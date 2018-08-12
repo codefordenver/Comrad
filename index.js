@@ -5,6 +5,7 @@ const cookieSession = require('cookie-session');
 const passport = require('passport');
 const bodyParser = require('body-parser');
 const keys = require('./config/keys');
+const routes = require('./routes');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -19,6 +20,8 @@ app.use(
     keys: [keys.cookieKey]
   })
 );
+
+app.use(routes);
 
 if (['production'].includes(process.env.NODE_ENV)) {
 

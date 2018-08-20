@@ -5,9 +5,9 @@ router.route('/')
   .get(userController.findAll)
   .post(userController.create);
 
-// router.route('/:id')
-//   .get(userController.findById)
-//   .post(userController.update)
-//   .delete(userControlelr.remove);
+router.route('/:id')
+  .get(userController.findById)
+  .put(userController.update)
+  .delete(userController.remove);
 
 module.exports = router;

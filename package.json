@@ -7,7 +7,7 @@
     "setupTestFrameworkScriptFile": "./tests/setup.js"
   },
   "scripts": {
-    "server": "nodemon index.js --ignore tests",
+    "server": "nodemon index.js --ignore tests --delay 2",
     "client": "npm run start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "build": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client",

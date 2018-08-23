@@ -24,9 +24,9 @@ module.exports = {
 
   update: (req, res) => {
     db.Album
-        .findOneAndUpdate({ _id: req.params.id }, req.body, { new: true })
-        .then(dbAlbum => res.json(dbAlbum))
-        .catch(err => res.status(422).json(err))
+      .findOneAndUpdate({ _id: req.params.id }, req.body, { new: true })
+      .then(dbAlbum => res.json(dbAlbum))
+      .catch(err => res.status(422).json(err))
   },
 
   remove: (req, res) => {

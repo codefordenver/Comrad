@@ -10,4 +10,7 @@ router.route('/:id')
   .put(albumController.update)
   .delete(albumController.remove);
 
+router.route('/search')
+  .post(albumController.search);
+
 module.exports = router;

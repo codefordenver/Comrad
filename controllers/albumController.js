@@ -2,7 +2,7 @@ const db = require('../models');
 
 module.exports = {
   findById: (req, res) => {
-    db.Album 
+    db.Album
       .findById(req.params.id)
       .then(dbAlbum => res.json(dbAlbum))
       .catch(err => res.status(422).json(err));
@@ -11,14 +11,60 @@ module.exports = {
   findAll: (req, res) => {
     db.Album
       .find({})
+      .populate("tracks")
+      .then(dbAlbum => res.json(dbAlbum))
+      .catch(err => res.status(422).json(err));
+  },
+
+  search: (req, res) => {
+    const q = new RegExp(req.body.title, 'i');
+
+    db.Album
+      .find({
+        title: q
+      })
       .then(dbAlbum => res.json(dbAlbum))
       .catch(err => res.status(422).json(err));
   },
 
   create: (req, res) => {
+    const { album, tracks } = req.body;
+    console.log(album);
+
     db.Album
-      .create(req.body)
-      .then(dbAlbum => res.json(dbAlbum))
+      .create(album)
+      .then(dbAlbum => {
+        
+        console.log(dbAlbum);
+        // If user DID NOT add tracks with new album, server will respond with new album
+        if (tracks.length === 0) {
+          res.json(dbAlbum);
+
+          // If user PROVIDED an array of tracks, we will save each track in the DB
+          // with the new album ID
+        } else {
+          const trackPromise = tracks.map((track, i) => {
+
+            track['album_id'] = dbAlbum._id;
+
+            return db.Track
+              .create(track)
+              .then(dbTrack => {
+                dbAlbum.tracks.push(dbTrack._id);
+              })
+              .catch(err => res.status(422).json(err));
+          });
+
+          // Using a promise, we want to make sure all the tracks are created before
+          // saving the new dbAlbum
+          Promise.all(trackPromise).then(() => {
+            dbAlbum
+              .save()
+              .then(dbAlbum => res.json(dbAlbum))
+              .catch(err => res.status(422).json(err));
+          });
+        }
+      })
       .catch(err => res.status(422).json(err))
   },
 

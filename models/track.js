@@ -23,6 +23,10 @@ const trackSchema = new Schema({
     type: String
   },
 
+  artist: {
+    type: String
+  },
+
   created_at: {
     type: Date,
     default: Date.now

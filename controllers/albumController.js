@@ -16,14 +16,26 @@ module.exports = {
       .catch(err => res.status(422).json(err));
   },
 
-  create: (req, res) => {
+  search: (req, res) => {
+    const q = new RegExp(req.body.title, 'i');
 
+    db.Album
+      .find({
+        title: q
+      })
+      .then(dbAlbum => res.json(dbAlbum))
+      .catch(err => res.status(422).json(err));
+  },
+
+  create: (req, res) => {
     const { album, tracks } = req.body;
+    console.log(album);
 
     db.Album
       .create(album)
       .then(dbAlbum => {
-
+        
+        console.log(dbAlbum);
         // If user DID NOT add tracks with new album, server will respond with new album
         if (tracks.length === 0) {
           res.json(dbAlbum);
@@ -37,8 +49,8 @@ module.exports = {
 
             return db.Track
               .create(track)
-              .then(dbTracks => {
-                dbAlbum.tracks.push(dbTracks._id);
+              .then(dbTrack => {
+                dbAlbum.tracks.push(dbTrack._id);
               })
               .catch(err => res.status(422).json(err));
           });

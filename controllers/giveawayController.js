@@ -2,38 +2,38 @@ const db = require('../models');
 
 module.exports = {
   findById: (req, res) => {
-    db.Ticket
+    db.Giveaway
       .findById(req.params.id)
-      .then(dbTicket => res.json(dbTicket))
+      .then(dbGiveaway => res.json(dbGiveaway))
       .catch(err => res.status(422).json(err));
   },
 
   findAll: (req, res) => {
-    db.Ticket
+    db.Giveaway
       .find({})
-      .then(dbTicket => res.json(dbTicket))
+      .then(dbGiveaway => res.json(dbGiveaway))
       .catch(err => res.status(422).json(err));
   },
 
   create: (req, res) => {
-    db.Ticket
+    db.Giveaway
       .create(req.body)
-      .then(dbTicket => res.json(dbTicket))
+      .then(dbGiveaway => res.json(dbGiveaway))
       .catch(err => res.status(422).json(err));
   },
 
   update: (req, res) => {
-    db.Ticket
+    db.Giveaway
       .findOneAndUpdate({ _id: req.params.id }, req.body, { new: true })
-      .then(dbTicket => res.json(dbTicket))
+      .then(dbGiveaway => res.json(dbGiveaway))
       .catch(err => res.status(422).json(err));
   },
 
   remove: (req, res) => {
-    db.Ticket
+    db.Giveaway
       .findById({ _id: req.params.id })
-      .then(dbTicket => dbTicket.remove())
-      .then(dbTicket => res.json(dbTicket))
+      .then(dbGiveaway => dbGiveaway.remove())
+      .then(dbGiveaway => res.json(dbGiveaway))
       .catch(err => res.status(422).json(err));
   }
 }

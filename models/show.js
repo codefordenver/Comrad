@@ -6,6 +6,26 @@ const showSchema = new Schema({
     type: String
   },
 
+  producer: {
+    type: String
+  },
+
+  summary: {
+    type: String
+  },
+
+  description: {
+    type: String
+  },
+
+  host: {
+    type: String
+  },
+
+  customer_properties: {
+    type: String
+  },
+
   created_at: {
     type: Date,
     default: Date.now

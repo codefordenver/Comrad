@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const ticketSchema = new Schema({
+const giveawaySchema = new Schema({
   title: {
     type: String
   },
@@ -17,6 +17,6 @@ const ticketSchema = new Schema({
   }
 });
 
-const Ticket = mongoose.model('Ticket', ticketSchema);
+const Giveaway = mongoose.model('Giveaway', giveawaySchema);
 
-module.exports = Ticket;
+module.exports = Giveaway;

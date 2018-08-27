@@ -3,9 +3,9 @@ module.exports = {
   Announcement: require('./announcement'),
   // Event: require('./event'),
   Feature: require('./feature'),
+  Giveaway: require('./giveaway'),
   Genre: require('./genre'),
   Show: require('./show'),
-  Ticket: require('./ticket'),
   Track: require('./track'),
   User: require('./user'),
   Venue: require('./venue')

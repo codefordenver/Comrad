@@ -6,6 +6,18 @@ const featureSchema = new Schema({
     type: String
   },
 
+  producer: {
+    type: String
+  },
+
+  summary: {
+    type: String
+  },
+
+  description: {
+    type: String
+  },
+
   created_at: {
     type: Date,
     default: Date.now

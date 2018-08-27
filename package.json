@@ -1,0 +1,47 @@
+{
+  "name": "comrad",
+  "version": "1.0.0",
+  "description": "Comrad is an open-source web application for use by community radio stations that helps with crucial show scheduling and playlist entry to organize all on air and streaming processes for hosts and DJ’s.",
+  "main": "index.js",
+  "jest": {
+    "setupTestFrameworkScriptFile": "./tests/setup.js"
+  },
+  "scripts": {
+    "server": "nodemon index.js --ignore tests",
+    "client": "npm run start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "build": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client",
+    "heroku-postbuild": "npm run build",
+    "seed": "node scripts/seedDB",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codefordenver/Comrad.git"
+  },
+  "author": "Sean Williams",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/codefordenver/Comrad/issues"
+  },
+  "homepage": "https://github.com/codefordenver/Comrad#readme",
+  "devDependencies": {
+    "concurrently": "^3.6.1",
+    "eslint": "^5.3.0",
+    "eslint-plugin-react": "^7.10.0",
+    "jest": "^23.4.2",
+    "nodemon": "^1.18.3",
+    "puppeteer": "^1.6.2"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "cookie-session": "^2.0.0-beta.3",
+    "dotenv": "^6.0.0",
+    "express": "^4.16.3",
+    "migrate-mongoose": "^3.2.2",
+    "mongoose": "^5.2.6",
+    "passport": "^0.4.0",
+    "redis": "^2.8.0",
+    "uuid": "^3.3.2"
+  }
+}

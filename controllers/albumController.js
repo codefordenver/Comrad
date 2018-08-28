@@ -29,13 +29,11 @@ module.exports = {
 
   create: (req, res) => {
     const { album, tracks } = req.body;
-    console.log(album);
 
     db.Album
       .create(album)
       .then(dbAlbum => {
         
-        console.log(dbAlbum);
         // If user DID NOT add tracks with new album, server will respond with new album
         if (tracks.length === 0) {
           res.json(dbAlbum);

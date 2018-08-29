@@ -1,5 +1,7 @@
 const router = require('express').Router();
 
+const requireLogin = require('../../middlewares/requireLogin.js');
+
 const albumRoutes = require('./album');
 const announcementRoutes = require('./announcement');
 const featureRoutes = require('./feature');
@@ -17,5 +19,10 @@ router.use('/giveaway', giveawayRoutes);
 router.use('/track', trackRoutes);
 router.use('/user', userRoutes);
 router.use('/venue', venueRoutes);
+
+router.route('/test-endpoint')
+  .get(requireLogin, function(req, res) {
+		res.json({'test': 'success'});
+	});
 
 module.exports = router;

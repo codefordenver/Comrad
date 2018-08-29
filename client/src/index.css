@@ -304,3 +304,140 @@ template {
  */
 [hidden] {
   display: none; }
+
+body {
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+  color: #777;
+  line-height: 1.7; }
+
+.button {
+  font-size: 2rem;
+  font-weight: 500;
+  letter-spacing: 2px;
+  border-radius: .5rem;
+  border: none;
+  padding: .5rem 1rem;
+  margin: 0 1rem;
+  transition: all .3s;
+  cursor: pointer; }
+  .button:active, .button:focus {
+    outline: none; }
+  .button--submit {
+    color: #fff;
+    background-color: #007083; }
+    .button--submit:hover {
+      background-color: #005C6C; }
+
+.link {
+  font-size: 1.6rem;
+  color: #007083;
+  margin: 0 1rem;
+  transition: all .3s; }
+  .link:hover {
+    color: #005C6C; }
+
+.card {
+  background-color: #fff;
+  border-radius: .5rem;
+  width: 100%;
+  overflow: hidden; }
+  .card .card__body {
+    padding: 0 2.5rem 2rem; }
+  .card .card__img {
+    width: 100%;
+    margin-bottom: 2rem; }
+  .card .card__title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #007083;
+    margin-bottom: 2rem; }
+
+.form__group {
+  margin-bottom: 1rem; }
+
+.form__input {
+  font-size: 1.5rem;
+  font-family: inherit;
+  color: #007083;
+  display: block;
+  width: 100%;
+  height: 3rem;
+  padding: 1rem;
+  border-radius: 2px;
+  border: none;
+  border-bottom: 2px solid #7cb2bf;
+  transition: all .3s; }
+  .form__input:focus {
+    outline: none;
+    border-bottom: 2px solid #007083; }
+
+.form__label {
+  color: #7cb2bf;
+  font-size: 1.2rem;
+  font-weight: 700;
+  text-align: left;
+  margin-left: 1rem;
+  margin-top: .7rem;
+  display: block;
+  transition: all .3s; }
+
+.form__input:placeholder-shown + .form__label {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-4rem); }
+
+.img {
+  width: 100%; }
+  .img--home {
+    padding: 2rem 10rem; }
+
+#home {
+  height: 100vh;
+  background-color: #7cb2bf;
+  display: grid;
+  grid-template-rows: 1;
+  grid-template-columns: 1fr 40rem 1fr; }
+
+.home__login {
+  grid-column: 2;
+  align-self: center; }
+
+/* ------------------------------------------
+  MARGIN
+------------------------------------------ */
+.m-auto {
+  margin: auto; }
+
+.mx-auto {
+  margin: 0 auto; }
+
+.my-auto {
+  margin: auto 0; }
+
+.mb-1 {
+  margin-bottom: 1rem; }
+
+.mb-2 {
+  margin-bottom: 2rem; }
+
+.mb-3 {
+  margin-bottom: 3rem; }
+
+.mb-4 {
+  margin-bottom: 4rem; }
+
+.mb-5 {
+  margin-bottom: 5rem; }
+
+/* ------------------------------------------
+  TEXT
+------------------------------------------ */
+.text-left {
+  text-align: left; }
+
+.text-center {
+  text-align: center; }
+
+.text-right {
+  text-align: right; }

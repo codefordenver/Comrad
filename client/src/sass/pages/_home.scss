@@ -1,0 +1,17 @@
+#home {
+  height: 100vh;
+  background-color: $color-secondary;
+  
+  display: grid;
+  grid-template-rows: 1;
+  grid-template-columns: 1fr 40rem 1fr;
+  
+}
+
+.home {
+
+  &__login {
+    grid-column: 2;
+    align-self: center;
+  }
+}

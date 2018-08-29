@@ -1,0 +1,46 @@
+.form {
+
+  &__group {
+    margin-bottom: 1rem;
+  }
+
+  &__input {
+    font-size: 1.5rem;
+    font-family: inherit;
+    color: $color-primary;
+
+    display: block;
+    width: 100%;
+    height: 3rem;
+    padding: 1rem;
+    border-radius: 2px;
+    border: none;
+    border-bottom: 2px solid $color-secondary;
+
+    transition: all .3s;
+
+    &:focus {
+      outline: none;
+      // box-shadow: 0 1rem 4rem rgba($color-black, .1);
+      border-bottom: 2px solid $color-primary;
+    }
+  }
+
+  &__label {
+    color: $color-secondary;
+    font-size: 1.2rem;
+    font-weight: 700;
+    text-align: left;
+
+    margin-left: 1rem;
+    margin-top: .7rem;
+    display: block;
+    transition: all .3s;
+  }
+
+  &__input:placeholder-shown + &__label {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-4rem);
+  }
+}

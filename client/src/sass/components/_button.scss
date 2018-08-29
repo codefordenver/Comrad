@@ -1,0 +1,45 @@
+.button {
+  font-size: 2rem;
+  font-weight: 500;
+  letter-spacing: 2px;
+
+  border-radius: .5rem;
+  border: none;
+  padding: .5rem 1rem;
+  margin: 0 1rem;
+  transition: all .3s;
+
+  cursor: pointer;
+
+  &:hover {
+
+  }
+
+  &:active,
+  &:focus {
+    outline: none;
+  }
+
+  &--submit {
+    color: $color-white;
+
+    background-color: $color-primary;
+
+    &:hover {
+      background-color: $color-primary-dark-1;
+    }
+  }
+}
+
+.link {
+  font-size: 1.6rem;
+  color: $color-primary;
+
+  margin: 0 1rem;
+
+  transition: all .3s;
+
+  &:hover {
+    color: $color-primary-dark-1;
+  }
+}

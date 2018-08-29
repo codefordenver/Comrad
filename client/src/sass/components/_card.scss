@@ -1,0 +1,33 @@
+.card {
+
+  background-color: #fff;
+  border-radius: .5rem;
+
+  width: 100%;
+  overflow: hidden;
+
+  .card__body {
+    padding: 0 2.5rem 2rem;
+  }
+
+  .card__img {
+    width: 100%;
+    margin-bottom: 2rem;
+  }
+
+  .card__link {
+
+  }
+
+  .card__text {
+
+  }
+
+  .card__title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: $color-primary;
+    
+    margin-bottom: 2rem;
+  }
+}

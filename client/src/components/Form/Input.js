@@ -1,5 +1,5 @@
 import React from 'react';
 
 export const Input = props => (
-  <input className="form__input" />
+  <input className="form__input" {...props}/>
 );

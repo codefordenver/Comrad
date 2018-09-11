@@ -1,4 +1,11 @@
 const db = require('../models');
+const jwt = require('jwt-simple');
+const key = process.env.SECRET_KEY;
+
+function tokenForUser(user) {
+  const timestamp = new Date().getTime();
+  return jwt.encode({ sub: user.id, iat: timestamp }, key);
+}
 
 module.exports = {
   findById: (req, res) => {
@@ -15,13 +22,31 @@ module.exports = {
       .catch(err => res.status(422).json(err));
   },
   
-  create: (req, res) => {
-    const { username, password } = req.body;
+  signup: (req, res) => {
+    const { email, password } = req.body;
 
-    db.User
-      .create({ username, password })
-      .then(dbNote => res.json(dbNote))
-      .catch(err => res.json(err));
+    if(!email || !password) {
+      return res.status(422).json({ error: 'You must provid email and password' })
+    }
+
+    db.User.findOne({ email }, function(err, existingUser) {
+      if(err) {
+        return next(err);
+      }
+
+      if(existingUser) {
+        return res.status(422).json({ erro: 'User already exists'})
+      }
+
+      db.User
+        .create(req.body)
+        .then(dbUser => res.json({ token: tokenForUser(dbUser) }))
+        .catch(err => res.status(422).json(err));
+    });
+  },
+
+  signin: (req, res) => {
+    res.json({ token: tokenForUser(req.user) });
   },
 
   update: (req, res) => {

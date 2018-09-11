@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
-import albumsReducer from './albums';
+import auth from './auth';
 
 export default combineReducers({
-  albums: albumsReducer
-});
+  auth
+})

@@ -5,13 +5,13 @@ import * as actions from '../../actions';
 import logo from './kgnu_logo.png';
 
 import { Link, SubmitBtn } from '../../components/Button';
-import { Card, CardBody, CardImg, CardTitle } from '../../components/Card';
+import { Card, CardBody, CardTitle } from '../../components/Card';
 import { Form, FormGroup, Input, Label } from '../../components/Form';
 
 class Home extends Component {
 
   state = {
-    username: '',
+    email: '',
     password: ''
   }
 
@@ -22,29 +22,39 @@ class Home extends Component {
     });
   }
 
+  handleFormSubmit = e => {
+    e.preventDefault();
+
+    const { email, password } = this.state;
+
+    this.props.signin({ email, password }, () => {
+      this.props.history.push('/dashboard');
+    })
+  }
+
   render() {
     return (
       <div id="home">
         <section className="home__login">
         <Card>
-            <img className="img img--home" src={logo} /> 
+            <img alt="logo" className="img img--home" src={logo} /> 
             <CardBody helpers='text-center'>
 
               <CardTitle>
                 COMRAD - KGNU PLAYLIST LOGIN:
               </CardTitle>
               
-              <Form>
+              <Form handleFormSubmit={this.handleFormSubmit}>
 
                 <FormGroup>
                   <Input
-                    name="username" 
+                    name="email" 
                     onChange={this.handleInputChange} 
-                    placeholder="Username"
+                    placeholder="Email"
                     type="text"
-                    value={this.state.username}
+                    value={this.state.email}
                   />
-                  <Label>Username</Label>
+                  <Label>Email</Label>
                 </FormGroup>
 
                 <FormGroup helpers="mb-3">
@@ -59,6 +69,7 @@ class Home extends Component {
                 </FormGroup>
 
                 <SubmitBtn>Sign In</SubmitBtn>
+
                 <Link link="#">
                   Reset Password
                 </Link>

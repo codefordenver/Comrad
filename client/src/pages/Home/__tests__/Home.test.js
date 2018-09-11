@@ -17,8 +17,8 @@ afterEach(() => {
   wrapped.unmount();
 });
 
-it('has username and password input', () => {
-  expect(wrapped.find('input[name="username"]').length).toEqual(1);
+it('has email and password input', () => {
+  expect(wrapped.find('input[name="email"]').length).toEqual(1);
   expect(wrapped.find('input[name="password"]').length).toEqual(1);
 });
 
@@ -27,11 +27,11 @@ it('has sign in and reset password button', () => {
   expect(wrapped.find('.link').length).toEqual(1);
 });
 
-describe('the username field', () => {
+describe('the email field', () => {
   beforeEach(() => {
-    wrapped.find('input[name="username"]').simulate('change', {
+    wrapped.find('input[name="email"]').simulate('change', {
       target: {
-        name: 'username',
+        name: 'email',
         value: 'dzimmerman'
       }
     });
@@ -39,7 +39,7 @@ describe('the username field', () => {
   });
 
   it('has text when user inputs', () => {
-    expect(wrapped.find('input[name="username"]').prop('value')).toEqual('dzimmerman');
+    expect(wrapped.find('input[name="email"]').prop('value')).toEqual('dzimmerman');
   });
 });
 

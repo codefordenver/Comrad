@@ -1,7 +1,12 @@
-This PR closes #[insert associated issue number here]
+# Guidelines
 
-#### What does this PR do?
+DEVELOPMENT branch on the LEFT <br>
+YOUR branch on the RIGHT
 
-#### How does this PR make you feel? [:link:](http://giphy.com/categories/emotions/)
+# Issue
 
-![](put .gif link here - can be found under "advanced" on giphy)
+This issue resolves #[Insert issue number]
+
+# Description
+
+_Description of pull request_

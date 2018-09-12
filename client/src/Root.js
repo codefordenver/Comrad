@@ -1,6 +1,6 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
 import reduxThunk from 'redux-thunk';
 import reducers from './reducers';
 
@@ -11,7 +11,10 @@ export default ({ children }) => {
     {
       auth: { authenticated: localStorage.getItem('token') }
     }, 
-    applyMiddleware(reduxThunk)
+    compose(
+      applyMiddleware(reduxThunk),
+      window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+    )
   );
 
   return (

@@ -1,2 +1,2 @@
 ## Comrad
-Switch to development branch to find most recent code
+Switch to DEVELOPMENT branch to find most recent code

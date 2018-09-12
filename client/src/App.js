@@ -1,20 +1,23 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
-import Admin from "./pages/Admin";
-import Calendar from "./pages/Calendar";
-import Dashboard from "./pages/Dashboard";
-import Library from "./pages/Library";
-import Home from "./pages/Home";
-import Report from "./pages/Report";
-import Builder from "./pages/Builder";
-import User from "./pages/User";
+import NavTest from './components/NavTest';
+
+import Admin from './pages/Admin';
+import Calendar from './pages/Calendar';
+import Dashboard from './pages/Dashboard';
+import Library from './pages/Library';
+import Home from './pages/Home';
+import Report from './pages/Report';
+import Builder from './pages/Builder';
+import User from './pages/User';
 
 class App extends Component {
   render() {
     return (
       <Router>
         <div>
+          <Route path="/" component={NavTest} />
           <Switch>
             <Route exact path="/" component={Home} />
             <Route exact path="/admin" component={Admin} />

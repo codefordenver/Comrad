@@ -7,6 +7,7 @@ const ExtractJwt = require('passport-jwt').ExtractJwt;
 const LocalStrategy = require('passport-local');
 
 const localOptions = { usernameField: 'email' };
+
 const localLogin = new LocalStrategy(localOptions, (email, password, done) => {
   db.User.findOne({ email }, (err, user) => {
     if(err) {
@@ -35,7 +36,9 @@ const jwtOptions = {
   jwtFromRequest: ExtractJwt.fromHeader('authorization'), 
   secretOrKey: key
 }
+
 const jwtLogin = new JwtStrategy(jwtOptions, (payload, done) => {
+  
   db.User.findById(payload.sub, (err, user) => {
     if(err) {
       return done(err, false);

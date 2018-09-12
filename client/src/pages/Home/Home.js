@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import * as actions from '../../actions';
+import * as actions from '../../actions/auth';
 
 import logo from './kgnu_logo.png';
 
@@ -29,7 +29,7 @@ class Home extends Component {
 
     this.props.signin({ email, password }, () => {
       this.props.history.push('/dashboard');
-    })
+    });
   }
 
   render() {

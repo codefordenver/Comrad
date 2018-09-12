@@ -16,6 +16,7 @@ module.exports = {
   },
 
   findAll: (req, res) => {
+    
     db.User
       .find({})
       .then(dbUser => res.json(dbUser))
@@ -46,6 +47,7 @@ module.exports = {
   },
 
   signin: (req, res) => {
+    console.log(req.user);
     res.json({ token: tokenForUser(req.user) });
   },
 

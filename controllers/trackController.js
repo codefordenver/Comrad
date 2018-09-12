@@ -11,14 +11,33 @@ module.exports = {
   findAll: (req, res) => {
     db.Track
       .find({})
+      .populate('album')
       .then(dbTrack => res.json(dbTrack))
       .catch(err => res.status(422).json(err))
   },
 
   create: (req, res) => {
+    const { album_id } = req.body[0];
+
+    // Create Array of Tracks
     db.Track
       .insertMany(req.body)
-      .then(dbTrack => res.json(dbTrack))
+      .then(dbTracks => {
+
+        // Search for album ID and save tracks to ablum
+        db.Album
+          .findById(album_id)
+          .then(dbAlbum => {
+
+            dbTracks.map(dbTrack => {
+              dbAlbum.tracks.push(dbTrack);
+            });
+
+            dbAlbum.save();
+            res.json(dbTracks);
+          })
+          .catch(err => res.status(422).json(err));
+      })
       .catch(err => res.status(422).json(err));
   },
 

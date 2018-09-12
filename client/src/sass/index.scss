@@ -1,14 +1,15 @@
-@import "abstracts/variables";
+@import 'abstracts/variables';
 
-@import "base/base";
-@import "base/typography";
-@import "base/utilities";
+@import 'base/base';
+@import 'base/typography';
+@import 'base/utilities';
 
-@import "components/button";
-@import "components/card";
-@import "components/form";
-@import "components/image";
+@import 'components/button';
+@import 'components/card';
+@import 'components/form';
+@import 'components/image';
+@import 'components/nav-test';
 
-@import "pages/_home";
+@import 'pages/_home';
 
-@import "utils/helpers";
+@import 'utils/helpers';

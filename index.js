@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
-const cookieSession = require('cookie-session');
+const session = require('express-session');
 const passport = require('passport');
 const bodyParser = require('body-parser');
 const keys = require('./config/keys');
@@ -13,14 +13,12 @@ const PORT = process.env.PORT || 5000;
 mongoose.Promise = global.Promise;
 mongoose.connect(keys.mongoURI, { useNewUrlParser: true });
 
-app.use(bodyParser.json());
-app.use(
-  cookieSession({
-    maxAge: 30 * 24 * 60 * 60 * 1000,
-    keys: [keys.cookieKey]
-  })
-);
+require('./services/passport');
 
+app.use(bodyParser.json());
+app.use(session({ secret: keys.secretKey, resave: false }))
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(routes);
 
 if (['production'].includes(process.env.NODE_ENV)) {

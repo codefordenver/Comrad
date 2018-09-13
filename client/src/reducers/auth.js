@@ -1,17 +1,25 @@
-import { AUTH_USER, AUTH_ERROR } from '../actions/types';
+import { AUTH_SIGNIN, AUTH_SIGNOUT, AUTH_FETCH, AUTH_ERROR } from '../actions/types';
 
-const INITIAL_STATE = {
-  authenticated: '',
+const initialState = {
+  status: 'fetching',
   errorMessage: ''
 }
 
-export default function(state = INITIAL_STATE, action) {
+export default function(state = initialState, action) {
   switch(action.type) {
-    case AUTH_USER:
-      console.log(action.payload);
-      return { ...state, authenticated: action.payload }
+
+    case AUTH_SIGNIN:
+      return { ...state, ...action.payload }
+
+    case AUTH_SIGNOUT:
+      return {...action.payload}
+
+    case AUTH_FETCH:
+      return {...state, ...action.payload }
+
     case AUTH_ERROR:
-      return { ...state, errorMessage: action.payload }
+      return {...action.payload}
+
     default:
       return state;
   }

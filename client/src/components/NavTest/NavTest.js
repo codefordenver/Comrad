@@ -8,13 +8,13 @@ class NavTest extends Component {
     const email = process.env.REACT_APP_TEST_EMAIL;
     const password = process.env.REACT_APP_TEST_PASSWORD;
 
-    this.props.signin({ email, password }, () => {
+    this.props.signinUser({ email, password }, () => {
       this.props.history.push('/dashboard');
     });
   };
 
   handleQuickSignOut = () => {
-    this.props.signout(() => {
+    this.props.signoutUser(() => {
       this.props.history.push('/');
     });
   };
@@ -62,7 +62,7 @@ class NavTest extends Component {
             {link.text}
           </Link>
         ))}
-        {localStorage.getItem('token') ? (
+        {this.props.auth.status === true ? (
           <button className="button" onClick={this.handleQuickSignOut}>
             Quick Sign Out
           </button>
@@ -76,7 +76,13 @@ class NavTest extends Component {
   }
 }
 
+function mapStateToProps(state) {
+  return {
+    auth: state.auth
+  }
+}
+
 export default connect(
-  null,
+  mapStateToProps,
   actions
 )(NavTest);

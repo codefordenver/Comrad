@@ -1,30 +1,36 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
+import * as actions from '../../actions';
 
 export default (ChildComponent) => {
   class ComposedComponent extends Component {
-    componentDidMount() {
-      this.shouldNavigateAway();
-    }
-  
-    componentDidUpdate() {
-      this.shouldNavigateAway();
-    }
-  
-    shouldNavigateAway() {
-      if(!this.props.auth) {
-        this.props.history.push('/');
+
+    shouldNavigateAway = () => {
+      if(this.props.auth.status === 'fetching') {
+        return <div>Loading...</div>
+
+      } else if (this.props.auth.status === false) {
+        return this.props.history.push('/');
+        
+      } else {
+        return <ChildComponent {...this.props} />
       }
     }
 
     render() {
-      return <ChildComponent {...this.props} />
+      return (
+        <Fragment>
+          {this.shouldNavigateAway()}
+        </Fragment>
+      )
     }
   }
 
   function mapStateToProps(state) {
-    return { auth: state.auth.authenticated };
+    return {
+      auth: state.auth
+    }
   }
 
-  return connect(mapStateToProps)(ComposedComponent);
+  return connect(mapStateToProps, actions)(ComposedComponent);
 };

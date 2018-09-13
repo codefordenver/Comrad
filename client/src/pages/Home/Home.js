@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import * as actions from '../../actions';
 
 import logo from './kgnu_logo.png';
 
@@ -26,7 +27,7 @@ class Home extends Component {
 
     const { email, password } = this.state;
 
-    this.props.signin({ email, password }, () => {
+    this.props.signinUser({ email, password }, () => {
       this.props.history.push('/dashboard');
     });
   }
@@ -81,4 +82,4 @@ class Home extends Component {
   }
 }
 
-export default connect()(Home);
+export default connect(null, actions)(Home);

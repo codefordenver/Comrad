@@ -6,7 +6,7 @@ class Dashboard extends Component {
 
   render() {
     return (
-      <div>Dashboard Component</div>
+      <div>Dashboard Component - Welcome {this.props.auth.email}</div> 
     )
   }
 }

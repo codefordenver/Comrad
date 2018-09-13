@@ -9,7 +9,9 @@ export default ({ children }) => {
   const store = createStore(
     reducers, 
     {
-      auth: { authenticated: localStorage.getItem('token') }
+      auth: {
+        status: 'fetching'
+      }
     }, 
     compose(
       applyMiddleware(reduxThunk),

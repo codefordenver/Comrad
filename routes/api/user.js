@@ -1,19 +1,11 @@
 const router = require('express').Router();
 const userController = require('../../controllers/userController');
-const passportServices = require('../../services/passport');
 const passport = require('passport');
-
-const requireSignin = passport.authenticate('local', { session: false });
-const requireToken = passport.authenticate('jwt', { session: false });
+const requireLogin = require('../../middlewares/requireLogin');
 
 router.route('/')
-  .get(requireToken, userController.findAll);
-
-router.route('/signup')
-  .post(userController.signup);
-
-router.route('/signin')
-  .post(requireSignin, userController.signin);
+  .get(requireLogin, userController.findAll)
+  .post(userController.create);
 
 router.route('/:id')
   .get(userController.findById)

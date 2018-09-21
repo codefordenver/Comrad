@@ -2,8 +2,33 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const eventSchema = new Schema({
-  title: {
-    type: String
+  master_event_uid:   Number,
+  status:             String,
+  start_date_utc:     Date,
+  end_date_utc:       Date,
+  duration:           Number,
+  is_all_day:         Boolean,
+  is_recurring:       Boolean,
+  RRULE:{
+    freq:             String,
+    dtstart:          Date,
+    until:            Date,
+    tzid:             String,
+    count:            Number,
+    byweekly:         String,
+    bymonth:          String
+  },
+  RDATE:              Date,
+  EXRULE:             String,
+  EXDATE:             Date,
+  event_details: {
+    title:            String,
+    summary:          String,
+    description:      String,
+    producer:         String,
+    host:             String,
+    guest:            [String],
+    custom:           String
   },
 
   created_at: {
@@ -20,3 +45,4 @@ const eventSchema = new Schema({
 const Event = mongoose.model('Event', eventSchema);
 
 module.exports = Event;
+

@@ -9,7 +9,7 @@ class Dashboard extends Component {
 
   render() {
     return (
-      <div>
+      <div className="dashboard-grid">
       <div>Dashboard Component - Welcome {this.props.auth.email}</div>
       <MyShows />
       <CurrentOnAir />

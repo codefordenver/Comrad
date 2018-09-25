@@ -8,6 +8,7 @@
 
 .dashboard-my-shows {
   grid-column: 1 / -1;
+  padding: 10%;
 }
 
 .dashboard-current-on-air {
@@ -15,13 +16,15 @@
   color: #fff;
   font-weight: 700;
   grid-column: 1 / -1;
-  margin: 10px 0;
+  margin: 10px 10%;
+  padding: 10%;
   text-align: center;
   text-transform: uppercase;
 }
 
 .dashboard-past-shows {
   grid-column: 1 / -1;
+  padding: 10%;
 }
 
 table {
@@ -29,6 +32,7 @@ table {
   border-style: hidden;
   color: #097284;
   table-layout: fixed;
+  width: 100%;
 }
 
 th,

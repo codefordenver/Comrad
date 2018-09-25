@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 
 class PastShows extends Component {
   render() {
-    return (  <div className="dashboard-past-shows">
+    return (
+      <div className="dashboard-past-shows">
         <h1>My past shows</h1>
         <table>
           <tr>
@@ -78,3 +79,5 @@ class PastShows extends Component {
     );
   }
 }
+
+export default PastShows;

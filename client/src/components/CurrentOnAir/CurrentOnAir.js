@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class PastShows extends Component {
+class CurrentOnAir extends Component {
   render() {
     return (
       <div className="dashboard-current-on-air">
@@ -13,3 +13,5 @@ class PastShows extends Component {
     );
   }
 }
+
+export default CurrentOnAir;

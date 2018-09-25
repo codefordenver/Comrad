@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class PastShows extends Component {
+class MyShows extends Component {
   render() {
     return (
 <div class="dashboard-my-shows">
@@ -78,3 +78,5 @@ class PastShows extends Component {
 </div>
 );
 }
+}
+export default MyShows;

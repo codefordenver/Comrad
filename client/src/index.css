@@ -412,6 +412,48 @@ body {
   grid-column: 2;
   align-self: center; }
 
+.dashboard-grid {
+  color: #097284;
+  display: grid;
+  font-family: 'Arial', 'open sans', sans-sans-serif;
+  grid-template-columns: repeat(12, [col-start] 1fr);
+  text-transform: uppercase; }
+
+.dashboard-my-shows {
+  grid-column: 1 / -1;
+  padding: 10%; }
+
+.dashboard-current-on-air {
+  background: #097284;
+  color: #fff;
+  font-weight: 700;
+  grid-column: 1 / -1;
+  margin: 10px 10%;
+  padding: 10%;
+  text-align: center;
+  text-transform: uppercase; }
+
+.dashboard-past-shows {
+  grid-column: 1 / -1;
+  padding: 10%; }
+
+table {
+  border-collapse: collapse;
+  border-style: hidden;
+  color: #097284;
+  table-layout: fixed;
+  width: 100%; }
+
+th,
+td {
+  border: 2px solid #7eb4c1; }
+
+td {
+  padding: 10px; }
+
+table a {
+  color: #097284; }
+
 /* ------------------------------------------
   MARGIN
 ------------------------------------------ */

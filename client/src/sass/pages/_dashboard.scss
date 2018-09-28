@@ -1,3 +1,12 @@
 .dashboard {
-  
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+
+  &__shows {
+
+  }
+
+  &__currenty-on-air {
+
+  }
 }

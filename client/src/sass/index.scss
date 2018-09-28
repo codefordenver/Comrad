@@ -9,7 +9,20 @@
 @import 'components/form';
 @import 'components/image';
 @import 'components/nav-test';
+@import 'components/table';
 
+@import 'layout/empty-layout';
+@import 'layout/main-layout';
+@import 'layout/navbar';
+@import 'layout/sidebar';
+
+@import 'pages/_admin';
+@import 'pages/_builder';
+@import 'pages/_calendar';
+@import 'pages/_dashboard';
 @import 'pages/_home';
+@import 'pages/_library';
+@import 'pages/_report';
+@import 'pages/_user';
 
-@import 'utils/helpers';
+@import 'utils/utilities';

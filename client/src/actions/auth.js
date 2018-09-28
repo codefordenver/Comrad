@@ -16,9 +16,9 @@ export const signinUser = (userInfo, callback) => async dispatch => {
 
 export const signoutUser = callback => async dispatch => {
   try {
-    const response = await axios.get('/api/auth/signout');
+    await axios.get('/api/auth/signout');
 
-    dispatch({ type: AUTH_SIGNOUT, payload: response.data });
+    dispatch({ type: AUTH_SIGNOUT });
 
     callback();
 

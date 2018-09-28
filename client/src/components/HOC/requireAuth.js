@@ -17,7 +17,7 @@ export default (ChildComponent) => {
 
     componentDidMount() {
       if (!this.props.auth.status) {
-        this.props.history.push('/');
+        this.props.history.push('/home');
       }
     }
     

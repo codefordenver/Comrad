@@ -1,7 +1,7 @@
 import React from 'react';
 
-export const CardBody = ({ children, helpers }) => (
-  <div className={helpers ? 'card__body ' + helpers : 'card__body'}>
+export const CardBody = ({ children, utilities }) => (
+  <div className={`card__body${utilities ? " " + utilities : ""}`}>
     {children}
   </div>
 );

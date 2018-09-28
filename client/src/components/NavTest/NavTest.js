@@ -15,7 +15,7 @@ class NavTest extends Component {
 
   handleQuickSignOut = () => {
     this.props.signoutUser(() => {
-      this.props.history.push('/');
+      this.props.history.push('/home');
     });
   };
 
@@ -23,7 +23,7 @@ class NavTest extends Component {
     const links = [
       {
         text: 'Home',
-        route: '/'
+        route: '/home'
       },
       {
         text: 'Admin',
@@ -39,7 +39,7 @@ class NavTest extends Component {
       },
       {
         text: 'Dashboard',
-        route: '/dashboard'
+        route: '/'
       },
       {
         text: 'Library',

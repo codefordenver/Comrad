@@ -5,7 +5,7 @@ class Builder extends Component {
 
   render() {
     return(
-      <div>Builder Component</div>
+      <main classNsme="builder">Builder Component</main>
     )
   }
 }

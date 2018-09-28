@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
 
 class Report extends Component {
+  state = {};
+
   render() {
     return (
-      <div>
+      <main className="report">
         Report Component        
-      </div>
+      </main>
     )
   }
 }

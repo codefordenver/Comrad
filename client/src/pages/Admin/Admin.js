@@ -5,7 +5,7 @@ class Admin extends Component {
 
   render() {
     return (
-      <div>Admin Component</div>
+      <main className="admin">Admin Component</main>
     )
   }
 }

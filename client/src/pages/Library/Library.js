@@ -1,12 +1,10 @@
 import React, { Component } from 'react'
 
 class Library extends Component {
+  state = {};
+
   render() {
-    return (
-      <div>
-        Library Component
-      </div>
-    )
+    return <main className="library">Library Component</main>
   }
 }
 

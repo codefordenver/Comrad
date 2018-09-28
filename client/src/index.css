@@ -305,6 +305,9 @@ template {
 [hidden] {
   display: none; }
 
+table {
+  border-collapse: collapse; }
+
 body {
   font-family: "Roboto", sans-serif;
   font-weight: 500;
@@ -401,16 +404,30 @@ body {
     .nav-test__link:not(:last-child) {
       border-right: 1px solid #000; }
 
-#home {
+.main-layout {
+  display: grid;
+  grid-template-rows: 5rem 1fr; }
+  .main-layout__body {
+    grid-row-start: 2;
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 10rem 1fr; }
+
+.navbar {
+  background-color: #eee; }
+
+.sidebar {
+  background-color: #ddd; }
+
+.home {
   height: 100vh;
   background-color: #7cb2bf;
   display: grid;
   grid-template-rows: 1;
   grid-template-columns: 1fr 40rem 1fr; }
-
-.home__login {
-  grid-column: 2;
-  align-self: center; }
+  .home__body {
+    grid-column: 2;
+    align-self: center; }
 
 /* ------------------------------------------
   MARGIN

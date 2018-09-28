@@ -1,12 +1,14 @@
-# Guidelines
+# Description of Issue
 
-Have a short descriptive title <br>
-Make sure to click the following:
+_Insert Description Here_
 
-- [ ] Assignees
-- [ ] Labels
-- [ ] Milestone
+# Possible Solution and/or Appraoch
 
-# Full Details
+_Insert Possible Solution/Apprach Here_
 
-_Details of pull request_
+# Approval
+
+- [ ] Yes
+- [ ] No
+
+_Leads Comment Below_

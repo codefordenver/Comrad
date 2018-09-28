@@ -6,9 +6,6 @@ _Insert Description Here_
 
 _Insert Possible Solution/Apprach Here_
 
-# Approval
-
-- [ ] Yes
-- [ ] No
+# Approval?
 
 _Leads Comment Below_

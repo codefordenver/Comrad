@@ -7,13 +7,11 @@ const eventSchema = new Schema({
   start_date_utc:     Date,
   end_date_utc:       Date,
   duration:           Number,
-  is_all_day:         Boolean,
   is_recurring:       Boolean,
   RRULE:{
     freq:             String,
     dtstart:          Date,
     until:            Date,
-    tzid:             String,
     count:            Number,
     byweekly:         String,
     bymonth:          String

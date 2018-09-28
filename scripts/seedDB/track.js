@@ -70,8 +70,7 @@ module.exports = [
   disk_number: '2',
   duration: '3:23',
   artist: 'Journey'
-}
-
+},
 {
   title: 'Wanna Be Startin\' Something',
   track_number: '1',

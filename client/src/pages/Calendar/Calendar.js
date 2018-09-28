@@ -3,48 +3,107 @@ import BigCalendar from 'react-big-calendar'
 import moment from 'moment';
 import { connect } from 'react-redux';
 import * as actions from '../../actions/event';
-//import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
+import NewEvent from './NewEvent';
+import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
 BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment))
 
+const DragAndDropCalendar = withDragAndDrop(BigCalendar)
+
+const events = [
+  {
+    id: 0,
+    title: 'Event 1',
+    start: new Date(2018, 0, 29, 9, 0, 0),
+    end: new Date(2018, 0, 29, 13, 0, 0),
+    resourceId: 1,
+  },
+  {
+    id: 1,
+    title: 'Event 2',
+    start: new Date(2018, 0, 29, 14, 0, 0),
+    end: new Date(2018, 0, 29, 16, 30, 0),
+    resourceId: 2,
+  },
+  {
+    id: 2,
+    title: 'Event 3',
+    start: new Date(2018, 0, 29, 8, 30, 0),
+    end: new Date(2018, 0, 29, 12, 30, 0),
+    resourceId: 1,
+  },
+  {
+    id: 11,
+    title: 'Event 4',
+    start: new Date(2018, 0, 30, 7, 0, 0),
+    end: new Date(2018, 0, 30, 10, 30, 0),
+    resourceId: 2,
+  },
+]
+
+const resourceMap = [
+  { resourceId: 1, resourceTitle: 'Schedule' },
+  { resourceId: 2, resourceTitle: 'Traffic' },
+]
 
 class Calendar extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      events: events,
+    }
+
+    this.moveEvent = this.moveEvent.bind(this)
+  }
+
   componentDidMount(){
     this.props.getEvent();
   }
 
-  state = {
-    events: [
-      {
-        start: new Date(),
-        end: new Date(moment().add(1, "days")),
-        title: "Some title"
-      }
-    ]
-  };
+  moveEvent({ event, start, end, resourceId, isAllDay: droppedOnAllDaySlot }) {
+    console.log(event);
+    const { events } = this.state
 
-  handleGetEvent = () => {
-    console.log("Event Props");
-    console.log(this.props);
-  };
+    const idx = events.indexOf(event)
+    let allDay = event.allDay
 
-  onEventResize = (type, { event, start, end, allDay }) => {
-    this.setState(state => {
-      state.events[0].start = start;
-      state.events[0].end = end;
-      return { events: state.events };
-    });
-  };
+    if (!event.allDay && droppedOnAllDaySlot) {
+      allDay = true
+    } else if (event.allDay && !droppedOnAllDaySlot) {
+      allDay = false
+    }
 
-  onEventDrop = ({ event, start, end, allDay }) => {
-    console.log(start);
-  };
+    const updatedEvent = { ...event, start, end, resourceId, allDay }
+
+    const nextEvents = [...events]
+    nextEvents.splice(idx, 1, updatedEvent)
+
+    console.log(updatedEvent);
+    this.setState({
+      events: nextEvents,
+    })
+  }
+
+  resizeEvent = (resizeType, { event, start, end }) => {
+    const { events } = this.state
+
+    const nextEvents = events.map(existingEvent => {
+      return existingEvent.id === event.id
+        ? { ...existingEvent, start, end }
+        : existingEvent
+    })
+
+    this.setState({
+      events: nextEvents,
+    })
+  }
 
   render() {
     return (
+<<<<<<< HEAD
 <<<<<<< HEAD
       <main className="calendar">Calendar Component</main>
     )
@@ -66,6 +125,22 @@ class Calendar extends Component {
       </div>
     );
 >>>>>>> Added calendar, event schema, initial event reducer
+=======
+      <DragAndDropCalendar
+        selectable
+        localizer={this.props.localizer}
+        events={this.state.events}
+        onEventDrop={this.moveEvent}
+        resizable
+        resources={resourceMap}
+        resourceIdAccessor="resourceId"
+        resourceTitleAccessor="resourceTitle"
+        onEventResize={this.resizeEvent}
+        defaultView="day"
+        defaultDate={new Date(2018, 0, 29)}
+      />
+    )
+>>>>>>> updated calendar and dependencies
   }
 }
 

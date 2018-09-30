@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import * as actions from "../../actions/event";
 import EventForm from "./EventForm";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
+import EventModal from "./EventModal";
 
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
@@ -54,11 +55,14 @@ class Calendar extends Component {
     super(props);
 
     this.state = {
-      events: events
+      events: events,
+      modalStatus: false
     };
 
     this.moveEvent = this.moveEvent.bind(this);
-    this.handleSelect = this.handleSelect.bind(this);
+    this.handleNewEvent = this.handleNewEvent.bind(this);
+    this.eventModalShow = this.eventModalShow.bind(this);
+    this.eventModalState = this.eventModalState.bind(this);
   }
 
   componentDidMount() {
@@ -103,10 +107,13 @@ class Calendar extends Component {
     });
   };
 
-  handleSelect = ({ start, end, resourceId }) => {
-    const title = window.prompt("New Event name");
+  handleNewEvent = ({ start, end, resourceId }) => {
+    //const title = window.prompt("New Event name");
+    const title = "Hi How Are You?";
+    this.eventInfo();
     console.log(this.state.events);
     console.log(start, end, title);
+
     if (title)
       this.setState({
         events: [
@@ -121,26 +128,46 @@ class Calendar extends Component {
       });
   };
 
+  eventModalShow() {
+    this.setState({
+      modalStatus: true
+    });
+  }
+
+  eventModalState(updatedState) {
+    this.setState({
+      modalStatus: updatedState
+    });
+  }
+
   render() {
     return (
       <div>
-        <EventForm />
-
+        {this.props.newEventForm.newEvent ? console.log(this.props.newEventForm.newEvent.values): null}
         <DragAndDropCalendar
           selectable
+          resizable
           localizer={this.props.localizer}
           events={this.state.events}
           onEventDrop={this.moveEvent}
+          onEventResize={this.resizeEvent}
           onSelectEvent={event => alert(event.title)}
-          onSelectSlot={this.handleSelect}
-          resizable
+          onSelectSlot={this.eventModalShow}
           resources={resourceMap}
           resourceIdAccessor="resourceId"
           resourceTitleAccessor="resourceTitle"
-          onEventResize={this.resizeEvent}
-          defaultView="day"
+          defaultView="week"
           defaultDate={new Date(2018, 0, 29)}
         />
+
+        {this.state.modalStatus ? (
+          <EventModal
+            modalStatus={this.state.modalStatus}
+            parentModalState={this.eventModalState}
+          >
+            <EventForm />
+          </EventModal>
+        ) : null}
       </div>
     );
   }
@@ -148,7 +175,8 @@ class Calendar extends Component {
 
 function mapStateToProps(state) {
   return {
-    event: state.event
+    event: state.event,
+    newEventForm: state.form
   };
 }
 

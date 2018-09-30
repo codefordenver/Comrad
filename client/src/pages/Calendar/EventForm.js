@@ -1,29 +1,29 @@
 import React from 'react'
 import { Field, reduxForm } from 'redux-form'
 
-const SimpleForm = props => {
+const EventForm = props => {
   const { handleSubmit, pristine, reset, submitting } = props
   return (
     <form onSubmit={handleSubmit}>
       <div>
-        <label>First Name</label>
+        <label>Event Name</label>
         <div>
           <Field
-            name="firstName"
+            name="eventName"
             component="input"
             type="text"
-            placeholder="First Name"
+            placeholder="Event Name"
           />
         </div>
       </div>
       <div>
-        <label>Last Name</label>
+        <label>Event Description</label>
         <div>
           <Field
-            name="lastName"
+            name="eventDescription"
             component="input"
             type="text"
-            placeholder="Last Name"
+            placeholder="Event Description"
           />
         </div>
       </div>
@@ -102,5 +102,5 @@ const SimpleForm = props => {
 }
 
 export default reduxForm({
-  form: 'simple' // a unique identifier for this form
-})(SimpleForm)
+  form: 'newEvent' // a unique identifier for this form
+})(EventForm)

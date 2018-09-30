@@ -1,7 +1,5 @@
 import axios from 'axios';
-import { EVENT_GET, EVENT_ERROR } from './types';
-
-
+import { EVENT_GET, EVENT_POST, EVENT_ERROR } from './types';
 
 export const getEvent = () => async dispatch => {
   try {
@@ -11,6 +9,22 @@ export const getEvent = () => async dispatch => {
 
   } catch (e) {
     dispatch({ type: EVENT_ERROR, payload: 'Get Event Error' });
+  }
+
+};
+
+export const postEvent = (event) => async dispatch => {
+  try {
+    console.log(event);
+    
+    //const response = await axios.post('/api/event', event);
+
+    const response = "";
+
+    dispatch({ type: EVENT_POST, payload: response.data });
+
+  } catch (e) {
+    dispatch({ type: EVENT_ERROR, payload: 'Posting New Event Error' });
   }
 
 };

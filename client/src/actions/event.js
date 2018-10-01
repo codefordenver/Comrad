@@ -15,13 +15,9 @@ export const getEvent = () => async dispatch => {
 
 export const postEvent = (event) => async dispatch => {
   try {
-    console.log(event);
-    
-    //const response = await axios.post('/api/event', event);
+    console.log("Action: " + event);
 
-    const response = "";
-
-    dispatch({ type: EVENT_POST, payload: response.data });
+    dispatch({ type: EVENT_POST, payload: event});
 
   } catch (e) {
     dispatch({ type: EVENT_ERROR, payload: 'Posting New Event Error' });

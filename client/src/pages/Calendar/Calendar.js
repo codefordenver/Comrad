@@ -14,36 +14,7 @@ BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment));
 
 const DragAndDropCalendar = withDragAndDrop(BigCalendar);
 
-const events = [
-  {
-    id: 0,
-    title: "Event 1",
-    start: new Date(2018, 0, 29, 9, 0, 0),
-    end: new Date(2018, 0, 29, 13, 0, 0),
-    resourceId: 1
-  },
-  {
-    id: 1,
-    title: "Event 2",
-    start: new Date(2018, 0, 29, 14, 0, 0),
-    end: new Date(2018, 0, 29, 16, 30, 0),
-    resourceId: 2
-  },
-  {
-    id: 2,
-    title: "Event 3",
-    start: new Date(2018, 0, 29, 8, 30, 0),
-    end: new Date(2018, 0, 29, 12, 30, 0),
-    resourceId: 1
-  },
-  {
-    id: 11,
-    title: "Event 4",
-    start: new Date(2018, 0, 30, 7, 0, 0),
-    end: new Date(2018, 0, 30, 10, 30, 0),
-    resourceId: 2
-  }
-];
+
 
 const resourceMap = [
   { resourceId: 1, resourceTitle: "Schedule" },
@@ -55,7 +26,8 @@ class Calendar extends Component {
     super(props);
 
     this.state = {
-      events: events,
+      newEvent: null,
+      events: null,
       modalStatus: false
     };
 
@@ -65,13 +37,9 @@ class Calendar extends Component {
     this.eventModalState = this.eventModalState.bind(this);
   }
 
-  componentDidMount() {
-    this.props.getEvent();
-  }
-
   moveEvent({ event, start, end, resourceId, isAllDay: droppedOnAllDaySlot }) {
     console.log(event);
-    const { events } = this.state;
+    const { events } = this.props;
 
     const idx = events.indexOf(event);
     let allDay = event.allDay;
@@ -94,7 +62,7 @@ class Calendar extends Component {
   }
 
   resizeEvent = (resizeType, { event, start, end }) => {
-    const { events } = this.state;
+    const { events } = this.props;
 
     const nextEvents = events.map(existingEvent => {
       return existingEvent.id === event.id
@@ -109,23 +77,19 @@ class Calendar extends Component {
 
   handleNewEvent = ({ start, end, resourceId }) => {
     //const title = window.prompt("New Event name");
-    const title = "Hi How Are You?";
-    this.eventInfo();
-    console.log(this.state.events);
-    console.log(start, end, title);
-
-    if (title)
+    console.log(this.props.events);
+    console.log(start, end);
       this.setState({
-        events: [
-          ...this.state.events,
+        newEvent:
           {
             start,
             end,
-            title,
             resourceId
           }
-        ]
       });
+    console.log("NewEvent: " + this.state.newEvent);
+
+    this.eventModalShow();
   };
 
   eventModalShow() {
@@ -148,11 +112,11 @@ class Calendar extends Component {
           selectable
           resizable
           localizer={this.props.localizer}
-          events={this.state.events}
+          events={this.props.events ?this.props.events: null}
           onEventDrop={this.moveEvent}
           onEventResize={this.resizeEvent}
           onSelectEvent={event => alert(event.title)}
-          onSelectSlot={this.eventModalShow}
+          onSelectSlot={this.handleNewEvent}
           resources={resourceMap}
           resourceIdAccessor="resourceId"
           resourceTitleAccessor="resourceTitle"
@@ -165,7 +129,8 @@ class Calendar extends Component {
             modalStatus={this.state.modalStatus}
             parentModalState={this.eventModalState}
           >
-            <EventForm />
+            <EventForm
+              event = {this.state.newEvent} />
           </EventModal>
         ) : null}
       </div>
@@ -175,7 +140,7 @@ class Calendar extends Component {
 
 function mapStateToProps(state) {
   return {
-    event: state.event,
+    events: state.events,
     newEventForm: state.form
   };
 }

@@ -1,106 +1,124 @@
-import React from 'react'
-import { Field, reduxForm } from 'redux-form'
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { Field, reduxForm } from "redux-form";
+import * as actions from "../../actions";
 
-const EventForm = props => {
-  const { handleSubmit, pristine, reset, submitting } = props
-  return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label>Event Name</label>
+class EventForm extends Component {
+  componentDidMount() {
+    this.props.initialize(this.props.event);
+  }
+
+  render() {
+    const {
+      handleSubmit,
+      pristine,
+      reset,
+      submitting,
+      postEvent,
+    } = this.props;
+    console.log("Event form: " + this.props.event);
+    return (
+      <form
+        onSubmit={handleSubmit(values => {
+          postEvent(values);
+        })}
+      >
         <div>
-          <Field
-            name="eventName"
-            component="input"
-            type="text"
-            placeholder="Event Name"
-          />
-        </div>
-      </div>
-      <div>
-        <label>Event Description</label>
-        <div>
-          <Field
-            name="eventDescription"
-            component="input"
-            type="text"
-            placeholder="Event Description"
-          />
-        </div>
-      </div>
-      <div>
-        <label>Email</label>
-        <div>
-          <Field
-            name="email"
-            component="input"
-            type="email"
-            placeholder="Email"
-          />
-        </div>
-      </div>
-      <div>
-        <label>Sex</label>
-        <div>
-          <label>
+          <label>Event Name</label>
+          <div>
             <Field
-              name="sex"
+              name="title"
               component="input"
-              type="radio"
-              value="male"
-            />{' '}
-            Male
-          </label>
-          <label>
+              type="text"
+              placeholder="Event Name"
+            />
+          </div>
+        </div>
+        <div>
+          <label>Event Description</label>
+          <div>
             <Field
-              name="sex"
+              name="eventDescription"
               component="input"
-              type="radio"
-              value="female"
-            />{' '}
-            Female
-          </label>
+              type="text"
+              placeholder="Event Description"
+            />
+          </div>
         </div>
-      </div>
-      <div>
-        <label>Favorite Color</label>
         <div>
-          <Field name="favoriteColor" component="select">
-            <option />
-            <option value="ff0000">Red</option>
-            <option value="00ff00">Green</option>
-            <option value="0000ff">Blue</option>
-          </Field>
+          <label>Start Time</label>
+          <div>
+            <Field name="start" component="input" type="text" />
+          </div>
         </div>
-      </div>
-      <div>
-        <label htmlFor="employed">Employed</label>
         <div>
-          <Field
-            name="employed"
-            id="employed"
-            component="input"
-            type="checkbox"
-          />
+          <label>End Time</label>
+          <div>
+            <Field name="end" component="input" type="text" />
+          </div>
         </div>
-      </div>
-      <div>
-        <label>Notes</label>
         <div>
-          <Field name="notes" component="textarea" />
+          <label>Resource ID</label>
+          <div>
+            <Field name="resourceId" component="input" type="text" />
+          </div>
         </div>
-      </div>
-      <div>
-        <button type="submit" disabled={pristine || submitting}>
-          Submit
-        </button>
-        <button type="button" disabled={pristine || submitting} onClick={reset}>
-          Clear Values
-        </button>
-      </div>
-    </form>
-  )
+        <div>
+          <label htmlFor="repeat_bool">Repeat</label>
+          <div>
+            <Field
+              name="repeat_bool"
+              id="repeat_bool"
+              component="input"
+              type="checkbox"
+            />
+          </div>
+        </div>
+        <div>
+          <label>Repeat Type</label>
+          <div>
+            <Field name="repeat_type" component="select">
+              <option />
+              <option value="hour">Hourly</option>
+              <option value="day">Daily</option>
+              <option value="week">Weekly</option>
+              <option value="month">Monthly</option>
+              <option value="year">Yearly</option>
+            </Field>
+          </div>
+        </div>
+        <div>
+          <label>Notes</label>
+          <div>
+            <Field name="notes" component="textarea" />
+          </div>
+        </div>
+        <div>
+          <button type="submit" disabled={pristine || submitting}>
+            Submit
+          </button>
+          <button
+            type="button"
+            disabled={pristine || submitting}
+            onClick={reset}
+          >
+            Clear Values
+          </button>
+        </div>
+      </form>
+    );
+  }
 }
 
+const mapStateToProps = state => ({
+  //
+});
+
+EventForm = connect(
+  mapStateToProps,
+  actions
+)(EventForm);
+
 export default reduxForm({
-  form: 'newEvent' // a unique identifier for this form
-})(EventForm)
+  form: "newEvent" // a unique identifier for this form
+})(EventForm);

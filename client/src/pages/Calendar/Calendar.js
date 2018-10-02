@@ -14,8 +14,6 @@ BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment));
 
 const DragAndDropCalendar = withDragAndDrop(BigCalendar);
 
-
-
 const resourceMap = [
   { resourceId: 1, resourceTitle: "Schedule" },
   { resourceId: 2, resourceTitle: "Traffic" }
@@ -37,57 +35,22 @@ class Calendar extends Component {
     this.eventModalState = this.eventModalState.bind(this);
   }
 
-  moveEvent({ event, start, end, resourceId, isAllDay: droppedOnAllDaySlot }) {
-    console.log(event);
-    const { events } = this.props;
-
-    const idx = events.indexOf(event);
-    let allDay = event.allDay;
-
-    if (!event.allDay && droppedOnAllDaySlot) {
-      allDay = true;
-    } else if (event.allDay && !droppedOnAllDaySlot) {
-      allDay = false;
-    }
-
-    const updatedEvent = { ...event, start, end, resourceId, allDay };
-
-    const nextEvents = [...events];
-    nextEvents.splice(idx, 1, updatedEvent);
-
-    console.log(updatedEvent);
-    this.setState({
-      events: nextEvents
-    });
+  moveEvent({ event, start, end, resourceId}) {
+    this.props.updateEvent(event, { start, end });
   }
 
-  resizeEvent = (resizeType, { event, start, end }) => {
-    const { events } = this.props;
-
-    const nextEvents = events.map(existingEvent => {
-      return existingEvent.id === event.id
-        ? { ...existingEvent, start, end }
-        : existingEvent;
-    });
-
-    this.setState({
-      events: nextEvents
-    });
+  resizeEvent = (resizeType, { event, start, end, resourceId }) => {
+   this.props.updateEvent(event, { start, end });
   };
 
   handleNewEvent = ({ start, end, resourceId }) => {
-    //const title = window.prompt("New Event name");
-    console.log(this.props.events);
-    console.log(start, end);
-      this.setState({
-        newEvent:
-          {
-            start,
-            end,
-            resourceId
-          }
-      });
-    console.log("NewEvent: " + this.state.newEvent);
+    this.setState({
+      newEvent: {
+        start,
+        end,
+        resourceId
+      }
+    });
 
     this.eventModalShow();
   };
@@ -107,12 +70,14 @@ class Calendar extends Component {
   render() {
     return (
       <div>
-        {this.props.newEventForm.newEvent ? console.log(this.props.newEventForm.newEvent.values): null}
+        {this.props.newEventForm.newEvent
+          ? console.log(this.props.newEventForm.newEvent.values)
+          : null}
         <DragAndDropCalendar
           selectable
           resizable
           localizer={this.props.localizer}
-          events={this.props.events ?this.props.events: null}
+          events={this.props.events ? this.props.events : []}
           onEventDrop={this.moveEvent}
           onEventResize={this.resizeEvent}
           onSelectEvent={event => alert(event.title)}
@@ -129,8 +94,7 @@ class Calendar extends Component {
             modalStatus={this.state.modalStatus}
             parentModalState={this.eventModalState}
           >
-            <EventForm
-              event = {this.state.newEvent} />
+            <EventForm event={this.state.newEvent} />
           </EventModal>
         ) : null}
       </div>

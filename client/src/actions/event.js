@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { EVENT_GET, EVENT_POST, EVENT_ERROR } from './types';
+import { EVENT_GET, EVENT_POST, EVENT_UPDATE, EVENT_DELETE, EVENT_ERROR } from './types';
 
 export const getEvent = () => async dispatch => {
   try {
@@ -15,12 +15,24 @@ export const getEvent = () => async dispatch => {
 
 export const postEvent = (event) => async dispatch => {
   try {
-    console.log("Action: " + event);
+    console.log("Event Post Action: " + event);
 
     dispatch({ type: EVENT_POST, payload: event});
 
   } catch (e) {
     dispatch({ type: EVENT_ERROR, payload: 'Posting New Event Error' });
+  }
+
+};
+
+export const updateEvent = (existingEvent, updatedEvent ) => async dispatch => {
+  try {
+    console.log("Action: " + updatedEvent);
+
+    dispatch({ type: EVENT_UPDATE, payload: {existingEvent, updatedEvent }});
+
+  } catch (e) {
+    dispatch({ type: EVENT_ERROR, payload: 'Updating Event Error' });
   }
 
 };

@@ -16,7 +16,9 @@ class EventForm extends Component {
       submitting,
       postEvent,
     } = this.props;
+
     console.log("Event form: " + this.props.event);
+    
     return (
       <form
         onSubmit={handleSubmit(values => {

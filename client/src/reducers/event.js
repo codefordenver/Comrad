@@ -1,4 +1,4 @@
-import { EVENT_GET, EVENT_POST, EVENT_ERROR } from "../actions/types";
+import { EVENT_GET, EVENT_POST, EVENT_UPDATE, EVENT_DELETE, EVENT_ERROR } from "../actions/types";
 
 const initialState = [
   {
@@ -41,6 +41,17 @@ export default function(state = initialState, { type, payload }) {
     case EVENT_POST:
       const updatedState = state.concat(payload);
       return updatedState
+
+    case EVENT_UPDATE:
+      const {existingEvent, updatedEvent} = payload;
+      const {start, end} = updatedEvent;
+
+      const nextEvents = state.map(stateEvent => {
+        return stateEvent.id === existingEvent.id
+          ? { ...stateEvent, start, end }
+          : stateEvent;
+      });
+      return nextEvents
 
     //Need some type of error response from server.
     case EVENT_ERROR:

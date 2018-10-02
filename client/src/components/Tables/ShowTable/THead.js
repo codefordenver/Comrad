@@ -5,10 +5,8 @@ export const THead = props => {
     <thead>
       <tr>
         {props.columns.map(column => (
-          <th key={column.key}>{column.name}</th>
+          <th className="table__header" key={column.key}>{column.name}</th>
         ))}
-        <th />
-        <th />
       </tr>
     </thead>
   )

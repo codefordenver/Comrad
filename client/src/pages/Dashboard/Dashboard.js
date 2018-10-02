@@ -26,11 +26,15 @@ class Dashboard extends Component {
     return (
       <main className="dashboard">
         <section className="dashboard__shows">
+          <h1>Upcoming Shows</h1>
           <ShowTable columns={showColumns} rows={showRows} />
-          
         </section>
         <section className="dashboard__currently-on-air">
           Currently On Air
+        </section>
+        <section className="dashboard__shows">
+          <h1>Past Shows</h1>
+          <ShowTable columns={showColumns} rows={showRows} />
         </section>
       </main>
     )

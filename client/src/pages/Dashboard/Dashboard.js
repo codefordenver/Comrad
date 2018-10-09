@@ -3,11 +3,6 @@ import requireAuth from '../../components/HOC/requireAuth'
 
 import ShowTable from '../../components/Tables/ShowTable';
 
-const showColumns = [
-  { key: 'name', name: 'Name' },
-  { key: 'time', name: 'Time' },
-]
-
 const showRows = [
   {
     id: '0',
@@ -26,11 +21,15 @@ class Dashboard extends Component {
     return (
       <main className="dashboard">
         <section className="dashboard__shows">
-          <ShowTable columns={showColumns} rows={showRows} />
-          
+          <h1>Upcoming Shows</h1>
+          <ShowTable rows={showRows} />
         </section>
         <section className="dashboard__currently-on-air">
           Currently On Air
+        </section>
+        <section className="dashboard__shows">
+          <h1>Past Shows</h1>
+          <ShowTable rows={showRows} />
         </section>
       </main>
     )

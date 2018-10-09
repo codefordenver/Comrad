@@ -28,6 +28,7 @@ module.exports = {
   },
 
   create: (req, res) => {
+    
     db.Album
       .create(req.body)
       .then(dbAlbum => res.json(dbAlbum))

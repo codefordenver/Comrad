@@ -2,38 +2,31 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 const db = require('../../models');
 const keys = require('../../config/keys');
+const albumSeeds = require('./lib/albums.json');
 
 mongoose.connect(
   keys.mongoURI,
   { useNewUrlParser: true }
 );
 
-const albumSeeds = [
-  {
-    title: 'Escape',
-    artist: 'Journey',
-    label: 'Columbia',
-    local: false,
-    compilation: '',
-    location: '',
-    album_art: ''
-  },
-  {
-    title: 'Thriller',
-    artist: 'Michael Jackson',
-    label: 'Epic',
-    local: false,
-    compilation: '',
-    location: '',
-    album_art: ''
-  }
-];
+db.Album.remove({}).catch(err => console.log(err));
+db.Track.remove({}).catch(err => console.log(err));
 
-db.Album.remove({}).catch(err => res.json(err));
+albumSeeds.forEach(seed => {
+  db.Album
+    .create(seed.album)
+    .then(res => {
+      
+      seed.tracks.forEach(track => {
+        track['album_id'] = res._id;
+        console.log(track);
+        db.Track
+          .create(track)
+          .then()
+          .catch(err => console.log(err));
+      })
+    })
+    .catch(err => console.log(err));
+});
 
-db.Album
-  .insertMany(albumSeeds)
-  .then(() => {
-    console.log('Seed Complete');
-    process.exit(0);
-  });
+console.log('Ctrl + C to exit');

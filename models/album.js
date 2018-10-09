@@ -38,14 +38,7 @@ const albumSchema = new Schema({
   updated_at: {
     type: Date,
     default: Date.now
-  },
-
-  tracks: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "Track"
-    }
-  ]
+  }
 });
 
 const Album = mongoose.model('Album', albumSchema);

@@ -13,10 +13,8 @@ db.Album.remove({}).catch(err => console.log(err));
 db.Track.remove({}).catch(err => console.log(err));
 
 albumSeeds.forEach(seed => {
-  db.Album
-    .create(seed.album)
-    .then(res => {
-      
+  db.Album.create(seed.album).then(res => {
+
       seed.tracks.forEach(track => {
         track['album_id'] = res._id;
         console.log(track);
@@ -28,5 +26,7 @@ albumSeeds.forEach(seed => {
     })
     .catch(err => console.log(err));
 });
+
+
 
 console.log('Ctrl + C to exit');

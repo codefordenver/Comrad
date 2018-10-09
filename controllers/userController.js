@@ -19,7 +19,7 @@ module.exports = {
     if (!email || !password) {
       return res
         .status(422)
-        .json({ error: 'You must provid email and password' });
+        .json({ error: 'You must provide email and password' });
     }
 
     db.User.findOne({ email }, function(err, existingUser) {

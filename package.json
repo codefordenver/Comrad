@@ -8,7 +8,7 @@
   },
   "scripts": {
     "start": "node index.js",
-    "server": "nodemon index.js --ignore tests",
+    "server": "nodemon index.js --ignore tests --delay 0.5",
     "client": "npm run start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "build": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client",

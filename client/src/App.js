@@ -23,13 +23,13 @@ const MainLayout = () => {
 
       <div className="main-layout__body">
         <Sidebar />
-        <Route exact path={"/admin"} component={Admin} />
-        <Route exact path={"/builder"} component={Builder} />
-        <Route exact path={"/calendar"} component={Calendar} />
-        <Route exact path={"/"} component={Dashboard} />
-        <Route exact path={"/library"} component={Library} />
-        <Route exact path={"/report"} component={Report} />
-        <Route exact path={"/user"} component={User} />
+        <Route path="/admin" component={Admin} />
+        <Route path="/builder" component={Builder} />
+        <Route path="/calendar" component={Calendar} />
+        <Route exact path="/" component={Dashboard} />
+        <Route path="/library" component={Library} />
+        <Route path="/report" component={Report} />
+        <Route path="/user" component={User} />
       </div>
     </div>
   )

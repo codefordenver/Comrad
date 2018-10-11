@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema
 
 const albumSchema = new Schema({
   name: {
@@ -7,7 +7,8 @@ const albumSchema = new Schema({
   },
 
   artist: {
-    type: String
+    type: Schema.Types.ObjectId,
+    ref: 'Artist'
   },
 
   label: {
@@ -32,7 +33,7 @@ const albumSchema = new Schema({
 
   type: {
     type: String,
-    defualt: 'album'
+    default: 'album'
   },
 
   created_at: {
@@ -44,8 +45,8 @@ const albumSchema = new Schema({
     type: Date,
     default: Date.now
   }
-});
+})
 
-const Album = mongoose.model('Album', albumSchema);
+const Album = mongoose.model('Album', albumSchema)
 
-module.exports = Album;
+module.exports = Album

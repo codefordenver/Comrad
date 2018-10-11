@@ -6,6 +6,11 @@ const artistSchema = new Schema({
     type: String
   },
 
+  type: {
+    type: String,
+    default: 'artist'
+  },
+
   created_at: {
     type: Date,
     default: Date.now

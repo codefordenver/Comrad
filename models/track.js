@@ -7,7 +7,7 @@ const trackSchema = new Schema({
     ref: 'Album'
   },
 
-  title: {
+  name: {
     type: String
   },
 
@@ -25,6 +25,11 @@ const trackSchema = new Schema({
 
   artist: {
     type: String
+  },
+
+  track: {
+    type: String,
+    default: 'track'
   },
 
   created_at: {

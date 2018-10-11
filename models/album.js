@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const albumSchema = new Schema({
-  title: {
+  name: {
     type: String
   },
 
@@ -28,6 +28,11 @@ const albumSchema = new Schema({
 
   album_art: {
     type: String
+  },
+
+  type: {
+    type: String,
+    defualt: 'album'
   },
 
   created_at: {

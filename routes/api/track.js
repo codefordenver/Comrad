@@ -13,4 +13,7 @@ router.route('/:id')
 router.route('/search')
   .post(trackController.search);
 
+router.route('/many')
+  .post(trackController.createMany);
+  
 module.exports = router;

@@ -10,4 +10,7 @@ router.route('/:id')
   .put(artistController.update)
   .delete(artistController.remove);
 
+router.route('/many')
+  .post(artistController.createMany);
+
 module.exports = router;

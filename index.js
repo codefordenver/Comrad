@@ -16,7 +16,7 @@ mongoose.connect(keys.mongoURI, { useNewUrlParser: true });
 require('./services/passport');
 
 app.use(bodyParser.json());
-app.use(session({ secret: keys.secretKey, resave: false }))
+app.use(session({ secret: keys.secretKey, resave: false }));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(routes);
@@ -25,7 +25,7 @@ if (['production'].includes(process.env.NODE_ENV)) {
 
   app.use(express.static('client/build'));
 
-  const path = require('path');
+  const path = requßire('path');
   
   app.get('*', (req, res) => {
     res.sendFile(path.resolve('client', 'build', 'index.html'));

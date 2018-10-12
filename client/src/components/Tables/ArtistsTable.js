@@ -5,12 +5,14 @@ class ArtistsTable extends Component {
   state = {}
 
   renderHeader() {
+    return (
     <thead>
       <tr>
         <th>Name</th>
         <th>ID</th>
       </tr>
     </thead>
+    )
   }
 
   renderBody() {

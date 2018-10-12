@@ -22,6 +22,13 @@ module.exports = {
       .catch(err => res.status(422).json(err));
   },
 
+  createMany: (req, res) => {
+    db.Artist
+      .insertMany(req.body)
+      .then(dbArtist => res.json(dbArtist))
+      .catch(err => res.json(422).json(err));
+  },
+
   update: (req, res) => {
     db.Artist
       .findOneAndUpdate({ _id: req.params.id }, req.body, { new: true })

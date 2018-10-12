@@ -1,8 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux';
 
-import { Body, Head, Table } from './Elements';
-
 class AlbumsTable extends Component {
   state = {}
 

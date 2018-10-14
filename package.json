@@ -4,7 +4,12 @@
   "description": "Comrad is an open-source web application for use by community radio stations that helps with crucial show scheduling and playlist entry to organize all on air and streaming processes for hosts and DJ’s.",
   "main": "index.js",
   "jest": {
-    "setupTestFrameworkScriptFile": "./tests/setup.js"
+    "setupTestFrameworkScriptFile": "./tests/setup.js",
+    "testEnvironment": "node",
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/client/"
+    ]
   },
   "scripts": {
     "start": "node index.js",
@@ -32,7 +37,8 @@
     "eslint-plugin-react": "^7.10.0",
     "jest": "^23.4.2",
     "nodemon": "^1.18.3",
-    "puppeteer": "^1.6.2"
+    "puppeteer": "^1.6.2",
+    "supertest": "^3.3.0"
   },
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",

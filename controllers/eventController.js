@@ -41,4 +41,16 @@ module.exports = {
     hellostring = 'Hello World';
     res.json({hellostring});
   },
+
+  search: (req, res) => {
+    const q = new RegExp(req.body.title, 'i');
+
+    db.Event
+      .find({
+        title: q
+      })
+      .then(dbEvent => res.json(dbEvent))
+      .catch(err => res.status(422).json(err));
+  },
+
 }

@@ -33,6 +33,7 @@ class EventForm extends Component {
               component="input"
               type="text"
               placeholder="Event Name"
+              className = "field-width"
             />
           </div>
         </div>
@@ -44,25 +45,26 @@ class EventForm extends Component {
               component="input"
               type="text"
               placeholder="Event Description"
+              className = "field-width"
             />
           </div>
         </div>
         <div>
           <label>Start Time</label>
           <div>
-            <Field name="start" component="input" type="text" />
+            <Field name="start" component="input" type="text" className = "field-width"/>
           </div>
         </div>
         <div>
           <label>End Time</label>
           <div>
-            <Field name="end" component="input" type="text" />
+            <Field name="end" component="input" type="text" className = "field-width"/>
           </div>
         </div>
         <div>
           <label>Resource ID</label>
           <div>
-            <Field name="resourceId" component="input" type="text" />
+            <Field name="resourceId" component="input" type="text" className = "field-width"/>
           </div>
         </div>
         <div>
@@ -73,13 +75,14 @@ class EventForm extends Component {
               id="repeat_bool"
               component="input"
               type="checkbox"
+              className = "field-width"
             />
           </div>
         </div>
         <div>
           <label>Repeat Type</label>
           <div>
-            <Field name="repeat_type" component="select">
+            <Field name="repeat_type" component="select" className = "field-width">
               <option />
               <option value="hour">Hourly</option>
               <option value="day">Daily</option>
@@ -92,7 +95,7 @@ class EventForm extends Component {
         <div>
           <label>Notes</label>
           <div>
-            <Field name="notes" component="textarea" />
+            <Field name="notes" component="textarea" className = "field-width"/>
           </div>
         </div>
         <div>

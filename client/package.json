@@ -7,7 +7,7 @@
     "axios": "^0.18.0",
     "moment": "^2.22.2",
     "react": "^16.4.2",
-    "react-big-calendar": "^0.19.2",
+    "react-big-calendar": "^0.20.1",
     "react-dnd": "^2.6.0",
     "react-dnd-html5-backend": "^2.6.0",
     "react-dom": "^16.4.2",

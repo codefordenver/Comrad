@@ -10,7 +10,7 @@ import EventModal from "./EventModal";
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
-BigCalendar.setLocalizer(BigCalendar.momentLocalizer(moment));
+const localizer = BigCalendar.momentLocalizer(moment);
 
 const DragAndDropCalendar = withDragAndDrop(BigCalendar);
 
@@ -25,7 +25,7 @@ class Calendar extends Component {
 
     this.state = {
       newEvent: null,
-      events: null,
+      events: [],
       modalStatus: false
     };
 
@@ -35,21 +35,53 @@ class Calendar extends Component {
     this.eventModalState = this.eventModalState.bind(this);
   }
 
-  moveEvent({ event, start, end, resourceId}) {
+  componentDidMount() {
+    const setInitialEvents = async () => {
+      //Change to getEvents once mongo is setup
+      const eventsProps = await this.props.events;
+      this.setState({ events: eventsProps });
+    };
+
+    setInitialEvents();
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    const { events, newEventForm } = props;
+    const nextEvent = newEventForm.newEvent ? newEventForm.newEvent.values : [];
+    
+    return { events: events.concat(nextEvent) };
+  }
+
+  moveEvent({ event, start, end, resourceId }) {
+    /*
+    const { events } = this.state;
+    const idx = events.indexOf(event);
+    const updatedEvent = { ...event, start, end, resourceId };
+    const nextEvents = [...events];
+    nextEvents.splice(idx, 1, updatedEvent);
+
+    this.setState({
+      events: nextEvents
+    });
+
+    console.log(this.state.events);
+    */
     this.props.updateEvent(event, { start, end });
   }
 
-  resizeEvent = (resizeType, { event, start, end, resourceId }) => {
-   this.props.updateEvent(event, { start, end });
+  resizeEvent = ({ event, start, end, resourceId }) => {
+    this.props.updateEvent(event, { start, end });
   };
 
   handleNewEvent = ({ start, end, resourceId }) => {
+    const newEventState = {
+      start,
+      end,
+      resourceId
+    };
+
     this.setState({
-      newEvent: {
-        start,
-        end,
-        resourceId
-      }
+      newEvent: newEventState
     });
 
     this.eventModalShow();
@@ -70,20 +102,17 @@ class Calendar extends Component {
   render() {
     return (
       <div>
-        {this.props.newEventForm.newEvent
-          ? console.log(this.props.newEventForm.newEvent.values)
-          : null}
         <DragAndDropCalendar
           selectable
           resizable
-          localizer={this.props.localizer}
-          events={this.props.events ? this.props.events : []}
+          localizer={localizer}
+          events={this.state.events}
           onEventDrop={this.moveEvent}
           onEventResize={this.resizeEvent}
           onSelectEvent={event => alert(event.title)}
           onSelectSlot={this.handleNewEvent}
           resources={resourceMap}
-          resourceIdAccessor="resourceId"
+          resourceIdAccessor={"resourceId"}
           resourceTitleAccessor="resourceTitle"
           defaultView="week"
           defaultDate={new Date(2018, 0, 29)}

@@ -419,6 +419,12 @@ body {
 .sidebar {
   background-color: #ddd; }
 
+.ReactModal__Overlay {
+  z-index: 1000; }
+
+.field-width {
+  min-width: 420px; }
+
 .home {
   height: 100vh;
   background-color: #7cb2bf;

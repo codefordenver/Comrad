@@ -428,6 +428,10 @@ body {
 .field-width {
   min-width: 420px; }
 
+.dashboard {
+  display: grid;
+  grid-template-columns: 3fr 1fr; }
+
 .home {
   height: 100vh;
   background-color: #7cb2bf;
@@ -437,6 +441,9 @@ body {
   .home__body {
     grid-column: 2;
     align-self: center; }
+
+.library__header {
+  display: flex; }
 
 /* ------------------------------------------
   MARGIN

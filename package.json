@@ -19,7 +19,9 @@
     "build": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client",
     "heroku-postbuild": "npm run build",
     "seed": "node scripts/seedDB",
-    "test": "jest"
+    "test:server": "jest",
+    "test:client": "npm run test --prefix client -- --watchAll=true",
+    "test": "npm run test:server && npm run test:client"
   },
   "repository": {
     "type": "git",

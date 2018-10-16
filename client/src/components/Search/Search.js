@@ -24,14 +24,7 @@ class Search extends Component {
   }
 
   renderShortSearch() {
-    const arrLength = this.props.results.length;
-    const length = arrLength < 5 ? arrLength : 5;
-
-    for(let i = 0; i < length; i++) {
-      return (
-        <li>{this.props.results[i].name}</li>
-      )
-    }
+    
   }
 
   render() {

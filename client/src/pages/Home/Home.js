@@ -31,6 +31,8 @@ class Home extends Component {
     })
   }
 
+  // Comment
+
   render() {
     return (
       <main className="home">

@@ -16,7 +16,7 @@ mongoose.connect(keys.mongoURI, { useNewUrlParser: true });
 require('./services/passport');
 
 app.use(bodyParser.json());
-app.use(session({ secret: keys.secretKey, resave: false }))
+app.use(session({ secret: keys.secretKey, resave: false }));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(routes);

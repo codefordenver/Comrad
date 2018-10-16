@@ -1,0 +1,38 @@
+[
+  {
+    "name": "Thriller",
+    "artist": "5bbed2529a30532d292d862f",
+    "label": "Epic",
+    "local": false,
+    "compilation": "",
+    "location": "",
+    "album_art": ""
+  },
+  {
+    "name": "Escape",
+    "artist": "5bbed2529a30532d292d8630",
+    "label": "Columbia",
+    "local": false,
+    "comiplation": "",
+    "location": "",
+    "album_art": ""
+  },
+  {
+    "name": "Aerosmith",
+    "artist": "5bbed2529a30532d292d8631",
+    "label": "Columbia",
+    "local": false,
+    "compilation": "",
+    "location": "",
+    "album_art": ""
+  },
+  {
+    "name": "Recovery",
+    "artist": "5bbed2529a30532d292d8632",
+    "label": "Aftermath",
+    "local": false,
+    "compilation": "",
+    "location": "",
+    "album_art": ""
+  }
+]

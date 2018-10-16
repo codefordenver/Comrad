@@ -2,12 +2,12 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema;
 
 const trackSchema = new Schema({
-  album_id: {
+  album: {
     type: Schema.Types.ObjectId,
     ref: 'Album'
   },
 
-  title: {
+  name: {
     type: String
   },
 
@@ -23,8 +23,9 @@ const trackSchema = new Schema({
     type: String
   },
 
-  artist: {
-    type: String
+  type: {
+    type: String,
+    default: 'track'
   },
 
   created_at: {

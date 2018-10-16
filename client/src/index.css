@@ -308,6 +308,9 @@ template {
 table {
   border-collapse: collapse; }
 
+main {
+  padding: 4rem; }
+
 body {
   font-family: "Roboto", sans-serif;
   font-weight: 500;

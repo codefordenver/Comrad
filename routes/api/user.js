@@ -12,4 +12,8 @@ router.route('/:id')
   .put(userController.update)
   .delete(userController.remove);
 
+// Permission Updates
+router.route('/permission/:id')
+  .put(requireLogin, userController.updatePermission);
+
 module.exports = router;

@@ -13,6 +13,38 @@ const userSchema = new Schema({
   password: {
     type: String,
     required: true
+  },
+
+  first_name: {
+    type: String,
+    required: true
+  },
+
+  last_name: {
+    type: String,
+    required: true
+  },
+  
+  on_air_name: {
+    type: String
+  },
+
+  role: {
+    type: String,
+    enum: ['DJ', 'Underwriting', 'Show Producer', 'Full Access', 'Admin'],
+    required: true
+  },
+
+  status: {
+    type: String,
+    enum: ['Active', 'Inactive'],
+    required: true,
+    default: true
+  },
+
+  can_delete: {
+    type: Boolean,
+    required: true
   }
 });
 

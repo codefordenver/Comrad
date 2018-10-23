@@ -10,4 +10,10 @@ router.route('/:id')
   .put(trackController.update)
   .delete(trackController.remove);
 
+router.route('/search')
+  .post(trackController.search);
+
+router.route('/many')
+  .post(trackController.createMany);
+  
 module.exports = router;

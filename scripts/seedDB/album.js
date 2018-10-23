@@ -17,7 +17,6 @@ albumSeeds.forEach(seed => {
 
       seed.tracks.forEach(track => {
         track['album_id'] = res._id;
-        console.log(track);
         db.Track
           .create(track)
           .then()

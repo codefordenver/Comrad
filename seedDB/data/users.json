@@ -47,4 +47,5 @@
 {"email":"fpickworth1a@cyberchimps.com","password":"dAgDcg","first_name":"Freddy","last_name":"Pickworth","on_air_name":"Freddy Pickworth","role":"DJ","status":"Active","can_delete":true},
 {"email":"fneild1b@marketwatch.com","password":"AgSF3w","first_name":"Farris","last_name":"Neild","on_air_name":"Farris Neild","role":"DJ","status":"Active","can_delete":true},
 {"email":"adreakin1c@opera.com","password":"TQP66yxLUzrG","first_name":"Aubree","last_name":"Dreakin","on_air_name":"Aubree Dreakin","role":"Show Producer","status":"Active","can_delete":true},
-{"email":"lrubbens1d@wikipedia.org","password":"bR4sfU2no","first_name":"Lari","last_name":"Rubbens","on_air_name":"Lari Rubbens","role":"Show Producer","status":"Active","can_delete":true}]
+{"email":"lrubbens1d@wikipedia.org","password":"bR4sfU2no","first_name":"Lari","last_name":"Rubbens","on_air_name":"Lari Rubbens","role":"Show Producer","status":"Active","can_delete":true},
+{"email":"comrad.development@gmail.com","password":"ComradDev1234","first_name":"Comrad","last_name":"Develpment","on_air_name":"DJ Cool Software","role":"Admin","status":"Active","can_delete":true}]

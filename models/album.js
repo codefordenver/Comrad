@@ -20,15 +20,7 @@ const albumSchema = new Schema({
   },
 
   compilation: {
-    type: String
-  },
-
-  location: {
-    type: String
-  },
-
-  album_art: {
-    type: String
+    type: Boolean
   },
 
   type: {

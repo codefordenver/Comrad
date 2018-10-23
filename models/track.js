@@ -7,6 +7,13 @@ const trackSchema = new Schema({
     ref: 'Album'
   },
 
+  artists: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Artist'
+    }
+  ],
+
   name: {
     type: String
   },
@@ -19,8 +26,8 @@ const trackSchema = new Schema({
     type: String
   },
 
-  duration: {
-    type: String
+  duration_in_seconds: {
+    type: Number
   },
 
   type: {

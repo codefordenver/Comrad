@@ -26,7 +26,7 @@ class Library extends Component {
             <DropRightBtn />
           </div>
         </section>
-        <section className="library__tables">
+        <section className="library__body">
           <Route exact path={`${this.props.match.url}/`} component={AllTable} />
           <Route path={`${this.props.match.url}/artists`} component={ArtistsTable} />
           <Route path={`${this.props.match.url}/albums`} component={AlbumsTable} />

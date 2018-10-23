@@ -13,7 +13,7 @@ class Search extends Component {
 
     this.setState({
       [name]: value
-    });
+    })
   }
 
   handleFormSubmit = e => {
@@ -23,11 +23,10 @@ class Search extends Component {
     this.props.searchAll(searchTerm)
   }
 
-  renderShortSearch() {
-    
-  }
+  renderShortSearch() {}
 
   render() {
+    console.log(this.props);
     return (
       <div className="search">
         <form onSubmit={this.handleFormSubmit}>
@@ -50,6 +49,8 @@ class Search extends Component {
               }`}>
               All
             </Link>
+          </li>
+          <li className="search__item">
             <Link
               to="/library/artists"
               id="artists"
@@ -58,6 +59,8 @@ class Search extends Component {
               }`}>
               Artists
             </Link>
+          </li>
+          <li className="search__item">
             <Link
               to="/library/albums"
               id="albums"
@@ -66,6 +69,8 @@ class Search extends Component {
               }`}>
               Albums
             </Link>
+          </li>
+          <li className="search__item">
             <Link
               to="/library/tracks"
               id="tracks"
@@ -83,7 +88,7 @@ class Search extends Component {
 
 function mapStateToProps(state) {
   return {
-    results: state.search.results
+    all: state.search.all
   }
 }
 

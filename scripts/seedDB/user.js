@@ -14,7 +14,6 @@ db.User.deleteMany({"email": {"$ne": "comrad.development@gmail.com"}}, function 
   if (err) return handleError(err);
 });
 
-
 userSeeds.forEach(seed => {
   db.User.create(seed).catch(err => console.log(err));
 });

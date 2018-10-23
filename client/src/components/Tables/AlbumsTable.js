@@ -18,7 +18,7 @@ class AlbumsTable extends Component {
   renderBody() {
     return (
       <tbody>
-        {this.props.results.map(result => {
+        {this.props.all.map(result => {
           if(result.type === 'album') {
             return (
               <tr key={result._id}>
@@ -36,7 +36,7 @@ class AlbumsTable extends Component {
   render() {
     return (
       <Fragment>
-        {this.props.results.length !== 0 ? (
+        {this.props.all.length !== 0 ? (
           <table className="table">
             {this.renderHeader()}
             {this.renderBody()}
@@ -51,7 +51,7 @@ class AlbumsTable extends Component {
 
 function mapStateToProps(state) {
   return {
-    results: state.search.results
+    all: state.search.all
   }
 }
 

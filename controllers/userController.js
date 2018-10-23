@@ -14,6 +14,7 @@ module.exports = {
   },
 
   create: (req, res) => {
+
     const { email, password } = req.body;
 
     if (!email || !password) {
@@ -28,12 +29,12 @@ module.exports = {
       }
 
       if (existingUser) {
-        return res.status(422).json({ error: 'User already exists' });
+        return res.status(422).json({ errorMessage: 'User already exists' });
       }
 
       db.User.create(req.body)
         .then(dbUser => res.json(dbUser))
-        .catch(err => res.status(422).json(err));
+        .catch(err => res.status(422).json({ errorMessage: err }));
     });
   },
 
@@ -49,12 +50,12 @@ module.exports = {
 
     // Only admins can update permissions
     if(req.user.role !== 'Admin') {
-      return res.json({ errorMessage: 'Must be admin to update permission' });
+      return res.status(403).json({ errorMessage: 'Must be admin to update permission' });
     }
 
     // Admin can't update their own permissions
     if(req.user.role === 'Admin' && role !== 'Admin') {
-      return res.json({ errorMessage: 'Admin cannot remove it\'s own permissions, must use another Admin' })
+      return res.status(403).json({ errorMessage: 'Admin cannot remove it\'s own permissions, must use another Admin' })
     }
 
     // Validation to make sure Front-End sends correct JSON
@@ -71,7 +72,7 @@ module.exports = {
     const count = await db.User.find({ role: 'Admin' }).count();
 
     if(req.user.role !== 'Admin') {
-      return res.json({ errorMessage: 'Must be admin to delete user' });
+      return res.status(403).json({ errorMessage: 'Must be admin to delete user' });
     }
 
     db.User.findById({ _id: req.params.id })

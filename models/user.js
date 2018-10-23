@@ -36,7 +36,8 @@ const userSchema = new Schema({
   },
 
   status: {
-    type: Boolean,
+    type: String,
+    enum: ['Active', 'Inactive'],
     required: true,
     default: true
   },

@@ -13,6 +13,14 @@ module.exports = {
       .catch(err => res.status(422).json(err));
   },
 
+  find: (req, res) => {
+    db.User.find({})
+      .sort({on_air_name: 'asc'})
+      .limit(5)
+      .then(dbUser => res.json(dbUser))
+      .catch(err => res.status(422).json(err));
+  },
+
   create: (req, res) => {
     const { email, password } = req.body;
 

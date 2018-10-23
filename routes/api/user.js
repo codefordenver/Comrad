@@ -4,7 +4,7 @@ const passport = require('passport');
 const requireLogin = require('../../middlewares/requireLogin');
 
 router.route('/')
-  .get(userController.findAll)
+  .get(userController.find)
   .post(userController.create);
 
 router.route('/:id')

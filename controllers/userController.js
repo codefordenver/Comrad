@@ -8,7 +8,7 @@ module.exports = {
   },
 
   findAll: (req, res) => {
-    db.User.find({}).limit(10)
+    db.User.find({})
       .then(dbUser => res.json(dbUser))
       .catch(err => res.status(422).json(err));
   },

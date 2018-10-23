@@ -14,12 +14,30 @@ module.exports = {
   },
 
   find: (req, res) => {
+    const sort_by = req.params.sort_by ? req.params.sort_by : "on_air_name";
     db.User.find({})
-      .sort({on_air_name: 'asc'})
-      .limit(5)
+      .sort(sort_by)
+      .limit(10)
       .then(dbUser => res.json(dbUser))
       .catch(err => res.status(422).json(err));
   },
+
+  findActive: (req, res) => {
+    db.User.find({status: "Active"})
+      .sort("on_air_name")
+      .limit(10)
+      .then(dbUser => res.json(dbUser))
+      .catch(err => res.status(422).json(err));
+  },
+
+  findInactive: (req, res) => {
+    db.User.find({status: "Inactive"})
+      .sort("on_air_name")
+      .limit(10)
+      .then(dbUser => res.json(dbUser))
+      .catch(err => res.status(422).json(err));
+  },
+
 
   create: (req, res) => {
     const { email, password } = req.body;

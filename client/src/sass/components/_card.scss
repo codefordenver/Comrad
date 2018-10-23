@@ -6,24 +6,24 @@
   width: 100%;
   overflow: hidden;
 
-  .card__body {
+  &__body {
     padding: 0 2.5rem 2rem;
   }
 
-  .card__img {
+  &__img {
     width: 100%;
     margin-bottom: 2rem;
   }
 
-  .card__link {
+  &__link {
 
   }
 
-  .card__text {
+  &__text {
 
   }
 
-  .card__title {
+  &__title {
     font-size: 2rem;
     font-weight: 700;
     color: $color-primary;

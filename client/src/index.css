@@ -348,16 +348,19 @@ body {
   border-radius: .5rem;
   width: 100%;
   overflow: hidden; }
-  .card .card__body {
+  .card__body {
     padding: 0 2.5rem 2rem; }
-  .card .card__img {
+  .card__img {
     width: 100%;
     margin-bottom: 2rem; }
-  .card .card__title {
+  .card__title {
     font-size: 2rem;
     font-weight: 700;
     color: #007083;
     margin-bottom: 2rem; }
+
+.filter__span {
+  cursor: pointer; }
 
 .form__group {
   margin-bottom: 1rem; }

@@ -4,12 +4,16 @@ const passport = require('passport');
 const requireLogin = require('../../middlewares/requireLogin');
 
 router.route('/')
-  .get(requireLogin, userController.findAll)
+  .get(userController.findAll)
   .post(userController.create);
 
 router.route('/:id')
   .get(userController.findById)
   .put(userController.update)
   .delete(userController.remove);
+
+// Permission Updates
+router.route('/permission/:id')
+  .put(userController.updatePermission);
 
 module.exports = router;

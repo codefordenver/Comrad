@@ -4,4 +4,7 @@ const searchController = require('../../controllers/searchController');
 router.route('/')
   .post(searchController.search);
 
+router.route('/users')
+  .post(searchController.searchUsers);
+
 module.exports = router;

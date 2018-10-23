@@ -8,7 +8,7 @@ module.exports = {
   },
 
   findAll: (req, res) => {
-    db.User.find({})
+    db.User.find({}).limit(10)
       .then(dbUser => res.json(dbUser))
       .catch(err => res.status(422).json(err));
   },
@@ -86,7 +86,7 @@ module.exports = {
         if(!dbUser.can_delete) {
           return { errorMessage: 'User cannot be deleted from the database' }
         }
-        
+
         return dbUser.remove()
       })
       .then(response => res.json(response))

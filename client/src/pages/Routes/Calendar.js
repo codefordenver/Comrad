@@ -12,7 +12,7 @@ class Calendar extends Component {
     return (
     <main className="calendar">
       <section className="calendar__body">
-        <Route exact path={`${url}/`} component={CalenderView} />
+        <Route exact path={`${url}/`} component={CalendarView} />
       </section>
     </main>
     )

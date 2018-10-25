@@ -1,18 +1,25 @@
 .card {
 
-  background-color: #fff;
-  border-radius: .5rem;
+  background-color: $color-white;
+  border-radius: $border-radius;
 
   width: 100%;
   overflow: hidden;
 
+  display: grid;
+
   &__body {
-    padding: 0 2.5rem 2rem;
+    padding: 2rem;
   }
 
   &__img {
     width: 100%;
-    margin-bottom: 2rem;
+    justify-self: center;
+
+    &--home {
+      width: 50%;
+      padding-top: 2rem;
+    }
   }
 
   &__link {

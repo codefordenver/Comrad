@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom';
 import { userAdd } from '../../actions';
 
-import { Form, FormGroup, Input, Label, Select } from '../../components/Form'
+import { Form, FormGroup, FormInput, FormLabel, FormSelect } from '../../components/Form'
 
 class UserAdd extends Component {
   state = {
@@ -40,47 +40,58 @@ class UserAdd extends Component {
     return (
       <Form handleFormSubmit={this.handleFormSubmit}>
         <FormGroup>
-          <Input
+          <FormLabel
+            text={"Email"}
+          />
+          <FormInput
             name="email"
             onChange={this.handleInputChange}
             placeholder="Email"
             type="text"
             value={this.state.email}
           />
-          <Label>Email</Label>
         </FormGroup>
         <FormGroup>
-          <Input
+          <FormLabel 
+            text={"First Name"}
+          />
+          <FormInput
             name="first_name"
             onChange={this.handleInputChange}
             placeholder="First Name"
             type="text"
             value={this.state.first_name}
           />
-          <Label>First Name</Label>
         </FormGroup>
         <FormGroup>
-          <Input
+          <FormLabel 
+            text={"Last Name"}
+          />
+          <FormInput
             name="last_name"
             onChange={this.handleInputChange}
             placeholder="Last Name"
             type="text"
             value={this.state.last_name}
           />
-          <Label>Last Name</Label>
         </FormGroup>
         <FormGroup>
-          <Input
+          <FormLabel 
+            text={"On Air Name"}
+          />
+          <FormInput
             name="on_air_name"
             onChange={this.handleInputChange}
             placeholder="On Air Name"
             type="text"
             value={this.state.on_air_name}
           />
-          <Label>On Air Name</Label>
         </FormGroup>
         <FormGroup>
-          <Select
+          <FormLabel 
+            text={"Role"}
+          />
+          <FormSelect
             name="role"
             onChange={this.handleInputChange}
             selectOptions={roleOptions}
@@ -88,10 +99,12 @@ class UserAdd extends Component {
             type="text"
             value={this.state.role}
           />
-          <Label>Role</Label>
         </FormGroup>
         <FormGroup>
-          <Select
+          <FormLabel 
+            text={"Status"}
+          />
+          <FormSelect
             name="status"
             onChange={this.handleInputChange}
             selectOptions={statusOpions}
@@ -99,7 +112,6 @@ class UserAdd extends Component {
             type="text"
             value={this.state.status}
           />
-          <Label>Status</Label>
         </FormGroup>
         <button type="submit">Submit</button>
         <Link to="/user">Go Back</Link>

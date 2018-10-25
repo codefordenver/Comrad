@@ -1,5 +1,4 @@
-import React from 'react'
-import { Link } from 'react-router-dom';
+import React from 'react';
 
 export const DropRightBtn = props => {
   const { dropRightBtnItems } = props;

@@ -21,4 +21,4 @@ class MyShowsTable extends Component {
   }
 }
 
-export default MyShowsTable;
+export default connect()(MyShowsTable);

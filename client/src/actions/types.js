@@ -1,5 +1,5 @@
-export const AUTH_SIGNIN = 'auth_signin';
-export const AUTH_SIGNOUT = 'auth_signout';
+export const AUTH_LOGIN = 'auth_login';
+export const AUTH_LOGOUT = 'auth_logout';
 export const AUTH_ERROR = 'auth_error';
 
 export const USER_FIND_ONE = 'user_find_one';

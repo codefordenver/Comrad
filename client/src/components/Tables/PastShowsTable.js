@@ -21,4 +21,4 @@ class PastShowsTable extends Component {
   }
 }
 
-export default PastShowsTable;
+export default connect()(PastShowsTable);

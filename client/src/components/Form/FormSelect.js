@@ -1,6 +1,6 @@
 import React from 'react'
 
-export const Select = props => {
+export const FormSelect = props => {
   const { className, selectOptions, ...rest } = props;
 
   return (

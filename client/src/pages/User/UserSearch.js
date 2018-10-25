@@ -7,11 +7,10 @@ import UsersTable from '../../components/Tables/UsersTable';
 
 class UserSearch extends Component {
   state = {
-    filter: 'All',
-    filterItems: ['All', 'Active', 'Inactive']
+    filter: 'All'
   }
 
-  handleFilterChange = item => {
+  handleFilterClick = item => {
     this.setState({
       filter: item
     })
@@ -19,6 +18,7 @@ class UserSearch extends Component {
 
   render() {
     const { url } = this.props.match
+    const filterItems = ['All', 'Active', 'Inactive'];
 
     return (
       <div className="user__search">
@@ -35,8 +35,8 @@ class UserSearch extends Component {
         <div className="user__options">
           <div className="user__filter">
             <Filter
-              filterItems={this.state.filterItems}
-              handleFilterChange={this.handleFilterChange}
+              filterItems={filterItems}
+              handleFilterClick={this.handleFilterClick}
             />
           </div>
 

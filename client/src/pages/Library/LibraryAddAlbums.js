@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
 
-export default class UserEdit extends Component {
+class LibraryAddAlbums extends Component {
   render() {
     return (
       <div>
-        User Edit Page
+        Library Add Albums
       </div>
     )
   }
 }
+
+export default LibraryAddAlbums;

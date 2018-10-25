@@ -30,14 +30,12 @@ class AllTable extends Component {
   render() {
     return (
       <Fragment>
-        {this.props.all.length !== 0 ? (
+        {this.props.all.length > 0 ? (
           <table className="table">
             {this.renderHeader()}
             {this.renderBody()}
           </table>
-        ) : (
-          null
-        )}
+        ) : null}
       </Fragment>
     )
   }
@@ -52,4 +50,4 @@ function mapStateToProps(state) {
 export default connect(
   mapStateToProps,
   null
-)(AllTable);
+)(AllTable)

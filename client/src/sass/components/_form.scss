@@ -15,7 +15,7 @@
     padding: 1rem;
     border-radius: 2px;
     border: none;
-    border-bottom: 2px solid $color-secondary;
+    border-bottom: 2px solid $color-primary-light;
 
     transition: all .3s;
 
@@ -27,7 +27,7 @@
   }
 
   &__label {
-    color: $color-secondary;
+    color: $color-primary-light;
     font-size: 1.2rem;
     font-weight: 700;
     text-align: left;

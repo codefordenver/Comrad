@@ -308,14 +308,14 @@ template {
 table {
   border-collapse: collapse; }
 
-main {
-  padding: 4rem; }
-
 body {
   font-family: "Roboto", sans-serif;
   font-weight: 500;
-  color: #777;
+  color: #555759;
   line-height: 1.7; }
+
+main {
+  padding: 4rem; }
 
 .button {
   font-size: 2rem;
@@ -331,17 +331,17 @@ body {
     outline: none; }
   .button--submit {
     color: #fff;
-    background-color: #007083; }
+    background-color: #007283; }
     .button--submit:hover {
-      background-color: #005C6C; }
+      background-color: #007283; }
 
 .link {
   font-size: 1.6rem;
-  color: #007083;
+  color: #007283;
   margin: 0 1rem;
   transition: all .3s; }
   .link:hover {
-    color: #005C6C; }
+    color: #007283; }
 
 .card {
   background-color: #fff;
@@ -356,7 +356,7 @@ body {
   .card__title {
     font-size: 2rem;
     font-weight: 700;
-    color: #007083;
+    color: #007283;
     margin-bottom: 2rem; }
 
 .filter__span {
@@ -368,21 +368,21 @@ body {
 .form__input {
   font-size: 1.5rem;
   font-family: inherit;
-  color: #007083;
+  color: #007283;
   display: block;
   width: 100%;
   height: 3rem;
   padding: 1rem;
   border-radius: 2px;
   border: none;
-  border-bottom: 2px solid #7cb2bf;
+  border-bottom: 2px solid #7DB2BF;
   transition: all .3s; }
   .form__input:focus {
     outline: none;
-    border-bottom: 2px solid #007083; }
+    border-bottom: 2px solid #007283; }
 
 .form__label {
-  color: #7cb2bf;
+  color: #7DB2BF;
   font-size: 1.2rem;
   font-weight: 700;
   text-align: left;
@@ -431,7 +431,7 @@ body {
 
 .home {
   height: 100vh;
-  background-color: #7cb2bf;
+  background-color: #007283;
   display: grid;
   grid-template-rows: 1;
   grid-template-columns: 1fr 40rem 1fr; }

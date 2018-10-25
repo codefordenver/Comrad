@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const keys = require("../config/keys");
 const artistSeeds = require("./data/artists.json");
 const albumSeeds = require("./data/albums.json");
+const userSeeds = require("./data/users.json");
 const db = require("../models");
 
 async function seedDB() {
@@ -12,6 +13,10 @@ async function seedDB() {
     );
 
     await mongoose.connection.dropDatabase();
+
+    await Promise.all(
+      userSeeds.map(async seed => await db.User.create(seed))
+    );
 
     await Promise.all(
       artistSeeds.map(async seed => await db.Artist.create(seed))

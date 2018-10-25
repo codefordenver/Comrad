@@ -18,7 +18,7 @@ class AllTable extends Component {
   renderBody() {
     return (
       <tbody>
-        {this.props.results.map(result => (
+        {this.props.all.map(result => (
           <tr key={result._id}>
             <td>{result.name}</td>
             <td>{result.type}</td>
@@ -30,7 +30,7 @@ class AllTable extends Component {
   render() {
     return (
       <Fragment>
-        {this.props.results.length !== 0 ? (
+        {this.props.all.length !== 0 ? (
           <table className="table">
             {this.renderHeader()}
             {this.renderBody()}
@@ -45,7 +45,7 @@ class AllTable extends Component {
 
 function mapStateToProps(state) {
   return {
-    results: state.search.results
+    all: state.search.all
   }
 }
 

@@ -1,73 +1,94 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import * as actions from '../../actions'
-
-import logo from './kgnu_logo.png'
+import { homeValidation } from '../../utils/validation'
 
 import { Link, SubmitBtn } from '../../components/Button'
-import { Card, CardBody, CardTitle } from '../../components/Card'
-import { Form, FormGroup, Input, Label } from '../../components/Form'
+import { Card, CardBody, CardImg, CardTitle } from '../../components/Card'
+import {
+  Form,
+  FormGroup,
+  FormInput,
+  FormInvalid,
+  FormLabel
+} from '../../components/Form'
+
+const initialState = {
+  email: '',
+  password: ''
+}
 
 class Home extends Component {
-  state = {
-    email: '',
-    password: ''
-  }
+  state = initialState
 
   handleInputChange = e => {
-    const { name, value } = e.target
+    const { name, value } = e.target;
+
+    homeValidation.input(e.target);
+
     this.setState({
       [name]: value
-    })
+    });
   }
 
   handleFormSubmit = e => {
-    e.preventDefault()
+    e.preventDefault();
 
-    const { email, password } = this.state
+    const { email, password } = this.state;
+    const valid = homeValidation.submit();
 
-    this.props.signinUser({ email, password }, () => {
-      this.props.history.push('/')
-    })
+    if (valid) {
+      this.props.loginUser({ email, password }, () => {
+        this.props.history.push('/');
+      });
+    }
   }
 
-  // Comment
-
   render() {
+    const logo = '/assets/images/kgnu_logo.png'
+    const { errorMessage } = this.props.auth
+
     return (
       <main className="home">
         <section className="home__body">
           <Card>
-            <img alt="logo" className="img img--home" src={logo} />
-            <CardBody utilities="text-center">
-              <CardTitle>COMRAD - KGNU PLAYLIST LOGIN:</CardTitle>
+            <CardImg className={'card__img--home'} src={logo} />
+            <CardBody>
+              <CardTitle
+                text="COMRAD - KGNU PLAYLIST LOGIN:"
+                className="text-center"
+              />
+
+              {errorMessage ? <div>{errorMessage}</div> : null}
 
               <Form handleFormSubmit={this.handleFormSubmit}>
+                <FormLabel text="Email" />
                 <FormGroup>
-                  <Input
+                  <FormInput
                     name="email"
                     onChange={this.handleInputChange}
-                    placeholder="Email"
                     type="text"
                     value={this.state.email}
                   />
-                  <Label>Email</Label>
+                  <FormInvalid text="Incorrect Email Address" />
                 </FormGroup>
 
                 <FormGroup>
-                  <Input
+                  <FormLabel text="Password" />
+                  <FormInput
                     name="password"
                     onChange={this.handleInputChange}
-                    placeholder="Password"
                     type="password"
                     value={this.state.password}
                   />
-                  <Label>Password</Label>
+                  <FormInvalid text="Enter Password" />
                 </FormGroup>
 
-                <SubmitBtn>Sign In</SubmitBtn>
+                <FormGroup className="text-center">
+                  <SubmitBtn>Sign In</SubmitBtn>
 
-                <Link link="#">Reset Password</Link>
+                  <Link link="#">Reset Password</Link>
+                </FormGroup>
               </Form>
             </CardBody>
           </Card>
@@ -77,7 +98,13 @@ class Home extends Component {
   }
 }
 
+function mapStateToProps(state) {
+  return {
+    auth: state.auth
+  }
+}
+
 export default connect(
-  null,
+  mapStateToProps,
   actions
 )(Home)

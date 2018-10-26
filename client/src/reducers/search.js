@@ -1,16 +1,16 @@
-import { SEARCH_ALL, SEARCH_USERS } from '../actions/types';
+import { SEARCH_LIBRARY, SEARCH_USERS } from '../actions/types';
 
 const initialState = {
-  all: [],
+  library: [],
   users: []
 }
 
 export default function(state = initialState, {type, payload}) {
   switch(type) {
-    case SEARCH_ALL: 
+    case SEARCH_LIBRARY: 
       return {
         ...state,
-        all: payload
+        library: payload
       }
     case SEARCH_USERS:
       return {

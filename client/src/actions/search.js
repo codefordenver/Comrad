@@ -1,11 +1,11 @@
 import axios from 'axios';
-import { SEARCH_ALL, SEARCH_USERS } from './types';
+import { SEARCH_LIBRARY, SEARCH_USERS } from './types';
 
-export const searchAll = searchTerm => async dispatch => {
+export const searchLibrary = searchTerm => async dispatch => {
   try {
-    const response = await axios.post('/api/search', { searchTerm });
+    const response = await axios.post('/api/search/library', { searchTerm });
 
-    dispatch({ type: SEARCH_ALL, payload: response.data });
+    dispatch({ type: SEARCH_LIBRARY, payload: response.data });
   } catch (e) {
     console.log(e);
   }

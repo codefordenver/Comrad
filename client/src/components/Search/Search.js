@@ -1,7 +1,6 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import * as actions from '../../actions'
-import { Link } from 'react-router-dom'
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import * as actions from '../../actions';
 
 class Search extends Component {
   state = {
@@ -18,15 +17,24 @@ class Search extends Component {
 
   handleFormSubmit = e => {
     e.preventDefault()
-    const { searchTerm } = this.state
+    const { searchTerm } = this.state;
+    const { type } = this.props;
 
-    this.props.searchAll(searchTerm)
+    switch (type) {
+      case 'library':
+        this.props.searchLibrary(searchTerm);
+        break;
+      case 'user':
+        this.props.searchUsers(searchTerm);
+        break;
+      default:
+        break;
+    }
   }
 
   renderShortSearch() {}
 
   render() {
-    console.log(this.props);
     return (
       <div className="search">
         <form onSubmit={this.handleFormSubmit}>
@@ -39,48 +47,6 @@ class Search extends Component {
           />
           <button>Search</button>
         </form>
-        <ul className="search__list">
-          <li className="search__item">
-            <Link
-              to="/library"
-              id="all"
-              className={`search__link ${
-                this.props.filter === 'all' ? 'active' : ''
-              }`}>
-              All
-            </Link>
-          </li>
-          <li className="search__item">
-            <Link
-              to="/library/artists"
-              id="artists"
-              className={`search__link ${
-                this.props.filter === 'artists' ? 'active' : ''
-              }`}>
-              Artists
-            </Link>
-          </li>
-          <li className="search__item">
-            <Link
-              to="/library/albums"
-              id="albums"
-              className={`search__link ${
-                this.props.filter === 'albums' ? 'active' : ''
-              }`}>
-              Albums
-            </Link>
-          </li>
-          <li className="search__item">
-            <Link
-              to="/library/tracks"
-              id="tracks"
-              className={`search__link ${
-                this.props.filter === 'tracks' ? 'active' : ''
-              }`}>
-              Tracks
-            </Link>
-          </li>
-        </ul>
       </div>
     )
   }

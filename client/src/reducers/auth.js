@@ -1,6 +1,6 @@
 import {
-  AUTH_SIGNIN,
-  AUTH_SIGNOUT,
+  AUTH_LOGIN,
+  AUTH_LOGOUT,
   AUTH_ERROR
 } from '../actions/types';
 
@@ -12,23 +12,21 @@ const initialState = {
 
 export default function(state = initialState, {type, payload}) {
   switch (type) {
-    case AUTH_SIGNIN:
+    case AUTH_LOGIN:
       return {
         ...payload,
         status: true,
         errorMessage: ''
       };
 
-    case AUTH_SIGNOUT:
+    case AUTH_LOGOUT:
       return {
-        ...payload,
         status: false,
         errorMessage: ''
       };
 
     case AUTH_ERROR:
       return {
-        ...state,
         status: false,
         errorMessage: payload
       };

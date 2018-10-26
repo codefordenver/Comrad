@@ -2,16 +2,15 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 
 import { Filter } from '../../components/Filter'
-import SearchUsers from '../../components/Search/SearchUsers';
+import Search from '../../components/Search';
 import UsersTable from '../../components/Tables/UsersTable';
 
 class UserSearch extends Component {
   state = {
-    filter: 'All',
-    filterItems: ['All', 'Active', 'Inactive']
+    filter: 'All'
   }
 
-  handleFilterChange = item => {
+  handleFilterClick = item => {
     this.setState({
       filter: item
     })
@@ -19,6 +18,7 @@ class UserSearch extends Component {
 
   render() {
     const { url } = this.props.match
+    const filterItems = ['All', 'Active', 'Inactive'];
 
     return (
       <div className="user__search">
@@ -28,15 +28,17 @@ class UserSearch extends Component {
           </div>
 
           <div className="user__search">
-            <SearchUsers />
+            <Search
+              type="user"
+            />
           </div>
         </div>
 
         <div className="user__options">
           <div className="user__filter">
             <Filter
-              filterItems={this.state.filterItems}
-              handleFilterChange={this.handleFilterChange}
+              filterItems={filterItems}
+              handleFilterClick={this.handleFilterClick}
             />
           </div>
 

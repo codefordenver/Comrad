@@ -1,8 +1,9 @@
-import React, { Component, Fragment } from 'react'
-import { connect } from 'react-redux'
-import * as actions from '../../actions'
+import React, { Component, Fragment } from 'react';
+import { connect } from 'react-redux';
 
 class UsersTable extends Component {
+  state = {}
+  
   renderHeader() {
     return (
       <thead>
@@ -31,7 +32,7 @@ class UsersTable extends Component {
                 </td>
                 <td>{result.on_air_name}</td>
                 <td>{result.role}</td>
-                <td>{result.status === 'Active' ? 'Active' : 'Inactive'}</td>
+                <td>{result.status}</td>
                 <td>Buttons go here</td>
               </tr>
             )
@@ -42,20 +43,14 @@ class UsersTable extends Component {
     )
   }
 
-  renderTable() {
-    return (
-      <table>
-        {this.renderHeader()}
-        {this.renderBody()}
-      </table>
-    )
-  }
-
   render() {
     return (
       <Fragment>
         {this.props.users.length > 0 ? (
-          <Fragment>{this.renderTable()}</Fragment>
+          <table className="table">
+            {this.renderHeader()}
+            {this.renderBody()}
+          </table>
         ) : null}
       </Fragment>
     )

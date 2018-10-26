@@ -1,7 +1,11 @@
-import React from 'react';
+import React from 'react'
 
-export const CardTitle = ({ children, utilities }) => (
-  <div className={`card__title${utilities ? " " + utilities : ""}`}>
-    {children}
-  </div>
-);
+export const CardTitle = props => {
+  const { text, className } = props
+
+  return (
+    <div className={`card__title ${className ? className : ''}`}>
+      {text ? text : ''}
+    </div>
+  )
+}

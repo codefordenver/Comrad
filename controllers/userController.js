@@ -34,7 +34,7 @@ module.exports = {
 
       db.User.create(req.body)
         .then(dbUser => res.json(dbUser))
-        .catch(err => res.status(422).json({ errorMessage: err }));
+        .catch(err => res.status(422).json({ errorMessage: err.message }));
     });
   },
 

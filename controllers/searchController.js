@@ -52,7 +52,7 @@ async function searchLibrary(query) {
 }
 
 module.exports = {
-  search: async (req, res) => {
+  searchLibrary: async (req, res) => {
     const { searchTerm } = req.body;
 
     if (searchTerm === '') {

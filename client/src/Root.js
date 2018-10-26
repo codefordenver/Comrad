@@ -6,15 +6,18 @@ import reducers from './reducers';
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
+const initialState = {
+  auth: {
+    status: 'fetching',
+    errorMessage: ''
+  }
+}
+
 export default ({ children }) => {
   
   const store = createStore(
     reducers, 
-    {
-      auth: {
-        status: 'fetching'
-      }
-    }, 
+    initialState, 
     composeEnhancers(
       applyMiddleware(reduxThunk),
     )

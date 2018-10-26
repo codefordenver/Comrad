@@ -32,6 +32,25 @@ function filterDuplicates(results) {
   ).filteredResults;
 }
 
+/**
+ * Queries the Album, Artist, and Track collections for a given query string
+ * and populates the relationships in Track.
+ */
+async function searchLibrary(query) {
+  const queryRegexp = new RegExp(query, 'i');
+  const resultSets = await Promise.all([
+    db.Album.find({ name: queryRegexp }),
+    db.Artist.find({ name: queryRegexp }),
+    db.Track.find({ name: queryRegexp })
+      .populate('album')
+      .populate('artists'),
+  ]);
+
+  const results = concatArrays(resultSets);
+
+  return results;
+}
+
 module.exports = {
   searchLibrary: async (req, res) => {
     const { searchTerm } = req.body;
@@ -40,36 +59,21 @@ module.exports = {
       return res.json([]);
     }
 
-    const queryAll = new RegExp(searchTerm, 'i');
+    const resultsAll = await searchLibrary(searchTerm);
 
-    const resultSetsAll = await Promise.all([
-      db.Album.find({ name: queryAll }),
-      db.Artist.find({ name: queryAll }),
-      db.Track.find({ name: queryAll }),
-    ]);
-
-    const resultsAll = concatArrays(resultSetsAll);
+    let results;
 
     if (/\s/.test(searchTerm)) {
-      const queryAny = new RegExp(
-        searchTerm
-          .split(/\s/)
-          .map(term => `(${term})`)
-          .join('|'),
-        'i'
-      );
+      const queryAny = searchTerm
+        .split(/\s/)
+        .map(term => `(${term})`)
+        .join('|');
 
-      const resultSetsAny = await Promise.all([
-        db.Album.find({ name: queryAny }),
-        db.Artist.find({ name: queryAny }),
-        db.Track.find({ name: queryAny }),
-      ]);
-
-      const resultsAny = concatArrays(resultSetsAny);
+      const resultsAny = await searchLibrary(queryAny);
 
       results = [...resultsAll, ...resultsAny];
     } else {
-      results = [...resultsAll];
+      results = resultsAll;
     }
 
     const data = filterDuplicates(

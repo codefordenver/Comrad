@@ -1,17 +1,7 @@
 const db = require('../models');
 
 /**
- * Flattens an array of arrays into one flat array.
- * @example
- * // returns [1, 2, 3, 4, 5, 6]
- * concatArrays([[1, 2], [3, 4], [5, 6]]);
- */
-function concatArrays(arrays) {
-  return arrays.reduce((acc, val) => [...acc, ...val]);
-}
-
-/**
- * Removes duplicate objects from a results array.
+ * Remove duplicate objects from a results array.
  * Objects are considered duplicates if their _id and type members are equal.
  */
 function filterDuplicates(results) {
@@ -33,22 +23,32 @@ function filterDuplicates(results) {
 }
 
 /**
- * Queries the Album, Artist, and Track collections for a given query string
- * and populates the relationships in Track.
+ * Query the Album, Artist, and Track collections for a given query string
+ * and populate the relationships in Track.
  */
 async function findInLibrary(query) {
   const queryRegexp = new RegExp(query, 'i');
-  const resultSets = await Promise.all([
-    db.Album.find({ name: queryRegexp }),
-    db.Artist.find({ name: queryRegexp }),
-    db.Track.find({ name: queryRegexp })
-      .populate('album')
-      .populate('artists'),
-  ]);
 
-  const results = concatArrays(resultSets);
+  const artistResults = await db.Artist.find({ name: queryRegexp });
+  const artistIDs = artistResults.map(result => result._id);
 
-  return results;
+  const albumResults = await db.Album.find({
+    $or: [{ name: queryRegexp }, { artists: { $in: artistIDs } }],
+  });
+  const albumIDs = albumResults.map(result => result._id);
+
+  const trackResults = db.Track.find({
+    $or: [
+      { name: queryRegexp },
+      { album: { $in: albumIDs } },
+      { artists: { $in: artistIDs } },
+    ],
+  })
+    .populate('album')
+    .populate('album.artist')
+    .populate('artists');
+
+  return [...artistResults, ...albumResults, ...trackResults];
 }
 
 module.exports = {
@@ -81,6 +81,7 @@ module.exports = {
     const data = filterDuplicates(
       results.sort((a, b) => {
         // Sort the results that match the whole string first, then alphabetically
+        // based on the fields we searched by.
         if (a.matchType === 'all') return -1;
         if (a.matchType === 'any') return 1;
         if (a.name < b.name) return -1;

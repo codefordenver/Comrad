@@ -43,4 +43,11 @@
     margin-top: .7rem;
     display: block;
   }
+
+  &__select {
+
+    &.invalid ~ .form__invalid {
+      display: block;
+    }
+  }
 }

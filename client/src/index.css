@@ -399,6 +399,9 @@ main {
   margin-top: .7rem;
   display: block; }
 
+.form__select.invalid ~ .form__invalid {
+  display: block; }
+
 .img {
   width: 100%; }
   .img--home {

@@ -1,9 +1,18 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom';
-import { userAdd } from '../../actions';
+import { Link } from 'react-router-dom'
+import { userAdd } from '../../actions'
+import { userValidation } from '../../utils/validation'
 
-import { Form, FormGroup, FormInput, FormLabel, FormSelect } from '../../components/Form'
+import {
+  Form,
+  FormCheckBox,
+  FormGroup,
+  FormInput,
+  FormInvalid,
+  FormLabel,
+  FormSelect
+} from '../../components/Form'
 
 class UserAdd extends Component {
   state = {
@@ -14,23 +23,39 @@ class UserAdd extends Component {
     on_air_name: '',
     role: '',
     status: '',
-    can_delete: true
+    can_delete: false
   }
 
   handleInputChange = e => {
     const { name, value } = e.target
+
+    userValidation.input(e.target)
 
     this.setState({
       [name]: value
     })
   }
 
-  handleFormSubmit = e => {
-    e.preventDefault()
+  handleCheckBox = e => {
+    const { name } = e.target;
 
-    this.props.userAdd(this.state, () => {
-      this.props.history.push('/user');
-    });
+    userValidation.input(e.target);
+
+    this.setState(prevState => ({
+      [name]: !prevState[name]
+    }));
+  }
+
+  handleFormSubmit = e => {
+    e.preventDefault();
+
+    const valid = userValidation.submit();
+
+    if(valid) {
+      this.props.userAdd(this.state, () => {
+        this.props.history.push('/user')
+      });
+    }
   }
 
   render() {
@@ -40,9 +65,7 @@ class UserAdd extends Component {
     return (
       <Form handleFormSubmit={this.handleFormSubmit}>
         <FormGroup>
-          <FormLabel
-            text={"Email"}
-          />
+          <FormLabel text={'Email'} />
           <FormInput
             name="email"
             onChange={this.handleInputChange}
@@ -50,11 +73,11 @@ class UserAdd extends Component {
             type="text"
             value={this.state.email}
           />
+          <FormInvalid text={'Invalid Email Format'} />
         </FormGroup>
+
         <FormGroup>
-          <FormLabel 
-            text={"First Name"}
-          />
+          <FormLabel text={'First Name'} />
           <FormInput
             name="first_name"
             onChange={this.handleInputChange}
@@ -62,11 +85,11 @@ class UserAdd extends Component {
             type="text"
             value={this.state.first_name}
           />
+          <FormInvalid text={'Minimum 3 Characters'} />
         </FormGroup>
+
         <FormGroup>
-          <FormLabel 
-            text={"Last Name"}
-          />
+          <FormLabel text={'Last Name'} />
           <FormInput
             name="last_name"
             onChange={this.handleInputChange}
@@ -74,11 +97,11 @@ class UserAdd extends Component {
             type="text"
             value={this.state.last_name}
           />
+          <FormInvalid text={'Minimum 3 Characters'} />
         </FormGroup>
+
         <FormGroup>
-          <FormLabel 
-            text={"On Air Name"}
-          />
+          <FormLabel text={'On Air Name'} />
           <FormInput
             name="on_air_name"
             onChange={this.handleInputChange}
@@ -86,11 +109,11 @@ class UserAdd extends Component {
             type="text"
             value={this.state.on_air_name}
           />
+          <FormInvalid text={'Minimum 3 Characters'} />
         </FormGroup>
+
         <FormGroup>
-          <FormLabel 
-            text={"Role"}
-          />
+          <FormLabel text={'Role'} />
           <FormSelect
             name="role"
             onChange={this.handleInputChange}
@@ -99,11 +122,11 @@ class UserAdd extends Component {
             type="text"
             value={this.state.role}
           />
+          <FormInvalid text={'Select a Role'} />
         </FormGroup>
+
         <FormGroup>
-          <FormLabel 
-            text={"Status"}
-          />
+          <FormLabel text={'Status'} />
           <FormSelect
             name="status"
             onChange={this.handleInputChange}
@@ -112,9 +135,23 @@ class UserAdd extends Component {
             type="text"
             value={this.state.status}
           />
+          <FormInvalid text={'Select a Status'} />
         </FormGroup>
-        <button type="submit">Submit</button>
-        <Link to="/user">Go Back</Link>
+
+        <FormGroup>
+          <FormLabel text={'Can Delete?'} />
+          <FormCheckBox
+            name="can_delete"
+            onClick={this.handleCheckBox}
+            type="checkbox"
+            value={this.state.can_delete}
+          />
+        </FormGroup>
+
+        <FormGroup>
+          <button type="submit">Submit</button>
+          <Link to="/user">Go Back</Link>
+        </FormGroup>
       </Form>
     )
   }
@@ -123,4 +160,4 @@ class UserAdd extends Component {
 export default connect(
   null,
   { userAdd }
-)(UserAdd);
+)(UserAdd)

@@ -22,25 +22,25 @@ class Home extends Component {
   state = initialState
 
   handleInputChange = e => {
-    const { name, value } = e.target
+    const { name, value } = e.target;
 
-    homeValidation.input(e.target)
+    homeValidation.input(e.target);
 
     this.setState({
       [name]: value
-    })
+    });
   }
 
   handleFormSubmit = e => {
-    e.preventDefault()
+    e.preventDefault();
 
-    const { email, password } = this.state
-    const valid = homeValidation.submit()
+    const { email, password } = this.state;
+    const valid = homeValidation.submit();
 
     if (valid) {
       this.props.loginUser({ email, password }, () => {
-        this.props.history.push('/')
-      })
+        this.props.history.push('/');
+      });
     }
   }
 

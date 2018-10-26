@@ -5,7 +5,7 @@ export const FormSelect = props => {
 
   return (
     <select className={`form__select ${className ? className : ''}`} {...rest}>
-      <option disabled defaultValue></option>
+      <option value="" disabled defaultValue></option>
       {selectOptions ? selectOptions.map((option, index) => (
         <option key={index} value={option}>
           {option}

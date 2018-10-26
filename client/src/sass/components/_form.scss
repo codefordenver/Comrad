@@ -14,7 +14,7 @@
     height: 3rem;
     padding: 1rem;
     border-radius: $border-radius;
-    border: 2px solid $color-primary-light;
+    border: 2px solid $color-secondary;
 
     transition: all .3s;
 
@@ -34,7 +34,7 @@
   }
 
   &__label {
-    color: $color-primary-light;
+    color: $color-secondary;
     font-size: 1.2rem;
     font-weight: 700;
     text-align: left;

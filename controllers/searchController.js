@@ -36,7 +36,7 @@ function filterDuplicates(results) {
  * Queries the Album, Artist, and Track collections for a given query string
  * and populates the relationships in Track.
  */
-async function searchLibrary(query) {
+async function findInLibrary(query) {
   const queryRegexp = new RegExp(query, 'i');
   const resultSets = await Promise.all([
     db.Album.find({ name: queryRegexp }),
@@ -59,17 +59,19 @@ module.exports = {
       return res.json([]);
     }
 
-    const resultsAll = await searchLibrary(searchTerm);
+    const resultsAll = await findInLibrary(searchTerm);
 
     let results;
 
     if (/\s/.test(searchTerm)) {
+      // Construct a regex that searches each whitespace separated term
+      // separately.
       const queryAny = searchTerm
         .split(/\s/)
         .map(term => `(${term})`)
         .join('|');
 
-      const resultsAny = await searchLibrary(queryAny);
+      const resultsAny = await findInLibrary(queryAny);
 
       results = [...resultsAll, ...resultsAny];
     } else {

@@ -20,7 +20,7 @@ module.exports = {
     if (!email || !password) {
       return res
         .status(422)
-        .json({ errorMessage: 'You must provid email and password' });
+        .json({ errorMessage: 'You must provide email and password' });
     }
 
     db.User.findOne({ email }, function(err, existingUser) {
@@ -87,7 +87,7 @@ module.exports = {
         if(!dbUser.can_delete) {
           return { errorMessage: 'User cannot be deleted from the database' }
         }
-        
+
         return dbUser.remove()
       })
       .then(response => res.json(response))

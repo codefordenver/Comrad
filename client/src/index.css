@@ -449,7 +449,7 @@ main {
 
 .library__search {
   display: grid;
-  grid-row-gap: 2rem; }
+  grid-row-gap: 1rem; }
 
 .library__header {
   display: grid;

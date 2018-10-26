@@ -1,12 +1,11 @@
 .card {
+  display: grid;
 
+  border: 1px solid #e2e2e2;
   background-color: $color-white;
   border-radius: $border-radius;
-
   width: 100%;
   overflow: hidden;
-
-  display: grid;
 
   &__body {
     padding: 2rem;

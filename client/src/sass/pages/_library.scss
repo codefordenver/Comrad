@@ -1,3 +1,34 @@
-.library__header {
-  display: flex;
+.library {
+
+  &__search {
+    display: grid; 
+    grid-row-gap: 2rem;
+  }
+
+  &__header {
+    display: grid;
+
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  &__search-input {
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+  }
+
+  &__add {
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
+  }
+
+  &__filter {
+    grid-column: 1 / 2;
+    grid-row: 2 / 3;
+  }
+
+  &__pagination {
+    grid-column: 3 / end;
+    grid-row: 3 / end;
+  }
 }

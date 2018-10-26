@@ -1,6 +1,8 @@
 import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 
+import { Card, CardBody } from '../Card'
+
 class AllTable extends Component {
   state = {}
 
@@ -31,10 +33,14 @@ class AllTable extends Component {
     return (
       <Fragment>
         {this.props.all.length > 0 ? (
-          <table className="table">
-            {this.renderHeader()}
-            {this.renderBody()}
-          </table>
+          <Card>
+            <CardBody>
+              <table className="table">
+                {this.renderHeader()}
+                {this.renderBody()}
+              </table>
+            </CardBody>
+          </Card>
         ) : null}
       </Fragment>
     )

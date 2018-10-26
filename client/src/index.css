@@ -315,7 +315,8 @@ body {
   line-height: 1.7; }
 
 main {
-  padding: 4rem; }
+  padding: 4rem;
+  background-color: #eee; }
 
 .button {
   font-size: 2rem;
@@ -344,11 +345,12 @@ main {
     color: #007283; }
 
 .card {
+  display: grid;
+  border: 1px solid #e2e2e2;
   background-color: #fff;
   border-radius: 0.5rem;
   width: 100%;
-  overflow: hidden;
-  display: grid; }
+  overflow: hidden; }
   .card__body {
     padding: 2rem; }
   .card__img {
@@ -445,8 +447,30 @@ main {
     grid-column: 2;
     align-self: center; }
 
+.library__search {
+  display: grid;
+  grid-row-gap: 2rem; }
+
 .library__header {
-  display: flex; }
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr; }
+
+.library__search-input {
+  grid-column: 1 / 2;
+  grid-row: 1 / 2; }
+
+.library__add {
+  grid-column: 2 / 3;
+  grid-row: 1 / 2; }
+
+.library__filter {
+  grid-column: 1 / 2;
+  grid-row: 2 / 3; }
+
+.library__pagination {
+  grid-column: 3 / end;
+  grid-row: 3 / end; }
 
 /* ------------------------------------------
   MARGIN

@@ -12,7 +12,6 @@ export const userFindOne = id => async dispatch => {
 }
 
 export const userAdd = (obj, cb) => async dispatch => {
-  console.log(obj);
   try {
     const response = await axios.post('/api/user', obj);
 

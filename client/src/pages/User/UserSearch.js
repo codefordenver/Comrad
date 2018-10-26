@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 
 import { Filter } from '../../components/Filter'
-import SearchUsers from '../../components/Search/SearchUsers';
+import Search from '../../components/Search';
 import UsersTable from '../../components/Tables/UsersTable';
 
 class UserSearch extends Component {
@@ -28,7 +28,9 @@ class UserSearch extends Component {
           </div>
 
           <div className="user__search">
-            <SearchUsers />
+            <Search
+              type="user"
+            />
           </div>
         </div>
 

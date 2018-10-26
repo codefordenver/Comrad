@@ -17,9 +17,19 @@ class Search extends Component {
 
   handleFormSubmit = e => {
     e.preventDefault()
-    const { searchTerm } = this.state
+    const { searchTerm } = this.state;
+    const { type } = this.props;
 
-    this.props.searchAll(searchTerm)
+    switch (type) {
+      case 'library':
+        this.props.searchLibrary(searchTerm);
+        break;
+      case 'user':
+        this.props.searchUsers(searchTerm);
+        break;
+      default:
+        break;
+    }
   }
 
   renderShortSearch() {}

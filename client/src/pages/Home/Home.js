@@ -55,14 +55,14 @@ class Home extends Component {
             <CardImg className={'card__img--home'} src={logo} />
             <CardBody>
               <CardTitle
-                text={'COMRAD - KGNU PLAYLIST LOGIN:'}
+                text="COMRAD - KGNU PLAYLIST LOGIN:"
                 className="text-center"
               />
 
               {errorMessage ? <div>{errorMessage}</div> : null}
 
               <Form handleFormSubmit={this.handleFormSubmit}>
-                <FormLabel text={'Email'} />
+                <FormLabel text="Email" />
                 <FormGroup>
                   <FormInput
                     name="email"
@@ -70,18 +70,18 @@ class Home extends Component {
                     type="text"
                     value={this.state.email}
                   />
-                  <FormInvalid text={'Incorrect Email Address'} />
+                  <FormInvalid text="Incorrect Email Address" />
                 </FormGroup>
 
                 <FormGroup>
-                  <FormLabel text={'Password'} />
+                  <FormLabel text="Password" />
                   <FormInput
                     name="password"
                     onChange={this.handleInputChange}
                     type="password"
                     value={this.state.password}
                   />
-                  <FormInvalid text={'Enter Password'} />
+                  <FormInvalid text="Enter Password" />
                 </FormGroup>
 
                 <FormGroup className="text-center">

@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 
 import { Card, CardBody } from '../Card'
 
-class AllTable extends Component {
+class LibraryTable extends Component {
   state = {}
 
   renderHeader() {
@@ -20,7 +20,7 @@ class AllTable extends Component {
   renderBody() {
     return (
       <tbody>
-        {this.props.all.map(result => (
+        {this.props.library.map(result => (
           <tr key={result._id}>
             <td>{result.name}</td>
             <td>{result.type}</td>
@@ -32,7 +32,7 @@ class AllTable extends Component {
   render() {
     return (
       <Fragment>
-        {this.props.all.length > 0 ? (
+        {this.props.library.length > 0 ? (
           <Card>
             <CardBody>
               <table className="table">
@@ -49,11 +49,11 @@ class AllTable extends Component {
 
 function mapStateToProps(state) {
   return {
-    all: state.search.all
+    library: state.search.library
   }
 }
 
 export default connect(
   mapStateToProps,
   null
-)(AllTable)
+)(LibraryTable)

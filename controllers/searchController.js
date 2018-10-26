@@ -1,7 +1,7 @@
 const db = require('../models');
 
 module.exports = {
-  search: async (req, res) => {
+  searchLibrary: async (req, res) => {
     const { searchTerm } = req.body;
     const q = new RegExp(searchTerm, 'i');
 

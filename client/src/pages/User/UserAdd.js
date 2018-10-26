@@ -65,7 +65,7 @@ class UserAdd extends Component {
     return (
       <Form handleFormSubmit={this.handleFormSubmit}>
         <FormGroup>
-          <FormLabel text={'Email'} />
+          <FormLabel text="Email" />
           <FormInput
             name="email"
             onChange={this.handleInputChange}
@@ -73,11 +73,11 @@ class UserAdd extends Component {
             type="text"
             value={this.state.email}
           />
-          <FormInvalid text={'Invalid Email Format'} />
+          <FormInvalid text="Invalid Email Formant" />
         </FormGroup>
 
         <FormGroup>
-          <FormLabel text={'First Name'} />
+          <FormLabel text="First Name" />
           <FormInput
             name="first_name"
             onChange={this.handleInputChange}
@@ -85,11 +85,11 @@ class UserAdd extends Component {
             type="text"
             value={this.state.first_name}
           />
-          <FormInvalid text={'Minimum 3 Characters'} />
+          <FormInvalid text="Minimum 3 Characters" />
         </FormGroup>
 
         <FormGroup>
-          <FormLabel text={'Last Name'} />
+          <FormLabel text="Last Name" />
           <FormInput
             name="last_name"
             onChange={this.handleInputChange}
@@ -97,11 +97,11 @@ class UserAdd extends Component {
             type="text"
             value={this.state.last_name}
           />
-          <FormInvalid text={'Minimum 3 Characters'} />
+          <FormInvalid text="Minimum 3 Characters" />
         </FormGroup>
 
         <FormGroup>
-          <FormLabel text={'On Air Name'} />
+          <FormLabel text="On Air Name" />
           <FormInput
             name="on_air_name"
             onChange={this.handleInputChange}
@@ -109,11 +109,11 @@ class UserAdd extends Component {
             type="text"
             value={this.state.on_air_name}
           />
-          <FormInvalid text={'Minimum 3 Characters'} />
+          <FormInvalid text="Minimum 3 Characters" />
         </FormGroup>
 
         <FormGroup>
-          <FormLabel text={'Role'} />
+          <FormLabel text="Role" />
           <FormSelect
             name="role"
             onChange={this.handleInputChange}
@@ -122,11 +122,11 @@ class UserAdd extends Component {
             type="text"
             value={this.state.role}
           />
-          <FormInvalid text={'Select a Role'} />
+          <FormInvalid text="Select a Role" />
         </FormGroup>
 
         <FormGroup>
-          <FormLabel text={'Status'} />
+          <FormLabel text="Status" />
           <FormSelect
             name="status"
             onChange={this.handleInputChange}
@@ -135,11 +135,11 @@ class UserAdd extends Component {
             type="text"
             value={this.state.status}
           />
-          <FormInvalid text={'Select a Status'} />
+          <FormInvalid text="Select a Status" />
         </FormGroup>
 
         <FormGroup>
-          <FormLabel text={'Can Delete?'} />
+          <FormLabel text="Can Delete" />
           <FormCheckBox
             name="can_delete"
             onClick={this.handleCheckBox}

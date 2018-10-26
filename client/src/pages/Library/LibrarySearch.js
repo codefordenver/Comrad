@@ -5,7 +5,7 @@ import { Card, CardBody } from '../../components/Card'
 import { Filter } from '../../components/Filter'
 import Search from '../../components/Search'
 
-import AllTable from '../../components/Tables/AllTable'
+import LibraryTable from '../../components/Tables/LibraryTable'
 import ArtistsTable from '../../components/Tables/ArtistsTable'
 import AlbumsTable from '../../components/Tables/AlbumsTable'
 import TracksTable from '../../components/Tables/TracksTable'
@@ -39,7 +39,7 @@ class LibrarySearch extends Component {
 
     switch (filter) {
       case 'All':
-        return <AllTable />
+        return <LibraryTable />
       case 'Artists':
         return <ArtistsTable />
       case 'Albums':
@@ -61,7 +61,9 @@ class LibrarySearch extends Component {
           <CardBody>
             <div className="library__header">
               <div className="library__search-input">
-                <Search />
+                <Search 
+                  type="library"
+                />
               </div>
               <div className="library__add">
                 <DropRightBtn

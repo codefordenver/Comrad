@@ -380,7 +380,7 @@ main {
   height: 3rem;
   padding: 1rem;
   border-radius: 0.5rem;
-  border: 2px solid #7db2bf;
+  border: 2px solid #7cb2bf;
   transition: all .3s; }
   .form__input:focus {
     outline: none;
@@ -393,7 +393,7 @@ main {
   color: red; }
 
 .form__label {
-  color: #7db2bf;
+  color: #7cb2bf;
   font-size: 1.2rem;
   font-weight: 700;
   text-align: left;
@@ -425,13 +425,24 @@ main {
     grid-row-start: 2;
     height: 100vh;
     display: grid;
-    grid-template-columns: 10rem 1fr; }
+    grid-template-columns: 6.5rem 1fr; }
 
 .navbar {
   background-color: #eee; }
 
 .sidebar {
-  background-color: #ddd; }
+  background-color: #007283; }
+  .sidebar__link {
+    text-decoration: none;
+    transition: all 0.1s ease-in-out;
+    display: grid; }
+    .sidebar__link:hover {
+      background-color: #7cb2bf; }
+  .sidebar__icon {
+    font-size: 2.5rem;
+    color: #fff;
+    margin: 2.2rem 0;
+    justify-self: center; }
 
 .dashboard {
   display: grid;

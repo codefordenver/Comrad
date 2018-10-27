@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Route } from 'react-router-dom'
 
-import CalendarView from '../Calendar/CalendarView';
+import CalendarView from '../pages/Calendar/CalendarView';
 
 class Calendar extends Component {
   state = {}

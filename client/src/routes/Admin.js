@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Route } from 'react-router-dom'
 
-import AdminPage from '../Admin/AdminPage';
+import AdminPage from '../pages/Admin/AdminPage';
 
 class Admin extends Component {
   state = {}

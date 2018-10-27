@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
-import requireAuth from '../../components/HOC/requireAuth';
+import requireAuth from '../components/HOC/requireAuth';
 
-import DashboardHome from '../Dashboard/DashboardHome';
+import DashboardHome from '../pages/Dashboard/DashboardHome';
 
 class Dashboard extends Component {
   state = {}

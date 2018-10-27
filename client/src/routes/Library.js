@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import { Route } from 'react-router-dom'
 
-import LibrarySearch from '../Library/LibrarySearch';
-import LibraryAddTracks from '../Library/LibraryAddTracks';
-import LibraryAddAlbums from '../Library/LibraryAddAlbums';
+import LibrarySearch from '../pages/Library/LibrarySearch';
+import LibraryAddTracks from '../pages/Library/LibraryAddTracks';
+import LibraryAddAlbums from '../pages/Library/LibraryAddAlbums';
 
 class Library extends Component {
   render() {

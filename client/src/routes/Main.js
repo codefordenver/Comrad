@@ -1,16 +1,16 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
 
-import Navbar from './components/Navbar';
-import Sidebar from './components/Sidebar';
+import Navbar from '../components/Navbar';
+import Sidebar from '../components/Sidebar';
 
-import Admin from './pages/Routes/Admin';
-import Builder from './pages/Routes/Builder';
-import Calendar from './pages/Routes/Calendar';
-import Dashboard from './pages/Routes/Dashboard';
-import Library from './pages/Routes/Library';
-import Report from './pages/Routes/Report';
-import User from './pages/Routes/User';
+import Admin from './Admin';
+import Builder from './Builder';
+import Calendar from './Calendar';
+import Dashboard from './Dashboard';
+import Library from './Library';
+import Report from './Report';
+import User from './User';
 
 export const Main = () => (
   <div className="main-layout">

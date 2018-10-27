@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { Route } from 'react-router-dom'
 
-import UserAdd from '../User/UserAdd'
-import UserSearch from '../User/UserSearch'
+import UserAdd from '../pages/User/UserAdd'
+import UserSearch from '../pages/User/UserSearch'
 
 class User extends Component {
   state = {}

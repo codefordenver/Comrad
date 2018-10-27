@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Route } from 'react-router-dom'
 
-import BuilderPage from '../Builder/BuilderPage';
+import BuilderPage from '../pages/Builder/BuilderPage';
 
 class Builder extends Component {
   state = {}

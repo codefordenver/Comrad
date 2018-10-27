@@ -4,9 +4,9 @@ import { connect } from 'react-redux'
 import * as actions from './actions'
 
 import Home from './pages/Home';
-import { Main } from './Main';
+import { Main } from './routes/Main';
 
-import NavTest from './components/NavTest'
+import NavTest from './components/NavTest';
 
 class App extends Component {
   componentDidMount() {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
 
-import ReportPage from  '../Report/ReportPage';
+import ReportPage from  '../pages/Report/ReportPage';
 
 class Report extends Component {
   state = {};

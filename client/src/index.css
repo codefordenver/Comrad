@@ -365,6 +365,9 @@ main {
     color: #007283;
     margin-bottom: 2rem; }
 
+.filter__span {
+  cursor: pointer; }
+
 .form__group {
   margin-bottom: 1rem; }
 

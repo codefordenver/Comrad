@@ -8,12 +8,15 @@ module.exports = {
   },
 
   findAll: (req, res) => {
+    const sort_by = req.params.sort_by ? req.params.sort_by : "on_air_name";
     db.User.find({})
+      .sort(sort_by)
       .then(dbUser => res.json(dbUser))
       .catch(err => res.status(422).json(err));
   },
 
   find: (req, res) => {
+    // Sort by name by default
     const sort_by = req.params.sort_by ? req.params.sort_by : "on_air_name";
     db.User.find({})
       .sort(sort_by)
@@ -23,16 +26,18 @@ module.exports = {
   },
 
   findActive: (req, res) => {
+    const sort_by = req.params.sort_by ? req.params.sort_by : "on_air_name";
     db.User.find({status: "Active"})
-      .sort("on_air_name")
+      .sort(sort_by)
       .limit(10)
       .then(dbUser => res.json(dbUser))
       .catch(err => res.status(422).json(err));
   },
 
   findInactive: (req, res) => {
+    const sort_by = req.params.sort_by ? req.params.sort_by : "on_air_name";
     db.User.find({status: "Inactive"})
-      .sort("on_air_name")
+      .sort(sort_by)
       .limit(10)
       .then(dbUser => res.json(dbUser))
       .catch(err => res.status(422).json(err));

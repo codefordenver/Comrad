@@ -19,7 +19,9 @@ function splitQueryByWord(queryString) {
  * @param {RegExp} re
  * @returns {Array}
  */
-async function findInLibrary(re) {
+async function findInLibrary(queryString) {
+  const re = new RegExp(splitQueryByWord(queryString), 'i');
+
   const artistResults = await db.Artist.find({ name: re });
   const artistIDs = artistResults.map(artist => artist._id);
 
@@ -66,17 +68,24 @@ function countMatches(str, re) {
  * @param {RegExp} re
  * @returns {Object}
  */
-function addRelevance(result, re) {
-  if (re.test(result.name)) {
+function addRelevance(result, queryString) {
+  const exactRE = new RegExp(queryString, 'i');
+
+  if (exactRE.test(result.name)) {
     return {
       ...result._doc,
       relevance: 100,
     };
   }
 
+  const anyRE = new RegExp(splitQueryByWord(queryString), 'i');
+
   const albumName = result.album ? result.album.name : '';
-  const albumArtist = result.album ? result.album.artist.name : '';
-  const artistName = result.artist ? result.artist.name : '';
+  const albumArtist = result.album
+    ? result.album.artist.name
+    : result.artist
+      ? result.artist.name
+      : '';
   const artistNames = result.artists
     ? result.artists.map(artist => artist.name).join(', ')
     : '';
@@ -84,10 +93,9 @@ function addRelevance(result, re) {
   return {
     ...result._doc,
     relevance:
-      countMatches(albumName, re) +
-      countMatches(albumArtist, re) +
-      countMatches(artistName, re) +
-      countMatches(artistNames, re),
+      countMatches(albumName, anyRE) +
+      countMatches(albumArtist, anyRE) +
+      countMatches(artistNames, anyRE),
   };
 }
 
@@ -99,10 +107,8 @@ module.exports = {
       return res.json([]);
     }
 
-    const re = new RegExp(splitQueryByWord(searchTerm), 'i');
-
-    const results = (await findInLibrary(re)).map(result =>
-      addRelevance(result, re)
+    const results = (await findInLibrary(searchTerm)).map(result =>
+      addRelevance(result, searchTerm)
     );
 
     const data = [...results].sort((a, b) => {

@@ -1,99 +1,122 @@
 const db = require('../models');
 
 /**
- * Remove duplicate objects from a results array.
- * Objects are considered duplicates if their _id and type members are equal.
+ * Splits a given query string into a regexp pattern string matching any word
+ * in the source query.
+ * @param {String} queryString
+ * @returns {String}
  */
-function filterDuplicates(results) {
-  return results.reduce(
-    (acc, result) => {
-      const key = result.type + result._id;
-      if (acc.seen.has(key)) {
-        return acc;
-      }
-      acc.seen.add(key);
-      acc.filteredResults.push(result);
-      return acc;
-    },
-    {
-      seen: new Set(),
-      filteredResults: [],
-    }
-  ).filteredResults;
+function splitQueryByWord(queryString) {
+  return queryString
+    .split(/\s+/)
+    .map(word => `(${word})`)
+    .join('|');
 }
 
 /**
- * Query the Album, Artist, and Track collections for a given query string
- * and populate the relationships in Track.
+ * Queries the Album, Artist, and Track collections, returning a combined array
+ * of albums, artists, and tracks that match the query.
+ * @param {RegExp} re
+ * @returns {Array}
  */
-async function findInLibrary(query) {
-  const queryRegexp = new RegExp(query, 'i');
-
-  const artistResults = await db.Artist.find({ name: queryRegexp });
-  const artistIDs = artistResults.map(result => result._id);
+async function findInLibrary(re) {
+  const artistResults = await db.Artist.find({ name: re });
+  const artistIDs = artistResults.map(artist => artist._id);
 
   const albumResults = await db.Album.find({
-    $or: [{ name: queryRegexp }, { artists: { $in: artistIDs } }],
-  });
-  const albumIDs = albumResults.map(result => result._id);
+    $or: [{ name: re }, { artist: { $in: artistIDs } }],
+  }).populate('artist');
+  const albumIDs = albumResults.map(album => album._id);
 
-  const trackResults = db.Track.find({
+  const trackResults = await db.Track.find({
     $or: [
-      { name: queryRegexp },
-      { album: { $in: albumIDs } },
+      { name: re },
       { artists: { $in: artistIDs } },
+      { album: { $in: albumIDs } },
     ],
   })
-    .populate('album')
-    .populate('album.artist')
+    .populate({
+      path: 'album',
+      populate: {
+        path: 'artist',
+      },
+    })
     .populate('artists');
 
   return [...artistResults, ...albumResults, ...trackResults];
 }
 
+/**
+ * Counts the number of times a regular expression matches an input string.
+ * @param {String} str
+ * @param {RegExp} re
+ */
+function countMatches(str, re) {
+  const { source, flags } = re;
+  const globalRE = flags.split('').includes('g')
+    ? new RegExp(source, flags)
+    : new RegExp(source, flags + 'g');
+  return (str.match(globalRE) || []).length;
+}
+
+/**
+ * Calculates the relevance of the search match and return a copy of the result
+ * object with the relevance added.
+ * @param {Object} result
+ * @param {RegExp} re
+ * @returns {Object}
+ */
+function addRelevance(result, re) {
+  if (re.test(result.name)) {
+    return {
+      ...result._doc,
+      relevance: 100,
+    };
+  }
+
+  const albumName = result.album ? result.album.name : '';
+  const albumArtist = result.album ? result.album.artist.name : '';
+  const artistName = result.artist ? result.artist.name : '';
+  const artistNames = result.artists
+    ? result.artists.map(artist => artist.name).join(', ')
+    : '';
+
+  return {
+    ...result._doc,
+    relevance:
+      countMatches(albumName, re) +
+      countMatches(albumArtist, re) +
+      countMatches(artistName, re) +
+      countMatches(artistNames, re),
+  };
+}
+
 module.exports = {
-  searchLibrary: async (req, res) => {
+  async searchLibrary(req, res) {
     const { searchTerm } = req.body;
 
     if (searchTerm === '') {
       return res.json([]);
     }
 
-    const resultsAll = await findInLibrary(searchTerm);
+    const re = new RegExp(splitQueryByWord(searchTerm), 'i');
 
-    let results;
-
-    if (/\s/.test(searchTerm)) {
-      // Construct a regex that searches each whitespace separated term
-      // separately.
-      const queryAny = searchTerm
-        .split(/\s/)
-        .map(term => `(${term})`)
-        .join('|');
-
-      const resultsAny = await findInLibrary(queryAny);
-
-      results = [...resultsAll, ...resultsAny];
-    } else {
-      results = resultsAll;
-    }
-
-    const data = filterDuplicates(
-      results.sort((a, b) => {
-        // Sort the results that match the whole string first, then alphabetically
-        // based on the fields we searched by.
-        if (a.matchType === 'all') return -1;
-        if (a.matchType === 'any') return 1;
-        if (a.name < b.name) return -1;
-        if (a.name > b.name) return 1;
-        return 0;
-      })
+    const results = (await findInLibrary(re)).map(result =>
+      addRelevance(result, re)
     );
 
-    return res.json(data);
+    const data = [...results].sort((a, b) => {
+      if (a.relevance > b.relevance) return -1;
+      if (a.relevance < b.relevance) return 1;
+      if (a.name < b.name) return -1;
+      if (a.name > b.name) return 1;
+      return 0;
+    });
+
+    return res.json(data.slice(0, 30));
   },
 
-  searchUsers: async (req, res) => {
+  async searchUsers(req, res) {
     const { searchTerm } = req.body;
     const q = new RegExp(searchTerm, 'i');
 

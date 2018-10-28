@@ -2,50 +2,62 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 
 class Sidebar extends Component {
+  state = {}
+
   render() {
+    const items = [
+      {
+        name: 'home',
+        url: '/',
+        iconClass: 'fas fa-home'
+      },
+      {
+        name: 'library',
+        url: '/library',
+        iconClass: 'fas fa-music'
+      },
+      {
+        name: 'microphone',
+        url: '/',
+        iconClass: 'fas fa-microphone'
+      },
+      {
+        name: 'user',
+        url: '/user',
+        iconClass: 'far fa-user'
+      },
+      {
+        name: 'calendar',
+        url: '/calendar',
+        iconClass: 'far fa-calendar-alt'
+      },
+      {
+        name: 'calendar-check',
+        url: '/',
+        iconClass: 'far fa-calendar-check'
+      },
+      {
+        name: 'report',
+        url: '/report',
+        iconClass: 'fas fa-chart-bar'
+      },
+      {
+        name: 'copy',
+        url: '/',
+        iconClass: 'far fa-copy'
+      }
+    ]
+
     return (
       <nav className="sidebar">
         <ul className="sidebar__list">
-          <li className="sidebar__item">
-            <Link to="/" className="sidebar__link">
-              <i className="sidebar__icon fas fa-home" />
-            </Link>
-          </li>
-          <li className="sidebar__item">
-            <Link to="/library" className="sidebar__link">
-              <i className="sidebar__icon fas fa-music" />
-            </Link>
-          </li>
-          <li className="sidebar__item">
-            <Link to="/" className="sidebar__link">
-              <i className="sidebar__icon fas fa-microphone" />
-            </Link>
-          </li>
-          <li className="sidebar__item">
-            <Link to="/user" className="sidebar__link">
-              <i className="sidebar__icon far fa-user" />
-            </Link>
-          </li>
-          <li className="sidebar__item">
-            <Link to="/calendar" className="sidebar__link">
-              <i className="sidebar__icon far fa-calendar-alt" />
-            </Link>
-          </li>
-          <li className="sidebar__item">
-            <Link to="/" className="sidebar__link">
-              <i className="sidebar__icon far fa-calendar-check" />
-            </Link>
-          </li>
-          <li className="sidebar__item">
-            <Link to="/report" className="sidebar__link">
-              <i className="sidebar__icon fas fa-chart-bar" />
-            </Link>
-          </li>
-          <li className="sidebar__item">
-            <Link to="/" className="sidebar__link">
-              <i className="sidebar__icon far fa-copy" />
-            </Link>
-          </li>
+          {items.map(item => (
+            <li key={item.name} className="sibebar-_item">
+              <Link to={item.url} className="sidebar__link">
+                <i className={`sidebar__icon ${item.iconClass}`} />
+              </Link>
+            </li>
+          ))}
         </ul>
       </nav>
     )

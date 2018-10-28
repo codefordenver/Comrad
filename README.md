@@ -1,7 +1,4 @@
 ## Comrad
-<<<<<<< HEAD
-Switch to DEVELOPMENT branch to find most recent code
-=======
 
 [![Stories Ready to Work On](https://badge.waffle.io/codefordenver/Comrad.svg?label=ready&title=Cards%20Ready%20To%20Work%20On)](https://waffle.io/codefordenver/Comrad)
 
@@ -33,4 +30,3 @@ Here is what you need to know:
 This project uses [GitHub flow](https://guides.github.com/introduction/flow/) where updates are made on feature branches. Pull requests are submitted on those branches and reviewed before being merged.
 
 # Here's a thing
->>>>>>> 72bf8ac70678122bcbe7e8bdd917dcf9222f0505

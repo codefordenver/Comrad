@@ -93,6 +93,7 @@ function addRelevance(result, queryString) {
   return {
     ...result._doc,
     relevance:
+      countMatches(result.name, anyRE) +
       countMatches(albumName, anyRE) +
       countMatches(albumArtist, anyRE) +
       countMatches(artistNames, anyRE),

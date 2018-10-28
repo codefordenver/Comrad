@@ -1,10 +1,11 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import * as actions from '../../actions'
-import { homeValidation } from '../../utils/validation'
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import * as actions from '../../actions';
+import { homeValidation } from '../../utils/validation';
+import logo from '../../images/kgnu_logo.png';
 
-import { Link, SubmitBtn } from '../../components/Button'
-import { Card, CardBody, CardImg, CardTitle } from '../../components/Card'
+import { Link, SubmitBtn } from '../../components/Button';
+import { Card, CardBody, CardImg, CardTitle } from '../../components/Card';
 import {
   Form,
   FormGroup,
@@ -45,7 +46,6 @@ class Home extends Component {
   }
 
   render() {
-    const logo = '/assets/images/kgnu_logo.png'
     const { errorMessage } = this.props.auth
 
     return (

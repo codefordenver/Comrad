@@ -1,6 +1,11 @@
 body {
   font-family: $font-family-primary;
   font-weight: 500;
-  color: $color-grey-light-1;
+  color: $color-grey-dark;
   line-height: 1.7;
+}
+
+main {
+  padding: 4rem;
+  background-color: $color-grey-light-1;
 }

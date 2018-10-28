@@ -5,9 +5,7 @@
       "artist": "Michael Jackson",
       "label": "Epic",
       "local": false,
-      "compilation": "",
-      "location": "",
-      "album_art": ""
+      "compilation": false
     },
     "tracks": [
       {
@@ -72,9 +70,7 @@
       "artist": "Journey",
       "label": "Columbia",
       "local": false,
-      "comiplation": "",
-      "location": "",
-      "album_art": ""
+      "compilation": false
     },
     "tracks": [
       {
@@ -145,9 +141,7 @@
       "artist": "Aerosmith",
       "label": "Columbia",
       "local": false,
-      "compilation": "",
-      "location": "",
-      "album_art": ""
+      "compilation": false
     },
     "tracks": [
       {

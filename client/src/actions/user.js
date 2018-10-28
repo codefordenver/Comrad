@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { USER_FIND_ONE, USER_ADD } from './types';
+import { USER_FIND_ONE, USER_ADD, USER_ERROR } from './types';
 
 export const userFindOne = id => async dispatch => {
   try {
@@ -12,7 +12,6 @@ export const userFindOne = id => async dispatch => {
 }
 
 export const userAdd = (obj, cb) => async dispatch => {
-  console.log(obj);
   try {
     const response = await axios.post('/api/user', obj);
 
@@ -20,6 +19,6 @@ export const userAdd = (obj, cb) => async dispatch => {
 
     cb();
   } catch (e) {
-    console.log(e.response.data.errorMessage);
+    dispatch({ type: USER_ERROR, payload: e.response.data });
   }
 }

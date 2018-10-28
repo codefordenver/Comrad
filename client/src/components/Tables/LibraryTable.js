@@ -1,7 +1,9 @@
 import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 
-class AllTable extends Component {
+import { Card, CardBody } from '../Card'
+
+class LibraryTable extends Component {
   state = {}
 
   renderHeader() {
@@ -18,7 +20,7 @@ class AllTable extends Component {
   renderBody() {
     return (
       <tbody>
-        {this.props.all.map(result => (
+        {this.props.library.map(result => (
           <tr key={result._id}>
             <td>{result.name}</td>
             <td>{result.type}</td>
@@ -30,14 +32,16 @@ class AllTable extends Component {
   render() {
     return (
       <Fragment>
-        {this.props.all.length !== 0 ? (
-          <table className="table">
-            {this.renderHeader()}
-            {this.renderBody()}
-          </table>
-        ) : (
-          null
-        )}
+        {this.props.library.length > 0 ? (
+          <Card>
+            <CardBody>
+              <table className="table">
+                {this.renderHeader()}
+                {this.renderBody()}
+              </table>
+            </CardBody>
+          </Card>
+        ) : null}
       </Fragment>
     )
   }
@@ -45,11 +49,11 @@ class AllTable extends Component {
 
 function mapStateToProps(state) {
   return {
-    all: state.search.all
+    library: state.search.library
   }
 }
 
 export default connect(
   mapStateToProps,
   null
-)(AllTable);
+)(LibraryTable)

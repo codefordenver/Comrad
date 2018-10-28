@@ -1,25 +1,24 @@
-import React from 'react'
-import { Link } from 'react-router-dom';
+import React from 'react';
 
 export const DropRightBtn = props => {
+  const { dropRightBtnItems } = props;
+
   return (
-    <div className="dropdown">
+    <div className="dropright">
       <button className="btn btn-primary">
         Add
       </button>
       <button>
         +
       </button>
-      <ul className="dropdown__list">
-        <li className="drop__item">
-          <Link to="/library/add/track">Tracks</Link>
-        </li>
-        <li className="drop__item">
-          <Link to="/library/add/album">Album</Link>
-        </li>
-        <li className="drop__item">
-          <Link to="#">Other</Link>
-        </li>
+      <ul className="dropright__list">
+        {dropRightBtnItems ? dropRightBtnItems.map(item => (
+          <li key={item} className="dropright__item">
+            <span className="dropright__span" onClick={() => props.handleDropRightBtnClick(item)}>{item}</span>
+          </li>
+        )) : (
+          null
+        )}
       </ul>
     </div>
   )

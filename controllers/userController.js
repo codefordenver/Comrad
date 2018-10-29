@@ -1,43 +1,48 @@
 const db = require('../models');
 
 module.exports = {
-  findById: (req, res) => {
-    db.User.findById(req.params.id)
-      .then(dbUser => res.json(dbUser))
-      .catch(err => res.status(422).json(err));
-  },
-
-  findAll: (req, res) => {
-    const sort_by = req.params.sort_by ? req.params.sort_by : "on_air_name";
-    db.User.find({})
-      .sort(sort_by)
-      .then(dbUser => res.json(dbUser))
-      .catch(err => res.status(422).json(err));
-  },
 
   find: (req, res) => {
-    const sort_by = req.params.sort_by ? req.params.sort_by : "on_air_name";
+    const id = req.query.id ? req.query.id : false
+    console.log(id);
+    const sort_by = req.query.sort_by ? req.query.sort_by : "on_air_name";
+    const limit = req.query.limit ? Number(req.query.limit) : 10;
+    const page = Math.max(0, Number(req.query.page));
+    if (id) {
+      db.User.findById(id)
+        .then(dbUser => res.json(dbUser))
+        .catch(err => res.status(422).json(err));
+    }
+    else {
     db.User.find({})
       .sort(sort_by)
-      .limit(10)
+      .limit(limit)
+      .skip(limit * page)
       .then(dbUser => res.json(dbUser))
       .catch(err => res.status(422).json(err));
+    }
   },
 
   findActive: (req, res) => {
     const sort_by = req.params.sort_by ? req.params.sort_by : "on_air_name";
+    const limit = req.query.limit ? Number(req.query.limit) : 10;
+    const page = Math.max(0, Number(req.query.page));
     db.User.find({status: "Active"})
       .sort(sort_by)
-      .limit(10)
+      .limit(limit)
+      .skip(limit * page)
       .then(dbUser => res.json(dbUser))
       .catch(err => res.status(422).json(err));
   },
 
   findInactive: (req, res) => {
     const sort_by = req.params.sort_by ? req.params.sort_by : "on_air_name";
+    const limit = req.query.limit ? Number(req.query.limit) : 10;
+    const page = Math.max(0, Number(req.query.page));
     db.User.find({status: "Inactive"})
       .sort(sort_by)
-      .limit(10)
+      .limit(limit)
+      .skip(limit * page)
       .then(dbUser => res.json(dbUser))
       .catch(err => res.status(422).json(err));
   },
@@ -45,6 +50,8 @@ module.exports = {
   search: (req, res) => {
     const sort_by = req.params.sort_by ? req.params.sort_by : "on_air_name";
     const name = req.params.name;
+    const limit = req.query.limit ? Number(req.query.limit) : 10;
+    const page = Math.max(0, Number(req.query.page));
     db.User.find(
       {
         $or: [
@@ -54,7 +61,8 @@ module.exports = {
       ]}
     )
       .sort(sort_by)
-      .limit(10)
+      .limit(limit)
+      .skip(limit * page)
       .then(dbUser => res.json(dbUser))
       .catch(err => res.status(422).json(err));
   },

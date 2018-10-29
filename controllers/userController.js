@@ -16,7 +16,6 @@ module.exports = {
   },
 
   find: (req, res) => {
-    // Sort by name by default
     const sort_by = req.params.sort_by ? req.params.sort_by : "on_air_name";
     db.User.find({})
       .sort(sort_by)
@@ -43,6 +42,22 @@ module.exports = {
       .catch(err => res.status(422).json(err));
   },
 
+  search: (req, res) => {
+    const sort_by = req.params.sort_by ? req.params.sort_by : "on_air_name";
+    const name = req.params.name;
+    db.User.find(
+      {
+        $or: [
+          { on_air_name: name },
+          { first_name: name },
+          { last_name: name }
+      ]}
+    )
+      .sort(sort_by)
+      .limit(10)
+      .then(dbUser => res.json(dbUser))
+      .catch(err => res.status(422).json(err));
+  },
 
   create: (req, res) => {
 

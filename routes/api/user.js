@@ -3,9 +3,7 @@ const userController = require('../../controllers/userController');
 const passport = require('passport');
 const requireLogin = require('../../middlewares/requireLogin');
 
-// Search string - return results filtered by the testing the search string against Name/DJ Name
 // Page items with 100 results per page
-
 
 router.route('/')
   .get(userController.find)
@@ -31,8 +29,8 @@ router.route('/filter/active:sort_by')
   .get(userController.findActive);
 
 // Search routes
-// router.route('/search:name')
-//   .get(userController.search);
+router.route('/search/for/:name')
+  .get(userController.search);
 
 // Permission Updates
 router.route('/permission/:id')

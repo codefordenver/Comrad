@@ -1,19 +1,19 @@
-import React, { Component } from 'react'
-import { Route } from 'react-router-dom'
+import React, { Component } from 'react';
+import { Route } from 'react-router-dom';
 
-import Navbar from '../components/Navbar'
-import Sidebar from '../components/Sidebar'
+import Navbar from '../components/Navbar';
+import Sidebar from '../components/Sidebar';
 
-import Admin from './Admin'
-import Builder from './Builder'
-import Calendar from './Calendar'
-import Dashboard from './Dashboard'
-import Library from './Library'
-import Report from './Report'
-import User from './User'
+import Admin from './Admin';
+import Builder from './Builder';
+import Calendar from './Calendar';
+import Dashboard from './Dashboard';
+import Library from './Library';
+import Report from './Report';
+import User from './User';
 
 class Main extends Component {
-  state = {}
+  state = {};
 
   render() {
     return (
@@ -31,8 +31,8 @@ class Main extends Component {
           <Route path="/user" component={User} />
         </div>
       </div>
-    )
+    );
   }
 }
 
-export default Main
+export default Main;

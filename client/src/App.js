@@ -1,7 +1,7 @@
-import React, { Component } from 'react'
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import { connect } from 'react-redux'
-import * as actions from './actions'
+import React, { Component } from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { connect } from 'react-redux';
+import * as actions from './actions';
 
 import Home from './pages/Home';
 import Main from './routes';
@@ -10,7 +10,7 @@ import NavTest from './components/NavTest';
 
 class App extends Component {
   componentDidMount() {
-    this.props.fetchUser()
+    this.props.fetchUser();
   }
 
   render() {
@@ -25,11 +25,11 @@ class App extends Component {
           </Switch>
         </div>
       </Router>
-    )
+    );
   }
 }
 
 export default connect(
   null,
   actions
-)(App)
+)(App);

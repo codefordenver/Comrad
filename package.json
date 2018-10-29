@@ -39,9 +39,12 @@
     "concurrently": "^3.6.1",
     "cross-env": "^5.2.0",
     "eslint": "^5.3.0",
+    "eslint-config-prettier": "^3.1.0",
+    "eslint-plugin-prettier": "^3.0.0",
     "eslint-plugin-react": "^7.10.0",
     "jest": "^23.4.2",
     "nodemon": "^1.18.3",
+    "prettier": "^1.14.3",
     "puppeteer": "^1.6.2",
     "supertest": "^3.3.0"
   },

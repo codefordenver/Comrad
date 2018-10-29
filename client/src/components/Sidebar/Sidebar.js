@@ -1,8 +1,8 @@
-import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 class Sidebar extends Component {
-  state = {}
+  state = {};
 
   render() {
     const items = [
@@ -46,7 +46,7 @@ class Sidebar extends Component {
         url: '/',
         iconClass: 'far fa-copy'
       }
-    ]
+    ];
 
     return (
       <nav className="sidebar">
@@ -60,8 +60,8 @@ class Sidebar extends Component {
           ))}
         </ul>
       </nav>
-    )
+    );
   }
 }
 
-export default Sidebar
+export default Sidebar;

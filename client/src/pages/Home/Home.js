@@ -12,15 +12,15 @@ import {
   FormInput,
   FormInvalid,
   FormLabel
-} from '../../components/Form'
+} from '../../components/Form';
 
 const initialState = {
   email: '',
   password: ''
-}
+};
 
 class Home extends Component {
-  state = initialState
+  state = initialState;
 
   handleInputChange = e => {
     const { name, value } = e.target;
@@ -30,7 +30,7 @@ class Home extends Component {
     this.setState({
       [name]: value
     });
-  }
+  };
 
   handleFormSubmit = e => {
     e.preventDefault();
@@ -43,10 +43,10 @@ class Home extends Component {
         this.props.history.push('/');
       });
     }
-  }
+  };
 
   render() {
-    const { errorMessage } = this.props.auth
+    const { errorMessage } = this.props.auth;
 
     return (
       <main className="home">
@@ -94,17 +94,17 @@ class Home extends Component {
           </Card>
         </section>
       </main>
-    )
+    );
   }
 }
 
 function mapStateToProps(state) {
   return {
     auth: state.auth
-  }
+  };
 }
 
 export default connect(
   mapStateToProps,
   actions
-)(Home)
+)(Home);

@@ -1,0 +1,57 @@
+{
+    "env": {
+        "browser": true,
+        "commonjs": true,
+        "es6": true,
+        "node": true,
+        "jest": true
+    },
+    "settings": {
+        "react": {
+          "createClass": "createReactClass",
+          "pragma": "React",
+          "version": "16.0",
+          "flowVersion": "0.53"
+        },
+        "propWrapperFunctions": [ "forbidExtraProps" ]
+      },
+    "extends": [
+        "eslint:recommended", 
+        "plugin:prettier/recommended", 
+        "plugin:react/recommended"
+    ],
+    "parser": "babel-eslint",
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": 8,
+        "sourceType": "module"
+    },
+    "plugins": [
+        "react",
+        "prettier"
+    ],
+    "rules": {
+        "no-duplicate-case":"error",
+        "no-empty":"error",
+        "no-extra-semi":"error",
+        "no-func-assign": "error",
+        "no-irregular-whitespace":"error",
+        "no-unreachable": "error",
+        "curly": "error",
+        "dot-notation": "error",
+        "eqeqeq": "error",
+        "no-empty-function": "error",
+        "no-multi-spaces": "error",
+        "no-unused-vars": "error",
+        "camelcase": "error",
+        "linebreak-style": [
+            "error",
+            "unix"
+        ],
+        "react/display-name": 0,
+        "react/prop-types": 0,
+        "prettier/prettier": ["error", { "tabWidth": 2, "singleQuote": true, "useTabs": false }]
+    }
+}

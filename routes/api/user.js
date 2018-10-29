@@ -10,11 +10,8 @@ router.route('/')
   .delete(userController.remove);
 
 // Filter routes
-router.route('/filter/active')
-  .get(userController.findActive);
-
-router.route('/filter/inactive')
-  .get(userController.findInactive);
+router.route('/filter/:status')
+  .get(userController.findByActive);
 
 // Search routes
 router.route('/search/:name')

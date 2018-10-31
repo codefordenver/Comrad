@@ -2,18 +2,16 @@ const db = require('../models');
 
 module.exports = {
 
-  find: (req, res) => {
-    const id = req.query.id ? req.query.id : false
-    console.log(id);
+  findById: (req, res) => {
+    db.User.findById(req.params.id)
+      .then(dbUser => res.json(dbUser))
+      .catch(err => res.status(422).json(err));
+  },
+
+  findAll: (req, res) => {
     const sort_by = req.query.sort_by ? req.query.sort_by : "on_air_name";
     const limit = req.query.limit ? Number(req.query.limit) : 10;
     const page = Math.max(0, Number(req.query.page));
-    if (id) {
-      db.User.findById(id)
-        .then(dbUser => res.json(dbUser))
-        .catch(err => res.status(422).json(err));
-    }
-    else {
     db.User.find({})
       .sort(sort_by)
       .limit(limit)
@@ -28,7 +26,6 @@ module.exports = {
     const status = req.params.status ? req.params.status : "Active";
     const limit = req.query.limit ? Number(req.query.limit) : 10;
     const page = Math.max(0, Number(req.query.page));
-    console.log(status);
     db.User.find({status: status})
       .sort(sort_by)
       .limit(limit)

@@ -4,10 +4,7 @@ const passport = require('passport');
 const requireLogin = require('../../middlewares/requireLogin');
 
 router.route('/')
-  .get(userController.find)
-  .post(userController.create)
-  .put(userController.update)
-  .delete(userController.remove);
+  .get(userController.findAll);
 
 // Filter routes
 router.route('/filter/:status')
@@ -20,5 +17,10 @@ router.route('/search/:name')
 // Permission Updates
 router.route('/permission/:id')
   .put(userController.updatePermission);
+
+router.route('/:id')
+  .get(userController.findById)
+  .put(userController.update)
+  .delete(userController.remove);
 
 module.exports = router;

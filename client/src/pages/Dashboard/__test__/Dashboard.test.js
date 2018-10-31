@@ -1,6 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import Dashboard from '../Dashboard';
+import DashboardHome from '../DashboardHome';
 import Root from '../../../Root';
 
 let wrapped;
@@ -8,7 +8,7 @@ let wrapped;
 beforeEach(() => {
   wrapped = mount(
     <Root>
-      <Dashboard />
+      <DashboardHome />
     </Root>
   )
 });

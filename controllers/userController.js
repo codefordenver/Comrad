@@ -18,8 +18,7 @@ module.exports = {
       .skip(limit * page)
       .then(dbUser => res.json(dbUser))
       .catch(err => res.status(422).json(err));
-    }
-  },
+    },
 
   findByActive: (req, res) => {
     const sort_by = req.query.sort_by ? req.query.sort_by : "on_air_name";

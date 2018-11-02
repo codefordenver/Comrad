@@ -1,6 +1,7 @@
 const db = require('../models');
 
 module.exports = {
+
   findById: (req, res) => {
     db.User.findById(req.params.id)
       .then(dbUser => res.json(dbUser))
@@ -8,7 +9,46 @@ module.exports = {
   },
 
   findAll: (req, res) => {
+    const sort_by = req.query.sort_by ? req.query.sort_by : "on_air_name";
+    const limit = req.query.limit ? Number(req.query.limit) : 10;
+    const page = Math.max(0, Number(req.query.page));
     db.User.find({})
+      .sort(sort_by)
+      .limit(limit)
+      .skip(limit * page)
+      .then(dbUser => res.json(dbUser))
+      .catch(err => res.status(422).json(err));
+    },
+
+  findByActive: (req, res) => {
+    const sort_by = req.query.sort_by ? req.query.sort_by : "on_air_name";
+    const status = req.params.status ? req.params.status : "Active";
+    const limit = req.query.limit ? Number(req.query.limit) : 10;
+    const page = Math.max(0, Number(req.query.page));
+    db.User.find({status: status})
+      .sort(sort_by)
+      .limit(limit)
+      .skip(limit * page)
+      .then(dbUser => res.json(dbUser))
+      .catch(err => res.status(422).json(err));
+  },
+
+  search: (req, res) => {
+    const sort_by = req.query.sort_by ? req.query.sort_by : "on_air_name";
+    const name = req.params.name;
+    const limit = req.query.limit ? Number(req.query.limit) : 10;
+    const page = Math.max(0, Number(req.query.page));
+    db.User.find(
+      {
+        $or: [
+          { on_air_name: name },
+          { first_name: name },
+          { last_name: name }
+      ]}
+    )
+      .sort(sort_by)
+      .limit(limit)
+      .skip(limit * page)
       .then(dbUser => res.json(dbUser))
       .catch(err => res.status(422).json(err));
   },

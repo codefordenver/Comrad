@@ -1,36 +1,47 @@
 const db = require('../models');
 
 module.exports = {
-  findById: (req, res) => {
-    db.Album
-      .findById(req.params.id)
-      .then(dbAlbum => res.json(dbAlbum))
-      .catch(err => res.status(422).json(err));
+  findById: async (req, res) => {
+
+    const dbAlbum = await db.Album.findById(req.params.id).populate('artist');
+    const dbTracks = await db.Track.find({ album: dbAlbum._id });
+    const data = {
+      ...dbAlbum._doc,
+      tracks: dbTracks
+    }
+
+    res.json(data);
   },
 
   findAll: (req, res) => {
     db.Album
       .find({})
-      .populate("tracks")
+      .populate("artist")
       .then(dbAlbum => res.json(dbAlbum))
       .catch(err => res.status(422).json(err));
   },
 
   search: (req, res) => {
-    const q = new RegExp(req.body.title, 'i');
+    const q = new RegExp(req.body.name, 'i');
 
     db.Album
       .find({
-        title: q
+        name: q
       })
       .then(dbAlbum => res.json(dbAlbum))
       .catch(err => res.status(422).json(err));
   },
 
   create: (req, res) => {
-    
     db.Album
       .create(req.body)
+      .then(dbAlbum => res.json(dbAlbum))
+      .catch(err => res.status(422).json(err));
+  },
+
+  createMany: (req, res) => {
+    db.Album
+      .insertMany(req.body)
       .then(dbAlbum => res.json(dbAlbum))
       .catch(err => res.status(422).json(err));
   },

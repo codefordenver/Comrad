@@ -4,8 +4,19 @@ const passport = require('passport');
 const requireLogin = require('../../middlewares/requireLogin');
 
 router.route('/')
-  .get(requireLogin, userController.findAll)
-  .post(userController.create);
+  .get(userController.findAll);
+
+// Filter routes
+router.route('/filter/:status')
+  .get(userController.findByActive);
+
+// Search routes
+router.route('/search/:name')
+  .get(userController.search);
+
+// Permission Updates
+router.route('/permission/:id')
+  .put(userController.updatePermission);
 
 router.route('/:id')
   .get(userController.findById)

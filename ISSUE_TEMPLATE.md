@@ -1,11 +1,11 @@
-# Description of Issue
+## Description of Issue
 
 _Insert Description Here_
 
-# Possible Solution and/or Appraoch
+## Possible Solution and/or Approach
 
-_Insert Possible Solution/Apprach Here_
+_Insert Possible Solution/Approach Here_
 
-# Approval?
+## Approval?
 
 _Leads Comment Below_

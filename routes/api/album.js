@@ -13,4 +13,7 @@ router.route('/:id')
 router.route('/search')
   .post(albumController.search);
 
+router.route('/many')
+  .post(albumController.createMany);
+
 module.exports = router;

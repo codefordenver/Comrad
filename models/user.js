@@ -7,12 +7,56 @@ const userSchema = new Schema({
     type: String,
     required: true,
     unique: true,
-    lowercase: true
+    lowercase: true,
+    validate: {
+      validator: (v) => {
+        return /^([a-zA-Z\d.-]+)@([a-zA-Z\d-]+\.)([a-zA-Z]{2,8})(.[a-zA-Z]{2,8})?$/.test(v);
+      },
+      message: props => `${props.value} is not a valid email`
+    }
   },
 
   password: {
     type: String,
-    required: true
+    required: true,
+    minlength: [3, 'Minimum 3 Characters']
+  },
+
+  first_name: {
+    type: String,
+    required: true,
+    minlength: [3, 'Minimum 3 Characters']
+  },
+
+  last_name: {
+    type: String,
+    required: true,
+    minlength: [3, 'Minimum 3 Characters']
+  },
+  
+  on_air_name: {
+    type: String,
+    minlength: [3, 'Minimum 3 Characters']
+  },
+
+  role: {
+    type: String,
+    enum: ['DJ', 'Underwriting', 'Show Producer', 'Full Access', 'Admin'],
+    required: true,
+    default: 'DJ'
+  },
+
+  status: {
+    type: String,
+    enum: ['Active', 'Inactive'],
+    required: true,
+    default: 'Active'
+  },
+
+  can_delete: {
+    type: Boolean,
+    required: true,
+    default: true
   }
 });
 

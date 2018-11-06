@@ -2,12 +2,19 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema;
 
 const trackSchema = new Schema({
-  album_id: {
+  album: {
     type: Schema.Types.ObjectId,
     ref: 'Album'
   },
 
-  title: {
+  artists: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Artist'
+    }
+  ],
+
+  name: {
     type: String
   },
 
@@ -19,12 +26,13 @@ const trackSchema = new Schema({
     type: String
   },
 
-  duration: {
-    type: String
+  duration_in_seconds: {
+    type: Number
   },
 
-  artist: {
-    type: String
+  type: {
+    type: String,
+    default: 'track'
   },
 
   created_at: {

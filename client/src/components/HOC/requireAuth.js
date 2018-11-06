@@ -7,7 +7,7 @@ export default (ChildComponent) => {
 
     shouldNavigateAway = () => {
       if(this.props.auth.status === 'fetching') {
-        return <div>Loading...</div>
+        return null
       } else if (this.props.auth.status === false) {
         return <div>Not authorized</div>
       } else {
@@ -16,6 +16,12 @@ export default (ChildComponent) => {
     }
 
     componentDidMount() {
+      if (!this.props.auth.status) {
+        this.props.history.push('/home');
+      }
+    }
+
+    componentDidUpdate() {
       if (!this.props.auth.status) {
         this.props.history.push('/home');
       }

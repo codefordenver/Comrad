@@ -1,10 +1,10 @@
 module.exports = {
-  signin: (req, res) => {
-    const { email } = req.user;
-    res.json({ email });
+  login: (req, res) => {
+    const { _id, email } = req.user;
+    res.json({ _id, email });
   },
 
-  signout: (req, res) => {
+  logout: (req, res) => {
     req.logout();
     res.json({ email: '' })
   },

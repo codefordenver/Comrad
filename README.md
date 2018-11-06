@@ -17,6 +17,8 @@ Comrad is an open-source web application for use by community radio stations tha
 
 This fellowship will allow the building of Comrad 2.0, permitting a standalone open source distribution in English and Spanish that will greatly benefit the small to mid-sized community radios as well as the hundreds of budget limited Lower Power FM radios just taking to the air in the United States.
 
+![](./docs/images/ComradUI-2.png)
+
 ## Waffle Board
 
 Use [the Waffle board](https://waffle.io/codefordenver/Comrad) for this repo to always know what to do next for your project!

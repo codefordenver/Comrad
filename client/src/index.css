@@ -766,6 +766,455 @@ border-table-collapse {
   clear: both;
   display: table; }
 
+/* ------------------------------------------
+  MARGIN
+------------------------------------------ */
+.m-auto {
+  margin: auto; }
+
+.mx-auto {
+  margin: 0 auto; }
+
+.my-auto {
+  margin: auto 0; }
+
+.mb-1 {
+  margin-bottom: 1rem; }
+
+.mb-2 {
+  margin-bottom: 2rem; }
+
+.mb-3 {
+  margin-bottom: 3rem; }
+
+.mb-4 {
+  margin-bottom: 4rem; }
+
+.mb-5 {
+  margin-bottom: 5rem; }
+
+.ml-1 {
+  margin-left: 1rem; }
+
+.ml-2 {
+  margin-left: 3rem; }
+
+.ml-3 {
+  margin-left: 4rem; }
+
+.ml-2 {
+  margin-left: 5rem; }
+
+.mr-1 {
+  margin-right: 1rem; }
+
+.mr-2 {
+  margin-right: 2rem; }
+
+.mr-3 {
+  margin-right: 3rem; }
+
+.mr-4 {
+  margin-right: 4rem; }
+
+.mr-5 {
+  margin-right: 5rem; }
+
+.mt-1 {
+  margin-top: 1rem; }
+
+.mt-2 {
+  margin-top: 2rem; }
+
+.mt-3 {
+  margin-top: 3rem; }
+
+.mt-4 {
+  margin-top: 4rem; }
+
+.mt-5 {
+  margin-top: 5rem; }
+
+.ma-1 {
+  margin: 1rem; }
+
+.ma-2 {
+  margin: 2rem; }
+
+.ma-3 {
+  margin: 3rem; }
+
+.ma-4 {
+  margin: 4rem; }
+
+.ma-5 {
+  margin: 5rem; }
+
+.m-0 {
+  margin: 0; }
+
+/* ------------------------------------------
+    TEXT ALIGN
+  ------------------------------------------ */
+.text-left {
+  text-align: left; }
+
+.text-center {
+  text-align: center; }
+
+.text-right {
+  text-align: right; }
+
+/* ------------------------------------------
+    PADDING
+  ------------------------------------------ */
+.pt-1 {
+  padding-top: 1rem; }
+
+.pt-2 {
+  padding-top: 2rem; }
+
+.pt-3 {
+  padding-top: 3rem; }
+
+.pt-4 {
+  padding-top: 4rem; }
+
+.pt-5 {
+  padding-top: 5rem; }
+
+.pr-1 {
+  padding-right: 1rem; }
+
+.pr-2 {
+  padding-right: 2rem; }
+
+.pr-3 {
+  padding-right: 3rem; }
+
+.pr-4 {
+  padding-right: 4rem; }
+
+.pr-5 {
+  padding-right: 5rem; }
+
+.pb-1 {
+  padding-bottom: 1rem; }
+
+.pb-2 {
+  padding-bottom: 2rem; }
+
+.pb-3 {
+  padding-bottom: 3rem; }
+
+.pb-4 {
+  padding-bottom: 4rem; }
+
+.pb-5 {
+  padding-bottom: 5rem; }
+
+.pl-1 {
+  padding-left: 1rem; }
+
+.pl-2 {
+  padding-left: 2rem; }
+
+.pl-3 {
+  padding-left: 3rem; }
+
+.pl-4 {
+  padding-left: 4rem; }
+
+.pl-5 {
+  padding-left: 5rem; }
+
+.pa-1 {
+  padding: 1rem; }
+
+.pa-2 {
+  padding: 2rem; }
+
+.pa-3 {
+  padding: 3rem; }
+
+.pa-4 {
+  padding: 4rem; }
+
+.pa-5 {
+  padding: 5rem; }
+
+.pt-0 {
+  padding-top: 0; }
+
+.pr-0 {
+  padding-right: 0; }
+
+.pb-0 {
+  padding-bottom: 0; }
+
+.pl-0 {
+  padding-left: 0; }
+
+.pa-0 {
+  padding: 0; }
+
+/* ------------------------------------------
+    COLOR
+  ------------------------------------------ */
+.red {
+  color: red; }
+
+.primary {
+  color: #007283; }
+
+.secondary {
+  color: #7DB2BF; }
+
+.dark-grey {
+  color: #555759; }
+
+.white {
+  color: #ffffff; }
+
+.grey {
+  color: #A4A9AD; }
+
+.light-grey {
+  color: #DBDCDD; }
+
+/* ------------------------------------------
+    Font Style
+  ------------------------------------------ */
+.bold {
+  font-weight: bold; }
+
+.italic {
+  font-style: italic; }
+
+.oblique {
+  font-style: oblique; }
+
+.overline {
+  text-decoration: overline; }
+
+.line-through {
+  text-decoration: line-through; }
+
+.underline {
+  text-decoration: underline; }
+
+/* ------------------------------------------
+    Border
+  ------------------------------------------ */
+border-shadow-bottom-right {
+  box-shadow: 2px 2px 2px -1px #DBDCDD; }
+
+border-shadow-all {
+  box-shadow: 0px 0px 2px 2px #DBDCDD; }
+
+border-dark-grey {
+  border-color: #555759; }
+
+border-grey {
+  border-color: #A4A9AD; }
+
+border-light-grey {
+  border-color: #DBDCDD; }
+
+border-left {
+  border-left: 1px; }
+
+border-right {
+  border-right: 1px; }
+
+border-top {
+  border-top: 1px; }
+
+border-bottom {
+  border-bottom: 1px; }
+
+border-all {
+  border: 1px; }
+
+no-border-top {
+  border-top: none; }
+
+no-border-right {
+  border-right: none; }
+
+no-border-left {
+  border-left: none; }
+
+no-border-bottom {
+  border-bottom: none; }
+
+no-border {
+  border: none; }
+
+/* ------------------------------------------
+    Background Colors
+  ------------------------------------------ */
+.background-color-primary {
+  background-color: #007283; }
+
+.background-color-secondary {
+  background-color: #7DB2BF; }
+
+.background-color-dark-grey {
+  background-color: #555759; }
+
+.background-color-white {
+  background-color: #ffffff; }
+
+.background-color-grey {
+  background-color: #A4A9AD; }
+
+.background-color-light-grey {
+  background-color: #DBDCDD; }
+
+/* ------------------------------------------
+    Display
+  ------------------------------------------ */
+.inline {
+  display: inline; }
+
+.block {
+  display: block; }
+
+.inline-block {
+  display: inline-block; }
+
+.display-none {
+  display: none; }
+
+/* ------------------------------------------
+    Float
+  ------------------------------------------ */
+.float-left {
+  float: left; }
+
+.float-right {
+  float: right; }
+
+/* ------------------------------------------
+    Position
+  ------------------------------------------ */
+.position-static {
+  position: static; }
+
+.position-relative {
+  position: relative; }
+
+.position-fixed {
+  position: fixed; }
+
+.position-absolute {
+  position: absolute; }
+
+.position-sticky {
+  position: sticky; }
+
+/* ------------------------------------------
+    vertical-align
+  ------------------------------------------ */
+.va-baseline {
+  vertical-align: baseline; }
+
+.va-top {
+  vertical-align: top; }
+
+.va-bottom {
+  vertical-align: bottom; }
+
+.va-sub {
+  vertical-align: sub; }
+
+.va-super {
+  vertical-align: super; }
+
+.va-middle {
+  vertical-align: middle; }
+
+/* ------------------------------------------
+    Visibility
+  ------------------------------------------ */
+.hidden {
+  visibility: hidden; }
+
+/* ------------------------------------------
+    Lists
+  ------------------------------------------ */
+.circle-list {
+  list-style-type: circle; }
+
+.square-list {
+  list-style-type: square; }
+
+.disc-list {
+  list-style-type: disc; }
+
+.upper-numeral-list {
+  list-style-type: upper-roman; }
+
+.lower-numeral-list {
+  list-style-type: lower-roman; }
+
+.lower-letter-list {
+  list-style-type: lower-alpha; }
+
+.upper-letter-list {
+  list-style-type: upper-alpha; }
+
+.inside-list {
+  list-style-position: inside; }
+
+.outside-list {
+  list-style-position: outside; }
+
+/* ------------------------------------------
+    Border
+  ------------------------------------------ */
+border-table-collapse {
+  border-collapse: collapse; }
+
+/* ------------------------------------------
+    Overflow
+  ------------------------------------------ */
+.overflow-visible {
+  overflow: visible; }
+
+.overflow-hidden {
+  overflow: hidden; }
+
+.overflow-scroll {
+  overflow: scroll; }
+
+.overflow-auto {
+  overflow: auto; }
+
+/* ------------------------------------------
+    Opacity
+  ------------------------------------------ */
+.opacity-1 {
+  opacity: 1; }
+
+.opacity-point6 {
+  opacity: 0.6; }
+
+.opacity-point3 {
+  opacity: 0.3; }
+
+.opacity-point1 {
+  opacity: 0.1; }
+
+/* ------------------------------------------
+    Clearfix
+  ------------------------------------------ */
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table; }
+
 .button {
   font-size: 2rem;
   font-weight: 500;

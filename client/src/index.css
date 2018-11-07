@@ -932,6 +932,10 @@ border-table-collapse {
   grid-column: 3 / end;
   grid-row: 3 / end; }
 
+.footer {
+  color: #007083;
+  border: 3px #007083; }
+
 /* ------------------------------------------
   MARGIN
 ------------------------------------------ */

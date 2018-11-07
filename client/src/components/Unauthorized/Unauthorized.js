@@ -5,6 +5,9 @@ class Unauthorized extends Component {
     return (
       <div>
         <h1>401: Unauthorized Access</h1>
+        <div>
+        Alert button with unauthorized text goes here
+        </div>
       </div>
     )
   }

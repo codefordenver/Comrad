@@ -867,6 +867,9 @@ border-table-collapse {
     .nav-test__link:not(:last-child) {
       border-right: 1px solid #000; }
 
+.unauthorized__h1 {
+  color: #f38173; }
+
 .main-layout {
   display: grid;
   grid-template-rows: 5rem 1fr; }

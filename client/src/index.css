@@ -867,6 +867,16 @@ border-table-collapse {
     .nav-test__link:not(:last-child) {
       border-right: 1px solid #000; }
 
+.unauthorized {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* __placholder should be replaced by the alert from #218 when ready, or it may not be necessary, depending on how that gets implemented */ }
+  .unauthorized__h1 {
+    color: #f38173; }
+  .unauthorized__placeholder {
+    text-align: center; }
+
 .main-layout {
   display: grid;
   grid-template-rows: 5rem 1fr; }

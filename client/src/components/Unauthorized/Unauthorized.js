@@ -4,7 +4,7 @@ class Unauthorized extends Component {
   render() {
     return (
       <div>
-        Unauthorized
+        <h1>401: Unauthorized Access</h1>
       </div>
     )
   }

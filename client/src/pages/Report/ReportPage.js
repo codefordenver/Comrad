@@ -6,7 +6,12 @@ class ReportPage extends Component {
   render() {
     return (
       <div className="report__page">
-        Report Page      
+        Report Page
+       <div className="footer__demo">
+       <footer className="footer">
+       Here's the footer 
+       </footer>
+       </div>      
       </div>
     )
   }

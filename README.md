@@ -30,5 +30,3 @@ Use [the Waffle board](https://waffle.io/codefordenver/Comrad) for this repo to 
 Here is what you need to know:
 
 This project uses [GitHub flow](https://guides.github.com/introduction/flow/) where updates are made on feature branches. Pull requests are submitted on those branches and reviewed before being merged.
-
-# Here's a thing

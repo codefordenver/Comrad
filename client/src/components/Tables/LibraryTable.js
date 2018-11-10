@@ -1,8 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 
-import { Card, CardBody } from '../Card'
-
 class LibraryTable extends Component {
   state = {}
 
@@ -33,14 +31,10 @@ class LibraryTable extends Component {
     return (
       <Fragment>
         {this.props.library.length > 0 ? (
-          <Card>
-            <CardBody>
               <table className="table">
                 {this.renderHeader()}
                 {this.renderBody()}
               </table>
-            </CardBody>
-          </Card>
         ) : null}
       </Fragment>
     )

@@ -1,2 +1,1 @@
-export * from './homeValidation';
-export * from './userValidation';
+export { default } from './validate'

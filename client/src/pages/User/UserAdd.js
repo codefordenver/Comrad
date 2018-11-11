@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { userAdd } from '../../actions'
-import { userValidation } from '../../utils/validation'
+import validate from '../../utils/validation'
 
 import {
   Form,
@@ -29,32 +29,32 @@ class UserAdd extends Component {
   handleInputChange = e => {
     const { name, value } = e.target
 
-    userValidation.input(e.target)
-
     this.setState({
       [name]: value
     })
   }
 
-  handleCheckBox = e => {
-    const { name } = e.target;
+  handleInputBlur = e => {
+    validate.input(e.target)
+  }
 
-    userValidation.input(e.target);
+  handleCheckBox = e => {
+    const { name } = e.target
 
     this.setState(prevState => ({
       [name]: !prevState[name]
-    }));
+    }))
   }
 
   handleFormSubmit = e => {
-    e.preventDefault();
+    e.preventDefault()
 
-    const valid = userValidation.submit();
+    const valid = validate.submit()
 
-    if(valid) {
+    if (valid) {
       this.props.userAdd(this.state, () => {
         this.props.history.push('/user')
-      });
+      })
     }
   }
 
@@ -69,6 +69,7 @@ class UserAdd extends Component {
           <FormInput
             name="email"
             onChange={this.handleInputChange}
+            onBlur={this.handleInputBlur}
             placeholder="Email"
             type="text"
             value={this.state.email}
@@ -81,6 +82,7 @@ class UserAdd extends Component {
           <FormInput
             name="first_name"
             onChange={this.handleInputChange}
+            onBlur={this.handleInputBlur}
             placeholder="First Name"
             type="text"
             value={this.state.first_name}
@@ -93,6 +95,7 @@ class UserAdd extends Component {
           <FormInput
             name="last_name"
             onChange={this.handleInputChange}
+            onBlur={this.handleInputBlur}
             placeholder="Last Name"
             type="text"
             value={this.state.last_name}
@@ -105,6 +108,7 @@ class UserAdd extends Component {
           <FormInput
             name="on_air_name"
             onChange={this.handleInputChange}
+            onBlur={this.handleInputBlur}
             placeholder="On Air Name"
             type="text"
             value={this.state.on_air_name}

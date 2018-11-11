@@ -1,9 +1,6 @@
-const patterns = {
-  email: /^([a-zA-Z\d.-]+)@([a-zA-Z\d-]+\.)([a-zA-Z]{2,8})(.[a-zA-Z]{2,8})?$/,
-  password: /^.{1,}$/
-}
+import patterns from './patterns'
 
-export const homeValidation = {
+const validate = {
   input: ({ name, value, classList }) => {
     const result = patterns[name].test(value);
 
@@ -23,15 +20,19 @@ export const homeValidation = {
 
   submit: () => {
     const inputs = document.querySelectorAll('input');
+    const selects = document.querySelectorAll('select');
+    
+    const form = [...inputs, ...selects];
+    
     let valid = true;
-
-    inputs.forEach(input => {
-      if(input.classList.contains('invalid')) {
+    
+    form.forEach(item => {
+      if(item.classList.contains('invalid')) {
         return valid = false;
       }
 
-      if(input.value === '') {
-        input.classList.add('invalid');
+      if(item.value === '') {
+        item.classList.add('invalid');
         return valid = false;
       }
     });
@@ -39,3 +40,5 @@ export const homeValidation = {
     return valid;
   }
 }
+
+export default validate;

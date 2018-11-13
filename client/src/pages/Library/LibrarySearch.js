@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 
 import { DropRightBtn } from '../../components/Button'
-import { Card, CardBody } from '../../components/Card'
 import { Filter } from '../../components/Filter'
 import Search from '../../components/Search'
 
@@ -57,32 +56,26 @@ class LibrarySearch extends Component {
 
     return (
       <div className="library__search">
-        <Card>
-          <CardBody>
-            <div className="library__header">
-              <div className="library__search-input">
-                <Search 
-                  type="library"
-                />
-              </div>
-              <div className="library__add">
-                <DropRightBtn
-                  dropRightBtnItems={dropRightBtnItems}
-                  handleDropRightBtnClick={this.handleDropRightBtnClick}
-                />
-              </div>
-              <div className="library__filter">
-                <Filter
-                  filterItems={filterItems}
-                  handleFilterClick={this.handleFilterClick}
-                />
-              </div>
-              <div className="library__pagination">
-                <div>Pagination</div>
-              </div>
-            </div>
-          </CardBody>
-        </Card>
+        <div className="library__header">
+          <div className="library__search-input">
+            <Search type="library" />
+          </div>
+          <div className="library__add">
+            <DropRightBtn
+              dropRightBtnItems={dropRightBtnItems}
+              handleDropRightBtnClick={this.handleDropRightBtnClick}
+            />
+          </div>
+          <div className="library__filter">
+            <Filter
+              filterItems={filterItems}
+              handleFilterClick={this.handleFilterClick}
+            />
+          </div>
+          <div className="library__pagination">
+            <div>Pagination</div>
+          </div>
+        </div>
         <div className="library__table">{this.renderTable()}</div>
       </div>
     )

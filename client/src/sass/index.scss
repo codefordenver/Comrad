@@ -1,9 +1,13 @@
+// abstracts
 @import 'abstracts/variables';
 
+// base
 @import 'base/base';
+@import 'base/grid';
 @import 'base/typography';
 @import 'base/utilities';
 
+// components
 @import 'components/button';
 @import 'components/card';
 @import 'components/filter';
@@ -13,11 +17,13 @@
 @import 'components/table';
 @import 'components/unauthorized';
 
+// layout
 @import 'layout/empty-layout';
 @import 'layout/main-layout';
 @import 'layout/navbar';
 @import 'layout/sidebar';
 
+// pages
 @import 'pages/_admin';
 @import 'pages/_builder';
 @import 'pages/_calendar';
@@ -27,4 +33,5 @@
 @import 'pages/_report';
 @import 'pages/_user';
 
+// utils
 @import 'utils/utilities';

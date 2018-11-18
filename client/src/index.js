@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './components/App';
-import registerServiceWorker from './utils/registerServiceWorker';
+import registerServiceWorker from './utils/serviceWorker/registerServiceWorker';
 
 import Root from './components/Root';
 

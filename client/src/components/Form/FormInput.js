@@ -4,6 +4,6 @@ export const FormInput = props => {
   const { className, ...rest } = props;
 
   return (
-    <input className={`form__input ${className ? className : ''}`} {...rest}/>
+    <input className={`form__input ${className || ''}`} {...rest}/>
   )
 }

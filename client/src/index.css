@@ -766,6 +766,43 @@ border-table-collapse {
   clear: both;
   display: table; }
 
+.alert {
+  height: 6.1rem;
+  border-radius: 10px;
+  color: white;
+  padding-top: .6rem;
+  padding-left: 1.5rem;
+  margin-top: 2rem;
+  margin-bottom: 2rem; }
+
+.alert__text-title {
+  font-weight: bold;
+  font-size: 1.8rem; }
+
+.alert__symbol {
+  float: left;
+  margin-top: 1.5rem; }
+
+.alert__title-body {
+  margin-left: 2rem; }
+
+.alert__text-title,
+.alert__text-body {
+  font-family: 'Montserrat';
+  padding: 1rem; }
+
+.alert--info {
+  background-color: #7DB2BF; }
+
+.alert--success {
+  background-color: #007283; }
+
+.alert--error {
+  background-color: #FF9999; }
+
+.alert--warning {
+  background-color: #FFB266; }
+
 .button {
   font-size: 2rem;
   font-weight: 500;

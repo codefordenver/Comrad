@@ -2167,6 +2167,21 @@ border-table-collapse {
     .nav-test__link:not(:last-child) {
       border-right: 1px solid #000; }
 
+.sidebar {
+  background-color: #007283;
+  height: 100%; }
+  .sidebar__link {
+    text-decoration: none;
+    transition: all 0.1s ease-in-out;
+    display: grid; }
+    .sidebar__link:hover {
+      background-color: #7cb2bf; }
+  .sidebar__icon {
+    font-size: 2.5rem;
+    color: #fff;
+    margin: 2.2rem 0;
+    justify-self: center; }
+
 .unauthorized {
   display: flex;
   justify-content: center;
@@ -2179,29 +2194,20 @@ border-table-collapse {
 
 .main-layout {
   display: grid;
-  grid-template-rows: 5rem 1fr; }
+  grid-template-columns: 7.6rem auto;
+  grid-template-rows: auto 100vh 5rem;
+  grid-template-areas: "navbar navbar" "sidebar body" "sidebar footer"; }
+  .main-layout__navbar {
+    grid-area: navbar; }
+  .main-layout__sidebar {
+    grid-area: sidebar; }
   .main-layout__body {
-    grid-row-start: 2;
-    height: 100vh;
-    display: grid;
-    grid-template-columns: 6.5rem 1fr; }
+    grid-area: body; }
+  .main-layout__footer {
+    grid-area: footer; }
 
 .navbar {
   background-color: #eee; }
-
-.sidebar {
-  background-color: #007283; }
-  .sidebar__link {
-    text-decoration: none;
-    transition: all 0.1s ease-in-out;
-    display: grid; }
-    .sidebar__link:hover {
-      background-color: #7cb2bf; }
-  .sidebar__icon {
-    font-size: 2.5rem;
-    color: #fff;
-    margin: 2.2rem 0;
-    justify-self: center; }
 
 .dashboard {
   display: grid;

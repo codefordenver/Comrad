@@ -14,14 +14,14 @@
 @import 'components/form';
 @import 'components/image';
 @import 'components/nav-test';
+@import '../components/Sidebar/Sidebar';
 @import 'components/table';
 @import 'components/unauthorized';
 
 // layout
 @import 'layout/empty-layout';
-@import 'layout/main-layout';
+@import '../layouts/MainLayout/MainLayout';
 @import 'layout/navbar';
-@import 'layout/sidebar';
 
 // pages
 @import 'pages/_admin';

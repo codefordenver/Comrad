@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { connect } from 'react-redux'
 import * as actions from '../../actions'
 
+import AdminRoutes from '../../routes/AdminRoutes'
+import BuilderRoutes from '../../routes/BuilderRoutes'
 import LoginRoutes from '../../routes/LoginRoutes'
 import NavTest from '../NavTest'
 
@@ -16,8 +18,9 @@ class App extends Component {
       <Router>
         <div className="app">
           <Route path="/" component={NavTest} />
+          <Route path="/admin" component={AdminRoutes} />
+          <Route path="/builder" component={BuilderRoutes} />
           <Route path="/login" component={LoginRoutes} />
-          {/* <Route component={Main} /> */}
         </div>
       </Router>
     )

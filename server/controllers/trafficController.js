@@ -37,12 +37,6 @@ module.exports = {
       .catch(err => res.status(422).json(err));
   },
 
-  EXAMPLE: (req, res) => {
-    hellostring = 'Hello World';
-    console.log("Event Requested");
-    res.json({hellostring});
-  },
-
   search: (req, res) => {
     const q = new RegExp(req.body.title, 'i');
 
@@ -52,6 +46,11 @@ module.exports = {
       })
       .then(dbEvent => res.json(dbEvent))
       .catch(err => res.status(422).json(err));
+  },
+
+  EXAMPLE: (req, res) => {
+    hellostring = 'Traffic Requested';
+    res.json({hellostring});
   },
 
 }

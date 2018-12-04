@@ -1,36 +1,36 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import * as actions from "../../actions/event";
+import * as actions from "../../actions/shows";
 
 class CalendarView extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      newEvent: null,
-      events: []
+      newShow: null,
+      shows: []
     };
   }
 
   componentDidMount() {
-    const setInitialEvents = async () => {
-      //Change to getEvents once mongo is setup
-      const eventsProps = await this.props.events;
-      this.setState({ events: eventsProps });
+    const setInitialShows = async () => {
+      //Change to getShows once mongo is setup
+      const showsProps = await this.props.shows;
+      this.setState({ shows: showsProps });
     };
 
-    setInitialEvents();
+    setInitialShows();
   }
 
   render() {
     return (
       <div className="calendar__view">
-        {this.state.events.map(event => {
+        {this.state.shows.map(show => {
           return (
             <div>
-              <h1>{event.title}</h1>
-              <p> Start: {event.start.toString()}</p>
-              <p> End: {event.end.toString()}</p>
+              <h1>{show.title}</h1>
+              <p> Start: {show.start.toString()}</p>
+              <p> End: {show.end.toString()}</p>
             </div>
           );
         })}
@@ -41,7 +41,7 @@ class CalendarView extends Component {
 
 function mapStateToProps(state) {
   return {
-    events: state.events
+    shows: state.shows
   };
 }
 

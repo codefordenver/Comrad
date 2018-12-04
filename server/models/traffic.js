@@ -1,9 +1,8 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const eventSchema = new Schema({
-  status:               String,
-  event_details: {
+const trafficSchema = new Schema({
+  traffic_details: {
     title:              String,
     summary:            String,
     description:        String,
@@ -13,11 +12,11 @@ const eventSchema = new Schema({
     custom:             String
   },
 
-  event_start_time_utc: Date,
-  event_end_time_utc:   Date,
+  traffic_start_time_utc: Date,
+  traffic_end_time_utc:   Date,
 
-  master_event_uid:     Number,
-  replace_event_date:   Date,
+  master_traffic_uid:     Number,
+  replace_traffic_date:   Date,
 
   is_recurring:         Boolean,
   repeat_rule:{
@@ -43,7 +42,7 @@ const eventSchema = new Schema({
   }
 });
 
-const Event = mongoose.model('Event', eventSchema);
+const Traffic = mongoose.model('Traffic', trafficSchema);
 
-module.exports = Event;
+module.exports = Traffic;
 

@@ -1,60 +1,60 @@
-import { EVENT_GET, EVENT_POST, EVENT_UPDATE, EVENT_DELETE, EVENT_ERROR } from "../actions/types";
+import { SHOW_GET, SHOW_POST, SHOW_UPDATE, SHOW_DELETE, SHOW_ERROR } from "../actions/types";
 
 const initialState = [
   {
     id: 0,
-    title: "Event 1",
+    title: "Show 1",
     start: new Date(2018, 0, 29, 9, 0, 0),
     end: new Date(2018, 0, 29, 13, 0, 0),
     resourceId: 1
   },
   {
     id: 1,
-    title: "Event 2",
+    title: "Show 2",
     start: new Date(2018, 0, 29, 14, 0, 0),
     end: new Date(2018, 0, 29, 16, 30, 0),
-    resourceId: 2
+    resourceId: 1
   },
   {
     id: 2,
-    title: "Event 3",
+    title: "Show 3",
     start: new Date(2018, 0, 29, 8, 30, 0),
     end: new Date(2018, 0, 29, 12, 30, 0),
     resourceId: 1
   },
   {
     id: 11,
-    title: "Event 4",
+    title: "Show 4",
     start: new Date(2018, 0, 30, 7, 0, 0),
     end: new Date(2018, 0, 30, 10, 30, 0),
-    resourceId: 2
+    resourceId: 1
   }
 ];
 
 export default function(state = initialState, { type, payload }) {
   switch (type) {
-    case EVENT_GET:
+    case SHOW_GET:
       return {
         payload
       };
 
-    case EVENT_POST:
+    case SHOW_POST:
       const updatedState = state.concat(payload);
       return updatedState
 
-    case EVENT_UPDATE:
-      const {existingEvent, updatedEvent} = payload;
-      const {start, end} = updatedEvent;
+    case SHOW_UPDATE:
+      const {existingShow, updatedShow} = payload;
+      const {start, end} = updatedShow;
 
-      const nextEvents = state.map(stateEvent => {
-        return stateEvent.id === existingEvent.id
-          ? { ...stateEvent, start, end }
-          : stateEvent;
+      const nextShows = state.map(stateShow => {
+        return stateShow.id === existingShow.id
+          ? { ...stateShow, start, end }
+          : stateShow;
       });
-      return nextEvents
+      return nextShows
 
     //Need some type of error response from server.
-    case EVENT_ERROR:
+    case SHOW_ERROR:
       return {
         status: "ERROR",
         errorMessage: payload

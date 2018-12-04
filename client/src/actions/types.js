@@ -2,12 +2,19 @@ export const AUTH_LOGIN = 'auth_login';
 export const AUTH_LOGOUT = 'auth_logout';
 export const AUTH_ERROR = 'auth_error';
 
-export const EVENT_GET = 'event_get';
-export const EVENT_POST = 'event_post';
-export const EVENT_UPDATE = 'event_update';
-export const EVENT_DELETE = 'event_delete';
-export const EVENT_ERROR = 'event_error';
-export const EVENT_SEARCH = 'event_search';
+export const TRAFFIC_GET = 'traffic_get';
+export const TRAFFIC_POST = 'traffic_post';
+export const TRAFFIC_UPDATE = 'traffic_update';
+export const TRAFFIC_DELETE = 'traffic_delete';
+export const TRAFFIC_ERROR = 'traffic_error';
+export const TRAFFIC_SEARCH = 'traffic_search';
+
+export const SHOW_GET = 'show_get';
+export const SHOW_POST = 'show_post';
+export const SHOW_UPDATE = 'show_update';
+export const SHOW_DELETE = 'show_delete';
+export const SHOW_ERROR = 'show_error';
+export const SHOW_SEARCH = 'show_search';
 
 export const USER_FIND_ONE = 'user_find_one';
 export const USER_ADD = 'user_add';

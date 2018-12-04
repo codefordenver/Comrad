@@ -15,7 +15,6 @@ const eventSchema = new Schema({
 
   event_start_time_utc: Date,
   event_end_time_utc:   Date,
-  duration_in_minutes:  Number,
 
   master_event_uid:     Number,
   replace_event_date:   Date,

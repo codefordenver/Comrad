@@ -1,23 +1,22 @@
-import React, { Component } from 'react';
-import { Route } from 'react-router-dom';
-import requireAuth from '../components/HOC/requireAuth';
+import React, { Component } from 'react'
+import { Route } from 'react-router-dom'
+import requireAuth from '../../components/HOC/requireAuth'
 
-import DashboardHome from '../pages/Dashboard/DashboardHome';
+import MainLayout from '../../layouts/MainLayout'
+import DashboardHomePage from '../../pages/DashboardHomePage'
 
-class Dashboard extends Component {
+class DashboardRoutes extends Component {
   state = {}
 
   render() {
     const { url } = this.props.match
 
     return (
-      <main className="dasbhoard">
-        <section className="dashboard__body">
-          <Route exact path={`${url}/`} component={DashboardHome} />
-        </section>
-      </main>
+      <MainLayout>
+        <Route exact path={`${url}/`} component={DashboardHomePage} />
+      </MainLayout>
     )
   }
 }
 
-export default requireAuth(Dashboard)
+export default requireAuth(DashboardRoutes)

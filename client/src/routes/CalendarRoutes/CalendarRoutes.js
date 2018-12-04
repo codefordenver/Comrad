@@ -1,22 +1,21 @@
 import React, { Component } from 'react'
 import { Route } from 'react-router-dom'
 
-import CalendarView from '../pages/Calendar/CalendarView';
+import MainLayout from '../../layouts/MainLayout'
+import CalendarHomePage from '../../pages/CalendarHomePage'
 
-class Calendar extends Component {
+class CalendarRoutes extends Component {
   state = {}
 
   render() {
-    const { url } = this.props.match;
+    const { url } = this.props.match
 
     return (
-    <main className="calendar">
-      <section className="calendar__body">
-        <Route exact path={`${url}/`} component={CalendarView} />
-      </section>
-    </main>
+      <MainLayout>
+        <Route exact path={`${url}/`} component={CalendarHomePage} />
+      </MainLayout>
     )
   }
 }
 
-export default Calendar;
+export default CalendarRoutes

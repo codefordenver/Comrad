@@ -1,22 +1,22 @@
-import React, { Component } from 'react';
-import { Route } from 'react-router-dom';
+import React, { Component } from 'react'
+import { Route } from 'react-router-dom'
 
-import ReportPage from  '../pages/Report/ReportPage';
+import MainLayout from '../../layouts/MainLayout'
 
-class Report extends Component {
-  state = {};
+import ReportHomePage from '../../pages/ReportHomePage'
+
+class ReportRoutes extends Component {
+  state = {}
 
   render() {
-    const { url } = this.props.match;
-    
+    const { url } = this.props.match
+
     return (
-      <main className="report">
-        <section className="report__body">
-          <Route exact path={`${url}/`} component={ReportPage} />
-        </section>
-      </main>
+      <MainLayout>
+        <Route exact path={`${url}/`} component={ReportHomePage} />
+      </MainLayout>
     )
   }
 }
 
-export default Report;
+export default ReportRoutes

@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import MyShowsTable from '../../components/Tables/MyShowsTable';
 import PastShowsTable from '../../components/Tables/PastShowsTable';
 
-class DashboardHome extends Component {
+class DashboardHomePage extends Component {
   state = {}
 
   render() { 
@@ -23,4 +23,4 @@ class DashboardHome extends Component {
   }
 }
 
-export default DashboardHome;
+export default DashboardHomePage;

@@ -4,14 +4,18 @@ import { Route } from 'react-router-dom'
 import MainLayout from '../../layouts/MainLayout'
 import BuilderHomePage from '../../pages/BuilderHomePage'
 
-const BuilderRoutes = props => {
-  const { url } = props.match
+class BuilderRoutes extends Component {
+  state = {}
 
-  return (
-    <MainLayout>
-      <Route exact page={`${url}/`} component={BuilderHomePage} />
-    </MainLayout>
-  )
+  render() {
+    const { url } = this.props.match
+
+    return (
+      <MainLayout>
+        <Route exact page={`${url}/`} component={BuilderHomePage} />
+      </MainLayout>
+    )
+  }
 }
 
 export default BuilderRoutes

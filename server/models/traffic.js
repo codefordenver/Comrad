@@ -1,24 +1,22 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const showSchema = new Schema({
-  status:               String,
-  show_details: {
+const trafficSchema = new Schema({
+  traffic_details: {
     title:              String,
     summary:            String,
     description:        String,
     producer:           String,
     host:               String,
     guests:             [String],
-    playlist:           String,
     custom:             String
   },
 
-  show_start_time_utc: Date,
-  show_end_time_utc:   Date,
+  traffic_start_time_utc: Date,
+  traffic_end_time_utc:   Date,
 
-  master_show_uid:     Number,
-  replace_show_date:   Date,
+  master_traffic_uid:     Number,
+  replace_traffic_date:   Date,
 
   is_recurring:         Boolean,
   repeat_rule:{
@@ -44,7 +42,7 @@ const showSchema = new Schema({
   }
 });
 
-const Show = mongoose.model('Show', showSchema);
+const Traffic = mongoose.model('Traffic', trafficSchema);
 
-module.exports = Show;
+module.exports = Traffic;
 

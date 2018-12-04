@@ -2,8 +2,10 @@ const router = require('express').Router();
 const showController = require('../../controllers/showController');
 
 router.route('/')
-  .get(showController.findAll)
+  .get(showController.EXAMPLE)
   .post(showController.create);
+
+  //  .get(showController.findAll)
 
 router.route('/:id')
   .get(showController.findById)

@@ -13,7 +13,7 @@ class ReportPage extends Component {
        <footer className="footer">
 
        <p className="footer-text">Powered By &nbsp;</p>
-       <img id="footer-conrad-logo" src="https://i.postimg.cc/dVFWp5Fq/Comrad-Logo-13.png"/>
+       <img id="footer-comrad-logo" src="https://i.postimg.cc/dVFWp5Fq/Comrad-Logo-13.png"/>
        
        </footer>
 

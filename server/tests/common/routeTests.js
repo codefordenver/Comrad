@@ -1,16 +1,16 @@
 // Common route test functions
 
 module.exports = {
-  async shouldReturnStatus200(app, route) {
+  async shouldReturnStatus200(request, route) {
     test('returns status 200', async () => {
-      const response = await app.get(route);
+      const response = await request.get(route);
       expect(response.status).toBe(200);
     });
   },
 
-  async shouldReturnArray(app, route) {
+  async shouldReturnArray(request, route) {
     test('returns an Array', async () => {
-      const response = await app.get(route);
+      const response = await request.get(route);
       expect(response.body).toBeInstanceOf(Array);
     });
   },

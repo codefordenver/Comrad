@@ -8,7 +8,8 @@
     "testEnvironment": "node",
     "testPathIgnorePatterns": [
       "/node_modules/",
-      "/client/"
+      "/client/",
+      "/server/config/test.js"
     ]
   },
   "scripts": {

@@ -8,6 +8,8 @@
 @import 'base/utilities';
 
 // components
+@import '../components/Alert/Alert';
+@import '../components/Footer/Footer';
 @import 'components/button';
 @import 'components/card';
 @import 'components/filter';
@@ -19,9 +21,7 @@
 @import 'components/unauthorized';
 
 // layout
-@import 'layout/empty-layout';
 @import '../layouts/MainLayout/MainLayout';
-@import 'layout/navbar';
 
 // pages
 @import 'pages/_admin';
@@ -30,8 +30,12 @@
 @import 'pages/_dashboard';
 @import 'pages/_home';
 @import 'pages/_library';
-@import 'pages/_report';
 @import 'pages/_user';
 
 // utils
-@import 'utils/utilities';
+@import './utils/border';
+@import './utils/color';
+@import './utils/margin';
+@import './utils/padding';
+@import './utils/position';
+@import './utils/text';

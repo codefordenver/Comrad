@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import Alert from '../../components/Alerts/Alert';
+import PrimaryAndSecondary from '../../components/Button/PrimaryAndSecondary';
+
 
 class AdminPage extends Component {
   state = {};
@@ -8,14 +9,23 @@ class AdminPage extends Component {
     return (
       <div className="admin__page">
         Admin Page
+        <p>
+          <PrimaryAndSecondary buttonType={"primary"}>Default</PrimaryAndSecondary>
+        </p>
 
-        <Alert alertType="warning" title="Warning">Warning Will Robinson, Warning!</Alert>
+        <p>
+        <PrimaryAndSecondary buttonType={"primaryDisabled"}>Disabled</PrimaryAndSecondary>
+        </p>
 
-        <Alert alertType="error" title="Error">Satan will eat your brain!!</Alert>
 
-        <Alert alertType="success" title="Success">You've learn now to spell "error", congrats!</Alert>
 
-        <Alert alertType="info" title="Information">Ipsom lerom blah blah blah</Alert>
+        <p>
+        <PrimaryAndSecondary buttonType={"secondary"}>Default</PrimaryAndSecondary>
+        </p>
+
+        <p>
+        <PrimaryAndSecondary buttonType={"secondaryDisabled"}>Disabled</PrimaryAndSecondary>
+        </p>      
 
 
       </div>

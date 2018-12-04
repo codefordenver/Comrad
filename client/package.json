@@ -5,6 +5,8 @@
   "proxy": "http://localhost:5000/",
   "dependencies": {
     "axios": "^0.18.0",
+    "gulp-sass": "^3.1.0",
+    "node-sass": "^4.10.0",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
     "react-redux": "^5.0.7",

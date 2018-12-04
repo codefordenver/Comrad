@@ -1,20 +1,19 @@
 const request = require('supertest');
 const { connect, disconnect } = require('../../../tests/mongoose');
 const app = require('../../../app');
+const {
+  shouldReturnStatus200,
+  shouldReturnArray,
+} = require('../../../tests/common/routeTests');
 
 beforeEach(connect);
 afterEach(disconnect);
 
 describe('/api/album/', () => {
-  test('returns status 200', async () => {
-    const response = await request(app).get('/api/album/');
-    expect(response.status).toBe(200);
-  });
+  const route = '/api/album/';
 
-  test('returns an array of albums in the body', async () => {
-    const response = await request(app).get('/api/album/');
-    expect(response.body).toBeInstanceOf(Array);
-  });
+  shouldReturnStatus200(request(app), route);
+  shouldReturnArray(request(app), route);
 });
 
 describe('/api/album/:id', () => {

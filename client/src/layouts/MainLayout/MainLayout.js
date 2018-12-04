@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 
+import Footer from '../../components/Footer'
 import Navbar from '../../components/Navbar'
 import Sidebar from '../../components/Sidebar'
 
@@ -17,7 +18,7 @@ class MainLayout extends Component {
         </div>
         <div className="main-layout__body">{children}</div>
         <div className="main-layout__footer">
-          <div>This is a footer</div>
+          <Footer />
         </div>
       </div>
     )

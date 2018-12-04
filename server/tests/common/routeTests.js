@@ -18,9 +18,3 @@ module.exports = {
   shouldReturnStatus200,
   shouldReturnArray,
 };
-
-{
-  blah() {
-    
-  }
-}

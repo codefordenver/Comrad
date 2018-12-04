@@ -40,7 +40,7 @@ async function seedDB() {
 
     // Announcements
     await Promise.all(
-      announcementSeeds.map(async announcement =>
+      seed.announcements.map(async announcement =>
         db.Announcement.create(announcement)
       )
     );

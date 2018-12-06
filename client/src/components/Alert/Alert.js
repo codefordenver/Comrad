@@ -16,16 +16,15 @@ const getIcon = type => {
 }
 
 const Alert = props => {
-  const { title, message, type } = props
+  const { children, styleName, type } = props
 
   return (
-    <div className={`alert alert--${type}`}>
+    <div className={`alert alert--${type} ${styleName || ''}`}>
       <div className="alert__symbol">
         <i className={`fas ${getIcon(type)} fa-2x`} />
       </div>
       <div className="alert__body">
-        <div className="alert__title">{title}</div>
-        <div className="alert__message">{message}</div>
+        {children}
       </div>
     </div>
   )

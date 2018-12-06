@@ -1,7 +1,13 @@
-import React from 'react';
+import React from 'react'
 
-export const Form = props => (
-  <form className="form" onSubmit={props.handleFormSubmit}>
-    {props.children}
-  </form>
-);
+const Form = props => {
+  const { children, styleName, ...rest } = props
+
+  return (
+    <form className={`form ${styleName || ''}`} {...rest}>
+      {children}
+    </form>
+  )
+}
+
+export default Form

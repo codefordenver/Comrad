@@ -9,3 +9,5 @@ class ReportHomePage extends Component {
     )
   }
 }
+
+export default ReportHomePage;

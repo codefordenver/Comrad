@@ -4,15 +4,12 @@ import { Link } from 'react-router-dom'
 import { userAdd } from '../../actions'
 import validate from '../../utils/validation'
 
-import {
-  Form,
-  FormCheckBox,
-  FormGroup,
-  FormInput,
-  FormInvalid,
-  FormLabel,
-  FormSelect
-} from '../../components/Form'
+import Checkbox from '../../components/Checkbox'
+import Form from '../../components/Form'
+import FormGroup from '../../components/FormGroup'
+import Input from '../../components/Input'
+import Label from '../../components/Label'
+import Select from '../../components/Select'
 
 class UserAddPage extends Component {
   state = {
@@ -65,8 +62,8 @@ class UserAddPage extends Component {
     return (
       <Form handleFormSubmit={this.handleFormSubmit}>
         <FormGroup>
-          <FormLabel text="Email" />
-          <FormInput
+          <Label text="Email" />
+          <Input
             name="email"
             onChange={this.handleInputChange}
             onBlur={this.handleInputBlur}
@@ -74,12 +71,11 @@ class UserAddPage extends Component {
             type="text"
             value={this.state.email}
           />
-          <FormInvalid text="Invalid Email Formant" />
         </FormGroup>
 
         <FormGroup>
-          <FormLabel text="First Name" />
-          <FormInput
+          <Label text="First Name" />
+          <Input
             name="first_name"
             onChange={this.handleInputChange}
             onBlur={this.handleInputBlur}
@@ -87,12 +83,11 @@ class UserAddPage extends Component {
             type="text"
             value={this.state.first_name}
           />
-          <FormInvalid text="Minimum 3 Characters" />
         </FormGroup>
 
         <FormGroup>
-          <FormLabel text="Last Name" />
-          <FormInput
+          <Label text="Last Name" />
+          <Input
             name="last_name"
             onChange={this.handleInputChange}
             onBlur={this.handleInputBlur}
@@ -100,12 +95,11 @@ class UserAddPage extends Component {
             type="text"
             value={this.state.last_name}
           />
-          <FormInvalid text="Minimum 3 Characters" />
         </FormGroup>
 
         <FormGroup>
-          <FormLabel text="On Air Name" />
-          <FormInput
+          <Label text="On Air Name" />
+          <Input
             name="on_air_name"
             onChange={this.handleInputChange}
             onBlur={this.handleInputBlur}
@@ -113,12 +107,11 @@ class UserAddPage extends Component {
             type="text"
             value={this.state.on_air_name}
           />
-          <FormInvalid text="Minimum 3 Characters" />
         </FormGroup>
 
         <FormGroup>
-          <FormLabel text="Role" />
-          <FormSelect
+          <Label text="Role" />
+          <Select
             name="role"
             onChange={this.handleInputChange}
             selectOptions={roleOptions}
@@ -126,12 +119,11 @@ class UserAddPage extends Component {
             type="text"
             value={this.state.role}
           />
-          <FormInvalid text="Select a Role" />
         </FormGroup>
 
         <FormGroup>
-          <FormLabel text="Status" />
-          <FormSelect
+          <Label text="Status" />
+          <Select
             name="status"
             onChange={this.handleInputChange}
             selectOptions={statusOpions}
@@ -139,12 +131,11 @@ class UserAddPage extends Component {
             type="text"
             value={this.state.status}
           />
-          <FormInvalid text="Select a Status" />
         </FormGroup>
 
         <FormGroup>
-          <FormLabel text="Can Delete" />
-          <FormCheckBox
+          <Label text="Can Delete" />
+          <Checkbox
             name="can_delete"
             onClick={this.handleCheckBox}
             type="checkbox"

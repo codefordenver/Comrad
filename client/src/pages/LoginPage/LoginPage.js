@@ -5,14 +5,17 @@ import validate from '../../utils/validation';
 import logo from '../../images/kgnu_logo.png';
 
 import { Link, SubmitBtn } from '../../components/Button';
-import { Card, CardBody, CardImg, CardTitle } from '../../components/Card';
-import {
-  Form,
-  FormGroup,
-  FormInput,
-  FormInvalid,
-  FormLabel
-} from '../../components/Form'
+
+import Card from '../../components/Card'
+import CardBody from '../../components/CardBody'
+import CardImg from '../../components/CardImg'
+import CardTitle from '../../components/CardTitle'
+import Checkbox from '../../components/Checkbox'
+import Form from '../../components/Form'
+import FormGroup from '../../components/FormGroup'
+import Input from '../../components/Input'
+import Label from '../../components/Label'
+import Select from '../../components/Select'
 
 const initialState = {
   email: '',
@@ -54,7 +57,7 @@ class LoginPage extends Component {
       <main className="home">
         <section className="home__body">
           <Card>
-            <CardImg className={'card__img--home'} src={logo} />
+            <CardImg className={'card__img--home'} imgSrc={logo} />
             <CardBody>
               <CardTitle
                 text="COMRAD - KGNU PLAYLIST LOGIN:"
@@ -63,29 +66,27 @@ class LoginPage extends Component {
 
               {errorMessage ? <div>{errorMessage}</div> : null}
 
-              <Form handleFormSubmit={this.handleFormSubmit}>
-                <FormLabel text="Email" />
+              <Form onSubmit={this.handleFormSubmit}>
+                <Label>Email</Label>
                 <FormGroup>
-                  <FormInput
+                  <Input
                     name="email"
                     onChange={this.handleInputChange}
                     onBlur={this.handleInputBlur}
                     type="text"
                     value={this.state.email}
                   />
-                  <FormInvalid text="Incorrect Email Address" />
                 </FormGroup>
 
                 <FormGroup>
-                  <FormLabel text="Password" />
-                  <FormInput
+                  <Label>Password</Label>
+                  <Input
                     name="password"
                     onChange={this.handleInputChange}
                     onBlur={this.handleInputBlur}
                     type="password"
                     value={this.state.password}
                   />
-                  <FormInvalid text="Enter Password" />
                 </FormGroup>
 
                 <FormGroup className="text-center">

@@ -2070,19 +2070,20 @@ border-table-collapse {
 .alert {
   display: grid;
   grid-template-columns: 5rem auto;
-  grid-column-gap: 1rem;
+  grid-column-gap: 0.5rem;
   border-radius: 0.5rem;
   color: white;
   padding: 1rem; }
   .alert__symbol {
     grid-column: 1;
+    font-size: 1.4rem;
     text-align: center;
-    margin-top: 0.5rem; }
+    margin-top: 0.6rem; }
   .alert__body {
     grid-column: 2; }
-  .alert__title {
+  .alert__header {
     font-weight: bold;
-    font-size: 1.8rem; }
+    font-size: 2.4rem; }
   .alert__message {
     font-size: 1.4rem; }
   .alert--info {

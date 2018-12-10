@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import Button from '../../components/Button'
+import Alert from '../../components/Alert'
 
 class AdminHomePage extends Component {
   state = {}
@@ -9,6 +9,9 @@ class AdminHomePage extends Component {
     return (
       <div>
         Admin Page
+        <Alert type="warning">
+          This is where the children will go
+        </Alert>
       </div>
     )
   }

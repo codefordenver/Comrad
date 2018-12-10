@@ -2097,77 +2097,36 @@ border-table-collapse {
 .button {
   font-size: 2rem;
   font-weight: 500;
-  border-radius: .5rem;
-  border: none;
-  padding: .5rem 1.5rem;
-  margin: .5rem 1rem;
-  transition: all .3s;
-  text-decoration: none;
-  cursor: pointer; }
+  border: 2px solid transparent;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  padding: 0.7rem 1.5rem;
+  transition: all 0.1s;
+  text-decoration: none; }
   .button:active, .button:focus {
     outline: none; }
-  .button--submit {
+  .button:not(:last-child) {
+    margin-right: 0.5rem; }
+  .button--primary {
     color: #fff;
     background-color: #007283; }
-    .button--submit:hover {
-      background-color: #007283; }
-
-.link {
-  font-size: 1.6rem;
-  color: #007283;
-  margin: 0 1rem;
-  transition: all .3s; }
-  .link:hover {
-    color: #007283; }
-
-.primary--default {
-  color: white;
-  background-color: #007283; }
-
-.primary--default:hover {
-  color: white;
-  background-color: #7DB2BF; }
-
-.primary--default:active {
-  color: white;
-  background-color: #7DB2BF;
-  border: #555759 solid 2px; }
-
-.primary--default:focus {
-  color: white;
-  background-color: #A4A9AD;
-  border: #555759 3px dotted; }
-
-.primary--disabled {
-  color: white;
-  background-color: #DBDCDD;
-  cursor: default; }
-
-.secondary--primary {
-  background-color: white;
-  color: #007283;
-  border: #007283 solid 3px; }
-
-.secondary--primary:hover {
-  background-color: white;
-  color: #7DB2BF;
-  border: #7DB2BF solid 3px; }
-
-.secondary--primary:active {
-  background-color: white;
-  color: #7DB2BF;
-  border: #007283 solid 2px; }
-
-.secondary--primary:focus {
-  background-color: white;
-  color: #A4A9AD;
-  border: #A4A9AD dotted 3px; }
-
-.secondary--disabled {
-  background-color: white;
-  color: #DBDCDD;
-  border: #DBDCDD solid 3px;
-  cursor: default; }
+    .button--primary:active {
+      box-shadow: 0 0 0 2px #007283; }
+    .button--primary:hover, .button--primary:active {
+      background-color: #7cb2bf; }
+    .button--primary:disabled {
+      background-color: #eee; }
+  .button--secondary {
+    color: #007283;
+    border: 2px solid #007283; }
+    .button--secondary:hover {
+      color: #7cb2bf;
+      border-color: #7cb2bf; }
+    .button--secondary:active {
+      border-color: #007283; }
+    .button--secondary:disabled {
+      color: #eee;
+      border-color: #eee; }
 
 .card {
   border: 1px solid #e2e2e2;

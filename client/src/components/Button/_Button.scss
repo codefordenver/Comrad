@@ -1,109 +1,60 @@
-
 .button {
   font-size: 2rem;
   font-weight: 500;
-  //letter-spacing: 2px;
 
-  border-radius: .5rem;
-  border: none;
-  
-  padding: .5rem 1.5rem;
-  margin: .5rem 1rem;
-  transition: all .3s; 
-  text-decoration: none; 
-
+  border: $border-width solid transparent;
+  border-radius: $border-radius;
   cursor: pointer;
+  padding: 0.7rem 1.5rem;
+  transition: all 0.1s;
+  text-decoration: none;
 
   &:active,
   &:focus {
     outline: none;
   }
 
-  &--submit {
-    color: $color-white;
+  &:not(:last-child) {
+    margin-right: 0.5rem;
+  }
 
+  &--primary {
+    color: $color-white;
     background-color: $color-primary;
 
-   &:hover {
-     background-color: $color-primary;
+    &:active {
+      box-shadow: 0 0 0 $border-width $color-primary;
+    }
+
+    &:hover,
+    &:active {
+      background-color: $color-secondary;
+    }
+
+    &:disabled {
+      background-color: $color-grey-1;
+    }
+  }
+
+  &--secondary {
+    color: $color-primary;
+
+    border: $border-width solid $color-primary;
+
+    &:hover {
+      color: $color-secondary;
+
+      border-color: $color-secondary;
+    }
+
+    &:active {
+      border-color: $color-primary;
+    }
+
+    &:disabled {
+      color: $color-grey-1;
+
+      border-color: $color-grey-1;
     }
   }
 }
-
-.link {
-  font-size: 1.6rem;
-  color: $color-primary;
-
-  margin: 0 1rem;
-
-  transition: all .3s;
-
-  &:hover {
-    color: $color-primary;
-  }
-}
-
-.primary--default{
-  color: white;
-  background-color: #007283;
-}
-
-.primary--default:hover{
-  color: white;
-  background-color: #7DB2BF;
-}
-
-.primary--default:active{
-  color: white;
-  background-color: #7DB2BF;
-  border: #555759 solid 2px;
-}
-
-.primary--default:focus{
-  color: white;
-  background-color: #A4A9AD;
-  border: #555759 3px dotted; 
-}
-
-.primary--disabled{
-  color: white;
-  background-color: #DBDCDD;
-  cursor: default;
-}
-
-.secondary--primary{
-  background-color: white;
-  color: #007283;
-  border: #007283 solid 3px;
-}
-
-.secondary--primary:hover{
-  background-color: white;
-  color: #7DB2BF;
-  border: #7DB2BF solid 3px;
-}
-
-.secondary--primary:active{
-  background-color: white;
-  color: #7DB2BF;
-  border: #007283 solid 2px;
-}
-
-.secondary--primary:focus{
-  background-color: white;
-  color: #A4A9AD;
-  border: #A4A9AD dotted 3px;  
-}
-
-
-.secondary--disabled{
-  background-color: white;
-  color: #DBDCDD;
-  border: #DBDCDD solid 3px; 
-  cursor: default; 
-}
-
-
-
-
-

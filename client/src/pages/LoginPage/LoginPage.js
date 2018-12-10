@@ -4,18 +4,16 @@ import * as actions from '../../actions';
 import validate from '../../utils/validation';
 import logo from '../../images/kgnu_logo.png';
 
-import { Link, SubmitBtn } from '../../components/Button';
+import Button from '../../components/Button'
 
 import Card from '../../components/Card'
 import CardBody from '../../components/CardBody'
 import CardImg from '../../components/CardImg'
 import CardTitle from '../../components/CardTitle'
-import Checkbox from '../../components/Checkbox'
 import Form from '../../components/Form'
 import FormGroup from '../../components/FormGroup'
 import Input from '../../components/Input'
 import Label from '../../components/Label'
-import Select from '../../components/Select'
 
 const initialState = {
   email: '',
@@ -90,9 +88,9 @@ class LoginPage extends Component {
                 </FormGroup>
 
                 <FormGroup className="text-center">
-                  <SubmitBtn>Sign In</SubmitBtn>
+                  <Button type="primary">Sign In</Button>
 
-                  <Link link="#">Reset Password</Link>
+                  <Button type="primary">Reset Password</Button>
                 </FormGroup>
               </Form>
             </CardBody>

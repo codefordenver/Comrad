@@ -1,0 +1,82 @@
+/* ------------------------------------------
+  Display
+------------------------------------------ */
+.inline {
+  display: inline;
+}
+
+.block {
+  display: block;
+}
+
+.inline-block {
+  display: inline-block;
+}
+
+.display-none {
+  display: none;
+}
+
+/* ------------------------------------------
+  Float
+------------------------------------------ */
+
+.float-left {
+  float: left;
+}
+
+.float-right {
+  float: right;
+}
+
+/* ------------------------------------------
+  Position
+------------------------------------------ */
+
+.position-static {
+  position: static;
+}
+
+.position-relative {
+  position: relative;
+}
+
+.position-fixed {
+  position: fixed;
+}
+
+.position-absolute {
+  position: absolute;
+}
+
+.position-sticky {
+  position: sticky;
+}
+
+/* ------------------------------------------
+  Vertical-Align
+------------------------------------------ */
+
+.va-baseline {
+  vertical-align: baseline;
+}
+
+.va-top {
+  vertical-align: top;
+}
+
+.va-bottom {
+  vertical-align: bottom;
+}
+
+.va-sub {
+  vertical-align: sub;
+}
+
+.va-super {
+  vertical-align: super;
+}
+
+.va-middle {
+  vertical-align: middle;
+}

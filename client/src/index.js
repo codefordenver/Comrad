@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
-import registerServiceWorker from './registerServiceWorker';
+import App from './components/App';
+import registerServiceWorker from './utils/serviceWorker/registerServiceWorker';
 
-import Root from './Root';
+import Root from './components/Root';
 
 ReactDOM.render(
   <Root>

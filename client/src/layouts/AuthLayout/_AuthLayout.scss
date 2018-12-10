@@ -1,0 +1,12 @@
+.auth-layout {
+  height: 100vh;
+  background-color: $color-primary;
+  
+  display: grid;
+  grid-template-columns: 1fr 40rem 1fr;
+
+  &__body {
+    grid-column: 2;
+    align-self: center;
+  }
+}

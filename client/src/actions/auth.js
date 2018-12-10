@@ -10,17 +10,17 @@ export const loginUser = (userInfo, callback) => async dispatch => {
     callback();
 
   } catch (e) {
-    const { status } = e.response;
-    console.log(e.response);
+    // const { status } = e.response;
+    // console.log(e.response);
 
-    switch(status) {
-      case 401:
-        dispatch({ type: AUTH_ERROR, payload: 'Invalid Email/Password Combination' });
-        break;
-      default:
-        dispatch({ type: AUTH_ERROR, payload: e.response.data });
-        break;
-    }
+    // switch(status) {
+    //   case 401:
+    //     dispatch({ type: AUTH_ERROR, payload: 'Invalid Email/Password Combination' });
+    //     break;
+    //   default:
+    //     dispatch({ type: AUTH_ERROR, payload: e.response.data });
+    //     break;
+    // }
   }
 };
 

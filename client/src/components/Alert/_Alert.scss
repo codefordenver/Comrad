@@ -1,0 +1,42 @@
+.alert {
+  display: grid;
+  grid-template-columns: 5rem auto;
+  grid-column-gap: 1rem;
+
+  border-radius: $border-radius;
+  color: white;
+  padding: 1rem;
+
+  &__symbol {
+    grid-column: 1;
+
+    text-align: center;
+    margin-top: 0.5rem;
+  }
+
+  &__body {
+    grid-column: 2;
+  }
+
+  &__title {
+    font-weight: bold;
+    font-size: 1.8rem;
+  }
+
+  &__message {
+    font-size: 1.4rem;
+  }
+
+  &--info {
+    background-color: #7db2bf;
+  }
+  &--success {
+    background-color: #007283;
+  }
+  &--error {
+    background-color: #ff9999;
+  }
+  &--warning {
+    background-color: #ffb266;
+  }
+}

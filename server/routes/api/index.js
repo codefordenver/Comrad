@@ -6,6 +6,7 @@ const albumRoutes = require('./album');
 const announcementRoutes = require('./announcement');
 const artistRoutes = require('./artist');
 const authRoutes = require('./auth');
+const trafficRoutes = require('./traffic');
 const featureRoutes = require('./feature');
 const giveawayRoutes = require('./giveaway');
 const searchRoutes = require('./search');
@@ -23,6 +24,7 @@ router.use('/giveaway', giveawayRoutes);
 router.use('/show', showRoutes);
 router.use('/search', searchRoutes);
 router.use('/track', trackRoutes);
+router.use('/traffic', trafficRoutes);
 router.use('/user', userRoutes);
 router.use('/venue', venueRoutes);
 

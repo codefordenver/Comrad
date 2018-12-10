@@ -1,0 +1,9 @@
+.card__img {
+  width: 100%;
+  justify-self: center;
+
+  &--home {
+    width: 50%;
+    padding-top: 2rem;
+  }
+}

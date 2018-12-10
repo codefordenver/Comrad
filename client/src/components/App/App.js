@@ -1,0 +1,50 @@
+import React, { Component, Fragment } from 'react'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import { connect } from 'react-redux'
+import * as actions from '../../actions'
+
+import NavTest from '../NavTest'
+
+import AdminRoutes from '../../routes/AdminRoutes'
+import BuilderRoutes from '../../routes/BuilderRoutes'
+import CalendarRoutes from '../../routes/CalendarRoutes'
+import DashboardRoutes from '../../routes/DashboardRoutes'
+import ErrorRoutes from '../../routes/ErrorRoutes'
+import LibraryRoutes from '../../routes/LibraryRoutes'
+import LoginRoutes from '../../routes/LoginRoutes'
+import ReportRoutes from '../../routes/ReportRoutes'
+import UserRoutes from '../../routes/UserRoutes'
+
+
+
+class App extends Component {
+  componentDidMount() {
+    this.props.fetchUser()
+  }
+
+  render() {
+    return (
+      <Router>
+        <div className="app">
+          <NavTest />
+          <Switch>
+            <Route path="/admin" component={AdminRoutes} />
+            <Route path="/builder" component={BuilderRoutes} />
+            <Route path="/calendar" component={CalendarRoutes} />
+            <Route path="/dashboard" component={DashboardRoutes} />
+            <Route path="/error" component={ErrorRoutes} />
+            <Route path="/library" component={LibraryRoutes} />
+            <Route path="/login" component={LoginRoutes} />
+            <Route path="/report" component={ReportRoutes} />
+            <Route path="/user" component={UserRoutes} />
+          </Switch>
+        </div>
+      </Router>
+    )
+  }
+}
+
+export default connect(
+  null,
+  actions
+)(App)

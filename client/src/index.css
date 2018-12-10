@@ -2097,28 +2097,36 @@ border-table-collapse {
 .button {
   font-size: 2rem;
   font-weight: 500;
-  letter-spacing: 2px;
-  border-radius: .5rem;
-  border: none;
-  padding: .5rem 1rem;
-  margin: 0 1rem;
-  transition: all .3s;
-  cursor: pointer; }
+  border: 2px solid transparent;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  padding: 0.7rem 1.5rem;
+  transition: all 0.1s;
+  text-decoration: none; }
   .button:active, .button:focus {
     outline: none; }
-  .button--submit {
+  .button:not(:last-child) {
+    margin-right: 0.5rem; }
+  .button--primary {
     color: #fff;
     background-color: #007283; }
-    .button--submit:hover {
-      background-color: #007283; }
-
-.link {
-  font-size: 1.6rem;
-  color: #007283;
-  margin: 0 1rem;
-  transition: all .3s; }
-  .link:hover {
-    color: #007283; }
+    .button--primary:active {
+      box-shadow: 0 0 0 2px #007283; }
+    .button--primary:hover, .button--primary:active {
+      background-color: #7cb2bf; }
+    .button--primary:disabled {
+      background-color: #eee; }
+  .button--secondary {
+    color: #007283;
+    border: 2px solid #007283; }
+    .button--secondary:hover {
+      color: #7cb2bf;
+      border-color: #7cb2bf; }
+    .button--secondary:active {
+      border-color: #007283; }
+    .button--secondary:disabled {
+      color: #eee;
+      border-color: #eee; }
 
 .card {
   border: 1px solid #e2e2e2;

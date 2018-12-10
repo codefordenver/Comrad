@@ -1,45 +1,60 @@
 .button {
   font-size: 2rem;
   font-weight: 500;
-  letter-spacing: 2px;
 
-  border-radius: .5rem;
-  border: none;
-  padding: .5rem 1rem;
-  margin: 0 1rem;
-  transition: all .3s;
-
+  border: $border-width solid transparent;
+  border-radius: $border-radius;
   cursor: pointer;
-
-  &:hover {
-
-  }
+  padding: 0.7rem 1.5rem;
+  transition: all 0.1s;
+  text-decoration: none;
 
   &:active,
   &:focus {
     outline: none;
   }
 
-  &--submit {
-    color: $color-white;
+  &:not(:last-child) {
+    margin-right: 0.5rem;
+  }
 
+  &--primary {
+    color: $color-white;
     background-color: $color-primary;
 
-    &:hover {
-      background-color: $color-primary;
+    &:active {
+      box-shadow: 0 0 0 $border-width $color-primary;
+    }
+
+    &:hover,
+    &:active {
+      background-color: $color-secondary;
+    }
+
+    &:disabled {
+      background-color: $color-grey-1;
     }
   }
-}
 
-.link {
-  font-size: 1.6rem;
-  color: $color-primary;
-
-  margin: 0 1rem;
-
-  transition: all .3s;
-
-  &:hover {
+  &--secondary {
     color: $color-primary;
+
+    border: $border-width solid $color-primary;
+
+    &:hover {
+      color: $color-secondary;
+
+      border-color: $color-secondary;
+    }
+
+    &:active {
+      border-color: $color-primary;
+    }
+
+    &:disabled {
+      color: $color-grey-1;
+
+      border-color: $color-grey-1;
+    }
   }
 }

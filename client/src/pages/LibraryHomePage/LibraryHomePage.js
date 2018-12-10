@@ -61,10 +61,10 @@ class LibraryHomePage extends Component {
             <Search type="library" />
           </div>
           <div className="library__add">
-            <DropRightBtn
+            {/* <DropRightBtn
               dropRightBtnItems={dropRightBtnItems}
               handleDropRightBtnClick={this.handleDropRightBtnClick}
-            />
+            /> */}
           </div>
           <div className="library__filter">
             <Filter

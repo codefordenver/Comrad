@@ -39,6 +39,6 @@ export default ChildComponent => {
 
   return connect(
     mapStateToProps,
-    actions
+    actions,
   )(ComposedComponent);
 };

@@ -11,7 +11,7 @@ const userSchema = new Schema({
     validate: {
       validator: v => {
         return /^([a-zA-Z\d.-]+)@([a-zA-Z\d-]+\.)([a-zA-Z]{2,8})(.[a-zA-Z]{2,8})?$/.test(
-          v
+          v,
         );
       },
       message: props => `${props.value} is not a valid email`,

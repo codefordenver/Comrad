@@ -84,8 +84,8 @@ function addRelevance(result, queryString) {
   const albumArtist = result.album
     ? result.album.artist.name
     : result.artist
-      ? result.artist.name
-      : '';
+    ? result.artist.name
+    : '';
   const artistNames = result.artists
     ? result.artists.map(artist => artist.name).join(', ')
     : '';
@@ -109,7 +109,7 @@ module.exports = {
     }
 
     const results = (await findInLibrary(searchTerm)).map(result =>
-      addRelevance(result, searchTerm)
+      addRelevance(result, searchTerm),
     );
 
     const data = [...results].sort((a, b) => {

@@ -154,5 +154,5 @@ class UserAddPage extends Component {
 
 export default connect(
   null,
-  { userAdd }
+  { userAdd },
 )(UserAddPage);

@@ -1,16 +1,13 @@
 module.exports = {
   extends: ['react-app', 'plugin:prettier/recommended'],
-  plugins: ['prettier'],
   rules: {
-    'no-empty': 'warn',
-    'no-extra-semi': 'warn',
-    'no-irregular-whitespace': 'warn',
-    curly: 'warn',
-    'dot-notation': 'warn',
-    'no-empty-function': 'warn',
-    'no-multi-spaces': 'warn',
+    'no-empty': 'error',
+    'no-extra-semi': 'error',
+    'no-irregular-whitespace': 'error',
+    curly: 'error',
+    'dot-notation': 'error',
+    'no-empty-function': 'error',
+    'no-multi-spaces': 'error',
     camelcase: 'warn',
-    'linebreak-style': ['error', 'unix'],
-    'prettier/prettier': 'warn',
   },
 };

@@ -9,7 +9,7 @@ async function seedDB() {
   try {
     mongoose.connect(
       keys.mongoURI,
-      { useNewUrlParser: true }
+      { useNewUrlParser: true },
     );
 
     await mongoose.connection.dropDatabase();
@@ -17,7 +17,7 @@ async function seedDB() {
     await Promise.all(userSeeds.map(async seed => await db.User.create(seed)));
 
     await Promise.all(
-      artistSeeds.map(async seed => await db.Artist.create(seed))
+      artistSeeds.map(async seed => await db.Artist.create(seed)),
     );
 
     await Promise.all(
@@ -32,7 +32,7 @@ async function seedDB() {
           }
           await db.Track.create(track);
         }
-      })
+      }),
     );
   } catch (err) {
     console.log(err);

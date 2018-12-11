@@ -30,7 +30,7 @@ export const postTraffic = traffic => async dispatch => {
 
 export const updateTraffic = (
   existingTraffic,
-  updatedTraffic
+  updatedTraffic,
 ) => async dispatch => {
   try {
     console.log('Action: ' + updatedTraffic);

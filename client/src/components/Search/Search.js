@@ -32,8 +32,6 @@ class Search extends Component {
     }
   };
 
-  renderShortSearch() {}
-
   render() {
     return (
       <div className="search">
@@ -60,5 +58,5 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  actions
+  actions,
 )(Search);

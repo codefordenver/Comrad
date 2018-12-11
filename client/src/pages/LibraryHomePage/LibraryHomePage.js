@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { DropRightBtn } from '../../components/Button';
+// import { DropRightBtn } from '../../components/Button';
 import { Filter } from '../../components/Filter';
 import Search from '../../components/Search';
 
@@ -52,7 +52,7 @@ class LibraryHomePage extends Component {
 
   render() {
     const filterItems = ['All', 'Artists', 'Albums', 'Tracks'];
-    const dropRightBtnItems = ['Track', 'Album', 'Other'];
+    // const dropRightBtnItems = ['Track', 'Album', 'Other'];
 
     return (
       <div className="library__search">

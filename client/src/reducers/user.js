@@ -1,4 +1,8 @@
-import { USER_FIND_ONE, USER_ADD, USER_ERROR } from '../actions/types';
+import {
+  //USER_FIND_ONE,
+  USER_ADD,
+  USER_ERROR,
+} from '../actions/types';
 
 const initialState = {};
 

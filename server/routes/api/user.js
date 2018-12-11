@@ -1,7 +1,5 @@
 const router = require('express').Router();
 const userController = require('../../controllers/userController');
-const passport = require('passport');
-const requireLogin = require('../../middlewares/requireLogin');
 
 router.route('/').get(userController.findAll);
 

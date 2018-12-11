@@ -1,6 +1,4 @@
 const router = require('express').Router();
-const passportServices = require('../../services/passport');
-const passport = require('passport');
 
 const albumRoutes = require('./album');
 const announcementRoutes = require('./announcement');

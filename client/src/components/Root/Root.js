@@ -17,7 +17,7 @@ export default ({ children }) => {
   const store = createStore(
     reducers,
     initialState,
-    composeEnhancers(applyMiddleware(reduxThunk))
+    composeEnhancers(applyMiddleware(reduxThunk)),
   );
 
   return <Provider store={store}>{children}</Provider>;

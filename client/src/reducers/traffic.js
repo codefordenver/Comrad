@@ -2,7 +2,7 @@ import {
   TRAFFIC_GET,
   TRAFFIC_POST,
   TRAFFIC_UPDATE,
-  TRAFFIC_DELETE,
+  // TRAFFIC_DELETE,
   TRAFFIC_ERROR,
 } from '../actions/types';
 

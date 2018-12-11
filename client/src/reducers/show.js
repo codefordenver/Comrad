@@ -2,7 +2,7 @@ import {
   SHOW_GET,
   SHOW_POST,
   SHOW_UPDATE,
-  SHOW_DELETE,
+  // SHOW_DELETE,
   SHOW_ERROR,
 } from '../actions/types';
 

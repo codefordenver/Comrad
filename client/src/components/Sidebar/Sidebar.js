@@ -24,17 +24,17 @@ class Sidebar extends Component {
       {
         name: 'user',
         url: '/user',
-        iconClass: 'far fa-user'
+        iconClass: 'fas fa-user'
       },
       {
         name: 'calendar',
         url: '/calendar',
-        iconClass: 'far fa-calendar-alt'
+        iconClass: 'fas fa-calendar-alt'
       },
       {
         name: 'calendar-check',
         url: '/',
-        iconClass: 'far fa-calendar-check'
+        iconClass: 'fas fa-calendar-check'
       },
       {
         name: 'report',
@@ -44,7 +44,7 @@ class Sidebar extends Component {
       {
         name: 'copy',
         url: '/',
-        iconClass: 'far fa-copy'
+        iconClass: 'fas fa-copy'
       }
     ];
 

@@ -4,20 +4,22 @@
   "description": "Comrad is an open-source web application for use by community radio stations that helps with crucial show scheduling and playlist entry to organize all on air and streaming processes for hosts and DJ’s.",
   "main": "index.js",
   "jest": {
-    "setupTestFrameworkScriptFile": "./tests/setup.js",
+    "setupTestFrameworkScriptFile": "./server/tests/setup.js",
     "testEnvironment": "node",
     "testPathIgnorePatterns": [
       "/node_modules/",
-      "/client/"
+      "/client/",
+      "/server/config/test.js"
     ]
   },
   "scripts": {
     "start": "node index.js",
-    "server": "nodemon index.js --ignore tests --delay 1",
+    "server": "nodemon server/index.js --ignore tests --delay 1",
     "client": "npm run start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "build": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client",
     "heroku-postbuild": "npm run build",
+    "postinstall": "npm install --prefix client",
     "seed": "node seedDB",
     "seed:test": "cross-env NODE_ENV=test npm run seed",
     "seed:dev": "cross-env NODE_ENV=development npm run seed",
@@ -51,9 +53,11 @@
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.18.3",
+    "classnames": "^2.2.6",
     "dotenv": "^6.0.0",
     "express": "^4.16.3",
     "express-session": "^1.15.6",
+    "lodash": "^4.17.11",
     "mongoose": "^5.2.6",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",

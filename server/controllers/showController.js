@@ -35,5 +35,11 @@ module.exports = {
       .then(dbShow => dbShow.remove())
       .then(dbShow => res.json(dbShow))
       .catch(err => res.status(422).json(err));
-  }
+  },
+
+  EXAMPLE: (req, res) => {
+    hellostring = 'Show Requested';
+    res.json({hellostring});
+  },
+
 }

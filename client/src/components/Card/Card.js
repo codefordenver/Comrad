@@ -1,7 +1,13 @@
 import React from 'react';
 
-export const Card = ({ children }) => (
-  <div className="card">
+const Card = props => {
+  const { children, styleName } = props
+
+  return (
+  <div className={`card ${styleName || ''}`}>
     {children}
   </div>
-);
+  )
+}
+
+export default Card

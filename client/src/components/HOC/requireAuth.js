@@ -17,13 +17,13 @@ export default (ChildComponent) => {
 
     componentDidMount() {
       if (!this.props.auth.status) {
-        this.props.history.push('/home');
+        this.props.history.push('/login');
       }
     }
 
     componentDidUpdate() {
       if (!this.props.auth.status) {
-        this.props.history.push('/home');
+        this.props.history.push('/login');
       }
     }
     

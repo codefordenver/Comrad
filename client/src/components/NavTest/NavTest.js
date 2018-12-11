@@ -22,8 +22,8 @@ class NavTest extends Component {
   render() {
     const links = [
       {
-        text: 'Home',
-        route: '/home'
+        text: 'Login',
+        route: '/login'
       },
       {
         text: 'Admin',
@@ -39,7 +39,7 @@ class NavTest extends Component {
       },
       {
         text: 'Dashboard',
-        route: '/'
+        route: '/dashboard'
       },
       {
         text: 'Library',
@@ -55,6 +55,8 @@ class NavTest extends Component {
       }
     ];
 
+    const { status } = this.props.auth
+
     return (
       <ul className="nav-test">
         {links.map(link => (
@@ -62,15 +64,9 @@ class NavTest extends Component {
             {link.text}
           </Link>
         ))}
-        {this.props.auth.status === true ? (
-          <button className="button" onClick={this.handleQuickSignOut}>
-            Quick Sign Out
+          <button className="button" onClick={status ? this.handleQuickSignOut : this.handleQuickSignIn}>
+            {status ? "Quick Sign Out" : "Quick Sign In"}
           </button>
-        ) : (
-          <button className="button" onClick={this.handleQuickSignIn}>
-            Quick Sign In
-          </button>
-        )}
       </ul>
     );
   }

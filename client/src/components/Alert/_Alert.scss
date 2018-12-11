@@ -1,0 +1,44 @@
+.alert {
+  display: grid;
+  grid-template-columns: 5rem auto;
+  grid-column-gap: 0.5rem;
+
+  border-radius: $border-radius;
+  color: white;
+  padding: 1rem;
+
+  &__symbol {
+    grid-column: 1;
+
+    font-size: 1.4rem;
+
+    text-align: center;
+    margin-top: 0.6rem;
+  }
+
+  &__body {
+    grid-column: 2;
+  }
+
+  &__header {
+    font-weight: bold;
+    font-size: 2.4rem;
+  }
+
+  &__message {
+    font-size: 1.4rem;
+  }
+
+  &--info {
+    background-color: #7db2bf;
+  }
+  &--success {
+    background-color: #007283;
+  }
+  &--error {
+    background-color: #ff9999;
+  }
+  &--warning {
+    background-color: #ffb266;
+  }
+}

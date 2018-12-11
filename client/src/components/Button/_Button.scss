@@ -1,0 +1,60 @@
+.button {
+  font-size: 2rem;
+  font-weight: 500;
+
+  border: $border-width solid transparent;
+  border-radius: $border-radius;
+  cursor: pointer;
+  padding: 0.7rem 1.5rem;
+  transition: all 0.1s;
+  text-decoration: none;
+
+  &:active,
+  &:focus {
+    outline: none;
+  }
+
+  &:not(:last-child) {
+    margin-right: 0.5rem;
+  }
+
+  &--primary {
+    color: $color-white;
+    background-color: $color-primary;
+
+    &:active {
+      box-shadow: 0 0 0 $border-width $color-primary;
+    }
+
+    &:hover,
+    &:active {
+      background-color: $color-secondary;
+    }
+
+    &:disabled {
+      background-color: $color-grey-1;
+    }
+  }
+
+  &--secondary {
+    color: $color-primary;
+
+    border: $border-width solid $color-primary;
+
+    &:hover {
+      color: $color-secondary;
+
+      border-color: $color-secondary;
+    }
+
+    &:active {
+      border-color: $color-primary;
+    }
+
+    &:disabled {
+      color: $color-grey-1;
+
+      border-color: $color-grey-1;
+    }
+  }
+}

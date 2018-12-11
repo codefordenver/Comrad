@@ -1,13 +1,13 @@
 const router = require('express').Router();
 const showController = require('../../controllers/showController');
 
-router.route('/')
-  .get(showController.EXAMPLE)
+router
+  .route('/')
+  .get(showController.findAll)
   .post(showController.create);
 
-  //  .get(showController.findAll)
-
-router.route('/:id')
+router
+  .route('/:id')
   .get(showController.findById)
   .put(showController.update)
   .delete(showController.remove);

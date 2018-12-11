@@ -9,9 +9,9 @@ const {
 beforeEach(connect);
 afterEach(disconnect);
 
-const route = '/api/album/';
+const route = '/api/album';
 
-describe(route, () => {
+describe(`${route}/`, () => {
   canGetArray(request(app), route);
 });
 

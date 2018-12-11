@@ -2,36 +2,31 @@ const db = require('../models');
 
 module.exports = {
   findById: (req, res) => {
-    db.Event
-      .findById(req.params.id)
+    db.Traffic.findById(req.params.id)
       .then(dbEvent => res.json(dbEvent))
       .catch(err => res.status(422).json(err));
   },
 
   findAll: (req, res) => {
-    db.Event
-      .find({})
+    db.Traffic.find({})
       .then(dbEvent => res.json(dbEvent))
       .catch(err => res.status(422).json(err));
   },
 
   create: (req, res) => {
-    db.Event
-      .create(req.body)
+    db.Traffic.create(req.body)
       .then(dbEvent => res.json(dbEvent))
       .catch(err => res.status(422).json(err));
   },
 
   update: (req, res) => {
-    db.Event
-      .findOneAndUpdate({ _id: req.params.id }, req.body, { new: true })
+    db.Traffic.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true })
       .then(dbEvent => res.json(dbEvent))
       .catch(err => res.status(422).json(err));
   },
 
   remove: (req, res) => {
-    db.Event
-      .findById({ _id: req.params.id })
+    db.Traffic.findById({ _id: req.params.id })
       .then(dbEvent => dbEvent.remove())
       .then(dbEvent => res.json(dbEvent))
       .catch(err => res.status(422).json(err));
@@ -40,17 +35,15 @@ module.exports = {
   search: (req, res) => {
     const q = new RegExp(req.body.title, 'i');
 
-    db.Event
-      .find({
-        title: q
-      })
+    db.Traffic.find({
+      title: q,
+    })
       .then(dbEvent => res.json(dbEvent))
       .catch(err => res.status(422).json(err));
   },
 
   EXAMPLE: (req, res) => {
     hellostring = 'Traffic Requested';
-    res.json({hellostring});
+    res.json({ hellostring });
   },
-
-}
+};

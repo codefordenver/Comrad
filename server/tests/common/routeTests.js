@@ -11,8 +11,8 @@ module.exports = {
 
   async canGetValidObjectByID(request, route) {
     test('returns a valid object when queried by ID', async () => {
-      const firstID = (await request(app).get(route)).body[0]._id;
-      const response = await request(app).get(`${route}${firstID}`);
+      const firstID = (await request.get(route)).body[0]._id;
+      const response = await request.get(`${route}/${firstID}`);
       expect(response.status).toBe(200);
       expect(response.body._id).toBe(firstID);
     });

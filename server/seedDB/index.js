@@ -44,6 +44,27 @@ async function seedDB() {
         db.Announcement.create(announcement)
       )
     );
+
+    // Features
+    await Promise.all(
+      seed.features.map(async feature => db.Feature.create(feature))
+    );
+
+    // Giveaways
+    await Promise.all(
+      seed.giveaway.map(async giveaway => db.Giveaway.create(giveaway))
+    );
+
+    // Shows
+    await Promise.all(seed.show.map(async show => db.Show.create(show)));
+
+    // Traffic
+    await Promise.all(
+      seed.traffic.map(async traffic => db.Traffic.create(traffic))
+    );
+
+    // Venue
+    await Promise.all(seed.venue.map(async venue => db.Venue.create(venue)));
   } catch (err) {
     console.log(err);
   }
@@ -51,7 +72,10 @@ async function seedDB() {
 
 if (require.main === module) {
   seedDB()
-    .then(process.exit)
+    .then(() => {
+      console.log('Seeded DB successfully!');
+      process.exit();
+    })
     .catch(err => {
       console.log(err);
       process.exit(1);

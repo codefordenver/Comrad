@@ -9,9 +9,9 @@ const {
 beforeEach(connect);
 afterEach(disconnect);
 
-const route = '/api/giveaway/';
+const route = '/api/giveaway';
 
-describe(route, () => {
+describe(`${route}/`, () => {
   canGetArray(request(app), route);
 });
 

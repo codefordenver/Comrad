@@ -9,9 +9,9 @@ const {
 beforeEach(connect);
 afterEach(disconnect);
 
-const route = '/api/track/';
+const route = '/api/track';
 
-describe(route, () => {
+describe(`${route}/`, () => {
   canGetArray(request(app), route);
 });
 

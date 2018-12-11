@@ -5,13 +5,13 @@ const {
   canGetArray,
   canGetValidObjectByID,
 } = require('../../../tests/common/routeTests');
-2;
+
 beforeEach(connect);
 afterEach(disconnect);
 
-const route = '/api/traffic/';
+const route = '/api/traffic';
 
-describe(route, () => {
+describe(`${route}/`, () => {
   canGetArray(request(app), route);
 });
 

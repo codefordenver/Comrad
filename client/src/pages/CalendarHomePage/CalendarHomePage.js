@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import * as actions from "../../actions/shows";
 
+import EventNew from "../../components/Events/EventNew";
+
 class CalendarHomePage extends Component {
   constructor(props) {
     super(props);
@@ -25,6 +27,7 @@ class CalendarHomePage extends Component {
   render() {
     return (
       <div className="calendar__view">
+        <EventNew/>
         {this.state.shows.map(show => {
           return (
             <div>

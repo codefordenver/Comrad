@@ -4,8 +4,7 @@ import * as actions from "../../actions";
 import validate from "../../utils/validation";
 import logo from "../../images/kgnu_logo.png";
 
-import { Link, SubmitBtn } from "../../components/Button";
-
+import Button from '../../components/Button'
 import Card from "../../components/Card";
 import CardBody from "../../components/CardBody";
 import CardImg from "../../components/CardImg";
@@ -159,9 +158,9 @@ class EventNew extends Component {
                 </FormGroup>
 
                 <FormGroup className="text-center">
-                  <SubmitBtn>Create Event</SubmitBtn>
+                  <Button type="primary">Create Event</Button>
 
-                  <Link link="#">Cancel</Link>
+                  <Button type="secondary">Cancel</Button>
                 </FormGroup>
               </Form>
             </CardBody>

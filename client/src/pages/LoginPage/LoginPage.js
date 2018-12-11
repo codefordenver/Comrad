@@ -58,9 +58,7 @@ class LoginPage extends Component {
             <CardImg className={'card__img--home'} imgSrc={logo} />
             <CardBody>
               <CardTitle
-                text="COMRAD - KGNU PLAYLIST LOGIN:"
-                className="text-center"
-              />
+                className="text-center">COMRAD - KGNU PLAYLIST LOGIN:</CardTitle>
 
               {errorMessage ? <div>{errorMessage}</div> : null}
 
@@ -90,7 +88,7 @@ class LoginPage extends Component {
                 <FormGroup className="text-center">
                   <Button type="primary">Sign In</Button>
 
-                  <Button type="primary">Reset Password</Button>
+                  <Button type="secondary">Reset Password</Button>
                 </FormGroup>
               </Form>
             </CardBody>

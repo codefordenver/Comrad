@@ -7,7 +7,7 @@ async function seedDB() {
   try {
     mongoose.connect(
       keys.mongoURI,
-      { useNewUrlParser: true }
+      { useNewUrlParser: true },
     );
 
     await mongoose.connection.dropDatabase();
@@ -17,7 +17,7 @@ async function seedDB() {
 
     // Artists
     await Promise.all(
-      seed.artists.map(async artist => await db.Artist.create(artist))
+      seed.artists.map(async artist => await db.Artist.create(artist)),
     );
 
     // Albums
@@ -35,24 +35,24 @@ async function seedDB() {
           }
           await db.Track.create(track);
         }
-      })
+      }),
     );
 
     // Announcements
     await Promise.all(
       seed.announcements.map(async announcement =>
-        db.Announcement.create(announcement)
-      )
+        db.Announcement.create(announcement),
+      ),
     );
 
     // Features
     await Promise.all(
-      seed.features.map(async feature => db.Feature.create(feature))
+      seed.features.map(async feature => db.Feature.create(feature)),
     );
 
     // Giveaways
     await Promise.all(
-      seed.giveaway.map(async giveaway => db.Giveaway.create(giveaway))
+      seed.giveaway.map(async giveaway => db.Giveaway.create(giveaway)),
     );
 
     // Shows
@@ -60,7 +60,7 @@ async function seedDB() {
 
     // Traffic
     await Promise.all(
-      seed.traffic.map(async traffic => db.Traffic.create(traffic))
+      seed.traffic.map(async traffic => db.Traffic.create(traffic)),
     );
 
     // Venue

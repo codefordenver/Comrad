@@ -1,21 +1,21 @@
-import React, { Component } from 'react'
-import { Route } from 'react-router-dom'
+import React, { Component } from 'react';
+import { Route } from 'react-router-dom';
 
-import MainLayout from '../../layouts/MainLayout'
-import BuilderHomePage from '../../pages/BuilderHomePage'
+import MainLayout from '../../layouts/MainLayout';
+import BuilderHomePage from '../../pages/BuilderHomePage';
 
 class BuilderRoutes extends Component {
-  state = {}
+  state = {};
 
   render() {
-    const { url } = this.props.match
+    const { url } = this.props.match;
 
     return (
       <MainLayout>
         <Route exact page={`${url}/`} component={BuilderHomePage} />
       </MainLayout>
-    )
+    );
   }
 }
 
-export default BuilderRoutes
+export default BuilderRoutes;

@@ -43,7 +43,7 @@ module.exports = {
   },
 
   EXAMPLE: (req, res) => {
-    hellostring = 'Traffic Requested';
+    const hellostring = 'Traffic Requested';
     res.json({ hellostring });
   },
 };

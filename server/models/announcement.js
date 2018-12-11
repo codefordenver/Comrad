@@ -3,30 +3,30 @@ const Schema = mongoose.Schema;
 
 const announcementSchema = new Schema({
   title: {
-    type: String
+    type: String,
   },
 
   type: {
-    type: String
+    type: String,
   },
 
   copy: {
-    type: String
+    type: String,
   },
 
   underwriter_name: {
-    type: String
+    type: String,
   },
 
   created_at: {
     type: Date,
-    default: Date.now
+    default: Date.now,
   },
 
   updated_at: {
     type: Date,
-    default: Date.now
-  }
+    default: Date.now,
+  },
 });
 
 const Announcement = mongoose.model('Announcement', announcementSchema);

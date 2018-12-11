@@ -1,18 +1,18 @@
-import React, { Component, Fragment } from 'react'
-import { connect } from 'react-redux'
+import React, { Component, Fragment } from 'react';
+import { connect } from 'react-redux';
 
 class ArtistsTable extends Component {
-  state = {}
+  state = {};
 
   renderHeader() {
     return (
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>ID</th>
-      </tr>
-    </thead>
-    )
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>ID</th>
+        </tr>
+      </thead>
+    );
   }
 
   renderBody() {
@@ -25,12 +25,12 @@ class ArtistsTable extends Component {
                 <td>{result.name}</td>
                 <td>{result._id}</td>
               </tr>
-            )
+            );
           }
           return null;
         })}
       </tbody>
-    )
+    );
   }
 
   render() {
@@ -41,21 +41,19 @@ class ArtistsTable extends Component {
             {this.renderHeader()}
             {this.renderBody()}
           </table>
-        ) : (
-          null
-        )}
+        ) : null}
       </Fragment>
-    )
+    );
   }
 }
 
 function mapStateToProps(state) {
   return {
-    library: state.search.library
-  }
+    library: state.search.library,
+  };
 }
 
 export default connect(
   mapStateToProps,
-  null
+  null,
 )(ArtistsTable);

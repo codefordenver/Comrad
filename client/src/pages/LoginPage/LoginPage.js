@@ -4,36 +4,36 @@ import * as actions from '../../actions';
 import validate from '../../utils/validation';
 import logo from '../../images/kgnu_logo.png';
 
-import Button from '../../components/Button'
+import Button from '../../components/Button';
 
-import Card from '../../components/Card'
-import CardBody from '../../components/CardBody'
-import CardImg from '../../components/CardImg'
-import CardTitle from '../../components/CardTitle'
-import Form from '../../components/Form'
-import FormGroup from '../../components/FormGroup'
-import Input from '../../components/Input'
-import Label from '../../components/Label'
+import Card from '../../components/Card';
+import CardBody from '../../components/CardBody';
+import CardImg from '../../components/CardImg';
+import CardTitle from '../../components/CardTitle';
+import Form from '../../components/Form';
+import FormGroup from '../../components/FormGroup';
+import Input from '../../components/Input';
+import Label from '../../components/Label';
 
 const initialState = {
   email: '',
-  password: ''
-}
+  password: '',
+};
 
 class LoginPage extends Component {
-  state = initialState
+  state = initialState;
 
   handleInputChange = e => {
     const { name, value } = e.target;
 
     this.setState({
-      [name]: value
+      [name]: value,
     });
-  }
+  };
 
   handleInputBlur = e => {
     validate.input(e.target);
-  }
+  };
 
   handleFormSubmit = e => {
     e.preventDefault();
@@ -46,10 +46,10 @@ class LoginPage extends Component {
         this.props.history.push('/');
       });
     }
-  }
+  };
 
   render() {
-    const { errorMessage } = this.props.auth
+    const { errorMessage } = this.props.auth;
 
     return (
       <main className="home">
@@ -97,17 +97,17 @@ class LoginPage extends Component {
           </Card>
         </section>
       </main>
-    )
+    );
   }
 }
 
 function mapStateToProps(state) {
   return {
-    auth: state.auth
-  }
+    auth: state.auth,
+  };
 }
 
 export default connect(
   mapStateToProps,
-  actions
-)(LoginPage)
+  actions,
+)(LoginPage);

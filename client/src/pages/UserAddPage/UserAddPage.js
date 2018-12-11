@@ -1,15 +1,15 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
-import { userAdd } from '../../actions'
-import validate from '../../utils/validation'
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { userAdd } from '../../actions';
+import validate from '../../utils/validation';
 
-import Checkbox from '../../components/Checkbox'
-import Form from '../../components/Form'
-import FormGroup from '../../components/FormGroup'
-import Input from '../../components/Input'
-import Label from '../../components/Label'
-import Select from '../../components/Select'
+import Checkbox from '../../components/Checkbox';
+import Form from '../../components/Form';
+import FormGroup from '../../components/FormGroup';
+import Input from '../../components/Input';
+import Label from '../../components/Label';
+import Select from '../../components/Select';
 
 class UserAddPage extends Component {
   state = {
@@ -20,44 +20,44 @@ class UserAddPage extends Component {
     on_air_name: '',
     role: '',
     status: '',
-    can_delete: false
-  }
+    can_delete: false,
+  };
 
   handleInputChange = e => {
-    const { name, value } = e.target
+    const { name, value } = e.target;
 
     this.setState({
-      [name]: value
-    })
-  }
+      [name]: value,
+    });
+  };
 
   handleInputBlur = e => {
-    validate.input(e.target)
-  }
+    validate.input(e.target);
+  };
 
   handleCheckBox = e => {
-    const { name } = e.target
+    const { name } = e.target;
 
     this.setState(prevState => ({
-      [name]: !prevState[name]
-    }))
-  }
+      [name]: !prevState[name],
+    }));
+  };
 
   handleFormSubmit = e => {
-    e.preventDefault()
+    e.preventDefault();
 
-    const valid = validate.submit()
+    const valid = validate.submit();
 
     if (valid) {
       this.props.userAdd(this.state, () => {
-        this.props.history.push('/user')
-      })
+        this.props.history.push('/user');
+      });
     }
-  }
+  };
 
   render() {
-    const roleOptions = ['DJ', 'Admin']
-    const statusOpions = ['Active', 'Inactive']
+    const roleOptions = ['DJ', 'Admin'];
+    const statusOpions = ['Active', 'Inactive'];
 
     return (
       <Form handleFormSubmit={this.handleFormSubmit}>
@@ -148,11 +148,11 @@ class UserAddPage extends Component {
           <Link to="/user">Go Back</Link>
         </FormGroup>
       </Form>
-    )
+    );
   }
 }
 
 export default connect(
   null,
-  { userAdd }
-)(UserAddPage)
+  { userAdd },
+)(UserAddPage);

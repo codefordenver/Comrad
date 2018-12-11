@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import * as actions from "../../actions/shows";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import * as actions from '../../actions/shows';
 
 class CalendarHomePage extends Component {
   constructor(props) {
@@ -8,7 +8,7 @@ class CalendarHomePage extends Component {
 
     this.state = {
       newShow: null,
-      shows: []
+      shows: [],
     };
   }
 
@@ -41,11 +41,11 @@ class CalendarHomePage extends Component {
 
 function mapStateToProps(state) {
   return {
-    shows: state.shows
+    shows: state.shows,
   };
 }
 
 export default connect(
   mapStateToProps,
-  actions
+  actions,
 )(CalendarHomePage);

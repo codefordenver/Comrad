@@ -1,1 +1,1 @@
-export { default } from './TBody'
+export { default } from './TBody';

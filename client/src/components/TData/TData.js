@@ -1,11 +1,9 @@
-import React from 'react'
+import React from 'react';
 
 const TData = props => {
-  const { children, styleName } = props
+  const { children, styleName } = props;
 
-  return (
-    <td className={`tdata ${styleName || ''}`}>{children}</td>
-  )
-}
+  return <td className={`tdata ${styleName || ''}`}>{children}</td>;
+};
 
-export default TData
+export default TData;

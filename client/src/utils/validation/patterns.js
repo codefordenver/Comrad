@@ -7,6 +7,6 @@ const patterns = {
   password: /^.{1,}$/,
   role: /^[a-zA-Z]{1,}$/,
   status: /^[a-zA-Z]{1,}$/,
-}
+};
 
 export default patterns;

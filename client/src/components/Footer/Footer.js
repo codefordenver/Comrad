@@ -1,7 +1,7 @@
-import React from 'react'
+import React from 'react';
 
 const Footer = props => {
-  const { styleName } = props
+  const { styleName } = props;
 
   return (
     <footer className={`footer ${styleName || ''}`}>
@@ -12,7 +12,7 @@ const Footer = props => {
         />
       </p>
     </footer>
-  )
-}
+  );
+};
 
-export default Footer
+export default Footer;

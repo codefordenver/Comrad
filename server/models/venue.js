@@ -2,21 +2,21 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const venueSchema = new Schema({
-    name: {
-        type: String
-    },
+  name: {
+    type: String,
+  },
 
-    location: {
-        type: String
-    },
+  location: {
+    type: String,
+  },
 
-    url: {
-        type: String
-    },
+  url: {
+    type: String,
+  },
 
-    active: {
-        type: Boolean
-    }
+  active: {
+    type: Boolean,
+  },
 });
 
 const Venue = mongoose.model('Venue', venueSchema);

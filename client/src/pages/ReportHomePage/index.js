@@ -1,1 +1,1 @@
-export { default } from './ReportHomePage'
+export { default } from './ReportHomePage';

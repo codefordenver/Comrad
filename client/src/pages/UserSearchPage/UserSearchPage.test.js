@@ -1,23 +1,23 @@
-import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
-import { Filter } from '../../components/Filter'
+import { Filter } from '../../components/Filter';
 import Search from '../../components/Search';
 import UsersTable from '../../components/Tables/UsersTable';
 
 class UserSearchPage extends Component {
   state = {
-    filter: 'All'
-  }
+    filter: 'All',
+  };
 
   handleFilterClick = item => {
     this.setState({
-      filter: item
-    })
-  }
+      filter: item,
+    });
+  };
 
   render() {
-    const { url } = this.props.match
+    const { url } = this.props.match;
     const filterItems = ['All', 'Active', 'Inactive'];
 
     return (
@@ -28,9 +28,7 @@ class UserSearchPage extends Component {
           </div>
 
           <div className="user__search">
-            <Search
-              type="user"
-            />
+            <Search type="user" />
           </div>
         </div>
 
@@ -45,12 +43,10 @@ class UserSearchPage extends Component {
           <div className="user__pagination">Pagination</div>
         </div>
         <div className="user__table">
-          <UsersTable 
-            filter={this.state.filter}
-          />
+          <UsersTable filter={this.state.filter} />
         </div>
       </div>
-    )
+    );
   }
 }
 

@@ -1,1 +1,1 @@
-export { default } from './UserRoutes'
+export { default } from './UserRoutes';

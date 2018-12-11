@@ -84,8 +84,8 @@ function addRelevance(result, queryString) {
   const albumArtist = result.album
     ? result.album.artist.name
     : result.artist
-      ? result.artist.name
-      : '';
+    ? result.artist.name
+    : '';
   const artistNames = result.artists
     ? result.artists.map(artist => artist.name).join(', ')
     : '';
@@ -109,14 +109,22 @@ module.exports = {
     }
 
     const results = (await findInLibrary(searchTerm)).map(result =>
-      addRelevance(result, searchTerm)
+      addRelevance(result, searchTerm),
     );
 
     const data = [...results].sort((a, b) => {
-      if (a.relevance > b.relevance) return -1;
-      if (a.relevance < b.relevance) return 1;
-      if (a.name < b.name) return -1;
-      if (a.name > b.name) return 1;
+      if (a.relevance > b.relevance) {
+        return -1;
+      }
+      if (a.relevance < b.relevance) {
+        return 1;
+      }
+      if (a.name < b.name) {
+        return -1;
+      }
+      if (a.name > b.name) {
+        return 1;
+      }
       return 0;
     });
 
@@ -132,8 +140,12 @@ module.exports = {
     });
 
     const data = [...userResults].sort((a, b) => {
-      if (a.last_name < b.last_name) return -1;
-      if (a.last_name > b.last_name) return 1;
+      if (a.last_name < b.last_name) {
+        return -1;
+      }
+      if (a.last_name > b.last_name) {
+        return 1;
+      }
       return 0;
     });
 

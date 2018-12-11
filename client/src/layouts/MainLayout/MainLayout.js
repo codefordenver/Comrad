@@ -1,12 +1,12 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 
-import Footer from '../../components/Footer'
-import Navbar from '../../components/Navbar'
-import Sidebar from '../../components/Sidebar'
+import Footer from '../../components/Footer';
+import Navbar from '../../components/Navbar';
+import Sidebar from '../../components/Sidebar';
 
 class MainLayout extends Component {
   render() {
-    const { children } = this.props
+    const { children } = this.props;
 
     return (
       <main className="main-layout">
@@ -21,8 +21,8 @@ class MainLayout extends Component {
           <Footer />
         </section>
       </main>
-    )
+    );
   }
 }
 
-export default MainLayout
+export default MainLayout;

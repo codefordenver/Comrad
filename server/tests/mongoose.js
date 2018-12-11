@@ -4,7 +4,7 @@ const keys = require('../config/keys');
 const connect = () => {
   return mongoose.connect(
     keys.mongoURI,
-    { useNewUrlParser: true }
+    { useNewUrlParser: true },
   );
 };
 

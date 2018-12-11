@@ -4,19 +4,19 @@ import * as actions from '../../actions';
 
 class Search extends Component {
   state = {
-    searchTerm: ''
-  }
+    searchTerm: '',
+  };
 
   handleInputChange = e => {
-    const { name, value } = e.target
+    const { name, value } = e.target;
 
     this.setState({
-      [name]: value
-    })
-  }
+      [name]: value,
+    });
+  };
 
   handleFormSubmit = e => {
-    e.preventDefault()
+    e.preventDefault();
     const { searchTerm } = this.state;
     const { type } = this.props;
 
@@ -30,9 +30,7 @@ class Search extends Component {
       default:
         break;
     }
-  }
-
-  renderShortSearch() {}
+  };
 
   render() {
     return (
@@ -48,17 +46,17 @@ class Search extends Component {
           <button>Search</button>
         </form>
       </div>
-    )
+    );
   }
 }
 
 function mapStateToProps(state) {
   return {
-    all: state.search.all
-  }
+    all: state.search.all,
+  };
 }
 
 export default connect(
   mapStateToProps,
-  actions
-)(Search)
+  actions,
+)(Search);

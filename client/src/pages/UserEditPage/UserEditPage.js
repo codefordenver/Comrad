@@ -1,13 +1,11 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 
 class UserEditPage extends Component {
-  state = {}
+  state = {};
 
   render() {
-    return (
-      <div>User Edit Page</div>
-    )
+    return <div>User Edit Page</div>;
   }
 }
 
-export default UserEditPage
+export default UserEditPage;

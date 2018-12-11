@@ -9,7 +9,7 @@ export const userFindOne = id => async dispatch => {
   } catch (e) {
     console.log(e);
   }
-}
+};
 
 export const userAdd = (obj, cb) => async dispatch => {
   try {
@@ -21,4 +21,4 @@ export const userAdd = (obj, cb) => async dispatch => {
   } catch (e) {
     dispatch({ type: USER_ERROR, payload: e.response.data });
   }
-}
+};

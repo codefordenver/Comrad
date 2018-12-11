@@ -1,1 +1,1 @@
-export { default } from './CalendarRoutes'
+export { default } from './CalendarRoutes';

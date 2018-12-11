@@ -3,30 +3,30 @@ const Schema = mongoose.Schema;
 
 const featureSchema = new Schema({
   title: {
-    type: String
+    type: String,
   },
 
   producer: {
-    type: String
+    type: String,
   },
 
   summary: {
-    type: String
+    type: String,
   },
 
   description: {
-    type: String
+    type: String,
   },
 
   created_at: {
     type: Date,
-    default: Date.now
+    default: Date.now,
   },
 
   updated_at: {
     type: Date,
-    default: Date.now
-  }
+    default: Date.now,
+  },
 });
 
 const Feature = mongoose.model('Feature', featureSchema);

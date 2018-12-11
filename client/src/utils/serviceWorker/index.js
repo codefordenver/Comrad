@@ -1,1 +1,1 @@
-export { default } from './registerServiceWorker'
+export { default } from './registerServiceWorker';

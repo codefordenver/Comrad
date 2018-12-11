@@ -1,1 +1,1 @@
-export { default } from './ErrorRoutes'
+export { default } from './ErrorRoutes';

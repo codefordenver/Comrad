@@ -9,7 +9,7 @@ const {
 beforeEach(connect);
 afterEach(disconnect);
 
-const route = '/api/traffic/';
+const route = '/api/user/';
 
 describe(route, () => {
   canGetArray(request(app), route);

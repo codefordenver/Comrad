@@ -1,1 +1,1 @@
-export { default } from './THead'
+export { default } from './THead';

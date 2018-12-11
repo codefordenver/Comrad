@@ -2,18 +2,17 @@ import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../../actions';
 
-export default (ChildComponent) => {
+export default ChildComponent => {
   class ComposedComponent extends Component {
-
     shouldNavigateAway = () => {
-      if(this.props.auth.status === 'fetching') {
-        return null
+      if (this.props.auth.status === 'fetching') {
+        return null;
       } else if (this.props.auth.status === false) {
-        return <div>Not authorized</div>
+        return <div>Not authorized</div>;
       } else {
-        return <ChildComponent {...this.props} />
+        return <ChildComponent {...this.props} />;
       }
-    }
+    };
 
     componentDidMount() {
       if (!this.props.auth.status) {
@@ -26,21 +25,20 @@ export default (ChildComponent) => {
         this.props.history.push('/login');
       }
     }
-    
+
     render() {
-      return (
-        <Fragment>
-          {this.shouldNavigateAway()}
-        </Fragment>
-      )
+      return <Fragment>{this.shouldNavigateAway()}</Fragment>;
     }
   }
 
   function mapStateToProps(state) {
     return {
-      auth: state.auth
-    }
+      auth: state.auth,
+    };
   }
 
-  return connect(mapStateToProps, actions)(ComposedComponent);
+  return connect(
+    mapStateToProps,
+    actions
+  )(ComposedComponent);
 };

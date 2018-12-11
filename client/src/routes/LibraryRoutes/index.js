@@ -1,1 +1,1 @@
-export { default } from './LibraryRoutes'
+export { default } from './LibraryRoutes';

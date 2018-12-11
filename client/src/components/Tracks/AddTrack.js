@@ -1,13 +1,9 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 
 class AddTrack extends Component {
   render() {
-    return (
-      <div>
-        Add Track        
-      </div>
-    )
+    return <div>Add Track</div>;
   }
 }
 
-export default AddTrack
+export default AddTrack;

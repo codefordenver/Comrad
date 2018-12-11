@@ -9,23 +9,16 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const initialState = {
   auth: {
     status: 'fetching',
-    errorMessage: ''
-  }
-}
+    errorMessage: '',
+  },
+};
 
 export default ({ children }) => {
-  
   const store = createStore(
-    reducers, 
-    initialState, 
-    composeEnhancers(
-      applyMiddleware(reduxThunk),
-    )
+    reducers,
+    initialState,
+    composeEnhancers(applyMiddleware(reduxThunk))
   );
 
-  return (
-    <Provider store={store}>
-      {children}
-    </Provider>
-  )
-}
+  return <Provider store={store}>{children}</Provider>;
+};

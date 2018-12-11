@@ -1,22 +1,22 @@
-import React, { Component } from 'react'
-import { Route } from 'react-router-dom'
+import React, { Component } from 'react';
+import { Route } from 'react-router-dom';
 
-import MainLayout from '../../layouts/MainLayout'
+import MainLayout from '../../layouts/MainLayout';
 
-import ReportHomePage from '../../pages/ReportHomePage'
+import ReportHomePage from '../../pages/ReportHomePage';
 
 class ReportRoutes extends Component {
-  state = {}
+  state = {};
 
   render() {
-    const { url } = this.props.match
+    const { url } = this.props.match;
 
     return (
       <MainLayout>
         <Route exact path={`${url}/`} component={ReportHomePage} />
       </MainLayout>
-    )
+    );
   }
 }
 
-export default ReportRoutes
+export default ReportRoutes;

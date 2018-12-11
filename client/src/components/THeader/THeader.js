@@ -1,11 +1,9 @@
-import React from 'react'
+import React from 'react';
 
 const THeader = props => {
-  const { children, styleName } = props
+  const { children, styleName } = props;
 
-  return (
-    <thead className={`theader ${styleName || ''}`}>{children}</thead>
-  )
-}
+  return <thead className={`theader ${styleName || ''}`}>{children}</thead>;
+};
 
-export default THeader
+export default THeader;

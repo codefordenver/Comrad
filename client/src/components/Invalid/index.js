@@ -1,1 +1,1 @@
-export { default } from './Invalid'
+export { default } from './Invalid';

@@ -1,8 +1,8 @@
-import React, { Component, Fragment } from 'react'
-import { connect } from 'react-redux'
+import React, { Component, Fragment } from 'react';
+import { connect } from 'react-redux';
 
 class LibraryTable extends Component {
-  state = {}
+  state = {};
 
   renderHeader() {
     return (
@@ -12,7 +12,7 @@ class LibraryTable extends Component {
           <th>Type</th>
         </tr>
       </thead>
-    )
+    );
   }
 
   renderBody() {
@@ -25,29 +25,29 @@ class LibraryTable extends Component {
           </tr>
         ))}
       </tbody>
-    )
+    );
   }
   render() {
     return (
       <Fragment>
         {this.props.library.length > 0 ? (
-              <table className="table">
-                {this.renderHeader()}
-                {this.renderBody()}
-              </table>
+          <table className="table">
+            {this.renderHeader()}
+            {this.renderBody()}
+          </table>
         ) : null}
       </Fragment>
-    )
+    );
   }
 }
 
 function mapStateToProps(state) {
   return {
-    library: state.search.library
-  }
+    library: state.search.library,
+  };
 }
 
 export default connect(
   mapStateToProps,
   null
-)(LibraryTable)
+)(LibraryTable);

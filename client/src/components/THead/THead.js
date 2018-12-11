@@ -1,11 +1,9 @@
-import React from 'react'
+import React from 'react';
 
 const THead = props => {
-  const { children, styleName } = props
+  const { children, styleName } = props;
 
-  return (
-    <th className={`thead ${styleName || ''}`}>{children}</th>
-  )
-}
+  return <th className={`thead ${styleName || ''}`}>{children}</th>;
+};
 
-export default THead
+export default THead;

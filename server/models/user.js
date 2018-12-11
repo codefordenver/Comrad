@@ -9,67 +9,69 @@ const userSchema = new Schema({
     unique: true,
     lowercase: true,
     validate: {
-      validator: (v) => {
-        return /^([a-zA-Z\d.-]+)@([a-zA-Z\d-]+\.)([a-zA-Z]{2,8})(.[a-zA-Z]{2,8})?$/.test(v);
+      validator: v => {
+        return /^([a-zA-Z\d.-]+)@([a-zA-Z\d-]+\.)([a-zA-Z]{2,8})(.[a-zA-Z]{2,8})?$/.test(
+          v
+        );
       },
-      message: props => `${props.value} is not a valid email`
-    }
+      message: props => `${props.value} is not a valid email`,
+    },
   },
 
   password: {
     type: String,
     required: true,
-    minlength: [3, 'Minimum 3 Characters']
+    minlength: [3, 'Minimum 3 Characters'],
   },
 
   first_name: {
     type: String,
     required: true,
-    minlength: [3, 'Minimum 3 Characters']
+    minlength: [3, 'Minimum 3 Characters'],
   },
 
   last_name: {
     type: String,
     required: true,
-    minlength: [3, 'Minimum 3 Characters']
+    minlength: [3, 'Minimum 3 Characters'],
   },
-  
+
   on_air_name: {
     type: String,
-    minlength: [3, 'Minimum 3 Characters']
+    minlength: [3, 'Minimum 3 Characters'],
   },
 
   role: {
     type: String,
     enum: ['DJ', 'Underwriting', 'Show Producer', 'Full Access', 'Admin'],
     required: true,
-    default: 'DJ'
+    default: 'DJ',
   },
 
   status: {
     type: String,
     enum: ['Active', 'Inactive'],
     required: true,
-    default: 'Active'
+    default: 'Active',
   },
 
   can_delete: {
     type: Boolean,
     required: true,
-    default: true
-  }
+    default: true,
+  },
 });
 
 userSchema.pre('save', function(next) {
   const user = this;
 
   bcrypt.genSalt(10, function(err, salt) {
-    if(err) {
+    if (err) {
       return next(err);
     }
 
     bcrypt.hash(user.password, salt, null, function(err, hash) {
-      if(err) {
+      if (err) {
         return next(err);
       }
 
@@ -81,13 +83,13 @@ userSchema.pre('save', function(next) {
 
 userSchema.methods.comparePassword = function(candidatePassword, callback) {
   bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
-    if(err) {
+    if (err) {
       return callback(err);
     }
 
     callback(null, isMatch);
   });
-}
+};
 
 const User = mongoose.model('User', userSchema);
 

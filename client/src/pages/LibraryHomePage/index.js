@@ -1,1 +1,1 @@
-export { default } from './LibraryHomePage'
+export { default } from './LibraryHomePage';

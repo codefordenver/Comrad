@@ -1,12 +1,10 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 
 class ReportHomePage extends Component {
-  state = {}
+  state = {};
 
   render() {
-    return (
-      <div>Report Home Page</div>
-    )
+    return <div>Report Home Page</div>;
   }
 }
 

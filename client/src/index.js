@@ -8,7 +8,8 @@ import Root from './components/Root';
 
 ReactDOM.render(
   <Root>
-    <App /> 
-  </Root>,  
-  document.getElementById('root'));
+    <App />
+  </Root>,
+  document.getElementById('root')
+);
 registerServiceWorker();

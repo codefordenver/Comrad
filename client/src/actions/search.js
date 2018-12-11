@@ -9,7 +9,7 @@ export const searchLibrary = searchTerm => async dispatch => {
   } catch (e) {
     console.log(e);
   }
-}
+};
 
 export const searchUsers = searchTerm => async dispatch => {
   try {
@@ -19,4 +19,4 @@ export const searchUsers = searchTerm => async dispatch => {
   } catch (e) {
     console.log(e);
   }
-}
+};

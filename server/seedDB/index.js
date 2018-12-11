@@ -25,7 +25,7 @@ async function seedDB() {
         const artist = await db.Artist.findOne({ name: seed.album.artist });
         seed.album.artist = artist._id;
         const album = await db.Album.create(seed.album);
-        for (track of seed.tracks) {
+        for (let track of seed.tracks) {
           track.album = album._id;
           if (!track.artists) {
             track.artists = [artist._id];

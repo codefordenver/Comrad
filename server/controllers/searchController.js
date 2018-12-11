@@ -113,10 +113,18 @@ module.exports = {
     );
 
     const data = [...results].sort((a, b) => {
-      if (a.relevance > b.relevance) return -1;
-      if (a.relevance < b.relevance) return 1;
-      if (a.name < b.name) return -1;
-      if (a.name > b.name) return 1;
+      if (a.relevance > b.relevance) {
+        return -1;
+      }
+      if (a.relevance < b.relevance) {
+        return 1;
+      }
+      if (a.name < b.name) {
+        return -1;
+      }
+      if (a.name > b.name) {
+        return 1;
+      }
       return 0;
     });
 
@@ -132,8 +140,12 @@ module.exports = {
     });
 
     const data = [...userResults].sort((a, b) => {
-      if (a.last_name < b.last_name) return -1;
-      if (a.last_name > b.last_name) return 1;
+      if (a.last_name < b.last_name) {
+        return -1;
+      }
+      if (a.last_name > b.last_name) {
+        return 1;
+      }
       return 0;
     });
 

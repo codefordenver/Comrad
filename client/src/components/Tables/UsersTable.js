@@ -2,8 +2,8 @@ import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 
 class UsersTable extends Component {
-  state = {}
-  
+  state = {};
+
   renderHeader() {
     return (
       <thead>
@@ -15,11 +15,11 @@ class UsersTable extends Component {
           <th />
         </tr>
       </thead>
-    )
+    );
   }
 
   renderBody() {
-    const { filter } = this.props
+    const { filter } = this.props;
 
     return (
       <tbody>
@@ -35,12 +35,12 @@ class UsersTable extends Component {
                 <td>{result.status}</td>
                 <td>Buttons go here</td>
               </tr>
-            )
+            );
           }
-          return null
+          return null;
         })}
       </tbody>
-    )
+    );
   }
 
   render() {
@@ -53,17 +53,17 @@ class UsersTable extends Component {
           </table>
         ) : null}
       </Fragment>
-    )
+    );
   }
 }
 
 function mapStateToProps(state) {
   return {
-    users: state.search.users
-  }
+    users: state.search.users,
+  };
 }
 
 export default connect(
   mapStateToProps,
   null
-)(UsersTable)
+)(UsersTable);

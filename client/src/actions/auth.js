@@ -8,11 +8,9 @@ export const loginUser = (userInfo, callback) => async dispatch => {
     dispatch({ type: AUTH_LOGIN, payload: response.data });
 
     callback();
-
   } catch (e) {
     // const { status } = e.response;
     // console.log(e.response);
-
     // switch(status) {
     //   case 401:
     //     dispatch({ type: AUTH_ERROR, payload: 'Invalid Email/Password Combination' });
@@ -31,9 +29,8 @@ export const logoutUser = callback => async dispatch => {
     dispatch({ type: AUTH_LOGOUT });
 
     callback();
-
   } catch (e) {
-    dispatch({ type: AUTH_ERROR, payload: 'Something went Wrong!'})
+    dispatch({ type: AUTH_ERROR, payload: 'Something went Wrong!' });
   }
 };
 
@@ -42,7 +39,6 @@ export const fetchUser = () => async dispatch => {
     const response = await axios.get('/api/auth/current');
 
     dispatch({ type: AUTH_LOGIN, payload: response.data });
-
   } catch (e) {
     dispatch({ type: AUTH_ERROR, payload: '' });
   }

@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { SHOW_GET, SHOW_POST, SHOW_UPDATE, SHOW_DELETE, SHOW_ERROR } from "../actions/types";
 
 const initialState = [
@@ -34,9 +35,7 @@ const initialState = [
 export default function(state = initialState, { type, payload }) {
   switch (type) {
     case SHOW_GET:
-      return {
-        payload
-      };
+      return Object.assign({}, state, _.mapKeys(payload, "id"));
 
     case SHOW_POST:
       const updatedState = state.concat(payload);

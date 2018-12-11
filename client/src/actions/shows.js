@@ -11,7 +11,7 @@ import {
 export const getShow = show => async dispatch => {
   try {
     const response = await axios.get(`/api/show/${show}`);
-
+    
     dispatch({ type: SHOW_GET, payload: response.data });
   } catch (e) {
     dispatch({ type: SHOW_ERROR, payload: "Get Show Error" });
@@ -20,9 +20,9 @@ export const getShow = show => async dispatch => {
 
 export const postShow = show => async dispatch => {
   try {
-    console.log("Show Post Action: " + show);
+    const response = await axios.post(`/api/show/`, show);
 
-    dispatch({ type: SHOW_POST, payload: show });
+    dispatch({ type: SHOW_POST, payload: response.data });
   } catch (e) {
     dispatch({ type: SHOW_ERROR, payload: "Posting New Show Error" });
   }

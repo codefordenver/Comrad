@@ -6,6 +6,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "classnames": "^2.2.6",
+    "lodash": "^4.17.11",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
     "react-redux": "^5.0.7",
@@ -24,10 +25,12 @@
     "watch:sass": "node-sass-chokidar ./src/sass/index.scss -o ./src --watch"
   },
   "devDependencies": {
+    "axios-mock-adapter": "^1.15.0",
     "concurrently": "^3.6.1",
     "enzyme": "^3.5.0",
     "enzyme-adapter-react-16": "^1.3.0",
     "moxios": "^0.4.0",
-    "node-sass-chokidar": "^1.3.3"
+    "node-sass-chokidar": "^1.3.3",
+    "redux-mock-store": "^1.5.3"
   }
 }

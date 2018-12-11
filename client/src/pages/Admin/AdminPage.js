@@ -1,4 +1,9 @@
 import React, { Component } from 'react';
+<<<<<<< Updated upstream
+=======
+import SearchBox from '../../components/Search-Box/SearchBox';
+
+>>>>>>> Stashed changes
 
 class AdminPage extends Component {
   state = {};
@@ -7,6 +12,19 @@ class AdminPage extends Component {
     return (
       <div className="admin__page">
         Admin Page
+<<<<<<< Updated upstream
+=======
+
+        <p>
+          <SearchBox searchBoxType="active" />
+        </p>
+
+
+        <p>
+          <SearchBox searchBoxType="disabled" />
+        </p>
+
+>>>>>>> Stashed changes
       </div>
     )
   }

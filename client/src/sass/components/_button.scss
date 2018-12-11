@@ -42,4 +42,68 @@
   &:hover {
     color: $color-primary;
   }
+<<<<<<< Updated upstream
 }
+=======
+}
+
+.primary--default{
+  color: white;
+  background-color: #007283;
+}
+
+.primary--default:hover{
+  color: white;
+  background-color: #7DB2BF;
+}
+
+.primary--default:active{
+  color: white;
+  background-color: #7DB2BF;
+  border: #555759 solid 2px;
+}
+
+.primary--default:focus{
+  color: white;
+  background-color: #A4A9AD;
+  border: #555759 3px dotted; 
+}
+
+.primary--disabled{
+  color: white;
+  background-color: #DBDCDD;
+  cursor: default;
+}
+
+.secondary--primary{
+  background-color: white;
+  color: #007283;
+  border: #007283 solid 3px;
+}
+
+.secondary--primary:hover{
+  background-color: white;
+  color: #7DB2BF;
+  border: #7DB2BF solid 3px;
+}
+
+.secondary--primary:active{
+  background-color: white;
+  color: #7DB2BF;
+  border: #007283 solid 2px;
+}
+
+.secondary--primary:focus{
+  background-color: white;
+  color: #A4A9AD;
+  border: #A4A9AD dotted 3px;  
+}
+
+
+.secondary--disabled{
+  background-color: white;
+  color: #DBDCDD;
+  border: #DBDCDD solid 3px; 
+  cursor: default; 
+}
+>>>>>>> Stashed changes

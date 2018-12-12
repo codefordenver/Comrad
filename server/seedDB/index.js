@@ -1,8 +1,6 @@
 const mongoose = require('mongoose');
 const keys = require('../config/keys');
-const artistSeeds = require('./data/artists.json');
-const albumSeeds = require('./data/albums.json');
-const userSeeds = require('./data/users.json');
+const seed = require('./data');
 const db = require('../models');
 
 async function seedDB() {
@@ -14,18 +12,23 @@ async function seedDB() {
 
     await mongoose.connection.dropDatabase();
 
-    await Promise.all(userSeeds.map(async seed => await db.User.create(seed)));
+    // Users
+    await Promise.all(seed.users.map(async user => await db.User.create(user)));
 
+    // Artists
     await Promise.all(
-      artistSeeds.map(async seed => await db.Artist.create(seed)),
+      seed.artists.map(async artist => await db.Artist.create(artist)),
     );
 
+    // Albums
     await Promise.all(
-      albumSeeds.map(async seed => {
-        const artist = await db.Artist.findOne({ name: seed.album.artist });
-        seed.album.artist = artist._id;
-        const album = await db.Album.create(seed.album);
-        for (let track of seed.tracks) {
+      seed.albums.map(async albumSeed => {
+        const artist = await db.Artist.findOne({
+          name: albumSeed.album.artist,
+        });
+        albumSeed.album.artist = artist._id;
+        const album = await db.Album.create(albumSeed.album);
+        for (let track of albumSeed.tracks) {
           track.album = album._id;
           if (!track.artists) {
             track.artists = [artist._id];
@@ -34,6 +37,34 @@ async function seedDB() {
         }
       }),
     );
+
+    // Announcements
+    await Promise.all(
+      seed.announcements.map(async announcement =>
+        db.Announcement.create(announcement),
+      ),
+    );
+
+    // Features
+    await Promise.all(
+      seed.features.map(async feature => db.Feature.create(feature)),
+    );
+
+    // Giveaways
+    await Promise.all(
+      seed.giveaway.map(async giveaway => db.Giveaway.create(giveaway)),
+    );
+
+    // Shows
+    await Promise.all(seed.show.map(async show => db.Show.create(show)));
+
+    // Traffic
+    await Promise.all(
+      seed.traffic.map(async traffic => db.Traffic.create(traffic)),
+    );
+
+    // Venue
+    await Promise.all(seed.venue.map(async venue => db.Venue.create(venue)));
   } catch (err) {
     console.log(err);
   }
@@ -41,7 +72,10 @@ async function seedDB() {
 
 if (require.main === module) {
   seedDB()
-    .then(process.exit)
+    .then(() => {
+      console.log('Seeded DB successfully!');
+      process.exit();
+    })
     .catch(err => {
       console.log(err);
       process.exit(1);

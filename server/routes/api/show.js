@@ -3,10 +3,8 @@ const showController = require('../../controllers/showController');
 
 router
   .route('/')
-  .get(showController.EXAMPLE)
+  .get(showController.findAll)
   .post(showController.create);
-
-//  .get(showController.findAll)
 
 router
   .route('/:id')

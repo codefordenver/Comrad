@@ -3,10 +3,8 @@ const trafficController = require('../../controllers/trafficController');
 
 router
   .route('/')
-  .get(trafficController.EXAMPLE)
+  .get(trafficController.findAll)
   .post(trafficController.create);
-
-//.get(trafficController.findAll)
 
 router
   .route('/:id')

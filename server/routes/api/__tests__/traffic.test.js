@@ -1,13 +1,20 @@
 const request = require('supertest');
 const { connect, disconnect } = require('../../../tests/mongoose');
 const app = require('../../../app');
+const {
+  canGetArray,
+  canGetValidObjectByID,
+} = require('../../../tests/common/routeTests');
 
 beforeEach(connect);
 afterEach(disconnect);
 
-describe('/api/traffic/', () => {
-  test('returns status 200', async () => {
-    const response = await request(app).get('/api/traffic/');
-    expect(response.status).toBe(200);
-  });
+const route = '/api/traffic';
+
+describe(`${route}/`, () => {
+  canGetArray(request(app), route);
+});
+
+describe(`${route}/:id`, () => {
+  canGetValidObjectByID(request(app), route);
 });

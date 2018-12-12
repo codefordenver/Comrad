@@ -9,12 +9,12 @@ const {
 beforeEach(connect);
 afterEach(disconnect);
 
-const route = '/api/show';
+const route = '/api/user';
 
-describe(route, () => {
+describe(`${route}/`, () => {
   canGetArray(request(app), route);
 });
 
-describe(`${route}:id`, () => {
+describe(`${route}/:id`, () => {
   canGetValidObjectByID(request(app), route);
 });

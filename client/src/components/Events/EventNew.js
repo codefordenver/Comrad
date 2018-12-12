@@ -74,16 +74,24 @@ class EventNew extends Component {
     }
   };
 
+  handleFormCancel = e => {
+    e.preventDefault();
+
+    this.setState(initialState);
+  }
+
   render() {
     return (
       <main className="event">
         <section className="event__body">
+
         {console.log(this.state)}
+
           <Card>
             <CardBody>
               <CardTitle className="text-center">Create New Event:</CardTitle>
 
-              <Form onSubmit={this.handleFormSubmit}>
+              <Form>
                 <FormGroup>
                   <Label>Title</Label>
                   <Input
@@ -198,9 +206,9 @@ class EventNew extends Component {
                 </FormGroup>
 
                 <FormGroup className="text-center">
-                  <Button type="primary">Create Event</Button>
+                  <Button onClick={this.handleFormSubmit} type="primary">Create Event</Button>
 
-                  <Button type="secondary">Cancel</Button>
+                  <Button onClick={this.handleFormCancel} type="secondary">Cancel</Button>
                 </FormGroup>
               </Form>
             </CardBody>

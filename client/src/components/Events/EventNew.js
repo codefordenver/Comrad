@@ -178,11 +178,11 @@ class EventNew extends Component {
                 <FormGroup>
                   <Label>Guests</Label>
                   <Input
-                    name="guest"
+                    name="guests"
                     onChange={this.handleInputChange}
                     onBlur={this.handleInputBlur}
                     type="text"
-                    value={this.state.guest}
+                    value={this.state.guests}
                   />
                 </FormGroup>
 

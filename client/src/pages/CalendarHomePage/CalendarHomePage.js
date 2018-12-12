@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import * as actions from "../../actions/shows";
-
+import _ from "lodash";
+import moment from "moment";
 import EventNew from "../../components/Events/EventNew";
 
 class CalendarHomePage extends Component {
@@ -10,7 +11,7 @@ class CalendarHomePage extends Component {
 
     this.state = {
       newShow: null,
-      shows: []
+      shows: {}
     };
   }
 
@@ -27,16 +28,23 @@ class CalendarHomePage extends Component {
   render() {
     return (
       <div className="calendar__view">
-        <EventNew/>
-        {this.state.shows.map(show => {
-          return (
-            <div>
-              <h1>{show.title}</h1>
-              <p> Start: {show.start.toString()}</p>
-              <p> End: {show.end.toString()}</p>
-            </div>
-          );
-        })}
+        <EventNew />
+
+        {this.props.shows
+          ? _.map(this.props.shows, show => {
+              return (
+                <div key={show._id}>
+                  <h1>{show.show_details.title}</h1>
+                  <p>Start Time: {moment(show.show_start_time_utc).format("hh:mm a")} </p>
+                  <p>End Time: {moment(show.show_end_time_utc).format("hh:mm a")}</p>
+
+                  <h2>Repeat Rules</h2>
+                  <p>Show Start Date: {show.repeat_rule.repeat_start_date}</p>
+                  <p>Show End Date: {show.repeat_rule.repeat_end_date}</p>
+                </div>
+              );
+            })
+          : ""}
       </div>
     );
   }

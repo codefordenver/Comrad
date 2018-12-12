@@ -2,9 +2,13 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import * as actions from "../../actions";
 import validate from "../../utils/validation";
-import logo from "../../images/kgnu_logo.png";
 
-import Button from '../../components/Button'
+import "react-dates/initialize";
+import { SingleDatePicker } from "react-dates";
+import moment from "moment";
+import "react-dates/lib/css/_datepicker.css";
+
+import Button from "../../components/Button";
 import Card from "../../components/Card";
 import CardBody from "../../components/CardBody";
 import CardImg from "../../components/CardImg";
@@ -24,8 +28,14 @@ const initialState = {
   host: "",
   guests: "",
   playlist: "",
-  show_start_time_utc: "",
-  show_end_time_utc: ""
+
+  show_start_time_utc: moment(),
+  show_end_time_utc: moment().add(1, "hour"),
+
+  repeat_start_date: moment(),
+  repeat_end_date: moment("1900", "YYYY"),
+
+  focused: false
 };
 
 class EventNew extends Component {
@@ -39,6 +49,14 @@ class EventNew extends Component {
     });
   };
 
+  handleInputChangeTime = e => {
+    const { name, value } = e.target;
+
+    this.setState({
+      [name]: moment(value, "HH:mm")
+    });
+  };
+
   handleInputBlur = e => {
     validate.input(e.target);
   };
@@ -46,37 +64,70 @@ class EventNew extends Component {
   handleFormSubmit = e => {
     e.preventDefault();
 
-    const { email, password } = this.state;
     const valid = validate.submit();
 
+    this.props.postShow(this.state);
+
+    //NEED TO SETUP VALIDATION
     if (valid) {
-      this.props.loginUser({ email, password }, () => {
-        this.props.history.push("/");
-      });
+      this.props.postShow(this.state);
     }
   };
 
   render() {
-    const { errorMessage } = this.props.auth;
-
     return (
       <main className="event">
         <section className="event__body">
+        {console.log(this.state)}
           <Card>
             <CardBody>
-              <CardTitle className="text-center" >Create New Event:</CardTitle>
-
-              {errorMessage ? <div>{errorMessage}</div> : null}
+              <CardTitle className="text-center">Create New Event:</CardTitle>
 
               <Form onSubmit={this.handleFormSubmit}>
-                <Label>Title</Label>
                 <FormGroup>
+                  <Label>Title</Label>
                   <Input
                     name="title"
                     onChange={this.handleInputChange}
                     onBlur={this.handleInputBlur}
                     type="text"
                     value={this.state.title}
+                  />
+                </FormGroup>
+
+                <FormGroup>
+                  <Label>Show Start Date</Label>
+                  <SingleDatePicker
+                    date={this.state.repeat_start_date} // momentPropTypes.momentObj or null
+                    onDateChange={repeat_start_date =>
+                      this.setState({ repeat_start_date })
+                    } // PropTypes.func.isRequired
+                    focused={this.state.focused} // PropTypes.bool
+                    onFocusChange={({ focused }) => this.setState({ focused })} // PropTypes.func.isRequired
+                    id="show_start_date_picker" // PropTypes.string.isRequired,
+                    numberOfMonths={1}
+                  />
+                </FormGroup>
+
+                <FormGroup>
+                  <Label>Show Start Time</Label>
+                  <Input
+                    name="show_start_time_utc"
+                    onChange={this.handleInputChangeTime}
+                    onBlur={this.handleInputBlur}
+                    type="time"
+                    value={moment(this.state.show_start_time_utc).format("HH:mm")}
+                  />
+                </FormGroup>
+
+                <FormGroup>
+                  <Label>Show End Time</Label>
+                  <Input
+                    name="show_end_time_utc"
+                    onChange={this.handleInputChangeTime}
+                    onBlur={this.handleInputBlur}
+                    type="time"
+                    value={moment(this.state.show_end_time_utc).format("HH:mm")}
                   />
                 </FormGroup>
 
@@ -146,17 +197,6 @@ class EventNew extends Component {
                   />
                 </FormGroup>
 
-                <FormGroup>
-                  <Label>Playlist</Label>
-                  <Input
-                    name="playlist"
-                    onChange={this.handleInputChange}
-                    onBlur={this.handleInputBlur}
-                    type="text"
-                    value={this.state.playlist}
-                  />
-                </FormGroup>
-
                 <FormGroup className="text-center">
                   <Button type="primary">Create Event</Button>
 
@@ -171,13 +211,7 @@ class EventNew extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    auth: state.auth
-  };
-}
-
 export default connect(
-  mapStateToProps,
+  null,
   actions
 )(EventNew);

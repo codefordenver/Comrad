@@ -19,6 +19,6 @@ const patterns = {
   show_start_time_utc: /^[a-zA-Z0-9\s]{1,}$/,
   show_end_time_utc: /^[a-zA-Z0-9\s]{1,}$/,
 
-}
+};
 
 export default patterns;

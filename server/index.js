@@ -7,9 +7,9 @@ const PORT = process.env.PORT || 5000;
 
 mongoose.connect(
   keys.mongoURI,
-  { useNewUrlParser: true }
+  { useNewUrlParser: true },
 );
 
 app.listen(PORT, () =>
-  console.log(`\n🌎  ==> API Server now listening on PORT ${PORT}!\n`)
+  console.log(`\n🌎  ==> API Server now listening on PORT ${PORT}!\n`),
 );

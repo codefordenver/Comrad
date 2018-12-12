@@ -9,5 +9,5 @@ module.exports = {
   Track: require('./track'),
   Traffic: require('./traffic'),
   User: require('./user'),
-  Venue: require('./venue')
-}
+  Venue: require('./venue'),
+};

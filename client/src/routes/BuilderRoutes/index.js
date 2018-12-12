@@ -1,1 +1,1 @@
-export { default } from './BuilderRoutes'
+export { default } from './BuilderRoutes';

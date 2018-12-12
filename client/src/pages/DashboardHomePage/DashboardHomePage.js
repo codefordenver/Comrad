@@ -4,9 +4,9 @@ import MyShowsTable from '../../components/Tables/MyShowsTable';
 import PastShowsTable from '../../components/Tables/PastShowsTable';
 
 class DashboardHomePage extends Component {
-  state = {}
+  state = {};
 
-  render() { 
+  render() {
     return (
       <div className="dashboard__home">
         <div className="dashboard__shows">
@@ -19,7 +19,7 @@ class DashboardHomePage extends Component {
           <h1>Currently On Air</h1>
         </div>
       </div>
-    )
+    );
   }
 }
 

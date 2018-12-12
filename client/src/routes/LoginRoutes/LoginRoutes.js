@@ -1,17 +1,17 @@
-import React, { Fragment } from 'react'
-import { Route } from 'react-router-dom'
+import React from 'react';
+import { Route } from 'react-router-dom';
 
-import AuthLayout from '../../layouts/AuthLayout'
-import LoginPage from '../../pages/LoginPage'
+import AuthLayout from '../../layouts/AuthLayout';
+import LoginPage from '../../pages/LoginPage';
 
 const LoginRoutes = props => {
-  const { url } = props.match
+  const { url } = props.match;
 
   return (
     <AuthLayout>
       <Route exact path={`${url}/`} component={LoginPage} />
     </AuthLayout>
-  )
-}
+  );
+};
 
-export default LoginRoutes
+export default LoginRoutes;

@@ -1,25 +1,23 @@
-import React, { Component, Fragment } from 'react'
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import { connect } from 'react-redux'
-import * as actions from '../../actions'
+import React, { Component } from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { connect } from 'react-redux';
+import * as actions from '../../actions';
 
-import NavTest from '../NavTest'
+import NavTest from '../NavTest';
 
-import AdminRoutes from '../../routes/AdminRoutes'
-import BuilderRoutes from '../../routes/BuilderRoutes'
-import CalendarRoutes from '../../routes/CalendarRoutes'
-import DashboardRoutes from '../../routes/DashboardRoutes'
-import ErrorRoutes from '../../routes/ErrorRoutes'
-import LibraryRoutes from '../../routes/LibraryRoutes'
-import LoginRoutes from '../../routes/LoginRoutes'
-import ReportRoutes from '../../routes/ReportRoutes'
-import UserRoutes from '../../routes/UserRoutes'
-
-
+import AdminRoutes from '../../routes/AdminRoutes';
+import BuilderRoutes from '../../routes/BuilderRoutes';
+import CalendarRoutes from '../../routes/CalendarRoutes';
+import DashboardRoutes from '../../routes/DashboardRoutes';
+import ErrorRoutes from '../../routes/ErrorRoutes';
+import LibraryRoutes from '../../routes/LibraryRoutes';
+import LoginRoutes from '../../routes/LoginRoutes';
+import ReportRoutes from '../../routes/ReportRoutes';
+import UserRoutes from '../../routes/UserRoutes';
 
 class App extends Component {
   componentDidMount() {
-    this.props.fetchUser()
+    this.props.fetchUser();
   }
 
   render() {
@@ -40,11 +38,11 @@ class App extends Component {
           </Switch>
         </div>
       </Router>
-    )
+    );
   }
 }
 
 export default connect(
   null,
-  actions
-)(App)
+  actions,
+)(App);

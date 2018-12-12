@@ -23,39 +23,39 @@ class NavTest extends Component {
     const links = [
       {
         text: 'Login',
-        route: '/login'
+        route: '/login',
       },
       {
         text: 'Admin',
-        route: '/admin'
+        route: '/admin',
       },
       {
         text: 'Builder',
-        route: '/builder'
+        route: '/builder',
       },
       {
         text: 'Calendar',
-        route: '/calendar'
+        route: '/calendar',
       },
       {
         text: 'Dashboard',
-        route: '/dashboard'
+        route: '/dashboard',
       },
       {
         text: 'Library',
-        route: '/library'
+        route: '/library',
       },
       {
         text: 'Report',
-        route: '/report'
+        route: '/report',
       },
       {
         text: 'User',
-        route: '/user'
-      }
+        route: '/user',
+      },
     ];
 
-    const { status } = this.props.auth
+    const { status } = this.props.auth;
 
     return (
       <ul className="nav-test">
@@ -64,9 +64,12 @@ class NavTest extends Component {
             {link.text}
           </Link>
         ))}
-          <button className="button" onClick={status ? this.handleQuickSignOut : this.handleQuickSignIn}>
-            {status ? "Quick Sign Out" : "Quick Sign In"}
-          </button>
+        <button
+          className="button"
+          onClick={status ? this.handleQuickSignOut : this.handleQuickSignIn}
+        >
+          {status ? 'Quick Sign Out' : 'Quick Sign In'}
+        </button>
       </ul>
     );
   }
@@ -74,11 +77,11 @@ class NavTest extends Component {
 
 function mapStateToProps(state) {
   return {
-    auth: state.auth
-  }
+    auth: state.auth,
+  };
 }
 
 export default connect(
   mapStateToProps,
-  actions
+  actions,
 )(NavTest);

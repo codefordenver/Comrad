@@ -1,7 +1,7 @@
-import React from 'react'
+import React from 'react';
 
 export const Filter = props => {
-  const { filterItems, handleFilterClick } = props
+  const { filterItems, handleFilterClick } = props;
 
   return (
     <ul className="filter__list">
@@ -12,12 +12,13 @@ export const Filter = props => {
                 className="filter__span"
                 onClick={
                   handleFilterClick ? () => handleFilterClick(item) : null
-                }>
+                }
+              >
                 {item}
               </span>
             </li>
           ))
         : null}
     </ul>
-  )
-}
+  );
+};

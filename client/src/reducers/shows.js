@@ -12,21 +12,21 @@ export default function(state = initialState, { type, payload }) {
       return Object.assign({}, state, _.mapKeys([payload], "_id"));
 
     case SHOW_UPDATE:
-      const {existingShow, updatedShow} = payload;
-      const {start, end} = updatedShow;
+      const { existingShow, updatedShow } = payload;
+      const { start, end } = updatedShow;
 
       const nextShows = state.map(stateShow => {
         return stateShow.id === existingShow.id
           ? { ...stateShow, start, end }
           : stateShow;
       });
-      return nextShows
+      return nextShows;
 
     //Need some type of error response from server.
     case SHOW_ERROR:
       return {
-        status: "ERROR",
-        errorMessage: payload
+        status: 'ERROR',
+        errorMessage: payload,
       };
 
     default:

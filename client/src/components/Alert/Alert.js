@@ -1,61 +1,61 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 
 class Alert extends Component {
   getAlertClass(props) {
-    const { type } = props
-    let alertClass = 'alert'
+    const { type } = props;
+    let alertClass = 'alert';
 
     switch (type) {
       case 'success':
-        return (alertClass += ' alert--success')
+        return (alertClass += ' alert--success');
       case 'info':
-        return (alertClass += ' alert--info')
+        return (alertClass += ' alert--info');
       case 'error':
-        return (alertClass += ' alert--error')
+        return (alertClass += ' alert--error');
       case 'warning':
-        return (alertClass += ' alert--warning')
+        return (alertClass += ' alert--warning');
       default:
-        break
+        break;
     }
   }
 
   getAlertHeader(props) {
-    const { type } = props
+    const { type } = props;
 
     switch (type) {
       case 'success':
-        return 'Success Status'
+        return 'Success Status';
       case 'info':
-        return 'Information Status'
+        return 'Information Status';
       case 'error':
-        return 'Error Status'
+        return 'Error Status';
       case 'warning':
-        return 'Warning Status'
+        return 'Warning Status';
       default:
-        break
+        break;
     }
   }
 
   getIconClass(props) {
-    const { type } = props
-    let iconClass = 'fas fa-2x'
+    const { type } = props;
+    let iconClass = 'fas fa-2x';
 
     switch (type) {
       case 'success':
-        return (iconClass += ' fa-check-circle')
+        return (iconClass += ' fa-check-circle');
       case 'info':
-        return (iconClass += ' fa-info-circle')
+        return (iconClass += ' fa-info-circle');
       case 'error':
-        return (iconClass += ' fa-exclamation-circle')
+        return (iconClass += ' fa-exclamation-circle');
       case 'warning':
-        return (iconClass += ' fa-times-circle')
+        return (iconClass += ' fa-times-circle');
       default:
-        break
+        break;
     }
   }
   render() {
-    const { getAlertClass, getAlertHeader, getIconClass, props } = this
-    const { children } = props
+    const { getAlertClass, getAlertHeader, getIconClass, props } = this;
+    const { children } = props;
 
     return (
       <div className={getAlertClass(props)}>
@@ -67,8 +67,8 @@ class Alert extends Component {
           <div className="alert__body">{children}</div>
         </div>
       </div>
-    )
+    );
   }
 }
 
-export default Alert
+export default Alert;

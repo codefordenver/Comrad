@@ -6,11 +6,10 @@ import user from './user';
 import shows from './shows';
 import traffic from './traffic';
 
-
 export default combineReducers({
   auth,
   search,
   shows,
   traffic,
-  user
+  user,
 });

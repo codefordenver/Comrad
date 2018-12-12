@@ -52,11 +52,11 @@ class CalendarHomePage extends Component {
 
 function mapStateToProps(state) {
   return {
-    shows: state.shows
+    shows: state.shows,
   };
 }
 
 export default connect(
   mapStateToProps,
-  actions
+  actions,
 )(CalendarHomePage);

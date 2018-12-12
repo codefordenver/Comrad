@@ -2,21 +2,21 @@ import { SEARCH_LIBRARY, SEARCH_USERS } from '../actions/types';
 
 const initialState = {
   library: [],
-  users: []
-}
+  users: [],
+};
 
-export default function(state = initialState, {type, payload}) {
-  switch(type) {
-    case SEARCH_LIBRARY: 
+export default function(state = initialState, { type, payload }) {
+  switch (type) {
+    case SEARCH_LIBRARY:
       return {
         ...state,
-        library: payload
-      }
+        library: payload,
+      };
     case SEARCH_USERS:
       return {
         ...state,
-        users: payload
-      }
+        users: payload,
+      };
     default:
       return state;
   }

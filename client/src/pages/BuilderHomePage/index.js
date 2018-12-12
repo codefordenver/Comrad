@@ -1,1 +1,1 @@
-export { default } from './BuilderHomePage'
+export { default } from './BuilderHomePage';

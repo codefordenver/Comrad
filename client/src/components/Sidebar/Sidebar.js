@@ -1,52 +1,52 @@
-import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 class Sidebar extends Component {
-  state = {}
+  state = {};
 
   render() {
     const items = [
       {
         name: 'home',
         url: '/',
-        iconClass: 'fas fa-home'
+        iconClass: 'fas fa-home',
       },
       {
         name: 'library',
         url: '/library',
-        iconClass: 'fas fa-music'
+        iconClass: 'fas fa-music',
       },
       {
         name: 'microphone',
         url: '/',
-        iconClass: 'fas fa-microphone'
+        iconClass: 'fas fa-microphone',
       },
       {
         name: 'user',
         url: '/user',
-        iconClass: 'fas fa-user'
+        iconClass: 'fas fa-user',
       },
       {
         name: 'calendar',
         url: '/calendar',
-        iconClass: 'fas fa-calendar-alt'
+        iconClass: 'fas fa-calendar-alt',
       },
       {
         name: 'calendar-check',
         url: '/',
-        iconClass: 'fas fa-calendar-check'
+        iconClass: 'fas fa-calendar-check',
       },
       {
         name: 'report',
         url: '/report',
-        iconClass: 'fas fa-chart-bar'
+        iconClass: 'fas fa-chart-bar',
       },
       {
         name: 'copy',
         url: '/',
-        iconClass: 'fas fa-copy'
-      }
-    ]
+        iconClass: 'fas fa-copy',
+      },
+    ];
 
     return (
       <nav className="sidebar">
@@ -60,8 +60,8 @@ class Sidebar extends Component {
           ))}
         </ul>
       </nav>
-    )
+    );
   }
 }
 
-export default Sidebar
+export default Sidebar;

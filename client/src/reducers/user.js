@@ -1,18 +1,22 @@
-import { USER_FIND_ONE, USER_ADD, USER_ERROR } from '../actions/types';
+import {
+  //USER_FIND_ONE,
+  USER_ADD,
+  USER_ERROR,
+} from '../actions/types';
 
-const initialState = {}
+const initialState = {};
 
-export default (state = initialState, {type, payload}) => {
-  switch(type) {
+export default (state = initialState, { type, payload }) => {
+  switch (type) {
     case USER_ADD:
       return {
-        ...payload
-      } 
+        ...payload,
+      };
     case USER_ERROR:
       return {
-        ...payload
-      }
+        ...payload,
+      };
     default:
       return state;
   }
-}
+};

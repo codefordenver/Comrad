@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../../actions';
-import validate from '../../utils/validation';
+import { validateInput } from '../../utils/validation';
 import logo from '../../images/kgnu_logo.png';
 
 import Button from '../../components/Button';
@@ -10,6 +10,7 @@ import Card from '../../components/Card';
 import CardBody from '../../components/CardBody';
 import CardImg from '../../components/CardImg';
 import CardTitle from '../../components/CardTitle';
+import Feedback from '../../components/Feedback';
 import Form from '../../components/Form';
 import FormGroup from '../../components/FormGroup';
 import Input from '../../components/Input';
@@ -31,21 +32,17 @@ class LoginPage extends Component {
     });
   };
 
-  handleInputBlur = e => {
-    validate.input(e.target);
-  };
-
   handleFormSubmit = e => {
     e.preventDefault();
 
     const { email, password } = this.state;
-    const valid = validate.submit();
+    // const valid = validate.submit();
 
-    if (valid) {
-      this.props.loginUser({ email, password }, () => {
-        this.props.history.push('/');
-      });
-    }
+    // if (valid) {
+    //   this.props.loginUser({ email, password }, () => {
+    //     this.props.history.push('/');
+    //   });
+    // }
   };
 
   render() {
@@ -65,19 +62,19 @@ class LoginPage extends Component {
               {errorMessage ? <div>{errorMessage}</div> : null}
 
               <Form onSubmit={this.handleFormSubmit}>
-                <Label>Email</Label>
                 <FormGroup>
                   <Input
                     name="email"
                     onChange={this.handleInputChange}
-                    onBlur={this.handleInputBlur}
                     type="text"
                     value={this.state.email}
+                    validate
                   />
+                  <Label htmlFor="email">Email</Label>
+                  <Feedback>Must be Valid Email</Feedback>
                 </FormGroup>
 
                 <FormGroup>
-                  <Label>Password</Label>
                   <Input
                     name="password"
                     onChange={this.handleInputChange}
@@ -85,13 +82,11 @@ class LoginPage extends Component {
                     type="password"
                     value={this.state.password}
                   />
+                  <Label>Password</Label>
                 </FormGroup>
 
-                <FormGroup className="text-center">
-                  <Button type="primary">Sign In</Button>
-
-                  <Button type="primary">Reset Password</Button>
-                </FormGroup>
+                <Button type="primary">Sign In</Button>
+                <Button type="primary">Reset Password</Button>
               </Form>
             </CardBody>
           </Card>

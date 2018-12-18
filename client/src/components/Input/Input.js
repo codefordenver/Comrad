@@ -1,9 +1,31 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { validateInput } from '../../utils/validation';
+import patterns from '../../utils/validation/patterns';
 
-const Input = props => {
-  const { styleName, ...rest } = props;
+class Input extends Component {
+  myRef = React.createRef();
 
-  return <input className={`input ${styleName || ''}`} {...rest} />;
-};
+  componentDidUpdate() {
+    const { current } = this.myRef;
+    this.toggleActiveClass(current);
+  }
+
+  toggleActiveClass(current) {
+    const { classList, value } = current;
+    if (value.length > 0) {
+      return classList.add('active');
+    }
+
+    return classList.remove('active');
+  }
+
+  render() {
+    const { styleName = '', value, validate, ...rest } = this.props;
+
+    return (
+      <input ref={this.myRef} className={`input ${styleName}`} {...rest} />
+    );
+  }
+}
 
 export default Input;

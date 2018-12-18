@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { userAdd } from '../../actions';
-import validate from '../../utils/validation';
+// import validate from '../../utils/validation';
 
 import Checkbox from '../../components/Checkbox';
 import Form from '../../components/Form';
@@ -32,7 +32,7 @@ class UserAddPage extends Component {
   };
 
   handleInputBlur = e => {
-    validate.input(e.target);
+    // validate.input(e.target);
   };
 
   handleCheckBox = e => {
@@ -46,13 +46,13 @@ class UserAddPage extends Component {
   handleFormSubmit = e => {
     e.preventDefault();
 
-    const valid = validate.submit();
+    // const valid = validate.submit();
 
-    if (valid) {
-      this.props.userAdd(this.state, () => {
-        this.props.history.push('/user');
-      });
-    }
+    // if (valid) {
+    //   this.props.userAdd(this.state, () => {
+    //     this.props.history.push('/user');
+    //   });
+    // }
   };
 
   render() {

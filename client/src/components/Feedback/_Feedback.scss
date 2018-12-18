@@ -5,3 +5,9 @@
   bottom: -2rem;
   left: 1.6rem;
 }
+
+.input {
+  &.invalid ~ .feedback {
+    visibility: visible;
+  }
+}

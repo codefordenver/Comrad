@@ -1,6 +1,6 @@
 import patterns from './patterns';
 
-export function validateInput({ name, value, classList }) {
+export function validateInput({ name, value }) {
   return patterns[name].test(value);
 }
 
@@ -13,14 +13,18 @@ export function validateSubmit() {
   let valid = true;
 
   form.forEach(item => {
-    if (item.classList.contains('invalid')) {
+    const { classList, name, value } = item;
+    if (!patterns[name].test(value)) {
+      classList.add('invalid');
       return (valid = false);
     }
 
-    if (item.value === '') {
-      item.classList.add('invalid');
+    if (value === '') {
+      classList.add('invalid');
       return (valid = false);
     }
+
+    classList.remove('invalid');
   });
 
   return valid;

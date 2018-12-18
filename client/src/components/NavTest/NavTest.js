@@ -9,13 +9,14 @@ class NavTest extends Component {
     const password = process.env.REACT_APP_TEST_PASSWORD;
 
     this.props.loginUser({ email, password }, () => {
-      this.props.history.push('/');
+      console.log(this.props);
+      this.props.history.push('/dashboard');
     });
   };
 
   handleQuickSignOut = () => {
     this.props.logoutUser(() => {
-      this.props.history.push('/home');
+      this.props.history.push('/login');
     });
   };
 

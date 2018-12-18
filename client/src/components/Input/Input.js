@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import { validateInput } from '../../utils/validation';
-import patterns from '../../utils/validation/patterns';
 
 class Input extends Component {
   myRef = React.createRef();
@@ -20,11 +18,10 @@ class Input extends Component {
   }
 
   render() {
-    const { styleName = '', value, validate, ...rest } = this.props;
+    const { myRef, props } = this;
+    const { styleName = '', ...rest } = props;
 
-    return (
-      <input ref={this.myRef} className={`input ${styleName}`} {...rest} />
-    );
+    return <input ref={myRef} className={`input ${styleName}`} {...rest} />;
   }
 }
 

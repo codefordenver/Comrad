@@ -1,13 +1,31 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { validateSubmit } from '../../utils/validation';
 
-const Form = props => {
-  const { children, styleName, ...rest } = props;
+class Form extends Component {
+  onSubmit = (e, handleFormSubmit, validate) => {
+    e.preventDefault();
+    validate ? handleFormSubmit(validateSubmit()) : handleFormSubmit(true);
+  };
 
-  return (
-    <form className={`form ${styleName || ''}`} {...rest}>
-      {children}
-    </form>
-  );
-};
+  render() {
+    const {
+      children,
+      handleFormSubmit,
+      styleName = '',
+      validate,
+      ...rest
+    } = this.props;
+
+    return (
+      <form
+        className={`form ${styleName}`}
+        onSubmit={e => this.onSubmit(e, handleFormSubmit, validate)}
+        {...rest}
+      >
+        {children}
+      </form>
+    );
+  }
+}
 
 export default Form;

@@ -1,7 +1,10 @@
 const router = require('express').Router();
 const userController = require('../../controllers/userController');
 
-router.route('/').get(userController.findAll);
+router
+  .route('/')
+  .get(userController.findAll)
+  .post(userController.create);
 
 // Filter routes
 router.route('/filter/:status').get(userController.findByActive);

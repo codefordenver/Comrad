@@ -41,4 +41,16 @@
     transform: scale(0.6) translate(0.6rem, -4rem);
     z-index: 2;
   }
+
+  &.invalid {
+    border-color: $color-red;
+  }
+
+  &.invalid + label {
+    color: $color-red;
+  }
+
+  &.invalid ~ .feedback {
+    visibility: visible;
+  }
 }

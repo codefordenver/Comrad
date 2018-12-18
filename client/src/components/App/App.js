@@ -24,7 +24,7 @@ class App extends Component {
     return (
       <Router>
         <div className="app">
-          <NavTest />
+          <Route component={NavTest} />
           <Switch>
             <Route path="/admin" component={AdminRoutes} />
             <Route path="/builder" component={BuilderRoutes} />

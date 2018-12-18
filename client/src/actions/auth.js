@@ -9,16 +9,23 @@ export const loginUser = (userInfo, callback) => async dispatch => {
 
     callback();
   } catch (e) {
-    // const { status } = e.response;
-    // console.log(e.response);
-    // switch(status) {
-    //   case 401:
-    //     dispatch({ type: AUTH_ERROR, payload: 'Invalid Email/Password Combination' });
-    //     break;
-    //   default:
-    //     dispatch({ type: AUTH_ERROR, payload: e.response.data });
-    //     break;
-    // }
+    const { status } = e.response;
+    let errorMessage = '';
+    console.log(e.response);
+
+    switch (status) {
+      case 400:
+        errorMessage = 'Please Fill In Form';
+        break;
+      case 401:
+        errorMessage = 'Invalid Login Credentials';
+        break;
+      default:
+        errorMessage = 'Unknown Error';
+        break;
+    }
+
+    dispatch({ type: AUTH_ERROR, payload: errorMessage });
   }
 };
 

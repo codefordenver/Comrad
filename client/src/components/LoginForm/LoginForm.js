@@ -60,8 +60,12 @@ class LoginForm extends Component {
           />
         </FormGroup>
 
-        <Button type="primary">Sign In</Button>
-        <Button type="primary">Reset Password</Button>
+        <Button color="primary" type="submit">
+          Sign In
+        </Button>
+        <Button color="primary" type="button">
+          Reset Password
+        </Button>
       </Form>
     );
   }

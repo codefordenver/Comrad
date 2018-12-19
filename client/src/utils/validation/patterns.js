@@ -1,12 +1,17 @@
-const patterns = {
-  canDelete: /^(true|false)$/,
-  email: /^([a-zA-Z\d.-]+)@([a-zA-Z\d-]+\.)([a-zA-Z]{2,8})(.[a-zA-Z]{2,8})?$/,
-  firstName: /^[a-zA-Z0-9\s]{1,}$/,
-  lastName: /^[a-zA-Z0-9\s]{1,}$/,
-  onAirName: /^[a-zA-Z0-9\s]{1,}$/,
-  password: /^.{1,}$/,
-  role: /^[a-zA-Z]{1,}$/,
-  status: /^[a-zA-Z]{1,}$/,
-};
+import {
+  REGEX_ANY_CHARS,
+  REGEX_BOOL,
+  REGEX_EMAIL,
+  REGEX_LETTERS_NUMBERS,
+} from './types';
 
-export default patterns;
+export const patterns = {
+  canDelete: REGEX_BOOL,
+  email: REGEX_EMAIL,
+  firstName: REGEX_LETTERS_NUMBERS,
+  lastName: REGEX_LETTERS_NUMBERS,
+  onAirName: REGEX_LETTERS_NUMBERS,
+  password: REGEX_ANY_CHARS,
+  role: REGEX_LETTERS_NUMBERS,
+  status: REGEX_LETTERS_NUMBERS,
+};

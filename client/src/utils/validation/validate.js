@@ -1,4 +1,4 @@
-import patterns from './patterns';
+import { patterns } from './patterns';
 
 export function validateInput({ name, value }) {
   return patterns[name].test(value);

@@ -43,10 +43,10 @@ class LoginForm extends Component {
             name="email"
             onChange={this.handleInputChange}
             type="text"
+            feedback="Must be Valid Email"
+            label="Email"
             value={this.state.email}
           />
-          <Label htmlFor="email">Email</Label>
-          <Feedback>Must be Valid Email</Feedback>
         </FormGroup>
 
         <FormGroup>
@@ -54,10 +54,10 @@ class LoginForm extends Component {
             name="password"
             onChange={this.handleInputChange}
             type="password"
+            feedback="Must be Valid Password"
+            label="Password"
             value={this.state.password}
           />
-          <Label htmlFor="password">Password</Label>
-          <Feedback>Must be Valid Password</Feedback>
         </FormGroup>
 
         <Button type="primary">Sign In</Button>

@@ -1,41 +1,41 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import * as actions from "../../actions";
-import validate from "../../utils/validation";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import * as actions from '../../actions';
+import validate from '../../utils/validation';
 
-import "react-dates/initialize";
-import { SingleDatePicker } from "react-dates";
-import moment from "moment";
-import "react-dates/lib/css/_datepicker.css";
+import 'react-dates/initialize';
+import { SingleDatePicker } from 'react-dates';
+import moment from 'moment';
+import 'react-dates/lib/css/_datepicker.css';
 
-import Button from "../../components/Button";
-import Card from "../../components/Card";
-import CardBody from "../../components/CardBody";
-import CardImg from "../../components/CardImg";
-import CardTitle from "../../components/CardTitle";
-import Checkbox from "../../components/Checkbox";
-import Form from "../../components/Form";
-import FormGroup from "../../components/FormGroup";
-import Input from "../../components/Input";
-import Label from "../../components/Label";
-import Select from "../../components/Select";
+import Button from '../../components/Button';
+import Card from '../../components/Card';
+import CardBody from '../../components/CardBody';
+import CardImg from '../../components/CardImg';
+import CardTitle from '../../components/CardTitle';
+import Checkbox from '../../components/Checkbox';
+import Form from '../../components/Form';
+import FormGroup from '../../components/FormGroup';
+import Input from '../../components/Input';
+import Label from '../../components/Label';
+import Select from '../../components/Select';
 
 const initialState = {
-  title: "",
-  summary: "",
-  description: "",
-  producer: "",
-  host: "",
-  guests: "",
-  playlist: "",
+  title: '',
+  summary: '',
+  description: '',
+  producer: '',
+  host: '',
+  guests: '',
+  playlist: '',
 
   show_start_time_utc: moment(),
-  show_end_time_utc: moment().add(1, "hour"),
+  show_end_time_utc: moment().add(1, 'hour'),
 
   repeat_start_date: moment(),
-  repeat_end_date: moment("1900", "YYYY"),
+  repeat_end_date: moment('1900', 'YYYY'),
 
-  focused: false
+  focused: false,
 };
 
 class EventNew extends Component {
@@ -45,7 +45,7 @@ class EventNew extends Component {
     const { name, value } = e.target;
 
     this.setState({
-      [name]: value
+      [name]: value,
     });
   };
 
@@ -53,7 +53,7 @@ class EventNew extends Component {
     const { name, value } = e.target;
 
     this.setState({
-      [name]: moment(value, "HH:mm")
+      [name]: moment(value, 'HH:mm'),
     });
   };
 
@@ -70,7 +70,7 @@ class EventNew extends Component {
 
     //NEED TO SETUP VALIDATION
     if (valid) {
-      this.props.postShow(this.state);
+      //this.props.postShow(this.state);
     }
   };
 
@@ -78,14 +78,13 @@ class EventNew extends Component {
     e.preventDefault();
 
     this.setState(initialState);
-  }
+  };
 
   render() {
     return (
       <main className="event">
         <section className="event__body">
-
-        {console.log(this.state)}
+          {console.log(this.state)}
 
           <Card>
             <CardBody>
@@ -124,7 +123,9 @@ class EventNew extends Component {
                     onChange={this.handleInputChangeTime}
                     onBlur={this.handleInputBlur}
                     type="time"
-                    value={moment(this.state.show_start_time_utc).format("HH:mm")}
+                    value={moment(this.state.show_start_time_utc).format(
+                      'HH:mm',
+                    )}
                   />
                 </FormGroup>
 
@@ -135,7 +136,7 @@ class EventNew extends Component {
                     onChange={this.handleInputChangeTime}
                     onBlur={this.handleInputBlur}
                     type="time"
-                    value={moment(this.state.show_end_time_utc).format("HH:mm")}
+                    value={moment(this.state.show_end_time_utc).format('HH:mm')}
                   />
                 </FormGroup>
 
@@ -206,9 +207,13 @@ class EventNew extends Component {
                 </FormGroup>
 
                 <FormGroup className="text-center">
-                  <Button onClick={this.handleFormSubmit} type="primary">Create Event</Button>
+                  <Button onClick={this.handleFormSubmit} type="primary">
+                    Create Event
+                  </Button>
 
-                  <Button onClick={this.handleFormCancel} type="secondary">Cancel</Button>
+                  <Button onClick={this.handleFormCancel} type="secondary">
+                    Cancel
+                  </Button>
                 </FormGroup>
               </Form>
             </CardBody>
@@ -221,5 +226,5 @@ class EventNew extends Component {
 
 export default connect(
   null,
-  actions
+  actions,
 )(EventNew);

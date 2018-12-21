@@ -2153,6 +2153,9 @@ border-table-collapse {
   text-align: center;
   margin-bottom: 2rem; }
 
+.event_search {
+  overflow: visible; }
+
 .footer {
   position: relative;
   bottom: 0;

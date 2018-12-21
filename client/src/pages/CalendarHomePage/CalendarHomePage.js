@@ -1,9 +1,20 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import * as actions from "../../actions/shows";
-import _ from "lodash";
-import moment from "moment";
-import EventNew from "../../components/Events/EventNew";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import * as actions from '../../actions/shows';
+import _ from 'lodash';
+import moment from 'moment';
+
+import Alert from '../../components/Alert';
+
+import EventNew from '../../components/Events/EventNew';
+import EventSearch from '../../components/Events/EventSearch';
+
+import {
+  getShowsData,
+  fetchingShowsStatus,
+  postingShowsStatus,
+  errorShowsMessage,
+} from '../../reducers/shows';
 
 class CalendarHomePage extends Component {
   constructor(props) {
@@ -11,7 +22,7 @@ class CalendarHomePage extends Component {
 
     this.state = {
       newShow: null,
-      shows: {}
+      shows: {},
     };
   }
 
@@ -26,17 +37,27 @@ class CalendarHomePage extends Component {
   }
 
   render() {
+    const { shows, showsFetching, showsPosting, showsError } = this.props;
     return (
       <div className="calendar__view">
+        {showsError && (
+          <Alert type="error">{showsError.response.data.message}</Alert>
+        )}
+        <EventSearch />
         <EventNew />
 
-        {this.props.shows
-          ? _.map(this.props.shows, show => {
+        {shows
+          ? _.map(shows, show => {
               return (
                 <div key={show._id}>
                   <h1>{show.show_details.title}</h1>
-                  <p>Start Time: {moment(show.show_start_time_utc).format("hh:mm a")} </p>
-                  <p>End Time: {moment(show.show_end_time_utc).format("hh:mm a")}</p>
+                  <p>
+                    Start Time:{' '}
+                    {moment(show.show_start_time_utc).format('hh:mm a')}{' '}
+                  </p>
+                  <p>
+                    End Time: {moment(show.show_end_time_utc).format('hh:mm a')}
+                  </p>
 
                   <h2>Repeat Rules</h2>
                   <p>Show Start Date: {show.repeat_rule.repeat_start_date}</p>
@@ -44,15 +65,18 @@ class CalendarHomePage extends Component {
                 </div>
               );
             })
-          : ""}
+          : ''}
       </div>
     );
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps({ shows }) {
   return {
-    shows: state.shows,
+    shows: getShowsData(shows),
+    showsFetching: fetchingShowsStatus(shows),
+    showsPosting: postingShowsStatus(shows),
+    showsError: errorShowsMessage(shows),
   };
 }
 

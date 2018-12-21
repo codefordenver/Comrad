@@ -14,11 +14,10 @@ const patterns = {
   description: /^[a-zA-Z0-9\s]{1,}$/,
   producer: /^[a-zA-Z0-9\s]{1,}$/,
   host: /^[a-zA-Z0-9\s]{1,}$/,
-  guests:/^[a-zA-Z0-9\s]{1,}$/,
+  guests: /^[a-zA-Z0-9\s]{1,}$/,
   playlist: /^[a-zA-Z0-9\s]{1,}$/,
   show_start_time_utc: /^[a-zA-Z0-9\s]{1,}$/,
   show_end_time_utc: /^[a-zA-Z0-9\s]{1,}$/,
-
 };
 
 export default patterns;

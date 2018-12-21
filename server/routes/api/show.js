@@ -3,7 +3,7 @@ const showController = require('../../controllers/showController');
 
 router
   .route('/')
-  .get(showController.findAll)
+  .get(showController.findByDate)
   .post(showController.create);
 
 router

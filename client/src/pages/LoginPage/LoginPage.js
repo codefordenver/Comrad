@@ -57,8 +57,9 @@ class LoginPage extends Component {
           <Card>
             <CardImg className={'card__img--home'} imgSrc={logo} />
             <CardBody>
-              <CardTitle
-                className="text-center">COMRAD - KGNU PLAYLIST LOGIN:</CardTitle>
+              <CardTitle className="text-center">
+                COMRAD - KGNU PLAYLIST LOGIN:
+              </CardTitle>
 
               {errorMessage ? <div>{errorMessage}</div> : null}
 

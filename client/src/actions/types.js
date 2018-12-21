@@ -11,9 +11,11 @@ export const TRAFFIC_SEARCH = 'traffic_search';
 
 export const SHOW_GET = 'show_get';
 export const SHOW_POST = 'show_post';
+export const SHOW_POSTING = 'show_posting';
 export const SHOW_UPDATE = 'show_update';
 export const SHOW_DELETE = 'show_delete';
 export const SHOW_ERROR = 'show_error';
+export const SHOW_FETCHING = 'show_fetching';
 export const SHOW_SEARCH = 'show_search';
 
 export const USER_FIND_ONE = 'user_find_one';

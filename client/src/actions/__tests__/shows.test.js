@@ -1,36 +1,36 @@
-import * as actions from "../shows";
-import * as types from "../types";
+import * as actions from '../shows';
+import * as types from '../types';
 
-import configureMockStore from "redux-mock-store";
-import thunk from "redux-thunk";
-import axios from "axios";
-import MockAdapter from "axios-mock-adapter";
+import configureMockStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
+import axios from 'axios';
+import MockAdapter from 'axios-mock-adapter';
 
 const mockAxios = new MockAdapter(axios);
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 
-describe("getShow actions", () => {
+describe('getShow actions', () => {
   beforeEach(function() {
     mockAxios.reset();
   });
 
   afterEach(function() {});
 
-  it("should create an action to GET a new show", () => {
+  it('should create an action to GET a new show', () => {
     const store = mockStore({ shows: [] });
-    const show_id = "123";
-    const show_id_url = "/api/show/123";
+    const show_id = '123';
+    const show_id_url = '/api/show/123';
     const show_payload = [
       {
-        name: "Test Show"
-      }
+        name: 'Test Show',
+      },
     ];
     const expectedAction = [
       {
         type: types.SHOW_GET,
-        payload: show_payload
-      }
+        payload: show_payload,
+      },
     ];
 
     mockAxios.onGet(show_id_url).reply(200, show_payload);
@@ -41,32 +41,32 @@ describe("getShow actions", () => {
   });
 });
 
-describe("postShow actions", () => {
+describe('postShow actions', () => {
   beforeEach(function() {
     mockAxios.reset();
   });
 
   afterEach(function() {});
 
-  it("should create an action to POST a new show", () => {
+  it('should create an action to POST a new show', () => {
     const store = mockStore({ shows: [] });
-    const show_id_url = "/api/show/";
+    const show_id_url = '/api/show/';
     const show_post = [
       {
-        name: "Test Show"
-      }
+        name: 'Test Show',
+      },
     ];
     const show_post_payload = [
       {
-        name: "Test Show",
-        description: "Hello world!"
-      }
+        name: 'Test Show',
+        description: 'Hello world!',
+      },
     ];
     const expectedAction = [
       {
         type: types.SHOW_POST,
-        payload: show_post_payload
-      }
+        payload: show_post_payload,
+      },
     ];
 
     mockAxios.onPost(show_id_url).reply(200, show_post_payload);

@@ -11,7 +11,7 @@ import {
 export const getShow = show => async dispatch => {
   try {
     const response = await axios.get(`/api/show/${show}`);
-  
+
     dispatch({ type: SHOW_GET, payload: response.data });
   } catch (e) {
     dispatch({ type: SHOW_ERROR, payload: 'Get Show Error' });
@@ -19,7 +19,7 @@ export const getShow = show => async dispatch => {
 };
 
 export const postShow = show => async dispatch => {
-  console.log("Posting Show");
+  console.log('Posting Show');
   try {
     const response = await axios.post(`/api/show/`, show);
 
@@ -49,12 +49,17 @@ export const deleteShow = show => async dispatch => {
   }
 };
 
-export const searchShow = show => async dispatch => {
+export const searchShow = (startDate, endDate) => async dispatch => {
   try {
-    console.log('Show Search Action: ' + show);
+    console.log(startDate);
+    const response = await axios.get(`/api/show/`, {
+      params: { startDate, endDate },
+    });
 
-    dispatch({ type: SHOW_SEARCH, payload: show });
+    console.log(response.data);
+
+    dispatch({ type: SHOW_SEARCH, payload: response.data });
   } catch (e) {
-    dispatch({ type: SHOW_ERROR, payload: 'Search Show Error' });
+    dispatch({ type: SHOW_ERROR, payload: e });
   }
 };

@@ -1,1 +1,1 @@
-export { default } from './EventNew'
+export { default } from './EventNew';

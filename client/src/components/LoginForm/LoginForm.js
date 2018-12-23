@@ -1,21 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import * as actions from '../../actions';
+import { loginUser } from '../../actions';
+import { REGEX_ANY_CHARS, REGEX_EMAIL } from '../../utils/validation';
 
 import Button from '../../components/Button';
 import ErrorMessage from '../../components/ErrorMessage';
-import Feedback from '../../components/Feedback';
 import Form from '../../components/Form';
 import FormGroup from '../../components/FormGroup';
 import Input from '../../components/Input';
-import Label from '../../components/Label';
 
 class LoginForm extends Component {
-  state = {
-    email: '',
-    password: '',
-  };
-
   handleInputChange = e => {
     const { name, value } = e.target;
     this.setState({ [name]: value });
@@ -32,20 +26,26 @@ class LoginForm extends Component {
     }
   };
 
+  handleCallback = () => {
+    const { history } = this.props;
+    history.push('/admin');
+  };
+
   render() {
-    const { errorMessage } = this.props.auth;
+    const { auth, loginUser } = this.props;
+    const { errorMessage } = auth;
 
     return (
-      <Form handleFormSubmit={this.handleFormSubmit} validate>
+      <Form callback={this.handleCallback} submit={loginUser}>
         {errorMessage && <ErrorMessage message={errorMessage} />}
         <FormGroup>
           <Input
             name="email"
-            onChange={this.handleInputChange}
             type="text"
-            feedback="Must be Valid Email"
-            label="Email"
-            value={this.state.email}
+            feedback="Please Enter Email Address"
+            label="Email  "
+            validate={REGEX_EMAIL}
+            data-validate="true"
           />
         </FormGroup>
 
@@ -54,9 +54,9 @@ class LoginForm extends Component {
             name="password"
             onChange={this.handleInputChange}
             type="password"
-            feedback="Must be Valid Password"
+            feedback="Please Enter Password"
             label="Password"
-            value={this.state.password}
+            validate={REGEX_ANY_CHARS}
           />
         </FormGroup>
 
@@ -79,5 +79,5 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  actions,
+  { loginUser },
 )(LoginForm);

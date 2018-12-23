@@ -3,30 +3,32 @@ import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR } from './types';
 
 export const loginUser = (userInfo, callback) => async dispatch => {
   try {
-    const response = await axios.post('/api/auth/login', userInfo);
+    console.log(userInfo);
+    const { email, password } = userInfo;
+    const response = await axios.post('/api/auth/login', { email, password });
 
     dispatch({ type: AUTH_LOGIN, payload: response.data });
-
-    callback();
+    return response;
   } catch (e) {
-    const { status } = e.response;
-    let errorMessage = '';
-    console.log(e.response);
+    console.log(e);
+    // const { status } = e.response;
+    // let errorMessage = '';
+    // console.log(e.response);
 
-    switch (status) {
-      case 400:
-        errorMessage = 'Please Fill In Form';
-        break;
-      case 401:
-        errorMessage = 'Invalid Login Credentials';
-        break;
-      default:
-        errorMessage = 'Unknown Error';
-        break;
-    }
-
-    dispatch({ type: AUTH_ERROR, payload: errorMessage });
+    // switch (status) {
+    //   case 400:
+    //     errorMessage = 'Please Fill In Form';
+    //     break;
+    //   case 401:
+    //     errorMessage = 'Invalid Login Credentials';
+    //     break;
+    //   default:
+    //     errorMessage = 'Unknown Error';
+    //     break;
+    // }
   }
+
+  // dispatch({ type: AUTH_ERROR, payload: errorMessage });
 };
 
 export const logoutUser = callback => async dispatch => {

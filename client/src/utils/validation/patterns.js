@@ -3,15 +3,13 @@ import {
   REGEX_BOOL,
   REGEX_EMAIL,
   REGEX_LETTERS_NUMBERS,
+  REGEX_PASSWORD,
 } from './types';
 
 export const patterns = {
-  canDelete: REGEX_BOOL,
-  email: REGEX_EMAIL,
-  firstName: REGEX_LETTERS_NUMBERS,
-  lastName: REGEX_LETTERS_NUMBERS,
-  onAirName: REGEX_LETTERS_NUMBERS,
-  password: REGEX_ANY_CHARS,
-  role: REGEX_LETTERS_NUMBERS,
-  status: REGEX_LETTERS_NUMBERS,
+  [REGEX_ANY_CHARS]: /^.+$/,
+  [REGEX_BOOL]: /^(true|false)$/,
+  [REGEX_EMAIL]: /^([a-zA-Z\d.-]+)@([a-zA-Z\d-]+\.)([a-zA-Z]{2,8})(.[a-zA-Z]{2,8})?$/,
+  [REGEX_LETTERS_NUMBERS]: /^[a-zA-Z0-9\s]+$/,
+  [REGEX_PASSWORD]: /^(?=.*\d).{4,8}$/, // Contain one lowercase, uppercase and letter
 };

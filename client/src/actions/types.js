@@ -22,3 +22,6 @@ export const USER_ERROR = 'user_error';
 
 export const SEARCH_LIBRARY = 'search_library';
 export const SEARCH_USERS = 'search_users';
+
+export const INPUT_CLEAR = 'input_clear';
+export const INPUT_UPDATE = 'input_update';

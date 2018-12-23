@@ -1,10 +1,20 @@
 import React, { Component } from 'react';
-import { validateSubmit } from '../../utils/validation';
+import { connect } from 'react-redux';
+import validation from '../../utils/validation';
 
 class Form extends Component {
-  onSubmit = (e, handleFormSubmit, validate) => {
+  handleOnSubmit = async e => {
     e.preventDefault();
-    validate ? handleFormSubmit(validateSubmit()) : handleFormSubmit(true);
+    const { callback, form, submit } = this.props;
+    const valid = validation.form();
+    let response = '';
+    if (valid) {
+      response = (await submit(form).status) || null;
+      console.log(response);
+      if (response === 200) {
+        callback();
+      }
+    }
   };
 
   render() {
@@ -17,15 +27,20 @@ class Form extends Component {
     } = this.props;
 
     return (
-      <form
-        className={`form ${styleName}`}
-        onSubmit={e => this.onSubmit(e, handleFormSubmit, validate)}
-        {...rest}
-      >
+      <form className={`form ${styleName}`} onSubmit={this.handleOnSubmit}>
         {children}
       </form>
     );
   }
 }
 
-export default Form;
+function mapStateToProps(state) {
+  return {
+    form: state.form,
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  null,
+)(Form);

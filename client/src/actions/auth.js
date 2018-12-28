@@ -1,15 +1,9 @@
 import axios from 'axios';
-import {
-  AUTH_LOGIN,
-  AUTH_LOGOUT,
-  AUTH_ERROR,
-  AUTH_RESET,
-  MESSAGE_UPDATE,
-} from './types';
+import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, MESSAGE_UPDATE } from './types';
 
-export const loginUser = (userInfo, callback) => async dispatch => {
+export const loginUser = (input, callback) => async dispatch => {
   try {
-    const { email, password } = userInfo;
+    const { email, password } = input;
     const response = await axios.post('/api/auth/login', { email, password });
 
     dispatch({ type: AUTH_LOGIN, payload: response.data });
@@ -31,7 +25,13 @@ export const logoutUser = callback => async dispatch => {
 
     callback();
   } catch (e) {
-    dispatch({ type: AUTH_ERROR, payload: 'Something went Wrong!' });
+    dispatch({
+      type: MESSAGE_UPDATE,
+      payload: {
+        type: 'error',
+        text: 'Something went wrong!',
+      },
+    });
   }
 };
 

@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 
 import auth from './auth';
-import form from './form';
+import input from './input';
 import message from './message';
 import search from './search';
 import shows from './show';
@@ -10,7 +10,7 @@ import user from './user';
 
 export default combineReducers({
   auth,
-  form,
+  input,
   message,
   search,
   shows,

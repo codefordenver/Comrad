@@ -5,8 +5,8 @@ import validation from '../../utils/validation';
 
 class Form extends Component {
   confirmPassword() {
-    const { form, messageUpdate } = this.props;
-    const { confirm_password, password } = form;
+    const { input, messageUpdate } = this.props;
+    const { confirm_password, password } = input;
     if (!confirm_password) {
       return true;
     }
@@ -24,11 +24,11 @@ class Form extends Component {
 
   handleOnSubmit = async e => {
     e.preventDefault();
-    const { callback, form, action } = this.props;
+    const { callback, input, action } = this.props;
     const valid = validation.form();
 
     if (valid && this.confirmPassword()) {
-      action(form, callback);
+      action(input, callback);
     }
   };
 
@@ -45,7 +45,7 @@ class Form extends Component {
 
 function mapStateToProps(state) {
   return {
-    form: state.form,
+    input: state.input,
   };
 }
 

@@ -73,7 +73,7 @@ class Input extends Component {
 
 function mapStateToProps(state) {
   return {
-    form: state.form,
+    input: state.input,
   };
 }
 

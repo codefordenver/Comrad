@@ -4,3 +4,17 @@ body {
   color: $color-grey-4;
   line-height: 1.7;
 }
+
+h1,
+.h1 {
+  color: $color-primary;
+  font-size: 3.4rem;
+}
+
+p,
+.p {
+  font-size: 1.6rem;
+  color: $color-grey-4;
+
+  margin-bottom: 1rem;
+}

@@ -21,24 +21,21 @@ const userSchema = new Schema({
   password: {
     type: String,
     required: true,
-    minlength: [3, 'Minimum 3 Characters'],
   },
 
   first_name: {
     type: String,
     required: true,
-    minlength: [3, 'Minimum 3 Characters'],
   },
 
   last_name: {
     type: String,
     required: true,
-    minlength: [3, 'Minimum 3 Characters'],
   },
 
   on_air_name: {
     type: String,
-    minlength: [3, 'Minimum 3 Characters'],
+    default: '',
   },
 
   role: {

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { USER_FIND_ONE, USER_ADD, USER_ERROR } from './types';
+import { MESSAGE_UPDATE, USER_FIND_ONE, USER_ADD, USER_ERROR } from './types';
 
 export const userFindOne = id => async dispatch => {
   try {
@@ -11,14 +11,18 @@ export const userFindOne = id => async dispatch => {
   }
 };
 
-export const userAdd = (obj, cb) => async dispatch => {
+export const userAdd = (obj, callback) => async dispatch => {
   try {
     const response = await axios.post('/api/user', obj);
 
     dispatch({ type: USER_ADD, payload: response.data });
 
-    cb();
+    callback();
   } catch (e) {
-    dispatch({ type: USER_ERROR, payload: e.response.data });
+    console.log(e.response);
+    dispatch({
+      type: MESSAGE_UPDATE,
+      payload: { type: 'error', text: e.response.data.errorMessage },
+    });
   }
 };

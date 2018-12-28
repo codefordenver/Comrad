@@ -8,6 +8,5 @@ module.exports = {
     'dot-notation': 'error',
     'no-empty-function': 'error',
     'no-multi-spaces': 'error',
-    camelcase: 'warn',
   },
 };

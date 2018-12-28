@@ -1,30 +1,39 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { messageUpdate } from '../../actions';
 import validation from '../../utils/validation';
 
 class Form extends Component {
+  confirmPassword() {
+    const { form, messageUpdate } = this.props;
+    const { confirm_password, password } = form;
+    if (!confirm_password) {
+      return true;
+    }
+
+    if (confirm_password !== password) {
+      messageUpdate({
+        type: 'error',
+        text: 'Passwords do not match!',
+      });
+      return false;
+    }
+
+    return true;
+  }
+
   handleOnSubmit = async e => {
     e.preventDefault();
-    const { callback, form, submit } = this.props;
+    const { callback, form, action } = this.props;
     const valid = validation.form();
-    let response = '';
-    if (valid) {
-      response = (await submit(form).status) || null;
-      console.log(response);
-      if (response === 200) {
-        callback();
-      }
+
+    if (valid && this.confirmPassword()) {
+      action(form, callback);
     }
   };
 
   render() {
-    const {
-      children,
-      handleFormSubmit,
-      styleName = '',
-      validate,
-      ...rest
-    } = this.props;
+    const { children, styleName = '' } = this.props;
 
     return (
       <form className={`form ${styleName}`} onSubmit={this.handleOnSubmit}>
@@ -42,5 +51,5 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  null,
+  { messageUpdate },
 )(Form);

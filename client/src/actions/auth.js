@@ -1,34 +1,26 @@
 import axios from 'axios';
-import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR } from './types';
+import {
+  AUTH_LOGIN,
+  AUTH_LOGOUT,
+  AUTH_ERROR,
+  AUTH_RESET,
+  MESSAGE_UPDATE,
+} from './types';
 
 export const loginUser = (userInfo, callback) => async dispatch => {
   try {
-    console.log(userInfo);
     const { email, password } = userInfo;
     const response = await axios.post('/api/auth/login', { email, password });
 
     dispatch({ type: AUTH_LOGIN, payload: response.data });
-    return response;
+
+    callback();
   } catch (e) {
-    console.log(e);
-    // const { status } = e.response;
-    // let errorMessage = '';
-    // console.log(e.response);
-
-    // switch (status) {
-    //   case 400:
-    //     errorMessage = 'Please Fill In Form';
-    //     break;
-    //   case 401:
-    //     errorMessage = 'Invalid Login Credentials';
-    //     break;
-    //   default:
-    //     errorMessage = 'Unknown Error';
-    //     break;
-    // }
+    dispatch({
+      type: MESSAGE_UPDATE,
+      payload: { type: 'error', text: e.response.statusText },
+    });
   }
-
-  // dispatch({ type: AUTH_ERROR, payload: errorMessage });
 };
 
 export const logoutUser = callback => async dispatch => {
@@ -50,5 +42,25 @@ export const fetchUser = () => async dispatch => {
     dispatch({ type: AUTH_LOGIN, payload: response.data });
   } catch (e) {
     dispatch({ type: AUTH_ERROR, payload: '' });
+  }
+};
+
+export const resetUser = () => async dispatch => {
+  try {
+    dispatch({
+      type: MESSAGE_UPDATE,
+      payload: {
+        type: 'success',
+        text: 'Check your email to reset your password',
+      },
+    });
+  } catch (e) {
+    dispatch({
+      type: MESSAGE_UPDATE,
+      payload: {
+        type: 'error',
+        text: 'Something went wrong!',
+      },
+    });
   }
 };

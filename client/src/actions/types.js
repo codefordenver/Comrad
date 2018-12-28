@@ -1,6 +1,7 @@
 export const AUTH_LOGIN = 'auth_login';
 export const AUTH_LOGOUT = 'auth_logout';
 export const AUTH_ERROR = 'auth_error';
+export const AUTH_RESET = 'auth_reset';
 
 export const TRAFFIC_GET = 'traffic_get';
 export const TRAFFIC_POST = 'traffic_post';
@@ -25,3 +26,6 @@ export const SEARCH_USERS = 'search_users';
 
 export const INPUT_CLEAR = 'input_clear';
 export const INPUT_UPDATE = 'input_update';
+
+export const MESSAGE_CLEAR = 'message_clear';
+export const MESSAGE_UPDATE = 'message_update';

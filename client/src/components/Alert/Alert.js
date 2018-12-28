@@ -1,27 +1,29 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
+import { connect } from 'react-redux';
+import { messageClear } from '../../actions';
 
 class Alert extends Component {
-  getAlertClass(props) {
-    const { type } = props;
-    let alertClass = 'alert';
+  componentWillUnmount() {
+    const { messageClear } = this.props;
+    messageClear();
+  }
 
+  getAlertClass(type) {
     switch (type) {
       case 'success':
-        return (alertClass += ' alert--success');
+        return 'alert alert--success';
       case 'info':
-        return (alertClass += ' alert--info');
+        return 'alert alert--info';
       case 'error':
-        return (alertClass += ' alert--error');
+        return 'alert alert--error';
       case 'warning':
-        return (alertClass += ' alert--warning');
+        return 'alert alert--warning';
       default:
         break;
     }
   }
 
-  getAlertHeader(props) {
-    const { type } = props;
-
+  getAlertHeader(type) {
     switch (type) {
       case 'success':
         return 'Success Status';
@@ -36,39 +38,52 @@ class Alert extends Component {
     }
   }
 
-  getIconClass(props) {
-    const { type } = props;
-    let iconClass = 'fas fa-2x';
-
+  getIconClass(type) {
     switch (type) {
       case 'success':
-        return (iconClass += ' fa-check-circle');
+        return 'fas fa-check-circle';
       case 'info':
-        return (iconClass += ' fa-info-circle');
+        return 'fas fa-info-circle';
       case 'error':
-        return (iconClass += ' fa-exclamation-circle');
+        return 'fas fa-exclamation-circle';
       case 'warning':
-        return (iconClass += ' fa-times-circle');
+        return 'fas fa-times-circle';
       default:
         break;
     }
   }
   render() {
     const { getAlertClass, getAlertHeader, getIconClass, props } = this;
-    const { children } = props;
+    const { message } = props;
+    const { type, text } = message;
 
     return (
-      <div className={getAlertClass(props)}>
-        <div className="alert__symbol">
-          <i className={getIconClass(props)} />
-        </div>
-        <div className="alert__title-body">
-          <div className="alert__header">{getAlertHeader(props)}</div>
-          <div className="alert__body">{children}</div>
-        </div>
-      </div>
+      <Fragment>
+        {text ? (
+          <div className={getAlertClass(type)}>
+            <div className="alert__symbol">
+              <i className={getIconClass(type)} />
+            </div>
+            <div className="alert__title-body">
+              <div className="alert__header">{getAlertHeader(type)}</div>
+              <div className="alert__body">
+                <div className="alert__message">{text}</div>
+              </div>
+            </div>
+          </div>
+        ) : null}
+      </Fragment>
     );
   }
 }
 
-export default Alert;
+function mapStateToProps(state) {
+  return {
+    message: state.message,
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  { messageClear },
+)(Alert);

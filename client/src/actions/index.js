@@ -1,6 +1,7 @@
 export * from './auth';
 export * from './form';
 export * from './input';
+export * from './message';
 export * from './search';
 export * from './traffic';
 export * from './shows';

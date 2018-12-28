@@ -1,6 +1,7 @@
 const db = require('../models');
 const moment = require('moment');
 const { RRule } = require('RRule');
+const _ = require('lodash');
 
 function create_new_show(req, res) {
   return {
@@ -30,6 +31,16 @@ function create_new_show(req, res) {
   };
 }
 
+function repeatRuleShows(shows, startDate, endDate) {
+  const allShows = shows.map(show => {
+    const allShowDates = returnDatesArrayByRepeatRule(show);
+    const allRepeatedShows = returnShowsArrayWithNewDates(allShowDates, show);
+    return allRepeatedShows;
+  });
+
+  return _.flatten(allShows);
+}
+
 function momentCombineDayAndTime(desiredDate, desiredTime) {
   const newDate = moment(desiredDate)
     .utc()
@@ -46,37 +57,30 @@ function momentCombineDayAndTime(desiredDate, desiredTime) {
     .format();
 }
 
-function repeatRuleShows(shows) {
-  const allShows = shows.map(show => {
-    let newShowList = {};
-    let returnedShows = { ...show.toObject() };
-    const allShowDates = returnDatesArrayByRepeatRule(show);
+function returnShowsArrayWithNewDates(dateArray, show) {
+  if (dateArray) {
+    const returnedShows = dateArray.map((date, i) => {
+      let newShow = { ...show.toObject() };
+      const show_start_time_utc = momentCombineDayAndTime(
+        date,
+        show.show_start_time_utc,
+      );
+      const show_end_time_utc = momentCombineDayAndTime(
+        date,
+        show.show_end_time_utc,
+      );
 
-    if (allShowDates) {
-      returnedShows = allShowDates.map((date, i) => {
-        let newShow = { ...show.toObject() };
-        const show_start_time_utc = momentCombineDayAndTime(
-          date,
-          show.show_start_time_utc,
-        );
-        const show_end_time_utc = momentCombineDayAndTime(
-          date,
-          show.show_end_time_utc,
-        );
+      newShow.master_show_uid = newShow._id;
+      newShow._id = newShow._id + '-' + i;
+      newShow.show_start_time_utc = show_start_time_utc;
+      newShow.show_end_time_utc = show_end_time_utc;
 
-        newShow._id = newShow._id + '-' + i;
-        newShow.show_start_time_utc = show_start_time_utc;
-        newShow.show_end_time_utc = show_end_time_utc;
-        return newShow;
-      });
-      console.log(returnedShows);
-      return returnedShows;
-    }
+      return newShow;
+    });
     return returnedShows;
-  });
-
-  //Need to change the way returned Shows is processed so it is a single array.
-  return allShows;
+  } else {
+    return show;
+  }
 }
 
 function returnDatesArrayByRepeatRule(show) {
@@ -122,13 +126,8 @@ module.exports = {
       },
     })
       .then(dbShow => {
-        const expandedShowList = repeatRuleShows(dbShow);
-        const filteredShowList = reduceShowsByDateRange(
-          expandedShowList,
-          startDate,
-          endDate,
-        );
-        res.json(filteredShowList);
+        const expandedShowList = repeatRuleShows(dbShow, startDate, endDate);
+        res.json(expandedShowList);
       })
       .catch(err => res.status(422).json(err));
   },

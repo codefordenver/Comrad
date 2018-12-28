@@ -46,7 +46,10 @@ class EventNew extends Component {
 
   checkRepeatEndDate = repeat => {
     if (!repeat) {
-      this.setState({ repeat_end_date: this.state.repeat_start_date });
+      this.setState({
+        repeat_end_date: this.state.repeat_start_date,
+        repeatType: '',
+      });
     }
   };
 

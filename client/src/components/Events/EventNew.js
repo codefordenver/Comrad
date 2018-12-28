@@ -32,26 +32,45 @@ const initialState = {
   show_start_time_utc: moment(),
   show_end_time_utc: moment().add(1, 'hour'),
 
+  repeat: false,
+  repeatType: '',
   repeat_start_date: moment(),
-  repeat_end_date: moment('1900', 'YYYY'),
+  repeat_end_date: moment(),
 
-  focused: false,
+  start_focused: false,
+  end_focused: false,
 };
 
 class EventNew extends Component {
   state = initialState;
 
+  checkRepeatEndDate = repeat => {
+    if (!repeat) {
+      this.setState({ repeat_end_date: this.state.repeat_start_date });
+    }
+  };
+
   handleInputChange = e => {
     const { name, value } = e.target;
+    this.setState({ [name]: value });
+  };
 
-    this.setState({
-      [name]: value,
-    });
+  handleCheckboxChange = e => {
+    const { name, value } = e.target;
+    const { repeat } = this.state;
+    this.setState({ [name]: !repeat }, () =>
+      this.checkRepeatEndDate(this.state.repeat),
+    );
+  };
+
+  handleInputDateChange = (type, dateValue) => {
+    this.setState({ [type]: dateValue }, () =>
+      this.checkRepeatEndDate(this.state.repeat),
+    );
   };
 
   handleInputChangeTime = e => {
     const { name, value } = e.target;
-
     this.setState({
       [name]: moment(value, 'HH:mm'),
     });
@@ -63,12 +82,11 @@ class EventNew extends Component {
 
   handleFormSubmit = e => {
     e.preventDefault();
-
     const valid = validate.submit();
 
+    //NEED TO SETUP VALIDATION
     this.props.postShow(this.state);
 
-    //NEED TO SETUP VALIDATION
     if (valid) {
       //this.props.postShow(this.state);
     }
@@ -76,7 +94,6 @@ class EventNew extends Component {
 
   handleFormCancel = e => {
     e.preventDefault();
-
     this.setState(initialState);
   };
 
@@ -107,14 +124,61 @@ class EventNew extends Component {
                   <SingleDatePicker
                     date={this.state.repeat_start_date} // momentPropTypes.momentObj or null
                     onDateChange={repeat_start_date =>
-                      this.setState({ repeat_start_date })
+                      this.handleInputDateChange(
+                        'repeat_start_date',
+                        repeat_start_date,
+                      )
                     } // PropTypes.func.isRequired
-                    focused={this.state.focused} // PropTypes.bool
-                    onFocusChange={({ focused }) => this.setState({ focused })} // PropTypes.func.isRequired
+                    focused={this.state.start_focused} // PropTypes.bool
+                    onFocusChange={({ focused }) =>
+                      this.setState({ start_focused: focused })
+                    } // PropTypes.func.isRequired
                     id="show_start_date_picker" // PropTypes.string.isRequired,
+                    isOutsideRange={() => false}
                     numberOfMonths={1}
                   />
+                  <Label>Repeat</Label>
+                  <Checkbox
+                    name="repeat"
+                    onChange={this.handleCheckboxChange}
+                    onBlur={this.handleInputBlur}
+                    type="checkbox"
+                    defaultChecked={this.state.repeat}
+                  />
                 </FormGroup>
+
+                {this.state.repeat && (
+                  <div>
+                    <FormGroup>
+                      <Label>Repeat End Date</Label>
+                      <SingleDatePicker
+                        date={this.state.repeat_end_date} // momentPropTypes.momentObj or null
+                        onDateChange={repeat_end_date =>
+                          this.handleInputDateChange(
+                            'repeat_end_date',
+                            repeat_end_date,
+                          )
+                        } // PropTypes.func.isRequired
+                        focused={this.state.end_focused} // PropTypes.bool
+                        onFocusChange={({ focused }) =>
+                          this.setState({ end_focused: focused })
+                        } // PropTypes.func.isRequired
+                        id="show_end_date_picker" // PropTypes.string.isRequired,
+                        isOutsideRange={() => false}
+                        numberOfMonths={1}
+                      />
+
+                      <Label>Repeat Type</Label>
+                      <Select
+                        selectOptions={['DAILY', 'WEEKLY', 'MONTHLY', 'YEARLY']}
+                        name="repeatType"
+                        onChange={this.handleInputChange}
+                        onBlur={this.handleInputBlur}
+                        value={this.state.repeatType}
+                      />
+                    </FormGroup>
+                  </div>
+                )}
 
                 <FormGroup>
                   <Label>Show Start Time</Label>
@@ -127,9 +191,7 @@ class EventNew extends Component {
                       'HH:mm',
                     )}
                   />
-                </FormGroup>
 
-                <FormGroup>
                   <Label>Show End Time</Label>
                   <Input
                     name="show_end_time_utc"

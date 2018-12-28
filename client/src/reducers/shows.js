@@ -36,6 +36,7 @@ export default function(state = initialState, { type, payload }) {
       };
 
     case SHOW_SEARCH:
+      console.log(payload);
       return {
         ...state,
         data: { ...state.data, ..._.mapKeys(payload, '_id') },

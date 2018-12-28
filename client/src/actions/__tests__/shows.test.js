@@ -15,7 +15,7 @@ describe('getShow actions', () => {
     mockAxios.reset();
   });
 
-  afterEach(function() {});
+  //afterEach(function() {});
 
   it('should create an action to GET a new show', () => {
     const store = mockStore({ shows: [] });
@@ -46,7 +46,7 @@ describe('postShow actions', () => {
     mockAxios.reset();
   });
 
-  afterEach(function() {});
+  //afterEach(function() {});
 
   it('should create an action to POST a new show', () => {
     const store = mockStore({ shows: [] });

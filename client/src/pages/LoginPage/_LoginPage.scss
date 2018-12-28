@@ -1,0 +1,25 @@
+.login {
+  display: grid;
+  grid-template-columns: 1fr 50rem;
+
+  height: 100vh;
+
+  &__left {
+    background: url(
+      images/cassette_tapes.jpg
+    ) no-repeat center center fixed;
+    background-size: cover;
+  }
+
+  &__right {
+    padding: 5rem 5rem 0;
+  }
+
+  &__form {
+    margin-bottom: 5rem;
+  }
+
+  &__reset {
+    margin-bottom: 5rem;
+  }
+}

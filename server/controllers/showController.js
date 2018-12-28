@@ -38,7 +38,10 @@ function repeatRuleShows(shows, startDate, endDate) {
     return allRepeatedShows;
   });
 
-  return _.flatten(allShows);
+  //Need to check for master_show_uid and then replace those shows within allShows
+  const mergedShows = _.concat(shows, allShows);
+
+  return _.flatten(mergedShows);
 }
 
 function momentCombineDayAndTime(desiredDate, desiredTime) {
@@ -79,7 +82,7 @@ function returnShowsArrayWithNewDates(dateArray, show) {
     });
     return returnedShows;
   } else {
-    return show;
+    return [];
   }
 }
 

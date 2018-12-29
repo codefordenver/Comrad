@@ -21,8 +21,10 @@ import Label from '../../components/Label';
 import Select from '../../components/Select';
 
 const initialState = {
-  start_date: moment().subtract(1, 'day'),
-  end_date: moment(),
+  start_date: moment()
+    .subtract(1, 'day')
+    .startOf('day'),
+  end_date: moment().endOf('day'),
 
   start_focused: false,
   end_focused: false,
@@ -74,8 +76,8 @@ class EventSearch extends Component {
     return (
       <main className="event_search">
         <section className="event_search__body">
-          {console.log(this.state)}
-
+          {console.log(this.state.start_date)}
+          {console.log(this.state.end_date)}
           <Card styleName="event_search">
             <CardBody>
               <CardTitle className="text-center">Search For Events:</CardTitle>
@@ -85,7 +87,11 @@ class EventSearch extends Component {
                   <Label>Show Start Date</Label>
                   <SingleDatePicker
                     date={this.state.start_date} // momentPropTypes.momentObj or null
-                    onDateChange={start_date => this.setState({ start_date })} // PropTypes.func.isRequired
+                    onDateChange={start_date =>
+                      this.setState({
+                        start_date: moment(start_date).startOf('day'),
+                      })
+                    } // PropTypes.func.isRequired
                     focused={this.state.start_focused} // PropTypes.bool
                     onFocusChange={({ focused }) =>
                       this.setState({ start_focused: focused })
@@ -99,7 +105,9 @@ class EventSearch extends Component {
                   <Label>Show End Date</Label>
                   <SingleDatePicker
                     date={this.state.end_date} // momentPropTypes.momentObj or null
-                    onDateChange={end_date => this.setState({ end_date })} // PropTypes.func.isRequired
+                    onDateChange={end_date =>
+                      this.setState({ end_date: moment(end_date).endOf('day') })
+                    } // PropTypes.func.isRequired
                     focused={this.state.end_focused} // PropTypes.bool
                     onFocusChange={({ focused }) =>
                       this.setState({ end_focused: focused })

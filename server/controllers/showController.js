@@ -20,6 +20,7 @@ function create_new_show(req, res) {
     show_start_time_utc: req.body.show_start_time_utc,
     show_end_time_utc: req.body.show_end_time_utc,
 
+    is_recurring: req.body.repeat,
     repeat_rule: {
       frequency: req.body.repeatType,
       repeat_start_date: req.body.repeat_start_date,
@@ -32,16 +33,35 @@ function create_new_show(req, res) {
 }
 
 function repeatRuleShows(shows, startDate, endDate) {
-  const allShows = shows.map(show => {
+  const allRepeatShows = reduceShowsByRepeatProperty(shows, true);
+  const allNonRepeatShows = reduceShowsByRepeatProperty(shows, false);
+
+  const allRepeatShowsExpanded = allRepeatShows.map(show => {
     const allShowDates = returnDatesArrayByRepeatRule(show);
-    const allRepeatedShows = returnShowsArrayWithNewDates(allShowDates, show);
-    return allRepeatedShows;
+    const allRepeatedShowsExpandedByDates = returnShowsArrayWithNewDates(
+      allShowDates,
+      show,
+    );
+    return allRepeatedShowsExpandedByDates;
   });
 
   //Need to check for master_show_uid and then replace those shows within allShows
-  const mergedShows = _.concat(shows, allShows);
+  const mergedShows = _.concat(allRepeatShowsExpanded, allNonRepeatShows);
 
   return _.flatten(mergedShows);
+}
+
+function reduceShowsByRepeatProperty(shows, recurringCheckValue) {
+  const reducer = (accShows, currentShow) => {
+    if (currentShow.is_recurring == recurringCheckValue) {
+      return [...accShows, currentShow];
+    }
+    return accShows;
+  };
+
+  const reducedShowList = shows.reduce(reducer, []);
+
+  return reducedShowList;
 }
 
 function momentCombineDayAndTime(desiredDate, desiredTime) {
@@ -61,29 +81,25 @@ function momentCombineDayAndTime(desiredDate, desiredTime) {
 }
 
 function returnShowsArrayWithNewDates(dateArray, show) {
-  if (dateArray) {
-    const returnedShows = dateArray.map((date, i) => {
-      let newShow = { ...show.toObject() };
-      const show_start_time_utc = momentCombineDayAndTime(
-        date,
-        show.show_start_time_utc,
-      );
-      const show_end_time_utc = momentCombineDayAndTime(
-        date,
-        show.show_end_time_utc,
-      );
+  const returnedShows = dateArray.map((date, i) => {
+    let newShow = { ...show.toObject() };
+    const show_start_time_utc = momentCombineDayAndTime(
+      date,
+      show.show_start_time_utc,
+    );
+    const show_end_time_utc = momentCombineDayAndTime(
+      date,
+      show.show_end_time_utc,
+    );
 
-      newShow.master_show_uid = newShow._id;
-      newShow._id = newShow._id + '-' + i;
-      newShow.show_start_time_utc = show_start_time_utc;
-      newShow.show_end_time_utc = show_end_time_utc;
+    newShow.master_show_uid = newShow._id;
+    newShow._id = newShow._id + '-' + i;
+    newShow.show_start_time_utc = show_start_time_utc;
+    newShow.show_end_time_utc = show_end_time_utc;
 
-      return newShow;
-    });
-    return returnedShows;
-  } else {
-    return [];
-  }
+    return newShow;
+  });
+  return returnedShows;
 }
 
 function returnDatesArrayByRepeatRule(show) {
@@ -105,13 +121,10 @@ function returnDatesArrayByRepeatRule(show) {
   }
 }
 
-function reduceShowsByDateRange(shows, startDate, endDate) {
-  return shows;
-}
-
 module.exports = {
   repeatRuleShows,
   returnDatesArrayByRepeatRule,
+  reduceShowsByRepeatProperty,
   findById: (req, res) => {
     db.Show.findById(req.params.id)
       .then(dbShow => res.json(dbShow))
@@ -122,12 +135,20 @@ module.exports = {
     let { startDate, endDate } = req.query;
     startDate = JSON.parse(startDate);
     endDate = JSON.parse(endDate);
-    //console.log(`Start ${startDate} : End ${endDate}`);
-    db.Show.find({
-      'repeat_rule.repeat_end_date': {
-        $gte: endDate,
-      },
-    })
+
+    db.Show.find()
+      .and([
+        {
+          'repeat_rule.repeat_start_date': {
+            $lte: endDate,
+          },
+        },
+        {
+          'repeat_rule.repeat_end_date': {
+            $gte: startDate,
+          },
+        },
+      ])
       .then(dbShow => {
         const expandedShowList = repeatRuleShows(dbShow, startDate, endDate);
         res.json(expandedShowList);
@@ -137,7 +158,10 @@ module.exports = {
 
   create: (req, res) => {
     db.Show.create(create_new_show(req, res))
-      .then(dbShow => res.json(dbShow))
+      .then(dbShow => {
+        //NEED TO RETURN EXPANDED SHOW LIST IF IT REPEATS
+        res.json(dbShow);
+      })
       .catch(err => res.status(422).json(err));
   },
 

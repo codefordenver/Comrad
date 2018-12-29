@@ -53,10 +53,15 @@ class CalendarHomePage extends Component {
                   <h1>{show.show_details.title}</h1>
                   <p>
                     Start Time:{' '}
-                    {moment(show.show_start_time_utc).format('hh:mm a')}{' '}
+                    {moment(show.show_start_time_utc).format(
+                      'YYYY MM DD hh:mm a',
+                    )}
                   </p>
                   <p>
-                    End Time: {moment(show.show_end_time_utc).format('hh:mm a')}
+                    End Time:{' '}
+                    {moment(show.show_end_time_utc).format(
+                      'YYYY MM DD hh:mm a',
+                    )}
                   </p>
 
                   <h2>Repeat Rules</h2>

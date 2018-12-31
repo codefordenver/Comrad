@@ -1,0 +1,47 @@
+.circle-drop {
+  position: relative;
+
+  &__icon {
+    border-radius: 50%;
+    border: 1px solid $color-primary;
+    cursor: pointer;
+    height: 2rem;
+    position: relative;
+    width: 2rem;
+
+    &:after {
+      content: "...";
+      line-height: 0;
+      position: absolute;
+      top: 0.6rem;
+      right: 0.5rem;
+    }
+  }
+
+  &__list {
+    border: 2px solid $color-secondary;
+    border-radius: $border-radius;
+    background-color: white;
+    display: none;
+    margin-top: 1rem;
+    position: absolute;
+    width: 20rem;
+    z-index: 10;
+
+    &.active {
+      display: block;
+    }
+  }
+
+  &__item {
+    color: $color-secondary;
+    font-size: 1.4rem;
+
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+
+    &:hover {
+      background-color: $color-grey-1;
+    }
+  }
+}

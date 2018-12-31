@@ -1,9 +1,12 @@
 import axios from 'axios';
-import { SEARCH_LIBRARY, SEARCH_USERS } from './types';
+import { SEARCH_LOADING, SEARCH_LIBRARY, SEARCH_USERS } from './types';
 
-export const searchLibrary = searchTerm => async dispatch => {
+export const searchLibrary = input => async dispatch => {
   try {
-    const response = await axios.post('/api/search/library', { searchTerm });
+    const { search } = input;
+
+    dispatch({ type: SEARCH_LOADING });
+    const response = await axios.get(`/api/search/library?s=${search}`);
 
     dispatch({ type: SEARCH_LIBRARY, payload: response.data });
   } catch (e) {

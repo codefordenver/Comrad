@@ -9,6 +9,7 @@ export const INPUT_UPDATE = 'input_update';
 export const MESSAGE_CLEAR = 'message_clear';
 export const MESSAGE_UPDATE = 'message_update';
 
+export const SEARCH_LOADING = 'search_loading";';
 export const SEARCH_LIBRARY = 'search_library';
 export const SEARCH_USERS = 'search_users';
 

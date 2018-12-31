@@ -25,3 +25,12 @@
     border-color: $color-red;
   }
 }
+
+.icon {
+  color: $color-primary;
+  font-size: 2rem;
+
+  position: absolute;
+  top: 0.8rem;
+  right:1.5rem;
+}

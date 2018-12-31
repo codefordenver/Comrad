@@ -49,9 +49,26 @@ class Input extends Component {
     }
   };
 
+  getIconClass(icon) {
+    switch (icon) {
+      case 'search':
+        return 'fas fa-search';
+      default:
+        break;
+    }
+  }
+
   render() {
-    const { myRef, props } = this;
-    const { feedback, label, name, type, styleName = '', validate } = props;
+    const { getIconClass, myRef, props } = this;
+    const {
+      feedback,
+      icon,
+      label,
+      name,
+      type,
+      styleName = '',
+      validate,
+    } = props;
 
     return (
       <Fragment>
@@ -66,6 +83,7 @@ class Input extends Component {
         />
         {label && <Label>{label}</Label>}
         {feedback && <Feedback>{feedback}</Feedback>}
+        {icon && <span className={`icon ${getIconClass(icon)}`} />}
       </Fragment>
     );
   }

@@ -27,6 +27,9 @@ export const TRAFFIC_DELETE = 'traffic_delete';
 export const TRAFFIC_ERROR = 'traffic_error';
 export const TRAFFIC_SEARCH = 'traffic_search';
 
-export const USER_FIND_ONE = 'user_find_one';
 export const USER_ADD = 'user_add';
+export const USER_CLEAR = 'user_clear';
 export const USER_ERROR = 'user_error';
+export const USER_FIND_ONE = 'user_find_one';
+export const USER_LOADING = 'user_loading';
+export const USER_MESSAGE = 'user_message';

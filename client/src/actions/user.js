@@ -1,5 +1,11 @@
 import axios from 'axios';
-import { MESSAGE_UPDATE, USER_FIND_ONE, USER_ADD } from './types';
+import {
+  MESSAGE_UPDATE,
+  USER_FIND_ONE,
+  USER_LOADING,
+  USER_ADD,
+  USER_CLEAR,
+} from './types';
 
 export const userFindOne = id => async dispatch => {
   try {
@@ -25,3 +31,29 @@ export const userAdd = (input, callback) => async dispatch => {
     });
   }
 };
+
+// export const requestReset = input => async dispatch => {
+//   try {
+//     dispatch({
+//       type: USER_LOADING,
+//     });
+
+//     const { email } = input;
+
+//     const response = await axios.put('/api/user/request', { email });
+
+//     dispatch({
+//       type: MESSAGE_UPDATE,
+//       payload: {
+//         header: 'Success',
+//         type: 'success',
+//         text: 'Please check your email for your reset link!',
+//       },
+//     });
+//     dispatch({
+//       type: USER_CLEAR,
+//     });
+//   } catch (e) {
+//     console.log(e);
+//   }
+// };

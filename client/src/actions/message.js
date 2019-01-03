@@ -8,9 +8,9 @@ export const messageClear = () => async dispatch => {
   }
 };
 
-export const messageUpdate = ({ type, text }) => async dispatch => {
+export const messageUpdate = payload => async dispatch => {
   try {
-    dispatch({ type: MESSAGE_UPDATE, payload: { type, text } });
+    dispatch({ type: MESSAGE_UPDATE, payload });
   } catch (e) {
     console.error(e);
   }

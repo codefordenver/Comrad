@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { messageUpdate } from '../../actions';
+import PropTypes from 'prop-types';
 import validation from '../../utils/validation';
 
 class Form extends Component {
-  confirmPassword() {
+  confirmPassword = () => {
     const { input, messageUpdate } = this.props;
     const { confirm_password, password } = input;
     if (!confirm_password) {
@@ -13,21 +14,21 @@ class Form extends Component {
 
     if (confirm_password !== password) {
       messageUpdate({
+        header: 'Passwords Do Not Match',
         type: 'error',
-        text: 'Passwords do not match!',
       });
       return false;
     }
 
     return true;
-  }
+  };
 
   handleOnSubmit = async e => {
     e.preventDefault();
     const { callback, input, action } = this.props;
     const valid = validation.form();
 
-    if (valid && this.confirmPassword()) {
+    if (valid && this.confirmPassword() && action) {
       action(input, callback);
     }
   };
@@ -45,6 +46,10 @@ class Form extends Component {
     );
   }
 }
+
+Form.propTypes = {
+  action: PropTypes.func.isRequired,
+};
 
 function mapStateToProps(state) {
   return {

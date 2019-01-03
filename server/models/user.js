@@ -57,6 +57,16 @@ const userSchema = new Schema({
     required: true,
     default: true,
   },
+
+  reset_token: {
+    type: String,
+    default: null,
+  },
+
+  reset_token_expiry: {
+    type: Number,
+    default: null,
+  },
 });
 
 userSchema.pre('save', function(next) {

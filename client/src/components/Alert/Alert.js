@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { messageClear } from '../../actions';
+import _isEmpty from 'lodash/isEmpty';
 
 class Alert extends Component {
   componentWillUnmount() {
@@ -23,21 +24,6 @@ class Alert extends Component {
     }
   }
 
-  getAlertHeader(type) {
-    switch (type) {
-      case 'success':
-        return 'Success Status';
-      case 'info':
-        return 'Information Status';
-      case 'error':
-        return 'Error Status';
-      case 'warning':
-        return 'Warning Status';
-      default:
-        break;
-    }
-  }
-
   getIconClass(type) {
     switch (type) {
       case 'success':
@@ -53,25 +39,25 @@ class Alert extends Component {
     }
   }
   render() {
-    const { getAlertClass, getAlertHeader, getIconClass, props } = this;
+    const { getAlertClass, getIconClass, props } = this;
     const { message } = props;
-    const { type, text } = message;
+    const { header, type, text } = message;
 
     return (
       <Fragment>
-        {text ? (
+        {_isEmpty(message) ? null : (
           <div className={getAlertClass(type)}>
             <div className="alert__symbol">
               <i className={getIconClass(type)} />
             </div>
             <div className="alert__title-body">
-              <div className="alert__header">{getAlertHeader(type)}</div>
+              <div className="alert__header">{header}</div>
               <div className="alert__body">
                 <div className="alert__message">{text}</div>
               </div>
             </div>
           </div>
-        ) : null}
+        )}
       </Fragment>
     );
   }

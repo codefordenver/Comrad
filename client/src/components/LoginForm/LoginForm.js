@@ -21,6 +21,7 @@ class LoginForm extends Component {
     return (
       <Form callback={this.handleCallback} action={loginUser}>
         <Alert />
+        <p>Login to your account</p>
         <FormGroup>
           <Input
             name="email"

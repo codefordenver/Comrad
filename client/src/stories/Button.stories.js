@@ -16,7 +16,7 @@ storiesOf('Button', module).add(
         type="button"
         onClick={handleOnClick}
       />
-        Click Me
+        children
       </Button>
     ~~~
   `)(ButtonStory),

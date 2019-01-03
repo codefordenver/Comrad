@@ -22,6 +22,7 @@
 @import '../components/Loading/Loading';
 @import '../components/NavTest/NavTest';
 @import '../components/Navbar/Navbar';
+@import '../components/ResetForm/ResetForm';
 @import '../components/Root/Root';
 @import '../components/Select/Select';
 @import '../components/Sidebar/Sidebar';
@@ -30,7 +31,7 @@
 @import '../components/Unauthorized/Unauthorized';
 
 // layout
-@import '../layouts/AuthLayout/AuthLayout';
+@import '../layouts/HomeLayout/HomeLayout';
 @import '../layouts/MainLayout/MainLayout';
 
 // pages
@@ -42,6 +43,7 @@
 @import '../pages/LibraryHomePage/LibraryHomePage';
 @import '../pages/LoginPage/LoginPage';
 @import '../pages/ReportHomePage/ReportHomePage';
+@import '../pages/ResetPage/ResetPage';
 @import '../pages/UserAddPage/UserAddPage';
 @import '../pages/UserEditPage/UserEditPage';
 @import '../pages/UserSearchPage/UserSearchPage';

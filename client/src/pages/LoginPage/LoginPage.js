@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from 'react';
-import logo from '../../images/kgnu_logo.png';
 
 import Button from '../../components/Button';
 import LoginForm from '../../components/LoginForm';

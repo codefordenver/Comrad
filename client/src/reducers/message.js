@@ -1,6 +1,6 @@
 import { MESSAGE_CLEAR, MESSAGE_UPDATE } from '../actions/types';
 
-const initialState = '';
+const initialState = {};
 
 export default function(state = initialState, { type, payload }) {
   switch (type) {

@@ -21,6 +21,7 @@ class SignupForm extends Component {
     return (
       <Form callback={handleCallback} action={userAdd}>
         <Alert />
+        <p>Enter you Information Below</p>
         <FormGroup>
           <Input name="first_name" type="text" label="First Name" />
         </FormGroup>

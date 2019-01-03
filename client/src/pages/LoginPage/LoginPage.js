@@ -12,6 +12,7 @@ class LoginPage extends Component {
   };
 
   handleDisplayAction = display => {
+    console.log(display);
     this.setState({
       display,
     });

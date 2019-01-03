@@ -4,10 +4,9 @@ import '../../index.css';
 import { storiesOf } from '@storybook/react';
 import Button from './Button';
 
-storiesOf('Button', module).add('Button', () => (
-  <div>
-    <Button color="primary">Click Me</Button>
-    <Button color="secondary">Click Me</Button>
-    <Button color="primary">Click Me</Button>
+export const ButtonStory = () => (
+  <div style={{ margin: '0 2.5rem 2rem' }}>
+    <Button color="primary">Primary</Button>
+    <Button color="secondary">Secondary</Button>
   </div>
-));
+);

@@ -22,14 +22,24 @@ Button.propTypes = {
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,
   ]),
+  /**
+   * Change the color
+   */
   color: PropTypes.string,
+  /**
+   * Add an on click function to the component
+   */
   onClick: PropTypes.func,
+  /**
+   * Set the type for the button
+   */
   type: PropTypes.string,
 };
 
 Button.defaultProps = {
   children: null,
   color: 'primary',
+  onClick: null,
   type: 'button',
 };
 

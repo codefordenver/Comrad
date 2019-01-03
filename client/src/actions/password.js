@@ -22,7 +22,7 @@ export const requestReset = input => async dispatch => {
 export const resetPassword = input => async dispatch => {
   try {
     const { confirm_password, password, resetToken } = input;
-    axios.put('/api/password/reset', {
+    await axios.put('/api/password/reset', {
       confirm_password,
       password,
       resetToken,
@@ -37,6 +37,13 @@ export const resetPassword = input => async dispatch => {
       },
     });
   } catch (e) {
-    console.log(e.response);
+    dispatch({
+      type: MESSAGE_UPDATE,
+      payload: {
+        header: 'Token Error',
+        text: e.response.data.message,
+        type: 'error',
+      },
+    });
   }
 };

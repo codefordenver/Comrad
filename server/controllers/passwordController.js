@@ -51,7 +51,9 @@ module.exports = {
     });
 
     if (!user) {
-      res.status(404).json({ message: 'Your information is invalid' });
+      return res
+        .status(404)
+        .json({ message: 'Your token has expired or is invalid' });
     }
 
     await bcrypt.genSalt(10, (err, salt) => {

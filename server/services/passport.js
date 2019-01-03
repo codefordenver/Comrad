@@ -22,7 +22,6 @@ passport.use(
       }
 
       if (!user) {
-        console.log(err);
         return done(null, false);
       }
 

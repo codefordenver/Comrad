@@ -44,10 +44,31 @@ const initialState = {
 class EventNew extends Component {
   state = initialState;
 
-  checkRepeatEndDate = repeat => {
+  updateTime(date, time) {
+    const newHours = moment(time, 'HH:mm').format('HH');
+    const newMinutes = moment(time, 'HH:mm').format('mm');
+    console.log(date);
+
+    return moment(date)
+      .hours(newHours)
+      .minutes(newMinutes);
+  }
+
+  updateDateAndTime = repeat => {
+    const date = this.state.repeat_start_date;
+    const { show_start_time_utc, show_end_time_utc } = this.state;
+
+    const newStartTime = this.updateTime(date, show_start_time_utc);
+    const newEndTime = this.updateTime(date, show_end_time_utc);
+
+    this.setState({
+      show_start_time_utc: newStartTime,
+      show_end_time_utc: newEndTime,
+    });
+
     if (!repeat) {
       this.setState({
-        repeat_end_date: this.state.repeat_start_date,
+        repeat_end_date: date,
         repeatType: '',
       });
     }
@@ -61,21 +82,24 @@ class EventNew extends Component {
   handleCheckboxChange = e => {
     const { name, value } = e.target;
     const { repeat } = this.state;
-    this.setState({ [name]: !repeat }, () =>
-      this.checkRepeatEndDate(this.state.repeat),
-    );
+
+    this.setState({ [name]: !repeat }, () => this.updateDateAndTime(repeat));
   };
 
   handleInputDateChange = (type, dateValue) => {
-    this.setState({ [type]: dateValue }, () =>
-      this.checkRepeatEndDate(this.state.repeat),
-    );
+    const { repeat } = this.state;
+
+    this.setState({ [type]: dateValue }, () => this.updateDateAndTime(repeat));
   };
 
   handleInputChangeTime = e => {
     const { name, value } = e.target;
+    const date = this.state.repeat_start_date;
+
+    const newTime = this.updateTime(date, value);
+
     this.setState({
-      [name]: moment(value, 'HH:mm'),
+      [name]: newTime,
     });
   };
 
@@ -104,6 +128,7 @@ class EventNew extends Component {
     return (
       <main className="event">
         <section className="event__body">
+          {console.log('New State')}
           {console.log(this.state)}
 
           <Card>

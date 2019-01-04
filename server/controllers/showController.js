@@ -65,19 +65,15 @@ function reduceShowsByRepeatProperty(shows, recurringCheckValue) {
 }
 
 function momentCombineDayAndTime(desiredDate, desiredTime) {
-  const newDate = moment(desiredDate)
-    .utc()
-    .format('YYYYMMDD');
+  const newDate = moment(desiredDate).format('YYYYMMDD');
+  const newTime = moment(desiredTime).format('h:mm:ss A');
+  const newDateAndTimeFormat = newDate + ' ' + newTime;
+  const returnedValue = moment(
+    newDateAndTimeFormat,
+    'YYYYMMDD h:mm:ss A',
+  ).format();
 
-  const newTime = moment(desiredTime)
-    .utc()
-    .format('h:mm:ss Z');
-
-  const newDateAndTime = newDate + ' ' + newTime;
-
-  return moment(newDateAndTime, 'YYYYMMDD h:mm:ss Z')
-    .utc()
-    .format();
+  return returnedValue;
 }
 
 function returnShowsArrayWithNewDates(dateArray, show) {
@@ -125,6 +121,7 @@ module.exports = {
   repeatRuleShows,
   returnDatesArrayByRepeatRule,
   reduceShowsByRepeatProperty,
+
   findById: (req, res) => {
     db.Show.findById(req.params.id)
       .then(dbShow => res.json(dbShow))

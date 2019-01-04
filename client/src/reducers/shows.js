@@ -11,7 +11,7 @@ import {
 } from '../actions/types';
 
 const initialState = {
-  data: null,
+  data: [],
   fetching: false,
   error: false,
 };

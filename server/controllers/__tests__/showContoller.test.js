@@ -5,6 +5,7 @@ const app = require('../../app');
 const {
   repeatRuleShows,
   reduceShowsByRepeatProperty,
+  momentCombineDayAndTime,
 } = require('../showController');
 
 beforeEach(connect);
@@ -172,5 +173,12 @@ describe('Test Repeat Rules', () => {
   it('Should filter out shows that are not repeated', () => {
     const nonRepeatShows = reduceShowsByRepeatProperty(showsList, false);
     expect(nonRepeatShows).toEqual(nonRepeatShowList);
+  });
+});
+
+describe('Updating Moment Date and Time', () => {
+  it('Should convert date and time to', () => {
+    const returnedDateAndTime = new Date();
+    expect(returnedDateAndTime).toEqual('Not Hello');
   });
 });

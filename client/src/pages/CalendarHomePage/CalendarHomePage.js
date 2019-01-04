@@ -8,6 +8,7 @@ import Alert from '../../components/Alert';
 
 import EventNew from '../../components/Events/EventNew';
 import EventSearch from '../../components/Events/EventSearch';
+import EventCalendar from '../../components/Events/EventCalendar';
 
 import {
   getShowsData,
@@ -26,16 +27,6 @@ class CalendarHomePage extends Component {
     };
   }
 
-  componentDidMount() {
-    const setInitialShows = async () => {
-      //Change to getShows once mongo is setup
-      const showsProps = await this.props.shows;
-      this.setState({ shows: showsProps });
-    };
-
-    setInitialShows();
-  }
-
   render() {
     const { shows, showsFetching, showsPosting, showsError } = this.props;
     return (
@@ -43,34 +34,10 @@ class CalendarHomePage extends Component {
         {showsError && (
           <Alert type="error">{showsError.response.data.message}</Alert>
         )}
-        <EventSearch />
+
+        <EventCalendar />
+
         <EventNew />
-
-        {shows
-          ? _.map(shows, show => {
-              return (
-                <div key={show._id}>
-                  <h1>{show.show_details.title}</h1>
-                  <p>
-                    Start Time:{' '}
-                    {moment(show.show_start_time_utc).format(
-                      'YYYY MM DD hh:mm a',
-                    )}
-                  </p>
-                  <p>
-                    End Time:{' '}
-                    {moment(show.show_end_time_utc).format(
-                      'YYYY MM DD hh:mm a',
-                    )}
-                  </p>
-
-                  <h2>Repeat Rules</h2>
-                  <p>Show Start Date: {show.repeat_rule.repeat_start_date}</p>
-                  <p>Show End Date: {show.repeat_rule.repeat_end_date}</p>
-                </div>
-              );
-            })
-          : ''}
       </div>
     );
   }

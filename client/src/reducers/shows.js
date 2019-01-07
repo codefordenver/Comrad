@@ -29,7 +29,7 @@ export default function(state = initialState, { type, payload }) {
     case SHOW_POST:
       return {
         ...state,
-        data: { ...state.data, ..._.mapKeys([payload], '_id') },
+        data: { ...state.data, ..._.mapKeys(payload, '_id') },
         posting: false,
         fetching: false,
         error: false,

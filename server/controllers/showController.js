@@ -32,7 +32,7 @@ function create_new_show(req, res) {
   };
 }
 
-function repeatRuleShows(shows, startDate, endDate) {
+function repeatRuleShows(shows) {
   const allRepeatShows = reduceShowsByRepeatProperty(shows, true);
   const allNonRepeatShows = reduceShowsByRepeatProperty(shows, false);
 
@@ -147,8 +147,7 @@ module.exports = {
         },
       ])
       .then(dbShow => {
-        const expandedShowList = repeatRuleShows(dbShow, startDate, endDate);
-        res.json(expandedShowList);
+        res.json(repeatRuleShows(dbShow));
       })
       .catch(err => res.status(422).json(err));
   },
@@ -156,8 +155,7 @@ module.exports = {
   create: (req, res) => {
     db.Show.create(create_new_show(req, res))
       .then(dbShow => {
-        //NEED TO RETURN EXPANDED SHOW LIST IF IT REPEATS
-        res.json(dbShow);
+        res.json(repeatRuleShows([dbShow]));
       })
       .catch(err => res.status(422).json(err));
   },

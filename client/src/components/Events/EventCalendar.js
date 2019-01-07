@@ -69,7 +69,7 @@ class Calendar extends Component {
           titleAccessor={show => show.show_details.title}
           startAccessor={show => new Date(show.show_start_time_utc)}
           endAccessor={show => new Date(show.show_end_time_utc)}
-          onRangeChange={dates => this.handleDateChange(dates)}
+          onRangeChange={dateRange => this.handleDateChange(dateRange)}
         />
       </div>
     );

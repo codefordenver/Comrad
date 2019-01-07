@@ -25,7 +25,8 @@ export const postShow = show => async dispatch => {
 
     dispatch({ type: SHOW_POST, payload: response.data });
   } catch (e) {
-    dispatch({ type: SHOW_ERROR, payload: 'Posting New Show Error' });
+    console.log(e);
+    dispatch({ type: SHOW_ERROR, payload: e });
   }
 };
 

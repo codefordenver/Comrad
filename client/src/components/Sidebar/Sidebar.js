@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import Tooltip from '../Tooltip';
 
 class Sidebar extends Component {
   state = {};
@@ -10,6 +11,7 @@ class Sidebar extends Component {
         name: 'home',
         url: '/',
         iconClass: 'fas fa-home',
+        tooltipText: 'Home',
       },
       {
         name: 'library',
@@ -52,11 +54,13 @@ class Sidebar extends Component {
       <nav className="sidebar">
         <ul className="sidebar__list">
           {items.map(item => (
-            <li key={item.name} className="sibebar-_item">
-              <Link to={item.url} className="sidebar__link">
-                <i className={`sidebar__icon ${item.iconClass}`} />
-              </Link>
-            </li>
+            <Tooltip key={item.name} text={item.tooltipText} placement="right">
+              <li className="sibebar-_item">
+                <Link to={item.url} className="sidebar__link">
+                  <i className={`sidebar__icon ${item.iconClass}`} />
+                </Link>
+              </li>
+            </Tooltip>
           ))}
         </ul>
       </nav>

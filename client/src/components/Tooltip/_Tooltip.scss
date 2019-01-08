@@ -1,0 +1,89 @@
+.tooltip-container {
+  position: relative;
+}
+
+.tooltip {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  visibility: hidden;
+  border: $border-width solid $color-primary;
+  border-radius: $border-radius;
+  padding: 0.25rem;
+
+  &__text {
+    color: $color-primary;
+    font-size: 1.5rem;
+  }
+
+  &--left,
+  &--right {
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  &--left {
+    right: 100%;
+    &::after {
+      position: absolute;
+      right: 100%;
+      width: 0;
+      height: 0;
+
+      border-top: $border-radius * 2 solid transparent;
+      border-bottom: $border-radius * 2 solid transparent;
+
+      border-right: $border-radius solid $color-primary;
+    }
+  }
+
+  &--right {
+    left: 100%;
+
+    &::before {
+      content: '';
+      position: absolute;
+      z-index: 100;
+      right: 100%;
+      width: 0;
+      height: 0;
+
+      border-top: $border-radius solid transparent;
+      border-bottom: $border-radius solid transparent;
+
+      border-right: $border-radius * 1.5 solid white;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      right: 100%;
+      width: 0;
+      height: 0;
+
+      border-top: $border-radius * 1.5 solid transparent;
+      border-bottom: $border-radius * 1.5 solid transparent;
+
+      border-right: $border-radius * 2 solid $color-primary;
+    }
+  }
+
+  &--top,
+  &--bottom {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  &--top {
+    bottom: 100%;
+  }
+
+  &--bottom {
+    top: 100%;
+  }
+
+  &--open {
+    visibility: visible;
+  }
+}

@@ -11,61 +11,83 @@
   border: $border-width solid $color-primary;
   border-radius: $border-radius;
   padding: 0.25rem;
+  white-space: nowrap;
+  box-shadow: 1px 1px 4px 1px $color-primary;
+  margin: 0 1rem;
 
   &__text {
     color: $color-primary;
     font-size: 1.5rem;
   }
 
+  &--open {
+    visibility: visible;
+  }
+
+  // Used for the triangle arrows attached to the tooltip bubble
+  $triangle-base: 4px;
+  $triangle-height: 6px;
+
+  &--top,
+  &--left,
+  &--right,
+  &--bottom {
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 0;
+    }
+  }
+
   &--left,
   &--right {
     top: 50%;
     transform: translateY(-50%);
+
+    &::before {
+      border-top: $triangle-base + $border-width solid transparent;
+      border-bottom: $triangle-base + $border-width solid transparent;
+    }
+
+    &::after {
+      border-top: $triangle-base solid transparent;
+      border-bottom: $triangle-base solid transparent;
+    }
   }
 
   &--left {
     right: 100%;
+
+    &::before,
     &::after {
-      position: absolute;
-      right: 100%;
-      width: 0;
-      height: 0;
+      left: 100%;
+    }
 
-      border-top: $border-radius * 2 solid transparent;
-      border-bottom: $border-radius * 2 solid transparent;
+    &::before {
+      border-left: $triangle-height + $border-width solid $color-primary;
+    }
 
-      border-right: $border-radius solid $color-primary;
+    &::after {
+      border-left: $triangle-height solid white;
     }
   }
 
   &--right {
     left: 100%;
 
-    &::before {
-      content: '';
-      position: absolute;
-      z-index: 100;
+    &::before,
+    &::after {
       right: 100%;
-      width: 0;
-      height: 0;
+    }
 
-      border-top: $border-radius solid transparent;
-      border-bottom: $border-radius solid transparent;
-
-      border-right: $border-radius * 1.5 solid white;
+    &::before {
+      border-right: $triangle-height + $border-width solid $color-primary;
     }
 
     &::after {
-      content: '';
-      position: absolute;
-      right: 100%;
-      width: 0;
-      height: 0;
-
-      border-top: $border-radius * 1.5 solid transparent;
-      border-bottom: $border-radius * 1.5 solid transparent;
-
-      border-right: $border-radius * 2 solid $color-primary;
+      border-right: $triangle-height solid white;
     }
   }
 
@@ -73,17 +95,49 @@
   &--bottom {
     left: 50%;
     transform: translateX(-50%);
+
+    &::before {
+      border-left: $triangle-base + $border-width solid transparent;
+      border-right: $triangle-base + $border-width solid transparent;
+    }
+
+    &::after {
+      border-left: $triangle-base solid transparent;
+      border-right: $triangle-base solid transparent;
+    }
   }
 
   &--top {
     bottom: 100%;
+
+    &::before,
+    &::after {
+      top: 100%;
+    }
+
+    &::before {
+      border-top: $triangle-height + $border-width solid $color-primary;
+    }
+
+    &::after {
+      border-top: $triangle-height solid white;
+    }
   }
 
   &--bottom {
     top: 100%;
-  }
 
-  &--open {
-    visibility: visible;
+    &::before,
+    &::after {
+      bottom: 100%;
+    }
+
+    &::before {
+      border-bottom: $triangle-height + $border-width solid $color-primary;
+    }
+
+    &::after {
+      border-bottom: $triangle-height solid white;
+    }
   }
 }

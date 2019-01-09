@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
 class Tooltip extends Component {
@@ -8,6 +9,12 @@ class Tooltip extends Component {
       open: false,
     };
   }
+
+  static propTypes = {
+    text: PropTypes.string.isRequired,
+    children: PropTypes.node.isRequired,
+    placement: PropTypes.oneOf(['top', 'right', 'bottom', 'left']).isRequired,
+  };
 
   handleMouseOver = event => {
     event.preventDefault();

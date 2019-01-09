@@ -17,36 +17,43 @@ class Sidebar extends Component {
         name: 'library',
         url: '/library',
         iconClass: 'fas fa-music',
+        tooltipText: 'Music Library',
       },
       {
         name: 'microphone',
         url: '/',
         iconClass: 'fas fa-microphone',
+        tooltipText: 'Shows',
       },
       {
         name: 'user',
         url: '/user',
         iconClass: 'fas fa-user',
+        tooltipText: 'Users',
       },
       {
         name: 'calendar',
         url: '/calendar',
         iconClass: 'fas fa-calendar-alt',
+        tooltipText: 'Calendars',
       },
       {
         name: 'calendar-check',
         url: '/',
         iconClass: 'fas fa-calendar-check',
+        tooltipText: 'Calendar with a Checkbox',
       },
       {
         name: 'report',
         url: '/report',
         iconClass: 'fas fa-chart-bar',
+        tooltipText: 'Report',
       },
       {
         name: 'copy',
         url: '/',
         iconClass: 'fas fa-copy',
+        tooltipText: 'Copy?',
       },
     ];
 

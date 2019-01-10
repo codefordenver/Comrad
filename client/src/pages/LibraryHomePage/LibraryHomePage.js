@@ -2,13 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { searchLibrary } from '../../actions';
 
-// import { DropRightBtn } from '../../components/Button';
-import { Filter } from '../../components/Filter';
-import Search from '../../components/Search';
-
 import AlbumsTable from '../../components/AlbumsTable';
 import ArtistsTable from '../../components/ArtistsTable';
-import Button from '../../components/Button';
 import Form from '../../components/Form';
 import FormGroup from '../../components/FormGroup';
 import Input from '../../components/Input';
@@ -66,10 +61,8 @@ class LibraryHomePage extends Component {
   };
 
   render() {
-    const { handleFilterClick, props, renderFilter, state } = this;
+    const { props, renderFilter, renderTable } = this;
     const { searchLibrary } = props;
-
-    console.log(this.state);
 
     return (
       <main className="library">
@@ -86,7 +79,7 @@ class LibraryHomePage extends Component {
             <div>Pagination</div>
           </div>
         </section>
-        <div className="library__table">{this.renderTable()}</div>
+        <div className="library__table">{renderTable()}</div>
       </main>
     );
   }

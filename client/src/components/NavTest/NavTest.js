@@ -51,7 +51,7 @@ class NavTest extends Component {
       },
       {
         text: 'User',
-        route: '/user',
+        route: '/user/search',
       },
     ];
 

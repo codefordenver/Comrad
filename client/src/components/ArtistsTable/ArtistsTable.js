@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 
-import CircleDropdown from '../CircleDropdown';
 import Loading from '../Loading';
 import Table from '../Table';
 
@@ -27,9 +26,7 @@ class ArtistsTable extends Component {
           if (item.type === 'album') {
             return (
               <tr key={item._id}>
-                <td>
-                  <CircleDropdown />
-                </td>
+                <td />
                 <td>{item.name}</td>
                 <td>{item._id}</td>
               </tr>

@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 
-import CircleDropdown from '../CircleDropdown';
 import Loading from '../Loading';
 import Table from '../Table';
 
@@ -19,15 +18,13 @@ class LibraryTable extends Component {
   };
 
   renderBody = () => {
-    const { data } = this.props;
+    const { docs } = this.props.search;
 
     return (
       <tbody>
-        {data.map(item => (
+        {docs.map(item => (
           <tr key={item._id}>
-            <td>
-              <CircleDropdown />
-            </td>
+            <td />
             <td>{item.name}</td>
             <td>{item.type}</td>
           </tr>
@@ -38,12 +35,12 @@ class LibraryTable extends Component {
 
   render() {
     const { props, renderHeader, renderBody } = this;
-    const { loading, data } = props;
+    const { loading, docs } = props.search;
 
     return (
       <Fragment>
         {loading && <Loading />}
-        {data.length > 0 ? (
+        {docs.length > 0 ? (
           <Table>
             {renderHeader()}
             {renderBody()}
@@ -56,8 +53,7 @@ class LibraryTable extends Component {
 
 function mapStateToProps(state) {
   return {
-    data: state.search.data,
-    loading: state.search.loading,
+    search: state.search,
   };
 }
 

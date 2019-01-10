@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 
-import CircleDropdown from '../CircleDropdown';
 import Loading from '../Loading';
 import Table from '../Table';
 
@@ -30,9 +29,7 @@ class TracksTable extends Component {
 
             return (
               <tr key={_id}>
-                <td>
-                  <CircleDropdown />
-                </td>
+                <td />
                 <td>{name}</td>
                 <td>{track_number}</td>
                 <td>{duration}</td>

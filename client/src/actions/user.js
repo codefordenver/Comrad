@@ -1,11 +1,5 @@
 import axios from 'axios';
-import {
-  MESSAGE_UPDATE,
-  USER_FIND_ONE,
-  USER_LOADING,
-  USER_ADD,
-  USER_CLEAR,
-} from './types';
+import { ALERT_UPDATE, USER_FIND_ONE, USER_ADD } from './types';
 
 export const userFindOne = id => async dispatch => {
   try {
@@ -26,7 +20,7 @@ export const userAdd = (input, callback) => async dispatch => {
     callback();
   } catch (e) {
     dispatch({
-      type: MESSAGE_UPDATE,
+      type: ALERT_UPDATE,
       payload: { type: 'error', text: e.response.data.errorMessage },
     });
   }

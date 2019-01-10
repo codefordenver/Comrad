@@ -1,29 +1,42 @@
 import axios from 'axios';
-import { AUTH_SIGNIN, AUTH_SIGNOUT, AUTH_ERROR } from './types';
+import { ALERT_UPDATE, AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR } from './types';
 
-export const signinUser = (userInfo, callback) => async dispatch => {
+export const loginUser = (input, callback) => async dispatch => {
   try {
-    const response = await axios.post('/api/auth/signin', userInfo);
+    console.log('Login User:', input);
+    const { email, password } = input;
+    const response = await axios.post('/api/auth/login', { email, password });
 
-    dispatch({ type: AUTH_SIGNIN, payload: response.data });
+    dispatch({ type: AUTH_LOGIN, payload: response.data });
 
     callback();
-
   } catch (e) {
-    dispatch({ type: AUTH_ERROR, payload: 'Invalid Login Credientials' });
+    dispatch({
+      type: ALERT_UPDATE,
+      payload: { type: 'error', text: e.response.statusText },
+    });
   }
 };
 
-export const signoutUser = callback => async dispatch => {
-  try {
-    await axios.get('/api/auth/signout');
+export const testFunction = input => async dispatch => {
+  console.log(input);
+};
 
-    dispatch({ type: AUTH_SIGNOUT });
+export const logoutUser = callback => async dispatch => {
+  try {
+    await axios.get('/api/auth/logout');
+
+    dispatch({ type: AUTH_LOGOUT });
 
     callback();
-
   } catch (e) {
-    dispatch({ type: AUTH_ERROR, payload: 'Something went Wrong!'})
+    dispatch({
+      type: ALERT_UPDATE,
+      payload: {
+        type: 'error',
+        text: 'Something went wrong!',
+      },
+    });
   }
 };
 
@@ -31,9 +44,28 @@ export const fetchUser = () => async dispatch => {
   try {
     const response = await axios.get('/api/auth/current');
 
-    dispatch({ type: AUTH_SIGNIN, payload: response.data });
-
+    dispatch({ type: AUTH_LOGIN, payload: response.data });
   } catch (e) {
-    dispatch({ type: AUTH_ERROR, payload: 'User Not Authroized!' });
+    dispatch({ type: AUTH_ERROR, payload: '' });
+  }
+};
+
+export const resetUser = () => async dispatch => {
+  try {
+    dispatch({
+      type: ALERT_UPDATE,
+      payload: {
+        type: 'success',
+        text: 'Check your email to reset your password',
+      },
+    });
+  } catch (e) {
+    dispatch({
+      type: ALERT_UPDATE,
+      payload: {
+        type: 'error',
+        text: 'Something went wrong!',
+      },
+    });
   }
 };

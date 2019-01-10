@@ -1,0 +1,28 @@
+.main-layout {
+  display: grid;
+  grid-template-columns: 7.6rem auto;
+  grid-template-rows: auto 100vh 5rem;
+  grid-template-areas:
+    "navbar navbar"
+    "sidebar body"
+    "sidebar footer";
+
+    &__navbar {
+      grid-area: navbar;
+    }
+
+    &__sidebar {
+      grid-area: sidebar;
+    }
+
+    &__body {
+      grid-area: body;
+
+      background-color: #eee;
+      padding: 4rem;
+    }
+
+    &__footer {
+      grid-area: footer;
+    }
+}

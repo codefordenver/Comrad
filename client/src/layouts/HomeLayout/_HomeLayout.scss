@@ -1,0 +1,21 @@
+.home-layout {
+  display: grid;
+  grid-template-columns: 1fr 50rem;
+
+  height: 100vh;
+
+  &__background {
+    background: url(
+      images/cassette_tapes.jpg
+    ) no-repeat center fixed;
+    background-size: cover;
+  }
+
+  &__body {
+    padding: 5rem 5rem 0;
+  }
+
+  &__children {
+    margin-bottom: 5rem;
+  }
+}

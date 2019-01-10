@@ -1,36 +1,43 @@
 import {
-  AUTH_SIGNIN,
-  AUTH_SIGNOUT,
-  AUTH_ERROR
+  AUTH_LOGIN,
+  AUTH_LOGOUT,
+  AUTH_ERROR,
+  AUTH_RESET,
 } from '../actions/types';
 
 const initialState = {
-  email: '',
+  data: {},
   status: 'fetching',
-  errorMessage: ''
+  message: '',
 };
 
-export default function(state = initialState, {type, payload}) {
+export default function(state = initialState, { type, payload }) {
   switch (type) {
-    case AUTH_SIGNIN:
+    case AUTH_LOGIN:
       return {
-        ...payload,
+        data: {
+          ...payload,
+        },
         status: true,
-        errorMessage: ''
+        message: '',
       };
 
-    case AUTH_SIGNOUT:
+    case AUTH_LOGOUT:
       return {
-        ...payload,
         status: false,
-        errorMessage: ''
+        message: '',
       };
 
     case AUTH_ERROR:
       return {
-        ...state,
         status: false,
-        errorMessage: payload
+        message: payload,
+      };
+
+    case AUTH_RESET:
+      return {
+        status: false,
+        message: payload,
       };
 
     default:

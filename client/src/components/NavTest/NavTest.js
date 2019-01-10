@@ -8,14 +8,14 @@ class NavTest extends Component {
     const email = process.env.REACT_APP_TEST_EMAIL;
     const password = process.env.REACT_APP_TEST_PASSWORD;
 
-    this.props.signinUser({ email, password }, () => {
+    this.props.loginUser({ email, password }, () => {
       this.props.history.push('/dashboard');
     });
   };
 
   handleQuickSignOut = () => {
-    this.props.signoutUser(() => {
-      this.props.history.push('/home');
+    this.props.logoutUser(() => {
+      this.props.history.push('/');
     });
   };
 
@@ -23,37 +23,39 @@ class NavTest extends Component {
     const links = [
       {
         text: 'Home',
-        route: '/home'
+        route: '/',
       },
       {
         text: 'Admin',
-        route: '/admin'
+        route: '/admin',
       },
       {
         text: 'Builder',
-        route: '/builder'
+        route: '/builder',
       },
       {
         text: 'Calendar',
-        route: '/calendar'
+        route: '/calendar',
       },
       {
         text: 'Dashboard',
-        route: '/'
+        route: '/dashboard',
       },
       {
         text: 'Library',
-        route: '/library'
+        route: '/library',
       },
       {
         text: 'Report',
-        route: '/report'
+        route: '/report',
       },
       {
         text: 'User',
-        route: '/user'
-      }
+        route: '/user/search',
+      },
     ];
+
+    const { status } = this.props.auth;
 
     return (
       <ul className="nav-test">
@@ -62,15 +64,12 @@ class NavTest extends Component {
             {link.text}
           </Link>
         ))}
-        {this.props.auth.status === true ? (
-          <button className="button" onClick={this.handleQuickSignOut}>
-            Quick Sign Out
-          </button>
-        ) : (
-          <button className="button" onClick={this.handleQuickSignIn}>
-            Quick Sign In
-          </button>
-        )}
+        <button
+          className="button"
+          onClick={status ? this.handleQuickSignOut : this.handleQuickSignIn}
+        >
+          {status ? 'Quick Sign Out' : 'Quick Sign In'}
+        </button>
       </ul>
     );
   }
@@ -78,11 +77,11 @@ class NavTest extends Component {
 
 function mapStateToProps(state) {
   return {
-    auth: state.auth
-  }
+    auth: state.auth,
+  };
 }
 
 export default connect(
   mapStateToProps,
-  actions
+  actions,
 )(NavTest);

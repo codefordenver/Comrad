@@ -1,9 +1,12 @@
-import React from 'react'
+import React from 'react';
+import loading from '../../images/comrad-loading-secondary.gif';
 
-export const Loading = () => {
+const Loading = () => {
   return (
     <div className="loading">
-      Loading Component
+      <img className="loading__gif" src={loading} alt="loading gif" />
     </div>
-  )
-}
+  );
+};
+
+export default Loading;

@@ -1,0 +1,46 @@
+.alert {
+  display: grid;
+  grid-template-columns: 5rem auto;
+  grid-column-gap: 0.5rem;
+
+  border-radius: $border-radius;
+  color: white;
+  margin-bottom: 3rem;
+  padding: 0.5rem;
+
+  &__symbol {
+    grid-column: 1;
+
+    display: grid;
+    justify-items: center;
+    align-items: center;
+
+    font-size: 3.6rem;
+  }
+
+  &__body {
+    grid-column: 2;
+  }
+
+  &__header {
+    font-weight: bold;
+    font-size: 2rem;
+  }
+
+  &__message {
+    font-size: 1.6rem;
+  }
+
+  &--info {
+    background-color: #7db2bf;
+  }
+  &--success {
+    background-color: #007283;
+  }
+  &--error {
+    background-color: #ff9999;
+  }
+  &--warning {
+    background-color: #ffb266;
+  }
+}

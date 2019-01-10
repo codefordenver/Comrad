@@ -1,7 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-export const CardBody = ({ children, utilities }) => (
-  <div className={`card__body${utilities ? " " + utilities : ""}`}>
-    {children}
-  </div>
-);
+const CardBody = props => {
+  const { children } = props;
+
+  return <div className="card__body">{children}</div>;
+};
+
+export { CardBody };

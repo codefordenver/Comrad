@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 
 class ShowTable extends Component {
   renderBody() {
@@ -17,14 +17,10 @@ class ShowTable extends Component {
           </tr>
         ))}
       </tbody>
-    )
+    );
   }
   render() {
-    return (
-      <table className="table">
-        {this.renderBody()}
-      </table>
-    )
+    return <table className="table">{this.renderBody()}</table>;
   }
 }
 

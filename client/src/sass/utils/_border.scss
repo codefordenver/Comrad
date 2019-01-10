@@ -1,0 +1,63 @@
+/* ------------------------------------------
+  Border
+------------------------------------------ */
+
+.border-shadow-bottom-right {
+  box-shadow: 2px 2px 2px -1px #dbdcdd;
+}
+
+.border-shadow-all {
+  box-shadow: 0px 0px 2px 2px #dbdcdd;
+}
+
+.border-dark-grey {
+  border-color: #555759;
+}
+
+.border-grey {
+  border-color: #a4a9ad;
+}
+
+.border-light-grey {
+  border-color: #dbdcdd;
+}
+
+.border-left {
+  border-left: 1px;
+}
+
+.border-right {
+  border-right: 1px;
+}
+
+.border-top {
+  border-top: 1px;
+}
+
+.border-bottom {
+  border-bottom: 1px;
+}
+
+.border-all {
+  border: 1px;
+}
+
+.no-border-top {
+  border-top: none;
+}
+
+.no-border-right {
+  border-right: none;
+}
+
+.no-border-left {
+  border-left: none;
+}
+
+.no-border-bottom {
+  border-bottom: none;
+}
+
+.no-border {
+  border: none;
+}

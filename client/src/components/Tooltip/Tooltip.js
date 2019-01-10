@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
@@ -16,37 +16,36 @@ class Tooltip extends Component {
     placement: PropTypes.oneOf(['top', 'right', 'bottom', 'left']).isRequired,
   };
 
-  handleMouseOver = event => {
-    event.preventDefault();
+  handleMouseEnter = event => {
     this.setState({ open: true });
   };
 
-  handleMouseOut = event => {
-    event.preventDefault();
+  handleMouseLeave = event => {
     this.setState({ open: false });
   };
 
   render() {
-    const { children, placement, text, ...otherProps } = this.props;
+    const { children, className, placement, text, ...otherProps } = this.props;
     const { open } = this.state;
 
-    return (
-      <div
-        className="tooltip-container"
-        onMouseOver={this.handleMouseOver}
-        onMouseOut={this.handleMouseOut}
-        {...otherProps}
-      >
-        {children}
+    const child = React.Children.only(children);
+    const updatedChild = React.cloneElement(child, {
+      className: classnames(child.props.className, 'tooltip-container'),
+      onMouseEnter: this.handleMouseEnter,
+      onMouseLeave: this.handleMouseLeave,
+      children: [
+        child.props.children,
         <div
           className={classnames('tooltip', `tooltip--${placement}`, {
             'tooltip--open': open,
           })}
         >
           <span className="tooltip__text">{text}</span>
-        </div>
-      </div>
-    );
+        </div>,
+      ],
+    });
+
+    return updatedChild;
   }
 }
 

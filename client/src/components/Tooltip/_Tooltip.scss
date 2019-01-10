@@ -7,13 +7,15 @@
   justify-content: center;
   align-items: center;
   position: absolute;
-  visibility: hidden;
+  opacity: 0;
   border: $border-width solid $color-primary;
   border-radius: $border-radius;
   padding: 0.25rem;
   white-space: nowrap;
   box-shadow: 1px 1px 4px 1px $color-primary;
-  margin: 0 1rem;
+  background-color: white;
+  z-index: 100;
+  transition: opacity 0.2s ease-in-out;
 
   &__text {
     color: $color-primary;
@@ -21,7 +23,7 @@
   }
 
   &--open {
-    visibility: visible;
+    opacity: 1;
   }
 
   // Used for the triangle arrows attached to the tooltip bubble
@@ -43,6 +45,7 @@
 
   &--left,
   &--right {
+    margin: 0 1rem;
     top: 50%;
     transform: translateY(-50%);
 
@@ -93,6 +96,7 @@
 
   &--top,
   &--bottom {
+    margin: 1rem 0;
     left: 50%;
     transform: translateX(-50%);
 

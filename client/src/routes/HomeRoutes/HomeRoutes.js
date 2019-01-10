@@ -7,9 +7,6 @@ import ResetPage from '../../pages/ResetPage';
 import SignupPage from '../../pages/SignupPage';
 
 const LoginRoutes = props => {
-  const { match } = props;
-  const { url } = match;
-
   return (
     <HomeLayout>
       <Route exact path={`/`} component={LoginPage} />

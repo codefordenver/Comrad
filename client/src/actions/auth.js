@@ -3,7 +3,6 @@ import { ALERT_UPDATE, AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR } from './types';
 
 export const loginUser = (input, callback) => async dispatch => {
   try {
-    console.log('Login User:', input);
     const { email, password } = input;
     const response = await axios.post('/api/auth/login', { email, password });
 

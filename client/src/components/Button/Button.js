@@ -9,18 +9,20 @@ class Button extends Component {
       color,
       disabled,
       onClick,
-      styleName,
+      className,
       to,
       type,
+      ...otherProps
     } = this.props;
     if (to) {
       return (
         <Link
           disabled={disabled}
           to={to}
-          className={`button button--link ${styleName}`}
+          className={`button button--link ${className}`}
           onClick={onClick}
           type={type}
+          {...otherProps}
         >
           {children}
         </Link>
@@ -29,10 +31,11 @@ class Button extends Component {
 
     return (
       <button
-        className={`button button--${color} ${styleName}`}
+        className={`button button--${color} ${className}`}
         disabled={disabled}
         onClick={onClick}
         type={type}
+        {...otherProps}
       >
         {children}
       </button>

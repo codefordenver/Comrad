@@ -19,8 +19,8 @@ class Pagination extends Component {
   };
 
   handleLeftClick = () => {
-    const { action, search } = this.props;
-    const { page } = search;
+    const { action, reducers } = this.props;
+    const { page } = reducers;
 
     if (page > 1 && action) {
       action(
@@ -34,13 +34,13 @@ class Pagination extends Component {
 
   render() {
     const { handleLeftClick, handleRightClick, props } = this;
-    const { page, pages } = props.reducer;
+    const { page, pages, total } = props.reducer;
 
     console.log(props);
 
     return (
       <Fragment>
-        {pages ? (
+        {total > 0 ? (
           <div className="pagination">
             <div className="pagination__page">{page || 1}</div>
             <div className="pagination__text">of</div>

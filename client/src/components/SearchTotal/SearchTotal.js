@@ -10,8 +10,9 @@ class SearchTotal extends Component {
       <Fragment>
         {total ? (
           <div className="search-total">
-            <div className="search-total__text">Total:&nbsp;</div>
-            <div className="search-total__number">{total}</div>
+            <div className="search-total__text">
+              Total: <span className="search-total__number">{total}</span>
+            </div>
           </div>
         ) : null}
       </Fragment>

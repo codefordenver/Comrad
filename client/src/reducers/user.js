@@ -1,6 +1,4 @@
 import {
-  MESSAGE_UPDATE,
-  //USER_FIND_ONE,
   USER_ADD,
   USER_CLEAR,
   USER_ERROR,

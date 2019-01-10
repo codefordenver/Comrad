@@ -10,8 +10,7 @@ export default function(state = initialState, { type, payload }) {
         ...payload,
       };
     case INPUT_CLEAR:
-      delete state[payload];
-      return state;
+      return initialState;
     default:
       return state;
   }

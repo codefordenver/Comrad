@@ -1,8 +1,12 @@
-import { SEARCH_LOADING, SEARCH_LIBRARY, SEARCH_USERS } from '../actions/types';
+import {
+  SEARCH_LOADING,
+  SEARCH_LIBRARY,
+  SEARCH_UPDATE,
+  SEARCH_USERS,
+} from '../actions/types';
 
 const initialState = {
-  data: [],
-  loading: false,
+  docs: [],
 };
 
 export default function(state = initialState, { type, payload }) {
@@ -14,13 +18,18 @@ export default function(state = initialState, { type, payload }) {
       };
     case SEARCH_LIBRARY:
       return {
-        data: payload,
+        docs: payload,
         loading: false,
       };
     case SEARCH_USERS:
       return {
         ...state,
         users: payload,
+      };
+    case SEARCH_UPDATE:
+      return {
+        ...state,
+        ...payload,
       };
     default:
       return state;

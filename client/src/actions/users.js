@@ -1,11 +1,19 @@
 import axios from 'axios';
-import { INPUT_CLEAR, USERS_UPDATE } from './types';
+import { USERS_CLEAR, USERS_UPDATE } from './types';
 
 export const usersAll = input => async dispatch => {
   try {
     const response = await axios.get(`/api/user`);
 
     console.log(response);
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+export const usersClear = () => async dispatch => {
+  try {
+    dispatch({ type: USERS_CLEAR });
   } catch (e) {
     console.log(e);
   }
@@ -26,7 +34,7 @@ export const usersSearch = (input, options = {}) => async dispatch => {
 
     const response = await axios.get(url);
 
-    dispatch({ type: USERS_UPDATE, payload: response.data });
+    dispatch({ type: USERS_UPDATE, payload: { q, ...response.data } });
   } catch (e) {
     console.log(e);
   }

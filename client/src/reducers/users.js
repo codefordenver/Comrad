@@ -1,4 +1,4 @@
-import { USERS_SEARCH, USERS_UPDATE } from '../actions/types';
+import { USERS_CLEAR, USERS_SEARCH, USERS_UPDATE } from '../actions/types';
 
 const initialState = {
   docs: [],
@@ -7,11 +7,13 @@ const initialState = {
   offset: 0,
   page: 0,
   pages: 0,
-  search: '',
+  q: '',
 };
 
 export default (state = initialState, { type, payload }) => {
   switch (type) {
+    case USERS_CLEAR:
+      return initialState;
     case USERS_SEARCH:
       return {
         ...state,

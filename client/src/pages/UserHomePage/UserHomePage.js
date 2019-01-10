@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import queryString from '../../utils/queryString';
-import { usersSearch } from '../../actions/users.js';
+import { usersClear, usersSearch } from '../../actions/users.js';
 
 import Button from '../../components/Button';
 import Card, { CardBody } from '../../components/Card';
@@ -11,6 +11,7 @@ import FormGroup from '../../components/FormGroup';
 import Input from '../../components/Input';
 import NoResults from '../../components/NoResults';
 import Pagination from '../../components/Pagination';
+import SearchTerm from '../../components/SearchTerm';
 import SearchTotal from '../../components/SearchTotal';
 import UsersTable from '../../components/UsersTable';
 
@@ -23,6 +24,11 @@ class UserHomePage extends Component {
       const query = queryString(search);
       await usersSearch(query);
     }
+  }
+
+  componentWillUnmount() {
+    const { usersClear } = this.props;
+    usersClear();
   }
 
   // async componentDidUpdate() {
@@ -73,8 +79,13 @@ class UserHomePage extends Component {
         <Card>
           <CardBody>
             <div className="user-home__table">
-              <div className="user-home__pagination">
-                <Pagination action={usersSearch} reducer={users} />
+              <div className="user-home__table-head">
+                <div className="user-home__search-term">
+                  <SearchTerm reducers={users} />
+                </div>
+                <div className="user-home__pagination">
+                  <Pagination action={usersSearch} reducer={users} />
+                </div>
               </div>
               {search ? (
                 <UsersTable />
@@ -101,5 +112,5 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  { usersSearch },
+  { usersClear, usersSearch },
 )(UserHomePage);

@@ -51,7 +51,7 @@ class UsersTable extends Component {
 
   render() {
     const { props, renderBody, renderHeader } = this;
-    const { docs } = props;
+    const { docs, loading } = props;
 
     return (
       <Fragment>
@@ -62,6 +62,8 @@ class UsersTable extends Component {
           </Table>
         ) : docs.length === 0 ? (
           <NoResults>No Results</NoResults>
+        ) : loading ? (
+          <div>Loading...</div>
         ) : null}
       </Fragment>
     );

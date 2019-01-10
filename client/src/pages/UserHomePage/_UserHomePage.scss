@@ -5,6 +5,12 @@
     justify-content: flex-start;
   }
 
+  &__table-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
   &__total {
     display: flex;
     justify-content: flex-end;

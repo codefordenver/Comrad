@@ -15,7 +15,7 @@ import SearchTerm from '../../components/SearchTerm';
 import SearchTotal from '../../components/SearchTotal';
 import UsersTable from '../../components/UsersTable';
 
-class UserHomePage extends Component {
+class UserSearchPage extends Component {
   async componentDidMount() {
     const { location, usersSearch } = this.props;
     const { search } = location;
@@ -44,18 +44,16 @@ class UserHomePage extends Component {
   render() {
     const { location, users, usersSearch } = this.props;
     const { search } = location;
-    const options = {
-      limit: 10,
-    };
+    const options = { limit: 10 };
 
     return (
-      <div className="user-home">
-        <div className="user-home__search">
+      <div className="user-search">
+        <div className="user-search__search">
           <Card>
             <CardBody>
               <h1>Users</h1>
 
-              <div className="user-home__search-container">
+              <div className="user-search__search-container">
                 <Form
                   styleName="mr-2"
                   action={usersSearch}
@@ -78,12 +76,12 @@ class UserHomePage extends Component {
 
         <Card>
           <CardBody>
-            <div className="user-home__table">
-              <div className="user-home__table-head">
-                <div className="user-home__search-term">
+            <div className="user-search__table">
+              <div className="user-search__table-head">
+                <div className="user-search__search-term">
                   <SearchTerm reducers={users} />
                 </div>
-                <div className="user-home__pagination">
+                <div className="user-search__pagination">
                   <Pagination action={usersSearch} reducer={users} />
                 </div>
               </div>
@@ -94,7 +92,7 @@ class UserHomePage extends Component {
               )}
             </div>
 
-            <div className="user-home__total">
+            <div className="user-search__total">
               <SearchTotal reducer={users} />
             </div>
           </CardBody>
@@ -113,4 +111,4 @@ function mapStateToProps(state) {
 export default connect(
   mapStateToProps,
   { usersClear, usersSearch },
-)(UserHomePage);
+)(UserSearchPage);

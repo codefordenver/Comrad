@@ -24,9 +24,9 @@ export const usersSearch = (input, options = {}) => async dispatch => {
     const { q } = input;
     const { limit, order, page, sort } = options;
 
-    let url = `/api/user/search?`;
+    let url = `/api/user/search?q=`;
 
-    q && (url += `&q=${q}`);
+    q && (url += `${q}`);
     limit && (url += `&limit=${limit}`);
     order && (url += `&order=${order}`);
     page && (url += `&page=${page}`);

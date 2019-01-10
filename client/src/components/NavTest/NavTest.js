@@ -43,7 +43,7 @@ class NavTest extends Component {
       },
       {
         text: 'Library',
-        route: '/library',
+        route: '/library/search',
       },
       {
         text: 'Report',

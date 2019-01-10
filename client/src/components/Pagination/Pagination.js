@@ -19,8 +19,8 @@ class Pagination extends Component {
   };
 
   handleLeftClick = () => {
-    const { action, reducers } = this.props;
-    const { page } = reducers;
+    const { action, reducer } = this.props;
+    const { page } = reducer;
 
     if (page > 1 && action) {
       action(
@@ -35,8 +35,6 @@ class Pagination extends Component {
   render() {
     const { handleLeftClick, handleRightClick, props } = this;
     const { page, pages, total } = props.reducer;
-
-    console.log(props);
 
     return (
       <Fragment>

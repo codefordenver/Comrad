@@ -1,11 +1,17 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
+import { usersClear } from '../../actions';
 
 import Dropdown, { DropdownItem } from '../Dropdown';
 import NoResults from '../NoResults';
 import Table from '../Table';
 
 class UsersTable extends Component {
+  componentWillUnmount() {
+    const { usersClear } = this.props;
+    usersClear();
+  }
+
   renderHeader = () => {
     return (
       <thead>
@@ -85,5 +91,5 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  null,
+  { usersClear },
 )(UsersTable);

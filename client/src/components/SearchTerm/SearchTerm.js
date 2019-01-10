@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 
 const SearchTerm = props => {
   const { q } = props.reducers;
-  console.log(props);
+
   return (
     <Fragment>
       {q ? (

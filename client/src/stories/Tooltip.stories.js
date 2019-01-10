@@ -3,7 +3,7 @@ import { storiesOf } from '@storybook/react';
 import Tooltip from '../components/Tooltip';
 import { wInfo } from './utils';
 
-const stories = storiesOf('Tooltip', module).addWithJSX(
+storiesOf('Tooltip', module).addWithJSX(
   'Directional Placement',
   wInfo('Shows the different directions tooltips can open in')(() => {
     const placements = ['top', 'left', 'right', 'bottom'];

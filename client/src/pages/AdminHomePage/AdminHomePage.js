@@ -4,7 +4,7 @@ class AdminHomePage extends Component {
   state = {};
 
   render() {
-    return <Fragment>Admin Page</Fragment>;
+    return <div>Admin Page</div>;
   }
 }
 

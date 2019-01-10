@@ -6,7 +6,7 @@ import {
 } from '../actions/types';
 
 const initialState = {
-  email: '',
+  data: {},
   status: 'fetching',
   message: '',
 };
@@ -15,7 +15,9 @@ export default function(state = initialState, { type, payload }) {
   switch (type) {
     case AUTH_LOGIN:
       return {
-        ...payload,
+        data: {
+          ...payload,
+        },
         status: true,
         message: '',
       };

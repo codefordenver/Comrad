@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, MESSAGE_UPDATE } from './types';
+import { ALERT_UPDATE, AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR } from './types';
 
 export const loginUser = (input, callback) => async dispatch => {
   try {
@@ -11,10 +11,14 @@ export const loginUser = (input, callback) => async dispatch => {
     callback();
   } catch (e) {
     dispatch({
-      type: MESSAGE_UPDATE,
+      type: ALERT_UPDATE,
       payload: { type: 'error', text: e.response.statusText },
     });
   }
+};
+
+export const testFunction = input => async dispatch => {
+  console.log(input);
 };
 
 export const logoutUser = callback => async dispatch => {
@@ -26,7 +30,7 @@ export const logoutUser = callback => async dispatch => {
     callback();
   } catch (e) {
     dispatch({
-      type: MESSAGE_UPDATE,
+      type: ALERT_UPDATE,
       payload: {
         type: 'error',
         text: 'Something went wrong!',
@@ -48,7 +52,7 @@ export const fetchUser = () => async dispatch => {
 export const resetUser = () => async dispatch => {
   try {
     dispatch({
-      type: MESSAGE_UPDATE,
+      type: ALERT_UPDATE,
       payload: {
         type: 'success',
         text: 'Check your email to reset your password',
@@ -56,7 +60,7 @@ export const resetUser = () => async dispatch => {
     });
   } catch (e) {
     dispatch({
-      type: MESSAGE_UPDATE,
+      type: ALERT_UPDATE,
       payload: {
         type: 'error',
         text: 'Something went wrong!',

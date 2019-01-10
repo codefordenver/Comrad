@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { MESSAGE_UPDATE } from './types';
+import { ALERT_UPDATE } from './types';
 
 export const requestReset = input => async dispatch => {
   try {
@@ -7,7 +7,7 @@ export const requestReset = input => async dispatch => {
     await axios.put('/api/password/request', { email });
 
     dispatch({
-      type: MESSAGE_UPDATE,
+      type: ALERT_UPDATE,
       payload: {
         header: 'Success',
         text: 'Please check your email for your reset link',
@@ -29,7 +29,7 @@ export const resetPassword = input => async dispatch => {
     });
 
     dispatch({
-      type: MESSAGE_UPDATE,
+      type: ALERT_UPDATE,
       payload: {
         header: 'Success',
         text: 'Your password has been successfully resetted',
@@ -38,7 +38,7 @@ export const resetPassword = input => async dispatch => {
     });
   } catch (e) {
     dispatch({
-      type: MESSAGE_UPDATE,
+      type: ALERT_UPDATE,
       payload: {
         header: 'Token Error',
         text: e.response.data.message,

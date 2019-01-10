@@ -1,0 +1,36 @@
+.pagination {
+  display: flex;
+  align-items: center;
+
+  color: $color-grey-4;
+
+  padding: 0.6rem 0;
+
+  &__page,
+  &__text,
+  &__pages {
+    font-size: 1.6rem;
+    padding: 2px;
+
+    &:not(:last-child) {
+      margin-right: 2px;
+    }
+  }
+
+  &__arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+
+    border: 1px solid;
+    border-radius: 2px;
+    height: 2rem;
+    width: 2rem;
+
+    &:not(:last-child) {
+      margin-right: 0.5rem;
+    }
+  }
+}

@@ -9,6 +9,7 @@ const Footer = props => {
         <img
           className="footer__logo"
           src="https://i.postimg.cc/dVFWp5Fq/Comrad-Logo-13.png"
+          alt="Comrad Logo"
         />
       </p>
     </footer>

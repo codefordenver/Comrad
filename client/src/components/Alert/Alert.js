@@ -1,12 +1,12 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
-import { messageClear } from '../../actions';
+import { alertClear } from '../../actions';
 import _isEmpty from 'lodash/isEmpty';
 
 class Alert extends Component {
   componentWillUnmount() {
-    const { messageClear } = this.props;
-    messageClear();
+    const { alertClear } = this.props;
+    alertClear();
   }
 
   getAlertClass(type) {
@@ -40,12 +40,12 @@ class Alert extends Component {
   }
   render() {
     const { getAlertClass, getIconClass, props } = this;
-    const { message } = props;
-    const { header, type, text } = message;
+    const { alert } = props;
+    const { header, type, text } = alert;
 
     return (
       <Fragment>
-        {_isEmpty(message) ? null : (
+        {_isEmpty(alert) ? null : (
           <div className={getAlertClass(type)}>
             <div className="alert__symbol">
               <i className={getIconClass(type)} />
@@ -65,11 +65,11 @@ class Alert extends Component {
 
 function mapStateToProps(state) {
   return {
-    message: state.message,
+    alert: state.alert,
   };
 }
 
 export default connect(
   mapStateToProps,
-  { messageClear },
+  { alertClear },
 )(Alert);

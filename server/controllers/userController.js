@@ -1,5 +1,68 @@
 const db = require('../models');
 
+/**
+ *
+ * @param {String} query
+ * @returns {Object}
+ */
+function queryOptions(query) {
+  const { q } = query;
+
+  let queryObj = {};
+
+  if (q) {
+    const { q } = query;
+    const re = new RegExp(splitQueryByWord(q), 'i');
+
+    queryObj = { ...queryObj, $or: [{ first_name: re }] };
+  }
+
+  return queryObj;
+}
+
+/**
+ * Return object with options to pass into Model.paginate({}) function
+ * @param {String} query
+ * @returns {Object}
+ */
+function searchOptions(query) {
+  const { limit, order, page, sort } = query;
+
+  let optionsObj = {};
+
+  if (sort) {
+    optionsObj = {
+      ...optionsObj,
+      sort: {
+        [sort]: parseInt(order) || 1,
+      },
+    };
+  }
+
+  if (limit) {
+    optionsObj = { ...optionsObj, limit: parseInt(limit) };
+  }
+
+  if (page) {
+    optionsObj = { ...optionsObj, page: parseInt(page) };
+  }
+
+  return optionsObj;
+}
+
+/**
+ * Splits a given query string into a regexp pattern string matching any word
+ * in the source query.
+ * @param {String} queryString
+ * @returns {String}
+ */
+function splitQueryByWord(queryString) {
+  return queryString
+    .split(/\s+/)
+    .map(word => `(${word})`)
+    .join('|');
+}
+
 module.exports = {
   findById: (req, res) => {
     db.User.findById(req.params.id)
@@ -7,15 +70,9 @@ module.exports = {
       .catch(err => res.status(422).json(err));
   },
 
-  findAll: (req, res) => {
-    const sort_by = req.query.sort_by ? req.query.sort_by : 'on_air_name';
-    const limit = req.query.limit ? Number(req.query.limit) : 10;
-    const page = Math.max(0, Number(req.query.page));
+  async findAll(req, res) {
     db.User.find({})
-      .sort(sort_by)
-      .limit(limit)
-      .skip(limit * page)
-      .then(dbUser => res.json(dbUser))
+      .then(dbUsers => res.json(dbUsers))
       .catch(err => res.status(422).json(err));
   },
 
@@ -32,19 +89,15 @@ module.exports = {
       .catch(err => res.status(422).json(err));
   },
 
-  search: (req, res) => {
-    const sort_by = req.query.sort_by ? req.query.sort_by : 'on_air_name';
-    const name = req.params.name;
-    const limit = req.query.limit ? Number(req.query.limit) : 10;
-    const page = Math.max(0, Number(req.query.page));
-    db.User.find({
-      $or: [{ on_air_name: name }, { first_name: name }, { last_name: name }],
-    })
-      .sort(sort_by)
-      .limit(limit)
-      .skip(limit * page)
-      .then(dbUser => res.json(dbUser))
-      .catch(err => res.status(422).json(err));
+  async search(req, res) {
+    const { query } = req;
+
+    const optionsObj = searchOptions(query);
+    const queryObj = queryOptions(query);
+
+    db.User.paginate(queryObj, optionsObj)
+      .then(dbUsers => res.json(dbUsers))
+      .catch(err => res.status(422).json({ message: err }));
   },
 
   create: (req, res, next) => {

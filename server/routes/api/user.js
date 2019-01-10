@@ -10,7 +10,7 @@ router
 router.route('/filter/:status').get(userController.findByActive);
 
 // Search routes
-router.route('/search/:name').get(userController.search);
+router.route('/search').get(userController.search);
 
 // Permission Updates
 router.route('/permission/:id').put(userController.updatePermission);

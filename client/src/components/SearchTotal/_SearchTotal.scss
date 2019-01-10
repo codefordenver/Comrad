@@ -1,0 +1,15 @@
+.search-total {
+  display: flex;
+  
+  color: $color-grey-4;
+  font-size: 1.4rem;
+  padding: 0.6rem 0;
+
+  &__text {
+    margin-right: 0.5rem;
+  }
+
+  &__number {
+    font-weight: $fw-heavy;
+  }
+}

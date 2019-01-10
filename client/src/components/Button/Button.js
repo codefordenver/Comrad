@@ -14,6 +14,7 @@ class Button extends Component {
       type,
       ...otherProps
     } = this.props;
+
     if (to) {
       return (
         <Link

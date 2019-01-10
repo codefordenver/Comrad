@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const mongoosePaginate = require('mongoose-paginate');
 const Schema = mongoose.Schema;
 const bcrypt = require('bcrypt-nodejs');
 
@@ -38,12 +39,14 @@ const userSchema = new Schema({
     default: '',
   },
 
-  role: {
-    type: String,
-    enum: ['DJ', 'Underwriting', 'Show Producer', 'Full Access', 'Admin'],
-    required: true,
-    default: 'DJ',
-  },
+  permissions: [
+    {
+      type: String,
+      enum: ['DJ', 'Underwriting', 'Show Producer', 'Full Access', 'Admin'],
+      required: true,
+      default: 'DJ',
+    },
+  ],
 
   status: {
     type: String,
@@ -97,6 +100,8 @@ userSchema.methods.comparePassword = function(candidatePassword, callback) {
     callback(null, isMatch);
   });
 };
+
+userSchema.plugin(mongoosePaginate);
 
 const User = mongoose.model('User', userSchema);
 

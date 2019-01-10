@@ -1,19 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { messageUpdate } from '../../actions';
+import { alertUpdate } from '../../actions';
 import PropTypes from 'prop-types';
 import validation from '../../utils/validation';
 
 class Form extends Component {
   confirmPassword = () => {
-    const { input, messageUpdate } = this.props;
+    const { input, alertUpdate } = this.props;
     const { confirm_password, password } = input;
     if (!confirm_password) {
       return true;
     }
 
     if (confirm_password !== password) {
-      messageUpdate({
+      alertUpdate({
         header: 'Passwords Do Not Match',
         type: 'error',
       });
@@ -25,11 +25,19 @@ class Form extends Component {
 
   handleOnSubmit = async e => {
     e.preventDefault();
-    const { callback, input, action } = this.props;
+    const { action, callback, input, options } = this.props;
+    const { q } = input;
     const valid = validation.form();
 
     if (valid && this.confirmPassword() && action) {
-      action(input, callback);
+      const { input, history } = this.props;
+
+      history.push(`?q=${q || ''}`);
+
+      if (options) {
+        return action(input, options, callback);
+      }
+      return action(input, callback);
     }
   };
 
@@ -51,6 +59,10 @@ Form.propTypes = {
   action: PropTypes.func.isRequired,
 };
 
+Form.defaultProps = {
+  action: null,
+};
+
 function mapStateToProps(state) {
   return {
     input: state.input,
@@ -59,5 +71,5 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  { messageUpdate },
+  { alertUpdate },
 )(Form);

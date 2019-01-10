@@ -1,17 +1,10 @@
-import React, { Component } from 'react';
-
-import Button from '../../components/Button';
+import React, { Component, Fragment } from 'react';
 
 class AdminHomePage extends Component {
   state = {};
 
   render() {
-    return (
-      <div>
-        Admin Page
-        <Button>Test Button</Button>
-      </div>
-    );
+    return <Fragment>Admin Page</Fragment>;
   }
 }
 

@@ -1,30 +1,76 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 class Button extends Component {
-  getButtonClass(props) {
-    const { type } = props;
-    let buttonClass = 'button';
-
-    switch (type) {
-      case 'primary':
-        return (buttonClass += ' button--primary');
-      case 'secondary':
-        return (buttonClass += ' button--secondary');
-      default:
-        break;
-    }
-  }
-
   render() {
-    const { props, getButtonClass } = this;
-    const { children } = props;
+    const {
+      children,
+      color,
+      disabled,
+      onClick,
+      styleName,
+      to,
+      type,
+    } = this.props;
+
+    if (to) {
+      return (
+        <Link
+          disabled={disabled}
+          to={to}
+          className={`button button--link ${styleName}`}
+          onClick={onClick}
+          type={type}
+        >
+          {children}
+        </Link>
+      );
+    }
 
     return (
-      <button className={getButtonClass(props)} {...props}>
+      <button
+        className={`button button--${color} ${styleName}`}
+        disabled={disabled}
+        onClick={onClick}
+        type={type}
+      >
         {children}
       </button>
     );
   }
 }
+
+Button.propTypes = {
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]),
+  /**
+   * Change the color
+   */
+  color: PropTypes.string,
+  disabled: PropTypes.bool,
+  /**
+   * Add an on click function to the component
+   */
+  onClick: PropTypes.func,
+  /**
+   * Set the type for the button
+   */
+  styleName: PropTypes.string,
+  to: PropTypes.string,
+  type: PropTypes.string,
+};
+
+Button.defaultProps = {
+  children: null,
+  color: 'primary',
+  disabled: false,
+  onClick: null,
+  styleName: '',
+  to: '',
+  type: 'button',
+};
 
 export default Button;

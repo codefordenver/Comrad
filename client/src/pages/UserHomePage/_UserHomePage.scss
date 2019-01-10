@@ -1,0 +1,12 @@
+.user-home {
+  
+  &__search-container {
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  &__total {
+    display: flex;
+    justify-content: flex-end;
+  }
+}

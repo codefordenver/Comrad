@@ -1,7 +1,11 @@
 .card {
-  border: 1px solid #e2e2e2;
-  background-color: $color-white;
-  border-radius: $border-radius;
+  background-color: white;
+  border-radius: 2px;
+  box-shadow: rgba(12, 52, 75, 0.05) 0px 3px 3px;
+  margin-bottom: 1rem;
   width: 100%;
-  overflow: hidden;
+
+  &__body {
+    padding: 2rem;
+  }
 }

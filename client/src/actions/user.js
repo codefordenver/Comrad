@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { USER_FIND_ONE, USER_ADD, USER_ERROR } from './types';
+import { ALERT_UPDATE, USER_FIND_ONE, USER_ADD } from './types';
 
 export const userFindOne = id => async dispatch => {
   try {
@@ -11,14 +11,43 @@ export const userFindOne = id => async dispatch => {
   }
 };
 
-export const userAdd = (obj, cb) => async dispatch => {
+export const userAdd = (input, callback) => async dispatch => {
   try {
-    const response = await axios.post('/api/user', obj);
+    const response = await axios.post('/api/user', input);
 
     dispatch({ type: USER_ADD, payload: response.data });
 
-    cb();
+    callback();
   } catch (e) {
-    dispatch({ type: USER_ERROR, payload: e.response.data });
+    dispatch({
+      type: ALERT_UPDATE,
+      payload: { type: 'error', text: e.response.data.errorMessage },
+    });
   }
 };
+
+// export const requestReset = input => async dispatch => {
+//   try {
+//     dispatch({
+//       type: USER_LOADING,
+//     });
+
+//     const { email } = input;
+
+//     const response = await axios.put('/api/user/request', { email });
+
+//     dispatch({
+//       type: MESSAGE_UPDATE,
+//       payload: {
+//         header: 'Success',
+//         type: 'success',
+//         text: 'Please check your email for your reset link!',
+//       },
+//     });
+//     dispatch({
+//       type: USER_CLEAR,
+//     });
+//   } catch (e) {
+//     console.log(e);
+//   }
+// };

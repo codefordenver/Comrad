@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const mongoosePaginate = require('mongoose-paginate');
 const Schema = mongoose.Schema;
 const bcrypt = require('bcrypt-nodejs');
 
@@ -21,32 +22,31 @@ const userSchema = new Schema({
   password: {
     type: String,
     required: true,
-    minlength: [3, 'Minimum 3 Characters'],
   },
 
   first_name: {
     type: String,
     required: true,
-    minlength: [3, 'Minimum 3 Characters'],
   },
 
   last_name: {
     type: String,
     required: true,
-    minlength: [3, 'Minimum 3 Characters'],
   },
 
   on_air_name: {
     type: String,
-    minlength: [3, 'Minimum 3 Characters'],
+    default: '',
   },
 
-  role: {
-    type: String,
-    enum: ['DJ', 'Underwriting', 'Show Producer', 'Full Access', 'Admin'],
-    required: true,
-    default: 'DJ',
-  },
+  permissions: [
+    {
+      type: String,
+      enum: ['DJ', 'Underwriting', 'Show Producer', 'Full Access', 'Admin'],
+      required: true,
+      default: 'DJ',
+    },
+  ],
 
   status: {
     type: String,
@@ -59,6 +59,16 @@ const userSchema = new Schema({
     type: Boolean,
     required: true,
     default: true,
+  },
+
+  reset_token: {
+    type: String,
+    default: null,
+  },
+
+  reset_token_expiry: {
+    type: Number,
+    default: null,
   },
 });
 
@@ -90,6 +100,8 @@ userSchema.methods.comparePassword = function(candidatePassword, callback) {
     callback(null, isMatch);
   });
 };
+
+userSchema.plugin(mongoosePaginate);
 
 const User = mongoose.model('User', userSchema);
 

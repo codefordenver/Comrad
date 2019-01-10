@@ -1,17 +1,19 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { searchLibrary } from '../../actions';
 
-// import { DropRightBtn } from '../../components/Button';
-import { Filter } from '../../components/Filter';
-import Search from '../../components/Search';
-
-import LibraryTable from '../../components/Tables/LibraryTable';
-import ArtistsTable from '../../components/Tables/ArtistsTable';
-import AlbumsTable from '../../components/Tables/AlbumsTable';
-import TracksTable from '../../components/Tables/TracksTable';
+import AlbumsTable from '../../components/AlbumsTable';
+import ArtistsTable from '../../components/ArtistsTable';
+import Form from '../../components/Form';
+import FormGroup from '../../components/FormGroup';
+import Input from '../../components/Input';
+import LibraryTable from '../../components/LibraryTable';
+import TracksTable from '../../components/TracksTable';
 
 class LibraryHomePage extends Component {
   state = {
     filter: 'All',
+    filterItems: ['All', 'Artists', 'Albums', 'Tracks'],
   };
 
   handleFilterClick = item => {
@@ -20,20 +22,28 @@ class LibraryHomePage extends Component {
     });
   };
 
-  handleDropRightBtnClick = item => {
-    switch (item) {
-      case 'Track':
-        this.props.history.push('/library/add/track');
-        break;
-      case 'Album':
-        this.props.history.push('/library/add/album');
-        break;
-      default:
-        break;
-    }
+  renderFilter = () => {
+    const { handleFilterClick, state } = this;
+    const { filter, filterItems } = state;
+
+    return (
+      <div className="library__filter">
+        {filterItems.map(item => (
+          <div
+            key={item}
+            onClick={() => handleFilterClick(item)}
+            className={`library__filter-item ${
+              filter === item ? 'active' : ''
+            }`}
+          >
+            {item}
+          </div>
+        ))}
+      </div>
+    );
   };
 
-  renderTable() {
+  renderTable = () => {
     const { filter } = this.state;
 
     switch (filter) {
@@ -48,38 +58,34 @@ class LibraryHomePage extends Component {
       default:
         break;
     }
-  }
+  };
 
   render() {
-    const filterItems = ['All', 'Artists', 'Albums', 'Tracks'];
-    // const dropRightBtnItems = ['Track', 'Album', 'Other'];
+    const { props, renderFilter, renderTable } = this;
+    const { searchLibrary } = props;
 
     return (
-      <div className="library__search">
-        <div className="library__header">
+      <main className="library">
+        <section className="library__header">
           <div className="library__search-input">
-            <Search type="library" />
+            <Form action={searchLibrary}>
+              <FormGroup>
+                <Input label="Search" name="search" type="text" icon="search" />
+              </FormGroup>
+            </Form>
           </div>
-          <div className="library__add">
-            {/* <DropRightBtn
-              dropRightBtnItems={dropRightBtnItems}
-              handleDropRightBtnClick={this.handleDropRightBtnClick}
-            /> */}
-          </div>
-          <div className="library__filter">
-            <Filter
-              filterItems={filterItems}
-              handleFilterClick={this.handleFilterClick}
-            />
-          </div>
+          <div className="library__filter">{renderFilter()}</div>
           <div className="library__pagination">
             <div>Pagination</div>
           </div>
-        </div>
-        <div className="library__table">{this.renderTable()}</div>
-      </div>
+        </section>
+        <div className="library__table">{renderTable()}</div>
+      </main>
     );
   }
 }
 
-export default LibraryHomePage;
+export default connect(
+  null,
+  { searchLibrary },
+)(LibraryHomePage);

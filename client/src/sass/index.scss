@@ -12,33 +12,30 @@
 @import '../components/App/App';
 @import '../components/Button/Button';
 @import '../components/Card/Card';
-@import '../components/CardBody/CardBody';
-@import '../components/CardImg/CardImg';
-@import '../components/CardTitle/CardTitle';
 @import '../components/Checkbox/Checkbox';
+@import '../components/Dropdown/Dropdown';
+@import '../components/Feedback/Feedback';
 @import '../components/Footer/Footer';
 @import '../components/Form/Form';
 @import '../components/FormGroup/FormGroup';
 @import '../components/Input/Input';
-@import '../components/Invalid/Invalid';
 @import '../components/Label/Label';
 @import '../components/Loading/Loading';
 @import '../components/NavTest/NavTest';
 @import '../components/Navbar/Navbar';
+@import '../components/NoResults/NoResults';
+@import '../components/Pagination/Pagination';
+@import '../components/ResetForm/ResetForm';
 @import '../components/Root/Root';
+@import '../components/SearchTotal/SearchTotal';
 @import '../components/Select/Select';
 @import '../components/Sidebar/Sidebar';
-@import '../components/TBody/TBody';
-@import '../components/TData/TData';
-@import '../components/THead/THead';
-@import '../components/THeader/THeader';
-@import '../components/TRow/TRow';
 @import '../components/Table/Table';
 @import '../components/TextArea/TextArea';
 @import '../components/Unauthorized/Unauthorized';
 
 // layout
-@import '../layouts/AuthLayout/AuthLayout';
+@import '../layouts/HomeLayout/HomeLayout';
 @import '../layouts/MainLayout/MainLayout';
 
 // pages
@@ -50,9 +47,10 @@
 @import '../pages/LibraryHomePage/LibraryHomePage';
 @import '../pages/LoginPage/LoginPage';
 @import '../pages/ReportHomePage/ReportHomePage';
+@import '../pages/ResetPage/ResetPage';
 @import '../pages/UserAddPage/UserAddPage';
 @import '../pages/UserEditPage/UserEditPage';
-@import '../pages/UserSearchPage/UserSearchPage';
+@import '../pages/UserHomePage/UserHomePage';
 
 // utils
 @import './utils/border';

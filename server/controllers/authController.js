@@ -1,7 +1,7 @@
 module.exports = {
   login: (req, res) => {
-    const { _id, email } = req.user;
-    res.json({ _id, email });
+    const { _id, email, permissions } = req.user;
+    res.json({ _id, email, permissions });
   },
 
   logout: (req, res) => {

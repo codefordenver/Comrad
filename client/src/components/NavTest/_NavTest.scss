@@ -1,4 +1,6 @@
 .nav-test {
+  display: flex;
+
   border-bottom: 1px solid #000;
   &__link {
     font-size: 2rem;

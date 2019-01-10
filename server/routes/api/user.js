@@ -1,13 +1,16 @@
 const router = require('express').Router();
 const userController = require('../../controllers/userController');
 
-router.route('/').get(userController.findAll);
+router
+  .route('/')
+  .get(userController.findAll)
+  .post(userController.create);
 
 // Filter routes
 router.route('/filter/:status').get(userController.findByActive);
 
 // Search routes
-router.route('/search/:name').get(userController.search);
+router.route('/search').get(userController.search);
 
 // Permission Updates
 router.route('/permission/:id').put(userController.updatePermission);

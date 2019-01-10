@@ -1,0 +1,17 @@
+.feedback {
+  color: $color-red;
+  opacity: 0;
+  position: absolute;
+  bottom: -2rem;
+  left: 1.6rem;
+
+  transform: translateY(-5px);
+  transition: all .2s;
+}
+
+.input {
+  &.invalid ~ .feedback {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

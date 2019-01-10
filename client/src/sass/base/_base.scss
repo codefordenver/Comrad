@@ -16,11 +16,6 @@ body {
   box-sizing: border-box;
 }
 
-h1 {
-  font-size: 2em;
-  margin: 0.67em 0;
-}
-
 hr {
   box-sizing: content-box; 
   height: 0; 
@@ -106,7 +101,6 @@ select {
 }
 
 button,
-[type='button'],
 [type='reset'],
 [type='submit'] {
   -webkit-appearance: button;

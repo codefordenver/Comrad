@@ -62,7 +62,7 @@ class Sidebar extends Component {
         <ul className="sidebar__list">
           {items.map(item => (
             <Tooltip key={item.name} text={item.tooltipText} placement="right">
-              <li className="sibebar-_item">
+              <li className="sibebar__item">
                 <Link to={item.url} className="sidebar__link">
                   <i className={`sidebar__icon ${item.iconClass}`} />
                 </Link>

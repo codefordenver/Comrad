@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
@@ -11,9 +11,16 @@ class Tooltip extends Component {
   }
 
   static propTypes = {
-    text: PropTypes.string.isRequired,
     children: PropTypes.node.isRequired,
+    className: PropTypes.string,
     placement: PropTypes.oneOf(['top', 'right', 'bottom', 'left']).isRequired,
+    text: PropTypes.string.isRequired,
+    heading: PropTypes.string,
+  };
+
+  static defaultProps = {
+    className: null,
+    heading: null,
   };
 
   handleMouseEnter = event => {
@@ -25,7 +32,14 @@ class Tooltip extends Component {
   };
 
   render() {
-    const { children, className, placement, text, ...otherProps } = this.props;
+    const {
+      children,
+      className,
+      placement,
+      text,
+      heading,
+      ...otherProps
+    } = this.props;
     const { open } = this.state;
 
     const child = React.Children.only(children);
@@ -40,9 +54,11 @@ class Tooltip extends Component {
             'tooltip--open': open,
           })}
         >
-          <span className="tooltip__text">{text}</span>
+          {heading ? <h3 className="tooltip__heading">{heading}</h3> : null}
+          <p className="tooltip__text">{text}</p>
         </div>,
       ],
+      ...otherProps,
     });
 
     return updatedChild;

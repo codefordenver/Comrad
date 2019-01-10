@@ -19,7 +19,7 @@ class LoginForm extends Component {
     const { loginUser } = this.props;
 
     return (
-      <Form callback={this.handleCallback} action={loginUser}>
+      <Form callback={this.handleCallback} action={loginUser} kw>
         <Alert />
         <p>Login to your account</p>
         <FormGroup>

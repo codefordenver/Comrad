@@ -7,6 +7,8 @@ import Feedback from '../Feedback';
 import Label from '../Label';
 
 class Input extends Component {
+  state = {};
+
   myRef = React.createRef();
 
   componentDidUpdate() {
@@ -60,6 +62,7 @@ class Input extends Component {
 
   render() {
     const { getIconClass, myRef, props } = this;
+
     const {
       feedback,
       icon,

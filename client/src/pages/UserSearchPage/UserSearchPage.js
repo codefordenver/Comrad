@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import queryString from '../../utils/queryString';
-import { usersSearch } from '../../actions/users.js';
+import { usersClear, usersSearch } from '../../actions/users.js';
 
 import Button from '../../components/Button';
 import Card, { CardBody } from '../../components/Card';
@@ -11,10 +11,11 @@ import FormGroup from '../../components/FormGroup';
 import Input from '../../components/Input';
 import NoResults from '../../components/NoResults';
 import Pagination from '../../components/Pagination';
+import SearchTerm from '../../components/SearchTerm';
 import SearchTotal from '../../components/SearchTotal';
 import UsersTable from '../../components/UsersTable';
 
-class UserHomePage extends Component {
+class UserSearchPage extends Component {
   async componentDidMount() {
     const { location, usersSearch } = this.props;
     const { search } = location;
@@ -25,31 +26,34 @@ class UserHomePage extends Component {
     }
   }
 
-  async componentDidUpdate() {
-    const { location, usersSearch } = this.props;
-    const { search } = location;
-
-    if (search) {
-      const query = queryString(search);
-      await usersSearch(query);
-    }
+  componentWillUnmount() {
+    const { usersClear } = this.props;
+    usersClear();
   }
 
+  // async componentDidUpdate() {
+  //   const { location, usersSearch } = this.props;
+  //   const { search } = location;
+
+  //   if (search) {
+  //     const query = queryString(search);
+  //     await usersSearch(query);
+  //   }
+  // }
+
   render() {
-    const { location, usersSearch } = this.props;
+    const { location, users, usersSearch } = this.props;
     const { search } = location;
-    const options = {
-      limit: 10,
-    };
+    const options = { limit: 10 };
 
     return (
-      <div className="user-home">
-        <div className="user-home__search">
+      <div className="user-search">
+        <div className="user-search__search">
           <Card>
             <CardBody>
               <h1>Users</h1>
 
-              <div className="user-home__search-container">
+              <div className="user-search__search-container">
                 <Form
                   styleName="mr-2"
                   action={usersSearch}
@@ -70,35 +74,41 @@ class UserHomePage extends Component {
           </Card>
         </div>
 
-        <div className="user-home__pagination">
-          <Pagination action={usersSearch} />
-        </div>
-
-        <div className="user-home__table">
-          {search ? (
-            <Card>
-              <CardBody>
+        <Card>
+          <CardBody>
+            <div className="user-search__table">
+              <div className="user-search__table-head">
+                <div className="user-search__search-term">
+                  <SearchTerm reducers={users} />
+                </div>
+                <div className="user-search__pagination">
+                  <Pagination action={usersSearch} reducer={users} />
+                </div>
+              </div>
+              {search ? (
                 <UsersTable />
-              </CardBody>
-            </Card>
-          ) : (
-            <Card>
-              <CardBody>
+              ) : (
                 <NoResults>Search For Users</NoResults>
-              </CardBody>
-            </Card>
-          )}
-        </div>
+              )}
+            </div>
 
-        <div className="user-home__total">
-          <SearchTotal />
-        </div>
+            <div className="user-search__total">
+              <SearchTotal reducer={users} />
+            </div>
+          </CardBody>
+        </Card>
       </div>
     );
   }
 }
 
+function mapStateToProps(state) {
+  return {
+    users: state.users,
+  };
+}
+
 export default connect(
-  null,
-  { usersSearch },
-)(UserHomePage);
+  mapStateToProps,
+  { usersClear, usersSearch },
+)(UserSearchPage);

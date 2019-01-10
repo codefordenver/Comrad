@@ -1,11 +1,17 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
+import { usersClear } from '../../actions';
 
 import Dropdown, { DropdownItem } from '../Dropdown';
 import NoResults from '../NoResults';
 import Table from '../Table';
 
 class UsersTable extends Component {
+  componentWillUnmount() {
+    const { usersClear } = this.props;
+    usersClear();
+  }
+
   renderHeader = () => {
     return (
       <thead>
@@ -51,7 +57,7 @@ class UsersTable extends Component {
 
   render() {
     const { props, renderBody, renderHeader } = this;
-    const { docs } = props;
+    const { docs, loading } = props;
 
     return (
       <Fragment>
@@ -62,6 +68,8 @@ class UsersTable extends Component {
           </Table>
         ) : docs.length === 0 ? (
           <NoResults>No Results</NoResults>
+        ) : loading ? (
+          <div>Loading...</div>
         ) : null}
       </Fragment>
     );
@@ -83,5 +91,5 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  null,
+  { usersClear },
 )(UsersTable);

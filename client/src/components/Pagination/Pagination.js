@@ -5,8 +5,8 @@ import { usersSearch } from '../../actions';
 
 class Pagination extends Component {
   handleRightClick = () => {
-    const { action, search } = this.props;
-    const { page, pages } = search;
+    const { action, reducer } = this.props;
+    const { page, pages } = reducer;
 
     if (page < pages && action) {
       action(
@@ -19,8 +19,8 @@ class Pagination extends Component {
   };
 
   handleLeftClick = () => {
-    const { action, search } = this.props;
-    const { page } = search;
+    const { action, reducer } = this.props;
+    const { page } = reducer;
 
     if (page > 1 && action) {
       action(
@@ -34,11 +34,11 @@ class Pagination extends Component {
 
   render() {
     const { handleLeftClick, handleRightClick, props } = this;
-    const { page, pages } = props.search;
+    const { page, pages, total } = props.reducer;
 
     return (
       <Fragment>
-        {pages ? (
+        {total > 0 ? (
           <div className="pagination">
             <div className="pagination__page">{page || 1}</div>
             <div className="pagination__text">of</div>

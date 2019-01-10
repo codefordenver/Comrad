@@ -27,6 +27,7 @@
 @import '../components/Pagination/Pagination';
 @import '../components/ResetForm/ResetForm';
 @import '../components/Root/Root';
+@import '../components/SearchTerm/SearchTerm';
 @import '../components/SearchTotal/SearchTotal';
 @import '../components/Select/Select';
 @import '../components/Sidebar/Sidebar';
@@ -50,7 +51,7 @@
 @import '../pages/ResetPage/ResetPage';
 @import '../pages/UserAddPage/UserAddPage';
 @import '../pages/UserEditPage/UserEditPage';
-@import '../pages/UserHomePage/UserHomePage';
+@import '../pages/UserSearchPage/UserSearchPage';
 
 // utils
 @import './utils/border';

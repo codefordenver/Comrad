@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { INPUT_CLEAR, USERS_UPDATE } from './types';
+import { USERS_CLEAR, USERS_UPDATE } from './types';
 
 export const usersAll = input => async dispatch => {
   try {
@@ -11,24 +11,30 @@ export const usersAll = input => async dispatch => {
   }
 };
 
+export const usersClear = () => async dispatch => {
+  try {
+    dispatch({ type: USERS_CLEAR });
+  } catch (e) {
+    console.log(e);
+  }
+};
+
 export const usersSearch = (input, options = {}) => async dispatch => {
   try {
     const { q } = input;
     const { limit, order, page, sort } = options;
 
-    let url = `/api/user/search?`;
+    let url = `/api/user/search?q=`;
 
-    q && (url += `&q=${q}`);
+    q && (url += `${q}`);
     limit && (url += `&limit=${limit}`);
     order && (url += `&order=${order}`);
     page && (url += `&page=${page}`);
     sort && (url += `&sort=${sort}`);
 
-    console.log(q);
-
     const response = await axios.get(url);
 
-    dispatch({ type: USERS_UPDATE, payload: response.data });
+    dispatch({ type: USERS_UPDATE, payload: { q, ...response.data } });
   } catch (e) {
     console.log(e);
   }

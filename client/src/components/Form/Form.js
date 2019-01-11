@@ -32,7 +32,7 @@ class Form extends Component {
     if (valid && this.confirmPassword() && action) {
       const { input, history } = this.props;
 
-      history.push(`?q=${q || ''}`);
+      // history.push(`?q=${q || ''}`);
 
       if (options) {
         return action(input, options, callback);

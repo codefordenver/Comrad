@@ -32,7 +32,7 @@ const initialState = [
   },
 ];
 
-describe('Get Event Reducer', () => {
+describe('Get Show Reducer', () => {
   it('should return the initial state', () => {
     expect(reducer(undefined, {})).toEqual(initialState);
   });

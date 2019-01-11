@@ -4,9 +4,9 @@ import { connect } from 'react-redux';
 import * as actions from '../../actions';
 import { getModalType, getModalVisibility } from '../../reducers/modals';
 
-import NewEventModal from './NewShowModal';
-import UpdateEventModal from './UpdateShowModal';
-import ViewEventModal from './ViewShowModal';
+import NewShowModal from './NewShowModal';
+import UpdateShowModal from './UpdateShowModal';
+import ViewShowModal from './ViewShowModal';
 
 export const MODAL_NEW_SHOW = 'modal_new_show';
 export const MODAL_UPDATE_SHOW = 'modal_update_show';
@@ -15,13 +15,13 @@ export const MODAL_VIEW_SHOW = 'modal_view_show';
 const ModalController = props => {
   switch (props.modalType) {
     case MODAL_NEW_SHOW:
-      return <NewEventModal {...props} />;
+      return <NewShowModal {...props} />;
 
     case MODAL_UPDATE_SHOW:
-      return <UpdateEventModal {...props} />;
+      return <UpdateShowModal {...props} />;
 
     case MODAL_VIEW_SHOW:
-      return <ViewEventModal {...props} />;
+      return <ViewShowModal {...props} />;
 
     default:
       return null;

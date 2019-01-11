@@ -11,7 +11,6 @@ import 'react-dates/lib/css/_datepicker.css';
 import Button from '../Button';
 import Card from '../Card';
 import CardBody from '../CardBody';
-import CardImg from '../CardImg';
 import CardTitle from '../CardTitle';
 import Checkbox from '../Checkbox';
 import Form from '../Form';
@@ -299,7 +298,7 @@ class NewShowForm extends Component {
 
                 <FormGroup className="text-center">
                   <Button onClick={this.handleFormSubmit} type="primary">
-                    Create Event
+                    Create Show
                   </Button>
 
                   <Button onClick={this.handleFormCancel} type="secondary">

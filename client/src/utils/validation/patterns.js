@@ -8,7 +8,7 @@ const patterns = {
   role: /^[a-zA-Z]{1,}$/,
   status: /^[a-zA-Z]{1,}$/,
 
-  //Event Patterns
+  //Show Patterns
   title: /^[a-zA-Z0-9\s]{1,}$/,
   summary: /^[a-zA-Z0-9\s]{1,}$/,
   description: /^[a-zA-Z0-9\s]{1,}$/,

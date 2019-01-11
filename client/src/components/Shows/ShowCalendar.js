@@ -29,7 +29,6 @@ class Calendar extends Component {
     this.state = {
       newShow: null,
       shows: [],
-      showNewEventModal: false,
     };
   }
 
@@ -52,7 +51,7 @@ class Calendar extends Component {
     }
   };
 
-  showNewEventModal = show => {
+  showNewShowModal = show => {
     this.props.setModalVisibility(MODAL_NEW_SHOW, true);
     //Need to pass show to form reducer
   };
@@ -69,7 +68,7 @@ class Calendar extends Component {
           events={this.convertShowsToArray(shows)}
           defaultView={BigCalendar.Views.WEEK}
           onSelectEvent={show => console.log(show)}
-          onSelectSlot={show => this.showNewEventModal(show)}
+          onSelectSlot={show => this.showNewShowModal(show)}
           titleAccessor={show => show.show_details.title}
           startAccessor={show => new Date(show.show_start_time_utc)}
           endAccessor={show => new Date(show.show_end_time_utc)}

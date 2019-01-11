@@ -18,6 +18,9 @@ export const SHOW_ERROR = 'show_error';
 export const SHOW_FETCHING = 'show_fetching';
 export const SHOW_SEARCH = 'show_search';
 
+export const SET_MODAL_VISIBILITY = 'set_modal_visibility';
+export const MODAL_ERROR = 'modal_error';
+
 export const USER_FIND_ONE = 'user_find_one';
 export const USER_ADD = 'user_add';
 export const USER_ERROR = 'user_error';

@@ -52,12 +52,9 @@ export const deleteShow = show => async dispatch => {
 
 export const searchShow = (startDate, endDate) => async dispatch => {
   try {
-    console.log(startDate);
     const response = await axios.get(`/api/show/`, {
       params: { startDate, endDate },
     });
-
-    console.log(response.data);
 
     dispatch({ type: SHOW_SEARCH, payload: response.data });
   } catch (e) {

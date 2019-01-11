@@ -3,10 +3,17 @@ import { connect } from 'react-redux';
 import * as actions from '../../actions';
 
 import BigCalendar from 'react-big-calendar';
+import 'react-big-calendar/lib/css/react-big-calendar.css';
 import moment from 'moment';
 import _ from 'lodash';
 
-import 'react-big-calendar/lib/css/react-big-calendar.css';
+import ShowModalController from './ShowModalController';
+
+import {
+  MODAL_NEW_SHOW,
+  MODAL_UPDATE_SHOW,
+  MODAL_VIEW_SHOW,
+} from './ShowModalController';
 
 import {
   getShowsData,
@@ -22,6 +29,7 @@ class Calendar extends Component {
     this.state = {
       newShow: null,
       shows: [],
+      showNewEventModal: false,
     };
   }
 
@@ -31,15 +39,6 @@ class Calendar extends Component {
 
     this.props.searchShow(initialStartDate, initialEndDate);
   }
-
-  handleSelect = ({ start, end }) => {
-    const title = window.prompt('New Event Name');
-    if (title) {
-      this.setState({
-        shows: [...this.state.shows, { start, end, title }],
-      });
-    }
-  };
 
   handleDateChange = dates => {
     alert('Should probably implement date updates...');
@@ -53,6 +52,11 @@ class Calendar extends Component {
     }
   };
 
+  showNewEventModal = show => {
+    this.props.setModalVisibility(MODAL_NEW_SHOW, true);
+    //Need to pass show to form reducer
+  };
+
   render() {
     const localizer = BigCalendar.momentLocalizer(moment);
     const { shows, showsFetching, showsPosting, showsError } = this.props;
@@ -64,13 +68,15 @@ class Calendar extends Component {
           localizer={localizer}
           events={this.convertShowsToArray(shows)}
           defaultView={BigCalendar.Views.WEEK}
-          onSelectEvent={show => alert(show.title)}
-          onSelectSlot={this.handleSelect}
+          onSelectEvent={show => console.log(show)}
+          onSelectSlot={show => this.showNewEventModal(show)}
           titleAccessor={show => show.show_details.title}
           startAccessor={show => new Date(show.show_start_time_utc)}
           endAccessor={show => new Date(show.show_end_time_utc)}
           onRangeChange={dateRange => this.handleDateChange(dateRange)}
         />
+
+        <ShowModalController />
       </div>
     );
   }

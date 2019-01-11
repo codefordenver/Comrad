@@ -8,17 +8,17 @@ import { SingleDatePicker } from 'react-dates';
 import moment from 'moment';
 import 'react-dates/lib/css/_datepicker.css';
 
-import Button from '../../components/Button';
-import Card from '../../components/Card';
-import CardBody from '../../components/CardBody';
-import CardImg from '../../components/CardImg';
-import CardTitle from '../../components/CardTitle';
-import Checkbox from '../../components/Checkbox';
-import Form from '../../components/Form';
-import FormGroup from '../../components/FormGroup';
-import Input from '../../components/Input';
-import Label from '../../components/Label';
-import Select from '../../components/Select';
+import Button from '../Button';
+import Card from '../Card';
+import CardBody from '../CardBody';
+import CardImg from '../CardImg';
+import CardTitle from '../CardTitle';
+import Checkbox from '../Checkbox';
+import Form from '../Form';
+import FormGroup from '../FormGroup';
+import Input from '../Input';
+import Label from '../Label';
+import Select from '../Select';
 
 const initialState = {
   title: '',
@@ -41,13 +41,12 @@ const initialState = {
   end_focused: false,
 };
 
-class EventNew extends Component {
+class NewShowForm extends Component {
   state = initialState;
 
   updateTime(date, time) {
     const newHours = moment(time, 'HH:mm').format('HH');
     const newMinutes = moment(time, 'HH:mm').format('mm');
-    console.log(date);
 
     return moment(date)
       .hours(newHours)
@@ -113,6 +112,7 @@ class EventNew extends Component {
 
     //NEED TO SETUP VALIDATION
     this.props.postShow(this.state);
+    this.props.setModalVisibility(null, false);
 
     if (valid) {
       //this.props.postShow(this.state);
@@ -122,12 +122,13 @@ class EventNew extends Component {
   handleFormCancel = e => {
     e.preventDefault();
     this.setState(initialState);
+    this.props.setModalVisibility(null, false);
   };
 
   render() {
     return (
-      <main className="event">
-        <section className="event__body">
+      <main className="show">
+        <section className="show__body">
           {console.log('New State')}
           {console.log(this.state)}
 
@@ -317,4 +318,4 @@ class EventNew extends Component {
 export default connect(
   null,
   actions,
-)(EventNew);
+)(NewShowForm);

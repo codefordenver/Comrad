@@ -6,9 +6,7 @@ import moment from 'moment';
 
 import Alert from '../../components/Alert';
 
-import EventNew from '../../components/Events/EventNew';
-import EventSearch from '../../components/Events/EventSearch';
-import EventCalendar from '../../components/Events/EventCalendar';
+import ShowCalendar from '../../components/Shows/ShowCalendar';
 
 import {
   getShowsData,
@@ -35,9 +33,7 @@ class CalendarHomePage extends Component {
           <Alert type="error">{showsError.response.data.message}</Alert>
         )}
 
-        <EventCalendar />
-
-        <EventNew />
+        <ShowCalendar />
       </div>
     );
   }

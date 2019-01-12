@@ -6,19 +6,19 @@ import Root from '../Root';
 let wrapped;
 
 beforeAll(() => {
-
   wrapped = mount(
     <Root>
       <Alert />
-    </Root>
-  )
-})
+    </Root>,
+  );
+});
 
 afterAll(() => {
-  wrapped.unmount()
-})
+  wrapped.unmount();
+});
 
 describe('<Alert />', () => {
   it('receives header props in good order', () => {
-  })
-})
+    console.log('Received');
+  });
+});

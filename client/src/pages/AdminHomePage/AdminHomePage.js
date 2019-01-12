@@ -6,11 +6,7 @@ class AdminHomePage extends Component {
   state = {};
 
   render() {
-    return (
-      <div>
-        Admin Page
-      </div>
-    );
+    return <div>Admin Page</div>;
   }
 }
 

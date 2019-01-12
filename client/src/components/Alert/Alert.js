@@ -10,8 +10,8 @@ import { ReactComponent as TimesCircle } from '../../images/times-circle-solid.s
 
 class Alert extends Component {
   state = {
-    display: this.props.display
-  }
+    display: this.props.display,
+  };
 
   componentWillUnmount() {
     const { alertClear } = this.props;
@@ -33,7 +33,7 @@ class Alert extends Component {
       default:
         break;
     }
-  }
+  };
 
   getIconSVG = type => {
     switch (type) {
@@ -44,7 +44,7 @@ class Alert extends Component {
       case 'error':
         return <ExclamationCircle />;
       case 'warning':
-        return <TimesCircle />
+        return <TimesCircle />;
       default:
         break;
     }
@@ -59,9 +59,7 @@ class Alert extends Component {
       <Fragment>
         {display ? (
           <div className={`${getAlertClass(type)} ${styleName}`} {...rest}>
-            <div className="alert__symbol">
-              {getIconSVG(type)}
-            </div>
+            <div className="alert__symbol">{getIconSVG(type)}</div>
             <div className="alert__body">
               <div className="alert__header">{header}</div>
               <div className="alert__message">{text}</div>

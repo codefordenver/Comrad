@@ -11,8 +11,8 @@ module.exports = {
     'src/components/TracksTable/AlbumsTable.js',
     'src/components/UsersTable/UsersTable.js',
     'src/components/App/App.js',
-    'src/components/NavTest/NavTest.js'
-    'src/components/Root/Root.js'
+    'src/components/NavTest/NavTest.js',
+    'src/components/Root/Root.js',
   ],
   styleguideComponents: {
     Wrapper: path.join(__dirname, './src/components/Root'),

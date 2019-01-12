@@ -1,15 +1,26 @@
 import React, { Component, Fragment } from 'react';
-import { connect } from 'react-redux';
 import { alertClear } from '../../actions';
-import _isEmpty from 'lodash/isEmpty';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+
+import { ReactComponent as ExclamationCircle } from '../../images/exclamation-circle-solid.svg';
+import { ReactComponent as CheckCircle } from '../../images/check-circle-solid.svg';
+import { ReactComponent as InfoCircle } from '../../images/info-circle-solid.svg';
+import { ReactComponent as TimesCircle } from '../../images/times-circle-solid.svg';
 
 class Alert extends Component {
+  state = {
+    display: this.props.display
+  }
+
   componentWillUnmount() {
     const { alertClear } = this.props;
     alertClear();
   }
 
-  getAlertClass(type) {
+  // getDisplayClass()
+
+  getAlertClass = type => {
     switch (type) {
       case 'success':
         return 'alert alert--success';
@@ -24,48 +35,86 @@ class Alert extends Component {
     }
   }
 
-  getIconClass(type) {
+  getIconSVG = type => {
     switch (type) {
       case 'success':
-        return 'fas fa-check-circle';
+        return <CheckCircle />;
       case 'info':
-        return 'fas fa-info-circle';
+        return <InfoCircle />;
       case 'error':
-        return 'fas fa-exclamation-circle';
+        return <ExclamationCircle />;
       case 'warning':
-        return 'fas fa-times-circle';
+        return <TimesCircle />
       default:
         break;
     }
-  }
+  };
+
   render() {
-    const { getAlertClass, getIconClass, props } = this;
-    const { alert } = props;
-    const { header, type, text } = alert;
+    const { getAlertClass, getIconSVG, props, state } = this;
+    const { display } = state;
+    const { header, styleName, type, text, ...rest } = props;
 
     return (
       <Fragment>
-        {_isEmpty(alert) ? null : (
-          <div className={getAlertClass(type)}>
+        {display ? (
+          <div className={`${getAlertClass(type)} ${styleName}`} {...rest}>
             <div className="alert__symbol">
-              <i className={getIconClass(type)} />
+              {getIconSVG(type)}
             </div>
-            <div className="alert__title-body">
+            <div className="alert__body">
               <div className="alert__header">{header}</div>
-              <div className="alert__body">
-                <div className="alert__message">{text}</div>
-              </div>
+              <div className="alert__message">{text}</div>
             </div>
           </div>
-        )}
+        ) : null}
       </Fragment>
     );
   }
 }
 
-function mapStateToProps(state) {
+Alert.propTypes = {
+  /**
+   * Boolean to trigger display
+   */
+  display: PropTypes.bool,
+  /**
+   * Header Text
+   */
+  header: PropTypes.string,
+  /**
+   * Additoinal classes added to element
+   */
+  styleName: PropTypes.string,
+  /**
+   * Body Text
+   */
+  text: PropTypes.string,
+  /**
+   * Background color
+   */
+  type: PropTypes.string,
+};
+
+Alert.defaultProps = {
+  display: false,
+  header: '',
+  styleName: '',
+  text: '',
+  type: '',
+};
+
+function mapStateToProps(
+  state,
+  { display: ownDisplay, header: ownHeader, text: ownText, type: ownType },
+) {
+  const { display, header, text, type } = state.alert;
+
   return {
-    alert: state.alert,
+    display: display || ownDisplay,
+    header: header || ownHeader,
+    text: text || ownText,
+    type: type || ownType,
   };
 }
 

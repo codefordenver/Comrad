@@ -27,7 +27,7 @@ class Dropdown extends Component {
 
   render() {
     const { props, renderButton, state } = this;
-    const { children, text, type } = props;
+    const { children } = props;
     const { active } = state;
 
     return (

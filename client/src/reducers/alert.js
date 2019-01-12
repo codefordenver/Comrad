@@ -1,6 +1,11 @@
 import { ALERT_CLEAR, ALERT_UPDATE } from '../actions/types';
 
-const initialState = {};
+const initialState = {
+  display: false,
+  header: '',
+  text: '',
+  type: '',
+};
 
 export default function(state = initialState, { type, payload }) {
   switch (type) {

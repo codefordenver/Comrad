@@ -26,11 +26,11 @@ class Form extends Component {
   handleOnSubmit = async e => {
     e.preventDefault();
     const { action, callback, input, options } = this.props;
-    const { q } = input;
+    // const { q } = input;
     const valid = validation.form();
 
     if (valid && this.confirmPassword() && action) {
-      const { input, history } = this.props;
+      // const { input } = this.props;
 
       // history.push(`?q=${q || ''}`);
 

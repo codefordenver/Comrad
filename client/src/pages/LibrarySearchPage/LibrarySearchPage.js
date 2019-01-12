@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import queryString from '../../utils/queryString';
+// import queryString from '../../utils/queryString';
 import { searchLibrary } from '../../actions';
 
 import Button from '../../components/Button';

@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
 
-import Button from '../../components/Button';
+import Alert from '../../components/Alert';
 
 class AdminHomePage extends Component {
   state = {};
 
   render() {
-    return <div>Admin Page</div>;
+    return (
+      <div>
+        Admin Page
+      </div>
+    );
   }
 }
 

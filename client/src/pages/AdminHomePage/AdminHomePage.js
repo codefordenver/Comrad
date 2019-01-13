@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 
-import Alert from '../../components/Alert';
-
 class AdminHomePage extends Component {
   state = {};
 

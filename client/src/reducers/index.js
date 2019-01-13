@@ -1,6 +1,5 @@
 import { combineReducers } from 'redux';
 
-import alert from './alert';
 import auth from './auth';
 import input from './input';
 import search from './search';
@@ -10,7 +9,6 @@ import user from './user';
 import users from './users';
 
 export default combineReducers({
-  alert,
   auth,
   input,
   search,

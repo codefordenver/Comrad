@@ -1,81 +1,86 @@
-import React, { Component, Fragment } from 'react';
-import { alertClear } from '../../actions';
-import { connect } from 'react-redux';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { ReactComponent as ExclamationCircle } from '../../images/exclamation-circle-solid.svg';
 import { ReactComponent as CheckCircle } from '../../images/check-circle-solid.svg';
 import { ReactComponent as InfoCircle } from '../../images/info-circle-solid.svg';
 import { ReactComponent as TimesCircle } from '../../images/times-circle-solid.svg';
+import { ReactComponent as TimesSolid } from '../../images/times-solid.svg';
 
 class Alert extends Component {
   state = {
-    display: this.props.display,
+    display: 'open',
   };
 
-  componentWillUnmount() {
-    const { alertClear } = this.props;
-    alertClear();
+  handleDisplayClick = () => {
+    const { display } = this.state;
+    const newDisplay = display === 'open' ? 'close' : 'open';
+
+    this.setState({
+      display: newDisplay,
+    });
+  };
+
+  getAlertClass(type) {
+    switch (type) {
+      case 'success':
+        return 'alert--success';
+      case 'info':
+        return 'alert--info';
+      case 'error':
+        return 'alert--error';
+      case 'warning':
+        return 'alert--warning';
+      default:
+        break;
+    }
   }
 
-  // getDisplayClass()
-
-  getAlertClass = type => {
+  getIconSVG(type) {
     switch (type) {
       case 'success':
-        return 'alert alert--success';
+        return <CheckCircle className="check-circle" />;
       case 'info':
-        return 'alert alert--info';
+        return <InfoCircle className="info-circle" />;
       case 'error':
-        return 'alert alert--error';
+        return <ExclamationCircle className="exclamation-circle" />;
       case 'warning':
-        return 'alert alert--warning';
+        return <TimesCircle className="times-circle" />;
       default:
         break;
     }
-  };
-
-  getIconSVG = type => {
-    switch (type) {
-      case 'success':
-        return <CheckCircle />;
-      case 'info':
-        return <InfoCircle />;
-      case 'error':
-        return <ExclamationCircle />;
-      case 'warning':
-        return <TimesCircle />;
-      default:
-        break;
-    }
-  };
+  }
 
   render() {
-    const { getAlertClass, getIconSVG, props, state } = this;
+    const {
+      handleDisplayClick,
+      getAlertClass,
+      getIconSVG,
+      props,
+      state,
+    } = this;
     const { display } = state;
     const { header, styleName, type, text, ...rest } = props;
 
     return (
-      <Fragment>
-        {display ? (
-          <div className={`${getAlertClass(type)} ${styleName}`} {...rest}>
-            <div className="alert__symbol">{getIconSVG(type)}</div>
-            <div className="alert__body">
-              <div className="alert__header">{header}</div>
-              <div className="alert__message">{text}</div>
-            </div>
-          </div>
-        ) : null}
-      </Fragment>
+      <div
+        className={`alert ${getAlertClass(type)} ${display} ${styleName}`}
+        {...rest}
+      >
+        <div className="alert__times" onClick={handleDisplayClick}>
+          <TimesSolid />
+        </div>
+        <div className="alert__symbol">{getIconSVG(type)}</div>
+        <div className="alert__body">
+          <div className="alert__header">{header}</div>
+          <div className="alert__message">{text}</div>
+        </div>
+      </div>
     );
   }
 }
 
 Alert.propTypes = {
-  /**
-   * Boolean to trigger display
-   */
-  display: PropTypes.bool,
   /**
    * Header Text
    */
@@ -89,34 +94,13 @@ Alert.propTypes = {
    */
   text: PropTypes.string,
   /**
-   * Background color
+   * Background color based on type
    */
-  type: PropTypes.string,
+  type: PropTypes.oneOf(['success', 'info', 'error', 'warning']),
 };
 
 Alert.defaultProps = {
-  display: false,
-  header: '',
   styleName: '',
-  text: '',
-  type: '',
 };
 
-function mapStateToProps(
-  state,
-  { display: ownDisplay, header: ownHeader, text: ownText, type: ownType },
-) {
-  const { display, header, text, type } = state.alert;
-
-  return {
-    display: display || ownDisplay,
-    header: header || ownHeader,
-    text: text || ownText,
-    type: type || ownType,
-  };
-}
-
-export default connect(
-  mapStateToProps,
-  { alertClear },
-)(Alert);
+export default Alert;

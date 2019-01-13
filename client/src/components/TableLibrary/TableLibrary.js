@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import Loading from '../Loading';
 import Table from '../Table';
 
-class LibraryTable extends Component {
+class TableLibrary extends Component {
   renderHeader = () => {
     return (
       <thead>
@@ -60,4 +60,4 @@ function mapStateToProps(state) {
 export default connect(
   mapStateToProps,
   null,
-)(LibraryTable);
+)(TableLibrary);

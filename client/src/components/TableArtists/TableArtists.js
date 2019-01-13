@@ -4,14 +4,14 @@ import { connect } from 'react-redux';
 import Loading from '../Loading';
 import Table from '../Table';
 
-class AlbumsTable extends Component {
+class TableArtists extends Component {
   renderHeader = () => {
     return (
       <thead>
         <tr>
           <th />
           <th>Name</th>
-          <th>Label</th>
+          <th>ID</th>
         </tr>
       </thead>
     );
@@ -24,13 +24,11 @@ class AlbumsTable extends Component {
       <tbody>
         {data.map(item => {
           if (item.type === 'album') {
-            const { _id, label, name } = item;
-
             return (
-              <tr key={_id}>
+              <tr key={item._id}>
                 <td />
-                <td>{name}</td>
-                <td>{label}</td>
+                <td>{item.name}</td>
+                <td>{item._id}</td>
               </tr>
             );
           }
@@ -39,6 +37,7 @@ class AlbumsTable extends Component {
       </tbody>
     );
   };
+
   render() {
     const { props, renderBody, renderHeader } = this;
     const { loading, data } = props;
@@ -69,4 +68,4 @@ function mapStateToProps(state) {
 export default connect(
   mapStateToProps,
   null,
-)(AlbumsTable);
+)(TableArtists);

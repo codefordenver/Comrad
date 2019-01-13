@@ -4,14 +4,15 @@ import { connect } from 'react-redux';
 import Loading from '../Loading';
 import Table from '../Table';
 
-class ArtistsTable extends Component {
+class TableTracks extends Component {
   renderHeader = () => {
     return (
       <thead>
         <tr>
           <th />
           <th>Name</th>
-          <th>ID</th>
+          <th>Track Number</th>
+          <th>Duration</th>
         </tr>
       </thead>
     );
@@ -23,12 +24,15 @@ class ArtistsTable extends Component {
     return (
       <tbody>
         {data.map(item => {
-          if (item.type === 'album') {
+          if (item.type === 'track') {
+            const { duration, _id, name, track_number } = item;
+
             return (
-              <tr key={item._id}>
+              <tr key={_id}>
                 <td />
-                <td>{item.name}</td>
-                <td>{item._id}</td>
+                <td>{name}</td>
+                <td>{track_number}</td>
+                <td>{duration}</td>
               </tr>
             );
           }
@@ -68,4 +72,4 @@ function mapStateToProps(state) {
 export default connect(
   mapStateToProps,
   null,
-)(ArtistsTable);
+)(TableTracks);

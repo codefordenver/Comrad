@@ -12,9 +12,9 @@
   />
 
   <Alert 
-    header="Error Alert" 
+    header="Danger Alert" 
     text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sit amet condimentum mauris, quis ornare ante. Nam a volutpat sapien, at mollis purus. Phasellus placerat urna a metus consequat mattis." 
-    type="error" 
+    type="danger" 
   />
 
   <Alert 

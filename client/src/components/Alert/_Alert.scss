@@ -57,15 +57,15 @@
   }
 
   &--info {
-    background-color: #7db2bf;
+    background-color: $color-info;
   }
   &--success {
-    background-color: #007283;
+    background-color: $color-success;
   }
-  &--error {
-    background-color: #ff9999;
+  &--danger {
+    background-color: $color-danger;
   }
   &--warning {
-    background-color: #ffb266;
+    background-color: $color-warning;
   }
 }

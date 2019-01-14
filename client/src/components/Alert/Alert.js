@@ -27,8 +27,8 @@ class Alert extends Component {
         return 'alert--success';
       case 'info':
         return 'alert--info';
-      case 'error':
-        return 'alert--error';
+      case 'danger':
+        return 'alert--danger';
       case 'warning':
         return 'alert--warning';
       default:
@@ -42,7 +42,7 @@ class Alert extends Component {
         return <CheckCircle className="check-circle" />;
       case 'info':
         return <InfoCircle className="info-circle" />;
-      case 'error':
+      case 'danger':
         return <ExclamationCircle className="exclamation-circle" />;
       case 'warning':
         return <TimesCircle className="times-circle" />;
@@ -96,7 +96,7 @@ Alert.propTypes = {
   /**
    * Background color based on type
    */
-  type: PropTypes.oneOf(['success', 'info', 'error', 'warning']),
+  type: PropTypes.oneOf(['success', 'info', 'danger', 'warning']),
 };
 
 Alert.defaultProps = {

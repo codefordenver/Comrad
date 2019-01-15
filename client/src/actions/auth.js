@@ -17,10 +17,6 @@ export const loginUser = (input, callback) => async dispatch => {
   }
 };
 
-export const testFunction = input => async dispatch => {
-  console.log(input);
-};
-
 export const logoutUser = callback => async dispatch => {
   try {
     await axios.get('/api/auth/logout');

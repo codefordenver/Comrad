@@ -1,6 +1,5 @@
 export * from './auth';
 export * from './input';
-export * from './alert';
 export * from './password';
 export * from './search';
 export * from './shows';

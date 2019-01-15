@@ -1,23 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { alertUpdate } from '../../actions';
 import PropTypes from 'prop-types';
 import validation from '../../utils/validation';
 
 class Form extends Component {
   confirmPassword = () => {
-    const { input, alertUpdate } = this.props;
-    const { confirm_password, password } = input;
+    const { input } = this.props;
+    const { confirm_password } = input;
     if (!confirm_password) {
       return true;
-    }
-
-    if (confirm_password !== password) {
-      alertUpdate({
-        header: 'Passwords Do Not Match',
-        type: 'error',
-      });
-      return false;
     }
 
     return true;
@@ -26,11 +17,11 @@ class Form extends Component {
   handleOnSubmit = async e => {
     e.preventDefault();
     const { action, callback, input, options } = this.props;
-    const { q } = input;
+    // const { q } = input;
     const valid = validation.form();
 
     if (valid && this.confirmPassword() && action) {
-      const { input, history } = this.props;
+      // const { input } = this.props;
 
       // history.push(`?q=${q || ''}`);
 
@@ -69,7 +60,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  { alertUpdate },
-)(Form);
+export default connect(mapStateToProps)(Form);

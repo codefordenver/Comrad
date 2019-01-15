@@ -69,7 +69,7 @@ class Input extends Component {
       label,
       name,
       type,
-      styleName = '',
+      className = '',
       validate,
     } = props;
 
@@ -77,7 +77,7 @@ class Input extends Component {
       <Fragment>
         <input
           ref={myRef}
-          className={`input ${styleName}`}
+          className={`input ${className}`}
           name={name}
           type={type}
           validate={validate}

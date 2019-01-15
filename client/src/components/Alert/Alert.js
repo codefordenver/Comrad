@@ -60,11 +60,11 @@ class Alert extends Component {
       state,
     } = this;
     const { display } = state;
-    const { header, styleName, type, text, ...rest } = props;
+    const { header, className, type, text, ...rest } = props;
 
     return (
       <div
-        className={`alert ${getAlertClass(type)} ${display} ${styleName}`}
+        className={`alert ${getAlertClass(type)} ${display} ${className}`}
         {...rest}
       >
         <div className="alert__times" onClick={handleDisplayClick}>
@@ -86,9 +86,9 @@ Alert.propTypes = {
    */
   header: PropTypes.string,
   /**
-   * Additoinal classes added to element
+   * Additional classes added to root element
    */
-  styleName: PropTypes.string,
+  className: PropTypes.string,
   /**
    * Body Text
    */
@@ -100,7 +100,7 @@ Alert.propTypes = {
 };
 
 Alert.defaultProps = {
-  styleName: '',
+  className: '',
 };
 
 export default Alert;

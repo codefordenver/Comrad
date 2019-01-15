@@ -1,10 +1,10 @@
 import React from 'react';
 
 const Select = props => {
-  const { selectOptions, styleName, ...rest } = props;
+  const { selectOptions, className, ...rest } = props;
 
   return (
-    <select className={`select ${styleName || ''}`} {...rest}>
+    <select className={`select ${className || ''}`} {...rest}>
       <option value="" disabled defaultValue />
       {selectOptions.map((option, index) => (
         <option key={index} value={option}>

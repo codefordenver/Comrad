@@ -1,9 +1,9 @@
 import React from 'react';
 
 const Feedback = props => {
-  const { children, styleName = '' } = props;
+  const { children, className = '' } = props;
 
-  return <div className={`feedback ${styleName}`}>{children}</div>;
+  return <div className={`feedback ${className}`}>{children}</div>;
 };
 
 export default Feedback;

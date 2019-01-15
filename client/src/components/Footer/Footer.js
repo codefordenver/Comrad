@@ -1,10 +1,10 @@
 import React from 'react';
 
 const Footer = props => {
-  const { styleName } = props;
+  const { className } = props;
 
   return (
-    <footer className={`footer ${styleName || ''}`}>
+    <footer className={`footer ${className || ''}`}>
       <p className="footer__text">
         <img
           className="footer__logo"

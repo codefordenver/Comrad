@@ -14,7 +14,7 @@ class ResetPasswordForm extends Component {
     const { resetPassword } = this.props;
 
     return (
-      <Form action={resetPassword} styleName="mb-5">
+      <Form action={resetPassword} className="mb-5">
         <Alert />
         <p>Enter new Password Information</p>
         <FormGroup>

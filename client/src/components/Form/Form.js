@@ -33,11 +33,11 @@ class Form extends Component {
   };
 
   render() {
-    const { children, onSubmit, styleName = '' } = this.props;
+    const { children, onSubmit, className = '' } = this.props;
 
     return (
       <form
-        className={`form ${styleName}`}
+        className={`form ${className}`}
         onSubmit={onSubmit || this.handleOnSubmit}
       >
         {children}

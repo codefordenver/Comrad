@@ -44,8 +44,8 @@ describe('<Alert />', () => {
     expect(wrapper.find('svg.info-circle')).toHaveLength(1);
   });
 
-  it('prop type error renders svg component with class of "exclamation-circle"', () => {
-    wrapper.setProps({ type: 'error' });
+  it('prop type danger renders svg component with class of "exclamation-circle"', () => {
+    wrapper.setProps({ type: 'danger' });
     expect(wrapper.find('svg.exclamation-circle')).toHaveLength(1);
   });
 

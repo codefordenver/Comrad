@@ -5,5 +5,7 @@ import Button from './Button';
 const wrapper = mount(<Button />);
 
 describe('<Button />', () => {
-  it('works', () => {});
+  it('works', () => {
+    console.log('test');
+  });
 });

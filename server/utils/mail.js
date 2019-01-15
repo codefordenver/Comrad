@@ -11,7 +11,7 @@ const transport = nodemailer.createTransport({
 
 const emailTemplate = text => `
   <div>
-    <h1>Restet Password!</h1>
+    <h1>Reset Password!</h1>
     <p>Link here: <span>${text}</span></p>
     <p>Comrad Team</p>
   </div>

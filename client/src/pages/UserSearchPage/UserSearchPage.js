@@ -13,7 +13,7 @@ import NoResults from '../../components/NoResults';
 import Pagination from '../../components/Pagination';
 import SearchTerm from '../../components/SearchTerm';
 import SearchTotal from '../../components/SearchTotal';
-import UsersTable from '../../components/UsersTable';
+// import UsersTable from '../../components/UsersTable';
 
 class UserSearchPage extends Component {
   async componentDidMount() {
@@ -85,11 +85,7 @@ class UserSearchPage extends Component {
                   <Pagination action={usersSearch} reducer={users} />
                 </div>
               </div>
-              {search ? (
-                <UsersTable />
-              ) : (
-                <NoResults>Search For Users</NoResults>
-              )}
+              {search ? null : <NoResults>Search For Users</NoResults>}
             </div>
 
             <div className="user-search__total">

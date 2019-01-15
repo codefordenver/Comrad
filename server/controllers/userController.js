@@ -90,14 +90,16 @@ module.exports = {
   },
 
   async search(req, res) {
-    const { query } = req;
+    const { q } = req.query;
+    const re = new RegExp(q, 'i');
 
-    const optionsObj = searchOptions(query);
-    const queryObj = queryOptions(query);
+    console.log(q);
 
-    db.User.paginate(queryObj, optionsObj)
+    db.User.find({
+      $or: [{ first_name: re }, { last_name: re }, { on_air_name: re }],
+    })
       .then(dbUsers => res.json(dbUsers))
-      .catch(err => res.status(422).json({ message: err }));
+      .catch(err => res.status(422).json(err));
   },
 
   create: (req, res, next) => {

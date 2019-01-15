@@ -24,12 +24,12 @@ class Button extends Component {
 
   render() {
     const { getButtonClass, props } = this;
-    const { children, color, disabled, onClick, styleName, to, type } = props;
+    const { children, color, disabled, onClick, className, to, type } = props;
 
     if (to) {
       return (
         <Link
-          className={`button button--link ${styleName}`}
+          className={`button button--link ${className}`}
           disabled={disabled}
           onClick={onClick}
           to={to}
@@ -42,7 +42,7 @@ class Button extends Component {
 
     return (
       <button
-        className={`button ${getButtonClass(color)} ${styleName}`}
+        className={`button ${getButtonClass(color)} ${className}`}
         disabled={disabled}
         onClick={onClick}
         type={type}
@@ -83,7 +83,7 @@ Button.propTypes = {
   /**
    * Any additional classes added
    */
-  styleName: PropTypes.string,
+  className: PropTypes.string,
   /**
    * Make this button a Link instead
    */
@@ -96,7 +96,7 @@ Button.propTypes = {
 
 Button.defaultProps = {
   color: 'primary',
-  styleName: '',
+  className: '',
   type: 'button',
 };
 

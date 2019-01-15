@@ -55,7 +55,7 @@ class UserSearchPage extends Component {
 
               <div className="user-search__search-container">
                 <Form
-                  styleName="mr-2"
+                  className="mr-2"
                   action={usersSearch}
                   options={options}
                   {...this.props}

@@ -11,12 +11,12 @@
 
 <div className="mb-3">
   <h4>Buttons:Hover</h4>
-  <Button color="primary" styleName="hover">Primary</Button>
-  <Button color="success" styleName="hover">Success</Button>
-  <Button color="info" styleName="hover">Info</Button>
-  <Button color="danger" styleName="hover">Danger</Button>
-  <Button color="warning" styleName="hover">Warning</Button>
-  <Button color="link" styleName="hover">Link</Button>
+  <Button color="primary" className="hover">Primary</Button>
+  <Button color="success" className="hover">Success</Button>
+  <Button color="info" className="hover">Info</Button>
+  <Button color="danger" className="hover">Danger</Button>
+  <Button color="warning" className="hover">Warning</Button>
+  <Button color="link" className="hover">Link</Button>
 </div>
 
 <div>

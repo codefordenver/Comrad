@@ -21,7 +21,7 @@ class LibrarySearchPage extends Component {
 
               <div className="library-search__search-container">
                 <Form
-                  styleName="mr-2"
+                  className="mr-2"
                   action={searchLibrary}
                   options={options}
                   {...this.props}

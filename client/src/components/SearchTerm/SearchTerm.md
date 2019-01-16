@@ -1,0 +1,3 @@
+```js
+<SearchTerm q="Development" />
+```

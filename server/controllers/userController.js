@@ -96,7 +96,12 @@ module.exports = {
     console.log(q);
 
     db.User.find({
-      $or: [{ first_name: re }, { last_name: re }, { on_air_name: re }],
+      $or: [
+        { first_name: re },
+        { last_name: re },
+        { email: re },
+        { on_air_name: re },
+      ],
     })
       .then(dbUsers => res.json(dbUsers))
       .catch(err => res.status(422).json(err));

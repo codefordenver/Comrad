@@ -1,13 +1,11 @@
 .search-term {
   color: $color-grey-4;
+  font-family: $font-family-primary;
   font-size: 1.4rem;
   padding: 0.6rem 0;
 
-  &__text {
-    margin-right: 0.5rem;
-  }
-
   &__term {
     font-weight: $font-weight-heavy;
+    margin-right: 0.5rem;
   }
 }

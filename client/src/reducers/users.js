@@ -1,28 +1,48 @@
-import { USERS_CLEAR, USERS_SEARCH, USERS_UPDATE } from '../actions/types';
+import {
+  USERS_CLEAR,
+  USERS_ERROR,
+  USERS_LOADING,
+  USERS_SEARCH,
+  USERS_UPDATE,
+} from '../actions/types';
 
 const initialState = {
   docs: [],
+  error: false,
   loading: false,
-  limit: 0,
-  offset: 0,
-  page: 0,
-  pages: 0,
-  q: '',
+  q: false,
 };
 
 export default (state = initialState, { type, payload }) => {
   switch (type) {
     case USERS_CLEAR:
       return initialState;
+    case USERS_ERROR:
+      return {
+        ...state,
+        ...payload,
+      };
+    case USERS_LOADING:
+      return {
+        ...state,
+        loading: true,
+      };
     case USERS_SEARCH:
       return {
         ...state,
         ...payload,
+        loading: false,
       };
     case USERS_UPDATE:
       return {
         ...state,
         ...payload,
+      };
+    case USERS_ERROR:
+      return {
+        ...state,
+        ...payload,
+        loading: false,
       };
     default:
       return state;

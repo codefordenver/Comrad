@@ -1,4 +1,5 @@
 import React, { Fragment, Component } from 'react';
+import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { inputClear, inputUpdate } from '../../actions/index';
 import validation from '../../utils/validation';
@@ -74,10 +75,10 @@ class Input extends Component {
     } = props;
 
     return (
-      <Fragment>
+      <div className={classnames('form-group', className)}>
         <input
           ref={myRef}
-          className={`input ${className}`}
+          className="input"
           name={name}
           type={type}
           validate={validate}
@@ -87,7 +88,7 @@ class Input extends Component {
         {label && <Label>{label}</Label>}
         {feedback && <Feedback>{feedback}</Feedback>}
         {icon && <span className={`icon ${getIconClass(icon)}`} />}
-      </Fragment>
+      </div>
     );
   }
 }

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import classnames from 'classnames';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import validation from '../../utils/validation';
@@ -37,7 +38,7 @@ class Form extends Component {
 
     return (
       <form
-        className={`form ${className}`}
+        className={classnames('form', className)}
         onSubmit={onSubmit || this.handleOnSubmit}
       >
         {children}

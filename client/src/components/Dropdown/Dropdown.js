@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import classnames from 'classnames';
 
 import { DropdownPlus } from './DropdownPlus';
 
@@ -25,11 +26,11 @@ class Dropdown extends Component {
 
   render() {
     const { props, renderButton, state } = this;
-    const { children, type } = props;
+    const { children, className, type } = props;
     const { active } = state;
 
     return (
-      <div className="dropdown">
+      <div className={classnames('dropdown', className)}>
         <div className="dropdown__button" onClick={this.handleClick}>
           {renderButton(type)}
         </div>

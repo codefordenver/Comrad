@@ -6,6 +6,6 @@ const wrapper = mount(<Button />);
 
 describe('<Button />', () => {
   it('works', () => {
-    console.log('test');
+    console.log('Need to write tests!');
   });
 });

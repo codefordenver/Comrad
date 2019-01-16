@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import classnames from 'classnames';
 import PropTypes from 'prop-types';
 
 import { ReactComponent as ExclamationCircle } from '../../images/exclamation-circle-solid.svg';
@@ -9,17 +10,22 @@ import { ReactComponent as TimesSolid } from '../../images/times-solid.svg';
 
 class Alert extends Component {
   state = {
-    display: 'open',
+    display: true,
   };
 
   handleDisplayClick = () => {
-    const { display } = this.state;
-    const newDisplay = display === 'open' ? 'close' : 'open';
-
-    this.setState({
-      display: newDisplay,
-    });
+    this.setState(prevProps => ({
+      display: !prevProps.display,
+    }));
   };
+
+  getDisplayClass(display) {
+    if (display) {
+      return 'open';
+    }
+
+    return 'close';
+  }
 
   getAlertClass(type) {
     switch (type) {
@@ -55,6 +61,7 @@ class Alert extends Component {
     const {
       handleDisplayClick,
       getAlertClass,
+      getDisplayClass,
       getIconSVG,
       props,
       state,
@@ -64,7 +71,12 @@ class Alert extends Component {
 
     return (
       <div
-        className={`alert ${getAlertClass(type)} ${display} ${className}`}
+        className={classnames(
+          'alert',
+          getAlertClass(type),
+          getDisplayClass(display),
+          className,
+        )}
         {...rest}
       >
         <div className="alert__times" onClick={handleDisplayClick}>

@@ -6,12 +6,12 @@ const wrapper = mount(<Alert />);
 
 describe('<Alert />', () => {
   it('receives class of close when display state updated to close', () => {
-    wrapper.setState({ display: 'close' });
+    wrapper.setState({ display: false });
     expect(wrapper.find('.alert').hasClass('close')).toEqual(true);
   });
 
   it('receives class of open when display state updated to open', () => {
-    wrapper.setState({ display: 'open' });
+    wrapper.setState({ display: true });
     expect(wrapper.find('.alert').hasClass('open')).toEqual(true);
   });
 
@@ -56,6 +56,6 @@ describe('<Alert />', () => {
 
   it('updates state when the x is clicked in corner', () => {
     wrapper.find('.alert__times').simulate('click');
-    expect(wrapper.state('display')).toEqual('close');
+    expect(wrapper.state('display')).toEqual(false);
   });
 });

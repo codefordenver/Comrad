@@ -3,7 +3,11 @@
   font-size: 1.6rem;
   font-weight: $font-weight-normal;
   letter-spacing: 1px;
+  line-height: $font-line-height;
+  text-align: center;
   text-transform: uppercase;
+  vertical-align: center;
+  user-select: none;
 
   border: $border-width solid transparent;
   border-radius: $border-radius;
@@ -23,10 +27,6 @@
   &:disabled,
   &.disabled {
     cursor: default;
-  }
-
-  &:not(:last-child) {
-    margin-right: 0.5rem;
   }
 
   &--primary {
@@ -142,13 +142,14 @@
   &--link {
     color: $color-primary;
     font-size: 1.8rem;
+    line-height: 1;
     text-transform: none;
     
     border: none;
     border-bottom: 1px solid $color-primary;
     border-radius: 0;
-    padding: 0.7rem 0 1px;
-    margin: 0 0.8rem;
+    margin: 0;
+    padding: 0 0 1px;
 
     &:active,
     &.active,

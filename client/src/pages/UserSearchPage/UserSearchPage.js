@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { usersClear, usersSearch } from '../../actions/users.js';
-import _isEmpty from 'lodash/isEmpty';
 
 import Alert from '../../components/Alert';
 import Button from '../../components/Button';
@@ -26,16 +25,18 @@ class UserSearchPage extends Component {
         <Card>
           <CardBody>
             <div className="user-search__header">
-              <Form className="user-search__form" action={usersSearch}>
-                <Input className="mb-0" label="Search" name="q" icon="search" />
+              <Form action={usersSearch}>
+                <Input label="Search" name="q" icon="search" />
                 <Button type="submit">Search</Button>
-                <Dropdown type="plus" text="Search">
-                  <DropdownItem to="user/add">Add</DropdownItem>
-                  <DropdownItem>Edit</DropdownItem>
-                </Dropdown>
               </Form>
+              <Dropdown type="plus" text="Search">
+                <DropdownItem to="user/add">Add</DropdownItem>
+                <DropdownItem>Edit</DropdownItem>
+              </Dropdown>
             </div>
+
             {error && <Alert type="danger" header="Users Error" text={error} />}
+
             {q === false ? (
               <LargeText>Search For Users</LargeText>
             ) : docs.length === 0 ? (

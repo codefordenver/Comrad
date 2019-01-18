@@ -1,4 +1,4 @@
-import React, { Fragment, Component } from 'react';
+import React, { Component } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { inputClear, inputUpdate } from '../../actions/index';
@@ -6,6 +6,7 @@ import validation from '../../utils/validation';
 
 import Feedback from '../Feedback';
 import Label from '../Label';
+import { ReactComponent as SearchSolid } from '../../images/search-solid.svg';
 
 class Input extends Component {
   state = {};
@@ -55,7 +56,7 @@ class Input extends Component {
   getIconClass(icon) {
     switch (icon) {
       case 'search':
-        return 'fas fa-search';
+        return <SearchSolid className="icon" />;
       default:
         break;
     }
@@ -64,15 +65,7 @@ class Input extends Component {
   render() {
     const { getIconClass, myRef, props } = this;
 
-    const {
-      feedback,
-      icon,
-      label,
-      name,
-      type,
-      className = '',
-      validate,
-    } = props;
+    const { feedback, icon, label, name, type, className, validate } = props;
 
     return (
       <div className={classnames('form-group', className)}>
@@ -87,7 +80,7 @@ class Input extends Component {
         />
         {label && <Label>{label}</Label>}
         {feedback && <Feedback>{feedback}</Feedback>}
-        {icon && <span className={`icon ${getIconClass(icon)}`} />}
+        {icon && getIconClass(icon)}
       </div>
     );
   }

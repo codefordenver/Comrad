@@ -8,6 +8,13 @@ import { ReactComponent as InfoCircle } from '../../images/info-circle-solid.svg
 import { ReactComponent as TimesCircle } from '../../images/times-circle-solid.svg';
 import { ReactComponent as TimesSolid } from '../../images/times-solid.svg';
 
+export const ALERT_CLASS = {
+  success: 'alert--success',
+  info: 'alert--info',
+  danger: 'alert--danger',
+  warning: 'alert--warning',
+};
+
 class Alert extends Component {
   state = {
     display: true,
@@ -30,13 +37,13 @@ class Alert extends Component {
   getAlertClass(type) {
     switch (type) {
       case 'success':
-        return 'alert--success';
+        return ALERT_CLASS.success;
       case 'info':
-        return 'alert--info';
+        return ALERT_CLASS.info;
       case 'danger':
-        return 'alert--danger';
+        return ALERT_CLASS.danger;
       case 'warning':
-        return 'alert--warning';
+        return ALERT_CLASS.warning;
       default:
         break;
     }
@@ -109,10 +116,6 @@ Alert.propTypes = {
    * Background color based on type
    */
   type: PropTypes.oneOf(['success', 'info', 'danger', 'warning']),
-};
-
-Alert.defaultProps = {
-  className: '',
 };
 
 export default Alert;

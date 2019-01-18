@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { loginUser } from '../../actions';
 import { REGEX_ANY_CHARS, REGEX_EMAIL } from '../../utils/validation';
 
-import Alert from '../../components/Alert';
 import Button from '../../components/Button';
 import Form from '../../components/Form';
 import Input from '../../components/Input';

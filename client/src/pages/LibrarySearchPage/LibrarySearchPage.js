@@ -6,7 +6,6 @@ import { searchLibrary } from '../../actions';
 import Button from '../../components/Button';
 import Card, { CardBody } from '../../components/Card';
 import Form from '../../components/Form';
-import FormGroup from '../../components/FormGroup';
 import Input from '../../components/Input';
 
 class LibrarySearchPage extends Component {
@@ -25,11 +24,10 @@ class LibrarySearchPage extends Component {
                   action={searchLibrary}
                   options={options}
                   {...this.props}
-                />
-                <FormGroup>
+                >
                   <Input label="Search" name="q" type="text" icon="search" />
-                </FormGroup>
-                <Button type="submit">Search</Button>
+                  <Button type="submit">Search</Button>
+                </Form>
               </div>
             </CardBody>
           </Card>

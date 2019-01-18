@@ -1,7 +1,10 @@
-// abstracts
-@import 'abstracts/variables';
+// variables
+@import 'variables/border';
+@import 'variables/colors';
+@import 'variables/font';
 
 // base
+@import 'base/reset';
 @import 'base/base';
 @import 'base/grid';
 @import 'base/reactTable';

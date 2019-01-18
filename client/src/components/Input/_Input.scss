@@ -1,7 +1,7 @@
 .form-group {
   position: relative;
 
-  margin-bottom: 3rem;
+    margin-bottom: 3rem;
 }
 
 .input {
@@ -28,13 +28,14 @@
   }
 
   &.invalid {
-    border-color: $color-red;
+    border-color: $color-danger;
   }
 }
 
 .icon {
   color: $color-primary;
-  font-size: 2rem;
+  height: 2rem;
+  width: 2rem;
 
   position: absolute;
   top: 0.8rem;

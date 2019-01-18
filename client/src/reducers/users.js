@@ -38,12 +38,6 @@ export default (state = initialState, { type, payload }) => {
         ...state,
         ...payload,
       };
-    case USERS_ERROR:
-      return {
-        ...state,
-        ...payload,
-        loading: false,
-      };
     default:
       return state;
   }

@@ -1,3 +1,9 @@
+.form-group {
+  position: relative;
+
+    margin-bottom: 3rem;
+}
+
 .input {
   font-size: 1.8rem;
   font-family: inherit;
@@ -5,8 +11,8 @@
 
   background: none;
   display: block;
-  width: 100%;
   height: 3.8rem;
+  width: 100%;
   padding: 1rem;
   padding-left: 1.4rem;
   position: relative;
@@ -22,13 +28,14 @@
   }
 
   &.invalid {
-    border-color: $color-red;
+    border-color: $color-danger;
   }
 }
 
 .icon {
   color: $color-primary;
-  font-size: 2rem;
+  height: 2rem;
+  width: 2rem;
 
   position: absolute;
   top: 0.8rem;

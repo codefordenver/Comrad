@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
+import classnames from 'classnames';
 
 import { DropdownPlus } from './DropdownPlus';
-import { DropdownCircle } from './DropdownCircle';
 
 class Dropdown extends Component {
   state = {
@@ -14,26 +14,25 @@ class Dropdown extends Component {
     }));
   };
 
-  renderButton = () => {
-    const { text, type } = this.props;
-
+  renderButton(type) {
     switch (type) {
       case 'circle':
-        return <DropdownCircle />;
+        return null;
+      case 'plus':
       default:
-        return <DropdownPlus>{text}</DropdownPlus>;
+        return <DropdownPlus />;
     }
-  };
+  }
 
   render() {
     const { props, renderButton, state } = this;
-    const { children } = props;
+    const { children, className, type } = props;
     const { active } = state;
 
     return (
-      <div className="dropdown">
+      <div className={classnames('dropdown', className)}>
         <div className="dropdown__button" onClick={this.handleClick}>
-          {renderButton()}
+          {renderButton(type)}
         </div>
         <div className={`dropdown__list ${active ? 'active' : ''}`}>
           {children}

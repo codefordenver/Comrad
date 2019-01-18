@@ -1,9 +1,13 @@
-// abstracts
-@import 'abstracts/variables';
+// variables
+@import 'variables/border';
+@import 'variables/colors';
+@import 'variables/font';
 
 // base
+@import 'base/reset';
 @import 'base/base';
 @import 'base/grid';
+@import 'base/reactTable';
 @import 'base/typography';
 @import 'base/utilities';
 
@@ -18,19 +22,17 @@
 @import '../components/Feedback/Feedback';
 @import '../components/Footer/Footer';
 @import '../components/Form/Form';
-@import '../components/FormGroup/FormGroup';
 @import '../components/Input/Input';
 @import '../components/Label/Label';
+@import '../components/LargeText/LargeText';
 @import '../components/Loading/Loading';
 @import '../components/Modal/Modal';
 @import '../components/NavTest/NavTest';
 @import '../components/Navbar/Navbar';
-@import '../components/NoResults/NoResults';
 @import '../components/Pagination/Pagination';
 @import '../components/ResetForm/ResetForm';
 @import '../components/Root/Root';
 @import '../components/SearchTerm/SearchTerm';
-@import '../components/SearchTotal/SearchTotal';
 @import '../components/Select/Select';
 @import '../components/Sidebar/Sidebar';
 @import '../components/Table/Table';

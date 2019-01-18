@@ -7,7 +7,6 @@ import { requestReset } from '../../actions';
 import Alert from '../../components/Alert';
 import Button from '../../components/Button';
 import Form from '../../components/Form';
-import FormGroup from '../../components/FormGroup';
 import Input from '../../components/Input';
 
 class ResetForm extends Component {
@@ -18,16 +17,14 @@ class ResetForm extends Component {
       <Form action={requestReset}>
         <Alert />
         <p>Enter Email Address</p>
-        <FormGroup>
-          <Input
-            name="email"
-            type="text"
-            feedback="Please Enter Email Address"
-            label="Email"
-            validate={REGEX_EMAIL}
-            disabled={user.loading}
-          />
-        </FormGroup>
+        <Input
+          name="email"
+          type="text"
+          feedback="Please Enter Email Address"
+          label="Email"
+          validate={REGEX_EMAIL}
+          disabled={user.loading}
+        />
 
         <Button color="primary" type="submit">
           {user.loading ? 'Loading' : 'Submit'}

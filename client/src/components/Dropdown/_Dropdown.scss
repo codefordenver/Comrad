@@ -1,6 +1,10 @@
 .dropdown {
   position: relative;
 
+  &__button {
+
+  }
+
   &__circle {
     display: grid;
     justify-content: center;
@@ -19,19 +23,15 @@
   }
 
   &__plus {
+    display: grid;
+
     color: white;
-    font-size: 1.8rem;
-    font-weight: 500;
 
     background-color: $color-primary;
-    border: $border-width solid transparent;
     border-radius: $border-radius;
     cursor: pointer;
-    display: inline-block;
-    line-height: 0;
-    padding: 0.7rem;
-    transition: all 0.1s;
-    text-decoration: none;
+    padding: 1rem;
+    width: 3.6rem;
   }
 
   &__list {

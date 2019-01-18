@@ -1,30 +1,24 @@
 import React, { Component } from 'react';
+import classnames from 'classnames';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import validation from '../../utils/validation';
 
 class Form extends Component {
-  confirmPassword = () => {
-    const { input } = this.props;
-    const { confirm_password } = input;
+  confirmPassword({ confirm_password }) {
     if (!confirm_password) {
       return true;
     }
 
     return true;
-  };
+  }
 
   handleOnSubmit = async e => {
     e.preventDefault();
     const { action, callback, input, options } = this.props;
-    // const { q } = input;
     const valid = validation.form();
 
-    if (valid && this.confirmPassword() && action) {
-      // const { input } = this.props;
-
-      // history.push(`?q=${q || ''}`);
-
+    if (valid && this.confirmPassword(input) && action) {
       if (options) {
         return action(input, options, callback);
       }
@@ -34,11 +28,11 @@ class Form extends Component {
   };
 
   render() {
-    const { children, onSubmit, className = '' } = this.props;
+    const { children, onSubmit, className } = this.props;
 
     return (
       <form
-        className={`form ${className}`}
+        className={classnames('form', className)}
         onSubmit={onSubmit || this.handleOnSubmit}
       >
         {children}

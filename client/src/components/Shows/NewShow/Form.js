@@ -116,9 +116,6 @@ class NewShowForm extends Component {
     return (
       <main className="show">
         <section className="show__body">
-          {console.log('New State')}
-          {console.log(this.props.postShow)}
-
           <Card>
             <Form callback={this.handleFormSubmit} action={this.props.postShow}>
               <div className="show__grid_container">

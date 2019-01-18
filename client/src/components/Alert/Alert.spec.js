@@ -1,17 +1,25 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import Alert from './Alert';
+import Alert, { ALERT_CLASS } from './Alert';
 
-const wrapper = mount(<Alert />);
+let wrapper;
+
+beforeEach(() => {
+  wrapper = mount(<Alert />);
+});
+
+afterEach(() => {
+  wrapper.unmount();
+});
 
 describe('<Alert />', () => {
   it('receives class of close when display state updated to close', () => {
-    wrapper.setState({ display: 'close' });
+    wrapper.setState({ display: false });
     expect(wrapper.find('.alert').hasClass('close')).toEqual(true);
   });
 
   it('receives class of open when display state updated to open', () => {
-    wrapper.setState({ display: 'open' });
+    wrapper.setState({ display: true });
     expect(wrapper.find('.alert').hasClass('open')).toEqual(true);
   });
 
@@ -31,7 +39,22 @@ describe('<Alert />', () => {
 
   it('receives class alert--success with type props of success', () => {
     wrapper.setProps({ type: 'success' });
-    expect(wrapper.find('.alert').hasClass('alert--success')).toEqual(true);
+    expect(wrapper.find('.alert').hasClass(ALERT_CLASS.success)).toEqual(true);
+  });
+
+  it('receives class alert--info with type props of info', () => {
+    wrapper.setProps({ type: 'info' });
+    expect(wrapper.find('.alert').hasClass(ALERT_CLASS.info)).toEqual(true);
+  });
+
+  it('receives class alert--danger with type props of danger', () => {
+    wrapper.setProps({ type: 'danger' });
+    expect(wrapper.find('.alert').hasClass(ALERT_CLASS.danger)).toEqual(true);
+  });
+
+  it('receives class alert--warning with type props of warning', () => {
+    wrapper.setProps({ type: 'warning' });
+    expect(wrapper.find('.alert').hasClass(ALERT_CLASS.warning)).toEqual(true);
   });
 
   it('prop types success renders svg component with class of "check-circle"', () => {
@@ -56,6 +79,6 @@ describe('<Alert />', () => {
 
   it('updates state when the x is clicked in corner', () => {
     wrapper.find('.alert__times').simulate('click');
-    expect(wrapper.state('display')).toEqual('close');
+    expect(wrapper.state('display')).toEqual(false);
   });
 });

@@ -3,7 +3,7 @@
   justify-content: center;
   align-items: center;
   &__h1 {
-    color: $color-red;
+    color: $color-danger;
   }
   /* __placholder should be replaced by the alert from #218 when ready, or it may not be necessary, depending on how that gets implemented */
   &__placeholder {

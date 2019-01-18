@@ -6,7 +6,6 @@ import { userAdd } from '../../actions';
 
 import Checkbox from '../../components/Checkbox';
 import Form from '../../components/Form';
-import FormGroup from '../../components/FormGroup';
 import Input from '../../components/Input';
 import Label from '../../components/Label';
 import Select from '../../components/Select';
@@ -61,92 +60,69 @@ class UserAddPage extends Component {
 
     return (
       <Form handleFormSubmit={this.handleFormSubmit}>
-        <FormGroup>
-          <Label text="Email" />
-          <Input
-            name="email"
-            onChange={this.handleInputChange}
-            onBlur={this.handleInputBlur}
-            placeholder="Email"
-            type="text"
-            value={this.state.email}
-          />
-        </FormGroup>
-
-        <FormGroup>
-          <Label text="First Name" />
-          <Input
-            name="first_name"
-            onChange={this.handleInputChange}
-            onBlur={this.handleInputBlur}
-            placeholder="First Name"
-            type="text"
-            value={this.state.first_name}
-          />
-        </FormGroup>
-
-        <FormGroup>
-          <Label text="Last Name" />
-          <Input
-            name="last_name"
-            onChange={this.handleInputChange}
-            onBlur={this.handleInputBlur}
-            placeholder="Last Name"
-            type="text"
-            value={this.state.last_name}
-          />
-        </FormGroup>
-
-        <FormGroup>
-          <Label text="On Air Name" />
-          <Input
-            name="on_air_name"
-            onChange={this.handleInputChange}
-            onBlur={this.handleInputBlur}
-            placeholder="On Air Name"
-            type="text"
-            value={this.state.on_air_name}
-          />
-        </FormGroup>
-
-        <FormGroup>
-          <Label text="Role" />
-          <Select
-            name="role"
-            onChange={this.handleInputChange}
-            selectOptions={roleOptions}
-            placeholder="Role"
-            type="text"
-            value={this.state.role}
-          />
-        </FormGroup>
-
-        <FormGroup>
-          <Label text="Status" />
-          <Select
-            name="status"
-            onChange={this.handleInputChange}
-            selectOptions={statusOpions}
-            placeholder="Status"
-            type="text"
-            value={this.state.status}
-          />
-        </FormGroup>
-
-        <FormGroup>
-          <Label text="Can Delete" />
-          <Checkbox
-            name="can_delete"
-            onClick={this.handleCheckBox}
-            type="checkbox"
-            value={this.state.can_delete}
-          />
-        </FormGroup>
-
-        <FormGroup>
-          <button type="submit">Submit</button>
-          <Link to="/user">Go Back</Link>
-        </FormGroup>
+        <Label text="Email" />
+        <Input
+          name="email"
+          onChange={this.handleInputChange}
+          onBlur={this.handleInputBlur}
+          placeholder="Email"
+          type="text"
+          value={this.state.email}
+        />
+        <Label text="First Name" />
+        <Input
+          name="first_name"
+          onChange={this.handleInputChange}
+          onBlur={this.handleInputBlur}
+          placeholder="First Name"
+          type="text"
+          value={this.state.first_name}
+        />
+        <Label text="Last Name" />
+        <Input
+          name="last_name"
+          onChange={this.handleInputChange}
+          onBlur={this.handleInputBlur}
+          placeholder="Last Name"
+          type="text"
+          value={this.state.last_name}
+        />
+        <Label text="On Air Name" />
+        <Input
+          name="on_air_name"
+          onChange={this.handleInputChange}
+          onBlur={this.handleInputBlur}
+          placeholder="On Air Name"
+          type="text"
+          value={this.state.on_air_name}
+        />
+        <Label text="Role" />
+        <Select
+          name="role"
+          onChange={this.handleInputChange}
+          selectOptions={roleOptions}
+          placeholder="Role"
+          type="text"
+          value={this.state.role}
+        />
+        <Label text="Status" />
+        <Select
+          name="status"
+          onChange={this.handleInputChange}
+          selectOptions={statusOpions}
+          placeholder="Status"
+          type="text"
+          value={this.state.status}
+        />
+        <Label text="Can Delete" />
+        <Checkbox
+          name="can_delete"
+          onClick={this.handleCheckBox}
+          type="checkbox"
+          value={this.state.can_delete}
+        />
+        <button type="submit">Submit</button>
+        <Link to="/user">Go Back</Link>
       </Form>
     );
   }

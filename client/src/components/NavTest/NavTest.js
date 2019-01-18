@@ -9,21 +9,21 @@ class NavTest extends Component {
     const password = process.env.REACT_APP_TEST_PASSWORD;
 
     this.props.loginUser({ email, password }, () => {
-      this.props.history.push('/');
+      this.props.history.push('/dashboard');
     });
   };
 
   handleQuickSignOut = () => {
     this.props.logoutUser(() => {
-      this.props.history.push('/home');
+      this.props.history.push('/');
     });
   };
 
   render() {
     const links = [
       {
-        text: 'Login',
-        route: '/login',
+        text: 'Home',
+        route: '/',
       },
       {
         text: 'Admin',
@@ -43,7 +43,7 @@ class NavTest extends Component {
       },
       {
         text: 'Library',
-        route: '/library',
+        route: '/library/search',
       },
       {
         text: 'Report',
@@ -51,7 +51,7 @@ class NavTest extends Component {
       },
       {
         text: 'User',
-        route: '/user',
+        route: '/user/search',
       },
     ];
 

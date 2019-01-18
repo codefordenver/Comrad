@@ -1,0 +1,32 @@
+.table {
+  width: 100%;
+
+  & thead {
+    & th {
+      font-size: 1.8rem;
+      text-align: left;
+
+      padding: 1rem;
+    }
+  }
+
+  & tbody {
+    border-radius: 1px;
+    border: 1px solid $color-grey-2;
+
+    & tr {
+      &:hover {
+        background-color: $color-grey-1;
+      }
+      &:not(:last-child) {
+        border-bottom: 1px solid $color-grey-2;
+      }
+    }
+
+    & td {
+      font-size: 1.4rem;
+
+      padding: 1rem;
+    }
+  }
+}

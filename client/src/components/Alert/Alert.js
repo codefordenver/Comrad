@@ -1,74 +1,106 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+
+import { ReactComponent as ExclamationCircle } from '../../images/exclamation-circle-solid.svg';
+import { ReactComponent as CheckCircle } from '../../images/check-circle-solid.svg';
+import { ReactComponent as InfoCircle } from '../../images/info-circle-solid.svg';
+import { ReactComponent as TimesCircle } from '../../images/times-circle-solid.svg';
+import { ReactComponent as TimesSolid } from '../../images/times-solid.svg';
 
 class Alert extends Component {
-  getAlertClass(props) {
-    const { type } = props;
-    let alertClass = 'alert';
+  state = {
+    display: 'open',
+  };
 
+  handleDisplayClick = () => {
+    const { display } = this.state;
+    const newDisplay = display === 'open' ? 'close' : 'open';
+
+    this.setState({
+      display: newDisplay,
+    });
+  };
+
+  getAlertClass(type) {
     switch (type) {
       case 'success':
-        return (alertClass += ' alert--success');
+        return 'alert--success';
       case 'info':
-        return (alertClass += ' alert--info');
-      case 'error':
-        return (alertClass += ' alert--error');
+        return 'alert--info';
+      case 'danger':
+        return 'alert--danger';
       case 'warning':
-        return (alertClass += ' alert--warning');
+        return 'alert--warning';
       default:
         break;
     }
   }
 
-  getAlertHeader(props) {
-    const { type } = props;
-
+  getIconSVG(type) {
     switch (type) {
       case 'success':
-        return 'Success Status';
+        return <CheckCircle className="check-circle" />;
       case 'info':
-        return 'Information Status';
-      case 'error':
-        return 'Error Status';
+        return <InfoCircle className="info-circle" />;
+      case 'danger':
+        return <ExclamationCircle className="exclamation-circle" />;
       case 'warning':
-        return 'Warning Status';
+        return <TimesCircle className="times-circle" />;
       default:
         break;
     }
   }
 
-  getIconClass(props) {
-    const { type } = props;
-    let iconClass = 'fas fa-2x';
-
-    switch (type) {
-      case 'success':
-        return (iconClass += ' fa-check-circle');
-      case 'info':
-        return (iconClass += ' fa-info-circle');
-      case 'error':
-        return (iconClass += ' fa-exclamation-circle');
-      case 'warning':
-        return (iconClass += ' fa-times-circle');
-      default:
-        break;
-    }
-  }
   render() {
-    const { getAlertClass, getAlertHeader, getIconClass, props } = this;
-    const { children } = props;
+    const {
+      handleDisplayClick,
+      getAlertClass,
+      getIconSVG,
+      props,
+      state,
+    } = this;
+    const { display } = state;
+    const { header, className, type, text, ...rest } = props;
 
     return (
-      <div className={getAlertClass(props)}>
-        <div className="alert__symbol">
-          <i className={getIconClass(props)} />
+      <div
+        className={`alert ${getAlertClass(type)} ${display} ${className}`}
+        {...rest}
+      >
+        <div className="alert__times" onClick={handleDisplayClick}>
+          <TimesSolid />
         </div>
-        <div className="alert__title-body">
-          <div className="alert__header">{getAlertHeader(props)}</div>
-          <div className="alert__body">{children}</div>
+        <div className="alert__symbol">{getIconSVG(type)}</div>
+        <div className="alert__body">
+          <div className="alert__header">{header}</div>
+          <div className="alert__message">{text}</div>
         </div>
       </div>
     );
   }
 }
+
+Alert.propTypes = {
+  /**
+   * Header Text
+   */
+  header: PropTypes.string,
+  /**
+   * Additional classes added to root element
+   */
+  className: PropTypes.string,
+  /**
+   * Body Text
+   */
+  text: PropTypes.string,
+  /**
+   * Background color based on type
+   */
+  type: PropTypes.oneOf(['success', 'info', 'danger', 'warning']),
+};
+
+Alert.defaultProps = {
+  className: '',
+};
 
 export default Alert;

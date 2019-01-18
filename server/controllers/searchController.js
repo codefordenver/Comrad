@@ -102,14 +102,14 @@ function addRelevance(result, queryString) {
 
 module.exports = {
   async searchLibrary(req, res) {
-    const { searchTerm } = req.body;
+    const { s } = req.query;
 
-    if (searchTerm === '') {
+    if (s === '') {
       return res.json([]);
     }
 
-    const results = (await findInLibrary(searchTerm)).map(result =>
-      addRelevance(result, searchTerm),
+    const results = (await findInLibrary(s)).map(result =>
+      addRelevance(result, s),
     );
 
     const data = [...results].sort((a, b) => {

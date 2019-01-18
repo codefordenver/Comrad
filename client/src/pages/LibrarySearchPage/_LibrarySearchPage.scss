@@ -1,0 +1,49 @@
+.library {
+
+  &__search {
+    display: grid; 
+    grid-row-gap: 1rem;
+  }
+
+  &__header {
+    display: grid;
+
+    grid-template-rows: auto auto;
+    grid-template-columns: 30rem auto;
+    grid-template-areas:
+      'search empty'
+      'filter pagination';
+
+    margin-bottom: 3rem;
+  }
+
+  &__search-input {
+    grid-area: search;
+  }
+
+  &__filter {
+    grid-area: filter;
+
+  }
+  
+  &__filter-item {
+    color: $color-primary-light;
+    cursor: pointer;
+    font-size: 1.4rem;
+    display: inline;
+
+    &.active {
+      color: $color-primary;
+      border-bottom: 1px solid $color-primary;
+    }
+
+    &:not(:last-child) {
+      margin-right: 1rem;
+    }
+  }
+
+  &__pagination {
+    grid-area: pagination;
+    justify-self: end;
+  }
+}

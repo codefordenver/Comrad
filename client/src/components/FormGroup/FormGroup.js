@@ -1,9 +1,9 @@
 import React from 'react';
 
 const FormGroup = props => {
-  const { children, styleName } = props;
+  const { children, className } = props;
 
-  return <div className={`form__group ${styleName || ''}`}>{children}</div>;
+  return <div className={`form__group ${className || ''}`}>{children}</div>;
 };
 
 export default FormGroup;

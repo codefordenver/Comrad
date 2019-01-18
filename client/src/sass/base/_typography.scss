@@ -4,3 +4,64 @@ body {
   color: $color-grey-4;
   line-height: 1.7;
 }
+
+h1,
+.h1 {
+  color: $color-primary;
+  font-family: $font-family-secondary;
+  font-size: 3.4rem;
+  font-weight: $font-weight-heavy;
+
+  margin-bottom: 2rem;
+}
+
+h2,
+.h2 {
+  color: $color-primary-light;
+  font-family: $font-family-primary;
+  font-weight: $font-weight-light;
+  font-size: 3rem;
+  line-height: 1.15;
+}
+
+h3,
+.h3 {
+  color: $color-primary-light;
+  font-family: $font-family-primary;
+  font-weight: $font-weight-light;
+  font-size: 2.6rem;
+  line-height: 1.15;
+
+  margin-bottom: 1.4rem;
+}
+
+h4,
+.h4 {
+  color: $color-primary-light;
+  font-family: $font-family-primary;
+  font-weight: $font-weight-light;
+  font-size: 2.2rem;
+  line-height: 1.15;
+
+  margin-bottom: 1.4rem;
+}
+
+p,
+.p {
+  font-size: 1.6rem;
+  color: $color-grey-4;
+
+  margin-bottom: 1rem;
+}
+
+a,
+.a {
+  display: block;
+  text-decoration: none;
+  font-family: inherit;
+  font-size: inherit;
+
+  &:hover {
+    background-color: none;
+  }
+}

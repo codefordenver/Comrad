@@ -3,7 +3,6 @@ import { combineReducers } from 'redux';
 import auth from './auth';
 import input from './input';
 import search from './search';
-import user from './user';
 import modals from './modals';
 import shows from './shows';
 import traffic from './traffic';

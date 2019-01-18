@@ -13,7 +13,7 @@ import NoResults from '../../components/NoResults';
 import Pagination from '../../components/Pagination';
 import SearchTerm from '../../components/SearchTerm';
 import SearchTotal from '../../components/SearchTotal';
-import UsersTable from '../../components/UsersTable';
+import UsersTable from '../../components/TableUsers';
 
 class UserSearchPage extends Component {
   async componentDidMount() {

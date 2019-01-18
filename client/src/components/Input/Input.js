@@ -31,14 +31,19 @@ class Input extends Component {
   }
 
   handleInputChange = e => {
-    const { inputUpdate, validate } = this.props;
+    const { inputUpdate, validate, action } = this.props;
     const { classList, name, value } = e.target;
 
     if (validate) {
       const valid = validation.input(validate, value);
       valid ? classList.remove('invalid') : classList.add('invalid');
     }
-    inputUpdate({ [name]: value });
+    if (action) {
+      console.log(action);
+      //action({ [name]: value });
+    } else {
+      inputUpdate({ [name]: value });
+    }
   };
 
   handleBlurChange = e => {

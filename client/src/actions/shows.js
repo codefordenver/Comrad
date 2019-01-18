@@ -18,8 +18,10 @@ export const getShow = show => async dispatch => {
   }
 };
 
-export const postShow = show => async dispatch => {
+export const postShow = (input, callback) => async dispatch => {
   console.log('Posting Show');
+  console.log(input);
+  const show = input;
   try {
     const response = await axios.post(`/api/show/`, show);
 

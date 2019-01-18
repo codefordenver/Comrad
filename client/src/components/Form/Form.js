@@ -28,6 +28,7 @@ class Form extends Component {
       if (options) {
         return action(input, options, callback);
       }
+      console.log('submit');
       return action(input, callback);
     }
   };

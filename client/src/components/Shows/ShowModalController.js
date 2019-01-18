@@ -4,9 +4,9 @@ import { connect } from 'react-redux';
 import * as actions from '../../actions';
 import { getModalType, getModalVisibility } from '../../reducers/modals';
 
-import NewShowModal from './NewShowModal';
-import UpdateShowModal from './UpdateShowModal';
-import ViewShowModal from './ViewShowModal';
+import NewShowModal from './NewShow/Modal';
+import UpdateShowModal from './EditShow/Modal';
+import ViewShowModal from './ViewShow/Modal';
 
 export const MODAL_NEW_SHOW = 'modal_new_show';
 export const MODAL_UPDATE_SHOW = 'modal_update_show';

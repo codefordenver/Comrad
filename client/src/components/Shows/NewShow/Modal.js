@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import NewShowForm from './NewShowForm';
-import Modal from '../Modal';
+import NewShowForm from './Form';
+import Modal from '../../Modal';
 
 const NewShowModal = props => {
   return (

@@ -7,10 +7,7 @@ const Modal = props => {
 
   return (
     <div className={`modal ${styleName || ''} ${showHideClassName}`} {...rest}>
-      <section className="modal-main">
-        {children}
-        <button onClick={handleClose}>Close</button>
-      </section>
+      <section className="modal-main">{children}</section>
     </div>
   );
 };

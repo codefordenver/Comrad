@@ -87,7 +87,16 @@ class Input extends Component {
   render() {
     const { getIconClass, getMarginClass, myRef, props } = this;
 
-    const { feedback, icon, label, name, type, className, validate } = props;
+    const {
+      feedback,
+      icon,
+      invalid,
+      label,
+      name,
+      type,
+      className,
+      validate,
+    } = props;
 
     return (
       <div
@@ -99,7 +108,7 @@ class Input extends Component {
       >
         <input
           ref={myRef}
-          className="input"
+          className={classnames('input', invalid && 'invalid')}
           name={name}
           type={type}
           validate={validate}

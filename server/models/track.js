@@ -29,6 +29,11 @@ const trackSchema = new Schema({
   duration_in_seconds: {
     type: Number,
   },
+  
+  popularity: { // ranges from 0-100, with 100 being most popular
+    type: Number,
+    default: 0
+  },
 
   type: {
     type: String,

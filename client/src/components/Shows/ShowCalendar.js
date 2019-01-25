@@ -33,10 +33,10 @@ class Calendar extends Component {
   }
 
   componentDidMount() {
-    const initialStartDate = moment().subtract(1, 'month');
-    const initialEndDate = moment().add(1, 'month');
+    const initialSearchStartDate = moment().subtract(1, 'month');
+    const initialSearchEndDate = moment().add(1, 'month');
 
-    this.props.searchShow(initialStartDate, initialEndDate);
+    this.props.searchShow(initialSearchStartDate, initialSearchEndDate);
   }
 
   handleDateChange = dates => {
@@ -52,8 +52,23 @@ class Calendar extends Component {
   };
 
   showNewShowModal = show => {
-    this.props.setModalVisibility(MODAL_NEW_SHOW, true);
-    //Need to pass show to form reducer
+    const {
+      inputUpdateShowTime,
+      inputUpdateShowDate,
+      setModalVisibility,
+    } = this.props;
+
+    const { start, end } = show;
+
+    inputUpdateShowTime('show_start_time_utc', start);
+    inputUpdateShowTime('show_end_time_utc', end);
+
+    inputUpdateShowDate('repeat_start_date', start);
+    inputUpdateShowDate('repeat_end_date', end);
+
+    setModalVisibility(MODAL_NEW_SHOW, true);
+
+    console.log(show);
   };
 
   render() {

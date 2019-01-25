@@ -40,9 +40,9 @@ class Input extends Component {
       const valid = validation.input(validate, value);
       valid ? classList.remove('invalid') : classList.add('invalid');
     }
+
     if (action) {
-      console.log(action);
-      //action({ [name]: value });
+      action(name, value);
     } else {
       inputUpdate({ [name]: value });
     }
@@ -70,7 +70,16 @@ class Input extends Component {
   render() {
     const { getIconClass, myRef, props } = this;
 
-    const { feedback, icon, label, name, type, className, validate } = props;
+    const {
+      feedback,
+      icon,
+      label,
+      name,
+      type,
+      className,
+      validate,
+      initialValue,
+    } = props;
 
     return (
       <div className={classnames('form-group', className)}>
@@ -80,6 +89,7 @@ class Input extends Component {
           name={name}
           type={type}
           validate={validate}
+          value={initialValue}
           onBlur={this.handleBlurChange}
           onChange={this.handleInputChange}
         />

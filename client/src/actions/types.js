@@ -8,6 +8,10 @@ export const AUTH_RESET = 'auth_reset';
 
 export const INPUT_CLEAR = 'input_clear';
 export const INPUT_UPDATE = 'input_update';
+export const INPUT_UPDATE_SHOW_TIME = 'input_update_show_time';
+export const INPUT_UPDATE_SHOW_DATE = 'input_update_show_date';
+export const INPUT_UPDATE_SHOW_REPEAT_CHECKBOX =
+  'input_update_show_repeat_checkbox';
 
 export const SEARCH_LOADING = 'search_loading";';
 export const SEARCH_LIBRARY = 'search_library';

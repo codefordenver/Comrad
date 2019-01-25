@@ -26,6 +26,8 @@ export const postShow = (input, callback) => async dispatch => {
     const response = await axios.post(`/api/show/`, show);
 
     dispatch({ type: SHOW_POST, payload: response.data });
+
+    callback();
   } catch (e) {
     console.log(e);
     dispatch({ type: SHOW_ERROR, payload: e });

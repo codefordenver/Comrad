@@ -153,8 +153,11 @@ module.exports = {
   },
 
   create: (req, res) => {
+    console.log('Creating show');
     db.Show.create(create_new_show(req, res))
       .then(dbShow => {
+        console.log('Sending Response');
+        console.log(dbShow);
         res.json(repeatRuleShows([dbShow]));
       })
       .catch(err => res.status(422).json(err));

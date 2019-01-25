@@ -3,10 +3,7 @@ import { connect } from 'react-redux';
 import * as actions from '../../../actions';
 import { REGEX_ANY_CHARS } from '../../../utils/validation';
 
-import 'react-dates/initialize';
-import { SingleDatePicker } from 'react-dates';
 import moment from 'moment';
-import 'react-dates/lib/css/_datepicker.css';
 
 import Button from '../../Button';
 import Card from '../../Card';
@@ -14,6 +11,9 @@ import Checkbox from '../../Checkbox';
 import Form from '../../Form';
 import Input from '../../Input';
 import Select from '../../Select';
+
+import PickerDate from './PickerDate';
+import PickerTime from './PickerTime';
 
 const initialState = {
   title: '',
@@ -37,6 +37,10 @@ const initialState = {
 
 class NewShowForm extends Component {
   state = initialState;
+
+  componentDidMount() {
+    this.props.inputUpdate({ repeat: false });
+  }
 
   updateTime(date, time) {
     const newHours = moment(time, 'HH:mm').format('HH');
@@ -69,7 +73,7 @@ class NewShowForm extends Component {
 
   handleInputChange = e => {
     const { name, value } = e.target;
-    this.setState({ [name]: value });
+    this.props.inputUpdate({ [name]: value });
   };
 
   handleCheckboxChange = e => {
@@ -77,12 +81,6 @@ class NewShowForm extends Component {
     const { repeat } = this.state;
 
     this.setState({ [name]: !repeat }, () => this.updateDateAndTime(repeat));
-  };
-
-  handleInputDateChange = (type, dateValue) => {
-    const { repeat } = this.state;
-
-    this.setState({ [type]: dateValue }, () => this.updateDateAndTime(repeat));
   };
 
   handleInputChangeTime = e => {
@@ -100,8 +98,8 @@ class NewShowForm extends Component {
     //validate.input(e.target);
   };
 
-  handleFormSubmit = e => {
-    e.preventDefault();
+  handleFormSubmit = () => {
+    console.log('trying to close modal');
     this.props.setModalVisibility(null, false);
   };
 
@@ -127,54 +125,25 @@ class NewShowForm extends Component {
                     type="text"
                     validate={REGEX_ANY_CHARS}
                     feedback="Enter Field"
-                    action="custom"
                   />
                 </div>
 
                 <div>
                   From
-                  <Input
-                    name="show_start_time_utc"
-                    onChange={this.handleInputChangeTime}
-                    type="time"
-                    value={moment(this.state.show_start_time_utc).format(
-                      'HH:mm',
-                    )}
-                    validate={REGEX_ANY_CHARS}
-                    feedback="Enter Field"
-                  />
+                  <PickerTime timeType="show_start_time_utc" />
                 </div>
 
                 <div>
                   To
-                  <Input
-                    name="show_end_time_utc"
-                    onChange={this.handleInputChangeTime}
-                    type="time"
-                    value={moment(this.state.show_end_time_utc).format('HH:mm')}
-                    validate={REGEX_ANY_CHARS}
-                    feedback="Enter Field"
-                  />
+                  <PickerTime timeType="show_end_time_utc" />
                 </div>
 
                 <div className="show__grid_container show__grid_span_3">
-                  <div className="">
+                  <div className="show__date_picker">
                     Start
-                    <SingleDatePicker
-                      date={this.state.repeat_start_date} // momentPropTypes.momentObj or null
-                      onDateChange={repeat_start_date =>
-                        this.handleInputDateChange(
-                          'repeat_start_date',
-                          repeat_start_date,
-                        )
-                      } // PropTypes.func.isRequired
-                      focused={this.state.start_focused} // PropTypes.bool
-                      onFocusChange={({ focused }) =>
-                        this.setState({ start_focused: focused })
-                      } // PropTypes.func.isRequired
-                      id="show_start_date_picker" // PropTypes.string.isRequired,
-                      isOutsideRange={() => false}
-                      numberOfMonths={1}
+                    <PickerDate
+                      dateType="repeat_start_date"
+                      initialDate={moment(this.props.input.repeat_start_date)}
                     />
                   </div>
 
@@ -189,24 +158,12 @@ class NewShowForm extends Component {
                   </div>
 
                   {this.state.repeat && (
-                    <div className="">
+                    <div className="show__date_picker">
                       <div className="">
                         Ends
-                        <SingleDatePicker
-                          date={this.state.repeat_end_date} // momentPropTypes.momentObj or null
-                          onDateChange={repeat_end_date =>
-                            this.handleInputDateChange(
-                              'repeat_end_date',
-                              repeat_end_date,
-                            )
-                          } // PropTypes.func.isRequired
-                          focused={this.state.end_focused} // PropTypes.bool
-                          onFocusChange={({ focused }) =>
-                            this.setState({ end_focused: focused })
-                          } // PropTypes.func.isRequired
-                          id="show_end_date_picker" // PropTypes.string.isRequired,
-                          isOutsideRange={() => false}
-                          numberOfMonths={1}
+                        <PickerDate
+                          dateType="repeat_start_end"
+                          initialDate={moment(this.props.input.repeat_end_date)}
                         />
                       </div>
 
@@ -214,6 +171,7 @@ class NewShowForm extends Component {
                         Repeat Type
                         <Select
                           selectOptions={[
+                            '',
                             'DAILY',
                             'WEEKLY',
                             'MONTHLY',
@@ -221,7 +179,6 @@ class NewShowForm extends Component {
                           ]}
                           name="repeatType"
                           onChange={this.handleInputChange}
-                          value={this.state.repeatType}
                         />
                       </div>
                     </div>
@@ -296,7 +253,13 @@ class NewShowForm extends Component {
   }
 }
 
+function mapStateToProps(state) {
+  return {
+    input: state.input,
+  };
+}
+
 export default connect(
-  null,
+  mapStateToProps,
   actions,
 )(NewShowForm);

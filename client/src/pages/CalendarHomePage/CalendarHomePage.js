@@ -29,7 +29,11 @@ class CalendarHomePage extends Component {
     return (
       <div className="calendar__view">
         {showsError && (
-          <Alert type="error">{showsError.response.data.message}</Alert>
+          <Alert
+            type="danger"
+            header="Error Loading Shows"
+            text={showsError.response.data.message}
+          />
         )}
 
         <ShowCalendar />

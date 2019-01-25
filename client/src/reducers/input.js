@@ -16,6 +16,7 @@ export default function(state = initialState, { type, payload }) {
         ...state,
         ...payload,
       };
+
     case INPUT_CLEAR:
       return initialState;
 
@@ -32,6 +33,7 @@ export default function(state = initialState, { type, payload }) {
         ...state,
         [dateType]: dateValue,
       };
+
     default:
       return state;
   }

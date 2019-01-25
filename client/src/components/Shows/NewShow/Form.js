@@ -15,6 +15,16 @@ import Select from '../../Select';
 import PickerDate from './PickerDate';
 import PickerTime from './PickerTime';
 
+/**
+ * Updte the initial state
+ * Move Repeat to a separate component
+ * Add Repeat to the reducer
+ * Add initial value for repeat type
+ * Setup select value with reducer
+ * Move date update logic to reducer
+ * Destructure all of the action creators
+ */
+
 const initialState = {
   title: '',
   summary: '',

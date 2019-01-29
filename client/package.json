@@ -13,7 +13,6 @@
     "watch:sass": "node-sass-chokidar ./src/sass/index.scss -o ./src --watch"
   },
   "dependencies": {
-    "axios": "^0.18.0",
     "classnames": "^2.2.6",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",

@@ -1,4 +1,5 @@
 const db = require('../models');
+const axios = require('axios');
 
 /**
  *
@@ -190,5 +191,11 @@ module.exports = {
       })
       .then(response => res.json(response))
       .catch(err => res.status(422).json(err));
+  },
+
+  randomUser: async (req, res) => {
+    const { data } = await axios.get('https://randomuser.me/api/');
+
+    console.log(data);
   },
 };

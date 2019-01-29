@@ -2,19 +2,26 @@ import React, { Component } from 'react';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 
-class TableArtists extends Component {
+class TableArtist extends Component {
   render() {
-    const { props } = this;
-    const { loading, docs } = props;
+    const { loading, docs } = this.props;
 
     const columns = [
+      {
+        Header: 'ID',
+        accessor: '_id',
+      },
       {
         Header: 'Name',
         accessor: 'name',
       },
       {
-        Header: 'ID',
-        accessor: 'id',
+        Header: 'Type',
+        accessor: 'type',
+      },
+      {
+        Header: 'Popularity',
+        accessor: 'popularity',
       },
     ];
 
@@ -25,10 +32,11 @@ class TableArtists extends Component {
         data={docs}
         defaultPageSize={15}
         loading={loading}
+        noDataText="No Data Found"
         sowPageSizeOptions={false}
       />
     );
   }
 }
 
-export default TableArtists;
+export default TableArtist;

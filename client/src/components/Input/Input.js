@@ -6,8 +6,6 @@ import validation from '../../utils/validation';
 
 import Feedback from '../Feedback';
 import Label from '../Label';
-import { ReactComponent as SearchSolid } from '../../images/search-solid.svg';
-import { ReactComponent as UserSolid } from '../../images/user-solid.svg';
 
 class Input extends Component {
   state = {};
@@ -62,9 +60,9 @@ class Input extends Component {
   getIconClass(icon) {
     switch (icon) {
       case 'search':
-        return <SearchSolid className="icon" />;
+        return <i className="icon fas fa-search" />;
       case 'user':
-        return <UserSolid className="icon" />;
+        return <i className="icon fas fa-user" />;
       default:
         break;
     }

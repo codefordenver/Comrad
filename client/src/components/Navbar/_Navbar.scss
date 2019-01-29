@@ -1,4 +1,28 @@
 .navbar {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+
   background-color: $color-primary;
-  height: 5rem;
+  padding: 0.5rem;
+
+  &__logo {
+    justify-self: start;
+
+    margin-left: 2rem;
+  }
+
+  &__profile {
+    justify-self: end;
+
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-column-gap: 2rem;
+
+    margin-right: 2rem;
+  }
+
+  &__station {
+    height: 6rem;
+  }
 }

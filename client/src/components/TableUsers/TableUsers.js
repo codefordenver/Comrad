@@ -17,26 +17,26 @@ class TableUsers extends Component {
       },
       {
         Header: 'Email',
-        accessor: 'email',
+        accessor: 'contact.email',
       },
       {
         Header: 'On Air Name',
-        accessor: 'on_air_name',
+        accessor: 'station.on_air_name',
       },
       {
         Header: 'Permissions',
-        accessor: 'permissions',
+        accessor: 'station.permissions',
       },
       {
         Header: 'Status',
-        accessor: 'status',
+        accessor: 'station.status',
         Cell: row => (
           <div
             style={{
-              color: `${row.value === 'Active' ? '#4BD685' : '#F38173'}`,
+              color: `${row.value ? '#4BD685' : '#F38173'}`,
             }}
           >
-            {row.value}
+            {row.value ? 'Active' : 'Inactive'}
           </div>
         ),
       },

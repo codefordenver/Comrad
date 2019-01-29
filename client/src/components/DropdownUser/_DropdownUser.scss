@@ -4,8 +4,10 @@
   position: relative;
 
   &__icon {
+    align-self: center;
     color: white;
-    padding: 1rem;
+    cursor: pointer;
+    font-size: 2.5rem;
     width: 100%;
   }
 

@@ -31,7 +31,7 @@ class DropdownUser extends Component {
     return (
       <div className={classnames('dropdown-user', className)} {...rest}>
         <div className="dropdown-user__icon">
-          <i className="fas fa-user" />
+          <i className="dropdown-user__icon-font fas fa-user" />
         </div>
         <ul className="dropdown-user__list">{children}</ul>
       </div>

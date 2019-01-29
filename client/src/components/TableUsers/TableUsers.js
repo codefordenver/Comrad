@@ -24,8 +24,8 @@ class TableUsers extends Component {
         accessor: 'on_air_name',
       },
       {
-        Header: 'Role',
-        accessor: 'role',
+        Header: 'Permissions',
+        accessor: 'permissions',
       },
       {
         Header: 'Status',

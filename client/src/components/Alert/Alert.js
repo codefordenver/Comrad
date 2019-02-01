@@ -1,75 +1,121 @@
-import React, { Component, Fragment } from 'react';
-import { connect } from 'react-redux';
-import { alertClear } from '../../actions';
-import _isEmpty from 'lodash/isEmpty';
+import React, { Component } from 'react';
+import classnames from 'classnames';
+import PropTypes from 'prop-types';
+
+import { ReactComponent as ExclamationCircle } from '../../images/exclamation-circle-solid.svg';
+import { ReactComponent as CheckCircle } from '../../images/check-circle-solid.svg';
+import { ReactComponent as InfoCircle } from '../../images/info-circle-solid.svg';
+import { ReactComponent as TimesCircle } from '../../images/times-circle-solid.svg';
+import { ReactComponent as TimesSolid } from '../../images/times-solid.svg';
+
+export const ALERT_CLASS = {
+  success: 'alert--success',
+  info: 'alert--info',
+  danger: 'alert--danger',
+  warning: 'alert--warning',
+};
 
 class Alert extends Component {
-  componentWillUnmount() {
-    const { alertClear } = this.props;
-    alertClear();
+  state = {
+    display: true,
+  };
+
+  handleDisplayClick = () => {
+    this.setState(prevProps => ({
+      display: !prevProps.display,
+    }));
+  };
+
+  getDisplayClass(display) {
+    if (display) {
+      return 'open';
+    }
+
+    return 'close';
   }
 
   getAlertClass(type) {
     switch (type) {
       case 'success':
-        return 'alert alert--success';
+        return ALERT_CLASS.success;
       case 'info':
-        return 'alert alert--info';
-      case 'error':
-        return 'alert alert--error';
+        return ALERT_CLASS.info;
+      case 'danger':
+        return ALERT_CLASS.danger;
       case 'warning':
-        return 'alert alert--warning';
+        return ALERT_CLASS.warning;
       default:
         break;
     }
   }
 
-  getIconClass(type) {
+  getIconSVG(type) {
     switch (type) {
       case 'success':
-        return 'fas fa-check-circle';
+        return <CheckCircle className="check-circle" />;
       case 'info':
-        return 'fas fa-info-circle';
-      case 'error':
-        return 'fas fa-exclamation-circle';
+        return <InfoCircle className="info-circle" />;
+      case 'danger':
+        return <ExclamationCircle className="exclamation-circle" />;
       case 'warning':
-        return 'fas fa-times-circle';
+        return <TimesCircle className="times-circle" />;
       default:
         break;
     }
   }
+
   render() {
-    const { getAlertClass, getIconClass, props } = this;
-    const { alert } = props;
-    const { header, type, text } = alert;
+    const {
+      handleDisplayClick,
+      getAlertClass,
+      getDisplayClass,
+      getIconSVG,
+      props,
+      state,
+    } = this;
+    const { display } = state;
+    const { header, className, type, text, ...rest } = props;
 
     return (
-      <Fragment>
-        {_isEmpty(alert) ? null : (
-          <div className={getAlertClass(type)}>
-            <div className="alert__symbol">
-              <i className={getIconClass(type)} />
-            </div>
-            <div className="alert__title-body">
-              <div className="alert__header">{header}</div>
-              <div className="alert__body">
-                <div className="alert__message">{text}</div>
-              </div>
-            </div>
-          </div>
+      <div
+        className={classnames(
+          'alert',
+          getAlertClass(type),
+          getDisplayClass(display),
+          className,
         )}
-      </Fragment>
+        {...rest}
+      >
+        <div className="alert__times" onClick={handleDisplayClick}>
+          <TimesSolid />
+        </div>
+        <div className="alert__symbol">{getIconSVG(type)}</div>
+        <div className="alert__body">
+          <div className="alert__header">{header}</div>
+          <div className="alert__message">{text}</div>
+        </div>
+      </div>
     );
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    alert: state.alert,
-  };
-}
+Alert.propTypes = {
+  /**
+   * Header Text
+   */
+  header: PropTypes.string,
+  /**
+   * Additional classes added to root element
+   */
+  className: PropTypes.string,
+  /**
+   * Body Text
+   */
+  text: PropTypes.string,
+  /**
+   * Background color based on type
+   */
+  type: PropTypes.oneOf(['success', 'info', 'danger', 'warning']),
+};
 
-export default connect(
-  mapStateToProps,
-  { alertClear },
-)(Alert);
+export default Alert;

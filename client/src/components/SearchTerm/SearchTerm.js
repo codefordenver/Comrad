@@ -1,19 +1,18 @@
-import React, { Fragment } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
 const SearchTerm = props => {
-  const { q } = props.reducers;
+  const { q } = props;
 
   return (
-    <Fragment>
-      {q ? (
-        <div className="search-term">
-          <div className="search-term__text">
-            Search: "<span className="search-term__term">{q}"</span>
-          </div>
-        </div>
-      ) : null}
-    </Fragment>
+    <div className="search-term">
+      Search: <span className="search-term__term">{q}</span>
+    </div>
   );
+};
+
+SearchTerm.propTypes = {
+  q: PropTypes.string,
 };
 
 export default SearchTerm;

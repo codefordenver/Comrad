@@ -1,76 +1,168 @@
 .button {
-  font-size: 1.8rem;
-  font-weight: 500;
+  font-family: $font-family-primary;
+  font-size: 1.6rem;
+  font-weight: $font-weight-normal;
+  letter-spacing: 1px;
+  line-height: $font-line-height;
+  text-align: center;
+  text-transform: uppercase;
+  vertical-align: center;
+  user-select: none;
 
   border: $border-width solid transparent;
   border-radius: $border-radius;
   cursor: pointer;
   display: inline-block;
-  padding: 0.7rem 1.5rem;
+  padding: 0.8rem 3rem;
   transition: all 0.1s;
   text-decoration: none;
 
   &:active,
-  &:focus {
+  &.active,
+  &:focus,
+  &.focus {
     outline: none;
   }
 
-  &:not(:last-child) {
-    margin-right: 0.5rem;
+  &:disabled,
+  &.disabled {
+    cursor: default;
   }
 
   &--primary {
     color: $color-white;
     background-color: $color-primary;
 
-    &:active {
-      box-shadow: 0 0 0 $border-width $color-primary;
+    &:active,
+    &.active {
+      box-shadow: 0 0 0 $border-width $color-primary-light;
     }
 
     &:hover,
-    &:active {
-      background-color: $color-secondary;
+    &.hover,
+    &:active,
+    &.active {
+      background-color: $color-primary-dark;
     }
 
-    &:disabled {
-      background-color: $color-grey-1;
+    &:disabled,
+    &.disabled {
+      background-color: $color-primary-lighter;
     }
   }
 
-  &--secondary {
-    color: $color-primary;
+  &--success {
+    color: $color-white;
+    background-color: $color-success;
 
-    border: $border-width solid $color-primary;
-
-    &:hover {
-      color: $color-secondary;
-
-      border-color: $color-secondary;
+    &:active,
+    &.active {
+      box-shadow: 0 0 0 $border-width $color-success-light;
     }
 
-    &:active {
-      border-color: $color-primary;
+    &:hover,
+    &.hover,
+    &:active,
+    &.active {
+      background-color: $color-success-dark;
     }
 
-    &:disabled {
-      color: $color-grey-1;
+    &:disabled,
+    &.disabled {
+      background-color: $color-success-lighter;
+    }
+  }
 
-      border-color: $color-grey-1;
+  &--info {
+    color: $color-white;
+    background-color: $color-info;
+
+    &:active,
+    &.active {
+      box-shadow: 0 0 0 $border-width $color-info-light;
+    }
+
+    &:hover,
+    &.hover,
+    &:active,
+    &.active {
+      background-color: $color-info-dark;
+    }
+
+    &:disabled,
+    &.disabled {
+      background-color: $color-info-lighter;
+    }
+  }
+
+  &--danger {
+    color: $color-white;
+    background-color: $color-danger;
+
+    &:active,
+    &.active {
+      box-shadow: 0 0 0 $border-width $color-danger-light;
+    }
+
+    &:hover,
+    &.hover,
+    &:active,
+    &.active {
+      background-color: $color-danger-dark;
+    }
+
+    &:disabled,
+    &.disabled {
+      background-color: $color-danger-lighter;
+    }
+  }
+
+  &--warning {
+    color: $color-white;
+    background-color: $color-warning;
+
+    &:active,
+    &.active {
+      box-shadow: 0 0 0 $border-width $color-warning-light;
+    }
+
+    &:active,
+    &.active, 
+    &:hover,
+    &.hover {
+      background-color: $color-warning-dark;
+    }
+
+    &:disabled,
+    &.disabled {
+      background-color: $color-warning-lighter;
     }
   }
 
   &--link {
     color: $color-primary;
     font-size: 1.8rem;
-    padding: 0 0 1px;
+    line-height: 1;
+    text-transform: none;
     
     border: none;
     border-bottom: 1px solid $color-primary;
     border-radius: 0;
+    margin: 0;
+    padding: 0 0 1px;
 
-    &:hover {
-      color: $color-secondary;
-      border-bottom: 1px solid $color-secondary;
+    &:active,
+    &.active,
+    &:hover,
+    &.hover {
+      color: $color-primary-dark;
+      border-bottom: 1px solid $color-primary-dark;
+    }
+
+    &:disabled,
+    &.disabled {
+      color: $color-primary-lighter;
+      border-bottom: 1px solid $color-primary-lighter;
     }
   }
 }

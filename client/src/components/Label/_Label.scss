@@ -21,6 +21,6 @@
   }
 
   &.invalid + label {
-    color: $color-red;
+    color: $color-danger;
   }
 }

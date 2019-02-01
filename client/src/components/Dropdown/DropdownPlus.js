@@ -1,11 +1,10 @@
 import React from 'react';
-
-import Button from '../Button';
+import { ReactComponent as PlusSolid } from '../../images/plus-solid.svg';
 
 const DropdownPlus = props => {
   return (
     <div className="dropdown__plus">
-      <i className="fas fa-plus" />
+      <PlusSolid />
     </div>
   );
 };

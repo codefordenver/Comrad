@@ -6,7 +6,6 @@ import { REGEX_ANY_CHARS, REGEX_EMAIL } from '../../utils/validation';
 import Alert from '../Alert';
 import Button from '../Button';
 import Form from '../Form';
-import FormGroup from '../FormGroup';
 import Input from '../Input';
 
 class SignupForm extends Component {
@@ -22,39 +21,29 @@ class SignupForm extends Component {
       <Form callback={handleCallback} action={userAdd}>
         <Alert />
         <p>Enter you Information Below</p>
-        <FormGroup>
-          <Input name="first_name" type="text" label="First Name" />
-        </FormGroup>
-        <FormGroup>
-          <Input name="last_name" type="text" label="Last Name" />
-        </FormGroup>
-        <FormGroup>
-          <Input
-            name="email"
-            type="email"
-            label="Email Address"
-            validate={REGEX_EMAIL}
-            feedback="Please Enter Email Address"
-          />
-        </FormGroup>
-        <FormGroup>
-          <Input
-            name="password"
-            type="password"
-            label="Password"
-            validate={REGEX_ANY_CHARS}
-            feedback="Please Enter Password"
-          />
-        </FormGroup>
-        <FormGroup>
-          <Input
-            name="confirm_password"
-            type="password"
-            label="Confirm Password"
-            validate={REGEX_ANY_CHARS}
-            feedback="Please Confirm Password"
-          />
-        </FormGroup>
+        <Input name="first_name" type="text" label="First Name" />
+        <Input name="last_name" type="text" label="Last Name" />
+        <Input
+          name="email"
+          type="email"
+          label="Email Address"
+          validate={REGEX_EMAIL}
+          feedback="Please Enter Email Address"
+        />
+        <Input
+          name="password"
+          type="password"
+          label="Password"
+          validate={REGEX_ANY_CHARS}
+          feedback="Please Enter Password"
+        />
+        <Input
+          name="confirm_password"
+          type="password"
+          label="Confirm Password"
+          validate={REGEX_ANY_CHARS}
+          feedback="Please Confirm Password"
+        />
         <Button color="primary" type="submit">
           Submit
         </Button>

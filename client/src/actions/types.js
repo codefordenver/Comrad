@@ -37,5 +37,7 @@ export const USER_MESSAGE = 'user_message';
 
 export const USERS_ALL = 'users_all';
 export const USERS_CLEAR = 'users_clear';
+export const USERS_ERROR = 'users_error';
+export const USERS_LOADING = 'users_loading';
 export const USERS_SEARCH = 'users_search';
 export const USERS_UPDATE = 'users_update';

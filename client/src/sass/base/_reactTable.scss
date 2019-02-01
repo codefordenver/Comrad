@@ -1,0 +1,37 @@
+.ReactTable {
+  & .rt-th {
+    font-size: 1.4rem;
+
+    background-color: $color-primary-lighter;
+    color: white;
+    outline: none;
+  }
+
+  & .rt-td {
+    font-size: 1.2rem;
+  }
+
+  & .rt-thead {
+    & .rt-th {
+      &.-sort-asc {
+        box-shadow: inset 0 3px 0 0 $color-primary;
+      }
+      &.-sort-desc {
+        box-shadow: inset 0 -3px 0 0 $color-primary;
+      }
+    }
+  }
+
+  & .-next,
+  & .-previous {
+    background-color: $color-primary-lighter;
+
+    & .-btn {
+      color: white;
+    }
+  }
+}
+
+.ReactTable {
+  
+}

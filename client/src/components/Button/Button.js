@@ -1,27 +1,64 @@
 import React, { Component } from 'react';
+import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
+export const BUTTON_CLASS = {
+  primary: 'button--primary',
+  success: 'button--success',
+  info: 'button--info',
+  danger: 'button--danger',
+  warning: 'button--warning',
+  link: 'button--link',
+};
+
+export const BUTTON_TYPE = {
+  button: 'button',
+  submit: 'submit',
+};
+
 class Button extends Component {
+  getButtonClass(color) {
+    switch (color) {
+      case 'primary':
+        return BUTTON_CLASS.primary;
+      case 'success':
+        return BUTTON_CLASS.success;
+      case 'info':
+        return BUTTON_CLASS.info;
+      case 'danger':
+        return BUTTON_CLASS.danger;
+      case 'warning':
+        return BUTTON_CLASS.warning;
+      case 'link':
+        return BUTTON_CLASS.link;
+      default:
+        break;
+    }
+  }
+
+  getButtonType(type) {
+    switch (type) {
+      case 'button':
+        return BUTTON_TYPE.button;
+      case 'submit':
+        return BUTTON_TYPE.submit;
+      default:
+        break;
+    }
+  }
+
   render() {
-    const {
-      children,
-      color,
-      disabled,
-      onClick,
-      className,
-      to,
-      type,
-      ...otherProps
-    } = this.props;
+    const { getButtonClass, getButtonType, props } = this;
+    const { children, color, disabled, onClick, className, to, type } = props;
 
     if (to) {
       return (
         <Link
+          className={classnames('button', 'button--link', className)}
           disabled={disabled}
-          to={to}
-          className={`button button--link ${className}`}
           onClick={onClick}
+          to={to}
           type={type}
           {...otherProps}
         >
@@ -32,11 +69,10 @@ class Button extends Component {
 
     return (
       <button
-        className={`button button--${color} ${className}`}
+        className={classnames('button', getButtonClass(color), className)}
         disabled={disabled}
         onClick={onClick}
-        type={type}
-        {...otherProps}
+        type={getButtonType(type)}
       >
         {children}
       </button>
@@ -45,6 +81,9 @@ class Button extends Component {
 }
 
 Button.propTypes = {
+  /**
+   * Any thing from elements to strings
+   */
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,
@@ -52,27 +91,38 @@ Button.propTypes = {
   /**
    * Change the color
    */
-  color: PropTypes.string,
+  color: PropTypes.oneOf([
+    'primary',
+    'success',
+    'info',
+    'danger',
+    'warning',
+    'link',
+  ]),
+  /**
+   * If you want to disable the button
+   */
   disabled: PropTypes.bool,
   /**
    * Add an on click function to the component
    */
   onClick: PropTypes.func,
   /**
-   * Set the type for the button
+   * Any additional classes added
    */
-  styleName: PropTypes.string,
+  className: PropTypes.string,
+  /**
+   * Make this button a Link instead
+   */
   to: PropTypes.string,
-  type: PropTypes.string,
+  /**
+   * Button type
+   */
+  type: PropTypes.oneOf(['button', 'submit']),
 };
 
 Button.defaultProps = {
-  children: null,
   color: 'primary',
-  disabled: false,
-  onClick: null,
-  styleName: '',
-  to: '',
   type: 'button',
 };
 

@@ -1,10 +1,10 @@
 import React from 'react';
 
 const Label = props => {
-  const { children, styleName = '', ...rest } = props;
+  const { children, className = '', ...rest } = props;
 
   return (
-    <label className={`label ${styleName}`} {...rest}>
+    <label className={`label ${className}`} {...rest}>
       {children}
     </label>
   );

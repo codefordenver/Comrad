@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import queryString from '../../utils/queryString';
+// import queryString from '../../utils/queryString';
 import { searchLibrary } from '../../actions';
 
 import Button from '../../components/Button';
 import Card, { CardBody } from '../../components/Card';
 import Form from '../../components/Form';
-import FormGroup from '../../components/FormGroup';
 import Input from '../../components/Input';
 
 class LibrarySearchPage extends Component {
@@ -21,15 +20,14 @@ class LibrarySearchPage extends Component {
 
               <div className="library-search__search-container">
                 <Form
-                  styleName="mr-2"
+                  className="mr-2"
                   action={searchLibrary}
                   options={options}
                   {...this.props}
-                />
-                <FormGroup>
+                >
                   <Input label="Search" name="q" type="text" icon="search" />
-                </FormGroup>
-                <Button type="submit">Search</Button>
+                  <Button type="submit">Search</Button>
+                </Form>
               </div>
             </CardBody>
           </Card>

@@ -22,6 +22,9 @@ const artistSchema = new Schema({
   },
 });
 
+artistSchema
+  .index({"name": "text"}, {"background": true});
+
 const Artist = mongoose.model('Artist', artistSchema);
 
 module.exports = Artist;

@@ -11,7 +11,8 @@ async function findInLibrary(queryString) {
   //limit each query to 100 so that queries of many words are only limited to the most relevant results
   //a sample query that causes issues: stevie songs in the key of life
   
-  const artistResults = await db.Artist.find({ "$text": {"$search":queryString} },
+  const artistResults = await db.Artist.find(
+    { "$text": {"$search":queryString} },
     {
       "name": 1,
       "popularity": 1,
@@ -24,11 +25,8 @@ async function findInLibrary(queryString) {
     }
   );
   
-  const albumResults = await db.Album.find({
-    $or: [
-      {"$text": {"$search":queryString }}
-    ],
-  },
+  const albumResults = await db.Album.find(
+    {"$text": {"$search":queryString }},
     {
       "name": 1,
       "popularity": 1,
@@ -41,11 +39,8 @@ async function findInLibrary(queryString) {
       "limit": 100
     });
 
-  const trackResults = await db.Track.find({
-      $or: [
-        { "$text": {"$search":queryString} }
-      ]
-    },
+  const trackResults = await db.Track.find(
+    { "$text": {"$search":queryString} },
     {
       "name": 1,
       "popularity": 1,
@@ -88,8 +83,13 @@ module.exports = {
     const allArtists = allResults.filter(function(ar) { return ar.type == 'artist'; });
     const results = allResults.map(result => {
       // in these relevance calculations, popularity of the entity has a slight effect,
-      // but it doesn't override the search query
-      // list of test queries for this:
+      // but, how much the name matches the search query has a much larger effect
+      // for artists, the artist's name only is considered
+      // for albums, the name of the artist and the name of the album is considered
+      // for tracks, the name of the track, the name of the album, and the name of all associated artists are considered
+      
+      // if making changes to this process, 
+      // here are some queries to test: (and please add any queries you come across that are causing issues that require changes)
       // michael jackson --- 1st result should be the artist Michael Jackson
       // michael jackson thriller in concert --- 1st result should be the track Thriller off of Michael Jackson's album In Concert
       // stevie songs in the key of life --- 1st result should be the album Songs in the Key of Life by Stevie Wonder

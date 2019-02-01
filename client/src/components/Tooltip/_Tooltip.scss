@@ -21,13 +21,19 @@
   &__heading {
     color: $color-primary;
     font-size: 2rem;
+    font-family: $font-family-primary;
+    letter-spacing: normal;
     margin: 0;
+    text-transform: none;
   }
 
   &__text {
     color: $color-primary;
     font-size: 1.5rem;
+    font-family: $font-family-primary;
+    letter-spacing: normal;
     margin: 0;
+    text-transform: none;
   }
 
   &--open {

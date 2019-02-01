@@ -131,7 +131,7 @@ module.exports = {
           });
           return {
             ...result._doc,
-            relevance: result._doc.score * 2 + + albumTextMatchScore + artistsTextMatchScore + (result._doc.popularity / 300)
+            relevance: result._doc.score * 2 + albumTextMatchScore + artistsTextMatchScore + (result._doc.popularity / 300)
           };
       }
     });

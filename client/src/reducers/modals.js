@@ -6,8 +6,7 @@ export default function(state = initialState, { type, payload }) {
   switch (type) {
     case SET_MODAL_VISIBILITY:
       return {
-        modalType: payload.modalType,
-        modalVisibility: payload.modalVisibility,
+        ...payload,
       };
     default:
       return state;
@@ -20,4 +19,8 @@ export function getModalType(state) {
 
 export function getModalVisibility(state) {
   return state.modalVisibility;
+}
+
+export function getModalData(state) {
+  return state.data;
 }

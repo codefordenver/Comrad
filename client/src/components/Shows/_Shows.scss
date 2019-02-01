@@ -1,17 +1,29 @@
+$show_start_z: 200;
+
+.show__padding{
+  padding:2rem;
+}
+
 .show__grid_container {
   display: grid;
   grid-template-rows: auto;
   grid-template-columns: 1fr 1fr 1fr;
   grid-column-gap: 1rem;
   grid-row-gap: 1rem;
-  padding: 1rem;
+}
+
+.show__grid_span_2{
+  grid-column: span 2;
 }
 
 .show__grid_span_3{
   grid-column: span 3;
 }
 
-.show__date_picker{
-  background:white;
-  z-index:200;
+.show__date_picker_start{
+  z-index: $show_start_z;
+}
+
+.show__date_picker_end{
+  z-index: $show_start_z - 1;
 }

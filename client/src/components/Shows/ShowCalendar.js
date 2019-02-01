@@ -71,6 +71,12 @@ class Calendar extends Component {
     console.log(show);
   };
 
+  showViewShowModal = show => {
+    const { setModalVisibility } = this.props;
+
+    setModalVisibility(MODAL_VIEW_SHOW, true, show);
+  };
+
   render() {
     const localizer = BigCalendar.momentLocalizer(moment);
     const { shows, showsFetching, showsPosting, showsError } = this.props;
@@ -82,7 +88,7 @@ class Calendar extends Component {
           localizer={localizer}
           events={this.convertShowsToArray(shows)}
           defaultView={BigCalendar.Views.WEEK}
-          onSelectEvent={show => console.log(show)}
+          onSelectEvent={show => this.showViewShowModal(show)}
           onSelectSlot={show => this.showNewShowModal(show)}
           titleAccessor={show => show.show_details.title}
           startAccessor={show => new Date(show.show_start_time_utc)}

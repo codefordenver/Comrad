@@ -12,9 +12,6 @@ class PickerTime extends Component {
     super(props);
     this.state = { focused: false };
   }
-  componentDidMount() {
-    const { timeType } = this.props;
-  }
 
   render() {
     //Props

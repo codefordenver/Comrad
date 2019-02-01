@@ -2,7 +2,7 @@ import React, { component } from 'react';
 import { connect } from 'react-redux';
 
 import * as actions from '../../actions';
-import { getModalType, getModalVisibility } from '../../reducers/modals';
+import { getModalType, getModalVisibility, getModalData } from '../../reducers/modals';
 
 import NewShowModal from './NewShow/Modal';
 import UpdateShowModal from './EditShow/Modal';
@@ -31,6 +31,7 @@ function mapStateToProps({ modals }) {
   return {
     modalType: getModalType(modals),
     modalVisibility: getModalVisibility(modals),
+    data: getModalData(modals),
   };
 }
 

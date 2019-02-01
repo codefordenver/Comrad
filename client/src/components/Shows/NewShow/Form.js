@@ -10,76 +10,16 @@ import Card from '../../Card';
 import Checkbox from '../../Checkbox';
 import Form from '../../Form';
 import Input from '../../Input';
-import Select from '../../Select';
 
 import PickerDate from './PickerDate';
 import PickerTime from './PickerTime';
 
-/**
- * Updte the initial state
- * Move Repeat to a separate component
- * Add Repeat to the reducer
- * Add initial value for repeat type
- * Setup select value with reducer
- * Move date update logic to reducer
- * Destructure all of the action creators
- */
-
-const initialState = {
-  title: '',
-  summary: '',
-  description: '',
-  producer: '',
-  host: '',
-  playlist: '',
-
-  show_start_time_utc: moment(),
-  show_end_time_utc: moment().add(1, 'hour'),
-
-  repeat: false,
-  repeatType: '',
-  repeat_start_date: moment(),
-  repeat_end_date: moment(),
-
-  start_focused: false,
-  end_focused: false,
-};
+import Repeat from './Repeat';
 
 class NewShowForm extends Component {
-  state = initialState;
-
   componentDidMount() {
     this.props.inputUpdate({ repeat: false });
   }
-
-  updateTime(date, time) {
-    const newHours = moment(time, 'HH:mm').format('HH');
-    const newMinutes = moment(time, 'HH:mm').format('mm');
-
-    return moment(date)
-      .hours(newHours)
-      .minutes(newMinutes);
-  }
-
-  updateDateAndTime = repeat => {
-    const date = this.state.repeat_start_date;
-    const { show_start_time_utc, show_end_time_utc } = this.state;
-
-    const newStartTime = this.updateTime(date, show_start_time_utc);
-    const newEndTime = this.updateTime(date, show_end_time_utc);
-
-    this.setState({
-      show_start_time_utc: newStartTime,
-      show_end_time_utc: newEndTime,
-    });
-
-    if (!repeat) {
-      this.setState({
-        repeat_end_date: date,
-        repeatType: '',
-      });
-    }
-  };
 
   handleInputChange = e => {
     const { name, value } = e.target;
@@ -87,42 +27,22 @@ class NewShowForm extends Component {
   };
 
   handleCheckboxChange = e => {
-    const { name, value } = e.target;
-    const { repeat } = this.state;
-
-    this.setState({ [name]: !repeat }, () => this.updateDateAndTime(repeat));
-  };
-
-  handleInputChangeTime = e => {
-    const { name, value } = e.target;
-    const date = this.state.repeat_start_date;
-
-    const newTime = this.updateTime(date, value);
-
-    this.setState({
-      [name]: newTime,
-    });
-  };
-
-  handleInputBlur = e => {
-    //validate.input(e.target);
+    const { repeat } = this.props.input;
+    this.props.inputUpdateShowRepeatCheckbox({ repeat: !repeat });
   };
 
   handleFormSubmit = () => {
-    console.log('trying to close modal');
     this.props.setModalVisibility(null, false);
   };
 
   handleFormCancel = e => {
     e.preventDefault();
-    this.setState(initialState);
     this.props.setModalVisibility(null, false);
   };
 
   render() {
-    console.log(this.state);
     return (
-      <main className="show">
+      <main className="show show__padding">
         <section className="show__body">
           <Card>
             <Form callback={this.handleFormSubmit} action={this.props.postShow}>
@@ -149,7 +69,7 @@ class NewShowForm extends Component {
                 </div>
 
                 <div className="show__grid_container show__grid_span_3">
-                  <div className="show__date_picker">
+                  <div className="show__date_picker_start">
                     Start
                     <PickerDate
                       dateType="repeat_start_date"
@@ -163,36 +83,13 @@ class NewShowForm extends Component {
                       name="repeat"
                       onChange={this.handleCheckboxChange}
                       type="checkbox"
-                      defaultChecked={this.state.repeat}
+                      defaultChecked={false}
                     />
                   </div>
 
-                  {this.state.repeat && (
-                    <div className="show__date_picker">
-                      <div className="">
-                        Ends
-                        <PickerDate
-                          dateType="repeat_start_end"
-                          initialDate={moment(this.props.input.repeat_end_date)}
-                        />
-                      </div>
-
-                      <div className="">
-                        Repeat Type
-                        <Select
-                          selectOptions={[
-                            '',
-                            'DAILY',
-                            'WEEKLY',
-                            'MONTHLY',
-                            'YEARLY',
-                          ]}
-                          name="repeatType"
-                          onChange={this.handleInputChange}
-                        />
-                      </div>
-                    </div>
-                  )}
+                  <div className="show__grid_span_3">
+                    <Repeat />
+                  </div>
                 </div>
 
                 <div className="show__grid_span_3">
@@ -201,7 +98,6 @@ class NewShowForm extends Component {
                     name="summary"
                     onChange={this.handleInputChange}
                     type="text"
-                    value={this.state.summary}
                   />
                 </div>
 
@@ -211,7 +107,6 @@ class NewShowForm extends Component {
                     name="description"
                     onChange={this.handleInputChange}
                     type="text"
-                    value={this.state.description}
                   />
                 </div>
 
@@ -221,7 +116,6 @@ class NewShowForm extends Component {
                     name="producer"
                     onChange={this.handleInputChange}
                     type="text"
-                    value={this.state.producer}
                   />
                 </div>
 
@@ -231,7 +125,6 @@ class NewShowForm extends Component {
                     name="host"
                     onChange={this.handleInputChange}
                     type="text"
-                    value={this.state.host}
                   />
                 </div>
 
@@ -241,17 +134,20 @@ class NewShowForm extends Component {
                     name="playlist"
                     onChange={this.handleInputChange}
                     type="text"
-                    value={this.state.playlist}
                   />
                 </div>
 
-                <div className="show__grid_span_3">
+                <div className="show__grid_container show__grid_span_3">
                   <div className="">
                     <Button color="primary" type="submit">
                       Save
                     </Button>
+                  </div>
 
-                    <Button onClick={this.handleFormCancel}>Cancel</Button>
+                  <div>
+                    <Button color="secondary" onClick={this.handleFormCancel}>
+                      Cancel
+                    </Button>
                   </div>
                 </div>
               </div>

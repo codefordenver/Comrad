@@ -1,15 +1,14 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React from 'react';
 
-import NewShowForm from './Form';
+import Form from './Form';
 import Modal from '../../Modal';
 
-const NewShowModal = props => {
+const ShowModal = props => {
   return (
     <Modal show={props.modalVisibility}>
-      <NewShowForm />
+      <Form />
     </Modal>
   );
 };
 
-export default NewShowModal;
+export default ShowModal;

@@ -23,8 +23,8 @@ function create_new_show(req, res) {
     is_recurring: req.body.repeat,
     repeat_rule: {
       frequency: req.body.repeatType,
-      repeat_start_date: req.body.repeat_start_date,
-      repeat_end_date: req.body.repeat_end_date,
+      repeat_start_date: moment(req.body.repeat_start_date).startOf('day'),
+      repeat_end_date: moment(req.body.repeat_end_date).endOf('day'),
       count: null,
       byweekly: '',
       bymonth: '',
@@ -42,6 +42,7 @@ function repeatRuleShows(shows) {
       allShowDates,
       show,
     );
+
     return allRepeatedShowsExpandedByDates;
   });
 
@@ -66,12 +67,11 @@ function reduceShowsByRepeatProperty(shows, recurringCheckValue) {
 
 function momentCombineDayAndTime(desiredDate, desiredTime) {
   const newDate = moment(desiredDate).format('YYYYMMDD');
-  const newTime = moment(desiredTime).format('h:mm:ss A');
+  const newTime = moment(desiredTime).format('h:mm:ss');
   const newDateAndTimeFormat = newDate + ' ' + newTime;
-  const returnedValue = moment(
-    newDateAndTimeFormat,
-    'YYYYMMDD h:mm:ss A',
-  ).format();
+  const returnedValue = moment(newDateAndTimeFormat, 'YYYYMMDD h:mm:ss')
+    .utc()
+    .format();
 
   return returnedValue;
 }

@@ -16,27 +16,37 @@ async function seedDB() {
     await Promise.all(seed.users.map(async user => await db.User.create(user)));
 
     // Artists
-    await Promise.all(
-      seed.artists.map(async artist => await db.Artist.create(artist)),
-    );
-
-    // Albums
-    await Promise.all(
-      seed.albums.map(async albumSeed => {
-        const artist = await db.Artist.findOne({
-          name: albumSeed.album.artist,
-        });
-        albumSeed.album.artist = artist._id;
-        const album = await db.Album.create(albumSeed.album);
-        for (let track of albumSeed.tracks) {
-          track.album = album._id;
-          if (!track.artists) {
-            track.artists = [artist._id];
+    let bulkOperations = [];
+    seed.artists.forEach(function(artist) {
+      bulkOperations.push({
+          "insertOne": {
+            "document": artist
           }
-          await db.Track.create(track);
-        }
-      }),
-    );
+        });
+    });
+    await db.Artist.bulkWrite(bulkOperations);
+    
+    // Albums
+    bulkOperations = [];
+    seed.albums.forEach(function(album) {
+      bulkOperations.push({
+          "insertOne": {
+            "document": album
+          }
+        });
+    });
+    await db.Album.bulkWrite(bulkOperations);
+    
+    // Tracks
+    bulkOperations = [];
+    seed.tracks.forEach(function(track) {
+      bulkOperations.push({
+          "insertOne": {
+            "document": track
+          }
+        });
+    });
+    await db.Track.bulkWrite(bulkOperations);
 
     // Announcements
     await Promise.all(

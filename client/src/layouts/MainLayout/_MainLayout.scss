@@ -1,7 +1,7 @@
 .main-layout {
   display: grid;
   grid-template-columns: 7.6rem auto;
-  grid-template-rows: auto minmax(100vh, auto) 5rem;
+  grid-template-rows: auto minmax(100vh, auto) auto;
   grid-template-areas:
     "navbar navbar"
     "sidebar body"

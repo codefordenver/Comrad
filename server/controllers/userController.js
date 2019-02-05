@@ -1,4 +1,12 @@
 const db = require('../models');
+const Chance = require('chance');
+const axios = require('axios');
+
+const chance = new Chance();
+
+function randomNumberGenerator(min, max) {
+  return Math.floor(Math.random() * (max - min)) + min;
+}
 
 /**
  *
@@ -64,7 +72,7 @@ function splitQueryByWord(queryString) {
 }
 
 module.exports = {
-  findById: (req, res) => {
+  async findById(req, res) {
     db.User.findById(req.params.id)
       .then(dbUser => res.json(dbUser))
       .catch(err => res.status(422).json(err));
@@ -76,7 +84,7 @@ module.exports = {
       .catch(err => res.status(422).json(err));
   },
 
-  findByActive: (req, res) => {
+  async findByActive(req, res) {
     const sort_by = req.query.sort_by ? req.query.sort_by : 'on_air_name';
     const status = req.params.status ? req.params.status : 'Active';
     const limit = req.query.limit ? Number(req.query.limit) : 10;
@@ -107,8 +115,9 @@ module.exports = {
       .catch(err => res.status(422).json(err));
   },
 
-  create: (req, res, next) => {
-    const { email, password } = req.body;
+  async create(req, res, next) {
+    const { contact, password } = req.body;
+    const { email } = contact;
 
     if (!email || !password) {
       return res
@@ -131,13 +140,13 @@ module.exports = {
     });
   },
 
-  update: (req, res) => {
+  async update(req, res) {
     db.User.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true })
       .then(dbUser => res.json(dbUser))
       .catch(err => res.status(422).json(err));
   },
 
-  updatePermission: (req, res) => {
+  updatePermission(req, res) {
     const { role } = req.body;
 
     // Only admins can update permissions
@@ -165,7 +174,7 @@ module.exports = {
       .catch(err => res.status(422).json(err));
   },
 
-  remove: async (req, res) => {
+  async remove(req, res) {
     const count = await db.User.find({ role: 'Admin' }).count();
 
     if (req.user.role !== 'Admin') {
@@ -190,5 +199,99 @@ module.exports = {
       })
       .then(response => res.json(response))
       .catch(err => res.status(422).json(err));
+  },
+
+  async randomUser(req, res) {
+    const gender = ['male', 'female'];
+    const listOfPermissions = [
+      'dj',
+      'underwriting',
+      'show_producer',
+      'full_access',
+      'admin',
+    ];
+
+    const randomGender = gender[Math.floor(Math.random() * gender.length)];
+    const randomPermissions =
+      listOfPermissions[Math.floor(Math.random() * listOfPermissions.length)];
+    const randomString = chance.string(
+      {
+        pool:
+          'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$',
+      },
+      {
+        length: 10,
+      },
+    );
+
+    const first_name = chance.first();
+    const last_name = chance.last();
+    const date_of_birth = chance.date({
+      month: randomNumberGenerator(0, 11),
+      day: randomNumberGenerator(0, 27),
+      year: randomNumberGenerator(1970, 2018),
+    });
+    const image = await axios.get(
+      `https://avatars.dicebear.com/v2/${randomGender}/${this.first_name +
+        this.last_name}.svg`,
+    );
+    const street = `${chance.integer({
+      min: 100,
+      max: 99999,
+    })} ${chance.street()}`;
+    const city = chance.city();
+    const state = chance.state();
+    const zip_code = chance.zip();
+    const phone = chance.phone({ formatted: false });
+    const email = `${first_name}.${last_name}@mail.com`;
+    const slack = `@${first_name + last_name}`;
+    const on_air_name = `DJ ${first_name} ${last_name}`;
+    const permissions = randomPermissions;
+    const status = true;
+    const can_delete = Math.random() >= 0.5;
+    const registered = chance.date({
+      month: randomNumberGenerator(0, 11),
+      day: randomNumberGenerator(0, 27),
+      year: randomNumberGenerator(2000, 2018),
+    });
+    const password = randomString;
+    const fake_user_password = randomString;
+    const reset_token = null;
+    const reset_token_expiry = null;
+
+    const userData = {
+      first_name,
+      last_name,
+      date_of_birth,
+      image: image.data,
+      location: {
+        street,
+        city,
+        state,
+        zip_code,
+      },
+      contact: {
+        phone,
+        email,
+        slack,
+      },
+      station: {
+        on_air_name,
+        permissions,
+        status,
+        can_delete,
+        registered,
+      },
+      password,
+      fake_user_password,
+      reset_token,
+      reset_token_expiry,
+    };
+
+    console.log(userData);
+
+    db.User.create(userData)
+      .then(dbUser => res.json(dbUser))
+      .catch(err => res.status(422).json({ errorMessage: err.message }));
   },
 };

@@ -21,5 +21,15 @@ module.exports = {
   styleguideComponents: {
     Wrapper: path.join(__dirname, './src/components/Root'),
   },
+  template: {
+    head: {
+      links: [
+        {
+          rel: 'stylesheet',
+          href: 'https://use.fontawesome.com/releases/v5.7.0/css/all.css',
+        },
+      ],
+    },
+  },
   webpackConfig: require('./node_modules/react-scripts/config/webpack.config.js'),
 };

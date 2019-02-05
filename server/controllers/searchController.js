@@ -7,51 +7,52 @@ const db = require('../models');
  * @returns {Array}
  */
 async function findInLibrary(queryString) {
-  
   //limit each query to 100 so that queries of many words are only limited to the most relevant results
   //a sample query that causes issues: stevie songs in the key of life
-  
+
   const artistResults = await db.Artist.find(
-    { "$text": {"$search":queryString} },
+    { $text: { $search: queryString } },
     {
-      "name": 1,
-      "popularity": 1,
-      "type": 1,
-      "score":{"$meta":"textScore"}
+      name: 1,
+      popularity: 1,
+      type: 1,
+      score: { $meta: 'textScore' },
     },
     {
-      "sort": {"score":{"$meta":"textScore"}},
-      "limit": 100
-    }
+      sort: { score: { $meta: 'textScore' } },
+      limit: 100,
+    },
   );
-  
+
   const albumResults = await db.Album.find(
-    {"$text": {"$search":queryString }},
+    { $text: { $search: queryString } },
     {
-      "name": 1,
-      "popularity": 1,
-      "artist": 1,
-      "type": 1,
-      "score":{"$meta":"textScore"}
+      name: 1,
+      popularity: 1,
+      artist: 1,
+      type: 1,
+      score: { $meta: 'textScore' },
     },
     {
-      "sort": {"score":{"$meta":"textScore"}},
-      "limit": 100
-    });
+      sort: { score: { $meta: 'textScore' } },
+      limit: 100,
+    },
+  );
 
   const trackResults = await db.Track.find(
-    { "$text": {"$search":queryString} },
+    { $text: { $search: queryString } },
     {
-      "name": 1,
-      "popularity": 1,
-      "artists": 1,
-      "album": 1,
-      "type": 1,
-      "score":{"$meta":"textScore"}
-    }, {
-      "sort": {"score":{"$meta":"textScore"}},
-      "limit": 100
-    }
+      name: 1,
+      popularity: 1,
+      artists: 1,
+      album: 1,
+      type: 1,
+      score: { $meta: 'textScore' },
+    },
+    {
+      sort: { score: { $meta: 'textScore' } },
+      limit: 100,
+    },
   );
 
   return [...artistResults, ...albumResults, ...trackResults];
@@ -72,39 +73,43 @@ function countMatches(str, re) {
 
 module.exports = {
   async searchLibrary(req, res) {
-    const { s } = req.query;
+    const { q } = req.query;
 
-    if (s === '') {
+    if (q === '') {
       return res.json([]);
     }
-    
-    const allResults = await findInLibrary(s);
-    const allAlbums = allResults.filter(function(ar) { return ar.type == 'album'; });
-    const allArtists = allResults.filter(function(ar) { return ar.type == 'artist'; });
+
+    const allResults = await findInLibrary(q);
+    const allAlbums = allResults.filter(function(ar) {
+      return ar.type == 'album';
+    });
+    const allArtists = allResults.filter(function(ar) {
+      return ar.type == 'artist';
+    });
     const results = allResults.map(result => {
       // in these relevance calculations, popularity of the entity has a slight effect,
       // but, how much the name matches the search query has a much larger effect
       // for artists, the artist's name only is considered
       // for albums, the name of the artist and the name of the album is considered
       // for tracks, the name of the track, the name of the album, and the name of all associated artists are considered
-      
-      // if making changes to this process, 
+
+      // if making changes to this process,
       // here are some queries to test: (and please add any queries you come across that are causing issues that require changes)
       // michael jackson --- 1st result should be the artist Michael Jackson
       // michael jackson thriller in concert --- 1st result should be the track Thriller off of Michael Jackson's album In Concert
       // stevie songs in the key of life --- 1st result should be the album Songs in the Key of Life by Stevie Wonder
       // yesterday --- 1st result should be Yesterday by The Beatles
       switch (result.type) {
-        case "artist":
+        case 'artist':
           return {
             ...result._doc,
-            relevance: result._doc.score * 3 + (result._doc.popularity / 300)
-          }
-        case "album":
+            relevance: result._doc.score * 3 + result._doc.popularity / 300,
+          };
+        case 'album':
           //find artist's text match score
           let artistTextMatchScore = 0;
           let artist = allArtists.filter(function(r) {
-            return String(r['_id']) == String(result['artist']);
+            return String(r._id) == String(result.artist);
           });
           if (artist.length > 0) {
             artistTextMatchScore += artist[0]._doc.score;
@@ -112,9 +117,12 @@ module.exports = {
           return {
             ...result._doc,
             artistTextMatchScore: artistTextMatchScore,
-            relevance: result._doc.score * 1.5 + artistTextMatchScore * 1.5 + (result._doc.popularity / 300) 
+            relevance:
+              result._doc.score * 1.5 +
+              artistTextMatchScore * 1.5 +
+              result._doc.popularity / 300,
           };
-        case "track":
+        case 'track':
           let albumTextMatchScore = 0;
           let album = allAlbums.filter(function(r) {
             return String(r._id) == String(result.album);
@@ -124,14 +132,18 @@ module.exports = {
           }
           let artistsTextMatchScore = 0;
           let artists = allResults.filter(function(r) {
-            return result['artists'].indexOf(r['_id']) != -1;
+            return result.artists.indexOf(r._id) != -1;
           });
           artists.forEach(function(a) {
             artistsTextMatchScore += a._doc.score;
           });
           return {
             ...result._doc,
-            relevance: result._doc.score * 2 + albumTextMatchScore + artistsTextMatchScore + (result._doc.popularity / 300)
+            relevance:
+              result._doc.score * 2 +
+              albumTextMatchScore +
+              artistsTextMatchScore +
+              result._doc.popularity / 300,
           };
       }
     });

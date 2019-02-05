@@ -23,6 +23,12 @@ const albumSchema = new Schema({
     type: Boolean,
   },
 
+  popularity: {
+    // ranges from 0-100, with 100 being most popular
+    type: Number,
+    default: 0,
+  },
+
   type: {
     type: String,
     default: 'album',
@@ -40,8 +46,8 @@ const albumSchema = new Schema({
 });
 
 albumSchema
-  .index({"name": "text"}, {"background": true})
-  .index({"artist": 1}, {"background": true});
+  .index({ name: 'text' }, { background: true })
+  .index({ artist: 1 }, { background: true });
 
 const Album = mongoose.model('Album', albumSchema);
 

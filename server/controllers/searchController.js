@@ -73,13 +73,13 @@ function countMatches(str, re) {
 
 module.exports = {
   async searchLibrary(req, res) {
-    const { q } = req.query;
+    const { s } = req.query;
 
-    if (q === '') {
+    if (s === '') {
       return res.json([]);
     }
 
-    const allResults = await findInLibrary(q);
+    const allResults = await findInLibrary(s);
     const allAlbums = allResults.filter(function(ar) {
       return ar.type == 'album';
     });
@@ -109,7 +109,7 @@ module.exports = {
           //find artist's text match score
           let artistTextMatchScore = 0;
           let artist = allArtists.filter(function(r) {
-            return String(r._id) == String(result.artist);
+            return String(r._id) === String(result.artist);
           });
           if (artist.length > 0) {
             artistTextMatchScore += artist[0]._doc.score;
@@ -125,7 +125,7 @@ module.exports = {
         case 'track':
           let albumTextMatchScore = 0;
           let album = allAlbums.filter(function(r) {
-            return String(r._id) == String(result.album);
+            return String(r._id) === String(result.album);
           });
           if (album.length > 0) {
             albumTextMatchScore += album[0]._doc.score;

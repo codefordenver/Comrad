@@ -41,6 +41,10 @@ class NewShowForm extends Component {
       <main className="show show__padding">
         <section className="show__body">
           <h1>You Clicked a Show!</h1>
+
+          <h2>Edit Instance</h2>
+          <h2>Edit Show Series</h2>
+          <h2>Delete Series</h2>
         </section>
       </main>
     );

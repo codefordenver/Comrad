@@ -6,6 +6,7 @@ import moment from 'moment';
 
 import Select from '../../Select';
 
+import RepeatDropdown from './Repeat_Dropdown';
 import PickerDate from './PickerDate';
 
 class Repeat extends Component {
@@ -15,7 +16,7 @@ class Repeat extends Component {
   };
 
   render() {
-    const { repeat } = this.props.input;
+    const { repeat, repeat_start_date, repeat_end_date } = this.props.input;
 
     return (
       <div>
@@ -25,17 +26,12 @@ class Repeat extends Component {
               Ends
               <PickerDate
                 dateType="repeat_end_date"
-                initialDate={moment(this.props.input.repeat_end_date)}
+                initialDate={repeat_end_date}
               />
             </div>
 
             <div className="">
-              Repeat Type
-              <Select
-                selectOptions={['', 'DAILY', 'WEEKLY', 'MONTHLY', 'YEARLY']}
-                name="repeatType"
-                onChange={this.handleInputChange}
-              />
+              <RepeatDropdown date={repeat_start_date} />
             </div>
           </div>
         )}

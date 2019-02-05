@@ -26,8 +26,11 @@ function create_new_show(req, res) {
       repeat_start_date: moment(req.body.repeat_start_date).startOf('day'),
       repeat_end_date: moment(req.body.repeat_end_date).endOf('day'),
       count: null,
-      byweekly: '',
-      bymonth: '',
+      interval: null,
+      byweekday: null,
+      bymonth: null,
+      bysetpos: null,
+      bymonthday: null,
     },
   };
 }
@@ -99,13 +102,31 @@ function returnShowsArrayWithNewDates(dateArray, show) {
 }
 
 function returnDatesArrayByRepeatRule(show) {
-  const { frequency, repeat_start_date, repeat_end_date } = show.repeat_rule;
+  const {
+    frequency,
+    repeat_start_date,
+    repeat_end_date,
+    interval,
+    count,
+    byweekday,
+    bymonth,
+    bysetpos,
+    bymonthday,
+  } = show.repeat_rule;
 
   if (frequency) {
     const rule = new RRule({
       freq: RRule[frequency],
       dtstart: repeat_start_date,
       until: repeat_end_date,
+      /** Needs to be empty if not used
+      count: count,
+      interval: interval,
+      byweekday: byweekday,
+      bymonth: bymonth,
+      bysetpos: bysetpos,
+      bymonthday: bymonthday,
+      */
     });
 
     try {

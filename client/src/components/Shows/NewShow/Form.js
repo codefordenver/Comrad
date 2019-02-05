@@ -73,7 +73,7 @@ class NewShowForm extends Component {
                     Start
                     <PickerDate
                       dateType="repeat_start_date"
-                      initialDate={moment(this.props.input.repeat_start_date)}
+                      initialDate={this.props.input.repeat_start_date}
                     />
                   </div>
 

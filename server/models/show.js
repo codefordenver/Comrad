@@ -26,8 +26,11 @@ const showSchema = new Schema({
     repeat_start_date: Date,
     repeat_end_date: Date,
     count: Number,
-    byweekly: String,
+    interval: Number,
+    byweekday: String,
     bymonth: String,
+    bysetpos: Number,
+    bymonthday: Number,
   },
 
   exclude_rule: String,

@@ -67,8 +67,6 @@ class Calendar extends Component {
     inputUpdateShowDate('repeat_end_date', end);
 
     setModalVisibility(MODAL_NEW_SHOW, true);
-
-    console.log(show);
   };
 
   showViewShowModal = show => {

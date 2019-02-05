@@ -26,7 +26,7 @@ class DatePicker extends Component {
 
     return (
       <SingleDatePicker
-        date={this.props.initialDate} // momentPropTypes.momentObj or null
+        date={moment(initialDate)} // momentPropTypes.momentObj or null
         onDateChange={date => inputUpdateShowDate(dateType, date)} // PropTypes.func.isRequired
         focused={this.state.focused} // PropTypes.bool
         onFocusChange={({ focused }) => this.setState({ focused })} // PropTypes.func.isRequired

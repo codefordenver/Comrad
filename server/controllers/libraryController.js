@@ -101,12 +101,12 @@ function addRelevance(result, queryString) {
 }
 
 module.exports = {
-  async searchLibrary(req, res) {
+  async findAll(req, res) {
     const { q } = req.query;
 
-    if (q === '') {
-      return res.json([]);
-    }
+    // if (q === '') {
+    //   return res.json([]);
+    // }
 
     const results = (await findInLibrary(q)).map(result =>
       addRelevance(result, q),
@@ -123,27 +123,6 @@ module.exports = {
         return -1;
       }
       if (a.name > b.name) {
-        return 1;
-      }
-      return 0;
-    });
-
-    return res.json(data.slice(0, 30));
-  },
-
-  async searchUsers(req, res) {
-    const { searchTerm } = req.body;
-    const q = new RegExp(searchTerm, 'i');
-
-    const userResults = await db.User.find({
-      $or: [{ email: q }, { first_name: q }, { last_name: q }],
-    });
-
-    const data = [...userResults].sort((a, b) => {
-      if (a.last_name < b.last_name) {
-        return -1;
-      }
-      if (a.last_name > b.last_name) {
         return 1;
       }
       return 0;

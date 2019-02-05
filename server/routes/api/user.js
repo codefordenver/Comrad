@@ -21,4 +21,6 @@ router
   .put(userController.update)
   .delete(userController.remove);
 
+router.route('/random').post(userController.randomUser);
+
 module.exports = router;

@@ -26,10 +26,11 @@ export const usersSearch = input => async dispatch => {
     const { q } = input;
     let url = `/api/user/search?q=`;
 
-    q && (url += `${q}`);
+    q && (url += q);
 
     const response = await axios.get(url);
 
+    // ! NEED TO REMOVE
     if (q === 'TestErrorMessage') {
       dispatch({
         type: USERS_ERROR,

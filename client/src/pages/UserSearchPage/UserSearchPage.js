@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { usersClear, usersSearch } from '../../actions/users.js';
+import { usersSearch } from '../../actions';
 
 import Alert from '../../components/Alert';
 import Button from '../../components/Button';
@@ -17,6 +17,8 @@ class UserSearchPage extends Component {
 
     return (
       <div className="user-search">
+        {error && <Alert type="danger" header="Users Error" text={error} />}
+
         <Card>
           <CardBody>
             <h1 className="mb-0">Users</h1>
@@ -26,7 +28,7 @@ class UserSearchPage extends Component {
           <CardBody>
             <div className="user-search__header">
               <Form action={usersSearch}>
-                <Input label="Search" name="q" icon="search" />
+                <Input className="mb-1" label="Search" name="q" icon="search" />
                 <Button type="submit">Search</Button>
               </Form>
               <Dropdown type="plus" text="Search">
@@ -35,15 +37,7 @@ class UserSearchPage extends Component {
               </Dropdown>
             </div>
 
-            {error && <Alert type="danger" header="Users Error" text={error} />}
-
-            {q === false ? (
-              <LargeText>Search For Users</LargeText>
-            ) : docs.length === 0 ? (
-              <LargeText>No User Found</LargeText>
-            ) : docs.length > 0 ? (
-              <TableUsers docs={docs} loading={loading} />
-            ) : null}
+            <TableUsers docs={docs} loading={loading} />
           </CardBody>
         </Card>
       </div>
@@ -63,5 +57,5 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  { usersClear, usersSearch },
+  { usersSearch },
 )(UserSearchPage);

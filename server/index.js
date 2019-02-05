@@ -5,7 +5,10 @@ const app = require('./app');
 
 const PORT = process.env.PORT || 5000;
 
-mongoose.connect(keys.mongoURI, { useNewUrlParser: true });
+mongoose.connect(
+  keys.mongoURI,
+  { useNewUrlParser: true },
+);
 
 app.listen(PORT, () =>
   console.log(`\n🌎  ==> API Server now listening on PORT ${PORT}!\n`),

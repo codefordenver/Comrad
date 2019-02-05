@@ -5,7 +5,10 @@ const db = require('../models');
 
 async function seedDB() {
   try {
-    mongoose.connect(keys.mongoURI, { useNewUrlParser: true });
+    mongoose.connect(
+      keys.mongoURI,
+      { useNewUrlParser: true },
+    );
 
     await mongoose.connection.dropDatabase();
 

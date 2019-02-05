@@ -58,19 +58,6 @@ async function findInLibrary(queryString) {
   return [...artistResults, ...albumResults, ...trackResults];
 }
 
-/**
- * Counts the number of times a regular expression matches an input string.
- * @param {String} str
- * @param {RegExp} re
- */
-function countMatches(str, re) {
-  const { source, flags } = re;
-  const globalRE = flags.split('').includes('g')
-    ? new RegExp(source, flags)
-    : new RegExp(source, flags + 'g');
-  return (str.match(globalRE) || []).length;
-}
-
 module.exports = {
   async searchLibrary(req, res) {
     const { s } = req.query;
@@ -81,10 +68,10 @@ module.exports = {
 
     const allResults = await findInLibrary(s);
     const allAlbums = allResults.filter(function(ar) {
-      return ar.type == 'album';
+      return ar.type === 'album';
     });
     const allArtists = allResults.filter(function(ar) {
-      return ar.type == 'artist';
+      return ar.type === 'artist';
     });
     const results = allResults.map(result => {
       // in these relevance calculations, popularity of the entity has a slight effect,
@@ -132,7 +119,7 @@ module.exports = {
           }
           let artistsTextMatchScore = 0;
           let artists = allResults.filter(function(r) {
-            return result.artists.indexOf(r._id) != -1;
+            return result.artists.indexOf(r._id) !== -1;
           });
           artists.forEach(function(a) {
             artistsTextMatchScore += a._doc.score;
@@ -144,6 +131,10 @@ module.exports = {
               albumTextMatchScore +
               artistsTextMatchScore +
               result._doc.popularity / 300,
+          };
+        default: //this condition should not be called, but is here to eliminate the eslint warning
+          return {
+            ...result._doc
           };
       }
     });

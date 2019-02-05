@@ -50,7 +50,16 @@ class Button extends Component {
 
   render() {
     const { getButtonClass, getButtonType, props } = this;
-    const { children, color, disabled, onClick, className, to, type, ...rest } = props;
+    const {
+      children,
+      color,
+      disabled,
+      onClick,
+      className,
+      to,
+      type,
+      ...rest
+    } = props;
 
     if (to) {
       return (

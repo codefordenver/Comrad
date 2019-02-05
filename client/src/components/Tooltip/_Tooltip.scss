@@ -10,8 +10,8 @@
   position: absolute;
   opacity: 0;
   border: $border-width solid $color-primary;
-  border-radius: $border-radius;
-  padding: 0.25rem;
+  border-radius: 0.75rem;
+  padding: 0.5rem;
   white-space: nowrap;
   box-shadow: 1px 1px 4px 1px $color-primary;
   background-color: white;
@@ -19,8 +19,12 @@
   transition: opacity 0.2s ease-in-out;
 
   &__heading {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
     color: $color-primary;
     font-size: 2rem;
+    font-weight: 700;
     font-family: $font-family-primary;
     letter-spacing: normal;
     margin: 0;
@@ -28,6 +32,9 @@
   }
 
   &__text {
+    display: block;
+    justify-content: flex-start;
+    align-items: flex-start;
     color: $color-primary;
     font-size: 1.5rem;
     font-family: $font-family-primary;

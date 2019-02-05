@@ -38,7 +38,7 @@ class Tooltip extends Component {
       placement,
       text,
       heading,
-      ...otherProps
+      ...rest
     } = this.props;
     const { open } = this.state;
 
@@ -54,11 +54,11 @@ class Tooltip extends Component {
             'tooltip--open': open,
           })}
         >
-          {heading ? <h3 className="tooltip__heading">{heading}</h3> : null}
+          {heading ? <h1 className="tooltip__heading">{heading}</h1> : null}
           <p className="tooltip__text">{text}</p>
         </div>,
       ],
-      ...otherProps,
+      ...rest,
     });
 
     return updatedChild;

@@ -4,13 +4,12 @@
   "private": true,
   "proxy": "http://localhost:5000/",
   "scripts": {
-    "start": "concurrently \"react-scripts start\" \"npm run watch:sass\"",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "styleguide": "styleguidist server",
-    "styleguide:build": "styleguidist build",
-    "watch:sass": "node-sass-chokidar ./src/sass/index.scss -o ./src --watch"
+    "styleguide:build": "styleguidist build"
   },
   "dependencies": {
     "axios": "^0.18.0",

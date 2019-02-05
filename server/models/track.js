@@ -29,10 +29,11 @@ const trackSchema = new Schema({
   duration_in_seconds: {
     type: Number,
   },
-  
-  popularity: { // ranges from 0-100, with 100 being most popular
+
+  popularity: {
+    // ranges from 0-100, with 100 being most popular
     type: Number,
-    default: 0
+    default: 0,
   },
 
   type: {
@@ -50,6 +51,11 @@ const trackSchema = new Schema({
     default: Date.now,
   },
 });
+
+trackSchema
+  .index({ name: 'text' }, { background: true })
+  .index({ artists: 1 }, { background: true })
+  .index({ album: 1 }, { background: true });
 
 const Track = mongoose.model('Track', trackSchema);
 

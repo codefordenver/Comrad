@@ -19,32 +19,32 @@ async function seedDB() {
     let bulkOperations = [];
     seed.artists.forEach(function(artist) {
       bulkOperations.push({
-          "insertOne": {
-            "document": artist
-          }
-        });
+        insertOne: {
+          document: artist,
+        },
+      });
     });
     await db.Artist.bulkWrite(bulkOperations);
-    
+
     // Albums
     bulkOperations = [];
     seed.albums.forEach(function(album) {
       bulkOperations.push({
-          "insertOne": {
-            "document": album
-          }
-        });
+        insertOne: {
+          document: album,
+        },
+      });
     });
     await db.Album.bulkWrite(bulkOperations);
-    
+
     // Tracks
     bulkOperations = [];
     seed.tracks.forEach(function(track) {
       bulkOperations.push({
-          "insertOne": {
-            "document": track
-          }
-        });
+        insertOne: {
+          document: track,
+        },
+      });
     });
     await db.Track.bulkWrite(bulkOperations);
 

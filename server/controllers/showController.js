@@ -12,9 +12,9 @@ function create_new_show(req, res) {
       description: req.body.description,
       producer: req.body.producer,
       host: req.body.host,
-      guests: [],
+      guests: req.body.guests,
       playlist: req.body.playlist,
-      custom: '',
+      custom: req.body.custom,
     },
 
     show_start_time_utc: req.body.show_start_time_utc,
@@ -25,12 +25,12 @@ function create_new_show(req, res) {
       frequency: req.body.repeatType,
       repeat_start_date: moment(req.body.repeat_start_date).startOf('day'),
       repeat_end_date: moment(req.body.repeat_end_date).endOf('day'),
-      count: null,
-      interval: null,
-      byweekday: null,
-      bymonth: null,
-      bysetpos: null,
-      bymonthday: null,
+      count: req.body.count,
+      interval: req.body.interval,
+      byweekday: req.body.byweekday,
+      bymonth: req.body.bymonth,
+      bysetpos: req.body.bysetpos,
+      bymonthday: req.body.bymonthday,
     },
   };
 }
@@ -68,6 +68,20 @@ function reduceShowsByRepeatProperty(shows, recurringCheckValue) {
   return reducedShowList;
 }
 
+function returnDatesArrayByRepeatRule(show) {
+  const { is_recurring } = show;
+
+  if (is_recurring) {
+    const rule = new RRule(createRRule(show));
+    try {
+      return rule.all();
+    } catch (e) {
+      console.log(e);
+      return null;
+    }
+  }
+}
+
 function momentCombineDayAndTime(desiredDate, desiredTime) {
   const newDate = moment(desiredDate).format('YYYYMMDD');
   const newTime = moment(desiredTime).format('h:mm:ss');
@@ -101,7 +115,7 @@ function returnShowsArrayWithNewDates(dateArray, show) {
   return returnedShows;
 }
 
-function returnDatesArrayByRepeatRule(show) {
+function createRRule(show) {
   const {
     frequency,
     repeat_start_date,
@@ -114,28 +128,60 @@ function returnDatesArrayByRepeatRule(show) {
     bymonthday,
   } = show.repeat_rule;
 
-  if (frequency) {
-    const rule = new RRule({
-      freq: RRule[frequency],
-      dtstart: repeat_start_date,
-      until: repeat_end_date,
-      /** Needs to be empty if not used
-      count: count,
-      interval: interval,
-      byweekday: byweekday,
-      bymonth: bymonth,
-      bysetpos: bysetpos,
-      bymonthday: bymonthday,
-      */
-    });
+  let newRRule = {};
 
-    try {
-      return rule.all();
-    } catch (e) {
-      console.log(e);
-      return null;
-    }
+  if (frequency) {
+    newRRule.freq = RRule[frequency];
   }
+
+  if (repeat_start_date) {
+    newRRule.dtstart = repeat_start_date;
+  }
+
+  if (repeat_end_date) {
+    newRRule.until = repeat_end_date;
+  }
+
+  if (count) {
+    newRRule.count = count;
+  }
+
+  if (interval) {
+    newRRule.interval = interval;
+  }
+
+  if (byweekday) {
+    newRRule.byweekday = byweekday;
+  }
+
+  if (bymonth) {
+    newRRule.bymonth = bymonth;
+  }
+
+  if (bysetpos) {
+    newRRule.bysetpos = bysetpos;
+  }
+
+  if (bymonthday) {
+    newRRule.bymonthday = bymonthday;
+  }
+
+  return newRRule;
+}
+
+function findShowQueryByDateRange(start, end) {
+  return [
+    {
+      'repeat_rule.repeat_start_date': {
+        $lte: end,
+      },
+    },
+    {
+      'repeat_rule.repeat_end_date': {
+        $gte: start,
+      },
+    },
+  ];
 }
 
 module.exports = {
@@ -155,18 +201,7 @@ module.exports = {
     endDate = JSON.parse(endDate);
 
     db.Show.find()
-      .and([
-        {
-          'repeat_rule.repeat_start_date': {
-            $lte: endDate,
-          },
-        },
-        {
-          'repeat_rule.repeat_end_date': {
-            $gte: startDate,
-          },
-        },
-      ])
+      .and(findShowQueryByDateRange(startDate, endDate))
       .then(dbShow => {
         res.json(repeatRuleShows(dbShow));
       })
@@ -174,11 +209,8 @@ module.exports = {
   },
 
   create: (req, res) => {
-    console.log('Creating show');
     db.Show.create(create_new_show(req, res))
       .then(dbShow => {
-        console.log('Sending Response');
-        console.log(dbShow);
         res.json(repeatRuleShows([dbShow]));
       })
       .catch(err => res.status(422).json(err));

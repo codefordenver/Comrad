@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../../../actions';
-import { MODAL_EDIT_SHOW } from '../ShowModalController';
 
 import moment from 'moment';
 
@@ -37,33 +36,12 @@ class NewShowForm extends Component {
     this.props.setModalVisibility(null, false);
   };
 
-  showEditShowModal = show => {
-    const { setModalVisibility } = this.props;
-
-    setModalVisibility(MODAL_EDIT_SHOW, true, show);
-  };
-
   render() {
-    const { data } = this.props;
-    console.log('New Show Model Open');
-    console.log(this.props);
     return (
       <main className="show show__padding">
         <section className="show__body">
-          <h1>You Clicked a Show!</h1>
+          <h1>Editing show modal</h1>
 
-          <Button
-            color="primary"
-            onClick={() => {
-              this.showEditShowModal(data);
-            }}
-          >
-            Edit Instance
-          </Button>
-
-          <h2>Edit Show Series</h2>
-          <h2>Delete Single Show</h2>
-          <h2>Delete Series</h2>
           <ModalClose />
         </section>
       </main>

@@ -9,11 +9,11 @@ import {
 } from '../../reducers/modals';
 
 import NewShowModal from './NewShow/Modal';
-import UpdateShowModal from './EditShow/Modal';
+import EditShowModal from './EditShow/Modal';
 import ViewShowModal from './ViewShow/Modal';
 
 export const MODAL_NEW_SHOW = 'modal_new_show';
-export const MODAL_UPDATE_SHOW = 'modal_update_show';
+export const MODAL_EDIT_SHOW = 'modal_edit_show';
 export const MODAL_VIEW_SHOW = 'modal_view_show';
 
 const ModalController = props => {
@@ -21,8 +21,8 @@ const ModalController = props => {
     case MODAL_NEW_SHOW:
       return <NewShowModal {...props} />;
 
-    case MODAL_UPDATE_SHOW:
-      return <UpdateShowModal {...props} />;
+    case MODAL_EDIT_SHOW:
+      return <EditShowModal {...props} />;
 
     case MODAL_VIEW_SHOW:
       return <ViewShowModal {...props} />;

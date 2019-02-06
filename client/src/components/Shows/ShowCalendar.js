@@ -11,7 +11,7 @@ import ShowModalController from './ShowModalController';
 
 import {
   MODAL_NEW_SHOW,
-  MODAL_UPDATE_SHOW,
+  MODAL_EDIT_SHOW,
   MODAL_VIEW_SHOW,
 } from './ShowModalController';
 

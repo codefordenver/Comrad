@@ -16,6 +16,8 @@ import PickerTime from './PickerTime';
 
 import Repeat from './Repeat';
 
+import ModalClose from '../../Modal/Modal__Button_Close';
+
 class NewShowForm extends Component {
   componentDidMount() {
     this.props.inputUpdate({ repeat: false });
@@ -145,9 +147,7 @@ class NewShowForm extends Component {
                   </div>
 
                   <div>
-                    <Button color="secondary" onClick={this.handleFormCancel}>
-                      Cancel
-                    </Button>
+                    <ModalClose />
                   </div>
                 </div>
               </div>

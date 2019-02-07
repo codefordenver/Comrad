@@ -1,63 +1,43 @@
-import React, { Component, Fragment } from 'react';
-import { connect } from 'react-redux';
-
-import Loading from '../Loading';
-import Table from '../Table';
+import React, { Component } from 'react';
+import ReactTable from 'react-table';
+import 'react-table/react-table.css';
 
 class TableLibrary extends Component {
-  renderHeader = () => {
-    return (
-      <thead>
-        <tr>
-          <th />
-          <th>Name</th>
-          <th>Type</th>
-        </tr>
-      </thead>
-    );
-  };
-
-  renderBody = () => {
-    const { docs } = this.props.search;
-
-    return (
-      <tbody>
-        {docs.map(item => (
-          <tr key={item._id}>
-            <td />
-            <td>{item.name}</td>
-            <td>{item.type}</td>
-          </tr>
-        ))}
-      </tbody>
-    );
-  };
-
+  constructor(props) {
+    super(props);
+    this.state = {
+      nextPageUrl: props.nextPageUrl
+    }
+  }
+  
   render() {
-    const { props, renderHeader, renderBody } = this;
-    const { loading, docs } = props.search;
+    const { loading, docs, totalPages } = this.props;
+
+    console.log(docs);
+    
+    const columns = [
+      {
+        Header: 'ID',
+        accessor: '_id',
+      },
+      {
+        Header: 'Name',
+        accessor: 'name',
+      },
+      {
+        Header: 'Type',
+        accessor: 'type',
+      },
+      {
+        Header: 'Popularity',
+        accessor: 'popularity',
+      },
+    ];
 
     return (
-      <Fragment>
-        {loading && <Loading />}
-        {docs.length > 0 ? (
-          <Table>
-            {renderHeader()}
-            {renderBody()}
-          </Table>
-        ) : null}
-      </Fragment>
+      <div></div>
     );
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    search: state.search,
-  };
-}
-
-export default connect(
-  mapStateToProps,
-  null,
-)(TableLibrary);
+export default TableLibrary;

@@ -47,7 +47,8 @@ const albumSchema = new Schema({
 
 albumSchema
   .index({ name: 'text' }, { background: true })
-  .index({ artist: 1 }, { background: true });
+  .index({ artist: 1 }, { background: true })
+  .index({ updated_at: -1 }, { background: true });
 
 const Album = mongoose.model('Album', albumSchema);
 

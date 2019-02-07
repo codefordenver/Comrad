@@ -1,4 +1,5 @@
 const db = require('../models');
+const keys = require('../config/keys');
 
 /**
  * Splits a given query string into a regexp pattern string matching any word
@@ -102,32 +103,130 @@ function addRelevance(result, queryString) {
 
 module.exports = {
   async findAll(req, res) {
-    const { q } = req.query;
+    let { page, artistSkip, albumSkip, trackSkip } = req.query; //TODO: are these the right conventions?
 
-    // if (q === '') {
-    //   return res.json([]);
-    // }
+    if (artistSkip == null) {
+      artistSkip = 0;
+    } else {
+      artistSkip = Number(artistSkip);
+    }
+    if (albumSkip == null) {
+      albumSkip = 0;
+    } else {
+      albumSkip = Number(albumSkip);
+    }
+    if (trackSkip == null) {
+      trackSkip = 0;
+    } else {
+      trackSkip = Number(trackSkip);
+    }
+    if (page == null) {
+      page = 1;
+    } else {
+      page = Number(page);
+    }
 
-    const results = (await findInLibrary(q)).map(result =>
-      addRelevance(result, q),
-    );
-
-    const data = [...results].sort((a, b) => {
-      if (a.relevance > b.relevance) {
-        return -1;
-      }
-      if (a.relevance < b.relevance) {
-        return 1;
-      }
-      if (a.name < b.name) {
-        return -1;
-      }
-      if (a.name > b.name) {
-        return 1;
-      }
-      return 0;
+    const artistResults = await db.Artist.find({}, null, {
+      sort: { updated_at: -1 },
+      skip: artistSkip,
+      limit: keys.queryPageSize,
+    });
+    const albumResults = await db.Album.find({}, null, {
+      sort: { updated_at: -1 },
+      skip: albumSkip,
+      limit: keys.queryPageSize,
+    });
+    const trackResults = await db.Track.find({}, null, {
+      sort: { updated_at: -1 },
+      skip: trackSkip,
+      limit: keys.queryPageSize,
     });
 
-    return res.json(data);
+    let results = [];
+    let currentArtist = artistResults.length > 0 ? artistResults[0] : null;
+    let currentAlbum = albumResults.length > 0 ? albumResults[0] : null;
+    let currentTrack = trackResults.length > 0 ? trackResults[0] : null;
+    let artistIndex = 0;
+    let albumIndex = 0;
+    let trackIndex = 0;
+    let endOfResults = false;
+
+    while (results.length < keys.queryPageSize && !endOfResults) {
+      if (
+        currentArtist != null &&
+        (currentAlbum == null ||
+          currentArtist.updated_at > currentAlbum.updated_at) &&
+        (currentTrack == null ||
+          currentArtist.updated_at > currentTrack.updated_at)
+      ) {
+        results.push(currentArtist);
+        artistIndex++;
+        if (artistIndex < artistResults.length) {
+          currentArtist = artistResults[artistIndex];
+        } else {
+          currentArtist = null;
+        }
+      } else if (
+        currentAlbum != null &&
+        (currentArtist == null ||
+          currentAlbum.updated_at > currentArtist.updated_at) &&
+        (currentTrack == null ||
+          currentAlbum.updated_at > currentTrack.updated_at)
+      ) {
+        results.push(currentAlbum);
+        albumIndex++;
+        if (albumIndex < albumResults.length) {
+          currentAlbum = albumResults[albumIndex];
+        } else {
+          currentAlbum = null;
+        }
+      } else if (currentTrack != null) {
+        results.push(currentTrack);
+        trackIndex++;
+        if (trackIndex < trackResults.length) {
+          currentTrack = trackResults[trackIndex];
+        } else {
+          currentTrack = null;
+        }
+      }
+      if (
+        currentArtist == null &&
+        currentAlbum == null &&
+        currentTrack == null
+      ) {
+        endOfResults = true;
+      }
+    }
+
+    const artistDocs = await db.Artist.estimatedDocumentCount();
+    const albumDocs = await db.Album.estimatedDocumentCount();
+    const trackDocs = await db.Track.estimatedDocumentCount();
+    const totalDocuments = artistDocs + albumDocs + trackDocs;
+    const totalPages = Math.ceil(totalDocuments / keys.queryPageSize);
+
+    let resultsJson = {
+      results: results,
+      totalPages: totalPages,
+    };
+    if (!endOfResults) {
+      page++;
+      artistSkip += artistIndex;
+      albumSkip += albumIndex;
+      trackSkip += trackIndex;
+      resultsJson.nextPage = {
+        page: page,
+        url:
+          '/api/library?page=' +
+          page +
+          '&artistSkip=' +
+          artistSkip +
+          '&albumSkip=' +
+          albumSkip +
+          '&trackSkip=' +
+          trackSkip,
+      };
+    }
+
+    return res.json(resultsJson);
   },
 };

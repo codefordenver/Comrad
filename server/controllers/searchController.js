@@ -132,9 +132,10 @@ module.exports = {
               artistsTextMatchScore +
               result._doc.popularity / 300,
           };
-        default: //this condition should not be called, but is here to eliminate the eslint warning
+        default:
+          //this condition should not be called, but is here to eliminate the eslint warning
           return {
-            ...result._doc
+            ...result._doc,
           };
       }
     });

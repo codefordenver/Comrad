@@ -55,7 +55,8 @@ const trackSchema = new Schema({
 trackSchema
   .index({ name: 'text' }, { background: true })
   .index({ artists: 1 }, { background: true })
-  .index({ album: 1 }, { background: true });
+  .index({ album: 1 }, { background: true })
+  .index({ updated_at: -1 }, { background: true });
 
 const Track = mongoose.model('Track', trackSchema);
 

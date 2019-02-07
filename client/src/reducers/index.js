@@ -3,6 +3,7 @@ import { combineReducers } from 'redux';
 import artist from './artist';
 import auth from './auth';
 import input from './input';
+import library from './library';
 import search from './search';
 import shows from './show';
 import traffic from './traffic';
@@ -13,6 +14,7 @@ export default combineReducers({
   artist,
   auth,
   input,
+  library,
   search,
   shows,
   traffic,

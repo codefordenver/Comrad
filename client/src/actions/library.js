@@ -1,11 +1,23 @@
 import axios from 'axios';
-import { LIBRARY_ALL, LIBRARY_LOADING, LIBRARY_SEARCH } from './types';
+import { LIBRARY_LOADING, LIBRARY_SEARCH } from './types';
 
-export const libraryAll = input => async dispatch => {
+export const libraryGetAll = input => async dispatch => {
   try {
-    const response = await axios.get(`/api/library`);
+    dispatch({ type: LIBRARY_LOADING }); //TODO: what is this for?
+    console.log('Test getting all for library');
 
-    console.log(response);
+    let url = `/api/library`;
+
+    const response = await axios.get(url);
+    
+    dispatch({
+      type: LIBRARY_SEARCH,
+      payload: { 
+        docs: response.data.results,
+        totalPages: response.data.totalPages,
+        nextPage: response.data.nextPage,
+      },
+    });
   } catch (e) {
     console.log(e);
   }

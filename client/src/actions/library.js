@@ -9,10 +9,10 @@ export const libraryGetAll = input => async dispatch => {
     let url = `/api/library`;
 
     const response = await axios.get(url);
-    
+
     dispatch({
       type: LIBRARY_SEARCH,
-      payload: { 
+      payload: {
         docs: response.data.results,
         totalPages: response.data.totalPages,
         nextPage: response.data.nextPage,

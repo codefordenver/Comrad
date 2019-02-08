@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import { libraryGetAll } from '../../actions';
@@ -10,7 +10,6 @@ import Card, { CardBody } from '../../components/Card';
 import Dropdown, { DropdownItem } from '../../components/Dropdown';
 import Form from '../../components/Form';
 import Input from '../../components/Input';
-import LargeText from '../../components/LargeText';
 import TableLibrary from '../../components/TableLibrary';
 
 class LibrarySearchPage extends Component {
@@ -18,69 +17,85 @@ class LibrarySearchPage extends Component {
     super(props);
     //this.props.libraryGetAll();
     this.state = {
-      docs: null,
+      docs: [],
       totalPages: null,
-      nextPageUrl: '/api/library',
+      pageUrls: [
+        '/api/library'
+      ],
       loading: true,
+      loadingError: false,
+      sort: {
+        "id": null,
+        "desc": null,
+      }
+    };
+
+    this.fetchData = this.fetchData.bind(this);
+  }
+
+  fetchData(state, instance) {
+    //if (state.page === 0) return;
+    // show the loading overlay
+    this.setState({ loading: true });
+    // fetch your data
+    let url = this.state.pageUrls[state.page];
+    console.log(state.sorted);
+    if (state.sorted.length > 0 && (state.sorted[0].id !== this.state.sort.id || state.sorted[0].desc !== this.state.sort.desc)) {
+      url = '/api/library?sortBy=' + state.sorted[0].id + '&sortDescending=' + (state.sorted[0].desc ? "1" : "0")
+      this.setState({
+        pageUrls: [url], //reset page URLs, we will have to rebuild this list for each page with the new results
+        sort: {
+          "id": state.sorted[0].id,
+          "desc": state.sorted[0].desc,
+        }
+      });
     }
-    axios.get('/api/library')
-      .then((response) => {        
+    axios
+      .get(url)
+      .then(response => {
+        let pageUrls = this.state.pageUrls;
+        pageUrls.push(response.data.nextPage.url);
         this.setState({
           docs: response.data.results,
           totalPages: response.data.totalPages,
-          nextPageUrl: response.data.nextPage.url,
+          pageUrls: pageUrls,
           loading: false,
-        })
-      });
-      
-    this.fetchData = this.fetchData.bind(this);
-  }
-  
-  fetchData(state, instance) {
-    // show the loading overlay
-    this.setState({loading: true});
-    // fetch your data
-    axios.get(this.state.nextPageUrl, {
-      page: state.page,
-      pageSize: state.pageSize,
-      sorted: state.sorted,
-      filtered: state.filtered
-    })
-      .then((res) => {
-        // Update react-table
-        this.setState({
-          docs: res.data.results,
-          totalPages: res.data.totalPages,
-          nextPageUrl: res.data.nextPage.url,
-          loading: false
-        })
+          loadingError: false,
+        });
       })
+      .catch(response => {
+        console.error(response);
+        this.setState({
+          loadingError: true,
+        });
+      });
   }
 
   render() {
-    const { error, q, loading, libraryGetAll, nextPage } = this.props;
-    
+    const { error, loading, libraryGetAll, nextPage } = this.props;
+
     const columns = [
       {
-        Header: 'ID',
-        accessor: '_id',
+        Header: 'Type',
+        accessor: 'type',
+        Cell: row => {
+          return row.value.charAt(0).toUpperCase() + row.value.slice(1); //capitalize the first letter
+        }
       },
       {
         Header: 'Name',
         accessor: 'name',
       },
       {
-        Header: 'Type',
-        accessor: 'type',
-      },
-      {
-        Header: 'Popularity',
-        accessor: 'popularity',
+        Header: 'Updated At',
+        accessor: 'updated_at',
+        Cell: row => {
+          let dateObj = new Date(row.value);
+          return dateObj.toLocaleDateString() + " " + dateObj.toLocaleTimeString();
+        }
       },
     ];
-    
-    const nextPageUrl = nextPage != null ? nextPage.url : "";
-    
+
     return (
       <div className="library-search">
         <Card>
@@ -100,8 +115,8 @@ class LibrarySearchPage extends Component {
                 <DropdownItem>Edit</DropdownItem>
               </Dropdown>
             </div>
-
-            {this.state.docs != null &&
+            
+            {!this.state.loadingError &&
               <ReactTable
                 className="-highlight"
                 columns={columns}
@@ -114,6 +129,9 @@ class LibrarySearchPage extends Component {
                 onFetchData={this.fetchData}
               />
             }
+            {this.state.loadingError && 
+              <div>An error occurred loading data. Please try again.</div>
+            }
           </CardBody>
         </Card>
       </div>
@@ -122,14 +140,13 @@ class LibrarySearchPage extends Component {
 }
 
 function mapStateToProps(state) {
-  const { docs, error, loading, q, nextPage, totalPages } = state.library;
+  const { docs, error, loading, nextPage, totalPages } = state.library;
   console.log('map state to props');
   console.log(state);
   return {
     docs,
     error,
     loading,
-    q,
     nextPage,
     totalPages,
   };

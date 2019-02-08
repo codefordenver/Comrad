@@ -6,15 +6,15 @@ class TableLibrary extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      nextPageUrl: props.nextPageUrl
-    }
+      nextPageUrl: props.nextPageUrl,
+    };
   }
-  
+
   render() {
     const { loading, docs, totalPages } = this.props;
 
     console.log(docs);
-    
+
     const columns = [
       {
         Header: 'ID',
@@ -26,7 +26,8 @@ class TableLibrary extends Component {
       },
       {
         Header: 'Type',
-        accessor: 'type',
+        accessor: 'type'
+        //remove this class
       },
       {
         Header: 'Popularity',
@@ -34,9 +35,7 @@ class TableLibrary extends Component {
       },
     ];
 
-    return (
-      <div></div>
-    );
+    return <div />;
   }
 }
 

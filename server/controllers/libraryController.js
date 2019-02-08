@@ -103,8 +103,16 @@ function addRelevance(result, queryString) {
 
 module.exports = {
   async findAll(req, res) {
-    let { page, artistSkip, albumSkip, trackSkip } = req.query; //TODO: are these the right conventions?
+    let { sortBy, sortDescending, page, artistSkip, albumSkip, trackSkip } = req.query;
 
+    if (sortBy == null) {
+      sortBy = "updated_at";
+    }
+    if (sortDescending == null) {
+      sortDescending = true;
+    } else {
+      sortDescending = Number(sortDescending) === 1 ? true : false;
+    }
     if (artistSkip == null) {
       artistSkip = 0;
     } else {
@@ -126,20 +134,23 @@ module.exports = {
       page = Number(page);
     }
 
+    let sortObj = {}
+    sortObj[sortBy] = sortDescending ? -1 : 1;
+    
     const artistResults = await db.Artist.find({}, null, {
-      sort: { updated_at: -1 },
-      skip: artistSkip,
-      limit: keys.queryPageSize,
+      "sort": sortObj,
+      "skip": artistSkip,
+      "limit": keys.queryPageSize,
     });
     const albumResults = await db.Album.find({}, null, {
-      sort: { updated_at: -1 },
-      skip: albumSkip,
-      limit: keys.queryPageSize,
+      "sort": sortObj,
+      "skip": albumSkip,
+      "limit": keys.queryPageSize,
     });
     const trackResults = await db.Track.find({}, null, {
-      sort: { updated_at: -1 },
-      skip: trackSkip,
-      limit: keys.queryPageSize,
+      "sort": sortObj,
+      "skip": trackSkip,
+      "limit": keys.queryPageSize,
     });
 
     let results = [];
@@ -155,9 +166,13 @@ module.exports = {
       if (
         currentArtist != null &&
         (currentAlbum == null ||
-          currentArtist.updated_at > currentAlbum.updated_at) &&
+          (currentArtist[sortBy] > currentAlbum[sortBy] && sortDescending) ||
+          (currentArtist[sortBy] < currentAlbum[sortBy] && ! sortDescending)
+        ) &&
         (currentTrack == null ||
-          currentArtist.updated_at > currentTrack.updated_at)
+          (currentArtist[sortBy] > currentTrack[sortBy] && sortDescending) ||
+          (currentArtist[sortBy] < currentTrack[sortBy] && ! sortDescending)
+        )
       ) {
         results.push(currentArtist);
         artistIndex++;
@@ -169,9 +184,13 @@ module.exports = {
       } else if (
         currentAlbum != null &&
         (currentArtist == null ||
-          currentAlbum.updated_at > currentArtist.updated_at) &&
+          (currentAlbum[sortBy] > currentArtist[sortBy] && sortDescending) ||
+          (currentAlbum[sortBy] < currentArtist[sortBy] && ! sortDescending)
+        ) &&
         (currentTrack == null ||
-          currentAlbum.updated_at > currentTrack.updated_at)
+          (currentAlbum[sortBy] > currentTrack[sortBy] && sortDescending) ||
+          (currentAlbum[sortBy] < currentTrack[sortBy] && ! sortDescending)
+        )
       ) {
         results.push(currentAlbum);
         albumIndex++;
@@ -223,7 +242,11 @@ module.exports = {
           '&albumSkip=' +
           albumSkip +
           '&trackSkip=' +
-          trackSkip,
+          trackSkip + 
+          '&sortBy=' + 
+          sortBy +
+          '&sortDescending=' +
+          (sortDescending ? 'true' : 'false'),
       };
     }
 

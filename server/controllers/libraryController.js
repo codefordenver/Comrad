@@ -134,7 +134,7 @@ module.exports = {
     let trackIndex = 0;
     let endOfResults = false;
 
-    while (results.length < keys.queryPageSize && !endOfResults) {
+    while (results.length < keys.queryPageSize && !endOfResults) { //loop through the results and order the artist, albums and tracks until we hit the desired page size
       if (
         currentArtist != null &&
         (currentAlbum == null ||

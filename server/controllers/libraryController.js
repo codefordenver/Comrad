@@ -321,7 +321,7 @@ module.exports = {
 
     return res.json({
       results: data.slice(0, keys.queryPageSize),
-      totalPages: 1
+      totalPages: 1,
     });
   },
 };

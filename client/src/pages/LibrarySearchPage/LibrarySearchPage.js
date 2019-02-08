@@ -54,10 +54,10 @@ class LibrarySearchPage extends Component {
         },
       });
     }
-    
+
     this.fetchTableDataFromApi(url);
   }
-  
+
   fetchTableDataFromApi(url) {
     axios
       .get(url)
@@ -81,16 +81,19 @@ class LibrarySearchPage extends Component {
         });
       });
   }
-  
+
   searchLibrary = function(form) {
     let url = '/api/library/search?s=' + form.q;
-    this.setState({
-      "pageUrls": [url],
-      "searchString": form.q
-    }, function() {
-      this.fetchTableDataFromApi(url);
-    });
-  }
+    this.setState(
+      {
+        pageUrls: [url],
+        searchString: form.q,
+      },
+      function() {
+        this.fetchTableDataFromApi(url);
+      },
+    );
+  };
 
   render() {
     const { error } = this.props;
@@ -173,5 +176,5 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  { },
+  {},
 )(LibrarySearchPage);

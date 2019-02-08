@@ -10,12 +10,10 @@ import Card, { CardBody } from '../../components/Card';
 import Dropdown, { DropdownItem } from '../../components/Dropdown';
 import Form from '../../components/Form';
 import Input from '../../components/Input';
-import TableLibrary from '../../components/TableLibrary';
 
 class LibrarySearchPage extends Component {
   constructor(props) {
     super(props);
-    //this.props.libraryGetAll();
     this.state = {
       docs: [],
       totalPages: null,
@@ -32,12 +30,8 @@ class LibrarySearchPage extends Component {
   }
 
   fetchData(state, instance) {
-    //if (state.page === 0) return;
-    // show the loading overlay
-    this.setState({ loading: true });
-    // fetch your data
+    this.setState({ loading: true }); //show loading overlay
     let url = this.state.pageUrls[state.page];
-    console.log(state.sorted);
     if (
       state.sorted.length > 0 &&
       (state.sorted[0].id !== this.state.sort.id ||
@@ -49,7 +43,7 @@ class LibrarySearchPage extends Component {
         '&sortDescending=' +
         (state.sorted[0].desc ? '1' : '0');
       this.setState({
-        pageUrls: [url], //reset page URLs, we will have to rebuild this list for each page with the new results
+        pageUrls: [url], //reset page URLs, we will have to rebuild this list for each page with the new results since the sort order has changed
         sort: {
           id: state.sorted[0].id,
           desc: state.sorted[0].desc,
@@ -78,7 +72,7 @@ class LibrarySearchPage extends Component {
   }
 
   render() {
-    const { error, loading, libraryGetAll, nextPage } = this.props;
+    const { error, libraryGetAll } = this.props;
 
     const columns = [
       {
@@ -148,15 +142,11 @@ class LibrarySearchPage extends Component {
 }
 
 function mapStateToProps(state) {
-  const { docs, error, loading, nextPage, totalPages } = state.library;
+  const { error } = state.library;
   console.log('map state to props');
   console.log(state);
   return {
-    docs,
-    error,
-    loading,
-    nextPage,
-    totalPages,
+    error
   };
 }
 

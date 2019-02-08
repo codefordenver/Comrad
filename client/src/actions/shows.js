@@ -4,6 +4,8 @@ import {
   SHOW_POST,
   SHOW_UPDATE,
   SHOW_DELETE,
+  SHOW_DELETE_SERIES,
+  SHOW_DELETE_INSTANCE,
   SHOW_SEARCH,
   SHOW_ERROR,
 } from './types';
@@ -46,11 +48,19 @@ export const updateShow = (existingShow, updatedShow) => async dispatch => {
 
 export const deleteShow = show => async dispatch => {
   try {
-    console.log('Show Delete Action: ' + show);
-
-    dispatch({ type: SHOW_DELETE, payload: show });
+    const response = await axios.delete(`/api/show/${show}`);
+    dispatch({ type: SHOW_DELETE, payload: response.data });
   } catch (e) {
-    dispatch({ type: SHOW_ERROR, payload: 'Delete Show Error' });
+    dispatch({ type: SHOW_ERROR, payload: e });
+  }
+};
+
+export const deleteShowSeries = show => async dispatch => {
+  try {
+    const response = await axios.delete(`/api/show/${show}`);
+    dispatch({ type: SHOW_DELETE_SERIES, payload: response.data });
+  } catch (e) {
+    dispatch({ type: SHOW_ERROR, payload: e });
   }
 };
 

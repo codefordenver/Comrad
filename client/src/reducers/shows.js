@@ -6,6 +6,8 @@ import {
   SHOW_UPDATE,
   SHOW_SEARCH,
   SHOW_DELETE,
+  SHOW_DELETE_SERIES,
+  SHOW_DELETE_INSTANCE,
   SHOW_FETCHING,
   SHOW_ERROR,
 } from '../actions/types';
@@ -39,6 +41,39 @@ export default function(state = initialState, { type, payload }) {
       return {
         ...state,
         data: { ...state.data, ..._.mapKeys(payload, '_id') },
+        fetching: false,
+        error: false,
+      };
+
+    case SHOW_DELETE:
+      let deleteShow = { ...state.data };
+
+      delete deleteShow[payload._id];
+
+      return {
+        ...state,
+        data: { ...deleteShow },
+        fetching: false,
+        error: false,
+      };
+
+    case SHOW_DELETE_SERIES:
+      const masterShowID = payload._id;
+
+      const deleteShowSeries = _.reduce(
+        state.data,
+        function(result, show, key) {
+          if (show.master_show_uid !== masterShowID) {
+            result[key] = show;
+          }
+          return result;
+        },
+        {},
+      );
+
+      return {
+        ...state,
+        data: { ...deleteShowSeries },
         fetching: false,
         error: false,
       };

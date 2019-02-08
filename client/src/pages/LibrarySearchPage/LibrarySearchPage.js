@@ -13,7 +13,7 @@ class LibrarySearchPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeFilter: "all",
+      activeFilter: 'all',
       docs: [],
       totalPages: null,
       pageUrls: ['/api/library'],
@@ -84,7 +84,8 @@ class LibrarySearchPage extends Component {
   }
 
   searchLibrary = function(form) {
-    let url = '/api/library/search?s=' + form.q + '&type=' + this.state.activeFilter;
+    let url =
+      '/api/library/search?s=' + form.q + '&type=' + this.state.activeFilter;
     this.setState(
       {
         pageUrls: [url],
@@ -95,14 +96,17 @@ class LibrarySearchPage extends Component {
       },
     );
   };
-  
+
   setActiveFilter = function(event) {
-    this.setState({
-      "activeFilter": event.target.getAttribute("value")
-    }, function() {
-      this.searchLibrary({'q':this.state.searchString});
-    });
-  }
+    this.setState(
+      {
+        activeFilter: event.target.getAttribute('value'),
+      },
+      function() {
+        this.searchLibrary({ q: this.state.searchString });
+      },
+    );
+  };
 
   render() {
     const { error } = this.props;
@@ -130,17 +134,40 @@ class LibrarySearchPage extends Component {
               let elements = [];
               elements.push(data.value);
               if (artistNames.length > 0) {
-                elements.push(<span className="library-search__grid__secondary-text"> by {artistNames.join(", ")}</span>);
+                elements.push(
+                  <span className="library-search__grid__secondary-text">
+                    {' '}
+                    by {artistNames.join(', ')}
+                  </span>,
+                );
               }
-              if (data.original.album != null && typeof data.original.album.name != 'undefined' && data.original.album.name.length > 0) {
-                elements.push(<span className="library-search__grid__secondary-text"> (from the album: {data.original.album.name})</span>);
+              if (
+                data.original.album != null &&
+                typeof data.original.album.name != 'undefined' &&
+                data.original.album.name.length > 0
+              ) {
+                elements.push(
+                  <span className="library-search__grid__secondary-text">
+                    {' '}
+                    (from the album: {data.original.album.name})
+                  </span>,
+                );
               }
               return elements;
             case 'album':
-              if (data.original.artist != null && typeof data.original.artist.name != 'undefined' && data.original.artist.name.length > 0) {
+              if (
+                data.original.artist != null &&
+                typeof data.original.artist.name != 'undefined' &&
+                data.original.artist.name.length > 0
+              ) {
                 let elements = [];
                 elements.push(data.value);
-                elements.push(<span className="library-search__grid__secondary-text"> by {data.original.artist.name}</span>);
+                elements.push(
+                  <span className="library-search__grid__secondary-text">
+                    {' '}
+                    by {data.original.artist.name}
+                  </span>,
+                );
                 return elements;
               } else {
                 return data.value;
@@ -174,13 +201,51 @@ class LibrarySearchPage extends Component {
             <div className="library-search__header">
               <div>
                 <Form action={this.searchLibrary}>
-                  <Input className="mb-1" label="Search" name="q" icon="search" />
+                  <Input
+                    className="mb-1"
+                    label="Search"
+                    name="q"
+                    icon="search"
+                  />
                 </Form>
                 <div className="library-search__filters">
-                  <span className={"" + (this.state.activeFilter === "all" ? "active" : "")} onClick={this.setActiveFilter} value="all">ALL</span>
-                  <span className={"" + (this.state.activeFilter === "artist" ? "active" : "")} onClick={this.setActiveFilter} value="artist">ARTISTS</span>
-                  <span className={"" + (this.state.activeFilter === "album" ? "active" : "")} onClick={this.setActiveFilter} value="album">ALBUMS</span>
-                  <span className={"" + (this.state.activeFilter === "track" ? "active" : "")} onClick={this.setActiveFilter} value="track">TRACKS</span>
+                  <span
+                    className={
+                      '' + (this.state.activeFilter === 'all' ? 'active' : '')
+                    }
+                    onClick={this.setActiveFilter}
+                    value="all"
+                  >
+                    ALL
+                  </span>
+                  <span
+                    className={
+                      '' +
+                      (this.state.activeFilter === 'artist' ? 'active' : '')
+                    }
+                    onClick={this.setActiveFilter}
+                    value="artist"
+                  >
+                    ARTISTS
+                  </span>
+                  <span
+                    className={
+                      '' + (this.state.activeFilter === 'album' ? 'active' : '')
+                    }
+                    onClick={this.setActiveFilter}
+                    value="album"
+                  >
+                    ALBUMS
+                  </span>
+                  <span
+                    className={
+                      '' + (this.state.activeFilter === 'track' ? 'active' : '')
+                    }
+                    onClick={this.setActiveFilter}
+                    value="track"
+                  >
+                    TRACKS
+                  </span>
                 </div>
               </div>
               <div>

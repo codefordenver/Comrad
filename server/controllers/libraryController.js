@@ -57,8 +57,9 @@ async function findInLibrary(queryString) {
       sort: { score: { $meta: 'textScore' } },
       limit: 100,
     },
-  ).populate('album')
-  .populate('artists');
+  )
+    .populate('album')
+    .populate('artists');
 
   return [...artistResults, ...albumResults, ...trackResults];
 }
@@ -120,8 +121,9 @@ module.exports = {
       sort: sortObj,
       skip: trackSkip,
       limit: keys.queryPageSize,
-    }).populate('artists')
-    .populate('album');
+    })
+      .populate('artists')
+      .populate('album');
 
     let results = [];
     let currentArtist = artistResults.length > 0 ? artistResults[0] : null;
@@ -220,7 +222,7 @@ module.exports = {
   },
   async searchLibrary(req, res) {
     let { s, type } = req.query;
-    
+
     if (typeof type === 'undefined') {
       type = 'all';
     }

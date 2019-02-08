@@ -103,10 +103,17 @@ function addRelevance(result, queryString) {
 
 module.exports = {
   async findAll(req, res) {
-    let { sortBy, sortDescending, page, artistSkip, albumSkip, trackSkip } = req.query;
+    let {
+      sortBy,
+      sortDescending,
+      page,
+      artistSkip,
+      albumSkip,
+      trackSkip,
+    } = req.query;
 
     if (sortBy == null) {
-      sortBy = "updated_at";
+      sortBy = 'updated_at';
     }
     if (sortDescending == null) {
       sortDescending = true;
@@ -134,23 +141,23 @@ module.exports = {
       page = Number(page);
     }
 
-    let sortObj = {}
+    let sortObj = {};
     sortObj[sortBy] = sortDescending ? -1 : 1;
-    
+
     const artistResults = await db.Artist.find({}, null, {
-      "sort": sortObj,
-      "skip": artistSkip,
-      "limit": keys.queryPageSize,
+      sort: sortObj,
+      skip: artistSkip,
+      limit: keys.queryPageSize,
     });
     const albumResults = await db.Album.find({}, null, {
-      "sort": sortObj,
-      "skip": albumSkip,
-      "limit": keys.queryPageSize,
+      sort: sortObj,
+      skip: albumSkip,
+      limit: keys.queryPageSize,
     });
     const trackResults = await db.Track.find({}, null, {
-      "sort": sortObj,
-      "skip": trackSkip,
-      "limit": keys.queryPageSize,
+      sort: sortObj,
+      skip: trackSkip,
+      limit: keys.queryPageSize,
     });
 
     let results = [];
@@ -167,12 +174,10 @@ module.exports = {
         currentArtist != null &&
         (currentAlbum == null ||
           (currentArtist[sortBy] > currentAlbum[sortBy] && sortDescending) ||
-          (currentArtist[sortBy] < currentAlbum[sortBy] && ! sortDescending)
-        ) &&
+          (currentArtist[sortBy] < currentAlbum[sortBy] && !sortDescending)) &&
         (currentTrack == null ||
           (currentArtist[sortBy] > currentTrack[sortBy] && sortDescending) ||
-          (currentArtist[sortBy] < currentTrack[sortBy] && ! sortDescending)
-        )
+          (currentArtist[sortBy] < currentTrack[sortBy] && !sortDescending))
       ) {
         results.push(currentArtist);
         artistIndex++;
@@ -185,12 +190,10 @@ module.exports = {
         currentAlbum != null &&
         (currentArtist == null ||
           (currentAlbum[sortBy] > currentArtist[sortBy] && sortDescending) ||
-          (currentAlbum[sortBy] < currentArtist[sortBy] && ! sortDescending)
-        ) &&
+          (currentAlbum[sortBy] < currentArtist[sortBy] && !sortDescending)) &&
         (currentTrack == null ||
           (currentAlbum[sortBy] > currentTrack[sortBy] && sortDescending) ||
-          (currentAlbum[sortBy] < currentTrack[sortBy] && ! sortDescending)
-        )
+          (currentAlbum[sortBy] < currentTrack[sortBy] && !sortDescending))
       ) {
         results.push(currentAlbum);
         albumIndex++;
@@ -242,8 +245,8 @@ module.exports = {
           '&albumSkip=' +
           albumSkip +
           '&trackSkip=' +
-          trackSkip + 
-          '&sortBy=' + 
+          trackSkip +
+          '&sortBy=' +
           sortBy +
           '&sortDescending=' +
           (sortDescending ? 'true' : 'false'),

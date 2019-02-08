@@ -26,7 +26,7 @@ class TableLibrary extends Component {
       },
       {
         Header: 'Type',
-        accessor: 'type'
+        accessor: 'type',
         //remove this class
       },
       {

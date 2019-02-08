@@ -19,15 +19,13 @@ class LibrarySearchPage extends Component {
     this.state = {
       docs: [],
       totalPages: null,
-      pageUrls: [
-        '/api/library'
-      ],
+      pageUrls: ['/api/library'],
       loading: true,
       loadingError: false,
       sort: {
-        "id": null,
-        "desc": null,
-      }
+        id: null,
+        desc: null,
+      },
     };
 
     this.fetchData = this.fetchData.bind(this);
@@ -40,14 +38,22 @@ class LibrarySearchPage extends Component {
     // fetch your data
     let url = this.state.pageUrls[state.page];
     console.log(state.sorted);
-    if (state.sorted.length > 0 && (state.sorted[0].id !== this.state.sort.id || state.sorted[0].desc !== this.state.sort.desc)) {
-      url = '/api/library?sortBy=' + state.sorted[0].id + '&sortDescending=' + (state.sorted[0].desc ? "1" : "0")
+    if (
+      state.sorted.length > 0 &&
+      (state.sorted[0].id !== this.state.sort.id ||
+        state.sorted[0].desc !== this.state.sort.desc)
+    ) {
+      url =
+        '/api/library?sortBy=' +
+        state.sorted[0].id +
+        '&sortDescending=' +
+        (state.sorted[0].desc ? '1' : '0');
       this.setState({
         pageUrls: [url], //reset page URLs, we will have to rebuild this list for each page with the new results
         sort: {
-          "id": state.sorted[0].id,
-          "desc": state.sorted[0].desc,
-        }
+          id: state.sorted[0].id,
+          desc: state.sorted[0].desc,
+        },
       });
     }
     axios
@@ -80,7 +86,7 @@ class LibrarySearchPage extends Component {
         accessor: 'type',
         Cell: row => {
           return row.value.charAt(0).toUpperCase() + row.value.slice(1); //capitalize the first letter
-        }
+        },
       },
       {
         Header: 'Name',
@@ -91,8 +97,10 @@ class LibrarySearchPage extends Component {
         accessor: 'updated_at',
         Cell: row => {
           let dateObj = new Date(row.value);
-          return dateObj.toLocaleDateString() + " " + dateObj.toLocaleTimeString();
-        }
+          return (
+            dateObj.toLocaleDateString() + ' ' + dateObj.toLocaleTimeString()
+          );
+        },
       },
     ];
 
@@ -115,8 +123,8 @@ class LibrarySearchPage extends Component {
                 <DropdownItem>Edit</DropdownItem>
               </Dropdown>
             </div>
-            
-            {!this.state.loadingError &&
+
+            {!this.state.loadingError && (
               <ReactTable
                 className="-highlight"
                 columns={columns}
@@ -128,10 +136,10 @@ class LibrarySearchPage extends Component {
                 showPageSizeOptions={false}
                 onFetchData={this.fetchData}
               />
-            }
-            {this.state.loadingError && 
+            )}
+            {this.state.loadingError && (
               <div>An error occurred loading data. Please try again.</div>
-            }
+            )}
           </CardBody>
         </Card>
       </div>

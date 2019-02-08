@@ -4,7 +4,6 @@ import axios from 'axios';
 
 import ReactTable from 'react-table';
 
-import Button from '../../components/Button';
 import Card, { CardBody } from '../../components/Card';
 import Dropdown, { DropdownItem } from '../../components/Dropdown';
 import Form from '../../components/Form';
@@ -14,6 +13,7 @@ class LibrarySearchPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      activeFilter: "all",
       docs: [],
       totalPages: null,
       pageUrls: ['/api/library'],
@@ -29,6 +29,7 @@ class LibrarySearchPage extends Component {
     this.fetchData = this.fetchData.bind(this);
     this.fetchTableDataFromApi = this.fetchTableDataFromApi.bind(this);
     this.searchLibrary = this.searchLibrary.bind(this);
+    this.setActiveFilter = this.setActiveFilter.bind(this);
   }
 
   fetchData(state, instance) {
@@ -83,7 +84,7 @@ class LibrarySearchPage extends Component {
   }
 
   searchLibrary = function(form) {
-    let url = '/api/library/search?s=' + form.q;
+    let url = '/api/library/search?s=' + form.q + '&type=' + this.state.activeFilter;
     this.setState(
       {
         pageUrls: [url],
@@ -94,6 +95,14 @@ class LibrarySearchPage extends Component {
       },
     );
   };
+  
+  setActiveFilter = function(event) {
+    this.setState({
+      "activeFilter": event.target.getAttribute("value")
+    }, function() {
+      this.searchLibrary({'q':this.state.searchString});
+    });
+  }
 
   render() {
     const { error } = this.props;
@@ -102,13 +111,44 @@ class LibrarySearchPage extends Component {
       {
         Header: 'Type',
         accessor: 'type',
-        Cell: row => {
-          return row.value.charAt(0).toUpperCase() + row.value.slice(1); //capitalize the first letter
+        Cell: data => {
+          return data.value.charAt(0).toUpperCase() + data.value.slice(1); //capitalize the first letter
         },
       },
       {
         Header: 'Name',
         accessor: 'name',
+        Cell: data => {
+          switch (data.row.type) {
+            case 'track':
+              let artistNames = [];
+              data.original.artists.forEach(function(a) {
+                if (typeof a.name != 'undefined' && a.name.length > 0) {
+                  artistNames.push(a.name);
+                }
+              });
+              let elements = [];
+              elements.push(data.value);
+              if (artistNames.length > 0) {
+                elements.push(<span className="library-search__grid__secondary-text"> by {artistNames.join(", ")}</span>);
+              }
+              if (data.original.album != null && typeof data.original.album.name != 'undefined' && data.original.album.name.length > 0) {
+                elements.push(<span className="library-search__grid__secondary-text"> (from the album: {data.original.album.name})</span>);
+              }
+              return elements;
+            case 'album':
+              if (data.original.artist != null && typeof data.original.artist.name != 'undefined' && data.original.artist.name.length > 0) {
+                let elements = [];
+                elements.push(data.value);
+                elements.push(<span className="library-search__grid__secondary-text"> by {data.original.artist.name}</span>);
+                return elements;
+              } else {
+                return data.value;
+              }
+            default:
+              return data.value;
+          }
+        },
       },
       {
         Header: 'Updated At',
@@ -132,18 +172,28 @@ class LibrarySearchPage extends Component {
         <Card>
           <CardBody>
             <div className="library-search__header">
-              <Form action={this.searchLibrary}>
-                <Input className="mb-1" label="Search" name="q" icon="search" />
-              </Form>
-              <Dropdown type="plus" text="Search">
-                <DropdownItem to="user/add">Add</DropdownItem>
-                <DropdownItem>Edit</DropdownItem>
-              </Dropdown>
+              <div>
+                <Form action={this.searchLibrary}>
+                  <Input className="mb-1" label="Search" name="q" icon="search" />
+                </Form>
+                <div className="library-search__filters">
+                  <span className={"" + (this.state.activeFilter === "all" ? "active" : "")} onClick={this.setActiveFilter} value="all">ALL</span>
+                  <span className={"" + (this.state.activeFilter === "artist" ? "active" : "")} onClick={this.setActiveFilter} value="artist">ARTISTS</span>
+                  <span className={"" + (this.state.activeFilter === "album" ? "active" : "")} onClick={this.setActiveFilter} value="album">ALBUMS</span>
+                  <span className={"" + (this.state.activeFilter === "track" ? "active" : "")} onClick={this.setActiveFilter} value="track">TRACKS</span>
+                </div>
+              </div>
+              <div>
+                <Dropdown type="plus" text="Add">
+                  <DropdownItem to="artist/add">Artist</DropdownItem>
+                  <DropdownItem to="album/add">Album</DropdownItem>
+                </Dropdown>
+              </div>
             </div>
 
             {!this.state.loadingError && (
               <ReactTable
-                className="-highlight"
+                className="-highlight library-search__grid"
                 columns={columns}
                 data={this.state.docs}
                 pages={this.state.totalPages}

@@ -40,7 +40,7 @@ async function findInLibrary(queryString) {
       sort: { score: { $meta: 'textScore' } },
       limit: 100,
     },
-  );
+  ).populate('artist');
 
   const trackResults = await db.Track.find(
     { $text: { $search: queryString } },
@@ -57,7 +57,8 @@ async function findInLibrary(queryString) {
       sort: { score: { $meta: 'textScore' } },
       limit: 100,
     },
-  );
+  ).populate('album')
+  .populate('artists');
 
   return [...artistResults, ...albumResults, ...trackResults];
 }
@@ -114,12 +115,13 @@ module.exports = {
       sort: sortObj,
       skip: albumSkip,
       limit: keys.queryPageSize,
-    });
+    }).populate('artist');
     const trackResults = await db.Track.find({}, null, {
       sort: sortObj,
       skip: trackSkip,
       limit: keys.queryPageSize,
-    });
+    }).populate('artists')
+    .populate('album');
 
     let results = [];
     let currentArtist = artistResults.length > 0 ? artistResults[0] : null;
@@ -210,27 +212,46 @@ module.exports = {
           '&sortBy=' +
           sortBy +
           '&sortDescending=' +
-          (sortDescending ? 'true' : 'false'),
+          (sortDescending ? '1' : '0'),
       };
     }
 
     return res.json(resultsJson);
   },
   async searchLibrary(req, res) {
-    const { s } = req.query;
+    let { s, type } = req.query;
+    
+    if (typeof type === 'undefined') {
+      type = 'all';
+    }
 
     if (s === '') {
       return res.json([]);
     }
 
-    const allResults = await findInLibrary(s);
+    const allResults = await findInLibrary(s, type);
     const allAlbums = allResults.filter(function(ar) {
       return ar.type === 'album';
     });
     const allArtists = allResults.filter(function(ar) {
       return ar.type === 'artist';
     });
-    const results = allResults.map(result => {
+    const allTracks = allResults.filter(function(ar) {
+      return ar.type === 'track';
+    });
+    let resultsToReturn = allResults;
+    switch (type) {
+      case 'artist':
+        resultsToReturn = allArtists;
+        break;
+      case 'album':
+        resultsToReturn = allAlbums;
+        break;
+      case 'track':
+        resultsToReturn = allTracks;
+        break;
+    }
+    const results = resultsToReturn.map(result => {
       // in these relevance calculations, popularity of the entity has a slight effect,
       // but, how much the name matches the search query has a much larger effect
       // for artists, the artist's name only is considered

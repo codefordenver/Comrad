@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
-import { libraryGetAll } from '../../actions';
 
 import ReactTable from 'react-table';
 
@@ -20,6 +19,7 @@ class LibrarySearchPage extends Component {
       pageUrls: ['/api/library'],
       loading: true,
       loadingError: false,
+      searchString: false,
       sort: {
         id: null,
         desc: null,
@@ -27,11 +27,15 @@ class LibrarySearchPage extends Component {
     };
 
     this.fetchData = this.fetchData.bind(this);
+    this.fetchTableDataFromApi = this.fetchTableDataFromApi.bind(this);
+    this.searchLibrary = this.searchLibrary.bind(this);
   }
 
   fetchData(state, instance) {
     this.setState({ loading: true }); //show loading overlay
     let url = this.state.pageUrls[state.page];
+
+    //check that the sort value matches what was previously there
     if (
       state.sorted.length > 0 &&
       (state.sorted[0].id !== this.state.sort.id ||
@@ -50,11 +54,18 @@ class LibrarySearchPage extends Component {
         },
       });
     }
+    
+    this.fetchTableDataFromApi(url);
+  }
+  
+  fetchTableDataFromApi(url) {
     axios
       .get(url)
       .then(response => {
         let pageUrls = this.state.pageUrls;
-        pageUrls.push(response.data.nextPage.url);
+        if (typeof response.data.nextPage !== 'undefined') {
+          pageUrls.push(response.data.nextPage.url);
+        }
         this.setState({
           docs: response.data.results,
           totalPages: response.data.totalPages,
@@ -70,9 +81,19 @@ class LibrarySearchPage extends Component {
         });
       });
   }
+  
+  searchLibrary = function(form) {
+    let url = '/api/library/search?s=' + form.q;
+    this.setState({
+      "pageUrls": [url],
+      "searchString": form.q
+    }, function() {
+      this.fetchTableDataFromApi(url);
+    });
+  }
 
   render() {
-    const { error, libraryGetAll } = this.props;
+    const { error } = this.props;
 
     const columns = [
       {
@@ -108,9 +129,8 @@ class LibrarySearchPage extends Component {
         <Card>
           <CardBody>
             <div className="library-search__header">
-              <Form action={libraryGetAll}>
+              <Form action={this.searchLibrary}>
                 <Input className="mb-1" label="Search" name="q" icon="search" />
-                <Button type="submit">Search</Button>
               </Form>
               <Dropdown type="plus" text="Search">
                 <DropdownItem to="user/add">Add</DropdownItem>
@@ -129,6 +149,7 @@ class LibrarySearchPage extends Component {
                 noDataText="No Data Found"
                 showPageSizeOptions={false}
                 onFetchData={this.fetchData}
+                sortable={this.state.searchString === false}
               />
             )}
             {this.state.loadingError && (
@@ -146,11 +167,11 @@ function mapStateToProps(state) {
   console.log('map state to props');
   console.log(state);
   return {
-    error
+    error,
   };
 }
 
 export default connect(
   mapStateToProps,
-  { libraryGetAll },
+  { },
 )(LibrarySearchPage);

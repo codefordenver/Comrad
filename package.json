@@ -79,6 +79,7 @@
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "redis": "^2.8.0",
+    "redux-form": "^8.1.0",
     "rrule": "^2.5.6"
   }
 }

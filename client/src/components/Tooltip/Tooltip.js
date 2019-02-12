@@ -54,6 +54,7 @@ class Tooltip extends Component {
             'tooltip--open': open,
           })}
           role="tooltip"
+          key="tooltip"
         >
           <section className="tooltip__content">
             {heading ? <h1 className="tooltip__heading">{heading}</h1> : null}

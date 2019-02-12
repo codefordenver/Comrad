@@ -8,7 +8,7 @@ describe('<Tooltip />', () => {
   beforeEach(() => {
     wrapper = mount(
       <Tooltip placement="top" text="tooltip text">
-        <div>Hello</div>
+        <div className="testDiv">Hello</div>
       </Tooltip>,
     );
   });
@@ -17,13 +17,13 @@ describe('<Tooltip />', () => {
     wrapper.unmount();
   });
 
-  test('should not have tooltip__open class before mouseenter', () => {
-    expect(wrapper.find('.tooltip__text')).toHaveLength(0);
+  test('should not have tooltip--open class before mouseenter', () => {
+    expect(wrapper.find('.tooltip--open').exists()).toBe(false);
   });
 
-  test('attaches the tooltip__open class on mouseenter', () => {
+  test('attaches the tooltip--open class on mouseenter', () => {
     wrapper.simulate('mouseenter');
-    expect(wrapper.find('.tooltip__open')).toHaveLength(1);
+    expect(wrapper.find('.tooltip--open').exists()).toBe(true);
     wrapper.simulate('mouseleave');
   });
 });

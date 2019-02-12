@@ -19,33 +19,11 @@ export const BUTTON_TYPE = {
 
 class Button extends Component {
   getButtonClass(color) {
-    switch (color) {
-      case 'primary':
-        return BUTTON_CLASS.primary;
-      case 'success':
-        return BUTTON_CLASS.success;
-      case 'info':
-        return BUTTON_CLASS.info;
-      case 'danger':
-        return BUTTON_CLASS.danger;
-      case 'warning':
-        return BUTTON_CLASS.warning;
-      case 'link':
-        return BUTTON_CLASS.link;
-      default:
-        break;
-    }
+    return BUTTON_CLASS[color];
   }
 
   getButtonType(type) {
-    switch (type) {
-      case 'button':
-        return BUTTON_TYPE.button;
-      case 'submit':
-        return BUTTON_TYPE.submit;
-      default:
-        break;
-    }
+    return BUTTON_TYPE[type];
   }
 
   render() {

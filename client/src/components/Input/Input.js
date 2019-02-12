@@ -6,7 +6,6 @@ import validation from '../../utils/validation';
 
 import Feedback from '../Feedback';
 import Label from '../Label';
-import { ReactComponent as SearchSolid } from '../../images/search-solid.svg';
 
 class Input extends Component {
   state = {};
@@ -53,25 +52,61 @@ class Input extends Component {
     }
   };
 
+  /**
+   * If a string is passed, it will return a react component based on it
+   * @param {string} icon
+   * @return {element}
+   */
   getIconClass(icon) {
     switch (icon) {
       case 'search':
-        return <SearchSolid className="icon" />;
+        return <i className="icon fas fa-search" />;
+      case 'user':
+        return <i className="icon fas fa-user" />;
       default:
         break;
     }
   }
 
-  render() {
-    const { getIconClass, myRef, props } = this;
+  /**
+   * If there is feedback, adding some extra margin to bottom to include it
+   * @param {string} feedback
+   * @return {string}
+   */
+  getMarginClass(feedback = '') {
+    switch (feedback.length > 0) {
+      case true:
+        return 'mb-3';
+      default:
+        return false;
+    }
+  }
 
-    const { feedback, icon, label, name, type, className, validate } = props;
+  render() {
+    const { getIconClass, getMarginClass, myRef, props } = this;
+
+    const {
+      feedback,
+      icon,
+      invalid,
+      label,
+      name,
+      type,
+      className,
+      validate,
+    } = props;
 
     return (
-      <div className={classnames('form-group', className)}>
+      <div
+        className={classnames(
+          'form-group',
+          getMarginClass(feedback),
+          className,
+        )}
+      >
         <input
           ref={myRef}
-          className="input"
+          className={classnames('input', invalid && 'invalid')}
           name={name}
           type={type}
           validate={validate}
@@ -87,8 +122,10 @@ class Input extends Component {
 }
 
 function mapStateToProps(state) {
+  const { input } = state;
+
   return {
-    input: state.input,
+    input,
   };
 }
 

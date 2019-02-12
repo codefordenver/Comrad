@@ -1,6 +1,15 @@
 export const ALERT_CLEAR = 'alert_clear';
 export const ALERT_UPDATE = 'alert_update';
 
+export const ARTIST_ADD = 'artist_add';
+export const ARTIST_ALL = 'artist_all';
+export const ARTIST_CLEAR = 'artist_clear';
+export const ARTIST_ERROR = 'artist_error';
+export const ARTIST_FIND_ONE = 'artist_find_one';
+export const ARTIST_LOADING = 'artist_loading';
+export const ARTIST_MESSAGE = 'artist_message';
+export const ARTIST_UPDATE = 'artist_update';
+
 export const AUTH_LOGIN = 'auth_login';
 export const AUTH_LOGOUT = 'auth_logout';
 export const AUTH_ERROR = 'auth_error';
@@ -8,6 +17,14 @@ export const AUTH_RESET = 'auth_reset';
 
 export const INPUT_CLEAR = 'input_clear';
 export const INPUT_UPDATE = 'input_update';
+
+export const LIBRARY_ADD = 'library_add';
+export const LIBRARY_ALL = 'library_all';
+export const LIBRARY_CLEAR = 'library_clear';
+export const LIBRARY_ERROR = 'library_error';
+export const LIBRARY_FIND_ONE = 'library_find_one';
+export const LIBRARY_LOADING = 'library_loading';
+export const LIBRARY_MESSAGE = 'library_message';
 
 export const SEARCH_LOADING = 'search_loading";';
 export const SEARCH_LIBRARY = 'search_library';

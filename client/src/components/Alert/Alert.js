@@ -2,12 +2,6 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 
-import { ReactComponent as ExclamationCircle } from '../../images/exclamation-circle-solid.svg';
-import { ReactComponent as CheckCircle } from '../../images/check-circle-solid.svg';
-import { ReactComponent as InfoCircle } from '../../images/info-circle-solid.svg';
-import { ReactComponent as TimesCircle } from '../../images/times-circle-solid.svg';
-import { ReactComponent as TimesSolid } from '../../images/times-solid.svg';
-
 export const ALERT_CLASS = {
   success: 'alert--success',
   info: 'alert--info',
@@ -49,16 +43,16 @@ class Alert extends Component {
     }
   }
 
-  getIconSVG(type) {
+  getIconFont(type) {
     switch (type) {
       case 'success':
-        return <CheckCircle className="check-circle" />;
+        return <i class="fas fa-check-circle" />;
       case 'info':
-        return <InfoCircle className="info-circle" />;
+        return <i class="fas fa-info-circle" />;
       case 'danger':
-        return <ExclamationCircle className="exclamation-circle" />;
+        return <i class="fas fa-exclamation-circle" />;
       case 'warning':
-        return <TimesCircle className="times-circle" />;
+        return <i class="fas fa-times-circle" />;
       default:
         break;
     }
@@ -69,7 +63,7 @@ class Alert extends Component {
       handleDisplayClick,
       getAlertClass,
       getDisplayClass,
-      getIconSVG,
+      getIconFont,
       props,
       state,
     } = this;
@@ -87,9 +81,9 @@ class Alert extends Component {
         {...rest}
       >
         <div className="alert__times" onClick={handleDisplayClick}>
-          <TimesSolid />
+          <i class="fas fa-times" />
         </div>
-        <div className="alert__symbol">{getIconSVG(type)}</div>
+        <div className="alert__symbol">{getIconFont(type)}</div>
         <div className="alert__body">
           <div className="alert__header">{header}</div>
           <div className="alert__message">{text}</div>

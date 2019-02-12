@@ -46,13 +46,13 @@ class Alert extends Component {
   getIconFont(type) {
     switch (type) {
       case 'success':
-        return <i class="fas fa-check-circle" />;
+        return <i className="fas fa-check-circle" />;
       case 'info':
-        return <i class="fas fa-info-circle" />;
+        return <i className="fas fa-info-circle" />;
       case 'danger':
-        return <i class="fas fa-exclamation-circle" />;
+        return <i className="fas fa-exclamation-circle" />;
       case 'warning':
-        return <i class="fas fa-times-circle" />;
+        return <i className="fas fa-times-circle" />;
       default:
         break;
     }
@@ -81,7 +81,7 @@ class Alert extends Component {
         {...rest}
       >
         <div className="alert__times" onClick={handleDisplayClick}>
-          <i class="fas fa-times" />
+          <i className="fas fa-times" />
         </div>
         <div className="alert__symbol">{getIconFont(type)}</div>
         <div className="alert__body">

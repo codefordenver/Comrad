@@ -9,6 +9,13 @@ export const ALERT_CLASS = {
   warning: 'alert--warning',
 };
 
+export const ICON_SET = {
+  success: '<i className="fas fa-check-circle" />',
+  info: '<i className="fas fa-info-circle" />',
+  danger: '<i className="fas fa-exclamation-circle" />',
+  warning: '<i className="fas fa-times-circle" />',
+};
+
 class Alert extends Component {
   state = {
     display: true,
@@ -28,45 +35,8 @@ class Alert extends Component {
     return 'close';
   }
 
-  getAlertClass(type) {
-    switch (type) {
-      case 'success':
-        return ALERT_CLASS.success;
-      case 'info':
-        return ALERT_CLASS.info;
-      case 'danger':
-        return ALERT_CLASS.danger;
-      case 'warning':
-        return ALERT_CLASS.warning;
-      default:
-        break;
-    }
-  }
-
-  getIconFont(type) {
-    switch (type) {
-      case 'success':
-        return <i className="fas fa-check-circle" />;
-      case 'info':
-        return <i className="fas fa-info-circle" />;
-      case 'danger':
-        return <i className="fas fa-exclamation-circle" />;
-      case 'warning':
-        return <i className="fas fa-times-circle" />;
-      default:
-        break;
-    }
-  }
-
   render() {
-    const {
-      handleDisplayClick,
-      getAlertClass,
-      getDisplayClass,
-      getIconFont,
-      props,
-      state,
-    } = this;
+    const { handleDisplayClick, getDisplayClass, props, state } = this;
     const { display } = state;
     const { header, className, type, text, ...rest } = props;
 
@@ -74,7 +44,7 @@ class Alert extends Component {
       <div
         className={classnames(
           'alert',
-          getAlertClass(type),
+          ALERT_CLASS[type],
           getDisplayClass(display),
           className,
         )}
@@ -83,7 +53,7 @@ class Alert extends Component {
         <div className="alert__times" onClick={handleDisplayClick}>
           <i className="fas fa-times" />
         </div>
-        <div className="alert__symbol">{getIconFont(type)}</div>
+        <div className="alert__symbol">{ICON_SET[type]}</div>
         <div className="alert__body">
           <div className="alert__header">{header}</div>
           <div className="alert__message">{text}</div>

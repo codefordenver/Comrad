@@ -4,9 +4,13 @@ import Form from './Form';
 import Modal from '../../Modal';
 
 const ShowModal = props => {
+  function submit(values) {
+    console.log(values);
+  }
+
   return (
     <Modal show={props.modalVisibility}>
-      <Form data={props.data} />
+      <Form onSubmit={submit} data={props.data} />
     </Modal>
   );
 };

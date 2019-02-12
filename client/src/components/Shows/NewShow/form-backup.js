@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../../../actions';
 import { REGEX_ANY_CHARS } from '../../../utils/validation';
-import { Field, reduxForm } from 'redux-form';
+
 import moment from 'moment';
 
 import Button from '../../Button';
@@ -43,45 +43,50 @@ class NewShowForm extends Component {
   };
 
   render() {
-    console.log(this.props);
     return (
       <main className="show show__padding">
         <section className="show__body">
           <Card>
-            <form onSubmit={this.handleSubmit}>
+            <Form callback={this.handleFormSubmit} action={this.props.postShow}>
               <div className="show__grid_container">
                 <div className="show__grid_span_3">
-                  <label htmlFor="title">Title</label>
-                  <Field name="title" component="input" type="text" />
-                </div>
-
-                <div>
-                  <label htmlFor="show_start_time_utc">From</label>
-                  <Field
-                    name="show_start_time_utc"
-                    component="input"
-                    type="time"
+                  Title
+                  <Input
+                    name="title"
+                    onChange={this.handleInputChange}
+                    type="text"
+                    validate={REGEX_ANY_CHARS}
+                    feedback="Enter Field"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="show_end_time_utc">To</label>
-                  <Field
-                    name="show_end_time_utc"
-                    component="input"
-                    type="time"
-                  />
+                  From
+                  <PickerTime timeType="show_start_time_utc" />
+                </div>
+
+                <div>
+                  To
+                  <PickerTime timeType="show_end_time_utc" />
                 </div>
 
                 <div className="show__grid_container show__grid_span_3">
                   <div className="show__date_picker_start">
-                    <label htmlFor="repeat_start_date">Start</label>
-                    <Field name="repeat_start_date" component={PickerDate} />
+                    Start
+                    <PickerDate
+                      dateType="repeat_start_date"
+                      initialDate={this.props.input.repeat_start_date}
+                    />
                   </div>
 
                   <div className="">
-                    <label htmlFor="repeat">Repeat</label>
-                    <Field name="repeat" component="input" type="checkbox" />
+                    Repeat
+                    <Checkbox
+                      name="repeat"
+                      onChange={this.handleCheckboxChange}
+                      type="checkbox"
+                      defaultChecked={false}
+                    />
                   </div>
 
                   <div className="show__grid_span_3">
@@ -146,7 +151,7 @@ class NewShowForm extends Component {
                   </div>
                 </div>
               </div>
-            </form>
+            </Form>
           </Card>
         </section>
       </main>
@@ -156,24 +161,9 @@ class NewShowForm extends Component {
 
 function mapStateToProps(state) {
   return {
-    initialValues: {
-      show_start_time_utc: moment(state.input.show_start_time_utc).format(
-        'HH:mm',
-      ),
-      show_end_time_utc: moment(state.input.show_end_time_utc).format('HH:mm'),
-    },
+    input: state.input,
   };
 }
-
-function getDateFromProps(props, key) {
-  if (props.data) {
-    moment(props.data[key]).format('HH:mm');
-  }
-}
-
-NewShowForm = reduxForm({
-  form: 'newShow',
-})(NewShowForm);
 
 export default connect(
   mapStateToProps,

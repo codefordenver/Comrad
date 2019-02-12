@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import * as actions from '../../../actions';
 
 import moment from 'moment';
 
@@ -16,23 +18,19 @@ class DatePicker extends Component {
   }
 
   render() {
-    const {
-      input: { name, value, onChange },
-    } = this.props;
+    //Props
+    const { dateType, initialDate } = this.props;
 
-    console.log('DatePicker Props');
-    console.log(this.props);
+    //Actions
+    const { inputUpdateShowDate } = this.props;
 
     return (
       <SingleDatePicker
-        date={this.state.date}
-        onDateChange={date => {
-          onChange(date);
-          this.setState({ date });
-        }} // PropTypes.func.isRequired
+        date={moment(initialDate)} // momentPropTypes.momentObj or null
+        onDateChange={date => inputUpdateShowDate(dateType, date)} // PropTypes.func.isRequired
         focused={this.state.focused} // PropTypes.bool
         onFocusChange={({ focused }) => this.setState({ focused })} // PropTypes.func.isRequired
-        id={name} // PropTypes.string.isRequired,
+        id={`${dateType}_picker`} // PropTypes.string.isRequired,
         isOutsideRange={() => false}
         numberOfMonths={1}
       />
@@ -40,4 +38,13 @@ class DatePicker extends Component {
   }
 }
 
-export default DatePicker;
+function mapStateToProps(state) {
+  return {
+    input: state.input,
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  actions,
+)(DatePicker);

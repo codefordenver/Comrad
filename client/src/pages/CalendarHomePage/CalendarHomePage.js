@@ -6,6 +6,7 @@ import _ from 'lodash';
 import Alert from '../../components/Alert';
 
 import ShowCalendar from '../../components/Shows/ShowCalendar';
+import ReduxForm from '../../components/Shows/reduxFormPage';
 
 import {
   getShowsData,

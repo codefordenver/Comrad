@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../../../actions';
 import { REGEX_ANY_CHARS } from '../../../utils/validation';
-import { Field, reduxForm } from 'redux-form';
+import { Field, reduxForm, formValueSelector } from 'redux-form';
 import moment from 'moment';
 
 import Button from '../../Button';
@@ -43,12 +43,12 @@ class NewShowForm extends Component {
   };
 
   render() {
-    console.log(this.props);
+    const { isRepeat } = this.props;
     return (
       <main className="show show__padding">
         <section className="show__body">
           <Card>
-            <form onSubmit={this.handleSubmit}>
+            <form onSubmit={this.props.handleSubmit}>
               <div className="show__grid_container">
                 <div className="show__grid_span_3">
                   <label htmlFor="title">Title</label>
@@ -61,6 +61,8 @@ class NewShowForm extends Component {
                     name="show_start_time_utc"
                     component="input"
                     type="time"
+                    format={value => moment(value).format('HH:mm')}
+                    parse={value => moment(value, 'HH:mm')}
                   />
                 </div>
 
@@ -70,6 +72,8 @@ class NewShowForm extends Component {
                     name="show_end_time_utc"
                     component="input"
                     type="time"
+                    format={value => moment(value).format('HH:mm')}
+                    parse={value => moment(value, 'HH:mm')}
                   />
                 </div>
 
@@ -85,7 +89,7 @@ class NewShowForm extends Component {
                   </div>
 
                   <div className="show__grid_span_3">
-                    <Repeat />
+                    {isRepeat && <Repeat />}
                   </div>
                 </div>
 
@@ -154,21 +158,18 @@ class NewShowForm extends Component {
   }
 }
 
+const selector = formValueSelector('newShow');
 function mapStateToProps(state) {
+  const isRepeat = selector(state, 'repeat');
+  console.log(state.input.show_start_time_utc);
   return {
     initialValues: {
-      show_start_time_utc: moment(state.input.show_start_time_utc).format(
-        'HH:mm',
-      ),
-      show_end_time_utc: moment(state.input.show_end_time_utc).format('HH:mm'),
+      show_start_time_utc: moment(state.input.show_start_time_utc),
+      show_end_time_utc: moment(state.input.show_end_time_utc),
+      repeat: false,
     },
+    isRepeat,
   };
-}
-
-function getDateFromProps(props, key) {
-  if (props.data) {
-    moment(props.data[key]).format('HH:mm');
-  }
 }
 
 NewShowForm = reduxForm({

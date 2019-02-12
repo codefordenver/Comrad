@@ -84,9 +84,9 @@ function returnDatesArrayByRepeatRule(show) {
 
 function momentCombineDayAndTime(desiredDate, desiredTime) {
   const newDate = moment(desiredDate).format('YYYYMMDD');
-  const newTime = moment(desiredTime).format('h:mm:ss');
+  const newTime = moment(desiredTime).format('HH:mm:ss');
   const newDateAndTimeFormat = newDate + ' ' + newTime;
-  const returnedValue = moment(newDateAndTimeFormat, 'YYYYMMDD h:mm:ss')
+  const returnedValue = moment(newDateAndTimeFormat, 'YYYYMMDD HH:mm:ss')
     .utc()
     .format();
 

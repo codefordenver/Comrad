@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../../../actions';
+import { Field, reduxForm, formValueSelector } from 'redux-form';
 
 import moment from 'moment';
 
@@ -8,12 +9,7 @@ import Select from '../../Select';
 
 import RRule from 'rrule';
 
-class Repeat extends Component {
-  handleInputChange = e => {
-    const { name, value } = e.target;
-    this.props.inputUpdate({ [name]: value });
-  };
-
+class RepeatDropdown extends Component {
   render() {
     const definedRepeatRules = {
       daily: {
@@ -57,24 +53,16 @@ class Repeat extends Component {
     return (
       <div>
         <div className="">
-          <Select
-            selectOptions={['', 'DAILY', 'WEEKLY', 'MONTHLY', 'YEARLY']}
-            name="repeatType"
-            onChange={this.handleInputChange}
-          />
+          <Field name="repeatType" component="select">
+            <option />
+            <option value="DAILY">DAILY</option>
+            <option value="WEEKLY">WEEKLY</option>
+            <option value="MONTHLY">MONTHLY</option>
+          </Field>
         </div>
       </div>
     );
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    input: state.input,
-  };
-}
-
-export default connect(
-  mapStateToProps,
-  actions,
-)(Repeat);
+export default RepeatDropdown;

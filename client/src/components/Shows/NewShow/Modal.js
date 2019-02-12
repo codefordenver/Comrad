@@ -7,8 +7,12 @@ import Modal from '../../Modal';
 import * as actions from '../../../actions';
 
 class ShowModal extends Component {
+  handleFormSubmit = () => {
+    this.props.setModalVisibility(null, false, null);
+  };
+
   submit = values => {
-    this.props.postShow(values);
+    this.props.postShow(values, this.handleFormSubmit);
   };
 
   render() {

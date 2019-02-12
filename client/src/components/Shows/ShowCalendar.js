@@ -58,8 +58,7 @@ class Calendar extends Component {
       setModalVisibility,
     } = this.props;
 
-    const { start, end } = show;
-
+    let { start, end } = show;
     inputUpdateShowTime('show_start_time_utc', start);
     inputUpdateShowTime('show_end_time_utc', end);
 

@@ -32,7 +32,7 @@ class DatePicker extends Component {
         }} // PropTypes.func.isRequired
         focused={this.state.focused} // PropTypes.bool
         onFocusChange={({ focused }) => this.setState({ focused })} // PropTypes.func.isRequired
-        id={name} // PropTypes.string.isRequired,
+        id={`${name}_picker`} // PropTypes.string.isRequired,
         isOutsideRange={() => false}
         numberOfMonths={1}
       />

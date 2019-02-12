@@ -7,7 +7,7 @@ import {
 } from '../actions/types';
 
 const initialState = {
-  docs: [],
+  docs: null,
   error: false,
   loading: false,
   q: false,
@@ -34,11 +34,6 @@ export default (state = initialState, { type, payload }) => {
         ...state,
         ...payload,
         loading: false,
-      };
-    case LIBRARY_UPDATE:
-      return {
-        ...state,
-        ...payload,
       };
     default:
       return {

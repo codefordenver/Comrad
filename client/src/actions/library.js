@@ -1,15 +1,5 @@
 import axios from 'axios';
-import { LIBRARY_ALL, LIBRARY_LOADING, LIBRARY_SEARCH } from './types';
-
-export const libraryAll = input => async dispatch => {
-  try {
-    const response = await axios.get(`/api/library`);
-
-    console.log(response);
-  } catch (e) {
-    console.log(e);
-  }
-};
+import { LIBRARY_LOADING, LIBRARY_SEARCH } from './types';
 
 export const librarySearch = input => async dispatch => {
   try {

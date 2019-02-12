@@ -27,14 +27,23 @@ class UserSearchPage extends Component {
         <Card>
           <CardBody>
             <div className="user-search__header">
-              <Form action={usersSearch}>
-                <Input className="mb-1" label="Search" name="q" icon="search" />
-                <Button type="submit">Search</Button>
-              </Form>
-              <Dropdown type="plus" text="Search">
-                <DropdownItem to="user/add">Add</DropdownItem>
-                <DropdownItem>Edit</DropdownItem>
-              </Dropdown>
+              <div>
+                <Form action={usersSearch}>
+                  <Input
+                    className="mb-1"
+                    label="Search"
+                    name="q"
+                    icon="search"
+                  />
+                  <Button type="submit">Search</Button>
+                </Form>
+              </div>
+              <div>
+                <Dropdown type="plus" text="Add">
+                  <DropdownItem to="user/add">Add</DropdownItem>
+                  <DropdownItem>Edit</DropdownItem>
+                </Dropdown>
+              </div>
             </div>
 
             <TableUsers docs={docs} loading={loading} />

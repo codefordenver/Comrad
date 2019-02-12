@@ -15,8 +15,30 @@
     grid-template-columns: repeat(3, auto);
     grid-column-gap: 1rem;
   }
+  
+  &__filters {
+    margin-top: 12px;
+    
+    > span {
+      cursor: pointer;
+      margin-right: 10px;
+      padding-left: 4px;
+      padding-right: 4px;
+      padding-bottom: 2px;
+      color: $color-primary-light;
+      &.active {
+        border-bottom: 2px solid $color-primary-light;
+      }
+    }
+  }
 
   &__term {
     height: 5rem;
+  }
+  
+  &__grid {
+    &__secondary-text {
+      color: $color-grey-3;
+    }
   }
 }

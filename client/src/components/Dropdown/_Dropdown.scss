@@ -1,5 +1,8 @@
 .dropdown {
+  $height: 3.8rem;
+
   position: relative;
+  display: inline-block;
 
   &__button {
 
@@ -23,15 +26,28 @@
   }
 
   &__plus {
-    display: grid;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     color: white;
 
     background-color: $color-primary;
     border-radius: $border-radius;
     cursor: pointer;
-    padding: 1rem;
-    width: 3.6rem;
+    
+    span {
+      padding: 0px 1rem;
+      border-right: 1px solid rgba(0,0,0,0.3);
+      font-size: 18px;
+      height: $height;
+      line-height: $height;
+    }
+    
+    svg {
+      padding: 1rem;
+      height: $height;
+    }
   }
 
   &__list {

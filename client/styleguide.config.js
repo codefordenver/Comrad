@@ -14,7 +14,6 @@ module.exports = {
     'src/components/Root/**',
     'src/components/TableAlbums/**',
     'src/components/TableArtists/**',
-    'src/components/TableLibrary/**',
     'src/components/TableTracks/**',
     'src/components/TableUsers/**',
   ],

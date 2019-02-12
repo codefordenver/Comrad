@@ -28,7 +28,9 @@ const artistSchema = new Schema({
   },
 });
 
-artistSchema.index({ name: 'text' }, { background: true });
+artistSchema
+  .index({ name: 'text' }, { background: true })
+  .index({ updated_at: -1 }, { background: true });
 
 const Artist = mongoose.model('Artist', artistSchema);
 

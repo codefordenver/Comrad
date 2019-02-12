@@ -57,26 +57,6 @@ describe('<Alert />', () => {
     expect(wrapper.find('.alert').hasClass(ALERT_CLASS.warning)).toEqual(true);
   });
 
-  it('prop types success renders svg component with class of "check-circle"', () => {
-    wrapper.setProps({ type: 'success' });
-    expect(wrapper.find('svg.check-circle')).toHaveLength(1);
-  });
-
-  it('prop type info renders svg component with class of "info-circle"', () => {
-    wrapper.setProps({ type: 'info' });
-    expect(wrapper.find('svg.info-circle')).toHaveLength(1);
-  });
-
-  it('prop type danger renders svg component with class of "exclamation-circle"', () => {
-    wrapper.setProps({ type: 'danger' });
-    expect(wrapper.find('svg.exclamation-circle')).toHaveLength(1);
-  });
-
-  it('prop type warning renders svg component with class of "times-circle"', () => {
-    wrapper.setProps({ type: 'warning' });
-    expect(wrapper.find('svg.times-circle')).toHaveLength(1);
-  });
-
   it('updates state when the x is clicked in corner', () => {
     wrapper.find('.alert__times').simulate('click');
     expect(wrapper.state('display')).toEqual(false);

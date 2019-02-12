@@ -28,21 +28,6 @@ class Alert extends Component {
     return 'close';
   }
 
-  getAlertClass(type) {
-    switch (type) {
-      case 'success':
-        return ALERT_CLASS.success;
-      case 'info':
-        return ALERT_CLASS.info;
-      case 'danger':
-        return ALERT_CLASS.danger;
-      case 'warning':
-        return ALERT_CLASS.warning;
-      default:
-        break;
-    }
-  }
-
   getIconFont(type) {
     switch (type) {
       case 'success':
@@ -61,7 +46,6 @@ class Alert extends Component {
   render() {
     const {
       handleDisplayClick,
-      getAlertClass,
       getDisplayClass,
       getIconFont,
       props,
@@ -74,7 +58,7 @@ class Alert extends Component {
       <div
         className={classnames(
           'alert',
-          getAlertClass(type),
+          ALERT_CLASS[type],
           getDisplayClass(display),
           className,
         )}

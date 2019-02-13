@@ -50,7 +50,16 @@ class Button extends Component {
 
   render() {
     const { getButtonClass, getButtonType, props } = this;
-    const { children, color, disabled, onClick, className, to, type } = props;
+    const {
+      children,
+      color,
+      disabled,
+      onClick,
+      className,
+      to,
+      type,
+      ...rest
+    } = props;
 
     if (to) {
       return (
@@ -60,6 +69,7 @@ class Button extends Component {
           onClick={onClick}
           to={to}
           type={type}
+          {...rest}
         >
           {children}
         </Link>
@@ -72,6 +82,7 @@ class Button extends Component {
         disabled={disabled}
         onClick={onClick}
         type={getButtonType(type)}
+        {...rest}
       >
         {children}
       </button>

@@ -18,16 +18,8 @@ export const BUTTON_TYPE = {
 };
 
 class Button extends Component {
-  getButtonClass(color) {
-    return BUTTON_CLASS[color];
-  }
-
-  getButtonType(type) {
-    return BUTTON_TYPE[type];
-  }
-
   render() {
-    const { getButtonClass, getButtonType, props } = this;
+    const { props } = this;
     const { children, color, disabled, onClick, className, to, type } = props;
 
     if (to) {
@@ -46,10 +38,10 @@ class Button extends Component {
 
     return (
       <button
-        className={classnames('button', getButtonClass(color), className)}
+        className={classnames('button', BUTTON_CLASS[color], className)}
         disabled={disabled}
         onClick={onClick}
-        type={getButtonType(type)}
+        type={BUTTON_TYPE[type]}
       >
         {children}
       </button>

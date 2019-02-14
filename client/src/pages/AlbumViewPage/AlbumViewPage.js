@@ -33,7 +33,12 @@ class AlbumViewPage extends Component {
                   Last updated: {this.state.last_updated}
                 </div>
                 <h1 className="mb-0">{this.state.album.name}</h1>
-                <div>by <a href={"/library/artist/" + this.state.album.artist._id}>{this.state.album.artist.name}</a></div>
+                <div>
+                  by{' '}
+                  <a href={'/library/artist/' + this.state.album.artist._id}>
+                    {this.state.album.artist.name}
+                  </a>
+                </div>
               </CardBody>
             </Card>
           </div>

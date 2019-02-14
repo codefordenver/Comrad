@@ -31,11 +31,11 @@ class TrackViewPage extends Component {
           artistsHtml.push(<span>, </span>);
         }
         artistsHtml.push(
-          <a href={"/library/artist/" + artist._id}>{artist.name}</a>
+          <a href={'/library/artist/' + artist._id}>{artist.name}</a>,
         );
       }
     }
-    
+
     return (
       <div className="track-view-page">
         {this.state.track != null && (
@@ -46,8 +46,16 @@ class TrackViewPage extends Component {
                   Last updated: {this.state.last_updated}
                 </div>
                 <h1 className="mb-0">{this.state.track.name}</h1>
-                <div> by <span>{artistsHtml}</span></div>
-                <div>from the album <a href={"/library/album/" + this.state.track.album._id}>{this.state.track.album.name}</a></div>
+                <div>
+                  {' '}
+                  by <span>{artistsHtml}</span>
+                </div>
+                <div>
+                  from the album{' '}
+                  <a href={'/library/album/' + this.state.track.album._id}>
+                    {this.state.track.album.name}
+                  </a>
+                </div>
               </CardBody>
             </Card>
           </div>

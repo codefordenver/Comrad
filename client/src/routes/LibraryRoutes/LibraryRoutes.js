@@ -3,6 +3,7 @@ import { Route } from 'react-router-dom';
 
 import MainLayout from '../../layouts/MainLayout';
 
+import ArtistViewPage from '../../pages/ArtistViewPage';
 import LibrarySearchPage from '../../pages/LibrarySearchPage';
 
 class Library extends Component {
@@ -11,7 +12,8 @@ class Library extends Component {
 
     return (
       <MainLayout>
-        <Route exact path={`${url}/search`} component={LibrarySearchPage} />
+        <Route exact path={`${url}`} component={LibrarySearchPage} />
+        <Route path={`${url}/artist/:id`} component={ArtistViewPage} />
       </MainLayout>
     );
   }

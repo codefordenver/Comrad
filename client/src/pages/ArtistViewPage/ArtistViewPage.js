@@ -9,26 +9,23 @@ class ArtistViewPage extends Component {
     super(props);
     this.state = {
       artist: null,
-      last_updated: ""
+      last_updated: '',
     };
-    
-    axios
-      .get('/api/artist/' + this.props.match.params.id)
-      .then(response => {
-        let dateObj = new Date(response.data.updated_at);
-        this.setState({
-          artist: response.data,
-          last_updated: dateObj.toLocaleDateString() + ' ' + dateObj.toLocaleTimeString()
-        });
+
+    axios.get('/api/artist/' + this.props.match.params.id).then(response => {
+      let dateObj = new Date(response.data.updated_at);
+      this.setState({
+        artist: response.data,
+        last_updated:
+          dateObj.toLocaleDateString() + ' ' + dateObj.toLocaleTimeString(),
       });
-        
+    });
   }
 
   render() {
-  
     return (
       <div className="artist-view-page">
-        {this.state.artist != null && 
+        {this.state.artist != null && (
           <div>
             <Card>
               <CardBody>
@@ -39,7 +36,7 @@ class ArtistViewPage extends Component {
               </CardBody>
             </Card>
           </div>
-        }
+        )}
       </div>
     );
   }

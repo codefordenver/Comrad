@@ -83,15 +83,17 @@ class LibrarySearchPage extends Component {
         });
       });
   }
-  
+
   navigateToRecord = function(state, rowInfo, column, instance) {
     return {
       onClick: (e, handleOriginal) => {
         //navigate to the view page for this record
-        this.props.history.push('/library/' + rowInfo.original.type + '/' + rowInfo.original._id);
-      }
+        this.props.history.push(
+          '/library/' + rowInfo.original.type + '/' + rowInfo.original._id,
+        );
+      },
     };
-  }
+  };
 
   searchLibrary = function(form) {
     let url =

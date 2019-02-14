@@ -1,0 +1,70 @@
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import axios from 'axios';
+
+import Card, { CardBody } from '../../components/Card';
+
+class TrackViewPage extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      track: null,
+      last_updated: '',
+    };
+
+    axios.get('/api/track/' + this.props.match.params.id).then(response => {
+      let dateObj = new Date(response.data.updated_at);
+      this.setState({
+        track: response.data,
+        last_updated:
+          dateObj.toLocaleDateString() + ' ' + dateObj.toLocaleTimeString(),
+      });
+    });
+  }
+
+  render() {
+    let artistsHtml = [];
+    if (this.state.track != null) {
+      for (var i = 0; i < this.state.track.artists.length; i++) {
+        let artist = this.state.track.artists[i];
+        if (i > 0) {
+          artistsHtml.push(<span>, </span>);
+        }
+        artistsHtml.push(
+          <a href={"/library/artist/" + artist._id}>{artist.name}</a>
+        );
+      }
+    }
+    
+    return (
+      <div className="track-view-page">
+        {this.state.track != null && (
+          <div>
+            <Card>
+              <CardBody>
+                <div className="float-right">
+                  Last updated: {this.state.last_updated}
+                </div>
+                <h1 className="mb-0">{this.state.track.name}</h1>
+                <div> by <span>{artistsHtml}</span></div>
+                <div>from the album <a href={"/library/album/" + this.state.track.album._id}>{this.state.track.album.name}</a></div>
+              </CardBody>
+            </Card>
+          </div>
+        )}
+      </div>
+    );
+  }
+}
+
+function mapStateToProps(state) {
+  const { error } = state.library;
+  return {
+    error,
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  {},
+)(TrackViewPage);

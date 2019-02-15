@@ -4,12 +4,10 @@
   align-items: center;
 
   background-color: $color-primary;
-  padding: 0.5rem;
 
   &__logo {
-    justify-self: start;
-
     margin-left: 2rem;
+    width: 10rem;
   }
 
   &__profile {
@@ -18,11 +16,12 @@
     display: grid;
     grid-template-columns: auto auto;
     grid-column-gap: 2rem;
+    align-items: center;
 
     margin-right: 2rem;
   }
 
-  &__station {
-    height: 6rem;
+  &__radio {
+    width: 10rem;
   }
 }

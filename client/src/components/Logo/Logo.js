@@ -1,9 +1,26 @@
 import React, { Component } from 'react';
-import logo from '../../images/comrad-logo.png';
+import PropTypes from 'prop-types';
 
 class Logo extends Component {
+  static propTypes = {
+    /**
+     * Image source
+     */
+    src: PropTypes.string,
+  };
+
+  static defaultProps = {
+    src: null,
+  };
+
   render() {
-    return <img className="logo" src={logo} alt="Comrad Logo" />;
+    const { src } = this.props;
+
+    return (
+      <div className="logo">
+        <img className="logo__image" src={src} alt="Comrad Logo" />
+      </div>
+    );
   }
 }
 

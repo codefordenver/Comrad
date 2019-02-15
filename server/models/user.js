@@ -4,26 +4,6 @@ const Schema = mongoose.Schema;
 const bcrypt = require('bcrypt-nodejs');
 
 const userSchema = new Schema({
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-    lowercase: true,
-    validate: {
-      validator: v => {
-        return /^([a-zA-Z\d.-]+)@([a-zA-Z\d-]+\.)([a-zA-Z]{2,8})(.[a-zA-Z]{2,8})?$/.test(
-          v,
-        );
-      },
-      message: props => `${props.value} is not a valid email`,
-    },
-  },
-
-  password: {
-    type: String,
-    required: true,
-  },
-
   first_name: {
     type: String,
     required: true,
@@ -34,31 +14,94 @@ const userSchema = new Schema({
     required: true,
   },
 
-  on_air_name: {
+  date_of_birth: {
     type: String,
-    default: '',
   },
 
-  permissions: [
-    {
+  image: {
+    type: String,
+  },
+
+  location: {
+    street: {
       type: String,
-      enum: ['DJ', 'Underwriting', 'Show Producer', 'Full Access', 'Admin'],
-      required: true,
-      default: 'DJ',
     },
-  ],
 
-  status: {
-    type: String,
-    enum: ['Active', 'Inactive'],
-    required: true,
-    default: 'Active',
+    city: {
+      type: String,
+    },
+
+    state: {
+      type: String,
+    },
+
+    zip_code: {
+      type: String,
+    },
   },
 
-  can_delete: {
-    type: Boolean,
+  contact: {
+    phone: {
+      type: String,
+    },
+
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      lowercase: true,
+      validate: {
+        validator: v => {
+          return /^([a-zA-Z\d.-]+)@([a-zA-Z\d-]+\.)([a-zA-Z]{2,8})(.[a-zA-Z]{2,8})?$/.test(
+            v,
+          );
+        },
+        message: props => `${props.value} is not a valid email`,
+      },
+    },
+
+    slack: {
+      type: String,
+    },
+  },
+
+  station: {
+    on_air_name: {
+      type: String,
+    },
+
+    permissions: {
+      type: String,
+      enum: ['dj', 'underwriting', 'show_producer', 'full_access', 'admin'],
+      required: true,
+      default: 'dj',
+    },
+
+    status: {
+      type: String,
+      enum: [true, false],
+      required: true,
+      default: true,
+    },
+
+    can_delete: {
+      type: Boolean,
+      required: true,
+      default: true,
+    },
+
+    registered: {
+      type: Date,
+    },
+  },
+
+  password: {
+    type: String,
     required: true,
-    default: true,
+  },
+
+  fake_user_password: {
+    type: String,
   },
 
   reset_token: {

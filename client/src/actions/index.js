@@ -1,5 +1,7 @@
+export * from './artist';
 export * from './auth';
 export * from './input';
+export * from './library';
 export * from './password';
 export * from './search';
 export * from './modals';

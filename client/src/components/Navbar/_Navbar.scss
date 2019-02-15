@@ -1,0 +1,27 @@
+.navbar {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+
+  background-color: $color-primary;
+
+  &__logo {
+    margin-left: 2rem;
+    width: 10rem;
+  }
+
+  &__profile {
+    justify-self: end;
+
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-column-gap: 2rem;
+    align-items: center;
+
+    margin-right: 2rem;
+  }
+
+  &__radio {
+    width: 10rem;
+  }
+}

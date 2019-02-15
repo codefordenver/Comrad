@@ -2,17 +2,18 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 
-import { ReactComponent as ExclamationCircle } from '../../images/exclamation-circle-solid.svg';
-import { ReactComponent as CheckCircle } from '../../images/check-circle-solid.svg';
-import { ReactComponent as InfoCircle } from '../../images/info-circle-solid.svg';
-import { ReactComponent as TimesCircle } from '../../images/times-circle-solid.svg';
-import { ReactComponent as TimesSolid } from '../../images/times-solid.svg';
-
 export const ALERT_CLASS = {
   success: 'alert--success',
   info: 'alert--info',
   danger: 'alert--danger',
   warning: 'alert--warning',
+};
+
+export const ICON_SET = {
+  success: '<i className="fas fa-check-circle" />',
+  info: '<i className="fas fa-info-circle" />',
+  danger: '<i className="fas fa-exclamation-circle" />',
+  warning: '<i className="fas fa-times-circle" />',
 };
 
 class Alert extends Component {
@@ -34,45 +35,8 @@ class Alert extends Component {
     return 'close';
   }
 
-  getAlertClass(type) {
-    switch (type) {
-      case 'success':
-        return ALERT_CLASS.success;
-      case 'info':
-        return ALERT_CLASS.info;
-      case 'danger':
-        return ALERT_CLASS.danger;
-      case 'warning':
-        return ALERT_CLASS.warning;
-      default:
-        break;
-    }
-  }
-
-  getIconSVG(type) {
-    switch (type) {
-      case 'success':
-        return <CheckCircle className="check-circle" />;
-      case 'info':
-        return <InfoCircle className="info-circle" />;
-      case 'danger':
-        return <ExclamationCircle className="exclamation-circle" />;
-      case 'warning':
-        return <TimesCircle className="times-circle" />;
-      default:
-        break;
-    }
-  }
-
   render() {
-    const {
-      handleDisplayClick,
-      getAlertClass,
-      getDisplayClass,
-      getIconSVG,
-      props,
-      state,
-    } = this;
+    const { handleDisplayClick, getDisplayClass, props, state } = this;
     const { display } = state;
     const { header, className, type, text, ...rest } = props;
 
@@ -80,16 +44,16 @@ class Alert extends Component {
       <div
         className={classnames(
           'alert',
-          getAlertClass(type),
+          ALERT_CLASS[type],
           getDisplayClass(display),
           className,
         )}
         {...rest}
       >
         <div className="alert__times" onClick={handleDisplayClick}>
-          <TimesSolid />
+          <i className="fas fa-times" />
         </div>
-        <div className="alert__symbol">{getIconSVG(type)}</div>
+        <div className="alert__symbol">{ICON_SET[type]}</div>
         <div className="alert__body">
           <div className="alert__header">{header}</div>
           <div className="alert__message">{text}</div>

@@ -14,13 +14,13 @@ class Dropdown extends Component {
     }));
   };
 
-  renderButton(type) {
+  renderButton(type, text) {
     switch (type) {
       case 'circle':
         return null;
       case 'plus':
       default:
-        return <DropdownPlus />;
+        return <DropdownPlus text={text} />;
     }
   }
 
@@ -32,7 +32,7 @@ class Dropdown extends Component {
     return (
       <div className={classnames('dropdown', className)}>
         <div className="dropdown__button" onClick={this.handleClick}>
-          {renderButton(type)}
+          {renderButton(type, this.props.text)}
         </div>
         <div className={`dropdown__list ${active ? 'active' : ''}`}>
           {children}

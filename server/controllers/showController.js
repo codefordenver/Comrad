@@ -208,9 +208,6 @@ module.exports = {
     startDate = JSON.parse(startDate);
     endDate = JSON.parse(endDate);
 
-    console.log(startDate);
-    console.log(endDate);
-
     db.Show.find()
       .and(findShowQueryByDateRange(startDate, endDate))
       .then(dbShow => {

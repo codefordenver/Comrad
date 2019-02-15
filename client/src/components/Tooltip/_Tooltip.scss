@@ -9,14 +9,13 @@
   align-items: center;
   position: absolute;
   opacity: 0;
-  border: $border-width solid $color-primary;
-  border-radius: 0.75rem;
+  border: $border-width solid $color-primary-light;
+  border-radius: $border-radius;
   padding: 0.5rem;
   white-space: nowrap;
-  box-shadow: 1px 1px 4px 1px $color-primary;
   background-color: white;
   z-index: 100;
-  transition: opacity 0.2s ease-in-out;
+  transition: opacity 0.1s ease-in-out;
 
   &__content {
     width: 100%;
@@ -74,7 +73,6 @@
 
   &--left,
   &--right {
-    margin: 0 1rem;
     top: 50%;
     transform: translateY(-50%);
 
@@ -98,7 +96,7 @@
     }
 
     &::before {
-      border-left: $triangle-height + $border-width solid $color-primary;
+      border-left: $triangle-height + $border-width solid $color-primary-light;
     }
 
     &::after {
@@ -115,7 +113,7 @@
     }
 
     &::before {
-      border-right: $triangle-height + $border-width solid $color-primary;
+      border-right: $triangle-height + $border-width solid $color-primary-light;
     }
 
     &::after {
@@ -149,7 +147,7 @@
     }
 
     &::before {
-      border-top: $triangle-height + $border-width solid $color-primary;
+      border-top: $triangle-height + $border-width solid $color-primary-light;
     }
 
     &::after {
@@ -166,7 +164,7 @@
     }
 
     &::before {
-      border-bottom: $triangle-height + $border-width solid $color-primary;
+      border-bottom: $triangle-height + $border-width solid $color-primary-light;
     }
 
     &::after {

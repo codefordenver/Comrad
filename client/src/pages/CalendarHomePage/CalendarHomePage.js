@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../../actions/shows';
-import _ from 'lodash';
 
 import Alert from '../../components/Alert';
 
 import ShowCalendar from '../../components/Shows/ShowCalendar';
-import ReduxForm from '../../components/Shows/reduxFormPage';
 
 import {
   getShowsData,

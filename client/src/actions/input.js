@@ -26,7 +26,7 @@ export const inputUpdate = value => async dispatch => {
 };
 
 /**
- * Special Show Form Actions
+ * Show Form Actions
  */
 export const inputUpdateShowTime = (timeType, timeValue) => async dispatch => {
   try {
@@ -52,9 +52,6 @@ export const inputUpdateShowDate = (dateType, dateValue) => async dispatch => {
 
 export const inputUpdateShowRepeatCheckbox = value => async dispatch => {
   try {
-    console.log('Repeat Payload');
-    console.log(value);
-
     dispatch({ type: INPUT_UPDATE_SHOW_REPEAT_CHECKBOX, payload: value });
   } catch (e) {
     console.error(e);

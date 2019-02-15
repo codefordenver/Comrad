@@ -13,6 +13,7 @@ class ShowModal extends Component {
 
   submit = values => {
     this.props.postShow(values, this.handleFormSubmit);
+    console.log(values);
   };
 
   render() {

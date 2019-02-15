@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 
-import moment from 'moment';
-
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 import { SingleDatePicker } from 'react-dates';
@@ -12,16 +10,17 @@ class DatePicker extends Component {
     this.state = { focused: false };
   }
   componentDidMount() {
-    //const { dateType } = this.props;
+    const { value } = this.props.input;
+
+    if (value) {
+      this.setState({ date: value });
+    }
   }
 
   render() {
     const {
       input: { name, value, onChange },
     } = this.props;
-
-    console.log('DatePicker Props');
-    console.log(this.props);
 
     return (
       <SingleDatePicker

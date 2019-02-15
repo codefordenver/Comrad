@@ -40,7 +40,26 @@ class Calendar extends Component {
   }
 
   handleDateChange = dates => {
-    alert('Should probably implement date updates...');
+    const { searchShow } = this.props;
+
+    if (Array.isArray(dates)) {
+      if (dates.length === 1) {
+        //For when changing days
+        const dayStart = moment(dates[0]).subtract(1, 'week');
+        const dayEnd = moment(dates[0]).add(1, 'week');
+        searchShow(dayStart, dayEnd);
+      } else {
+        //For when changing weeks
+        const rangeStart = moment(dates[0]).subtract(1, 'months');
+        const rangeEnd = moment(dates[dates.length - 1]).add(1, 'months');
+        searchShow(rangeStart, rangeEnd);
+      }
+    } else {
+      //For when changing months/agenda
+      const objectStart = moment(dates.start).subtract(2, 'month');
+      const objectEnd = moment(dates.end).add(2, 'month');
+      searchShow(objectStart, objectEnd);
+    }
   };
 
   convertShowsToArray = shows => {
@@ -84,6 +103,7 @@ class Calendar extends Component {
           selectable
           localizer={localizer}
           events={this.convertShowsToArray(shows)}
+          defaultDate={new Date()}
           defaultView={BigCalendar.Views.WEEK}
           onSelectEvent={show => this.showViewShowModal(show)}
           onSelectSlot={show => this.showNewShowModal(show)}
@@ -91,6 +111,7 @@ class Calendar extends Component {
           startAccessor={show => new Date(show.show_start_time_utc)}
           endAccessor={show => new Date(show.show_end_time_utc)}
           onRangeChange={dateRange => this.handleDateChange(dateRange)}
+          onNavigate={view => console.log(view)}
         />
 
         <ShowModalController />

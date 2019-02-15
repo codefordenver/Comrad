@@ -1,49 +1,21 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../../../actions';
-import { REGEX_ANY_CHARS } from '../../../utils/validation';
 import { Field, reduxForm, formValueSelector } from 'redux-form';
 import moment from 'moment';
 
+import Repeat from './Repeat';
+
 import Button from '../../Button';
 import Card from '../../Card';
-import Checkbox from '../../Checkbox';
-import Form from '../../Form';
-import Input from '../../Input';
-
 import PickerDate from './PickerDate';
-import PickerTime from './PickerTime';
-
-import Repeat from './Repeat';
 
 import ModalClose from '../../Modal/Modal__Button_Close';
 
 class NewShowForm extends Component {
-  componentDidMount() {
-    this.props.inputUpdate({ repeat: false });
-  }
-
-  handleInputChange = e => {
-    const { name, value } = e.target;
-    this.props.inputUpdate({ [name]: value });
-  };
-
-  handleCheckboxChange = e => {
-    const { repeat } = this.props.input;
-    this.props.inputUpdateShowRepeatCheckbox({ repeat: !repeat });
-  };
-
-  handleFormSubmit = () => {
-    this.props.setModalVisibility(null, false);
-  };
-
-  handleFormCancel = e => {
-    e.preventDefault();
-    this.props.setModalVisibility(null, false);
-  };
-
   render() {
     const { isRepeat } = this.props;
+
     return (
       <main className="show show__padding">
         <section className="show__body">
@@ -94,48 +66,28 @@ class NewShowForm extends Component {
                 </div>
 
                 <div className="show__grid_span_3">
-                  Summary
-                  <Input
-                    name="summary"
-                    onChange={this.handleInputChange}
-                    type="text"
-                  />
+                  <label htmlFor="Summary">Summary</label>
+                  <Field name="summary" component="input" type="text" />
                 </div>
 
                 <div className="show__grid_span_3">
-                  Description
-                  <Input
-                    name="description"
-                    onChange={this.handleInputChange}
-                    type="text"
-                  />
+                  <label htmlFor="Description">Description</label>
+                  <Field name="description" component="input" type="text" />
                 </div>
 
                 <div>
-                  Producer
-                  <Input
-                    name="producer"
-                    onChange={this.handleInputChange}
-                    type="text"
-                  />
+                  <label htmlFor="Producer">Producer</label>
+                  <Field name="producer" component="input" type="text" />
                 </div>
 
                 <div>
-                  Host
-                  <Input
-                    name="host"
-                    onChange={this.handleInputChange}
-                    type="text"
-                  />
+                  <label htmlFor="Host">Host</label>
+                  <Field name="host" component="input" type="text" />
                 </div>
 
                 <div>
-                  Playlist
-                  <Input
-                    name="playlist"
-                    onChange={this.handleInputChange}
-                    type="text"
-                  />
+                  <label htmlFor="Playlist">Playlist</label>
+                  <Field name="playlist" component="input" type="text" />
                 </div>
 
                 <div className="show__grid_container show__grid_span_3">
@@ -161,11 +113,13 @@ class NewShowForm extends Component {
 const selector = formValueSelector('newShow');
 function mapStateToProps(state) {
   const isRepeat = selector(state, 'repeat');
-  console.log(state.input.show_start_time_utc);
+  const { show_start_time_utc, show_end_time_utc } = state.input;
   return {
     initialValues: {
-      show_start_time_utc: moment(state.input.show_start_time_utc),
-      show_end_time_utc: moment(state.input.show_end_time_utc),
+      show_start_time_utc: moment(show_start_time_utc),
+      show_end_time_utc: moment(show_end_time_utc),
+      repeat_start_date: moment(show_end_time_utc),
+      repeat_end_date: moment(show_end_time_utc),
       repeat: false,
     },
     isRepeat,

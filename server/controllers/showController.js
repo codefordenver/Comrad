@@ -4,6 +4,14 @@ const { RRule } = require('RRule');
 const _ = require('lodash');
 
 function create_new_show(req, res) {
+  let { repeatType } = req.body;
+
+  if (repeatType) {
+    repeatType = JSON.parse(repeatType);
+  } else {
+    repeatType = {};
+  }
+
   return {
     status: 'Active',
     show_details: {
@@ -22,15 +30,15 @@ function create_new_show(req, res) {
 
     is_recurring: req.body.repeat,
     repeat_rule: {
-      frequency: req.body.repeatType,
+      frequency: repeatType.freq,
       repeat_start_date: moment(req.body.repeat_start_date).startOf('day'),
       repeat_end_date: moment(req.body.repeat_end_date).endOf('day'),
-      count: req.body.count,
-      interval: req.body.interval,
-      byweekday: req.body.byweekday,
-      bymonth: req.body.bymonth,
-      bysetpos: req.body.bysetpos,
-      bymonthday: req.body.bymonthday,
+      count: repeatType.count,
+      interval: repeatType.interval,
+      byweekday: repeatType.byweekday,
+      bymonth: repeatType.bymonth,
+      bysetpos: repeatType.bysetpos,
+      bymonthday: repeatType.bymonthday,
     },
   };
 }
@@ -131,7 +139,7 @@ function createRRule(show) {
   let newRRule = {};
 
   if (frequency) {
-    newRRule.freq = RRule[frequency];
+    newRRule.freq = frequency;
   }
 
   if (repeat_start_date) {
@@ -151,19 +159,19 @@ function createRRule(show) {
   }
 
   if (byweekday) {
-    newRRule.byweekday = byweekday;
+    newRRule.byweekday = byweekday.map(day => RRule[day]);
   }
 
   if (bymonth) {
-    newRRule.bymonth = bymonth;
+    newRRule.bymonth = [bymonth];
   }
 
   if (bysetpos) {
-    newRRule.bysetpos = bysetpos;
+    newRRule.bysetpos = [bysetpos];
   }
 
   if (bymonthday) {
-    newRRule.bymonthday = bymonthday;
+    newRRule.bymonthday = [bymonthday];
   }
 
   return newRRule;
@@ -199,6 +207,9 @@ module.exports = {
     let { startDate, endDate } = req.query;
     startDate = JSON.parse(startDate);
     endDate = JSON.parse(endDate);
+
+    console.log(startDate);
+    console.log(endDate);
 
     db.Show.find()
       .and(findShowQueryByDateRange(startDate, endDate))

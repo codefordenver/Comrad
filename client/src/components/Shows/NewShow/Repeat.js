@@ -1,9 +1,5 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import * as actions from '../../../actions';
-import { Field, reduxForm, formValueSelector } from 'redux-form';
-
-import moment from 'moment';
+import { Field } from 'redux-form';
 
 import RepeatDropdown from './Repeat_Dropdown';
 import PickerDate from './PickerDate';

@@ -3,12 +3,9 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
 class Tooltip extends Component {
-  constructor() {
-    super();
-    this.state = {
-      open: false,
-    };
-  }
+  state = {
+    open: false,
+  };
 
   static propTypes = {
     children: PropTypes.node.isRequired,

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import comradLogo from '../../images/comrad-logo-white.png';
 import DropdownUser, { DropdownUserItem } from '../DropdownUser';
-import kgnuLogo from '../../images/kgnu_logo.png';
+import kgnuLogo from '../../images/kgnu-logo-white-gray.png';
 import Logo from '../Logo';
 
 class Navbar extends Component {

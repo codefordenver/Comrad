@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+import { reducer as formReducer } from 'redux-form';
 
 import artist from './artist';
 import auth from './auth';
@@ -13,6 +14,7 @@ import users from './users';
 export default combineReducers({
   artist,
   auth,
+  form: formReducer,
   input,
   library,
   search,

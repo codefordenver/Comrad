@@ -1,135 +1,70 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import { connect } from 'react-redux';
-import { inputClear, inputUpdate } from '../../actions/index';
-import validation from '../../utils/validation';
 
-import Feedback from '../Feedback';
-import Label from '../Label';
+export const ICON_SET = {
+  search: <i className="icon fas fa-search" />,
+  user: <i className="icon fas fa-user" />,
+};
+
+const InputError = props => {
+  const { children } = props;
+  return <div className="input__error">{children}</div>;
+};
+
+const InputLabel = props => {
+  const { active, children, dirty, error, touched } = props;
+
+  return (
+    <div
+      className={classnames(
+        'input__label',
+        active && 'active',
+        dirty && 'dirty',
+        touched && error && 'error',
+      )}
+    >
+      {children}
+    </div>
+  );
+};
 
 class Input extends Component {
-  state = {};
-
-  myRef = React.createRef();
-
-  componentDidUpdate() {
-    const { current } = this.myRef;
-    this.toggleActiveClass(current);
-  }
-
-  componentWillUnmount() {
-    const { name, inputClear } = this.props;
-    inputClear(name);
-  }
-
-  toggleActiveClass(current) {
-    const { classList, value } = current;
-    if (value.length > 0) {
-      return classList.add('active');
-    }
-
-    return classList.remove('active');
-  }
-
-  handleInputChange = e => {
-    const { inputUpdate, validate } = this.props;
-    const { classList, name, value } = e.target;
-
-    if (validate) {
-      const valid = validation.input(validate, value);
-      valid ? classList.remove('invalid') : classList.add('invalid');
-    }
-    inputUpdate({ [name]: value });
-  };
-
-  handleBlurChange = e => {
-    const { classList, value } = e.target;
-    const { validate } = this.props;
-
-    if (validate) {
-      const valid = validation.input(validate, value);
-      valid ? classList.remove('invalid') : classList.add('invalid');
-    }
-  };
-
-  /**
-   * If a string is passed, it will return a react component based on it
-   * @param {string} icon
-   * @return {element}
-   */
-  getIconClass(icon) {
-    switch (icon) {
-      case 'search':
-        return <i className="icon fas fa-search" />;
-      case 'user':
-        return <i className="icon fas fa-user" />;
-      default:
-        break;
-    }
-  }
-
-  /**
-   * If there is feedback, adding some extra margin to bottom to include it
-   * @param {string} feedback
-   * @return {string}
-   */
-  getMarginClass(feedback = '') {
-    switch (feedback.length > 0) {
-      case true:
-        return 'mb-3';
-      default:
-        return false;
-    }
-  }
-
   render() {
-    const { getIconClass, getMarginClass, myRef, props } = this;
+    const { props } = this;
 
     const {
-      feedback,
-      icon,
-      invalid,
-      label,
-      name,
-      type,
       className,
-      validate,
+      icon,
+      input,
+      label,
+      meta: { active, dirty, error, touched },
+      type,
     } = props;
 
+    console.log(label + ':', props.meta);
+
     return (
-      <div
-        className={classnames(
-          'form-group',
-          getMarginClass(feedback),
-          className,
-        )}
-      >
+      <div className={classnames('form-group', className)}>
         <input
-          ref={myRef}
-          className={classnames('input', invalid && 'invalid')}
-          name={name}
+          className={classnames('input', touched && error && 'error')}
           type={type}
-          validate={validate}
-          onBlur={this.handleBlurChange}
-          onChange={this.handleInputChange}
+          {...input}
         />
-        {label && <Label>{label}</Label>}
-        {feedback && <Feedback>{feedback}</Feedback>}
-        {icon && getIconClass(icon)}
+        {label && (
+          <InputLabel
+            active={active}
+            dirty={dirty}
+            error={error}
+            touched={touched}
+          >
+            {label}
+          </InputLabel>
+        )}
+        {touched && error && <InputError>{error}</InputError>}
+        {icon && ICON_SET[icon]}
       </div>
     );
   }
 }
 
-function mapStateToProps(state) {
-  const { input } = state;
-
-  return {
-    input,
-  };
-}
-
-export default connect(
-  mapStateToProps,
-  { inputClear, inputUpdate },
-)(Input);
+export default Input;

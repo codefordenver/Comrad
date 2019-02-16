@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { REGEX_ANY_CHARS } from '../../utils/validation';
+// import { REGEX_ANY_CHARS } from '../../utils/validation';
 import { resetPassword } from '../../actions';
 
 import Alert from '../../components/Alert';
@@ -21,13 +21,13 @@ class ResetPasswordForm extends Component {
           type="password"
           feedback="Please Enter Password"
           label="New Password"
-          validate={REGEX_ANY_CHARS}
+          // validate={REGEX_ANY_CHARS}
         />
         <Input
           name="confirm_password"
           type="password"
           label="Confirm New Password"
-          validate={REGEX_ANY_CHARS}
+          // validate={REGEX_ANY_CHARS}
           feedback="Please Enter Password"
         />
         <Button color="primary" type="submit">

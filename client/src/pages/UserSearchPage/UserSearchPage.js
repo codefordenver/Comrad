@@ -29,12 +29,12 @@ class UserSearchPage extends Component {
             <div className="user-search__header">
               <div>
                 <Form action={usersSearch}>
-                  <Input
+                  {/* <Input
                     className="mb-1"
                     label="Search"
                     name="q"
                     icon="search"
-                  />
+                  /> */}
                   <Button type="submit">Search</Button>
                 </Form>
               </div>

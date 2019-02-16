@@ -2,46 +2,51 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../../actions/shows';
 
+import Alert from '../../components/Alert';
+
+import ShowCalendar from '../../components/Shows/ShowCalendar';
+
+import {
+  getShowsData,
+  fetchingShowsStatus,
+  postingShowsStatus,
+  errorShowsMessage,
+} from '../../reducers/shows';
+
 class CalendarHomePage extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       newShow: null,
-      shows: [],
+      shows: {},
     };
-  }
-
-  componentDidMount() {
-    const setInitialShows = async () => {
-      //Change to getShows once mongo is setup
-      const showsProps = await this.props.shows;
-      this.setState({ shows: showsProps });
-    };
-
-    setInitialShows();
   }
 
   render() {
+    const { shows, showsFetching, showsPosting, showsError } = this.props;
     return (
       <div className="calendar__view">
-        {this.state.shows.map(show => {
-          return (
-            <div>
-              <h1>{show.title}</h1>
-              <p> Start: {show.start.toString()}</p>
-              <p> End: {show.end.toString()}</p>
-            </div>
-          );
-        })}
+        {showsError && (
+          <Alert
+            type="danger"
+            header="Error Loading Shows"
+            text={showsError.response.data.message}
+          />
+        )}
+
+        <ShowCalendar />
       </div>
     );
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps({ shows }) {
   return {
-    shows: state.shows,
+    shows: getShowsData(shows),
+    showsFetching: fetchingShowsStatus(shows),
+    showsPosting: postingShowsStatus(shows),
+    showsError: errorShowsMessage(shows),
   };
 }
 

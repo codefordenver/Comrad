@@ -13,7 +13,10 @@
   },
   "dependencies": {
     "classnames": "^2.2.6",
+    "lodash": "^4.17.11",
     "react": "^16.4.2",
+    "react-big-calendar": "^0.20.2",
+    "react-dates": "^18.3.0",
     "react-dom": "^16.4.2",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.3.1",
@@ -25,6 +28,7 @@
     "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
+    "axios-mock-adapter": "^1.15.0",
     "babel-loader": "^8.0.5",
     "concurrently": "^3.6.1",
     "enzyme": "^3.5.0",

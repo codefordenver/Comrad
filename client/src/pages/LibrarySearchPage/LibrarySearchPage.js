@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Field, reduxForm } from 'redux-form';
 import axios from 'axios';
 
 import ReactTable from 'react-table';
@@ -109,7 +110,7 @@ class LibrarySearchPage extends Component {
   };
 
   render() {
-    const { error } = this.props;
+    const { error, handleSubmit } = this.props;
 
     const columns = [
       {
@@ -200,14 +201,15 @@ class LibrarySearchPage extends Component {
           <CardBody>
             <div className="library-search__header">
               <div>
-                <Form action={this.searchLibrary}>
-                  <Input
+                <form onSubmit={handleSubmit(this.searchLibrary)}>
+                  <Field
                     className="mb-1"
+                    component={Input}
                     label="Search"
                     name="q"
-                    icon="search"
+                    type="text"
                   />
-                </Form>
+                </form>
                 <div className="library-search__filters">
                   <span
                     className={
@@ -289,7 +291,11 @@ function mapStateToProps(state) {
   };
 }
 
+const ReduxLibrarySearchPage = reduxForm({
+  form: 'librarySearch',
+})(LibrarySearchPage);
+
 export default connect(
   mapStateToProps,
   {},
-)(LibrarySearchPage);
+)(ReduxLibrarySearchPage);

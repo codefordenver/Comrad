@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { REGEX_EMAIL } from '../../utils/validation';
+// import { REGEX_EMAIL } from '../../utils/validation';
 import { requestReset } from '../../actions';
 
 import Alert from '../../components/Alert';
@@ -22,7 +22,7 @@ class ResetForm extends Component {
           type="text"
           feedback="Please Enter Email Address"
           label="Email"
-          validate={REGEX_EMAIL}
+          // validate={REGEX_EMAIL}
           disabled={user.loading}
         />
 

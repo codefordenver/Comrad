@@ -15,6 +15,7 @@ import users from './users';
 export default combineReducers({
   artist,
   auth,
+  form: formReducer,
   input,
   library,
   search,

@@ -1,19 +1,16 @@
 import axios from 'axios';
 import { ALERT_UPDATE, AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR } from './types';
 
-export const loginUser = (input, callback) => async dispatch => {
+export const authLogin = (values, callback) => async dispatch => {
   try {
-    const { email, password } = input;
+    const { email, password } = values;
     const response = await axios.post('/api/auth/login', { email, password });
 
     dispatch({ type: AUTH_LOGIN, payload: response.data });
 
     callback();
   } catch (e) {
-    dispatch({
-      type: ALERT_UPDATE,
-      payload: { type: 'error', text: e.response.statusText },
-    });
+    console.log(e);
   }
 };
 

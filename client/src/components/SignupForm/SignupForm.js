@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { userAdd } from '../../actions';
-import { REGEX_ANY_CHARS, REGEX_EMAIL } from '../../utils/validation';
+// import { REGEX_ANY_CHARS, REGEX_EMAIL } from '../../utils/validation';
 
 import Alert from '../Alert';
 import Button from '../Button';
@@ -27,21 +27,21 @@ class SignupForm extends Component {
           name="email"
           type="email"
           label="Email Address"
-          validate={REGEX_EMAIL}
+          // validate={REGEX_EMAIL}
           feedback="Please Enter Email Address"
         />
         <Input
           name="password"
           type="password"
           label="Password"
-          validate={REGEX_ANY_CHARS}
+          // validate={REGEX_ANY_CHARS}
           feedback="Please Enter Password"
         />
         <Input
           name="confirm_password"
           type="password"
           label="Confirm Password"
-          validate={REGEX_ANY_CHARS}
+          // validate={REGEX_ANY_CHARS}
           feedback="Please Confirm Password"
         />
         <Button color="primary" type="submit">

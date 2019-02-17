@@ -4,6 +4,7 @@ export * from './input';
 export * from './library';
 export * from './password';
 export * from './search';
+export * from './modals';
 export * from './shows';
 export * from './traffic';
 export * from './user';

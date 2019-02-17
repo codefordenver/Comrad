@@ -4,6 +4,8 @@ import {
   SHOW_POST,
   SHOW_UPDATE,
   SHOW_DELETE,
+  SHOW_DELETE_SERIES,
+  SHOW_DELETE_INSTANCE,
   SHOW_SEARCH,
   SHOW_ERROR,
 } from './types';
@@ -18,13 +20,19 @@ export const getShow = show => async dispatch => {
   }
 };
 
-export const postShow = show => async dispatch => {
+export const postShow = (input, callback) => async dispatch => {
+  console.log('Posting Show');
+  console.log(input);
+  const show = input;
   try {
-    console.log('Show Post Action: ' + show);
+    const response = await axios.post(`/api/show/`, show);
 
-    dispatch({ type: SHOW_POST, payload: show });
+    dispatch({ type: SHOW_POST, payload: response.data });
+
+    callback();
   } catch (e) {
-    dispatch({ type: SHOW_ERROR, payload: 'Posting New Show Error' });
+    console.log(e);
+    dispatch({ type: SHOW_ERROR, payload: e });
   }
 };
 
@@ -40,20 +48,30 @@ export const updateShow = (existingShow, updatedShow) => async dispatch => {
 
 export const deleteShow = show => async dispatch => {
   try {
-    console.log('Show Delete Action: ' + show);
-
-    dispatch({ type: SHOW_DELETE, payload: show });
+    const response = await axios.delete(`/api/show/${show}`);
+    dispatch({ type: SHOW_DELETE, payload: response.data });
   } catch (e) {
-    dispatch({ type: SHOW_ERROR, payload: 'Delete Show Error' });
+    dispatch({ type: SHOW_ERROR, payload: e });
   }
 };
 
-export const searchShow = show => async dispatch => {
+export const deleteShowSeries = show => async dispatch => {
   try {
-    console.log('Show Search Action: ' + show);
-
-    dispatch({ type: SHOW_SEARCH, payload: show });
+    const response = await axios.delete(`/api/show/${show}`);
+    dispatch({ type: SHOW_DELETE_SERIES, payload: response.data });
   } catch (e) {
-    dispatch({ type: SHOW_ERROR, payload: 'Search Show Error' });
+    dispatch({ type: SHOW_ERROR, payload: e });
+  }
+};
+
+export const searchShow = (startDate, endDate) => async dispatch => {
+  try {
+    const response = await axios.get(`/api/show/`, {
+      params: { startDate, endDate },
+    });
+
+    dispatch({ type: SHOW_SEARCH, payload: response.data });
+  } catch (e) {
+    dispatch({ type: SHOW_ERROR, payload: e });
   }
 };

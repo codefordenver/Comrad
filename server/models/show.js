@@ -22,12 +22,15 @@ const showSchema = new Schema({
 
   is_recurring: Boolean,
   repeat_rule: {
-    frequency: String,
+    frequency: Number,
     repeat_start_date: Date,
     repeat_end_date: Date,
     count: Number,
-    byweekly: String,
-    bymonth: String,
+    interval: Number,
+    byweekday: [String],
+    bymonth: Number,
+    bysetpos: Number,
+    bymonthday: Number,
   },
 
   exclude_rule: String,

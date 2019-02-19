@@ -4,11 +4,16 @@ import { connect } from 'react-redux';
 import * as actions from '../../actions/auth';
 
 class NavTest extends Component {
+  constructor(props) {
+    super(props);
+    this.handleQuickSignIn = this.handleQuickSignIn.bind(this);
+  }
+
   handleQuickSignIn = () => {
     const email = process.env.REACT_APP_TEST_EMAIL;
     const password = process.env.REACT_APP_TEST_PASSWORD;
 
-    this.props.loginUser({ email, password }, () => {
+    this.props.authLogin({ email, password }, () => {
       this.props.history.push('/dashboard');
     });
   };

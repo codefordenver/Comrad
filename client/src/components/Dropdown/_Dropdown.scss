@@ -7,6 +7,18 @@
   &__button {
 
   }
+  
+  &__icon {
+    color: white;
+    cursor: pointer;
+    font-size: 2.5rem;
+    width: 100%;
+    
+    i {
+      display: block;
+      padding: 0px 3px;
+    }
+  }
 
   &__circle {
     display: grid;
@@ -61,6 +73,10 @@
     transform: translateY(-3px);
     transition: all 0.2s;
     z-index: -1;
+    
+    &--below-and-align-against-right {
+      right: 0px;
+    }
 
     &.active {
       display: block;
@@ -74,7 +90,7 @@
   &__item {
     color: $color-primary-light;
     font-size: 1.4rem;
-
+    display: block;
     cursor: pointer;
     padding: 0.5rem 1rem;
 

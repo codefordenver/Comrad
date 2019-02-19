@@ -19,7 +19,6 @@ class App extends Component {
   componentDidMount() {
     const { authFetch } = this.props;
     authFetch();
-    console.log('authFetch');
   }
 
   render() {

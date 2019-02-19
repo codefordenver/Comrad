@@ -14,16 +14,40 @@ class Sidebar extends Component {
         tooltipText: 'Home',
       },
       {
+        name: 'microphone',
+        url: '/show-builder',
+        iconClass: 'fas fa-microphone',
+        tooltipText: 'Show Builder',
+      },
+      {
+        name: 'calendar-check',
+        url: '/traffic-calendar',
+        iconClass: 'fas fa-calendar-check',
+        tooltipText: 'Traffic Calendar',
+      },
+      {
+        name: 'calendar',
+        url: '/calendar',
+        iconClass: 'fas fa-calendar-alt',
+        tooltipText: 'Show Calendar',
+      },
+      {
         name: 'library',
         url: '/library',
         iconClass: 'fas fa-music',
         tooltipText: 'Music Library',
       },
       {
-        name: 'microphone',
-        url: '/',
-        iconClass: 'fas fa-microphone',
-        tooltipText: 'Shows',
+        name: 'copy',
+        url: '/resources',
+        iconClass: 'fas fa-copy',
+        tooltipText: 'Resources',
+      },
+      {
+        name: 'report',
+        url: '/reporting',
+        iconClass: 'fas fa-chart-bar',
+        tooltipText: 'Reporting',
       },
       {
         name: 'user',
@@ -31,30 +55,7 @@ class Sidebar extends Component {
         iconClass: 'fas fa-user',
         tooltipText: 'Users',
       },
-      {
-        name: 'calendar',
-        url: '/calendar',
-        iconClass: 'fas fa-calendar-alt',
-        tooltipText: 'Calendars',
-      },
-      {
-        name: 'calendar-check',
-        url: '/',
-        iconClass: 'fas fa-calendar-check',
-        tooltipText: 'Calendar with a Checkbox',
-      },
-      {
-        name: 'report',
-        url: '/report',
-        iconClass: 'fas fa-chart-bar',
-        tooltipText: 'Report',
-      },
-      {
-        name: 'copy',
-        url: '/',
-        iconClass: 'fas fa-copy',
-        tooltipText: 'Copy?',
-      },
+      
     ];
 
     return (

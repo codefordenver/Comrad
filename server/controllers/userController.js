@@ -97,6 +97,17 @@ module.exports = {
       .catch(err => res.status(422).json(err));
   },
 
+  async deleteByEmail(req, res) {
+    const { email } = req.body;
+
+    db.User.findOne({ 'contact.email': email })
+      .then(dbUser => {
+        dbUser.remove();
+      })
+      .then(response => res.json(response))
+      .catch(err => res.json(err));
+  },
+
   async search(req, res) {
     const { q } = req.query;
     const re = new RegExp(q, 'i');
@@ -116,28 +127,9 @@ module.exports = {
   },
 
   async create(req, res, next) {
-    const { contact, password } = req.body;
-    const { email } = contact;
-
-    if (!email || !password) {
-      return res
-        .status(422)
-        .json({ errorMessage: 'You must provide email and password' });
-    }
-
-    db.User.findOne({ email }, function(err, existingUser) {
-      if (err) {
-        return next(err);
-      }
-
-      if (existingUser) {
-        return res.status(422).json({ errorMessage: 'User already exists' });
-      }
-
-      db.User.create(req.body)
-        .then(dbUser => res.json(dbUser))
-        .catch(err => res.status(422).json({ errorMessage: err.message }));
-    });
+    db.User.create(req.body)
+      .then(dbUser => res.json(dbUser))
+      .catch(err => res.status(422).json({ error: err.message }));
   },
 
   async update(req, res) {
@@ -212,7 +204,7 @@ module.exports = {
     ];
 
     const randomGender = gender[Math.floor(Math.random() * gender.length)];
-    const randomPermissions =
+    const randomPermission =
       listOfPermissions[Math.floor(Math.random() * listOfPermissions.length)];
     const randomString = chance.string(
       {
@@ -246,8 +238,8 @@ module.exports = {
     const email = `${first_name}.${last_name}@mail.com`;
     const slack = `@${first_name + last_name}`;
     const on_air_name = `DJ ${first_name} ${last_name}`;
-    const permissions = randomPermissions;
-    const status = true;
+    const permission = randomPermission;
+    const status = 'active';
     const can_delete = Math.random() >= 0.5;
     const registered = chance.date({
       month: randomNumberGenerator(0, 11),
@@ -260,10 +252,12 @@ module.exports = {
     const reset_token_expiry = null;
 
     const userData = {
-      first_name,
-      last_name,
-      date_of_birth,
-      image: image.data,
+      profile: {
+        first_name,
+        last_name,
+        date_of_birth,
+        image: image.data,
+      },
       location: {
         street,
         city,
@@ -277,18 +271,18 @@ module.exports = {
       },
       station: {
         on_air_name,
-        permissions,
+        permission,
         status,
         can_delete,
         registered,
       },
-      password,
-      fake_user_password,
-      reset_token,
-      reset_token_expiry,
+      auth: {
+        password,
+        fake_user_password,
+        reset_token,
+        reset_token_expiry,
+      },
     };
-
-    console.log(userData);
 
     db.User.create(userData)
       .then(dbUser => res.json(dbUser))

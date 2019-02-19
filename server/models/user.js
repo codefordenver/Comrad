@@ -4,22 +4,24 @@ const Schema = mongoose.Schema;
 const bcrypt = require('bcrypt-nodejs');
 
 const userSchema = new Schema({
-  first_name: {
-    type: String,
-    required: true,
-  },
+  profile: {
+    first_name: {
+      type: String,
+      required: true,
+    },
 
-  last_name: {
-    type: String,
-    required: true,
-  },
+    last_name: {
+      type: String,
+      required: true,
+    },
 
-  date_of_birth: {
-    type: String,
-  },
+    date_of_birth: {
+      type: Date,
+    },
 
-  image: {
-    type: String,
+    image: {
+      type: String,
+    },
   },
 
   location: {
@@ -70,7 +72,7 @@ const userSchema = new Schema({
       type: String,
     },
 
-    permissions: {
+    permission: {
       type: String,
       enum: ['dj', 'underwriting', 'show_producer', 'full_access', 'admin'],
       required: true,
@@ -79,9 +81,9 @@ const userSchema = new Schema({
 
     status: {
       type: String,
-      enum: [true, false],
+      enum: ['active', 'inactive'],
       required: true,
-      default: true,
+      default: 'active',
     },
 
     can_delete: {
@@ -95,23 +97,25 @@ const userSchema = new Schema({
     },
   },
 
-  password: {
-    type: String,
-    required: true,
-  },
+  auth: {
+    password: {
+      type: String,
+      required: true,
+    },
 
-  fake_user_password: {
-    type: String,
-  },
+    fake_user_password: {
+      type: String,
+    },
 
-  reset_token: {
-    type: String,
-    default: null,
-  },
+    reset_token: {
+      type: String,
+      default: null,
+    },
 
-  reset_token_expiry: {
-    type: Number,
-    default: null,
+    reset_token_expiry: {
+      type: Number,
+      default: null,
+    },
   },
 });
 
@@ -123,19 +127,19 @@ userSchema.pre('save', function(next) {
       return next(err);
     }
 
-    bcrypt.hash(user.password, salt, null, function(err, hash) {
+    bcrypt.hash(user.auth.password, salt, null, function(err, hash) {
       if (err) {
         return next(err);
       }
 
-      user.password = hash;
+      user.auth.password = hash;
       next();
     });
   });
 });
 
 userSchema.methods.comparePassword = function(candidatePassword, callback) {
-  bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
+  bcrypt.compare(candidatePassword, this.auth.password, function(err, isMatch) {
     if (err) {
       return callback(err);
     }

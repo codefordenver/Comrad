@@ -17,7 +17,6 @@ const localOptions = { usernameField: 'email' };
 passport.use(
   new LocalStrategy(localOptions, async (email, password, done) => {
     db.User.findOne({ 'contact.email': email }, (err, user) => {
-      console.log('Passport ', user);
       if (err) {
         return done(err);
       }

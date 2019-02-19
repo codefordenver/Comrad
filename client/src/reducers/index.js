@@ -24,5 +24,4 @@ export default combineReducers({
   traffic,
   user,
   users,
-  form: formReducer,
 });

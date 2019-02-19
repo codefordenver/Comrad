@@ -6,9 +6,9 @@ import {
 } from '../actions/types';
 
 const initialState = {
-  data: [],
+  doc: {},
+  error: null,
   loading: false,
-  message: {},
 };
 
 export default (state = initialState, { type, payload }) => {

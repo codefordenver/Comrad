@@ -32,16 +32,8 @@ class Input extends Component {
   render() {
     const { props } = this;
 
-    const {
-      className,
-      icon,
-      input,
-      label,
-      meta: { active, dirty, error, touched },
-      type,
-    } = props;
-
-    console.log(label + ':', props.meta);
+    const { className, icon, input, label, meta, type } = props;
+    const { error, touched } = meta;
 
     return (
       <div className={classnames('form-group', className)}>
@@ -50,16 +42,7 @@ class Input extends Component {
           type={type}
           {...input}
         />
-        {label && (
-          <InputLabel
-            active={active}
-            dirty={dirty}
-            error={error}
-            touched={touched}
-          >
-            {label}
-          </InputLabel>
-        )}
+        {label && <InputLabel {...meta}>{label}</InputLabel>}
         {touched && error && <InputError>{error}</InputError>}
         {icon && ICON_SET[icon]}
       </div>

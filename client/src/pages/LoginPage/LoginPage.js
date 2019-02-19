@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 import Button from '../../components/Button';
-// import LoginForm from '../../components/LoginForm';
-import FormUserLogin from '../../components/FormUserLogin';
+import FormAuthLogin from '../../components/FormAuthLogin';
 
 class LoginPage extends Component {
   render() {
@@ -10,9 +10,9 @@ class LoginPage extends Component {
 
     return (
       <div className="login-page">
+        <p>Login to your account</p>
         <div className="login-page__form">
-          {/* <LoginForm {...this.props} /> */}
-          <FormUserLogin {...props} />
+          <FormAuthLogin {...props} />
         </div>
         <div className="login-page__reset-button">
           <Button to="/reset">Reset Password</Button>

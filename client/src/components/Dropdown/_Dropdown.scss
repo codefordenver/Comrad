@@ -56,7 +56,10 @@
       line-height: $height;
     }
     
-    svg {
+    i {
+      display: grid;
+      align-content: center;
+      
       padding: 1rem;
       height: $height;
     }

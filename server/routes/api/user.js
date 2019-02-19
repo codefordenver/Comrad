@@ -15,12 +15,14 @@ router.route('/search').get(userController.search);
 // Permission Updates
 router.route('/permission/:id').put(userController.updatePermission);
 
+router.route('/email').delete(userController.deleteByEmail);
+
+router.route('/random').post(userController.randomUser);
+
 router
   .route('/:id')
   .get(userController.findById)
   .put(userController.update)
   .delete(userController.remove);
-
-router.route('/random').post(userController.randomUser);
 
 module.exports = router;

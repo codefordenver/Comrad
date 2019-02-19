@@ -1,6 +1,6 @@
 const db = require('../models');
 const moment = require('moment');
-const { RRule } = require('RRule');
+const { RRule } = require('rrule');
 const _ = require('lodash');
 
 function create_new_show(req, res) {

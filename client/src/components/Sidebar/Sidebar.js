@@ -55,7 +55,6 @@ class Sidebar extends Component {
         iconClass: 'fas fa-user',
         tooltipText: 'Users',
       },
-      
     ];
 
     return (

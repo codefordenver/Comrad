@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import * as actions from '../../actions/auth';
+import { authLogin, authLogout } from '../../actions';
 
 class NavTest extends Component {
   constructor(props) {
@@ -19,7 +19,8 @@ class NavTest extends Component {
   };
 
   handleQuickSignOut = () => {
-    this.props.logoutUser(() => {
+    this.props.authLogout(() => {
+      console.log('Logged Out!');
       this.props.history.push('/');
     });
   };
@@ -27,40 +28,12 @@ class NavTest extends Component {
   render() {
     const links = [
       {
-        text: 'Home',
-        route: '/',
-      },
-      {
-        text: 'Admin',
-        route: '/admin',
-      },
-      {
-        text: 'Builder',
-        route: '/builder',
-      },
-      {
-        text: 'Calendar',
-        route: '/calendar',
-      },
-      {
         text: 'Dashboard',
         route: '/dashboard',
       },
-      {
-        text: 'Library',
-        route: '/library',
-      },
-      {
-        text: 'Report',
-        route: '/report',
-      },
-      {
-        text: 'User',
-        route: '/user/search',
-      },
     ];
 
-    const { status } = this.props.auth;
+    const { permission } = this.props.auth;
 
     return (
       <ul className="nav-test">
@@ -71,9 +44,11 @@ class NavTest extends Component {
         ))}
         <button
           className="button"
-          onClick={status ? this.handleQuickSignOut : this.handleQuickSignIn}
+          onClick={
+            permission ? this.handleQuickSignOut : this.handleQuickSignIn
+          }
         >
-          {status ? 'Quick Sign Out' : 'Quick Sign In'}
+          {permission ? 'Quick Sign Out' : 'Quick Sign In'}
         </button>
       </ul>
     );
@@ -88,5 +63,5 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  actions,
+  { authLogin, authLogout },
 )(NavTest);

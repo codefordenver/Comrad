@@ -9,7 +9,7 @@ class Sidebar extends Component {
     const items = [
       {
         name: 'home',
-        url: '/',
+        url: '/dashboard',
         iconClass: 'fas fa-home',
         tooltipText: 'Home',
       },

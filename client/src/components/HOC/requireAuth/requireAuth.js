@@ -4,24 +4,31 @@ import { connect } from 'react-redux';
 export default ChildComponent => {
   class ComposedComponent extends Component {
     shouldNavigateAway = () => {
-      if (this.props.auth.status === 'fetching') {
+      const { props } = this;
+      const { loading, permission } = props;
+
+      if (loading) {
         return null;
-      } else if (this.props.auth.status === false) {
+      } else if (permission === null) {
         return <div>Not authorized</div>;
       } else {
-        return <ChildComponent {...this.props} />;
+        return <ChildComponent {...props} />;
       }
     };
 
     componentDidMount() {
-      if (!this.props.auth.status) {
-        this.props.history.push('/');
+      const { history, permission } = this.props;
+
+      if (!permission) {
+        history.push('/');
       }
     }
 
     componentDidUpdate() {
-      if (!this.props.auth.status) {
-        this.props.history.push('/');
+      const { history, permission } = this.props;
+
+      if (!permission) {
+        history.push('/');
       }
     }
 
@@ -31,8 +38,11 @@ export default ChildComponent => {
   }
 
   function mapStateToProps(state) {
+    const { loading, permission } = state.auth;
+
     return {
-      auth: state.auth,
+      loading,
+      permission,
     };
   }
 

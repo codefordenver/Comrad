@@ -10,49 +10,53 @@ export const ALERT_CLASS = {
 };
 
 export const ICON_SET = {
-  success: '<i className="fas fa-check-circle" />',
-  info: '<i className="fas fa-info-circle" />',
-  danger: '<i className="fas fa-exclamation-circle" />',
-  warning: '<i className="fas fa-times-circle" />',
+  success: <i className="fas fa-check-circle" />,
+  info: <i className="fas fa-info-circle" />,
+  danger: <i className="fas fa-exclamation-circle" />,
+  warning: <i className="fas fa-times-circle" />,
 };
 
 class Alert extends Component {
-  state = {
-    display: true,
+  static propTypes = {
+    /**
+     * Additional classes added to root element
+     */
+    className: PropTypes.string,
+    /**
+     * Header Text
+     */
+    header: PropTypes.string,
+    /**
+     * Body Text
+     */
+    text: PropTypes.string,
+    /**
+     * Background color based on type
+     */
+    type: PropTypes.oneOf(['success', 'info', 'danger', 'warning']),
   };
 
-  handleDisplayClick = () => {
-    this.setState(prevProps => ({
-      display: !prevProps.display,
-    }));
+  handleToggle = () => {
+    console.log('Handle Toggle Function');
   };
-
-  getDisplayClass(display) {
-    if (display) {
-      return 'open';
-    }
-
-    return 'close';
-  }
 
   render() {
-    const { handleDisplayClick, getDisplayClass, props, state } = this;
-    const { display } = state;
-    const { header, className, type, text, ...rest } = props;
-
+    const { handleToggle, props } = this;
+    const { display, header, className, type, text } = props;
     return (
       <div
         className={classnames(
           'alert',
           ALERT_CLASS[type],
-          getDisplayClass(display),
+          display ? 'open' : 'close',
           className,
         )}
-        {...rest}
       >
-        <div className="alert__times" onClick={handleDisplayClick}>
+        {/* TODO: Need to figure out how to handle clicks */}
+
+        {/* <div className="alert__times" onClick={handleToggle}>
           <i className="fas fa-times" />
-        </div>
+        </div> */}
         <div className="alert__symbol">{ICON_SET[type]}</div>
         <div className="alert__body">
           <div className="alert__header">{header}</div>
@@ -62,24 +66,5 @@ class Alert extends Component {
     );
   }
 }
-
-Alert.propTypes = {
-  /**
-   * Header Text
-   */
-  header: PropTypes.string,
-  /**
-   * Additional classes added to root element
-   */
-  className: PropTypes.string,
-  /**
-   * Body Text
-   */
-  text: PropTypes.string,
-  /**
-   * Background color based on type
-   */
-  type: PropTypes.oneOf(['success', 'info', 'danger', 'warning']),
-};
 
 export default Alert;

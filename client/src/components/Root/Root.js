@@ -7,12 +7,7 @@ import '../../sass/index.scss';
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-const initialState = {
-  auth: {
-    status: 'fetching',
-    errorMessage: '',
-  },
-};
+const initialState = {};
 
 export default ({ children }) => {
   const store = createStore(

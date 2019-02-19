@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const keys = require('./config/keys');
 const routes = require('./routes');
 require('./services/passport');
+require('console.table');
 
 const app = express();
 

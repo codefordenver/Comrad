@@ -1,43 +1,52 @@
 import {
+  AUTH_ALERT,
+  AUTH_LOADING,
   AUTH_LOGIN,
   AUTH_LOGOUT,
-  AUTH_ERROR,
-  AUTH_RESET,
 } from '../actions/types';
 
 const initialState = {
-  data: {},
-  status: 'fetching',
-  message: '',
+  alert: {
+    display: false,
+    header: '',
+    text: '',
+    type: '',
+  },
+  doc: {},
+  loading: false,
+  permission: null,
 };
 
 export default function(state = initialState, { type, payload }) {
   switch (type) {
     case AUTH_LOGIN:
+      const { permission } = payload.station;
+
       return {
-        data: {
-          ...payload,
-        },
-        status: true,
-        message: '',
+        ...initialState,
+        doc: { ...payload },
+        permission,
       };
 
     case AUTH_LOGOUT:
       return {
-        status: false,
-        message: '',
+        ...initialState,
       };
 
-    case AUTH_ERROR:
+    case AUTH_ALERT:
       return {
-        status: false,
-        message: payload,
+        ...state,
+        alert: {
+          display: true,
+          ...payload,
+        },
+        permission: null,
       };
 
-    case AUTH_RESET:
+    case AUTH_LOADING:
       return {
-        status: false,
-        message: payload,
+        ...state,
+        loading: true,
       };
 
     default:

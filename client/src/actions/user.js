@@ -6,10 +6,22 @@ export const userFindOne = id => async dispatch => {
     const response = await axios.get(`/api/user/${id}`);
 
     dispatch({ type: USER_FIND_ONE, payload: response.data });
-  } catch (e) {
-    console.log(e);
+  } catch (err) {
+    console.log(err);
   }
 };
+
+export const userFindAll = () => async dispatch => {
+  try {
+    const response = await axios.get(`/api/user`);
+
+    console.log(response);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const userSearch = values => async dispatch => {};
 
 export const userAdd = (input, callback) => async dispatch => {
   try {

@@ -1,62 +1,109 @@
 import axios from 'axios';
-import { ALERT_UPDATE, AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR } from './types';
+import { AUTH_ALERT, AUTH_LOADING, AUTH_LOGIN, AUTH_LOGOUT } from './types';
 
 export const authLogin = (values, callback) => async dispatch => {
   try {
+    dispatch({ type: AUTH_LOADING });
+
     const { email, password } = values;
+
     const response = await axios.post('/api/auth/login', { email, password });
 
     dispatch({ type: AUTH_LOGIN, payload: response.data });
 
     callback();
   } catch (e) {
-    console.log(e);
+    dispatch({
+      type: AUTH_ALERT,
+      payload: {
+        header: 'Error',
+        text: 'Invalid login credentials',
+        type: 'danger',
+      },
+    });
   }
 };
 
-export const logoutUser = callback => async dispatch => {
+export const authLogout = callback => async dispatch => {
   try {
     await axios.get('/api/auth/logout');
 
     dispatch({ type: AUTH_LOGOUT });
 
     callback();
-  } catch (e) {
-    dispatch({
-      type: ALERT_UPDATE,
-      payload: {
-        type: 'error',
-        text: 'Something went wrong!',
-      },
-    });
+  } catch (err) {
+    console.log(err);
   }
 };
 
-export const fetchUser = () => async dispatch => {
+export const authFetch = () => async dispatch => {
   try {
+    dispatch({ type: AUTH_LOADING });
+
     const response = await axios.get('/api/auth/current');
 
     dispatch({ type: AUTH_LOGIN, payload: response.data });
   } catch (e) {
-    dispatch({ type: AUTH_ERROR, payload: '' });
+    dispatch({ type: AUTH_LOGOUT });
   }
 };
 
-export const resetUser = () => async dispatch => {
+export const authPasswordReset = values => async dispatch => {
   try {
+    dispatch({ type: AUTH_LOADING });
+
+    const { email } = values;
+
+    await axios.put(`/api/auth/password/reset`, { email });
+
     dispatch({
-      type: ALERT_UPDATE,
+      type: AUTH_ALERT,
       payload: {
+        header: 'Success',
+        text: 'Please check your email for your reset link',
         type: 'success',
-        text: 'Check your email to reset your password',
       },
     });
-  } catch (e) {
+  } catch (err) {
     dispatch({
-      type: ALERT_UPDATE,
+      type: AUTH_ALERT,
       payload: {
-        type: 'error',
-        text: 'Something went wrong!',
+        header: 'Error',
+        text: 'Error trying to reset your password',
+        type: 'danger',
+      },
+    });
+  }
+};
+
+export const authPasswordNew = (values, callback) => async dispatch => {
+  try {
+    dispatch({ type: AUTH_LOADING });
+
+    const { passwordConfirm, passwordNew, resetToken } = values;
+
+    await axios.put(`/api/auth/password/new?rt=${resetToken}`, {
+      passwordConfirm,
+      passwordNew,
+    });
+
+    callback();
+
+    dispatch({
+      type: AUTH_ALERT,
+      payload: {
+        header: 'Success',
+        text: 'Your Password Has Been Successfully Resetted',
+        type: 'success',
+      },
+    });
+  } catch (err) {
+    dispatch({
+      type: AUTH_ALERT,
+      payload: {
+        header: 'Error',
+        text: 'Error resetting password',
+        type: 'danger',
       },
     });
   }

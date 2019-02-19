@@ -3,5 +3,8 @@ export const emailValidate = value =>
     ? 'Invalid email address'
     : undefined;
 
+export const passwordsMatchValidate = (value, { passwordNew }) =>
+  value !== passwordNew ? 'Passwords do not match' : undefined;
+
 export const requiredValidate = value =>
   value || typeof value === 'number' ? undefined : 'Required';

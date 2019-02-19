@@ -5,11 +5,11 @@ import comradLogo from '../../images/comrad-logo-white.png';
 import Dropdown, { DropdownItem } from '../Dropdown';
 import kgnuLogo from '../../images/kgnu-logo-white-gray.png';
 import Logo from '../Logo';
-import { logoutUser } from '../../actions/auth';
+import { authLogout } from '../../actions/auth';
 
 class Navbar extends Component {
   handleSignOut = () => {
-    this.props.logoutUser(() => {
+    this.props.authLogout(() => {
       this.props.history.push('/');
     });
   };
@@ -47,5 +47,5 @@ class Navbar extends Component {
 
 export default connect(
   null,
-  { logoutUser },
+  { authLogout },
 )(Navbar);

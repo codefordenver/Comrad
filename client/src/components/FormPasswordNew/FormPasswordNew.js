@@ -2,20 +2,36 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import classnames from 'classnames';
-import { requiredValidate } from '../../utils/validation';
+import {
+  passwordsMatchValidate,
+  requiredValidate,
+} from '../../utils/validation';
 import { authPasswordNew } from '../../actions';
+import queryString from 'query-string';
 
 import Alert from '../Alert';
 import Button from '../Button';
 import Input from '../Input';
 
 class FormPasswordNew extends Component {
-  submit = values => {
-    const { authPasswordNew, match } = this.props;
-    const { token } = match.params;
-    const { confirmPassword, newPassword } = values;
+  componentDidMount() {
+    const { location, history } = this.props;
+    const { search } = location;
 
-    authPasswordNew({ confirmPassword, newPassword, token });
+    if (!location || !queryString.parse(search).rt) {
+      history.push('/');
+    }
+  }
+
+  submit = values => {
+    const { authPasswordNew, history, location } = this.props;
+    const { search } = location;
+
+    const resetToken = queryString.parse(search).rt;
+
+    authPasswordNew({ resetToken, ...values }, () => {
+      history.push('/');
+    });
   };
 
   render() {
@@ -30,7 +46,7 @@ class FormPasswordNew extends Component {
           className="mb-3"
           component={Input}
           label="New Password"
-          name="newPassword"
+          name="passwordNew"
           type="password"
           validate={requiredValidate}
         />
@@ -38,9 +54,9 @@ class FormPasswordNew extends Component {
           className="mb-3"
           component={Input}
           label="Confirm"
-          name="confirmPassword"
+          name="passwordConfirm"
           type="password"
-          validate={requiredValidate}
+          validate={[requiredValidate, passwordsMatchValidate]}
         />
         <Button type="submit">Change Password</Button>
       </form>

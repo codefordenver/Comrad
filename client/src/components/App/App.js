@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchUser } from '../../actions';
+import { authFetch } from '../../actions';
 
 import NavTest from '../NavTest';
 
@@ -17,7 +17,9 @@ import UserRoutes from '../../routes/UserRoutes';
 
 class App extends Component {
   componentDidMount() {
-    this.props.fetchUser();
+    const { authFetch } = this.props;
+    authFetch();
+    console.log('authFetch');
   }
 
   render() {
@@ -44,5 +46,5 @@ class App extends Component {
 
 export default connect(
   null,
-  { fetchUser },
+  { authFetch },
 )(App);

@@ -9,11 +9,11 @@ class TableUsers extends Component {
     const columns = [
       {
         Header: 'First Name',
-        accessor: 'first_name', // String-based value accessors!
+        accessor: 'profile.first_name', // String-based value accessors!
       },
       {
         Header: 'Last Name',
-        accessor: 'last_name',
+        accessor: 'profile.last_name',
       },
       {
         Header: 'Email',
@@ -25,7 +25,7 @@ class TableUsers extends Component {
       },
       {
         Header: 'Permissions',
-        accessor: 'station.permissions',
+        accessor: 'station.permission',
       },
       {
         Header: 'Status',
@@ -33,10 +33,10 @@ class TableUsers extends Component {
         Cell: row => (
           <div
             style={{
-              color: `${row.value ? '#4BD685' : '#F38173'}`,
+              color: `${row.value === 'active' ? '#4BD685' : '#F38173'}`,
             }}
           >
-            {row.value ? 'Active' : 'Inactive'}
+            {row.value === 'active' ? 'Active' : 'Inactive'}
           </div>
         ),
       },

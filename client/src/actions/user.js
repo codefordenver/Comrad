@@ -1,5 +1,12 @@
 import axios from 'axios';
-import { ALERT_UPDATE, USER_FIND_ONE, USER_ADD } from './types';
+import {
+  USER_ALERT,
+  ALERT_UPDATE,
+  USER_FIND_ONE,
+  USER_ADD,
+  USER_LOADING,
+  USER_FIND_ALL,
+} from './types';
 
 export const userFindOne = id => async dispatch => {
   try {
@@ -13,15 +20,31 @@ export const userFindOne = id => async dispatch => {
 
 export const userFindAll = () => async dispatch => {
   try {
+    dispatch({ type: USER_LOADING });
+
     const response = await axios.get(`/api/user`);
 
-    console.log(response);
+    const { data: docs } = response;
+
+    dispatch({
+      type: USER_FIND_ALL,
+      payload: {
+        docs,
+      },
+    });
   } catch (err) {
-    console.log(err);
+    dispatch({
+      type: USER_ALERT,
+      payload: {
+        header: 'Error',
+        text: 'There was an error loading all users',
+        type: 'danger',
+      },
+    });
   }
 };
 
-export const userSearch = values => async dispatch => {};
+// export const userSearch = values => async dispatch => {};
 
 export const userAdd = (input, callback) => async dispatch => {
   try {

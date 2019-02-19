@@ -1,24 +1,26 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { usersSearch } from '../../actions';
+import { userFindAll } from '../../actions';
 
 import Alert from '../../components/Alert';
-import Button from '../../components/Button';
 import Card, { CardBody } from '../../components/Card';
-import Dropdown, { DropdownItem } from '../../components/Dropdown';
-import Form from '../../components/Form';
-import Input from '../../components/Input';
-import LargeText from '../../components/LargeText';
+import FormUserSearch from '../../components/FormUserSearch';
 import TableUsers from '../../components/TableUsers';
 
 class UserSearchPage extends Component {
+  componentDidMount() {
+    const { userFindAll } = this.props;
+    userFindAll();
+  }
+
   render() {
-    const { docs, error, q, loading, usersSearch } = this.props;
+    const { props } = this;
+    const { user } = props;
+    const { alert, docs, loading } = user;
+    const { display } = alert;
 
     return (
       <div className="user-search">
-        {error && <Alert type="danger" header="Users Error" text={error} />}
-
         <Card>
           <CardBody>
             <h1 className="mb-0">Users</h1>
@@ -27,25 +29,13 @@ class UserSearchPage extends Component {
         <Card>
           <CardBody>
             <div className="user-search__header">
-              <div>
-                <Form action={usersSearch}>
-                  {/* <Input
-                    className="mb-1"
-                    label="Search"
-                    name="q"
-                    icon="search"
-                  /> */}
-                  <Button type="submit">Search</Button>
-                </Form>
+              <div className="user-search__form">
+                <FormUserSearch {...props} />
               </div>
-              <div>
-                <Dropdown type="plus" text="Add">
-                  <DropdownItem to="user/add">Add</DropdownItem>
-                  <DropdownItem>Edit</DropdownItem>
-                </Dropdown>
+              <div className="user-search__options">
+                <div>Button Goes here</div>
               </div>
             </div>
-
             <TableUsers docs={docs} loading={loading} />
           </CardBody>
         </Card>
@@ -55,16 +45,13 @@ class UserSearchPage extends Component {
 }
 
 function mapStateToProps(state) {
-  const { docs, error, loading, q } = state.users;
+  const user = state.user;
   return {
-    docs,
-    error,
-    loading,
-    q,
+    user,
   };
 }
 
 export default connect(
   mapStateToProps,
-  { usersSearch },
+  { userFindAll },
 )(UserSearchPage);

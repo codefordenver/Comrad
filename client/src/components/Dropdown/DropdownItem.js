@@ -1,12 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-function handleOnClick() {
-  console.log('Clicked!');
-}
-
 export const DropdownItem = props => {
-  const { children, to } = props;
+  const { children, to, handleOnClick } = props;
 
   if (to) {
     return (

@@ -13,9 +13,11 @@ async function seedDB() {
     await mongoose.connection.dropDatabase();
 
     // Users
+    console.log('seeding users...');
     await Promise.all(seed.users.map(async user => await db.User.create(user)));
 
     // Artists
+    console.log('seeding artists...');
     let bulkOperations = [];
     seed.artists.forEach(function(artist) {
       bulkOperations.push({
@@ -27,6 +29,7 @@ async function seedDB() {
     await db.Artist.bulkWrite(bulkOperations);
 
     // Albums
+    console.log('seeding albums...');
     bulkOperations = [];
     seed.albums.forEach(function(album) {
       bulkOperations.push({
@@ -38,6 +41,7 @@ async function seedDB() {
     await db.Album.bulkWrite(bulkOperations);
 
     // Tracks
+    console.log('seeding tracks...');
     bulkOperations = [];
     seed.tracks.forEach(function(track) {
       bulkOperations.push({
@@ -49,6 +53,7 @@ async function seedDB() {
     await db.Track.bulkWrite(bulkOperations);
 
     // Announcements
+    console.log('seeding announcements...');
     await Promise.all(
       seed.announcements.map(async announcement =>
         db.Announcement.create(announcement),
@@ -56,24 +61,29 @@ async function seedDB() {
     );
 
     // Features
+    console.log('seeding features...');
     await Promise.all(
       seed.features.map(async feature => db.Feature.create(feature)),
     );
 
     // Giveaways
+    console.log('seeding giveaways...');
     await Promise.all(
       seed.giveaway.map(async giveaway => db.Giveaway.create(giveaway)),
     );
 
     // Shows
+    console.log('seeding shows...');
     await Promise.all(seed.show.map(async show => db.Show.create(show)));
 
     // Traffic
+    console.log('seeding traffic...');
     await Promise.all(
       seed.traffic.map(async traffic => db.Traffic.create(traffic)),
     );
 
     // Venue
+    console.log('seeding venues...');
     await Promise.all(seed.venue.map(async venue => db.Venue.create(venue)));
   } catch (err) {
     console.log(err);

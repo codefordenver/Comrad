@@ -8,13 +8,12 @@ import Logo from '../Logo';
 import { logoutUser } from '../../actions/auth';
 
 class Navbar extends Component {
-  
   handleSignOut = () => {
     this.props.logoutUser(() => {
       this.props.history.push('/');
     });
   };
-    
+
   render() {
     return (
       <div className="navbar">
@@ -26,10 +25,18 @@ class Navbar extends Component {
             <Logo src={kgnuLogo} />
           </div>
           <div className="navbar__user">
-            <Dropdown type="icon" dropdownPosition="belowAndAlignAgainstRight" icon="fa-user">
+            <Dropdown
+              type="icon"
+              dropdownPosition="belowAndAlignAgainstRight"
+              icon="fa-user"
+            >
               <DropdownItem to="/profile/edit">Edit Profile</DropdownItem>
-              <DropdownItem to="/profile/change-password">Change Password</DropdownItem>
-              <DropdownItem handleOnClick={this.handleSignOut}>Sign Out</DropdownItem>
+              <DropdownItem to="/profile/change-password">
+                Change Password
+              </DropdownItem>
+              <DropdownItem handleOnClick={this.handleSignOut}>
+                Sign Out
+              </DropdownItem>
             </Dropdown>
           </div>
         </div>

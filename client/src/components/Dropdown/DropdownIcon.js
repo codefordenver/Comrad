@@ -1,9 +1,9 @@
 import React from 'react';
 
 const DropdownIcon = props => {
-  let className = "fas"
+  let className = 'fas';
   if (props.icon) {
-    className += " " + props.icon;
+    className += ' ' + props.icon;
   }
   return (
     <div className="dropdown__icon">

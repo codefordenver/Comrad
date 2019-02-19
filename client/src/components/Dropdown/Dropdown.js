@@ -19,7 +19,7 @@ class Dropdown extends Component {
     const { props, renderButton, state } = this;
     const { children, className, dropdownPosition, type } = props;
     const { active } = state;
-    
+
     let button = [];
     switch (type) {
       case 'icon':
@@ -31,12 +31,13 @@ class Dropdown extends Component {
       default:
         button.push(<DropdownPlus text={this.props.text} />);
     }
-    
+
     let dropdownListAdditionalClass = '';
     if (typeof dropdownPosition !== 'undefined') {
       switch (dropdownPosition) {
         case 'belowAndAlignAgainstRight':
-          dropdownListAdditionalClass = "dropdown__list--below-and-align-against-right";
+          dropdownListAdditionalClass =
+            'dropdown__list--below-and-align-against-right';
           break;
       }
     }
@@ -46,7 +47,11 @@ class Dropdown extends Component {
         <div className="dropdown__button" onClick={this.handleClick}>
           {button}
         </div>
-        <div className={`dropdown__list ${active ? 'active' : ''} ${dropdownListAdditionalClass}`}>
+        <div
+          className={`dropdown__list ${
+            active ? 'active' : ''
+          } ${dropdownListAdditionalClass}`}
+        >
           {children}
         </div>
       </div>

@@ -8,11 +8,11 @@ class NavTest extends Component {
     super(props);
     this.handleQuickSignIn = this.handleQuickSignIn.bind(this);
   }
-  
+
   handleQuickSignIn = () => {
     const email = process.env.REACT_APP_TEST_EMAIL;
     const password = process.env.REACT_APP_TEST_PASSWORD;
-    
+
     this.props.authLogin({ email: email, password: password }, () => {
       this.props.history.push('/dashboard');
     });
@@ -82,7 +82,7 @@ class NavTest extends Component {
 
 function mapStateToProps(state) {
   return {
-    auth: state.auth
+    auth: state.auth,
   };
 }
 

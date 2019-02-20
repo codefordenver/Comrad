@@ -30,7 +30,7 @@ class UserSearchPage extends Component {
           <CardBody>
             <div className="user-search__header">
               <div className="user-search__form">
-                <FormUserSearch {...props} />
+                <FormUserSearch />
               </div>
               <div className="user-search__options">
                 <div>Button Goes here</div>

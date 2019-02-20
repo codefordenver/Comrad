@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
+import { userSearch } from '../../actions';
 
 import Button from '../Button';
 import Input from '../Input';
 
 class FormUserSearch extends Component {
   submit = values => {
-    console.log(values);
+    const { userSearch } = this.props;
+    userSearch(values);
   };
 
   render() {
@@ -19,8 +21,8 @@ class FormUserSearch extends Component {
         <Field
           className="mb-1"
           component={Input}
-          label={'Search'}
-          name="search"
+          label="Search"
+          name="q"
           type="text"
         />
         <Button type="submit">Submit</Button>
@@ -43,5 +45,5 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  {},
+  { userSearch },
 )(ReduxFormUserSearch);

@@ -51,7 +51,7 @@ class Sidebar extends Component {
       },
       {
         name: 'user',
-        url: '/user',
+        url: '/user/search',
         iconClass: 'fas fa-user',
         tooltipText: 'Users',
       },

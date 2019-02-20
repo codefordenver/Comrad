@@ -5,6 +5,7 @@ import {
   USER_ERROR,
   USER_FIND_ALL,
   USER_LOADING,
+  USER_SEARCH,
 } from '../actions/types';
 
 const initialState = {
@@ -51,6 +52,12 @@ export default (state = initialState, { type, payload }) => {
           display: true,
           ...payload,
         },
+        loading: false,
+      };
+    case USER_SEARCH:
+      return {
+        ...state,
+        docs: payload,
         loading: false,
       };
     default:

@@ -6,6 +6,7 @@ import {
   USER_ADD,
   USER_LOADING,
   USER_FIND_ALL,
+  USER_SEARCH,
 } from './types';
 
 export const userFindOne = id => async dispatch => {
@@ -41,6 +42,23 @@ export const userFindAll = () => async dispatch => {
         type: 'danger',
       },
     });
+  }
+};
+
+export const userSearch = values => async dispatch => {
+  try {
+    dispatch({ type: USER_LOADING });
+
+    const { q } = values;
+
+    const response = await axios.get(`/api/user/search?q=${q}`);
+
+    dispatch({
+      type: USER_SEARCH,
+      payload: response.data,
+    });
+  } catch (e) {
+    console.log(e);
   }
 };
 

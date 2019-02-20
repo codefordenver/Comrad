@@ -1,6 +1,7 @@
 const db = require('../models');
 const Chance = require('chance');
 const axios = require('axios');
+const Fuse = require('fuse.js');
 
 const chance = new Chance();
 
@@ -119,21 +120,35 @@ module.exports = {
   },
 
   async search(req, res) {
+    if (!req.user) {
+      return res.status(422).json('Must be logged in');
+    }
+
+    const { permission } = req.user.station;
+
+    if (permission !== 'admin') {
+      return res.status(422).json('User must have admin access');
+    }
+
     const { q } = req.query;
-    const re = new RegExp(q, 'i');
 
-    console.log(q);
+    await db.User.find({})
+      .then(dbUsers => {
+        const options = {
+          shouldSort: true,
+          threshold: 0.6,
+          location: 0,
+          distance: 100,
+          maxPatternLength: 32,
+          minMatchCharLength: 1,
+          keys: ['profile.last_name', 'profile_first_name', 'contact.email'],
+        };
+        const fuse = new Fuse(dbUsers, options);
+        const results = fuse.search(q);
 
-    db.User.find({
-      $or: [
-        { first_name: re },
-        { last_name: re },
-        { email: re },
-        { on_air_name: re },
-      ],
-    })
-      .then(dbUsers => res.json(dbUsers))
-      .catch(err => res.status(422).json(err));
+        res.status(200).json(results);
+      })
+      .catch(err => err.status(422).json(err));
   },
 
   async create(req, res, next) {

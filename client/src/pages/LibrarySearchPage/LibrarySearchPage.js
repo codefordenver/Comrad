@@ -7,34 +7,24 @@ import ReactTable from 'react-table';
 
 import Card, { CardBody } from '../../components/Card';
 import Dropdown, { DropdownItem } from '../../components/Dropdown';
-import Form from '../../components/Form';
 import Input from '../../components/Input';
 
 class LibrarySearchPage extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      activeFilter: 'all',
-      docs: [],
-      totalPages: null,
-      pageUrls: ['/api/library'],
-      loading: true,
-      loadingError: false,
-      searchString: false,
-      sort: {
-        id: null,
-        desc: null,
-      },
-    };
+  state = {
+    activeFilter: 'all',
+    docs: [],
+    totalPages: null,
+    pageUrls: ['/api/library'],
+    loading: true,
+    loadingError: false,
+    searchString: false,
+    sort: {
+      id: null,
+      desc: null,
+    },
+  };
 
-    this.fetchData = this.fetchData.bind(this);
-    this.fetchTableDataFromApi = this.fetchTableDataFromApi.bind(this);
-    this.navigateToRecord = this.navigateToRecord.bind(this);
-    this.searchLibrary = this.searchLibrary.bind(this);
-    this.setActiveFilter = this.setActiveFilter.bind(this);
-  }
-
-  fetchData(state, instance) {
+  fetchData = (state, instance) => {
     this.setState({ loading: true }); //show loading overlay
     let url = this.state.pageUrls[state.page];
 
@@ -59,9 +49,9 @@ class LibrarySearchPage extends Component {
     }
 
     this.fetchTableDataFromApi(url);
-  }
+  };
 
-  fetchTableDataFromApi(url) {
+  fetchTableDataFromApi = url => {
     axios
       .get(url)
       .then(response => {
@@ -83,9 +73,9 @@ class LibrarySearchPage extends Component {
           loadingError: true,
         });
       });
-  }
+  };
 
-  navigateToRecord = function(state, rowInfo, column, instance) {
+  navigateToRecord = (state, rowInfo, column, instance) => {
     return {
       onClick: (e, handleOriginal) => {
         //navigate to the view page for this record
@@ -96,7 +86,7 @@ class LibrarySearchPage extends Component {
     };
   };
 
-  searchLibrary = function(form) {
+  searchLibrary = form => {
     let url =
       '/api/library/search?s=' + form.q + '&type=' + this.state.activeFilter;
     this.setState(
@@ -110,7 +100,7 @@ class LibrarySearchPage extends Component {
     );
   };
 
-  setActiveFilter = function(event) {
+  setActiveFilter = event => {
     this.setState(
       {
         activeFilter: event.target.getAttribute('value'),
@@ -297,8 +287,7 @@ class LibrarySearchPage extends Component {
 
 function mapStateToProps(state) {
   const { error } = state.library;
-  console.log('map state to props');
-  console.log(state);
+
   return {
     error,
   };

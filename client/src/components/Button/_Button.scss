@@ -3,17 +3,17 @@
   font-size: 1.6rem;
   font-weight: $font-weight-normal;
   letter-spacing: 1px;
-  line-height: $font-line-height;
+  // line-height: $font-line-height;
   text-align: center;
   text-transform: uppercase;
-  vertical-align: center;
   user-select: none;
 
   border: $border-width solid transparent;
   border-radius: $border-radius;
   cursor: pointer;
   display: inline-block;
-  padding: 0.8rem 3rem;
+  height: 3.8rem;
+  padding: 0 2rem;
   transition: all 0.1s;
   text-decoration: none;
 

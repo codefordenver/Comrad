@@ -19,6 +19,10 @@ const initialState = {
   docs: [],
   error: null,
   loading: false,
+  search: {
+    filter: 'all',
+    query: '',
+  },
 };
 
 export default (state = initialState, { type, payload }) => {
@@ -48,6 +52,7 @@ export default (state = initialState, { type, payload }) => {
       };
     case USER_ALERT:
       return {
+        ...state,
         alert: {
           display: true,
           ...payload,
@@ -55,10 +60,16 @@ export default (state = initialState, { type, payload }) => {
         loading: false,
       };
     case USER_SEARCH:
+      const { docs, filter, query } = payload;
+
       return {
         ...state,
-        docs: payload,
+        docs,
         loading: false,
+        search: {
+          filter,
+          query,
+        },
       };
     default:
       return state;

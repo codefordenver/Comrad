@@ -1,0 +1,11 @@
+.table-users {
+  &__status {
+    &.active {
+      color: $color-success;
+    }
+
+    &.inactive {
+      color: $color-danger;
+    }
+  }
+}

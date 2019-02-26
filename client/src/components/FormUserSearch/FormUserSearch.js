@@ -8,8 +8,14 @@ import Input from '../Input';
 
 class FormUserSearch extends Component {
   submit = values => {
-    const { userSearch } = this.props;
-    userSearch(values);
+    const {
+      userSearch,
+      user: {
+        search: { filter },
+      },
+    } = this.props;
+
+    userSearch({ ...values, filter });
   };
 
   render() {
@@ -17,15 +23,15 @@ class FormUserSearch extends Component {
     const { handleSubmit } = props;
 
     return (
-      <form onSubmit={handleSubmit(submit)}>
+      <form className="user-search-form mb-2" onSubmit={handleSubmit(submit)}>
         <Field
           className="mb-1"
           component={Input}
           label="Search"
-          name="q"
+          name="query"
           type="text"
         />
-        <Button type="submit">Submit</Button>
+        <Button type="submit">Search</Button>
       </form>
     );
   }

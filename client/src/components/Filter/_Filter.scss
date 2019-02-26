@@ -1,0 +1,14 @@
+.filter {
+  &__item {
+    color: $color-primary-light;
+    cursor: pointer;
+    display: inline;
+
+    margin-right: 1rem;
+    padding: 0 4px 2px;
+
+    &.active {
+      border-bottom: 2px solid $color-primary-light;
+    }
+  }
+}

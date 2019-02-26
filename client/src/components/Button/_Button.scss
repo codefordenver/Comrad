@@ -148,8 +148,10 @@
     border: none;
     border-bottom: 1px solid $color-primary;
     border-radius: 0;
+    height: 2.2rem;
     margin: 0;
     padding: 0 0 1px;
+    // text-decoration: underline;
 
     &:active,
     &.active,

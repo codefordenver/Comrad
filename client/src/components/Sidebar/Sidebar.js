@@ -21,7 +21,7 @@ class Sidebar extends Component {
       },
       {
         name: 'calendar-check',
-        url: '/traffic-calendar',
+        url: '/calendar',
         iconClass: 'fas fa-calendar-check',
         tooltipText: 'Traffic Calendar',
       },

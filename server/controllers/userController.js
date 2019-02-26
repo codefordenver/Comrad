@@ -130,9 +130,11 @@ module.exports = {
       return res.status(422).json('User must have admin access');
     }
 
-    const { q } = req.query;
+    const { f = 'all', q } = req.query;
 
-    await db.User.find({})
+    const conditions = f === 'all' ? {} : { 'station.status': f };
+
+    await db.User.find(conditions)
       .then(dbUsers => {
         const options = {
           shouldSort: true,
@@ -143,12 +145,16 @@ module.exports = {
           minMatchCharLength: 1,
           keys: ['profile.last_name', 'profile_first_name', 'contact.email'],
         };
-        const fuse = new Fuse(dbUsers, options);
-        const results = fuse.search(q);
 
-        res.status(200).json(results);
+        if (q) {
+          const fuse = new Fuse(dbUsers, options);
+          const results = fuse.search(q);
+          return res.status(200).json(results);
+        }
+
+        return res.status(200).json(dbUsers);
       })
-      .catch(err => err.status(422).json(err));
+      .catch(err => res.status(422).json(err));
   },
 
   async create(req, res, next) {
@@ -227,10 +233,13 @@ module.exports = {
       'full_access',
       'admin',
     ];
+    const listOfStatuses = ['active', 'inactive'];
 
     const randomGender = gender[Math.floor(Math.random() * gender.length)];
     const randomPermission =
       listOfPermissions[Math.floor(Math.random() * listOfPermissions.length)];
+    const randomStatus =
+      listOfStatuses[Math.floor(Math.random() * listOfStatuses.length)];
     const randomString = chance.string(
       {
         pool:
@@ -264,7 +273,7 @@ module.exports = {
     const slack = `@${first_name + last_name}`;
     const on_air_name = `DJ ${first_name} ${last_name}`;
     const permission = randomPermission;
-    const status = 'active';
+    const status = randomStatus;
     const can_delete = Math.random() >= 0.5;
     const registered = chance.date({
       month: randomNumberGenerator(0, 11),

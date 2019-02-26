@@ -47,15 +47,28 @@ export const userFindAll = () => async dispatch => {
 
 export const userSearch = values => async dispatch => {
   try {
-    dispatch({ type: USER_LOADING });
+    let loadTimeOut;
 
-    const { q } = values;
+    loadTimeOut = setTimeout(() => {
+      dispatch({ type: USER_LOADING });
+    }, 2000);
 
-    const response = await axios.get(`/api/user/search?q=${q}`);
+    const { filter, query } = values;
+    let queryUrl = `/api/user/search?f=${filter}`;
+
+    if (!query) {
+      queryUrl += `&q=${query}`;
+    }
+
+    const response = await axios.get(
+      `/api/user/search?q=${query || ''}&f=${filter}`,
+    );
+
+    clearTimeout(loadTimeOut);
 
     dispatch({
       type: USER_SEARCH,
-      payload: response.data,
+      payload: { docs: response.data, query, filter },
     });
   } catch (e) {
     console.log(e);

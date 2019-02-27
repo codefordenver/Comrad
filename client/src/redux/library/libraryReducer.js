@@ -3,7 +3,7 @@ import {
   LIBRARY_ERROR,
   LIBRARY_LOADING,
   LIBRARY_SEARCH,
-} from '../actions/types';
+} from './libraryTypes';
 
 const initialState = {
   docs: null,
@@ -12,7 +12,7 @@ const initialState = {
   q: false,
 };
 
-export default (state = initialState, { type, payload }) => {
+export const libraryReducer = (state = initialState, { type, payload }) => {
   switch (type) {
     case LIBRARY_CLEAR:
       return {

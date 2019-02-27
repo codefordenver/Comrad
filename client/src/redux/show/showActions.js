@@ -7,7 +7,7 @@ import {
   SHOW_DELETE_SERIES,
   SHOW_SEARCH,
   SHOW_ERROR,
-} from './types';
+} from './showTypes';
 
 export const getShow = show => async dispatch => {
   try {

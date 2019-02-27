@@ -1,9 +1,4 @@
-import {
-  AUTH_ALERT,
-  AUTH_LOADING,
-  AUTH_LOGIN,
-  AUTH_LOGOUT,
-} from '../actions/types';
+import { AUTH_ALERT, AUTH_LOADING, AUTH_LOGIN, AUTH_LOGOUT } from './authTypes';
 
 const initialState = {
   alert: {
@@ -17,7 +12,7 @@ const initialState = {
   permission: null,
 };
 
-export default function(state = initialState, { type, payload }) {
+export const authReducer = (state = initialState, { type, payload }) => {
   switch (type) {
     case AUTH_LOGIN:
       const { permission } = payload.station;
@@ -52,4 +47,4 @@ export default function(state = initialState, { type, payload }) {
     default:
       return state;
   }
-}
+};

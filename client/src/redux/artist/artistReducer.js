@@ -9,7 +9,7 @@ const initialState = {
   },
 };
 
-export default (state = initialState, { type, payload }) => {
+export const artistReducer = (state = initialState, { type, payload }) => {
   switch (type) {
     default:
       return state;

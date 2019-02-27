@@ -9,7 +9,7 @@ import {
   SHOW_DELETE_SERIES,
   SHOW_FETCHING,
   SHOW_ERROR,
-} from '../actions/types';
+} from './showTypes';
 
 const initialState = {
   data: [],
@@ -17,7 +17,7 @@ const initialState = {
   error: false,
 };
 
-export default function(state = initialState, { type, payload }) {
+export const showReducer = (state = initialState, { type, payload }) => {
   switch (type) {
     case SHOW_GET:
       return {
@@ -117,7 +117,7 @@ export default function(state = initialState, { type, payload }) {
     default:
       return state;
   }
-}
+};
 
 export function getShowsData(state) {
   return state.data;

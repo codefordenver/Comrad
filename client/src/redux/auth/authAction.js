@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { AUTH_ALERT, AUTH_LOADING, AUTH_LOGIN, AUTH_LOGOUT } from './types';
+import { AUTH_ALERT, AUTH_LOADING, AUTH_LOGIN, AUTH_LOGOUT } from './authTypes';
 
 export const authLogin = ({ email, password }, callback) => async dispatch => {
   try {

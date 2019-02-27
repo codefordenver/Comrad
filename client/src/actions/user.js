@@ -75,8 +75,6 @@ export const userSearch = values => async dispatch => {
   }
 };
 
-// export const userSearch = values => async dispatch => {};
-
 export const userAdd = (input, callback) => async dispatch => {
   try {
     const response = await axios.post('/api/user', input);

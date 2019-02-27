@@ -6,8 +6,6 @@ import MainLayout from '../../layouts/MainLayout';
 import DashboardHomePage from '../../pages/DashboardHomePage';
 
 class DashboardRoutes extends Component {
-  state = {};
-
   render() {
     const { url } = this.props.match;
 

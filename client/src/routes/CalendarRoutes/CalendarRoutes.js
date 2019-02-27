@@ -5,8 +5,6 @@ import MainLayout from '../../layouts/MainLayout';
 import CalendarHomePage from '../../pages/CalendarHomePage';
 
 class CalendarRoutes extends Component {
-  state = {};
-
   render() {
     const { url } = this.props.match;
 

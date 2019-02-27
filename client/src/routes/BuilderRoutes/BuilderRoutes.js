@@ -5,8 +5,6 @@ import MainLayout from '../../layouts/MainLayout';
 import BuilderHomePage from '../../pages/BuilderHomePage';
 
 class BuilderRoutes extends Component {
-  state = {};
-
   render() {
     const { url } = this.props.match;
 

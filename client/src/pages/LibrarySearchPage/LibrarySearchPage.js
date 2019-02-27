@@ -112,7 +112,7 @@ class LibrarySearchPage extends Component {
   };
 
   render() {
-    const { error, handleSubmit } = this.props;
+    const { handleSubmit } = this.props;
 
     const columns = [
       {

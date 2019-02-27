@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { authLogin, authLogout } from '../../actions';
+import { authLogin, authLogout } from '../../redux/auth';
 
 class NavTest extends Component {
   constructor(props) {

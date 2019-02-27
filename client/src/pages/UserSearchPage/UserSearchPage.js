@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { userSearch } from '../../actions';
+import { userSearch } from '../../redux/user';
 
-import Alert from '../../components/Alert';
 import Card, { CardBody } from '../../components/Card';
 import FilterUsers from '../../components/FilterUsers';
 import FormUserSearch from '../../components/FormUserSearch';
@@ -16,11 +15,6 @@ class UserSearchPage extends Component {
   }
 
   render() {
-    const { props } = this;
-    const { user } = props;
-    const { alert } = user;
-    const { display } = alert;
-
     return (
       <div className="user-search">
         <Card>

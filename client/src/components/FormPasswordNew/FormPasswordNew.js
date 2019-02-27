@@ -6,7 +6,7 @@ import {
   passwordsMatchValidate,
   requiredValidate,
 } from '../../utils/validation';
-import { authPasswordNew } from '../../actions';
+import { authPasswordNew } from '../../redux/auth';
 import queryString from 'query-string';
 
 import Alert from '../Alert';

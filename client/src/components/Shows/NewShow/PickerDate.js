@@ -19,7 +19,7 @@ class DatePicker extends Component {
 
   render() {
     const {
-      input: { name, value, onChange },
+      input: { name, onChange },
     } = this.props;
 
     return (

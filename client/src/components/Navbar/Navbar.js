@@ -5,7 +5,7 @@ import comradLogo from '../../images/comrad-logo-white.png';
 import Dropdown, { DropdownItem } from '../Dropdown';
 import kgnuLogo from '../../images/kgnu-logo-white-gray.png';
 import Logo from '../Logo';
-import { authLogout } from '../../actions/auth';
+import { authLogout } from '../../redux/auth';
 
 class Navbar extends Component {
   handleSignOut = () => {

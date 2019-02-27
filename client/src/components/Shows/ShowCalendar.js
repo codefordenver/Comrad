@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import * as actions from '../../actions';
+import {
+  getShowsData,
+  fetchingShowsStatus,
+  postingShowsStatus,
+  errorShowsMessage,
+} from '../../redux/show';
 
 import BigCalendar from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
@@ -9,18 +14,7 @@ import _ from 'lodash';
 
 import ShowModalController from './ShowModalController';
 
-import {
-  MODAL_NEW_SHOW,
-  MODAL_EDIT_SHOW,
-  MODAL_VIEW_SHOW,
-} from './ShowModalController';
-
-import {
-  getShowsData,
-  fetchingShowsStatus,
-  postingShowsStatus,
-  errorShowsMessage,
-} from '../../reducers/shows';
+import { MODAL_NEW_SHOW, MODAL_VIEW_SHOW } from './ShowModalController';
 
 class Calendar extends Component {
   constructor(...args) {
@@ -95,7 +89,7 @@ class Calendar extends Component {
 
   render() {
     const localizer = BigCalendar.momentLocalizer(moment);
-    const { shows, showsFetching, showsPosting, showsError } = this.props;
+    const { shows } = this.props;
 
     return (
       <div>
@@ -131,5 +125,10 @@ function mapStateToProps({ shows }) {
 
 export default connect(
   mapStateToProps,
-  actions,
+  {
+    getShowsData,
+    fetchingShowsStatus,
+    postingShowsStatus,
+    errorShowsMessage,
+  },
 )(Calendar);

@@ -1,12 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import * as actions from '../../actions';
 import {
   getModalType,
   getModalVisibility,
   getModalData,
-} from '../../reducers/modals';
+} from '../../redux/modal';
 
 import NewShowModal from './NewShow/Modal';
 import EditShowModal from './EditShow/Modal';
@@ -41,5 +40,9 @@ function mapStateToProps({ modals }) {
 
 export default connect(
   mapStateToProps,
-  actions,
+  {
+    getModalType,
+    getModalVisibility,
+    getModalData,
+  },
 )(ModalController);

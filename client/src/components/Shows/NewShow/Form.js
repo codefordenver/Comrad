@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import * as actions from '../../../actions';
 import { Field, reduxForm, formValueSelector } from 'redux-form';
 import moment from 'moment';
 
@@ -132,5 +131,5 @@ NewShowForm = reduxForm({
 
 export default connect(
   mapStateToProps,
-  actions,
+  {},
 )(NewShowForm);

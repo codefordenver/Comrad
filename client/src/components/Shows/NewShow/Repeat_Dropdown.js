@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import * as actions from '../../../actions';
-import { Field, reduxForm, formValueSelector } from 'redux-form';
+import { Field, formValueSelector } from 'redux-form';
 import _ from 'lodash';
 import moment from 'moment';
 import RRule from 'rrule';
@@ -98,5 +97,5 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  actions,
+  {},
 )(RepeatDropdown);

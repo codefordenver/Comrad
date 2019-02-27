@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
-import { authLogin } from '../../actions';
+import { authLogin } from '../../redux/auth';
 import { emailValidate, requiredValidate } from '../../utils/validation.js';
 
 import Alert from '../Alert';

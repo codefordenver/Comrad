@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { userSearch } from '../../actions';
+import { userSearch } from '../../redux/user';
 
 import Filter, { FilterItem } from '../Filter';
 

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { setModalVisibility } from '../../redux/modal';
 import {
   getShowsData,
   fetchingShowsStatus,
@@ -124,6 +125,7 @@ export default connect(
     fetchingShowsStatus,
     postingShowsStatus,
     searchShow,
+    setModalVisibility,
     errorShowsMessage,
     setModalVisibility,
     selectShow,

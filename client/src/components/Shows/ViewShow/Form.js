@@ -8,6 +8,8 @@ import Button from '../../Button';
 
 import ModalClose from '../../Modal/Modal__Button_Close';
 
+import DropdownDJ from './Dropdown_DJ';
+
 class NewShowForm extends Component {
   showEditShowModal = show => {
     const { setModalVisibility } = this.props;
@@ -53,8 +55,8 @@ class NewShowForm extends Component {
               </Button>
             </div>
 
-            <h2>Edit Show Series</h2>
-            <h2>Delete Single Show</h2>
+            <p>Edit Show Series</p>
+            <p>Delete Single Show</p>
             <div>
               <Button
                 color="primary"
@@ -110,8 +112,8 @@ class NewShowForm extends Component {
     return (
       <main className="show show__padding">
         <section className="show__body">
-          <h1>You Clicked a Show!</h1>
-
+          <p>You Clicked a Show!</p>
+          <DropdownDJ />
           {this.showOptions(showType, data)}
           <ModalClose />
         </section>

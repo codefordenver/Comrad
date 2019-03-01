@@ -5,6 +5,7 @@ export const setModalVisibility = (
   modalVisibility,
   data,
 ) => async dispatch => {
+  console.log('Modal Action');
   try {
     dispatch({
       type: SET_MODAL_VISIBILITY,

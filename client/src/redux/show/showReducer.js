@@ -9,6 +9,7 @@ import {
   SHOW_DELETE_SERIES,
   SHOW_FETCHING,
   SHOW_ERROR,
+  SHOW_SELECTED,
 } from './showTypes';
 
 const initialState = {
@@ -37,6 +38,7 @@ export function showReducer(state = initialState, { type, payload }) {
       };
 
     case SHOW_SEARCH:
+      console.log('Updating Show Search Reducer');
       return {
         ...state,
         data: { ...state.data, ..._.mapKeys(payload, '_id') },
@@ -106,6 +108,11 @@ export function showReducer(state = initialState, { type, payload }) {
         error: false,
       };
 
+    case SHOW_SELECTED:
+      return {
+        ...state,
+        selected: payload,
+      };
     //Need some type of error response from server.
     case SHOW_ERROR:
       return {
@@ -121,6 +128,10 @@ export function showReducer(state = initialState, { type, payload }) {
 
 export function getShowsData(state = initialState) {
   return state.data;
+}
+
+export function getShowSelected(state = initialState) {
+  return state.selected;
 }
 
 export function fetchingShowsStatus(state = initialState) {

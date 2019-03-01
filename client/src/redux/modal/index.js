@@ -1,3 +1,3 @@
 export * from './modalActions';
-export * from './modalReducer';
+export * from './modalReducers';
 export * from './modalTypes';

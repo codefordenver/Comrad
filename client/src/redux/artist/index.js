@@ -1,3 +1,3 @@
-export * from './artistAction';
-export * from './artistReducer';
+export * from './artistActions';
+export * from './artistReducers';
 export * from './artistTypes';

@@ -4,6 +4,7 @@ import {
   getShowsData,
   fetchingShowsStatus,
   postingShowsStatus,
+  searchShow,
   errorShowsMessage,
 } from '../../redux/show';
 
@@ -129,6 +130,7 @@ export default connect(
     getShowsData,
     fetchingShowsStatus,
     postingShowsStatus,
+    searchShow,
     errorShowsMessage,
   },
 )(Calendar);

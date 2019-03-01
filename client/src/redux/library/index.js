@@ -1,3 +1,3 @@
 export * from './libraryActions';
-export * from './libraryReducer';
+export * from './libraryReducers';
 export * from './libraryTypes';

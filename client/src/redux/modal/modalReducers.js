@@ -13,14 +13,14 @@ export const modalReducer = (state = initialState, { type, payload }) => {
   }
 };
 
-export function getModalType(state) {
+export function getModalType(state = initialState) {
   return state.modalType;
 }
 
-export function getModalVisibility(state) {
+export function getModalVisibility(state = initialState) {
   return state.modalVisibility;
 }
 
-export function getModalData(state) {
+export function getModalData(state = initialState) {
   return state.data;
 }

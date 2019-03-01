@@ -5,7 +5,7 @@ import { artistReducer } from './artist';
 import { authReducer } from './auth';
 import { libraryReducer } from './library';
 import { modalReducer } from './modal';
-import { showReducer } from './show';
+import * as showReducer from './show';
 import { trafficReducer } from './traffic';
 import { userReducer } from './user';
 

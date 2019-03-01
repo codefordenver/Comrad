@@ -17,7 +17,7 @@ const initialState = {
   error: false,
 };
 
-export const showReducer = (state = initialState, { type, payload }) => {
+export function showReducer(state = initialState, { type, payload }) {
   switch (type) {
     case SHOW_GET:
       return {
@@ -117,20 +117,20 @@ export const showReducer = (state = initialState, { type, payload }) => {
     default:
       return state;
   }
-};
+}
 
-export function getShowsData(state) {
+export function getShowsData(state = initialState) {
   return state.data;
 }
 
-export function fetchingShowsStatus(state) {
+export function fetchingShowsStatus(state = initialState) {
   return state.fetching;
 }
 
-export function postingShowsStatus(state) {
+export function postingShowsStatus(state = initialState) {
   return state.posting;
 }
 
-export function errorShowsMessage(state) {
+export function errorShowsMessage(state = initialState) {
   return state.error;
 }

@@ -1,3 +1,3 @@
-export * from './authAction';
-export * from './authReducer';
+export * from './authActions';
+export * from './authReducers';
 export * from './authTypes';

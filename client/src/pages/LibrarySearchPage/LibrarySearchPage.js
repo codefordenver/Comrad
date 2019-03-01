@@ -126,15 +126,26 @@ class LibrarySearchPage extends Component {
         Header: 'Name',
         accessor: 'name',
         Cell: data => {
+          console.log(data);
           switch (data.row.type) {
             case 'track':
+              const { original, value } = data;
+              const { artists } = original;
               let artistNames = [];
-              data.original.artists.forEach(function(a) {
-                if (typeof a.name != 'undefined' && a.name.length > 0) {
-                  artistNames.push(a.name);
+              let elements = [];
+
+              if (!value) {
+                return null;
+              }
+
+              artists.forEach(artist => {
+                const { name } = artist;
+
+                if (name) {
+                  artistNames.push(name);
                 }
               });
-              let elements = [];
+
               elements.push(data.value);
               if (artistNames.length > 0) {
                 elements.push(
@@ -157,6 +168,7 @@ class LibrarySearchPage extends Component {
                 );
               }
               return elements;
+              return <div className="library-search_track-name">{value} </div>;
             case 'album':
               if (
                 data.original.artist != null &&

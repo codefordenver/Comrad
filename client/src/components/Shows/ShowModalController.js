@@ -30,11 +30,11 @@ const ModalController = props => {
       return null;
   }
 };
-function mapStateToProps({ modals }) {
+function mapStateToProps({ modal }) {
   return {
-    modalType: getModalType(modals),
-    modalVisibility: getModalVisibility(modals),
-    data: getModalData(modals),
+    modalType: getModalType(modal),
+    modalVisibility: getModalVisibility(modal),
+    data: getModalData(modal),
   };
 }
 

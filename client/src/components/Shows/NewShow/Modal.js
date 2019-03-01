@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import Form from './Form';
 import Modal from '../../Modal';
 
+import { postShow } from '../../../redux/show';
 import { setModalVisibility } from '../../../redux/modal';
 
 class ShowModal extends Component {
@@ -27,5 +28,5 @@ class ShowModal extends Component {
 
 export default connect(
   null,
-  { setModalVisibility },
+  { setModalVisibility, postShow },
 )(ShowModal);

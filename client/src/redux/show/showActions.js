@@ -7,6 +7,7 @@ import {
   SHOW_DELETE_SERIES,
   SHOW_SEARCH,
   SHOW_ERROR,
+  SHOW_SELECTED,
 } from './showTypes';
 
 export const getShow = show => async dispatch => {
@@ -70,6 +71,14 @@ export const searchShow = (startDate, endDate) => async dispatch => {
     });
 
     dispatch({ type: SHOW_SEARCH, payload: response.data });
+  } catch (e) {
+    dispatch({ type: SHOW_ERROR, payload: e });
+  }
+};
+
+export const selectShow = show => async dispatch => {
+  try {
+    dispatch({ type: SHOW_SELECTED, payload: show });
   } catch (e) {
     dispatch({ type: SHOW_ERROR, payload: e });
   }

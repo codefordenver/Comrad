@@ -70,12 +70,7 @@ class Calendar extends Component {
 
   showNewShowModal = show => {
     const { setModalVisibility, selectShow } = this.props;
-    // let { start, end } = show;
-    // inputUpdateShowTime('show_start_time_utc', start);
-    // inputUpdateShowTime('show_end_time_utc', end);
 
-    // inputUpdateShowDate('repeat_start_date', start);
-    // inputUpdateShowDate('repeat_end_date', end);
     selectShow(show);
     setModalVisibility(MODAL_NEW_SHOW, true, show);
   };

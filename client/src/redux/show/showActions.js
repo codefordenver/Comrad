@@ -70,8 +70,6 @@ export const searchShow = (startDate, endDate) => async dispatch => {
       params: { startDate, endDate },
     });
 
-    console.log(response);
-
     dispatch({ type: SHOW_SEARCH, payload: response.data });
   } catch (e) {
     dispatch({ type: SHOW_ERROR, payload: e });

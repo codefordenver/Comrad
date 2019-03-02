@@ -5,23 +5,25 @@ import { connect } from 'react-redux';
 import Dropdown, { DropdownItem } from '../../../components/Dropdown';
 import Input from '../../../components/Input';
 
-import { userSearch } from '../../../redux/user';
+import { userSearch, userClear } from '../../../redux/user';
 
 class DropdownDJ extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-  componentDidMount() {
-    this.props.userSearch({ filter: 'all' });
-  }
-
   render() {
+    const inputOnChange = event => {
+      console.log(event.target.value);
+      if (!event.target.value) {
+        return;
+      }
+      this.props.userSearch({ filter: 'all', query: event.target.value });
+    };
+
     const users = this.props.user.docs;
     console.log(users);
     const items = users.map((user, index) => ({
       _id: user._id,
-      value: `${user.profile.first_name} ${user.profile.last_name}`,
+      value: `${user.profile.first_name} ${user.profile.last_name} | ${
+        user.contact.email
+      }`,
     }));
     console.log(items);
 
@@ -40,36 +42,28 @@ class DropdownDJ extends Component {
           selectedItem,
         }) => (
           <div>
-            <label {...getLabelProps()}>Enter a fruit</label>
+            <label {...getLabelProps()}>Select a DJ:</label>
             <p />
-            <input {...getInputProps()} />
+            <input {...getInputProps({ onChange: inputOnChange })} />
 
-            {isOpen ? (
+            {isOpen && inputValue ? (
               <div className="dropdown__list active">
-                {items
-                  .filter(
-                    item =>
-                      !inputValue ||
-                      item.value
-                        .toLowerCase()
-                        .includes(inputValue.toLowerCase()),
-                  )
-                  .map((item, index) => (
-                    <div
-                      {...getItemProps({
-                        key: item.value,
-                        index,
-                        item,
-                        style: {
-                          backgroundColor:
-                            highlightedIndex === index ? 'lightgray' : 'white',
-                          fontWeight: selectedItem === item ? 'bold' : 'normal',
-                        },
-                      })}
-                    >
-                      <DropdownItem>{item.value}</DropdownItem>
-                    </div>
-                  ))}
+                {items.map((item, index) => (
+                  <div
+                    {...getItemProps({
+                      key: item.value,
+                      index,
+                      item,
+                      style: {
+                        backgroundColor:
+                          highlightedIndex === index ? 'lightgray' : 'white',
+                        fontWeight: selectedItem === item ? 'bold' : 'normal',
+                      },
+                    })}
+                  >
+                    <DropdownItem>{item.value}</DropdownItem>
+                  </div>
+                ))}
               </div>
             ) : null}
           </div>
@@ -89,5 +83,6 @@ export default connect(
   mapStateToProps,
   {
     userSearch,
+    userClear,
   },
 )(DropdownDJ);

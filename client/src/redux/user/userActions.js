@@ -6,6 +6,7 @@ import {
   USER_LOADING,
   USER_FIND_ALL,
   USER_SEARCH,
+  USER_CLEAR,
 } from './userTypes';
 
 export const userFindOne = id => async dispatch => {
@@ -86,5 +87,13 @@ export const userAdd = (input, callback) => async dispatch => {
       type: USER_ALERT,
       payload: { type: 'error', text: e.response.data.errorMessage },
     });
+  }
+};
+
+export const userClear = () => async dispatch => {
+  try {
+    dispatch({ type: USER_CLEAR });
+  } catch (err) {
+    console.log(err);
   }
 };

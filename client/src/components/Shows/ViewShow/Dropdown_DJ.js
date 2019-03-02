@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import Dropdown, { DropdownItem } from '../../../components/Dropdown';
 import Input from '../../../components/Input';
 
+import { updateShowHost } from '../../../redux/show';
 import { userSearch, userClear } from '../../../redux/user';
 
 class DropdownDJ extends Component {
@@ -15,6 +16,15 @@ class DropdownDJ extends Component {
         return;
       }
       this.props.userSearch({ filter: 'all', query: event.target.value });
+    };
+
+    const onSelect = selection => {
+      console.log('Show id');
+      console.log(this.props.show._id);
+      console.log('Selection');
+      console.log(selection);
+      const show_id = this.props.show._id;
+      this.props.updateShowHost(show_id, selection._id);
     };
 
     const users = this.props.user.docs;
@@ -29,7 +39,7 @@ class DropdownDJ extends Component {
 
     return (
       <Downshift
-        onChange={selection => console.log(selection)}
+        onChange={onSelect}
         itemToString={item => (item ? item.value : '')}
       >
         {({
@@ -76,12 +86,14 @@ class DropdownDJ extends Component {
 function mapStateToProps(state) {
   return {
     user: state.user,
+    show: state.modal.data,
   };
 }
 
 export default connect(
   mapStateToProps,
   {
+    updateShowHost,
     userSearch,
     userClear,
   },

@@ -104,17 +104,30 @@ class NewShowForm extends Component {
 
   render() {
     const { data } = this.props;
-    console.log('New Show Model Open');
-    console.log(this.props);
+    const { _id } = data;
+    const { host } = this.props.shows[_id].show_details;
+    let firstname,
+      lastname = '';
+    console.log(data);
+
+    if (host) {
+      firstname = host.profile.first_name || '';
+      lastname = host.profile.last_name || '';
+    }
 
     const showType = this.checkShowType(data);
 
     return (
       <main className="show show__padding">
         <section className="show__body">
-          <p>You Clicked a Show!</p>
           <DropdownDJ />
+
+          <p>{`Current DJ: ${firstname} ${lastname}`}</p>
+
+          <p />
+
           {this.showOptions(showType, data)}
+
           <ModalClose />
         </section>
       </main>
@@ -124,7 +137,7 @@ class NewShowForm extends Component {
 
 function mapStateToProps(state) {
   return {
-    input: state.input,
+    shows: state.show.data,
   };
 }
 

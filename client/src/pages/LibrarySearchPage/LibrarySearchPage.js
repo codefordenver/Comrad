@@ -8,6 +8,7 @@ import ReactTable from 'react-table';
 import Card, { CardBody } from '../../components/Card';
 import Dropdown, { DropdownItem } from '../../components/Dropdown';
 import Input from '../../components/Input';
+import TableLibrary from '../../components/TableLibrary';
 
 class LibrarySearchPage extends Component {
   state = {
@@ -168,7 +169,6 @@ class LibrarySearchPage extends Component {
                 );
               }
               return elements;
-              return <div className="library-search_track-name">{value} </div>;
             case 'album':
               if (
                 data.original.artist != null &&
@@ -271,8 +271,8 @@ class LibrarySearchPage extends Component {
                 </Dropdown>
               </div>
             </div>
-
-            {!this.state.loadingError && (
+            <TableLibrary />
+            {/* {!this.state.loadingError && (
               <ReactTable
                 className="-highlight library-search__grid clickable-rows"
                 columns={columns}
@@ -289,7 +289,7 @@ class LibrarySearchPage extends Component {
             )}
             {this.state.loadingError && (
               <div>An error occurred loading data. Please try again.</div>
-            )}
+            )} */}
           </CardBody>
         </Card>
       </div>

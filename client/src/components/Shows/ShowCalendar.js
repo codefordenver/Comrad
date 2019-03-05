@@ -1,6 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import * as actions from '../../actions';
+import { setModalVisibility } from '../../redux/modal';
+import {
+  getShowsData,
+  fetchingShowsStatus,
+  postingShowsStatus,
+  searchShow,
+  selectShow,
+  errorShowsMessage,
+} from '../../redux/show';
 
 import BigCalendar from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
@@ -9,18 +17,7 @@ import _ from 'lodash';
 
 import ShowModalController from './ShowModalController';
 
-import {
-  MODAL_NEW_SHOW,
-  MODAL_EDIT_SHOW,
-  MODAL_VIEW_SHOW,
-} from './ShowModalController';
-
-import {
-  getShowsData,
-  fetchingShowsStatus,
-  postingShowsStatus,
-  errorShowsMessage,
-} from '../../reducers/shows';
+import { MODAL_NEW_SHOW, MODAL_VIEW_SHOW } from './ShowModalController';
 
 class Calendar extends Component {
   constructor(...args) {
@@ -71,19 +68,9 @@ class Calendar extends Component {
   };
 
   showNewShowModal = show => {
-    const {
-      inputUpdateShowTime,
-      inputUpdateShowDate,
-      setModalVisibility,
-    } = this.props;
+    const { setModalVisibility, selectShow } = this.props;
 
-    let { start, end } = show;
-    inputUpdateShowTime('show_start_time_utc', start);
-    inputUpdateShowTime('show_end_time_utc', end);
-
-    inputUpdateShowDate('repeat_start_date', start);
-    inputUpdateShowDate('repeat_end_date', end);
-
+    selectShow(show);
     setModalVisibility(MODAL_NEW_SHOW, true, show);
   };
 
@@ -95,7 +82,7 @@ class Calendar extends Component {
 
   render() {
     const localizer = BigCalendar.momentLocalizer(moment);
-    const { shows, showsFetching, showsPosting, showsError } = this.props;
+    const { shows } = this.props;
 
     return (
       <div>
@@ -120,16 +107,25 @@ class Calendar extends Component {
   }
 }
 
-function mapStateToProps({ shows }) {
+function mapStateToProps({ show }) {
   return {
-    shows: getShowsData(shows),
-    showsFetching: fetchingShowsStatus(shows),
-    showsPosting: postingShowsStatus(shows),
-    showsError: errorShowsMessage(shows),
+    shows: getShowsData(show),
+    showsFetching: fetchingShowsStatus(show),
+    showsPosting: postingShowsStatus(show),
+    showsError: errorShowsMessage(show),
   };
 }
 
 export default connect(
   mapStateToProps,
-  actions,
+  {
+    getShowsData,
+    fetchingShowsStatus,
+    postingShowsStatus,
+    searchShow,
+    setModalVisibility,
+    errorShowsMessage,
+    setModalVisibility,
+    selectShow,
+  },
 )(Calendar);

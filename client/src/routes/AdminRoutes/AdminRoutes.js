@@ -5,8 +5,6 @@ import MainLayout from '../../layouts/MainLayout';
 import AdminHomePage from '../../pages/AdminHomePage';
 
 class AdminRoutes extends Component {
-  state = {};
-
   render() {
     const { url } = this.props.match;
 

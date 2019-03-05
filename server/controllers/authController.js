@@ -57,8 +57,7 @@ module.exports = {
   },
 
   async passwordNew(req, res) {
-    const { passwordConfirm, passwordNew } = req.body;
-    const { rt: resetToken } = req.query;
+    const { passwordConfirm, passwordNew, resetToken } = req.body;
 
     if (!passwordConfirm || !passwordNew) {
       console.log('Empty');

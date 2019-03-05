@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import * as actions from '../../../actions';
+import { setModalVisibility } from '../../../redux/modal';
+import { deleteShow, deleteShowSeries } from '../../../redux/show';
 import { MODAL_EDIT_SHOW } from '../ShowModalController';
 
 import Button from '../../Button';
@@ -127,5 +128,9 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  actions,
+  {
+    deleteShow,
+    deleteShowSeries,
+    setModalVisibility,
+  },
 )(NewShowForm);

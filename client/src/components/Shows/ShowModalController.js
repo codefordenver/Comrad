@@ -1,12 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import * as actions from '../../actions';
 import {
   getModalType,
   getModalVisibility,
   getModalData,
-} from '../../reducers/modals';
+} from '../../redux/modal';
 
 import NewShowModal from './NewShow/Modal';
 import EditShowModal from './EditShow/Modal';
@@ -31,15 +30,19 @@ const ModalController = props => {
       return null;
   }
 };
-function mapStateToProps({ modals }) {
+function mapStateToProps({ modal }) {
   return {
-    modalType: getModalType(modals),
-    modalVisibility: getModalVisibility(modals),
-    data: getModalData(modals),
+    modalType: getModalType(modal),
+    modalVisibility: getModalVisibility(modal),
+    data: getModalData(modal),
   };
 }
 
 export default connect(
   mapStateToProps,
-  actions,
+  {
+    getModalType,
+    getModalVisibility,
+    getModalData,
+  },
 )(ModalController);

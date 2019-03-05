@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import * as actions from '../../../actions';
 import { Field, reduxForm, formValueSelector } from 'redux-form';
 import moment from 'moment';
 
@@ -11,6 +10,8 @@ import Card from '../../Card';
 import PickerDate from './PickerDate';
 
 import ModalClose from '../../Modal/Modal__Button_Close';
+
+import { getShowSelected } from '../../../redux/show';
 
 class NewShowForm extends Component {
   render() {
@@ -113,15 +114,20 @@ class NewShowForm extends Component {
 const selector = formValueSelector('newShow');
 function mapStateToProps(state) {
   const isRepeat = selector(state, 'repeat');
-  const { show_start_time_utc, show_end_time_utc } = state.input;
-  return {
-    initialValues: {
-      show_start_time_utc: moment(show_start_time_utc),
-      show_end_time_utc: moment(show_end_time_utc),
-      repeat_start_date: moment(show_end_time_utc),
-      repeat_end_date: moment(show_end_time_utc),
+
+  const initialValues = state => {
+    const selectedShow = getShowSelected(state.show);
+    return {
+      show_start_time_utc: moment(selectedShow.start),
+      show_end_time_utc: moment(selectedShow.end),
+      repeat_start_date: moment(selectedShow.start),
+      repeat_end_date: moment(selectedShow.end),
       repeat: false,
-    },
+    };
+  };
+
+  return {
+    initialValues: initialValues(state),
     isRepeat,
   };
 }
@@ -132,5 +138,5 @@ NewShowForm = reduxForm({
 
 export default connect(
   mapStateToProps,
-  actions,
+  {},
 )(NewShowForm);

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import * as actions from '../../actions/shows';
 
 import Alert from '../../components/Alert';
 
@@ -11,7 +10,7 @@ import {
   fetchingShowsStatus,
   postingShowsStatus,
   errorShowsMessage,
-} from '../../reducers/shows';
+} from '../../redux/show';
 
 class CalendarHomePage extends Component {
   constructor(props) {
@@ -24,7 +23,8 @@ class CalendarHomePage extends Component {
   }
 
   render() {
-    const { shows, showsFetching, showsPosting, showsError } = this.props;
+    const { showsError } = this.props;
+
     return (
       <div className="calendar__view">
         {showsError && (
@@ -52,5 +52,10 @@ function mapStateToProps({ shows }) {
 
 export default connect(
   mapStateToProps,
-  actions,
+  {
+    getShowsData,
+    fetchingShowsStatus,
+    postingShowsStatus,
+    errorShowsMessage,
+  },
 )(CalendarHomePage);

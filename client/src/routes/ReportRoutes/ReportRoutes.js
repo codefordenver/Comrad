@@ -6,8 +6,6 @@ import MainLayout from '../../layouts/MainLayout';
 import ReportHomePage from '../../pages/ReportHomePage';
 
 class ReportRoutes extends Component {
-  state = {};
-
   render() {
     const { url } = this.props.match;
 

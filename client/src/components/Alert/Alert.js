@@ -36,12 +36,8 @@ class Alert extends Component {
     type: PropTypes.oneOf(['success', 'info', 'danger', 'warning']),
   };
 
-  handleToggle = () => {
-    console.log('Handle Toggle Function');
-  };
-
   render() {
-    const { handleToggle, props } = this;
+    const { props } = this;
     const { display, header, className, type, text } = props;
     return (
       <div

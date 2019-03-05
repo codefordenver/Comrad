@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { authFetch } from '../../actions';
+import { authFetch } from '../../redux/auth';
 
 import NavTest from '../NavTest';
 

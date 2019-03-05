@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 import Form from './Form';
 import Modal from '../../Modal';
 
-import * as actions from '../../../actions';
+import { postShow } from '../../../redux/show';
+import { setModalVisibility } from '../../../redux/modal';
 
 class ShowModal extends Component {
   handleFormSubmit = () => {
@@ -27,5 +28,5 @@ class ShowModal extends Component {
 
 export default connect(
   null,
-  actions,
+  { setModalVisibility, postShow },
 )(ShowModal);

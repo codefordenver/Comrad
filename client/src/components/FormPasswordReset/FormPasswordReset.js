@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import classnames from 'classnames';
 import { emailValidate, requiredValidate } from '../../utils/validation.js';
-import { authPasswordReset } from '../../actions';
+import { authPasswordReset } from '../../redux/auth';
 
 import Alert from '../Alert';
 import Button from '../Button';

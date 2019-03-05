@@ -1,11 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { userAdd } from '../../actions';
-// import validate from '../../utils/validation';
-
-import Checkbox from '../../components/Checkbox';
-import Input from '../../components/Input';
+import { userAdd } from '../../redux/user';
 
 class UserAddPage extends Component {
   state = {
@@ -52,9 +47,6 @@ class UserAddPage extends Component {
   };
 
   render() {
-    const roleOptions = ['DJ', 'Admin'];
-    const statusOpions = ['Active', 'Inactive'];
-
     return (
       <div>Test</div>
       // <Form handleFormSubmit={this.handleFormSubmit}>

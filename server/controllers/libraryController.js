@@ -3,9 +3,10 @@ const keys = require('../config/keys');
 
 /**
  * Queries the Album, Artist, and Track collections, returning a combined array
- * of albums, artists, and tracks that match the query.
+ * of albums, artists, and tracks that match the query. Only searches
+ * for the most relevant 100 results in each of the Album, Artist and Track collections.
  * @param {String} queryString
- * @returns {Array}
+ * @returns {Array} an array of artists, albums and tracks found in the database
  */
 async function findInLibrary(queryString) {
   //limit each query to 100 so that queries of many words are only limited to the most relevant results
@@ -65,6 +66,27 @@ async function findInLibrary(queryString) {
 }
 
 module.exports = {
+  /**
+   * Queries all records in the music library: artists, albums, and tracks.
+   * Returns paged results, with a limited number of records per page in order to
+   * keep the Mongo query running quickly.
+   *
+   * GET Parameters:
+   * sortBy (optional) - String, defaults to "updated_at". The field name to filter by.
+   * sortDescending (optional) - Boolean, defaults to true. Whether to sort the records in a descending order
+   * page (optional) - Number, defaults to 1. The page number of results to return. Making an API call to the first page of results (without providing page, artistSkip, albumSkip, or trackSkip) will return a property that will be the URL to use for the next page (with page, artistSkip, albumSkip and trackSkip automatically set)
+   * artistSkip (optional) - Number, defaults to 0. The number of artist records to skip in the Mongo query before grabbing records. Making an API call to the first page of results (without providing page, artistSkip, albumSkip, or trackSkip) will return a property that will be the URL to use for the next page (with page, artistSkip, albumSkip and trackSkip automatically set)
+   * albumSkip (optional) - Number, defaults to 0. The number of album records to skip in the Mongo query before grabbing records. Making an API call to the first page of results (without providing page, artistSkip, albumSkip, or trackSkip) will return a property that will be the URL to use for the next page (with page, artistSkip, albumSkip and trackSkip automatically set)
+   * trackSkip (optional) - Number, defaults to 0. The number of track records to skip in the Mongo query before grabbing records. Making an API call to the first page of results (without providing page, artistSkip, albumSkip, or trackSkip) will return a property that will be the URL to use for the next page (with page, artistSkip, albumSkip and trackSkip automatically set)
+   *
+   * Returns:
+   * An object with:
+   * results - Array, the artist/album/track objects
+   * totalPages - Number, the total number of pages in the result set
+   * nextPage - Object, if there is another page of results
+   * nextPage.page - Number, the page number for the next page
+   * nextPage.url - String, the API URL to call for the results of the next page
+   */
   async findAll(req, res) {
     let {
       sortBy,
@@ -75,38 +97,18 @@ module.exports = {
       trackSkip,
     } = req.query;
 
-    if (sortBy == null) {
-      sortBy = 'updated_at';
-    }
-    if (sortDescending == null) {
-      sortDescending = true;
-    } else {
-      sortDescending = Number(sortDescending) === 1 ? true : false;
-    }
-    if (artistSkip == null) {
-      artistSkip = 0;
-    } else {
-      artistSkip = Number(artistSkip);
-    }
-    if (albumSkip == null) {
-      albumSkip = 0;
-    } else {
-      albumSkip = Number(albumSkip);
-    }
-    if (trackSkip == null) {
-      trackSkip = 0;
-    } else {
-      trackSkip = Number(trackSkip);
-    }
-    if (page == null) {
-      page = 1;
-    } else {
-      page = Number(page);
-    }
+    //set defaults for variables & cast variables to correct data type
+    sortBy = sortBy || 'updated_at';
+    sortDescending = sortDescending || true;
+    page = page != null ? Number(page) : 0;
+    artistSkip = artistSkip != null ? Number(artistSkip) : 0;
+    albumSkip = albumSkip != null ? Number(albumSkip) : 0;
+    trackSkip = trackSkip != null ? Number(trackSkip) : 0;
 
     let sortObj = {};
     sortObj[sortBy] = sortDescending ? -1 : 1;
 
+    //query 100 items of each type from the mongo database
     const artistResults = await db.Artist.find({}, null, {
       sort: sortObj,
       skip: artistSkip,
@@ -125,6 +127,10 @@ module.exports = {
       .populate('artists')
       .populate('album');
 
+    //transform the results from the database to the results for this page by
+    //looping through the results and order the artist, albums and tracks,
+    //determining how the artists/albums/tracks shold be ordered relative to each other,
+    //then returning the results once we've hit the number of results that should be returned
     let results = [];
     let currentArtist = artistResults.length > 0 ? artistResults[0] : null;
     let currentAlbum = albumResults.length > 0 ? albumResults[0] : null;
@@ -135,8 +141,8 @@ module.exports = {
     let endOfResults = false;
 
     while (results.length < keys.queryPageSize && !endOfResults) {
-      //loop through the results and order the artist, albums and tracks until we hit the desired page size
       if (
+        //check if the artist should be sorted before the album and track
         currentArtist != null &&
         (currentAlbum == null ||
           (currentArtist[sortBy] > currentAlbum[sortBy] && sortDescending) ||
@@ -153,6 +159,7 @@ module.exports = {
           currentArtist = null;
         }
       } else if (
+        //check if the album should be sorted before the artist and track
         currentAlbum != null &&
         (currentArtist == null ||
           (currentAlbum[sortBy] > currentArtist[sortBy] && sortDescending) ||
@@ -169,6 +176,7 @@ module.exports = {
           currentAlbum = null;
         }
       } else if (currentTrack != null) {
+        //the track should be next in the list based on sort order
         results.push(currentTrack);
         trackIndex++;
         if (trackIndex < trackResults.length) {
@@ -186,6 +194,7 @@ module.exports = {
       }
     }
 
+    //estimate the total number of pages
     const artistDocs = await db.Artist.estimatedDocumentCount();
     const albumDocs = await db.Album.estimatedDocumentCount();
     const trackDocs = await db.Track.estimatedDocumentCount();
@@ -197,6 +206,7 @@ module.exports = {
       totalPages: totalPages,
     };
     if (!endOfResults) {
+      //generate a URL that will be used to display the next page of results
       page++;
       artistSkip += artistIndex;
       albumSkip += albumIndex;
@@ -221,12 +231,21 @@ module.exports = {
 
     return res.json(resultsJson);
   },
-  async searchLibrary(req, res) {
-    let { s, type } = req.query;
 
-    if (typeof type === 'undefined') {
-      type = 'all';
-    }
+  /**
+   * Searches artists, albums, and/or tracks based on a search term
+   *
+   * GET Parameters:
+   * s (required) - String, the search string to query by
+   * type (optional) - String, defaults to "all". One of "all", "album", "artist" or "track" depending on what database objects should be searched
+   *
+   * Returns:
+   * An object with:
+   * results - Array, the artist/album/track objects
+   * totalPages - Number, the total number of pages in the result set (At the moment, this is always 1 since we aren't returning more than one page of search results.)
+   */
+  async searchLibrary(req, res) {
+    let { s, type = 'all' } = req.query;
 
     if (s === '') {
       return res.json([]);

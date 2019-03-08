@@ -108,8 +108,6 @@ export function showReducer(state = initialState, { type, payload }) {
       };
 
     case SHOW_UPDATE_HOST:
-      console.log('Updating Host Reducer');
-      console.log(payload);
       return {
         ...state,
         data: { ...state.data, [payload._id]: payload },

@@ -8,7 +8,7 @@ import Button from '../../Button';
 
 import ModalClose from '../../Modal/Modal__Button_Close';
 
-import DropdownDJ from './Dropdown_DJ';
+import DownshiftHost from './DownshiftHost';
 
 class NewShowForm extends Component {
   showEditShowModal = show => {
@@ -44,7 +44,7 @@ class NewShowForm extends Component {
       case 'series':
         return (
           <div>
-            <div>
+            {/*<div>
               <Button
                 color="primary"
                 onClick={() => {
@@ -53,47 +53,40 @@ class NewShowForm extends Component {
               >
                 Edit Instance
               </Button>
-            </div>
-
-            <p>Edit Show Series</p>
-            <p>Delete Single Show</p>
-            <div>
-              <Button
-                color="primary"
-                onClick={() => {
-                  this.deleteSeriesShow(data);
-                }}
-              >
-                Delete Series
-              </Button>
-            </div>
+              </div>*/}
+            <div>Edit Show Instance</div>
+            <div>Edit Show Series</div>
+            <div>Delete Single Show</div>
+            <button
+              onClick={() => {
+                this.deleteSeriesShow(data);
+              }}
+            >
+              Delete Series
+            </button>
           </div>
         );
 
       case 'regular':
         return (
           <div>
-            <div>
+            {/*<div>
               <Button
                 color="primary"
                 onClick={() => {
                   this.showEditShowModal(data);
                 }}
               >
-                Edit Show
+                Edit Instance
               </Button>
-            </div>
-
-            <div>
-              <Button
-                color="primary"
-                onClick={() => {
-                  this.deleteRegularShow(data);
-                }}
-              >
-                Delete
-              </Button>
-            </div>
+              </div>*/}
+            <button
+              onClick={() => {
+                this.deleteRegularShow(data);
+              }}
+            >
+              Delete Series
+            </button>
           </div>
         );
 
@@ -104,30 +97,13 @@ class NewShowForm extends Component {
 
   render() {
     const { data } = this.props;
-    const { _id } = data;
-    const { host } = this.props.shows[_id].show_details;
-    let firstname,
-      lastname = '';
-    console.log(data);
-
-    if (host) {
-      firstname = host.profile.first_name || '';
-      lastname = host.profile.last_name || '';
-    }
-
     const showType = this.checkShowType(data);
 
     return (
       <main className="show show__padding">
         <section className="show__body">
-          <DropdownDJ />
-
-          <p>{`Current DJ: ${firstname} ${lastname}`}</p>
-
-          <p />
-
+          <DownshiftHost />
           {this.showOptions(showType, data)}
-
           <ModalClose />
         </section>
       </main>

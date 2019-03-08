@@ -237,8 +237,7 @@ module.exports = {
   updateHost: (req, res) => {
     const id = req.params.id;
     const { host } = req.body;
-    console.log(req.body);
-    console.log(host);
+
     db.Show.findOneAndUpdate(
       { _id: id },
       { $set: { 'show_details.host': host } },
@@ -249,8 +248,6 @@ module.exports = {
         'profile.last_name',
       ])
       .then(dbShow => {
-        console.log('updating show');
-        console.log(dbShow);
         res.json(dbShow);
       })
       .catch(err => res.status(422).json(err));

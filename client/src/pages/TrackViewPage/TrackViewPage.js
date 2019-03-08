@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
+import { formatTotalSecondsAsMMSS } from '../../utils/formatters';
 
 import Card, { CardBody } from '../../components/Card';
 
@@ -51,11 +52,19 @@ class TrackViewPage extends Component {
                   by <span>{artistsHtml}</span>
                 </div>
                 <div>
+                  Track duration:{' '}
+                  {formatTotalSecondsAsMMSS(
+                    this.state.track.duration_in_seconds,
+                  )}
+                </div>
+                <div>
                   from the album{' '}
                   <a href={'/library/album/' + this.state.track.album._id}>
                     {this.state.track.album.name}
                   </a>
                 </div>
+                <div>Disk number: {this.state.track.disk_number}</div>
+                <div>Track number: {this.state.track.track_number}</div>
               </CardBody>
             </Card>
           </div>

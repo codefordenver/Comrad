@@ -32,7 +32,9 @@ class ArtistViewPage extends Component {
                 <div className="float-right">
                   Last updated: {this.state.last_updated}
                 </div>
-                <h1 className="mb-0">{this.state.artist.name}</h1>
+                <h1 className="mb-0">
+                  {this.state.artist.name} <a className="edit-button" />
+                </h1>
               </CardBody>
             </Card>
           </div>

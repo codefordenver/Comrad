@@ -1,0 +1,9 @@
+.edit-button {
+  cursor: pointer;
+  &::after {
+    content: "\f303"; /* fa-pencil-alt */
+    font-family: "Font Awesome 5 Free";
+    color: $color-grey-3;
+    font-size: 1.6rem;
+  }
+}

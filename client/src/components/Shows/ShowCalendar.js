@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { setModalVisibility } from '../../redux/modal';
 import {
   getShowsData,
   fetchingShowsStatus,
@@ -8,8 +9,6 @@ import {
   selectShow,
   errorShowsMessage,
 } from '../../redux/show';
-
-import { setModalVisibility } from '../../redux/modal';
 
 import BigCalendar from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
@@ -124,6 +123,7 @@ export default connect(
     fetchingShowsStatus,
     postingShowsStatus,
     searchShow,
+    setModalVisibility,
     errorShowsMessage,
     setModalVisibility,
     selectShow,

@@ -11,6 +11,13 @@ import ModalClose from '../../Modal/Modal__Button_Close';
 import DownshiftHost from './DownshiftHost';
 
 class NewShowForm extends Component {
+  componentDidMount() {
+    console.log('Form mounting');
+    const { show } = this.props;
+    const { setModalVisibility } = this.props;
+    setModalVisibility(false, false, show);
+  }
+
   showEditShowModal = show => {
     const { setModalVisibility } = this.props;
 
@@ -96,15 +103,27 @@ class NewShowForm extends Component {
   }
 
   render() {
-    const { data } = this.props;
-    const showType = this.checkShowType(data);
+    const { show } = this.props;
+    const { _id } = show;
+    const showType = this.checkShowType(show);
+    const { host } = this.props.shows[_id].show_details;
+
+    const setHost = host => {
+      if (host) {
+        let firstname,
+          lastname = '';
+        firstname = host.profile.first_name || '';
+        lastname = host.profile.last_name || '';
+        return `${firstname} ${lastname}`;
+      }
+      return;
+    };
 
     return (
       <main className="show show__padding">
         <section className="show__body">
-          <DownshiftHost />
-          {this.showOptions(showType, data)}
-          <ModalClose />
+          <DownshiftHost key={_id} _id={_id} host={setHost(host)} />
+          {this.showOptions(showType, show)}
         </section>
       </main>
     );

@@ -61,7 +61,13 @@ class Sidebar extends Component {
       <nav className="sidebar">
         <ul className="sidebar__list">
           {items.map(item => (
-            <Tooltip key={item.name} text={item.tooltipText} placement="right">
+            <Tooltip
+              key={item.name}
+              setKey={item.name}
+              overlay={item.tooltipText}
+              trigger="hover"
+              placement="right"
+            >
               <li className="sibebar__item">
                 <Link to={item.url} className="sidebar__link">
                   <i className={`sidebar__icon ${item.iconClass}`} />

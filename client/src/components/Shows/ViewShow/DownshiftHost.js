@@ -8,10 +8,18 @@ import Input from '../../Input';
 import { updateShowHost } from '../../../redux/show';
 import { userSearch, userClear } from '../../../redux/user';
 
-import { Field, reduxForm } from 'redux-form';
+import { Field, reduxForm, formValueSelector } from 'redux-form';
 import { change } from 'redux-form';
 
 class DropdownHost extends Component {
+  componentDidMount() {
+    this.props.dispatch(change('hostSearch', 'host', this.props.host));
+  }
+
+  componentWillUnmount() {
+    console.log('Downshift Host Unmounting');
+  }
+
   render() {
     const NONE = 'none';
     const users = this.props.user.docs;
@@ -26,7 +34,7 @@ class DropdownHost extends Component {
     };
 
     const onSelect = selection => {
-      const show_id = this.props.show._id;
+      const show_id = this.props._id;
       this.props.updateShowHost(show_id, selection._id);
       this.props.dispatch(change('hostSearch', 'host', selection.value));
     };
@@ -128,29 +136,9 @@ DropdownHost = reduxForm({
   form: 'hostSearch',
 })(DropdownHost);
 
-function setHost(host) {
-  if (host) {
-    let firstname,
-      lastname = '';
-    firstname = host.profile.first_name || '';
-    lastname = host.profile.last_name || '';
-    return `${firstname} ${lastname}`;
-  }
-  return;
-}
-
 function mapStateToProps(state) {
-  const shows = state.show.data;
-  const _id = state.modal.data._id;
-  const { host } = shows[_id].show_details;
-
   return {
     user: state.user,
-    show: state.modal.data,
-    host: setHost(host),
-    initialValues: {
-      host: setHost(host),
-    },
   };
 }
 

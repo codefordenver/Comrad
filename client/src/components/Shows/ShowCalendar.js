@@ -16,6 +16,8 @@ import moment from 'moment';
 import _ from 'lodash';
 
 import ShowModalController from './ShowModalController';
+import Tooltip from '../Tooltip';
+import ViewShowForm from './ViewShow/Form';
 
 import { MODAL_NEW_SHOW, MODAL_VIEW_SHOW } from './ShowModalController';
 
@@ -80,6 +82,34 @@ class Calendar extends Component {
     setModalVisibility(MODAL_VIEW_SHOW, true, show);
   };
 
+  customEventWrapper = props => {
+    const {
+      event: { _id, master_show_uid },
+    } = props;
+
+    const show = { _id, master_show_uid };
+    return (
+      <Tooltip
+        setKey={_id}
+        overlay={<ViewShowForm show={show} />}
+        trigger="click"
+        placement="right"
+        destroyTooltipOnHide={true}
+      >
+        {props.children}
+      </Tooltip>
+    );
+  };
+
+  eventStyleGetter = (event, start, end, isSelected) => {
+    var style = {
+      backgroundColor: '#007283',
+    };
+    return {
+      style: style,
+    };
+  };
+
   render() {
     const localizer = BigCalendar.momentLocalizer(moment);
     const { shows } = this.props;
@@ -92,13 +122,17 @@ class Calendar extends Component {
           events={this.convertShowsToArray(shows)}
           defaultDate={new Date()}
           defaultView={BigCalendar.Views.WEEK}
-          onSelectEvent={show => this.showViewShowModal(show)}
+          //onSelectEvent={show => this.showViewShowModal(show)}
           onSelectSlot={show => this.showNewShowModal(show)}
           titleAccessor={show => show.show_details.title}
           startAccessor={show => new Date(show.show_start_time_utc)}
           endAccessor={show => new Date(show.show_end_time_utc)}
           onRangeChange={dateRange => this.handleDateChange(dateRange)}
           onNavigate={view => console.log(view)}
+          eventPropGetter={this.eventStyleGetter}
+          components={{
+            eventWrapper: this.customEventWrapper,
+          }}
         />
 
         <ShowModalController />
@@ -125,7 +159,6 @@ export default connect(
     searchShow,
     setModalVisibility,
     errorShowsMessage,
-    setModalVisibility,
     selectShow,
   },
 )(Calendar);

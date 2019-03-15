@@ -28,6 +28,7 @@ class RCTooltip extends Component {
       .isRequired,
     trigger: PropTypes.oneOf(['hover', 'click']).isRequired,
     destroyTooltipOnHide: PropTypes.bool,
+    mouseLeaveDelay: PropTypes.number,
   };
 
   componentDidMount() {
@@ -62,6 +63,7 @@ class RCTooltip extends Component {
       overlay,
       trigger,
       destroyTooltipOnHide = false,
+      mouseLeaveDelay = 0,
       ...rest
     } = this.props;
 
@@ -78,6 +80,7 @@ class RCTooltip extends Component {
         visible={visible}
         onVisibleChange={this.onVisibleChange}
         destroyTooltipOnHide={destroyTooltipOnHide}
+        mouseLeaveDelay={mouseLeaveDelay}
       >
         {children}
       </Tooltip>

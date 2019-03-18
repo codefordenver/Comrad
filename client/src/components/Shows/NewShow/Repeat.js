@@ -5,6 +5,13 @@ import RepeatDropdown from './Repeat_Dropdown';
 import PickerDate from './PickerDate';
 
 class Repeat extends Component {
+  componentWillMount() {
+    console.log('mounting');
+  }
+  componentWillUnmount() {
+    console.log('unmounting');
+  }
+
   render() {
     return (
       <div>

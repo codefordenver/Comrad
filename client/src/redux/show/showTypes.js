@@ -8,5 +8,6 @@ export const SHOW_POST = 'show_post';
 export const SHOW_POSTING = 'show_posting';
 export const SHOW_SEARCH = 'show_search';
 export const SHOW_UPDATE = 'show_update';
+export const SHOW_UPDATE_HOST = 'show_update_host';
 export const SHOW_SELECTED = 'show_selected';
 export const SHOW_UNSELECTED = 'show_unselected';

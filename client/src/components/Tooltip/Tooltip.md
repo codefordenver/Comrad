@@ -8,6 +8,7 @@
 >
   <div
     style={{
+      margin: '1em',
       display: 'flex',
       justifyContent: 'space-evenly',
     }}
@@ -33,7 +34,7 @@
 
   <div
     style={{
-      marginTop: '10px',
+      margin: '1em',
       display: 'flex',
       justifyContent: 'space-evenly',
     }}
@@ -89,19 +90,21 @@
   }}
 >
   {
-    (example_component = () => {
+    (example_jsx_component = () => {
+      const COOL = 'cool';
+
       return (
         <div>
-          <h1>Example React Component </h1>
-          <p>Oh wow that is so cool!</p>
+          <h2>Example JSX Component </h2>
+          <p>{`Oh wow that is so ${COOL}!`}</p>
         </div>
       );
     })
   }
 
   <Tooltip
-    setKey={'example_bottom_react'}
-    overlay={example_component()}
+    setKey={'example_bottom_jsx'}
+    overlay={example_jsx_component()}
     trigger="hover"
     placement="bottom"
   >

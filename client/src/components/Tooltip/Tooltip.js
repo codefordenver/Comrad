@@ -18,14 +18,38 @@ class Tooltip extends Component {
   };
 
   static propTypes = {
+    /**
+     * Used to set a unique key on the tooltip component
+     */
     setKey: PropTypes.string.isRequired,
+    /**
+     * Any component that can be wrapped in JSX
+     */
     children: PropTypes.node.isRequired,
+    /**
+     * Any additional classes added
+     */
     className: PropTypes.string,
+    /**
+     * Set the default placement of the tooltip
+     */
     placement: PropTypes.oneOf(['top', 'right', 'bottom', 'left']).isRequired,
+    /**
+     * Overlay sets the content that is shown within the tooltip popup.
+     */
     overlay: PropTypes.oneOfType([PropTypes.string, PropTypes.element])
       .isRequired,
+    /**
+     * Set if the tooltip should be shown on mouse hover or mouse click
+     */
     trigger: PropTypes.oneOf(['hover', 'click']).isRequired,
+    /**
+     * Destory the tooltip when it is hidden.  This will unmount the tooltip.
+     */
     destroyTooltipOnHide: PropTypes.bool,
+    /**
+     * For on hover tooltips, can set the delay (in seconds) when leaving the tooltip area.
+     */
     mouseLeaveDelay: PropTypes.number,
   };
 

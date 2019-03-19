@@ -8,7 +8,7 @@ export const formatTotalSecondsAsMMSS = totalSeconds => {
   const minutes = Math.floor(totalSeconds / 60);
   const seconds = totalSeconds % 60;
   let secondsString = String(seconds);
-  if (seconds == 0) {
+  if (seconds === 0) {
     secondsString = '00';
   } else if (seconds < 10) {
     secondsString = '0' + secondsString;

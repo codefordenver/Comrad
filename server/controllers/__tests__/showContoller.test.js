@@ -1,12 +1,5 @@
-const request = require('supertest');
 const { connect, disconnect } = require('../../tests/mongoose');
-const app = require('../../app');
-
-const {
-  repeatRuleShows,
-  reduceShowsByRepeatProperty,
-  momentCombineDayAndTime,
-} = require('../showController');
+const { reduceShowsByRepeatProperty } = require('../showController');
 
 beforeEach(connect);
 afterEach(disconnect);

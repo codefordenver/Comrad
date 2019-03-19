@@ -4,8 +4,6 @@ import { setModalVisibility } from '../../../redux/modal';
 import { deleteShow, deleteShowSeries } from '../../../redux/show';
 import { MODAL_EDIT_SHOW } from '../ShowModalController';
 
-import Button from '../../Button';
-
 import ModalClose from '../../Modal/Modal__Button_Close';
 
 import DownshiftHost from './DownshiftHost';

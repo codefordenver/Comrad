@@ -33,7 +33,7 @@ class ArtistViewPage extends Component {
                   Last updated: {this.state.last_updated}
                 </div>
                 <h1 className="mb-0">
-                  {this.state.artist.name} <a className="edit-button" />
+                  {this.state.artist.name} <button className="edit-button" />
                 </h1>
               </CardBody>
             </Card>

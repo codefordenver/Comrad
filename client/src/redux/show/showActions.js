@@ -2,7 +2,6 @@ import axios from 'axios';
 import {
   SHOW_GET,
   SHOW_POST,
-  SHOW_UPDATE,
   SHOW_UPDATE_HOST,
   SHOW_DELETE,
   SHOW_DELETE_SERIES,

@@ -65,7 +65,7 @@ function repeatRuleShows(shows) {
 
 function reduceShowsByRepeatProperty(shows, recurringCheckValue) {
   const reducer = (accShows, currentShow) => {
-    if (currentShow.is_recurring == recurringCheckValue) {
+    if (currentShow.is_recurring === recurringCheckValue) {
       return [...accShows, currentShow];
     }
     return accShows;

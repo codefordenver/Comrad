@@ -54,11 +54,6 @@ export const userSearch = values => async dispatch => {
     }, 2000);
 
     const { filter, query } = values;
-    let queryUrl = `/api/user/search?f=${filter}`;
-
-    if (!query) {
-      queryUrl = queryUrl + `&q=${query}`;
-    }
 
     const response = await axios.get(
       `/api/user/search?q=${query || ''}&f=${filter}`,

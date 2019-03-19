@@ -9,69 +9,6 @@ function randomNumberGenerator(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
-/**
- *
- * @param {String} query
- * @returns {Object}
- */
-function queryOptions(query) {
-  const { q } = query;
-
-  let queryObj = {};
-
-  if (q) {
-    const { q } = query;
-    const re = new RegExp(splitQueryByWord(q), 'i');
-
-    queryObj = { ...queryObj, $or: [{ first_name: re }] };
-  }
-
-  return queryObj;
-}
-
-/**
- * Return object with options to pass into Model.paginate({}) function
- * @param {String} query
- * @returns {Object}
- */
-function searchOptions(query) {
-  const { limit, order, page, sort } = query;
-
-  let optionsObj = {};
-
-  if (sort) {
-    optionsObj = {
-      ...optionsObj,
-      sort: {
-        [sort]: parseInt(order) || 1,
-      },
-    };
-  }
-
-  if (limit) {
-    optionsObj = { ...optionsObj, limit: parseInt(limit) };
-  }
-
-  if (page) {
-    optionsObj = { ...optionsObj, page: parseInt(page) };
-  }
-
-  return optionsObj;
-}
-
-/**
- * Splits a given query string into a regexp pattern string matching any word
- * in the source query.
- * @param {String} queryString
- * @returns {String}
- */
-function splitQueryByWord(queryString) {
-  return queryString
-    .split(/\s+/)
-    .map(word => `(${word})`)
-    .join('|');
-}
-
 module.exports = {
   async findById(req, res) {
     db.User.findById(req.params.id)

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Downshift from 'downshift';
 import { connect } from 'react-redux';
 
-import Dropdown, { DropdownItem } from '../../Dropdown';
+import { DropdownItem } from '../../Dropdown';
 import Input from '../../Input';
 
 import { updateShowHost } from '../../../redux/show';

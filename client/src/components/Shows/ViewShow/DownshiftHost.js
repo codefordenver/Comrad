@@ -13,7 +13,8 @@ import { change } from 'redux-form';
 
 class DropdownHost extends Component {
   componentDidMount() {
-    this.props.dispatch(change('hostSearch', 'host', this.props.host));
+    const { dispatch, host } = this.props;
+    dispatch(change('hostSearch', 'host', host));
   }
 
   componentWillUnmount() {
@@ -27,16 +28,22 @@ class DropdownHost extends Component {
     const { host } = this.props;
 
     const inputOnChange = event => {
+      const { userSearch } = this.props;
       if (!event.target.value) {
         return;
       }
-      this.props.userSearch({ filter: 'all', query: event.target.value });
+      userSearch({ filter: 'all', query: event.target.value });
     };
 
     const onSelect = selection => {
-      const show_id = this.props._id;
-      this.props.updateShowHost(show_id, selection._id);
-      this.props.dispatch(change('hostSearch', 'host', selection.value));
+      const { updateShowHost, dispatch, _id } = this.props;
+      updateShowHost(_id, selection._id);
+      dispatch(change('hostSearch', 'host', selection.value));
+    };
+
+    const handleBlur = props => {
+      const { dispatch, host } = this.props;
+      dispatch(change('hostSearch', 'host', host));
     };
 
     const renderDropdown = (item, loading) => {
@@ -101,6 +108,7 @@ class DropdownHost extends Component {
               type="text"
               {...getInputProps({
                 onChange: inputOnChange,
+                onBlur: handleBlur,
               })}
               dirtyOverride={dirtyOverride(host)}
             />

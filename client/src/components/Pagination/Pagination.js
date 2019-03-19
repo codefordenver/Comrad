@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { usersSearch } from '../../actions';
+import { userSearch } from '../../redux/user';
 
 class Pagination extends Component {
   handleRightClick = () => {
@@ -80,5 +80,5 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  { usersSearch },
+  { userSearch },
 )(Pagination);

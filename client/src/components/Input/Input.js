@@ -51,6 +51,7 @@ class Input extends Component {
           type={type}
           {...input}
           {...other}
+          onBlur={() => input.onBlur()}
         />
         {label && (
           <InputLabel {...meta} dirtyOverride={dirtyOverride}>

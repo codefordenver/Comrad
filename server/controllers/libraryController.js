@@ -272,6 +272,7 @@ module.exports = {
       case 'track':
         resultsToReturn = allTracks;
         break;
+      default:
     }
     const results = resultsToReturn.map(result => {
       // in these relevance calculations, popularity of the entity has a slight effect,

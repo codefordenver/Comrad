@@ -39,6 +39,7 @@ class Dropdown extends Component {
           dropdownListAdditionalClass =
             'dropdown__list--below-and-align-against-right';
           break;
+        default:
       }
     }
 

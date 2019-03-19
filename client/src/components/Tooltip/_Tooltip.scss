@@ -1,28 +1,28 @@
-.rc-tooltip{
-  opacity: 1;
+.rc-tooltip {
+  opacity: 1 !important;
 }
 
 .rc-tooltip-inner {
-  border: $border-width solid $color-primary-light;
-  border-radius: $border-radius;
+  border: $border-width solid $color-primary-light !important;
+  border-radius: $border-radius !important;
 }
 
 .rc-tooltip-placement-right .rc-tooltip-arrow {
-  opacity: 1;
+  opacity: 1 !important;
   border-right-color: $color-primary-light !important;
 }
 
 .rc-tooltip-placement-left .rc-tooltip-arrow {
-  opacity: 1;
+  opacity: 1 !important;
   border-left-color: $color-primary-light !important;
 }
 
 .rc-tooltip-placement-top .rc-tooltip-arrow {
-  opacity: 1;
+  opacity: 1 !important;
   border-top-color: $color-primary-light !important;
 }
 
 .rc-tooltip-placement-bottom .rc-tooltip-arrow {
-  opacity: 1;
+  opacity: 1 !important;
   border-bottom-color: $color-primary-light !important;
 }

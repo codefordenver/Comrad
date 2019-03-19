@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Tooltip from 'rc-tooltip';
+import RCTooltip from 'rc-tooltip';
 import 'rc-tooltip/assets/bootstrap_white.css';
-
-import Form from '../Shows/ViewShow/Form';
 
 function preventDefault(e) {
   e.preventDefault();
 }
 
-class RCTooltip extends Component {
+class Tooltip extends Component {
   constructor(props) {
     super(props);
     this.escFunction = this.escFunction.bind(this);
@@ -70,7 +68,7 @@ class RCTooltip extends Component {
     const { visible } = this.state;
 
     return (
-      <Tooltip
+      <RCTooltip
         key={setKey}
         className={className}
         trigger={trigger}
@@ -81,11 +79,12 @@ class RCTooltip extends Component {
         onVisibleChange={this.onVisibleChange}
         destroyTooltipOnHide={destroyTooltipOnHide}
         mouseLeaveDelay={mouseLeaveDelay}
+        {...rest}
       >
         {children}
-      </Tooltip>
+      </RCTooltip>
     );
   }
 }
 
-export default RCTooltip;
+export default Tooltip;

@@ -90,7 +90,8 @@ class Calendar extends Component {
     const show = { _id, master_show_uid };
     return (
       <Tooltip
-        setKey={_id}
+        key={_id}
+        id={_id}
         overlay={<ViewShowForm show={show} />}
         trigger="click"
         placement="right"

@@ -19,10 +19,6 @@ class Tooltip extends Component {
 
   static propTypes = {
     /**
-     * Used to set a unique key on the tooltip component
-     */
-    setKey: PropTypes.string.isRequired,
-    /**
      * Any component that can be wrapped in JSX
      */
     children: PropTypes.node.isRequired,
@@ -51,6 +47,10 @@ class Tooltip extends Component {
      * For on hover tooltips, can set the delay (in seconds) when leaving the tooltip area.
      */
     mouseLeaveDelay: PropTypes.number,
+    /**
+     * Used to set a unique id on the tooltip component for accessability
+     */
+    id: PropTypes.string,
   };
 
   componentDidMount() {
@@ -77,7 +77,6 @@ class Tooltip extends Component {
 
   render() {
     const {
-      setKey,
       children,
       className,
       placement,
@@ -93,7 +92,6 @@ class Tooltip extends Component {
 
     return (
       <RCTooltip
-        key={setKey}
         className={className}
         trigger={trigger}
         overlay={overlay}

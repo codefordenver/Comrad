@@ -63,7 +63,7 @@ class Sidebar extends Component {
           {items.map(item => (
             <Tooltip
               key={item.name}
-              setKey={item.name}
+              id={item.name}
               overlay={item.tooltipText}
               trigger="hover"
               placement="right"

@@ -14,7 +14,6 @@
     }}
   >
     <Tooltip
-      setKey={'example_top'}
       overlay={`Enter Text or Component Here`}
       trigger="hover"
       placement="top"
@@ -23,7 +22,6 @@
     </Tooltip>
 
     <Tooltip
-      setKey={'example_right'}
       overlay={`Enter Text or Component Here`}
       trigger="hover"
       placement="right"
@@ -40,7 +38,6 @@
     }}
   >
     <Tooltip
-      setKey={'example_left'}
       overlay={`Enter Text or Component Here`}
       trigger="hover"
       placement="left"
@@ -49,7 +46,6 @@
     </Tooltip>
 
     <Tooltip
-      setKey={'example_bottom'}
       overlay={`Enter Text or Component Here`}
       trigger="hover"
       placement="bottom"
@@ -70,7 +66,6 @@
   }}
 >
   <Tooltip
-    setKey={'example_bottom_click'}
     overlay={`Enter Text or Component Here`}
     trigger="click"
     placement="bottom"
@@ -103,7 +98,6 @@
   }
 
   <Tooltip
-    setKey={'example_bottom_jsx'}
     overlay={example_jsx_component()}
     trigger="hover"
     placement="bottom"

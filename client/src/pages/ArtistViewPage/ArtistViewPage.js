@@ -18,6 +18,8 @@ class ArtistViewPage extends Component {
 
   handleSubmit = (state, instance) => {
     console.log('test submit');
+    console.log(state);
+    console.log(instance);
   };
 
   toggleEditMode = (state, instance) => {
@@ -54,13 +56,10 @@ class ArtistViewPage extends Component {
                     <form onSubmit={this.handleSubmit(submit)}>
                       {display && <Alert {...alert} />}
                       <Field
-                        label="Artist Name"
-                        validate={requiredValidate}
+                        name="artistName"
+                        placeholder="Artist Name"
                         component="input"
-                        name="aritstName"
                         type="text"
-                        initial="sean test"
-                        value={artist.name}
                       />
                       <a className="ok-button" />
                       <a
@@ -80,16 +79,21 @@ class ArtistViewPage extends Component {
 }
 
 const ReduxFormEditArtist = reduxForm({
-  form: 'editArtist',
+  form: 'editArtistName',
+  enableReinitialize: true, //necessary for initialValues property to work
 })(ArtistViewPage);
 
 function mapStateToProps(state) {
   const artist = state.artist.doc;
   const auth = state.auth;
+  const initialValues = {
+    artistName: artist.name,
+  };
 
   return {
     artist,
     auth,
+    initialValues,
   };
 }
 

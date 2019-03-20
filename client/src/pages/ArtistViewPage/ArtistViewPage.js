@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import { requiredValidate } from '../../utils/validation.js';
-import axios from 'axios';
+import { artistFindOne } from '../../redux/artist/artistActions.js';
 
 import Alert from '../../components/Alert';
 import Card, { CardBody } from '../../components/Card';
@@ -11,62 +11,39 @@ class ArtistViewPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      artist: null,
       editing: false,
-      last_updated: '',
-      originalArtistName: null,
     };
-
-    axios.get('/api/artist/' + this.props.match.params.id).then(response => {
-      let dateObj = new Date(response.data.updated_at);
-      this.setState({
-        artist: response.data,
-        last_updated:
-          dateObj.toLocaleDateString() + ' ' + dateObj.toLocaleTimeString(),
-        originalArtistName: response.data.name,
-      });
-    });
+    this.props.artistFindOne(this.props.match.params.id);
   }
 
   handleSubmit = (state, instance) => {
     console.log('test submit');
   };
 
-  textChange = (state, instance) => {
-    const { artist } = this.state;
-    artist.name = this.refs.artistNameInput.value;
-    this.setState({
-      artist: artist,
-    });
-  };
-
   toggleEditMode = (state, instance) => {
-    const { artist } = this.state;
-    artist.name = this.state.originalArtistName;
     this.state.editing = this.setState({
-      artist: artist,
       editing: !this.state.editing,
     });
   };
 
   render() {
     const { props, submit } = this;
-    const { auth } = props;
+    const { artist, auth } = props;
     const { alert } = auth;
     const { display } = alert;
     return (
       <div className="artist-view-page">
-        {this.state.artist != null && (
+        {artist != null && (
           <div>
             <Card>
               <CardBody>
                 <div className="float-right">
-                  Last updated: {this.state.last_updated}
+                  Last updated: {artist.updated_at_string}
                 </div>
                 <h1 className="mb-0">
                   {!this.state.editing && (
                     <span>
-                      {this.state.artist.name}{' '}
+                      {artist.name}{' '}
                       <a
                         onClick={this.toggleEditMode}
                         className="edit-button"
@@ -83,7 +60,7 @@ class ArtistViewPage extends Component {
                         name="aritstName"
                         type="text"
                         initial="sean test"
-                        value={this.state.artist.name}
+                        value={artist.name}
                       />
                       <a className="ok-button" />
                       <a
@@ -107,9 +84,11 @@ const ReduxFormEditArtist = reduxForm({
 })(ArtistViewPage);
 
 function mapStateToProps(state) {
+  const artist = state.artist.doc;
   const auth = state.auth;
 
   return {
+    artist,
     auth,
   };
 }
@@ -117,6 +96,6 @@ function mapStateToProps(state) {
 export default connect(
   mapStateToProps,
   {
-    /*editArtist*/
+    artistFindOne,
   },
 )(ReduxFormEditArtist);

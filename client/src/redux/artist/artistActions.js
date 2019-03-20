@@ -1,14 +1,11 @@
-export const artistFindOne = values => async dispatch => {
-  try {
-    console.log(values);
-  } catch (err) {
-    console.log(err);
-  }
-};
+import axios from 'axios';
+import { ARTIST_FIND_ONE } from './artistTypes';
 
-export const artistFindAll = values => async dispatch => {
+export const artistFindOne = id => async dispatch => {
   try {
-    console.log(values);
+    const response = await axios.get(`/api/artist/${id}`);
+
+    dispatch({ type: ARTIST_FIND_ONE, payload: response.data });
   } catch (err) {
     console.log(err);
   }

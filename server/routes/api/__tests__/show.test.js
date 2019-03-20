@@ -1,10 +1,4 @@
-const request = require('supertest');
 const { connect, disconnect } = require('../../../tests/mongoose');
-const app = require('../../../app');
-const {
-  canGetArray,
-  canGetValidObjectByID,
-} = require('../../../tests/common/routeTests');
 
 beforeEach(connect);
 afterEach(disconnect);

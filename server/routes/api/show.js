@@ -9,7 +9,7 @@ router
 router
   .route('/:id')
   .get(showController.findById)
-  .put(showController.update)
+  .patch(showController.updateHost)
   .delete(showController.remove);
 
 module.exports = router;

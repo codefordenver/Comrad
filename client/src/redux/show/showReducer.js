@@ -4,6 +4,7 @@ import {
   SHOW_POST,
   SHOW_POSTING,
   SHOW_UPDATE,
+  SHOW_UPDATE_HOST,
   SHOW_SEARCH,
   SHOW_DELETE,
   SHOW_DELETE_SERIES,
@@ -91,18 +92,25 @@ export function showReducer(state = initialState, { type, payload }) {
       };
 
     case SHOW_UPDATE:
-      const { existingShow, updatedShow } = payload;
-      const { start, end } = updatedShow;
+      // const { existingShow, updatedShow } = payload;
+      // const { start, end } = updatedShow;
 
-      const updatedShows = state.map(stateShow => {
-        return stateShow.id === existingShow.id
-          ? { ...stateShow, start, end }
-          : stateShow;
-      });
+      // const updatedShows = state.map(stateShow => {
+      //   return stateShow.id === existingShow.id
+      //     ? { ...stateShow, start, end }
+      //     : stateShow;
+      // });
 
       return {
         ...state,
-        data: updatedShows,
+        fetching: false,
+        error: false,
+      };
+
+    case SHOW_UPDATE_HOST:
+      return {
+        ...state,
+        data: { ...state.data, [payload._id]: payload },
         fetching: false,
         error: false,
       };

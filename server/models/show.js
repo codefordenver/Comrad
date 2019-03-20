@@ -8,7 +8,7 @@ const showSchema = new Schema({
     summary: String,
     description: String,
     producer: String,
-    host: String,
+    host: { type: Schema.Types.ObjectId, ref: 'User' },
     guests: [String],
     playlist: String,
     custom: String,

@@ -2,7 +2,7 @@ import axios from 'axios';
 import {
   SHOW_GET,
   SHOW_POST,
-  SHOW_UPDATE,
+  SHOW_UPDATE_HOST,
   SHOW_DELETE,
   SHOW_DELETE_SERIES,
   SHOW_SEARCH,
@@ -36,11 +36,11 @@ export const postShow = (input, callback) => async dispatch => {
   }
 };
 
-export const updateShow = (existingShow, updatedShow) => async dispatch => {
+export const updateShowHost = (id, host) => async dispatch => {
   try {
-    console.log('Action: ' + updatedShow);
+    const response = await axios.patch(`/api/show/${id}`, { host });
 
-    dispatch({ type: SHOW_UPDATE, payload: { existingShow, updatedShow } });
+    dispatch({ type: SHOW_UPDATE_HOST, payload: response.data });
   } catch (e) {
     dispatch({ type: SHOW_ERROR, payload: 'Updating Show Error' });
   }

@@ -12,14 +12,14 @@ const InputError = props => {
 };
 
 const InputLabel = props => {
-  const { active, children, dirty, error, touched } = props;
+  const { active, children, dirty, error, touched, dirtyOverride } = props;
 
   return (
     <div
       className={classnames(
         'input__label',
         active && 'active',
-        dirty && 'dirty',
+        (dirty || dirtyOverride) && 'dirty',
         touched && error && 'error',
       )}
     >
@@ -38,7 +38,17 @@ class Input extends Component {
   render() {
     const { props } = this;
 
-    const { className, icon, inline, input, label, meta, type } = props;
+    const {
+      className,
+      icon,
+      inline,
+      input,
+      label,
+      meta,
+      type,
+      dirtyOverride = false,
+      ...other
+    } = props;
     const { error, touched } = meta;
 
     return (
@@ -52,8 +62,13 @@ class Input extends Component {
           className={classnames('input', touched && error && 'error')}
           type={type}
           {...input}
+          {...other}
         />
-        {label && <InputLabel {...meta}>{label}</InputLabel>}
+        {label && (
+          <InputLabel {...meta} dirtyOverride={dirtyOverride}>
+            {label}
+          </InputLabel>
+        )}
         {touched && error && <InputError>{error}</InputError>}
         {icon && ICON_SET[icon]}
       </div>

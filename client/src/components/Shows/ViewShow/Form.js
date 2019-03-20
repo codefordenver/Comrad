@@ -4,9 +4,9 @@ import { setModalVisibility } from '../../../redux/modal';
 import { deleteShow, deleteShowSeries } from '../../../redux/show';
 import { MODAL_EDIT_SHOW } from '../ShowModalController';
 
-import Button from '../../Button';
-
 import ModalClose from '../../Modal/Modal__Button_Close';
+
+import DownshiftHost from './DownshiftHost';
 
 class NewShowForm extends Component {
   showEditShowModal = show => {
@@ -42,7 +42,7 @@ class NewShowForm extends Component {
       case 'series':
         return (
           <div>
-            <div>
+            {/*<div>
               <Button
                 color="primary"
                 onClick={() => {
@@ -51,47 +51,40 @@ class NewShowForm extends Component {
               >
                 Edit Instance
               </Button>
-            </div>
-
-            <h2>Edit Show Series</h2>
-            <h2>Delete Single Show</h2>
-            <div>
-              <Button
-                color="primary"
-                onClick={() => {
-                  this.deleteSeriesShow(data);
-                }}
-              >
-                Delete Series
-              </Button>
-            </div>
+              </div>*/}
+            <div>Edit Show Instance</div>
+            <div>Edit Show Series</div>
+            <div>Delete Single Show</div>
+            <button
+              onClick={() => {
+                this.deleteSeriesShow(data);
+              }}
+            >
+              Delete Series
+            </button>
           </div>
         );
 
       case 'regular':
         return (
           <div>
-            <div>
+            {/*<div>
               <Button
                 color="primary"
                 onClick={() => {
                   this.showEditShowModal(data);
                 }}
               >
-                Edit Show
+                Edit Instance
               </Button>
-            </div>
-
-            <div>
-              <Button
-                color="primary"
-                onClick={() => {
-                  this.deleteRegularShow(data);
-                }}
-              >
-                Delete
-              </Button>
-            </div>
+              </div>*/}
+            <button
+              onClick={() => {
+                this.deleteRegularShow(data);
+              }}
+            >
+              Delete Series
+            </button>
           </div>
         );
 
@@ -102,16 +95,12 @@ class NewShowForm extends Component {
 
   render() {
     const { data } = this.props;
-    console.log('New Show Model Open');
-    console.log(this.props);
-
     const showType = this.checkShowType(data);
 
     return (
       <main className="show show__padding">
         <section className="show__body">
-          <h1>You Clicked a Show!</h1>
-
+          <DownshiftHost />
           {this.showOptions(showType, data)}
           <ModalClose />
         </section>
@@ -122,7 +111,7 @@ class NewShowForm extends Component {
 
 function mapStateToProps(state) {
   return {
-    input: state.input,
+    shows: state.show.data,
   };
 }
 

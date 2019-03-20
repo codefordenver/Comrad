@@ -125,7 +125,6 @@ export default connect(
     searchShow,
     setModalVisibility,
     errorShowsMessage,
-    setModalVisibility,
     selectShow,
   },
 )(Calendar);

@@ -65,7 +65,7 @@ function repeatRuleShows(shows) {
 
 function reduceShowsByRepeatProperty(shows, recurringCheckValue) {
   const reducer = (accShows, currentShow) => {
-    if (currentShow.is_recurring == recurringCheckValue) {
+    if (currentShow.is_recurring === recurringCheckValue) {
       return [...accShows, currentShow];
     }
     return accShows;
@@ -210,6 +210,10 @@ module.exports = {
 
     db.Show.find()
       .and(findShowQueryByDateRange(startDate, endDate))
+      .populate('show_details.host', [
+        'profile.first_name',
+        'profile.last_name',
+      ])
       .then(dbShow => {
         res.json(repeatRuleShows(dbShow));
       })
@@ -227,6 +231,25 @@ module.exports = {
   update: (req, res) => {
     db.Show.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true })
       .then(dbShow => res.json(dbShow))
+      .catch(err => res.status(422).json(err));
+  },
+
+  updateHost: (req, res) => {
+    const id = req.params.id;
+    const { host } = req.body;
+
+    db.Show.findOneAndUpdate(
+      { _id: id },
+      { $set: { 'show_details.host': host } },
+      { new: true },
+    )
+      .populate('show_details.host', [
+        'profile.first_name',
+        'profile.last_name',
+      ])
+      .then(dbShow => {
+        res.json(dbShow);
+      })
       .catch(err => res.status(422).json(err));
   },
 

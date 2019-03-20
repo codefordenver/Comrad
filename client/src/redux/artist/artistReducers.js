@@ -1,4 +1,4 @@
-import { ARTIST_FIND_ONE } from './artistTypes';
+import { ARTIST_FIND_ONE, ARTIST_UPDATE } from './artistTypes';
 
 const initialState = {
   doc: {},
@@ -16,6 +16,12 @@ export const artistReducer = (state = initialState, { type, payload }) => {
           updated_at_string:
             dateObj.toLocaleDateString() + ' ' + dateObj.toLocaleTimeString(),
           ...payload,
+        },
+      };
+    case ARTIST_UPDATE:
+      return {
+        doc: {
+          name: payload.name,
         },
       };
     default:

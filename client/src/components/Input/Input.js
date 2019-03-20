@@ -32,11 +32,15 @@ class Input extends Component {
   render() {
     const { props } = this;
 
-    const { className, icon, input, label, meta, type } = props;
+    const { className, icon, inline, input, label, meta, type } = props;
     const { error, touched } = meta;
 
     return (
-      <div className={classnames('form-group', className)}>
+      <div
+        className={classnames('form-group', className, {
+          'form-group--inline': inline,
+        })}
+      >
         <input
           className={classnames('input', touched && error && 'error')}
           type={type}

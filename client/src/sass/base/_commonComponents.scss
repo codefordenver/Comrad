@@ -9,6 +9,8 @@
 }
 .ok-button {
   cursor: pointer;
+  margin-right: 0.5rem;
+  
   &::after {
     content: "\f00c"; /* fa-check */ 
     font-family: "Font Awesome 5 Free";

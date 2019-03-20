@@ -2,10 +2,14 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import { requiredValidate } from '../../utils/validation.js';
-import { artistFindOne } from '../../redux/artist/artistActions.js';
+import {
+  artistFindOne,
+  artistUpdate,
+} from '../../redux/artist/artistActions.js';
 
 import Alert from '../../components/Alert';
 import Card, { CardBody } from '../../components/Card';
+import Input from '../../components/Input';
 
 class ArtistViewPage extends Component {
   constructor(props) {
@@ -16,10 +20,8 @@ class ArtistViewPage extends Component {
     this.props.artistFindOne(this.props.match.params.id);
   }
 
-  handleSubmit = (state, instance) => {
-    console.log('test submit');
-    console.log(state);
-    console.log(instance);
+  submit = values => {
+    this.props.artistUpdate(this.props.artist._id, values.artistName);
   };
 
   toggleEditMode = (state, instance) => {
@@ -30,7 +32,7 @@ class ArtistViewPage extends Component {
 
   render() {
     const { props, submit } = this;
-    const { artist, auth } = props;
+    const { artist, auth, handleSubmit } = props;
     const { alert } = auth;
     const { display } = alert;
     return (
@@ -53,15 +55,15 @@ class ArtistViewPage extends Component {
                     </span>
                   )}
                   {this.state.editing && (
-                    <form onSubmit={this.handleSubmit(submit)}>
+                    <form onSubmit={handleSubmit(submit)}>
                       {display && <Alert {...alert} />}
                       <Field
                         name="artistName"
-                        placeholder="Artist Name"
-                        component="input"
+                        component={Input}
+                        inline="true"
                         type="text"
                       />
-                      <a className="ok-button" />
+                      <a className="ok-button" onClick={handleSubmit(submit)} />
                       <a
                         onClick={this.toggleEditMode}
                         className="cancel-button"
@@ -101,5 +103,6 @@ export default connect(
   mapStateToProps,
   {
     artistFindOne,
+    artistUpdate,
   },
 )(ReduxFormEditArtist);

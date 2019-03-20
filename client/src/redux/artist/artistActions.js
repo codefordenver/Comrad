@@ -1,5 +1,9 @@
 import axios from 'axios';
-import { ARTIST_FIND_ONE, ARTIST_UPDATE } from './artistTypes';
+import {
+  ARTIST_ALERT,
+  ARTIST_FIND_ONE,
+  ARTIST_EDITING_NAME,
+} from './artistTypes';
 
 export const artistFindOne = id => async dispatch => {
   try {
@@ -11,15 +15,24 @@ export const artistFindOne = id => async dispatch => {
   }
 };
 
-export const artistUpdate = (id, name) => async dispatch => {
+export const artistUpdate = (id, name, callback) => async dispatch => {
   try {
-    console.log('putting artist');
-    await axios.put(`/api/artist/${id}`, {
+    const response = await axios.put(`/api/artist/${id}`, {
       name: name,
     });
 
-    dispatch({ type: ARTIST_UPDATE, payload: { name: name } });
+    dispatch({ type: ARTIST_FIND_ONE, payload: response.data });
+
+    callback();
   } catch (err) {
     console.log(err);
+    dispatch({
+      type: ARTIST_ALERT,
+      payload: { type: 'danger', text: err.response.data.errorMessage },
+    });
   }
+};
+
+export const changeEditingArtistName = value => async dispatch => {
+  dispatch({ type: ARTIST_EDITING_NAME, payload: { editingName: value } });
 };

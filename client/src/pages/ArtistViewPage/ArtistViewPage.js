@@ -5,6 +5,7 @@ import { requiredValidate } from '../../utils/validation.js';
 import {
   artistFindOne,
   artistUpdate,
+  changeEditingArtistName,
 } from '../../redux/artist/artistActions.js';
 
 import Alert from '../../components/Alert';
@@ -14,26 +15,38 @@ import Input from '../../components/Input';
 class ArtistViewPage extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      editing: false,
-    };
+    if (this.props.editingName) {
+      this.props.changeEditingArtistName(false);
+    }
     this.props.artistFindOne(this.props.match.params.id);
   }
 
+  doNotTakeFocus = e => {
+    e.preventDefault(); // do not take the focus so that the field's onblur event is not fired
+  };
+
   submit = values => {
-    this.props.artistUpdate(this.props.artist._id, values.artistName);
+    const changeEditingArtistName = this.props.changeEditingArtistName;
+    if (this.props.dirty) {
+      this.props.artistUpdate(
+        this.props.artist._id,
+        values.artistName,
+        function() {
+          changeEditingArtistName(false);
+        },
+      );
+    } else {
+      changeEditingArtistName(false);
+    }
   };
 
   toggleEditMode = (state, instance) => {
-    this.state.editing = this.setState({
-      editing: !this.state.editing,
-    });
+    this.props.changeEditingArtistName(!this.props.editingName);
   };
 
   render() {
     const { props, submit } = this;
-    const { artist, auth, handleSubmit } = props;
-    const { alert } = auth;
+    const { alert, artist, editingName, handleSubmit } = props;
     const { display } = alert;
     return (
       <div className="artist-view-page">
@@ -45,7 +58,7 @@ class ArtistViewPage extends Component {
                   Last updated: {artist.updated_at_string}
                 </div>
                 <h1 className="mb-0">
-                  {!this.state.editing && (
+                  {!editingName && (
                     <span>
                       {artist.name}{' '}
                       <a
@@ -54,18 +67,26 @@ class ArtistViewPage extends Component {
                       />
                     </span>
                   )}
-                  {this.state.editing && (
+                  {editingName && (
                     <form onSubmit={handleSubmit(submit)}>
                       {display && <Alert {...alert} />}
                       <Field
                         name="artistName"
                         component={Input}
                         inline="true"
+                        focus="true"
                         type="text"
+                        validate={[requiredValidate]}
+                        onBlur={handleSubmit(submit)}
                       />
-                      <a className="ok-button" onClick={handleSubmit(submit)} />
+                      <a
+                        className="ok-button"
+                        onMouseDown={this.doNotTakeFocus}
+                        onClick={handleSubmit(submit)}
+                      />
                       <a
                         onClick={this.toggleEditMode}
+                        onMouseDown={this.doNotTakeFocus}
                         className="cancel-button"
                       />
                     </form>
@@ -87,14 +108,16 @@ const ReduxFormEditArtist = reduxForm({
 
 function mapStateToProps(state) {
   const artist = state.artist.doc;
-  const auth = state.auth;
+  const editingName = state.artist.editingName;
+  const alert = state.artist.alert;
   const initialValues = {
     artistName: artist.name,
   };
 
   return {
+    alert,
     artist,
-    auth,
+    editingName,
     initialValues,
   };
 }
@@ -104,5 +127,6 @@ export default connect(
   {
     artistFindOne,
     artistUpdate,
+    changeEditingArtistName,
   },
 )(ReduxFormEditArtist);

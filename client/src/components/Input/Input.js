@@ -29,6 +29,12 @@ const InputLabel = props => {
 };
 
 class Input extends Component {
+  constructor(props) {
+    super(props);
+
+    this.inputRef = React.createRef();
+  }
+
   render() {
     const { props } = this;
 
@@ -42,6 +48,7 @@ class Input extends Component {
         })}
       >
         <input
+          ref={this.inputRef}
           className={classnames('input', touched && error && 'error')}
           type={type}
           {...input}
@@ -51,6 +58,12 @@ class Input extends Component {
         {icon && ICON_SET[icon]}
       </div>
     );
+  }
+
+  componentDidMount() {
+    if (this.props.focus) {
+      this.inputRef.current.focus();
+    }
   }
 }
 

@@ -1,4 +1,4 @@
-const db = require('../models');
+const db = require('../models/v1');
 const moment = require('moment');
 const { RRule } = require('rrule');
 const _ = require('lodash');

@@ -1,92 +1,101 @@
 import React, { Component } from 'react';
 import Downshift from 'downshift';
 import { connect } from 'react-redux';
-
-import { DropdownItem } from '../../Dropdown';
-import Input from '../../Input';
+import { change, Field, reduxForm } from 'redux-form';
 
 import { updateShowHost } from '../../../redux/show';
 import { userSearch, userClear } from '../../../redux/user';
 
-import { Field, reduxForm, formValueSelector } from 'redux-form';
-import { change } from 'redux-form';
+import { DropdownItem } from '../../Dropdown';
+import Input from '../../Input';
+
+const DOWNSHIFT_NONE = 'none';
 
 class DropdownHost extends Component {
   componentDidMount() {
     const { dispatch, host } = this.props;
+
     dispatch(change('hostSearch', 'host', host));
   }
 
-  componentWillUnmount() {
-    console.log('Downshift Host Unmounting');
-  }
+  inputOnChange = e => {
+    const { userSearch } = this.props;
+    const { value } = e.target;
+
+    if (!value) {
+      return;
+    }
+
+    userSearch({ filter: 'all', query: value });
+  };
+
+  onSelect = selection => {
+    const { updateShowHost, dispatch, _id } = this.props;
+    const { value } = selection;
+
+    updateShowHost(_id, selection._id);
+    dispatch(change('hostSearch', 'host', value));
+  };
+
+  handleBlur = () => {
+    const { dispatch, host } = this.props;
+
+    dispatch(change('hostSearch', 'host', host));
+  };
+
+  renderDropdown = (item, loading) => {
+    const { email, value } = item;
+
+    if (!loading) {
+      if (value !== DOWNSHIFT_NONE) {
+        return <DropdownItem key={value}>{`${value} ${email}`}</DropdownItem>;
+      }
+      //Add a new user component or redirect here
+      return (
+        <DropdownItem key={value}>{`ADD NEW USER COMPOMENT HERE`}</DropdownItem>
+      );
+    }
+    //Can return loading indictor here
+  };
+
+  dirtyOverride = host => {
+    return host ? true : false;
+  };
 
   render() {
-    const NONE = 'none';
-    const users = this.props.user.docs;
-    const users_loading = this.props.user.loading;
-    const { host } = this.props;
+    const {
+      dirtyOverride,
+      handleBlur,
+      initialValue,
+      inputOnChange,
+      onSelect,
+      props,
+      renderDropdown,
+    } = this;
+    const { host, user } = props;
+    const { docs, loading } = user;
 
-    const inputOnChange = event => {
-      const { userSearch } = this.props;
-      if (!event.target.value) {
-        return;
-      }
-      userSearch({ filter: 'all', query: event.target.value });
-    };
+    let items = docs.map(user => {
+      const { contact, _id, profile } = user;
+      const { email } = contact;
+      const { first_name, last_name } = profile;
 
-    const onSelect = selection => {
-      const { updateShowHost, dispatch, _id } = this.props;
-      updateShowHost(_id, selection._id);
-      dispatch(change('hostSearch', 'host', selection.value));
-    };
-
-    const handleBlur = props => {
-      const { dispatch, host } = this.props;
-      dispatch(change('hostSearch', 'host', host));
-    };
-
-    const renderDropdown = (item, loading) => {
-      if (!loading) {
-        if (item.value !== NONE) {
-          return (
-            <DropdownItem key={item.value}>
-              {`${item.value} ${item.email}`}
-            </DropdownItem>
-          );
-        }
-        //Add a new user component or redirect here
-        return (
-          <DropdownItem key={item.value}>
-            {`ADD NEW USER COMPOMENT HERE`}
-          </DropdownItem>
-        );
-      }
-      //Can return loading indictor here
-    };
-
-    const dirtyOverride = host => {
-      if (host) {
-        return true;
-      }
-      return false;
-    };
-
-    let items = users.map((user, index) => ({
-      _id: user._id,
-      value: `${user.profile.first_name} ${user.profile.last_name}`,
-      email: `| ${user.contact.email}`,
-    }));
+      return {
+        _id,
+        value: `${first_name} ${last_name}`,
+        email: `| ${email}`,
+      };
+    });
 
     if (items.length === 0) {
-      items = [{ value: NONE }];
+      items = [{ value: DOWNSHIFT_NONE }];
     }
 
     return (
       <Downshift
         onChange={onSelect}
-        initialInputValue={this.props.initialValue}
-        itemToString={item => (item ? item.value : '')}
+        initialInputValue={initialValue}
+        itemToString={({ value }) => value || ''}
       >
         {({
           getInputProps,
@@ -128,7 +137,7 @@ class DropdownHost extends Component {
                       },
                     })}
                   >
-                    {renderDropdown(item, users_loading)}
+                    {renderDropdown(item, loading)}
                   </div>
                 ))}
               </div>
@@ -144,9 +153,9 @@ DropdownHost = reduxForm({
   form: 'hostSearch',
 })(DropdownHost);
 
-function mapStateToProps(state) {
+function mapStateToProps({ user }) {
   return {
-    user: state.user,
+    user,
   };
 }
 

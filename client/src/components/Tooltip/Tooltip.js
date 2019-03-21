@@ -3,10 +3,6 @@ import PropTypes from 'prop-types';
 import RCTooltip from 'rc-tooltip';
 import 'rc-tooltip/assets/bootstrap_white.css';
 
-function preventDefault(e) {
-  e.preventDefault();
-}
-
 class Tooltip extends Component {
   constructor(props) {
     super(props);

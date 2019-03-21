@@ -49,10 +49,11 @@ class Input extends Component {
         <input
           className={classnames('input', touched && error && 'error')}
           type={type}
+          onBlur={() => input.onBlur()}
           {...input}
           {...other}
-          onBlur={() => input.onBlur()}
         />
+
         {label && (
           <InputLabel {...meta} dirtyOverride={dirtyOverride}>
             {label}

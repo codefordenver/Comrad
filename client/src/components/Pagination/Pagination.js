@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { userSearch } from '../../redux/user';
@@ -53,7 +53,7 @@ class Pagination extends Component {
     const { page, pages, total } = props.reducer;
 
     return (
-      <Fragment>
+      <>
         {total > 0 ? (
           <div className="pagination">
             <div className="pagination__page">{page}</div>
@@ -67,7 +67,7 @@ class Pagination extends Component {
             </div>
           </div>
         ) : null}
-      </Fragment>
+      </>
     );
   }
 }

@@ -47,11 +47,11 @@ class Input extends Component {
     return (
       <div className={classnames('form-group', className)}>
         <input
+          {...input}
+          {...other}
           className={classnames('input', touched && error && 'error')}
           type={type}
           onBlur={() => input.onBlur()}
-          {...input}
-          {...other}
         />
 
         {label && (

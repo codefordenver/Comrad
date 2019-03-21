@@ -4,11 +4,6 @@ import RCTooltip from 'rc-tooltip';
 import 'rc-tooltip/assets/bootstrap_white.css';
 
 class Tooltip extends Component {
-  constructor(props) {
-    super(props);
-    this.escFunction = this.escFunction.bind(this);
-  }
-
   state = {
     visible: false,
   };
@@ -56,14 +51,14 @@ class Tooltip extends Component {
     document.removeEventListener('keydown', this.escFunction, false);
   }
 
-  escFunction(event) {
+  escFunction = e => {
     //https://stackoverflow.com/questions/37440408/how-to-detect-esc-key-press-in-react-and-how-to-handle-it
-    if (event.keyCode === 27) {
+    if (e.keyCode === 27) {
       this.setState({
         visible: false,
       });
     }
-  }
+  };
 
   onVisibleChange = visible => {
     this.setState({

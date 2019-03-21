@@ -4,6 +4,22 @@ import PropTypes from 'prop-types';
 import { userSearch } from '../../redux/user';
 
 class Pagination extends Component {
+  static propTypes = {
+    action: PropTypes.func,
+    search: PropTypes.shape({
+      page: PropTypes.number,
+      pages: PropTypes.number,
+    }),
+  };
+
+  static defaultProps = {
+    action: null,
+    search: {
+      page: 1,
+      pages: 1,
+    },
+  };
+
   handleRightClick = () => {
     const { action, reducer } = this.props;
     const { page, pages } = reducer;
@@ -40,9 +56,9 @@ class Pagination extends Component {
       <Fragment>
         {total > 0 ? (
           <div className="pagination">
-            <div className="pagination__page">{page || 1}</div>
+            <div className="pagination__page">{page}</div>
             <div className="pagination__text">of</div>
-            <div className="pagination__pages">{pages || 1}</div>
+            <div className="pagination__pages">{pages}</div>
             <div className="pagination__arrow" onClick={handleLeftClick}>
               <i className="fas fa-arrow-left" />
             </div>
@@ -56,25 +72,9 @@ class Pagination extends Component {
   }
 }
 
-Pagination.propTypes = {
-  action: PropTypes.func,
-  search: PropTypes.shape({
-    page: PropTypes.number,
-    pages: PropTypes.number,
-  }),
-};
-
-Pagination.defaultProps = {
-  action: null,
-  search: {
-    page: 1,
-    pages: 1,
-  },
-};
-
-function mapStateToProps(state) {
+function mapStateToProps({ search }) {
   return {
-    search: state.search,
+    search,
   };
 }
 

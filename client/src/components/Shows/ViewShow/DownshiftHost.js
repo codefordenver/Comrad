@@ -95,7 +95,7 @@ class DropdownHost extends Component {
       <Downshift
         onChange={onSelect}
         initialInputValue={initialValue}
-        itemToString={({ value }) => value || ''}
+        itemToString={item => (item ? item.value : '')}
       >
         {({
           getInputProps,

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-
+import classnames from 'classnames';
+import { InputLabel } from '../../Input/Input';
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 import { SingleDatePicker } from 'react-dates';
@@ -20,21 +21,30 @@ class DatePicker extends Component {
   render() {
     const {
       input: { name, onChange },
+      meta,
+      label,
+      className,
     } = this.props;
 
     return (
-      <SingleDatePicker
-        date={this.state.date}
-        onDateChange={date => {
-          onChange(date);
-          this.setState({ date });
-        }} // PropTypes.func.isRequired
-        focused={this.state.focused} // PropTypes.bool
-        onFocusChange={({ focused }) => this.setState({ focused })} // PropTypes.func.isRequired
-        id={`${name}_picker`} // PropTypes.string.isRequired,
-        isOutsideRange={() => false}
-        numberOfMonths={1}
-      />
+      <div className={classnames('form-group', className)}>
+        <SingleDatePicker
+          date={this.state.date}
+          onDateChange={date => {
+            onChange(date);
+            this.setState({ date });
+          }} // PropTypes.func.isRequired
+          focused={this.state.focused} // PropTypes.bool
+          onFocusChange={({ focused }) => this.setState({ focused })} // PropTypes.func.isRequired
+          id={`${name}_picker`} // PropTypes.string.isRequired,
+          isOutsideRange={() => false}
+          numberOfMonths={1}
+        />
+
+        <InputLabel {...meta} dirtyOverride={true}>
+          {label}
+        </InputLabel>
+      </div>
     );
   }
 }

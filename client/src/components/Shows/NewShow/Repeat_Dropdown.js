@@ -4,6 +4,7 @@ import { Field, formValueSelector } from 'redux-form';
 import _ from 'lodash';
 import moment from 'moment';
 import RRule from 'rrule';
+import { InputLabel } from '../../Input/Input';
 
 class RepeatDropdown extends Component {
   render() {
@@ -63,7 +64,7 @@ class RepeatDropdown extends Component {
       return rules;
     };
 
-    const { date } = this.props;
+    const { date, meta, label } = this.props;
     const repeatOptions = definedRepeatRules(date);
 
     const repeatDropdownList = _.map(repeatOptions, option => {
@@ -74,13 +75,19 @@ class RepeatDropdown extends Component {
       );
     });
 
+    //Componentize the select component
+    //https://stackoverflow.com/questions/40075281/how-to-create-custom-dropdown-field-component-with-redux-form-v6
     return (
       <div>
-        <div className="">
-          <Field name="repeatType" component="select">
+        <div className="form-group">
+          <Field name="repeatType" component="select" className="input">
             <option />
             {repeatDropdownList}
           </Field>
+
+          <InputLabel {...meta} dirtyOverride={true}>
+            {`Repeat Type`}
+          </InputLabel>
         </div>
       </div>
     );

@@ -17,11 +17,10 @@ class Repeat extends Component {
       <div>
         <div className="show__grid_container">
           <div className="show__date_picker_end">
-            <label htmlFor="repeat_end_date">Ends</label>
-            <Field name="repeat_end_date" component={PickerDate} />
+            <Field label="End" name="repeat_end_date" component={PickerDate} />
           </div>
 
-          <div className="">
+          <div className="show__grid_span_2">
             <RepeatDropdown />
           </div>
         </div>

@@ -5,6 +5,7 @@ import moment from 'moment';
 
 import Repeat from './Repeat';
 
+import Input from '../../Input';
 import Button from '../../Button';
 import Card from '../../Card';
 import PickerDate from './PickerDate';
@@ -13,82 +14,125 @@ import ModalClose from '../../Modal/Modal__Button_Close';
 
 import { getShowSelected } from '../../../redux/show';
 
+import { requiredValidate } from '../../../utils/validation';
+
 class NewShowForm extends Component {
   render() {
-    const { isRepeat } = this.props;
-
+    const { isRepeat, handleSubmit } = this.props;
+    //Need handleBlur for time fields.  Redux-form is clearing the field otherwise.
+    const handleBlur = e => e.preventDefault();
     return (
       <main className="show show__padding">
         <section className="show__body">
           <Card>
-            <form onSubmit={this.props.handleSubmit}>
+            <form onSubmit={handleSubmit}>
               <div className="show__grid_container">
                 <div className="show__grid_span_3">
-                  <label htmlFor="title">Title</label>
-                  <Field name="title" component="input" type="text" />
-                </div>
-
-                <div>
-                  <label htmlFor="show_start_time_utc">From</label>
                   <Field
-                    name="show_start_time_utc"
-                    component="input"
-                    type="time"
-                    format={value => moment(value).format('HH:mm')}
-                    parse={value => moment(value, 'HH:mm')}
+                    label="Title"
+                    name="title"
+                    component={Input}
+                    type="text"
+                    validate={[requiredValidate]}
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="show_end_time_utc">To</label>
                   <Field
-                    name="show_end_time_utc"
-                    component="input"
+                    label="From"
+                    name="show_start_time_utc"
+                    component={Input}
                     type="time"
                     format={value => moment(value).format('HH:mm')}
                     parse={value => moment(value, 'HH:mm')}
+                    onBlur={handleBlur}
+                    validate={[requiredValidate]}
+                    dirtyOverride={true}
+                  />
+                </div>
+
+                <div>
+                  <Field
+                    label="To"
+                    name="show_end_time_utc"
+                    component={Input}
+                    type="time"
+                    format={value => moment(value).format('HH:mm')}
+                    parse={value => moment(value, 'HH:mm')}
+                    onBlur={handleBlur}
+                    validate={[requiredValidate]}
+                    dirtyOverride={true}
                   />
                 </div>
 
                 <div className="show__grid_container show__grid_span_3">
                   <div className="show__date_picker_start">
-                    <label htmlFor="repeat_start_date">Start</label>
-                    <Field name="repeat_start_date" component={PickerDate} />
+                    <Field
+                      label="Start"
+                      name="repeat_start_date"
+                      component={PickerDate}
+                    />
                   </div>
 
                   <div className="">
-                    <label htmlFor="repeat">Repeat</label>
-                    <Field name="repeat" component="input" type="checkbox" />
+                    <Field
+                      label="Repeat"
+                      name="repeat"
+                      component={Input}
+                      type="checkbox"
+                      dirtyOverride={true}
+                    />
                   </div>
 
-                  <div className="show__grid_span_3">
-                    {isRepeat && <Repeat />}
-                  </div>
+                  {isRepeat && (
+                    <div className="show__grid_span_3">
+                      <Repeat />
+                    </div>
+                  )}
                 </div>
 
                 <div className="show__grid_span_3">
-                  <label htmlFor="Summary">Summary</label>
-                  <Field name="summary" component="input" type="text" />
+                  <Field
+                    label="Summary"
+                    name="summary"
+                    component={Input}
+                    type="text"
+                  />
+                  {/**
+                  *Example of text area.  Needs to be turned into a full component to use with redux-forms.
+                  <textarea
+                    name=""
+                    id=""
+                    style={{ resize: 'none', width: '100%' }}
+                    rows="7"
+                  />*/}
                 </div>
 
                 <div className="show__grid_span_3">
-                  <label htmlFor="Description">Description</label>
-                  <Field name="description" component="input" type="text" />
+                  <Field
+                    label="Description"
+                    name="description"
+                    component={Input}
+                    type="text"
+                  />
                 </div>
 
                 <div>
-                  <label htmlFor="Producer">Producer</label>
-                  <Field name="producer" component="input" type="text" />
+                  <Field
+                    label="Producer"
+                    name="producer"
+                    component={Input}
+                    type="text"
+                  />
                 </div>
 
                 <div>
-                  <label htmlFor="Host">Host</label>
-                  <Field name="host" component="input" type="text" />
-                </div>
-
-                <div>
-                  <label htmlFor="Playlist">Playlist</label>
-                  <Field name="playlist" component="input" type="text" />
+                  <Field
+                    label="Host"
+                    name="host"
+                    component={Input}
+                    type="text"
+                  />
                 </div>
 
                 <div className="show__grid_container show__grid_span_3">

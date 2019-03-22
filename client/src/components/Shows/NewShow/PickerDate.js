@@ -4,6 +4,7 @@ import { InputLabel } from '../../Input/Input';
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 import { SingleDatePicker } from 'react-dates';
+import moment from 'moment';
 
 class DatePicker extends Component {
   constructor(props) {
@@ -18,12 +19,17 @@ class DatePicker extends Component {
     }
   }
 
+  handleDateChangeRaw = date => {
+    console.log('raw');
+  };
+
   render() {
     const {
       input: { name, onChange },
       meta,
       label,
       className,
+      ...rest
     } = this.props;
 
     return (
@@ -39,6 +45,10 @@ class DatePicker extends Component {
           id={`${name}_picker`} // PropTypes.string.isRequired,
           isOutsideRange={() => false}
           numberOfMonths={1}
+          small
+          block
+          onChangeRaw={() => console.log('Testing')}
+          {...rest}
         />
 
         <InputLabel {...meta} dirtyOverride={true}>

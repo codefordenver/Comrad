@@ -71,6 +71,7 @@ class NewShowForm extends Component {
                       label="Start"
                       name="repeat_start_date"
                       component={PickerDate}
+                      validate={[requiredValidate]}
                     />
                   </div>
 

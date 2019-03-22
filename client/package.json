@@ -16,6 +16,7 @@
     "downshift": "^3.2.6",
     "lodash": "^4.17.11",
     "query-string": "^6.2.0",
+    "rc-tooltip": "^3.7.3",
     "react": "^16.4.2",
     "react-big-calendar": "^0.20.2",
     "react-dates": "^18.3.0",

@@ -1,14 +1,52 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+
 import { setModalVisibility } from '../../../redux/modal';
 import { deleteShow, deleteShowSeries } from '../../../redux/show';
 import { MODAL_EDIT_SHOW } from '../ShowModalController';
 
-import ModalClose from '../../Modal/Modal__Button_Close';
-
+import Button from '../../Button';
 import DownshiftHost from './DownshiftHost';
 
+const FORM_OPTIONS = {
+  series: (data, deleteSereisShow) => {
+    return (
+      <div className="series">
+        <div className="series__show-instance">Edit Show Instance</div>
+        <div className="series__show-series">Edit Show Series</div>
+        <div className="series__delete">Delete</div>
+        <Button
+          className="series__btn-delete"
+          color="danger"
+          onClick={() => deleteSereisShow(data)}
+        >
+          Delete Series
+        </Button>
+      </div>
+    );
+  },
+  regular: (data, deleteRegularShow) => {
+    return (
+      <div className="regular">
+        <Button
+          className="regular__btn-delete"
+          color="danger"
+          onClick={() => deleteRegularShow(data)}
+        >
+          Delete Series
+        </Button>
+      </div>
+    );
+  },
+};
+
 class NewShowForm extends Component {
+  componentDidMount() {
+    const { setModalVisibility, show } = this.props;
+
+    setModalVisibility(false, false, show);
+  }
+
   showEditShowModal = show => {
     const { setModalVisibility } = this.props;
 
@@ -17,17 +55,31 @@ class NewShowForm extends Component {
 
   deleteRegularShow = show => {
     const { deleteShow, setModalVisibility } = this.props;
+
     deleteShow(show._id);
     setModalVisibility(null, false, null);
   };
 
   deleteSeriesShow = show => {
     const { deleteShowSeries, setModalVisibility } = this.props;
+
     deleteShowSeries(show.master_show_uid);
     setModalVisibility(null, false, null);
   };
 
-  checkShowType(show) {
+  getHost = host => {
+    if (host) {
+      const { first_name, last_name } = host.profile;
+      let firstname = first_name || '';
+      let lastname = last_name || '';
+
+      return `${firstname} ${lastname}`;
+    }
+
+    return null;
+  };
+
+  getShowType(show) {
     if (show._id.includes('-')) {
       return 'series';
     } else if (show.master_show_uid) {
@@ -37,72 +89,30 @@ class NewShowForm extends Component {
     }
   }
 
-  showOptions(type, data) {
-    switch (type) {
-      case 'series':
-        return (
-          <div>
-            {/*<div>
-              <Button
-                color="primary"
-                onClick={() => {
-                  this.showEditShowModal(data);
-                }}
-              >
-                Edit Instance
-              </Button>
-              </div>*/}
-            <div>Edit Show Instance</div>
-            <div>Edit Show Series</div>
-            <div>Delete Single Show</div>
-            <button
-              onClick={() => {
-                this.deleteSeriesShow(data);
-              }}
-            >
-              Delete Series
-            </button>
-          </div>
-        );
+  getShowFunction = showType => {
+    const { deleteRegularShow, deleteSeriesShow } = this;
+    const showFunction = {
+      series: deleteSeriesShow,
+      regular: deleteRegularShow,
+    };
 
-      case 'regular':
-        return (
-          <div>
-            {/*<div>
-              <Button
-                color="primary"
-                onClick={() => {
-                  this.showEditShowModal(data);
-                }}
-              >
-                Edit Instance
-              </Button>
-              </div>*/}
-            <button
-              onClick={() => {
-                this.deleteRegularShow(data);
-              }}
-            >
-              Delete Series
-            </button>
-          </div>
-        );
-
-      default:
-        break;
-    }
-  }
+    return showFunction[showType];
+  };
 
   render() {
-    const { data } = this.props;
-    const showType = this.checkShowType(data);
+    const { getShowType, getShowFunction, props, getHost } = this;
+    const { show, shows } = props;
+    const { _id } = show;
+    const { host } = shows[_id].show_details;
+
+    const showType = getShowType(show);
+    const showFunction = getShowFunction(showType);
 
     return (
       <main className="show show__padding">
         <section className="show__body">
-          <DownshiftHost />
-          {this.showOptions(showType, data)}
-          <ModalClose />
+          <DownshiftHost key={_id} _id={_id} host={getHost(host)} />
+          {FORM_OPTIONS[showType](show, showFunction)}
         </section>
       </main>
     );

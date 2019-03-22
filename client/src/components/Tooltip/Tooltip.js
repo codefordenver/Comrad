@@ -1,31 +1,69 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import classnames from 'classnames';
+import RCTooltip from 'rc-tooltip';
+import 'rc-tooltip/assets/bootstrap_white.css';
 
 class Tooltip extends Component {
   state = {
-    open: false,
+    visible: false,
   };
 
   static propTypes = {
+    /**
+     * Any component that can be wrapped in JSX
+     */
     children: PropTypes.node.isRequired,
+    /**
+     * Any additional classes added
+     */
     className: PropTypes.string,
+    /**
+     * Set the default placement of the tooltip
+     */
     placement: PropTypes.oneOf(['top', 'right', 'bottom', 'left']).isRequired,
-    text: PropTypes.string.isRequired,
-    heading: PropTypes.string,
+    /**
+     * Overlay sets the content that is shown within the tooltip popup.
+     */
+    overlay: PropTypes.oneOfType([PropTypes.string, PropTypes.element])
+      .isRequired,
+    /**
+     * Set if the tooltip should be shown on mouse hover or mouse click
+     */
+    trigger: PropTypes.oneOf(['hover', 'click']).isRequired,
+    /**
+     * Destory the tooltip when it is hidden.  This will unmount the tooltip.
+     */
+    destroyTooltipOnHide: PropTypes.bool,
+    /**
+     * For on hover tooltips, can set the delay (in seconds) when leaving the tooltip area.
+     */
+    mouseLeaveDelay: PropTypes.number,
+    /**
+     * Used to set a unique id on the tooltip component for accessability
+     */
+    id: PropTypes.string,
   };
 
-  static defaultProps = {
-    className: null,
-    heading: null,
+  componentDidMount() {
+    document.addEventListener('keydown', this.escFunction, false);
+  }
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.escFunction, false);
+  }
+
+  escFunction = e => {
+    //https://stackoverflow.com/questions/37440408/how-to-detect-esc-key-press-in-react-and-how-to-handle-it
+    if (e.keyCode === 27) {
+      this.setState({
+        visible: false,
+      });
+    }
   };
 
-  handleMouseEnter = event => {
-    this.setState({ open: true });
-  };
-
-  handleMouseLeave = event => {
-    this.setState({ open: false });
+  onVisibleChange = visible => {
+    this.setState({
+      visible,
+    });
   };
 
   render() {
@@ -34,35 +72,31 @@ class Tooltip extends Component {
       className,
       placement,
       text,
-      heading,
+      overlay,
+      trigger,
+      destroyTooltipOnHide = false,
+      mouseLeaveDelay = 0,
       ...rest
     } = this.props;
-    const { open } = this.state;
 
-    const child = React.Children.only(children);
-    const updatedChild = React.cloneElement(child, {
-      className: classnames(child.props.className, 'tooltip-container'),
-      onMouseEnter: this.handleMouseEnter,
-      onMouseLeave: this.handleMouseLeave,
-      children: [
-        child.props.children,
-        <div
-          className={classnames('tooltip', `tooltip--${placement}`, {
-            'tooltip--open': open,
-          })}
-          role="tooltip"
-          key="tooltip"
-        >
-          <section className="tooltip__content">
-            {heading ? <h1 className="tooltip__heading">{heading}</h1> : null}
-            <p className="tooltip__text">{text}</p>
-          </section>
-        </div>,
-      ],
-      ...rest,
-    });
+    const { visible } = this.state;
 
-    return updatedChild;
+    return (
+      <RCTooltip
+        className={className}
+        trigger={trigger}
+        overlay={overlay}
+        placement={placement}
+        //Visible and onVisableChange are used for trigger='click' tooltips
+        visible={visible}
+        onVisibleChange={this.onVisibleChange}
+        destroyTooltipOnHide={destroyTooltipOnHide}
+        mouseLeaveDelay={mouseLeaveDelay}
+        {...rest}
+      >
+        {children}
+      </RCTooltip>
+    );
   }
 }
 

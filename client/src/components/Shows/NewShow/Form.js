@@ -4,16 +4,13 @@ import { Field, reduxForm, formValueSelector } from 'redux-form';
 import moment from 'moment';
 
 import Repeat from './Repeat';
-
 import Input from '../../Input';
 import Button from '../../Button';
 import Card from '../../Card';
-import PickerDate from './PickerDate';
-
+import DatePicker from '../../DatePicker';
 import ModalClose from '../../Modal/Modal__Button_Close';
 
 import { getShowSelected } from '../../../redux/show';
-
 import { requiredValidate } from '../../../utils/validation';
 
 class NewShowForm extends Component {
@@ -47,7 +44,7 @@ class NewShowForm extends Component {
                     parse={value => moment(value, 'HH:mm')}
                     onBlur={handleBlur}
                     validate={[requiredValidate]}
-                    dirtyOverride={true}
+                    dirtyOverride
                   />
                 </div>
 
@@ -61,7 +58,7 @@ class NewShowForm extends Component {
                     parse={value => moment(value, 'HH:mm')}
                     onBlur={handleBlur}
                     validate={[requiredValidate]}
-                    dirtyOverride={true}
+                    dirtyOverride
                   />
                 </div>
 
@@ -70,7 +67,7 @@ class NewShowForm extends Component {
                     <Field
                       label="Start"
                       name="repeat_start_date"
-                      component={PickerDate}
+                      component={DatePicker}
                       validate={[requiredValidate]}
                     />
                   </div>
@@ -81,7 +78,7 @@ class NewShowForm extends Component {
                       name="repeat"
                       component={Input}
                       type="checkbox"
-                      dirtyOverride={true}
+                      dirtyOverride
                     />
                   </div>
 
@@ -157,11 +154,11 @@ class NewShowForm extends Component {
 }
 
 const selector = formValueSelector('newShow');
-function mapStateToProps(state) {
-  const isRepeat = selector(state, 'repeat');
 
+function mapStateToProps(state) {
   const initialValues = state => {
     const selectedShow = getShowSelected(state.show);
+
     return {
       show_start_time_utc: moment(selectedShow.start),
       show_end_time_utc: moment(selectedShow.end),
@@ -170,6 +167,8 @@ function mapStateToProps(state) {
       repeat: false,
     };
   };
+
+  const isRepeat = selector(state, 'repeat');
 
   return {
     initialValues: initialValues(state),

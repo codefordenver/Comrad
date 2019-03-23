@@ -31,13 +31,6 @@ $show_start_z: 200;
   z-index: $show_start_z - 1;
 }
 
-.SingleDatePicker {
-  font-size: 1.8rem;
-  font-family: inherit;
-  border-radius: $border-radius;
-  border: 2px solid $color-primary-light;
-  &:focus {
-    outline: none;
-    border: 2px solid $color-primary;
-  }
+.rbc-calendar {
+  min-height: 80vh;
 }

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Field } from 'redux-form';
 
 import RepeatDropdown from './Repeat_Dropdown';
-import PickerDate from './PickerDate';
+import DatePicker from '../../DatePicker';
 
 class Repeat extends Component {
   componentWillMount() {
@@ -20,9 +20,10 @@ class Repeat extends Component {
             <Field
               label="End"
               name="repeat_end_date"
-              component={PickerDate}
+              component={DatePicker}
               showClearDate
               placeholder="Never"
+              allowNullDate
             />
           </div>
 

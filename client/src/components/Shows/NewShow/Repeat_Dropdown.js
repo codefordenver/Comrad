@@ -57,7 +57,7 @@ class RepeatDropdown extends Component {
         byday: {
           name: `On day ${dateNumber} of the month`,
           freq: RRule.MONTHLY,
-          bymonthday: dateNumber, //ADD DAY INPUT
+          bymonthday: dateNumber,
         },
       };
 

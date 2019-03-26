@@ -4,8 +4,6 @@ import { Field, reduxForm } from 'redux-form';
 
 import { artistFindOne, artistUpdate } from '../../redux/artist';
 
-import Alert from '../Alert';
-import Button from '../Button';
 import Input from '../Input';
 
 class FormArtistUpdate extends Component {

@@ -2,17 +2,14 @@ import {
   ARTIST_ALERT,
   ARTIST_FIND_ONE,
   ARTIST_EDITING_NAME,
+  ARTIST_LOAD,
 } from './artistTypes';
 
 const initialState = {
-  alert: {
-    display: false,
-    header: '',
-    text: '',
-    type: '',
-  },
   doc: {},
   editingName: false,
+  error: null,
+  loading: false,
 };
 
 export const artistReducer = (state = initialState, { type, payload }) => {
@@ -29,9 +26,8 @@ export const artistReducer = (state = initialState, { type, payload }) => {
       let dateObj = new Date(payload.updated_at);
       return {
         ...state,
+        loading: false,
         doc: {
-          updated_at_string:
-            dateObj.toLocaleDateString() + ' ' + dateObj.toLocaleTimeString(),
           ...payload,
         },
       };
@@ -39,6 +35,11 @@ export const artistReducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         editingName: payload.editingName,
+      };
+    case ARTIST_LOAD:
+      return {
+        ...state,
+        loading: true,
       };
     default:
       return state;

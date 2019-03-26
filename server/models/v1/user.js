@@ -17,34 +17,43 @@ const userSchema = new Schema({
 
     date_of_birth: {
       type: Date,
+      default: null,
     },
 
     image: {
       type: String,
+      default: null,
     },
   },
 
   location: {
     street: {
       type: String,
+      default: null,
     },
 
     city: {
       type: String,
+      default: null,
     },
 
     state: {
       type: String,
+      default: null,
+      max: 2,
     },
 
     zip_code: {
       type: String,
+      default: null,
+      max: 5,
     },
   },
 
   contact: {
     phone: {
       type: String,
+      require: true,
     },
 
     email: {
@@ -64,26 +73,28 @@ const userSchema = new Schema({
 
     slack: {
       type: String,
+      default: null,
     },
   },
 
   station: {
     on_air_name: {
       type: String,
+      default: null,
     },
 
     permission: {
       type: String,
-      enum: ['dj', 'underwriting', 'show_producer', 'full_access', 'admin'],
+      enum: ['DJ', 'Underwriting', 'Show Producer', 'Full Access', 'Admin'],
       required: true,
-      default: 'dj',
+      default: 'DJ',
     },
 
     status: {
       type: String,
-      enum: ['active', 'inactive'],
+      enum: ['Active', 'Inactive'],
       required: true,
-      default: 'active',
+      default: 'Active',
     },
 
     can_delete: {
@@ -94,6 +105,7 @@ const userSchema = new Schema({
 
     registered: {
       type: Date,
+      default: Date.now,
     },
   },
 
@@ -103,10 +115,6 @@ const userSchema = new Schema({
       required: true,
     },
 
-    fake_user_password: {
-      type: String,
-    },
-
     reset_token: {
       type: String,
       default: null,
@@ -114,6 +122,11 @@ const userSchema = new Schema({
 
     reset_token_expiry: {
       type: Number,
+      default: null,
+    },
+
+    api_key: {
+      type: String,
       default: null,
     },
   },

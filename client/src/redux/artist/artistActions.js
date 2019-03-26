@@ -19,11 +19,15 @@ export const artistFindOne = id => async dispatch => {
   }
 };
 
-export const artistUpdate = ({ _id, ...rest }) => async dispatch => {
+export const artistUpdate = ({ _id, ...rest }, callback) => async dispatch => {
   try {
+    dispatch({ type: ARTIST_LOAD });
+
     const response = await axios.put(`/api/artist/${_id}`, rest);
 
     dispatch({ type: ARTIST_UPDATE, payload: response.data });
+
+    callback();
   } catch (err) {
     console.log(err);
   }

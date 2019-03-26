@@ -19,12 +19,22 @@ class FormArtistUpdate extends Component {
   submit = values => {
     const { artistUpdate } = this.props;
 
-    artistUpdate(values);
+    artistUpdate(values, () => {
+      const { match } = this.props;
+      const { url } = match;
+
+      window.location.href = url;
+    });
   };
 
   render() {
     const { props, submit } = this;
-    const { children, handleSubmit } = props;
+    const { artist, children, handleSubmit } = props;
+    const { loading } = artist;
+
+    const childrenWithProps = React.Children.map(children, child => {
+      return React.cloneElement(child, { loading });
+    });
 
     return (
       <form onSubmit={handleSubmit(submit)}>
@@ -35,7 +45,7 @@ class FormArtistUpdate extends Component {
           name="name"
           type="text"
         />
-        {children}
+        {childrenWithProps}
       </form>
     );
   }

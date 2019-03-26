@@ -3,6 +3,7 @@ import {
   ARTIST_FIND_ONE,
   ARTIST_EDITING_NAME,
   ARTIST_LOAD,
+  ARTIST_UPDATE,
 } from './artistTypes';
 
 const initialState = {
@@ -40,6 +41,14 @@ export const artistReducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         loading: true,
+      };
+    case ARTIST_UPDATE:
+      return {
+        ...state,
+        doc: {
+          ...payload,
+        },
+        loading: false,
       };
     default:
       return state;

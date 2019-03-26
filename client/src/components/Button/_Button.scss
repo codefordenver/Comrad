@@ -167,4 +167,8 @@
       border-bottom: 1px solid $color-primary-lighter;
     }
   }
+
+  &--small {
+    transform: scale(0.8);
+  }
 }

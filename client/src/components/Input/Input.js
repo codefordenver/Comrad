@@ -12,13 +12,21 @@ const InputError = props => {
 };
 
 const InputLabel = props => {
-  const { active, children, dirty, error, touched, dirtyOverride } = props;
+  const {
+    active,
+    children,
+    dirty,
+    error,
+    initial,
+    touched,
+    dirtyOverride,
+  } = props;
 
   return (
     <div
       className={classnames(
         'input__label',
-        active && 'active',
+        (active || initial) && 'active',
         (dirty || dirtyOverride) && 'dirty',
         touched && error && 'error',
       )}
@@ -29,12 +37,6 @@ const InputLabel = props => {
 };
 
 class Input extends Component {
-  constructor(props) {
-    super(props);
-
-    this.inputRef = React.createRef();
-  }
-
   render() {
     const { props } = this;
 
@@ -75,12 +77,6 @@ class Input extends Component {
         {icon && ICON_SET[icon]}
       </div>
     );
-  }
-
-  componentDidMount() {
-    if (this.props.focus) {
-      this.inputRef.current.focus();
-    }
   }
 }
 

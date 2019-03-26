@@ -5,13 +5,13 @@ const Chance = require('chance');
 
 const USER_GENDERS = ['male', 'female'];
 const USER_PERMISSIONS = [
-  'dj',
-  'underwriting',
-  'show_producer',
-  'full_access',
-  'admin',
+  'DJ',
+  'Underwriting',
+  'Show Producer',
+  'Full Access',
+  'Admin',
 ];
-const USER_STATUS = ['active', 'inactive'];
+const USER_STATUS = ['Active', 'Inactive'];
 const STRING_POOL =
   'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$';
 
@@ -21,7 +21,7 @@ async function randomUser(req, res) {
   const randGender = randArrItem(USER_GENDERS);
   const randPermissions = randArrItem(USER_PERMISSIONS);
   const randStatus = randArrItem(USER_STATUS);
-  const randString = chance.stringI({ pool: STRING_POOL }, { length: 10 });
+  const randString = chance.string({ pool: STRING_POOL }, { length: 10 });
 
   // Proile
   const first_name = chance.first();
@@ -31,7 +31,7 @@ async function randomUser(req, res) {
     day: randNumGen(0, 27),
     year: randNumGen(1970, 2018),
   });
-  const image = await axios.get(
+  const { data: image } = await axios.get(
     `https://avatars.dicebear.com/v2/${randGender}/${first_name +
       last_name}.svg`,
   );
@@ -44,7 +44,7 @@ async function randomUser(req, res) {
 
   // Contact
   const phone = chance.phone({ formatted: false });
-  const email = `${first_name + last_name}@mail.com`;
+  const email = `${first_name}.${last_name}@mail.com`;
   const slack = `@${first_name + last_name}`;
 
   // Station
@@ -69,7 +69,7 @@ async function randomUser(req, res) {
       first_name,
       last_name,
       date_of_birth,
-      image: image.data,
+      image,
     },
     location: {
       street,
@@ -99,7 +99,7 @@ async function randomUser(req, res) {
 
   db.User.create(userData)
     .then(dbUser => res.json(dbUser))
-    .catch(err => res.status(422).json({ errorMessage: err.message }));
+    .catch(err => res.status(422).json(err));
 }
 
 module.exports = randomUser;

@@ -1,174 +1,28 @@
-.tooltip-container {
-  position: relative;
+.rc-tooltip {
+  opacity: 1 !important;
 }
 
-.tooltip {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  opacity: 0;
-  border: $border-width solid $color-primary-light;
-  border-radius: $border-radius;
-  padding: 0.5rem;
-  white-space: nowrap;
-  background-color: white;
-  z-index: 100;
-  transition: opacity 0.1s ease-in-out;
+.rc-tooltip-inner {
+  border: $border-width solid $color-primary-light !important;
+  border-radius: $border-radius !important;
+}
 
-  &__content {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-  }
+.rc-tooltip-placement-right .rc-tooltip-arrow {
+  opacity: 1 !important;
+  border-right-color: $color-primary-light !important;
+}
 
-  &__heading {
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
-    color: $color-primary;
-    font-size: 2rem;
-    font-weight: 700;
-    font-family: $font-family-primary;
-    letter-spacing: normal;
-    margin: 0;
-    text-transform: none;
-  }
+.rc-tooltip-placement-left .rc-tooltip-arrow {
+  opacity: 1 !important;
+  border-left-color: $color-primary-light !important;
+}
 
-  &__text {
-    display: block;
-    justify-content: flex-start;
-    align-items: flex-start;
-    color: $color-primary;
-    font-size: 1.5rem;
-    font-family: $font-family-primary;
-    letter-spacing: normal;
-    margin: 0;
-    text-transform: none;
-  }
+.rc-tooltip-placement-top .rc-tooltip-arrow {
+  opacity: 1 !important;
+  border-top-color: $color-primary-light !important;
+}
 
-  &--open {
-    opacity: 1;
-  }
-
-  // Used for the triangle arrows attached to the tooltip bubble
-  $triangle-base: 4px;
-  $triangle-height: 6px;
-
-  &--top,
-  &--left,
-  &--right,
-  &--bottom {
-    &::before,
-    &::after {
-      content: '';
-      position: absolute;
-      width: 0;
-      height: 0;
-    }
-  }
-
-  &--left,
-  &--right {
-    top: 50%;
-    transform: translateY(-50%);
-
-    &::before {
-      border-top: $triangle-base + $border-width solid transparent;
-      border-bottom: $triangle-base + $border-width solid transparent;
-    }
-
-    &::after {
-      border-top: $triangle-base solid transparent;
-      border-bottom: $triangle-base solid transparent;
-    }
-  }
-
-  &--left {
-    right: 100%;
-
-    &::before,
-    &::after {
-      left: 100%;
-    }
-
-    &::before {
-      border-left: $triangle-height + $border-width solid $color-primary-light;
-    }
-
-    &::after {
-      border-left: $triangle-height solid white;
-    }
-  }
-
-  &--right {
-    left: 100%;
-
-    &::before,
-    &::after {
-      right: 100%;
-    }
-
-    &::before {
-      border-right: $triangle-height + $border-width solid $color-primary-light;
-    }
-
-    &::after {
-      border-right: $triangle-height solid white;
-    }
-  }
-
-  &--top,
-  &--bottom {
-    margin: 1rem 0;
-    left: 50%;
-    transform: translateX(-50%);
-
-    &::before {
-      border-left: $triangle-base + $border-width solid transparent;
-      border-right: $triangle-base + $border-width solid transparent;
-    }
-
-    &::after {
-      border-left: $triangle-base solid transparent;
-      border-right: $triangle-base solid transparent;
-    }
-  }
-
-  &--top {
-    bottom: 100%;
-
-    &::before,
-    &::after {
-      top: 100%;
-    }
-
-    &::before {
-      border-top: $triangle-height + $border-width solid $color-primary-light;
-    }
-
-    &::after {
-      border-top: $triangle-height solid white;
-    }
-  }
-
-  &--bottom {
-    top: 100%;
-
-    &::before,
-    &::after {
-      bottom: 100%;
-    }
-
-    &::before {
-      border-bottom: $triangle-height + $border-width solid $color-primary-light;
-    }
-
-    &::after {
-      border-bottom: $triangle-height solid white;
-    }
-  }
+.rc-tooltip-placement-bottom .rc-tooltip-arrow {
+  opacity: 1 !important;
+  border-bottom-color: $color-primary-light !important;
 }

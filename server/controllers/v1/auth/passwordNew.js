@@ -5,12 +5,10 @@ async function passwordNew(req, res) {
   const { passwordConfirm, passwordNew, resetToken } = req.body;
 
   if (!passwordConfirm || !passwordNew) {
-    console.log('Empty');
     return res.status(401).json('Password Confirm and/or Password New Missing');
   }
 
   if (passwordConfirm !== passwordNew) {
-    console.log("Don't Match");
     return res.status(401).json('Your passwords do not match!');
   }
 
@@ -44,8 +42,6 @@ async function passwordNew(req, res) {
         },
         { new: true },
       );
-
-      console.log(updatedUser);
 
       return res.json(updatedUser);
     });

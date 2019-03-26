@@ -4,10 +4,13 @@ import { artistFindOne } from '../../redux/artist';
 
 class ViewArtist extends Component {
   componentDidMount() {
-    const { artistFindOne, match } = this.props;
+    const { artist, artistFindOne, match } = this.props;
+    const { _id } = artist.doc;
     const { id } = match.params;
 
-    artistFindOne(id);
+    if (id !== _id) {
+      artistFindOne(id);
+    }
   }
 
   render() {

@@ -38,10 +38,10 @@ class FormArtistUpdateName extends Component {
         });
       });
     } else {
+      initialize(initialValues);
       this.setState({
         editMode: false,
       });
-      initialize(initialValues);
     }
   };
 

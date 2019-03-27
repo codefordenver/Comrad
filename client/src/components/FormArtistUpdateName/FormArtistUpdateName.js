@@ -62,7 +62,7 @@ class FormArtistUpdateName extends Component {
               name="name"
               type="text"
               autoFocus
-              onBlur={handleSubmit(data => submit(data, true))}
+              // onBlur={handleSubmit(data => submit(data, true))}
             />
             <ButtonIcon
               icon="confirm"

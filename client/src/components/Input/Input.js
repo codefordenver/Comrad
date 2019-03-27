@@ -41,6 +41,7 @@ class Input extends Component {
     const { props } = this;
 
     const {
+      autoFocus,
       className,
       icon,
       inline,
@@ -62,7 +63,7 @@ class Input extends Component {
         <input
           {...input}
           {...other}
-          ref={this.inputRef}
+          autoFocus={autoFocus}
           className={classnames('input', touched && error && 'error')}
           type={type}
           onBlur={() => input.onBlur()}

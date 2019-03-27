@@ -45,6 +45,7 @@ class FormArtistUpdate extends Component {
           label="Name"
           name="name"
           type="text"
+          autoFocus
           onBlur={handleSubmit(submit)}
         />
         {childrenWithProps}

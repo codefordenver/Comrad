@@ -35,12 +35,11 @@ class ArtistViewPage extends Component {
                 </Button>
               </FormArtistUpdate>
             ) : (
-              <div>
-                <ViewArtist {...props} />
+              <ViewArtist {...props}>
                 <Button type="button" onClick={handleEditClick}>
                   Edit
                 </Button>
-              </div>
+              </ViewArtist>
             )}
           </CardBody>
         </Card>

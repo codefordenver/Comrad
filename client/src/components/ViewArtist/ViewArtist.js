@@ -15,11 +15,20 @@ class ViewArtist extends Component {
 
   render() {
     const { props } = this;
-    const { artist } = props;
+    const { artist, children } = props;
     const { loading, doc } = artist;
     const { name } = doc;
 
-    return <>{loading ? null : <h1 className="mb-2">{name}</h1>}</>;
+    return (
+      <>
+        {loading ? null : (
+          <>
+            <h1 className="mb-2">{name}</h1>
+            {children}
+          </>
+        )}
+      </>
+    );
   }
 }
 

@@ -12,6 +12,8 @@ router
   .put(artistController.update)
   .delete(artistController.remove);
 
+router.route('/:id/albums').get(artistController.findAlbums);
+
 router.route('/many').post(artistController.createMany);
 
 module.exports = router;

@@ -42,6 +42,27 @@ module.exports = {
       .catch(err => res.status(422).json(err));
   },
 
+  findAlbums: (req, res) => {
+    db.Album.find({ artist: req.params.id }, {}, { sort: 'name' })
+      .then(async dbAlbum => {
+        const results = await Promise.all(
+          dbAlbum.map(async album => {
+            const numberOfTracks = await db.Track.countDocuments({
+              album: album._id,
+            });
+            let modifiedAlbum = {
+              ...album._doc,
+              number_of_tracks: numberOfTracks,
+            };
+            //console.log(modifiedAlbum);
+            return modifiedAlbum;
+          }),
+        );
+        res.json(results);
+      })
+      .catch(err => res.status(422).json(err));
+  },
+
   create: (req, res) => {
     if (typeof req.body.name === 'undefined') {
       res.status(422).json({

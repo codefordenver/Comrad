@@ -1,11 +1,25 @@
 import axios from 'axios';
 import {
   ARTIST_ALERT,
+  ARTIST_FIND_ALBUMS,
   ARTIST_FIND_ONE,
   ARTIST_EDITING_NAME,
   ARTIST_LOAD,
+  ARTIST_LOAD_ALBUMS,
   ARTIST_UPDATE,
 } from './artistTypes';
+
+export const artistFindAlbums = artistId => async dispatch => {
+  try {
+    dispatch({ type: ARTIST_LOAD_ALBUMS });
+
+    const response = await axios.get(`/api/artist/${artistId}/albums`);
+
+    dispatch({ type: ARTIST_FIND_ALBUMS, payload: response.data });
+  } catch (err) {
+    console.log(err);
+  }
+};
 
 export const artistFindOne = id => async dispatch => {
   try {

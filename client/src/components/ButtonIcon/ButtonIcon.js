@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 
 export const BUTTON_ICON = {
-  pencil: () => <i className="fas fa-pencil-alt" />,
+  cancel: 'fas fa-times',
+  confirm: 'fas fa-check',
+  pencil: 'fas fa-pencil-alt',
 };
 
 export const BUTTON_TYPE = {
@@ -13,15 +15,14 @@ export const BUTTON_TYPE = {
 class ButtonIcon extends Component {
   render() {
     const { props } = this;
-    const { className, icon, type } = props;
+    const { className, icon, onClick, type } = props;
 
     return (
       <button
-        className={classnames('button-icon', className)}
+        className={classnames('button-icon', BUTTON_ICON[icon], className)}
+        onClick={onClick}
         type={BUTTON_TYPE[type]}
-      >
-        {BUTTON_ICON[icon]}
-      </button>
+      />
     );
   }
 }

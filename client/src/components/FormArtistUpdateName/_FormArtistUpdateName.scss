@@ -1,0 +1,24 @@
+.faun {
+  &__heading {
+    display: inline-grid;
+    grid-template-columns: auto auto;
+    grid-column-gap: 2rem;
+  }
+
+  &__name {
+    color: $color-primary;
+    font-size: 3.6rem;
+    font-weight: bold;
+  }
+
+  &__edit {
+    cursor: pointer;
+  }
+
+  &__form {
+    display: inline-grid;
+    grid-template-columns: 30rem auto auto;
+    grid-column-gap: 1rem;
+    justify-content: center;
+  }
+}

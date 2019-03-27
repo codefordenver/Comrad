@@ -8,7 +8,6 @@ import {
 
 const initialState = {
   doc: {},
-  editingName: false,
   error: null,
   loading: false,
 };

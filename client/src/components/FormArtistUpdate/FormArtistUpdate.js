@@ -45,6 +45,7 @@ class FormArtistUpdate extends Component {
           label="Name"
           name="name"
           type="text"
+          onBlur={handleSubmit(submit)}
         />
         {childrenWithProps}
       </form>

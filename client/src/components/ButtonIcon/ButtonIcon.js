@@ -7,6 +7,11 @@ export const BUTTON_ICON = {
   pencil: 'fas fa-pencil-alt',
 };
 
+export const BUTTON_SIZE = {
+  medium: '',
+  small: 'button-icon--small',
+};
+
 export const BUTTON_TYPE = {
   button: 'button',
   submit: 'submit',
@@ -15,11 +20,24 @@ export const BUTTON_TYPE = {
 class ButtonIcon extends Component {
   render() {
     const { props } = this;
-    const { className, icon, onClick, type } = props;
+    const {
+      className,
+      icon,
+      inline = false,
+      onClick,
+      size = 'medium',
+      type,
+    } = props;
 
     return (
       <button
-        className={classnames('button-icon', BUTTON_ICON[icon], className)}
+        className={classnames(
+          'button-icon',
+          BUTTON_ICON[icon],
+          BUTTON_SIZE[size],
+          { 'button-icon--inline': inline },
+          className,
+        )}
         onClick={onClick}
         type={BUTTON_TYPE[type]}
       />

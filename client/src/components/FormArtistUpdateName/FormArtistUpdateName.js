@@ -75,10 +75,12 @@ class FormArtistUpdateName extends Component {
           </form>
         ) : (
           <div className="faun__heading">
-            <div className="faun__name">{name}</div>
+            <span className="faun__name">{name}</span>
             <ButtonIcon
               className="faun__edit"
               icon="pencil"
+              size="small"
+              inline={true}
               onClick={handleEditClick}
             />
           </div>

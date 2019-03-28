@@ -24,6 +24,7 @@ class Button extends Component {
       children,
       color,
       disabled,
+      loading,
       onClick,
       className,
       to,
@@ -49,7 +50,7 @@ class Button extends Component {
     return (
       <button
         className={classnames('button', BUTTON_CLASS[color], className)}
-        disabled={disabled}
+        disabled={loading}
         onClick={onClick}
         type={BUTTON_TYPE[type]}
         {...rest}

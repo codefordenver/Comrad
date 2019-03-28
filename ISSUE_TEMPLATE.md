@@ -6,6 +6,6 @@ _Insert Description Here_
 
 _Insert Possible Solution/Approach Here_
 
-## Approval?
+## Additional Comments
 
-_Leads Comment Below_
+_Comments Go Here_

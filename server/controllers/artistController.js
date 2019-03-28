@@ -54,7 +54,6 @@ module.exports = {
               ...album._doc,
               number_of_tracks: numberOfTracks,
             };
-            //console.log(modifiedAlbum);
             return modifiedAlbum;
           }),
         );

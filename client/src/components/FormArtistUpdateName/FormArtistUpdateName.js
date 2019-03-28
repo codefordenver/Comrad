@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 
 import { artistFindOne, artistUpdate } from '../../redux/artist';
+import { requiredValidate } from '../../utils/validation.js';
 
 import ButtonIcon from '../ButtonIcon';
 import Input from '../Input';
@@ -23,30 +24,32 @@ class FormArtistUpdateName extends Component {
   }
 
   handleEditClick = () => {
-    this.setState(prevState => ({
-      editMode: !prevState.editMode,
-    }));
+    const { initialize, initialValues } = this.props;
+
+    this.setState(
+      prevState => ({
+        editMode: !prevState.editMode,
+      }),
+      () => initialize(initialValues),
+    );
   };
 
-  submit = (values, confirm) => {
-    const { artistUpdate, initialize, initialValues } = this.props;
+  handleDefault = e => {
+    e.preventDefault();
+  };
 
-    if (confirm) {
-      artistUpdate(values, () => {
-        this.setState({
-          editMode: false,
-        });
-      });
-    } else {
-      initialize(initialValues);
+  submit = values => {
+    const { artistUpdate } = this.props;
+
+    artistUpdate(values, () => {
       this.setState({
         editMode: false,
       });
-    }
+    });
   };
 
   render() {
-    const { handleEditClick, props, state, submit } = this;
+    const { handleDefault, handleEditClick, props, state, submit } = this;
     const { artist, handleSubmit } = props;
     const { editMode } = state;
     const { doc } = artist;
@@ -58,24 +61,27 @@ class FormArtistUpdateName extends Component {
           <form className="faun__form" onSubmit={handleSubmit(submit)}>
             <Field
               component={Input}
-              label="Name"
+              label="Artist Name"
               name="name"
               type="text"
               autoFocus
-              // onBlur={handleSubmit(data => submit(data, true))}
+              onBlur={handleSubmit(submit)}
+              validate={requiredValidate}
             />
             <ButtonIcon
               icon="confirm"
-              onClick={handleSubmit(data => submit(data, true))}
+              onClick={handleSubmit(submit)}
+              onMouseDown={handleDefault}
             />
             <ButtonIcon
               icon="cancel"
-              onClick={handleSubmit(data => submit(data, false))}
+              onClick={handleSubmit(handleEditClick)}
+              onMouseDown={handleDefault}
             />
           </form>
         ) : (
           <div className="faun__heading">
-            <span className="faun__name">{name}</span>
+            <div className="faun__name">{name}</div>
             <ButtonIcon
               className="faun__edit"
               icon="pencil"

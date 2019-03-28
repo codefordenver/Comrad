@@ -1,6 +1,10 @@
 .faun {
+  height: 4rem;
+
   &__heading {
-    display: inline;
+    display: inline-grid;
+    grid-template-columns: auto auto;
+    grid-column-gap: 1rem;
     align-items: end;
   }
 
@@ -8,20 +12,19 @@
     color: $color-primary;
     font-size: 3.6rem;
     font-weight: bold;
-    margin-right: 1rem;
+    line-height: 1.1;
+    vertical-align: bottom;
   }
 
   &__edit {
     cursor: pointer;
+    margin-bottom: 0.7rem;
   }
 
   &__form {
     display: inline-grid;
-    grid-template-columns: 30rem auto auto;
+    grid-template-columns: 30rem 2rem 2rem;
     grid-column-gap: 1rem;
     justify-content: center;
-    /* use margin to position the form in the same location the "name" text was in */
-    margin-top: 1.2rem;
-    margin-bottom: 1.1rem;
   }
 }

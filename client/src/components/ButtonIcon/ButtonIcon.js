@@ -20,14 +20,7 @@ export const BUTTON_TYPE = {
 class ButtonIcon extends Component {
   render() {
     const { props } = this;
-    const {
-      className,
-      icon,
-      inline = false,
-      onClick,
-      size = 'medium',
-      type,
-    } = props;
+    const { className, icon, onClick, onMouseDown, size, type } = props;
 
     return (
       <button
@@ -35,10 +28,10 @@ class ButtonIcon extends Component {
           'button-icon',
           BUTTON_ICON[icon],
           BUTTON_SIZE[size],
-          { 'button-icon--inline': inline },
           className,
         )}
         onClick={onClick}
+        onMouseDown={onMouseDown}
         type={BUTTON_TYPE[type]}
       />
     );

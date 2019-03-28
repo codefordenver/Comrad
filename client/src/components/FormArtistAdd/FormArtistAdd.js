@@ -18,7 +18,7 @@ class FormArtistAdd extends Component {
     const { handleSubmit } = props;
 
     return (
-      <form onSubmit={handleSubmit(submit)}>
+      <form className="form-artist-add" onSubmit={handleSubmit(submit)}>
         <Field
           component={Input}
           label="Name"
@@ -26,7 +26,9 @@ class FormArtistAdd extends Component {
           autoFocus
           validate={requiredValidate}
         />
-        <Button type="submit">Submit</Button>
+        <div>
+          <Button type="submit">Submit</Button>
+        </div>
       </form>
     );
   }

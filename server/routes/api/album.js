@@ -12,6 +12,8 @@ router
   .put(albumController.update)
   .delete(albumController.remove);
 
+router.route('/:id/tracks').get(albumController.findTracks);
+
 router.route('/search').post(albumController.search);
 
 router.route('/many').post(albumController.createMany);

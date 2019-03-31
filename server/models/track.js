@@ -19,11 +19,11 @@ const trackSchema = new Schema({
   },
 
   track_number: {
-    type: String,
+    type: Number,
   },
 
   disk_number: {
-    type: String,
+    type: Number,
   },
 
   duration_in_seconds: {

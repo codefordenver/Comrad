@@ -3,100 +3,103 @@ import { connect } from 'react-redux';
 import { Field, reduxForm, formValueSelector } from 'redux-form';
 import moment from 'moment';
 
-import Repeat from './Repeat';
-import Input from '../../Input';
 import Button from '../../Button';
-import Card from '../../Card';
+import Card, { CardBody } from '../../Card';
 import DatePicker from '../../DatePicker';
+import Input from '../../Input';
 import ModalClose from '../../Modal/Modal__Button_Close';
+import RepeatDropdown from './RepeatDropdown';
 
 import { getShowSelected } from '../../../redux/show';
 import { requiredValidate } from '../../../utils/validation';
 
 class NewShowForm extends Component {
+  handleDefault = e => {
+    e.preventDefault();
+  };
+
   render() {
-    const { isRepeat, handleSubmit } = this.props;
-    //Need handleBlur for time fields.  Redux-form is clearing the field otherwise.
-    const handleBlur = e => e.preventDefault();
+    const { handleDefault, props } = this;
+    const { isRepeat, handleSubmit } = props;
+
     return (
-      <main className="show show__padding">
-        <section className="show__body">
-          <Card>
-            <form onSubmit={handleSubmit}>
-              <div className="show__grid_container">
-                <div className="show__grid_span_3">
+      <Card>
+        <CardBody>
+          <form className="new-show-form" onSubmit={handleSubmit}>
+            <div className="new-show-form__grid">
+              <Field
+                className="grid-span--2"
+                component={Input}
+                label="Title"
+                name="title"
+                type="text"
+                validate={[requiredValidate]}
+              />
+
+              <Field
+                component={Input}
+                dirtyOverride
+                format={value => moment(value).format('HH:mm')}
+                label="From"
+                name="show_start_time_utc"
+                onBlur={handleDefault}
+                parse={value => moment(value, 'HH:mm')}
+                type="time"
+                validate={[requiredValidate]}
+              />
+
+              <Field
+                component={Input}
+                dirtyOverride
+                format={value => moment(value).format('HH:mm')}
+                label="To"
+                name="show_end_time_utc"
+                onBlur={handleDefault}
+                parse={value => moment(value, 'HH:mm')}
+                type="time"
+                validate={[requiredValidate]}
+              />
+
+              <Field
+                className="z-index--200"
+                component={DatePicker}
+                label="Start"
+                name="repeat_start_date"
+                validate={[requiredValidate]}
+              />
+
+              <Field
+                component={Input}
+                dirtyOverride
+                label="Repeat"
+                name="repeat"
+                type="checkbox"
+              />
+
+              {isRepeat && (
+                <>
                   <Field
-                    label="Title"
-                    name="title"
-                    component={Input}
-                    type="text"
-                    validate={[requiredValidate]}
+                    allowNullDate
+                    className="z-index--150"
+                    component={DatePicker}
+                    label="End"
+                    name="repeat_end_date"
+                    placeholder="Never"
+                    showClearDate
                   />
-                </div>
 
-                <div>
-                  <Field
-                    label="From"
-                    name="show_start_time_utc"
-                    component={Input}
-                    type="time"
-                    format={value => moment(value).format('HH:mm')}
-                    parse={value => moment(value, 'HH:mm')}
-                    onBlur={handleBlur}
-                    validate={[requiredValidate]}
-                    dirtyOverride
-                  />
-                </div>
+                  <RepeatDropdown />
+                </>
+              )}
 
-                <div>
-                  <Field
-                    label="To"
-                    name="show_end_time_utc"
-                    component={Input}
-                    type="time"
-                    format={value => moment(value).format('HH:mm')}
-                    parse={value => moment(value, 'HH:mm')}
-                    onBlur={handleBlur}
-                    validate={[requiredValidate]}
-                    dirtyOverride
-                  />
-                </div>
-
-                <div className="show__grid_container show__grid_span_3">
-                  <div className="show__date_picker_start">
-                    <Field
-                      label="Start"
-                      name="repeat_start_date"
-                      component={DatePicker}
-                      validate={[requiredValidate]}
-                    />
-                  </div>
-
-                  <div className="">
-                    <Field
-                      label="Repeat"
-                      name="repeat"
-                      component={Input}
-                      type="checkbox"
-                      dirtyOverride
-                    />
-                  </div>
-
-                  {isRepeat && (
-                    <div className="show__grid_span_3">
-                      <Repeat />
-                    </div>
-                  )}
-                </div>
-
-                <div className="show__grid_span_3">
-                  <Field
-                    label="Summary"
-                    name="summary"
-                    component={Input}
-                    type="text"
-                  />
-                  {/**
+              <Field
+                className="grid-span--2"
+                component={Input}
+                label="Summary"
+                name="summary"
+                type="text"
+              />
+              {/**
                   *Example of text area.  Needs to be turned into a full component to use with redux-forms.
                   <textarea
                     name=""
@@ -104,51 +107,35 @@ class NewShowForm extends Component {
                     style={{ resize: 'none', width: '100%' }}
                     rows="7"
                   />*/}
-                </div>
 
-                <div className="show__grid_span_3">
-                  <Field
-                    label="Description"
-                    name="description"
-                    component={Input}
-                    type="text"
-                  />
-                </div>
+              <Field
+                className="grid-span--2"
+                component={Input}
+                label="Description"
+                name="description"
+                type="text"
+              />
 
-                <div>
-                  <Field
-                    label="Producer"
-                    name="producer"
-                    component={Input}
-                    type="text"
-                  />
-                </div>
+              <Field
+                label="Producer"
+                name="producer"
+                component={Input}
+                type="text"
+              />
 
-                <div>
-                  <Field
-                    label="Host"
-                    name="host"
-                    component={Input}
-                    type="text"
-                  />
-                </div>
+              <Field label="Host" name="host" component={Input} type="text" />
+            </div>
 
-                <div className="show__grid_container show__grid_span_3">
-                  <div className="">
-                    <Button color="primary" type="submit">
-                      Save
-                    </Button>
-                  </div>
+            <div className="new-show-form__buttons">
+              <Button color="primary" type="submit">
+                Save
+              </Button>
 
-                  <div>
-                    <ModalClose />
-                  </div>
-                </div>
-              </div>
-            </form>
-          </Card>
-        </section>
-      </main>
+              <ModalClose />
+            </div>
+          </form>
+        </CardBody>
+      </Card>
     );
   }
 }

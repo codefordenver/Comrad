@@ -14,8 +14,9 @@ class ShowModal extends Component {
   };
 
   submit = values => {
-    const { postShow } = this.props;
-    postShow(values, this.handleFormSubmit);
+    const { handleFormSubmit, props } = this;
+    const { postShow } = props;
+    postShow(values, handleFormSubmit);
   };
 
   render() {

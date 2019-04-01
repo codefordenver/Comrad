@@ -5,7 +5,7 @@ const { findInLibrary } = require('./utils');
 async function search(req, res) {
   let { s, type = 'all' } = req.query;
 
-  if (s === '') {
+  if (!s) {
     return res.json([]);
   }
 

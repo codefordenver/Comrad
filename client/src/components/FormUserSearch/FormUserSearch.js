@@ -4,6 +4,7 @@ import { Field, reduxForm } from 'redux-form';
 import { userSearch } from '../../redux/user';
 
 import Button from '../Button';
+import Filter from '../Filter';
 import Input from '../Input';
 
 class FormUserSearch extends Component {
@@ -19,19 +20,29 @@ class FormUserSearch extends Component {
   };
 
   render() {
-    const { props, submit } = this;
-    const { handleSubmit } = props;
+    const { props } = this;
+    const { handleSubmit, handleUserSubmit } = props;
+
+    console.log(props);
 
     return (
-      <form className="user-search-form mb-2" onSubmit={handleSubmit(submit)}>
-        <Field
-          className="mb-1"
-          component={Input}
-          label="Search"
-          name="query"
-          type="text"
-        />
-        <Button type="submit">Search</Button>
+      <form
+        className="f-user-search mb-2"
+        onSubmit={handleSubmit(handleUserSubmit)}
+      >
+        <div className="f-user-search__field">
+          <Field
+            className="mb-1"
+            component={Input}
+            label="Search"
+            name="query"
+            type="text"
+          />
+          <Button type="submit">Search</Button>
+        </div>
+        <div className="f-user-search__filter">
+          <Filter />
+        </div>
       </form>
     );
   }

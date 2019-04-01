@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { userSearch } from '../../redux/user';
 
 import Card, { CardBody } from '../../components/Card';
-import FilterUsers from '../../components/FilterUsers';
+// import FilterUsers from '../../components/FilterUsers';
 import FormUserSearch from '../../components/FormUserSearch';
 import TableUsers from '../../components/TableUsers';
 
@@ -14,7 +14,13 @@ class UserSearchPage extends Component {
     userSearch(search);
   }
 
+  handleUserSubmit = values => {
+    console.log(values);
+  };
+
   render() {
+    const { handleUserSubmit } = this;
+
     return (
       <div className="user-search">
         <Card>
@@ -24,12 +30,7 @@ class UserSearchPage extends Component {
         </Card>
         <Card>
           <CardBody>
-            <div className="user-search__form">
-              <FormUserSearch />
-            </div>
-            <div className="user-search__filter">
-              <FilterUsers />
-            </div>
+            <FormUserSearch handleUserSubmit={handleUserSubmit} />
             <TableUsers />
           </CardBody>
         </Card>

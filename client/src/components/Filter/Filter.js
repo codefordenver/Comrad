@@ -1,21 +1,37 @@
 import React, { Component } from 'react';
+import { Field } from 'redux-form';
 import classnames from 'classnames';
 
-export const FilterItem = props => {
-  const { children, className, onClick } = props;
-
+const Radio = props => {
+  console.log(props.input.checked);
   return (
-    <li className={classnames('filter__item', className)} onClick={onClick}>
-      {children}
-    </li>
+    <input
+      className={props.className}
+      type={props.type}
+      checked={'checked'}
+      {...props.input}
+    />
   );
 };
 
 class Filter extends Component {
   render() {
-    const { children, className } = this.props;
+    const { className } = this.props;
 
-    return <ul className={classnames('filter', className)}>{children}</ul>;
+    console.log(this.props);
+
+    return (
+      <label className={classnames('filter', className)}>
+        <Field
+          className="filter__radio"
+          name="sex"
+          component={Radio}
+          type="radio"
+          value="male"
+        />
+        <span className={classnames('filter__text', className)}>Male</span>
+      </label>
+    );
   }
 }
 

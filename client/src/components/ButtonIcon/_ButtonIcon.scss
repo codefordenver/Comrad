@@ -1,0 +1,28 @@
+.button-icon {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 2rem;
+  
+  &--inline {
+    display: inline;
+  }
+  
+  &--small {
+    font-size: 1.5rem;
+  }
+  
+  &.fa-pencil-alt {
+    color: $color-grey-3;
+  }
+
+  &.fa-check {
+    color: $color-primary;
+  }
+
+  &.fa-times {
+    color: $color-danger;
+  }
+
+
+}

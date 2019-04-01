@@ -10,6 +10,7 @@ async function seedDB() {
       { useNewUrlParser: true },
     );
 
+    console.log('dropping database...');
     await mongoose.connection.dropDatabase();
 
     // Users
@@ -87,6 +88,7 @@ async function seedDB() {
     await Promise.all(seed.venue.map(async venue => db.Venue.create(venue)));
   } catch (err) {
     console.log(err);
+    throw err;
   }
 }
 

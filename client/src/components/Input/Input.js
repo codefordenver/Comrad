@@ -11,14 +11,22 @@ export const InputError = props => {
   return <div className="input__error">{children}</div>;
 };
 
-export const InputLabel = props => {
-  const { active, children, dirty, error, touched, dirtyOverride } = props;
+const InputLabel = props => {
+  const {
+    active,
+    children,
+    dirty,
+    error,
+    initial,
+    touched,
+    dirtyOverride,
+  } = props;
 
   return (
     <div
       className={classnames(
         'input__label',
-        active && 'active',
+        (active || initial) && 'active',
         (dirty || dirtyOverride) && 'dirty',
         touched && error && 'error',
       )}
@@ -33,8 +41,10 @@ class Input extends Component {
     const { props } = this;
 
     const {
+      autoFocus,
       className,
       icon,
+      inline,
       input,
       label,
       meta,
@@ -45,10 +55,15 @@ class Input extends Component {
     const { error, touched } = meta;
 
     return (
-      <div className={classnames('form-group', className)}>
+      <div
+        className={classnames('form-group', className, {
+          'form-group--inline': inline,
+        })}
+      >
         <input
           {...input}
           {...other}
+          autoFocus={autoFocus}
           className={classnames('input', touched && error && 'error')}
           type={type}
           onBlur={() => input.onBlur()}

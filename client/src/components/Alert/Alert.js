@@ -39,6 +39,7 @@ class Alert extends Component {
   render() {
     const { props } = this;
     const { display, header, className, type, text } = props;
+
     return (
       <div
         className={classnames(

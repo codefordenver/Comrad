@@ -4,7 +4,7 @@ import { Field, formValueSelector } from 'redux-form';
 import _ from 'lodash';
 import moment from 'moment';
 import RRule from 'rrule';
-import { InputLabel } from '../../Input/Input';
+import { InputLabel } from '../../Input';
 
 class RepeatDropdown extends Component {
   definedRepeatRules = date => {

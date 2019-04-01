@@ -11,7 +11,7 @@ export const InputError = props => {
   return <div className="input__error">{children}</div>;
 };
 
-const InputLabel = props => {
+export const InputLabel = props => {
   const {
     active,
     children,

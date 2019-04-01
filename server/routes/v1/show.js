@@ -1,15 +1,15 @@
 const router = require('express').Router();
-const showController = require('../../controllers/showController');
+const { show } = require('../../controllers/v1');
 
 router
   .route('/')
-  .get(showController.findByDate)
-  .post(showController.create);
+  .get(show.findByDate)
+  .post(show.create);
 
 router
   .route('/:id')
-  .get(showController.findById)
-  .patch(showController.updateHost)
-  .delete(showController.remove);
+  .get(show.findById)
+  .patch(show.updateHost)
+  .delete(show.remove);
 
 module.exports = router;

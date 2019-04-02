@@ -3,33 +3,25 @@ import { Field } from 'redux-form';
 import classnames from 'classnames';
 
 const Radio = props => {
-  console.log(props.input.checked);
-  return (
-    <input
-      className={props.className}
-      type={props.type}
-      checked={'checked'}
-      {...props.input}
-    />
-  );
+  const { input } = props;
+
+  return <input className="filter__radio" type="radio" {...input} />;
 };
 
 class Filter extends Component {
   render() {
-    const { className } = this.props;
-
-    console.log(this.props);
+    const { className, onChange, name, text, value } = this.props;
 
     return (
       <label className={classnames('filter', className)}>
         <Field
-          className="filter__radio"
-          name="sex"
           component={Radio}
+          name={name}
+          onChange={onChange}
           type="radio"
-          value="male"
+          value={value}
         />
-        <span className={classnames('filter__text', className)}>Male</span>
+        <span className={'filter__text'}>{text}</span>
       </label>
     );
   }

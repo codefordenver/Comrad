@@ -1,4 +1,5 @@
 .filter {
+  display: inline;
 
   &__text {
     color: $color-primary-light;
@@ -13,7 +14,7 @@
     opacity: 0;
     cursor: pointer;
 
-    &:checked + .filter__label {
+    &:checked + .filter__text {
       border-bottom: 2px solid $color-primary-light;    
     }
   }

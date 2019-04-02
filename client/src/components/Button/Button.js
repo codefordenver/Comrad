@@ -30,6 +30,7 @@ class Button extends Component {
       className,
       color,
       disabled,
+      loading,
       onClick,
       size,
       to,

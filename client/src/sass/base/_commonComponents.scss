@@ -7,3 +7,23 @@
     font-size: 1.6rem;
   }
 }
+.ok-button {
+  cursor: pointer;
+  margin-right: 0.5rem;
+  
+  &::after {
+    content: "\f00c"; /* fa-check */ 
+    font-family: "Font Awesome 5 Free";
+    color: $color-success;
+    font-size: 1.6rem;
+  }
+}
+.cancel-button {
+  cursor: pointer;
+  &::after {
+    content: "\f00d"; /* fa-times */ 
+    font-family: "Font Awesome 5 Free";
+    color: $color-danger;
+    font-size: 1.6rem;
+  }
+}

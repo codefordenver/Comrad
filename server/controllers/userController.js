@@ -88,8 +88,6 @@ module.exports = {
       conditions.push(and);
     }
 
-    console.log(conditions);
-
     db.User.find({ $and: conditions })
       .then(dbUsers => {
         if (s) {

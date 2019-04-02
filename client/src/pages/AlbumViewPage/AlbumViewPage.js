@@ -38,6 +38,12 @@ class AlbumViewPage extends Component {
                   <a href={'/library/artist/' + this.state.album.artist._id}>
                     {this.state.album.artist.name}
                   </a>
+                  {!!this.state.album.label && (
+                    <span>&nbsp;| {this.state.album.label}</span>
+                  )}
+                  {!!this.state.album.compilation && (
+                    <span>&nbsp;| Compilation</span>
+                  )}
                 </div>
               </CardBody>
             </Card>

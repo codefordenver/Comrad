@@ -17,15 +17,21 @@ export const BUTTON_TYPE = {
   submit: 'submit',
 };
 
+export const BUTTON_SIZE = {
+  small: 'button--small',
+  normal: 'button--normal',
+};
+
 class Button extends Component {
   render() {
     const { props } = this;
     const {
       children,
+      className,
       color,
       disabled,
       onClick,
-      className,
+      size,
       to,
       type,
       ...rest
@@ -48,9 +54,15 @@ class Button extends Component {
 
     return (
       <button
-        className={classnames('button', BUTTON_CLASS[color], className)}
+        className={classnames(
+          'button',
+          BUTTON_CLASS[color],
+          BUTTON_SIZE[size],
+          className,
+        )}
         disabled={disabled}
         onClick={onClick}
+        size={size}
         type={BUTTON_TYPE[type]}
         {...rest}
       >
@@ -92,6 +104,10 @@ Button.propTypes = {
    */
   className: PropTypes.string,
   /**
+   * Updates size of button
+   */
+  size: PropTypes.string,
+  /**
    * Make this button a Link instead
    */
   to: PropTypes.string,
@@ -103,6 +119,7 @@ Button.propTypes = {
 
 Button.defaultProps = {
   color: 'primary',
+  size: 'normal',
   type: 'button',
 };
 

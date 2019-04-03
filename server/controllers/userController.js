@@ -63,29 +63,46 @@ module.exports = {
 
     const { permission } = req.user.station;
 
-    if (permission !== 'admin') {
+    if (permission !== 'Admin') {
       return res.status(422).json('User must have admin access');
     }
 
-    const { f = 'all', q } = req.query;
+    let { filter, s } = req.query;
 
-    const conditions = f === 'all' ? {} : { 'station.status': f };
+    const conditions = [];
 
-    await db.User.find(conditions)
+    const or = {
+      $or: [
+        { 'profile.first_name': new RegExp(s, 'i') },
+        { 'profile.last_name': new RegExp(s, 'i') },
+      ],
+    };
+
+    conditions.push(or);
+
+    if (filter && filter !== 'All') {
+      const and = {
+        'station.status': filter,
+      };
+
+      conditions.push(and);
+    }
+
+    db.User.find({ $and: conditions })
       .then(dbUsers => {
-        const options = {
-          shouldSort: true,
-          threshold: 0.6,
-          location: 0,
-          distance: 100,
-          maxPatternLength: 32,
-          minMatchCharLength: 1,
-          keys: ['profile.last_name', 'profile_first_name', 'contact.email'],
-        };
-
-        if (q) {
+        if (s) {
+          const options = {
+            shouldSort: true,
+            threshold: 0.6,
+            location: 0,
+            distance: 100,
+            maxPatternLength: 32,
+            minMatchCharLength: 1,
+            keys: ['profile.last_name', 'profile.first_name', 'contact.email'],
+          };
           const fuse = new Fuse(dbUsers, options);
-          const results = fuse.search(q);
+          const results = fuse.search(s);
+
           return res.status(200).json(results);
         }
 

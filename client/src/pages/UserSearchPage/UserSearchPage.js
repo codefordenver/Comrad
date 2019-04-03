@@ -1,20 +1,44 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { userSearch } from '../../redux/user';
+// import { userSearch } from '../../redux/user';
+
+import { user } from '../../utils/api';
 
 import Card, { CardBody } from '../../components/Card';
-import FilterUsers from '../../components/FilterUsers';
 import FormUserSearch from '../../components/FormUserSearch';
 import TableUsers from '../../components/TableUsers';
 
 class UserSearchPage extends Component {
-  componentDidMount() {
-    const { user, userSearch } = this.props;
-    const { search } = user;
-    userSearch(search);
+  state = {
+    docs: [],
+    loading: false,
+    search: {
+      filter: 'All',
+      s: '',
+    },
+  };
+
+  async componentDidMount() {
+    const { search } = this.state;
+    const { data } = await user.search(search);
+
+    this.setState({
+      docs: data,
+    });
   }
 
+  handleUserSubmit = async values => {
+    const { data } = await user.search(values);
+
+    this.setState({
+      docs: data,
+    });
+  };
+
   render() {
+    const { handleUserSubmit, state } = this;
+    const { docs } = state;
+
     return (
       <div className="user-search">
         <Card>
@@ -24,13 +48,8 @@ class UserSearchPage extends Component {
         </Card>
         <Card>
           <CardBody>
-            <div className="user-search__form">
-              <FormUserSearch />
-            </div>
-            <div className="user-search__filter">
-              <FilterUsers />
-            </div>
-            <TableUsers />
+            <FormUserSearch handleUserSubmit={handleUserSubmit} />
+            <TableUsers docs={docs} />
           </CardBody>
         </Card>
       </div>
@@ -47,5 +66,5 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  { userSearch },
+  {},
 )(UserSearchPage);

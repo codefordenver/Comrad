@@ -3,120 +3,149 @@ import { connect } from 'react-redux';
 import { Field, reduxForm, formValueSelector } from 'redux-form';
 import moment from 'moment';
 
-import Repeat from './Repeat';
-
 import Button from '../../Button';
-import Card from '../../Card';
-import PickerDate from './PickerDate';
-
+import Card, { CardBody } from '../../Card';
+import DatePicker from '../../DatePicker';
+import Input from '../../Input';
 import ModalClose from '../../Modal/Modal__Button_Close';
+import RepeatDropdown from './RepeatDropdown';
 
 import { getShowSelected } from '../../../redux/show';
+import { requiredValidate } from '../../../utils/validation';
 
 class NewShowForm extends Component {
+  handleDefault = e => {
+    e.preventDefault();
+  };
+
   render() {
-    const { isRepeat } = this.props;
+    const { handleDefault, props } = this;
+    const { isRepeat, handleSubmit } = props;
 
     return (
-      <main className="show show__padding">
-        <section className="show__body">
-          <Card>
-            <form onSubmit={this.props.handleSubmit}>
-              <div className="show__grid_container">
-                <div className="show__grid_span_3">
-                  <label htmlFor="title">Title</label>
-                  <Field name="title" component="input" type="text" />
-                </div>
+      <Card>
+        <CardBody>
+          <form className="new-show-form" onSubmit={handleSubmit}>
+            <div className="new-show-form__grid">
+              <Field
+                className="grid-span--2"
+                component={Input}
+                label="Title"
+                name="title"
+                type="text"
+                validate={[requiredValidate]}
+              />
 
-                <div>
-                  <label htmlFor="show_start_time_utc">From</label>
+              <Field
+                component={Input}
+                dirtyOverride
+                format={value => moment(value).format('HH:mm')}
+                label="From"
+                name="show_start_time_utc"
+                onBlur={handleDefault}
+                parse={value => moment(value, 'HH:mm')}
+                type="time"
+                validate={[requiredValidate]}
+              />
+
+              <Field
+                component={Input}
+                dirtyOverride
+                format={value => moment(value).format('HH:mm')}
+                label="To"
+                name="show_end_time_utc"
+                onBlur={handleDefault}
+                parse={value => moment(value, 'HH:mm')}
+                type="time"
+                validate={[requiredValidate]}
+              />
+
+              <Field
+                className="z-index--200"
+                component={DatePicker}
+                label="Start"
+                name="repeat_start_date"
+                validate={[requiredValidate]}
+              />
+
+              <Field
+                component={Input}
+                dirtyOverride
+                label="Repeat"
+                name="repeat"
+                type="checkbox"
+              />
+
+              {isRepeat && (
+                <>
                   <Field
-                    name="show_start_time_utc"
-                    component="input"
-                    type="time"
-                    format={value => moment(value).format('HH:mm')}
-                    parse={value => moment(value, 'HH:mm')}
+                    allowNullDate
+                    className="z-index--150"
+                    component={DatePicker}
+                    label="End"
+                    name="repeat_end_date"
+                    placeholder="Never"
+                    showClearDate
                   />
-                </div>
 
-                <div>
-                  <label htmlFor="show_end_time_utc">To</label>
-                  <Field
-                    name="show_end_time_utc"
-                    component="input"
-                    type="time"
-                    format={value => moment(value).format('HH:mm')}
-                    parse={value => moment(value, 'HH:mm')}
-                  />
-                </div>
+                  <RepeatDropdown />
+                </>
+              )}
 
-                <div className="show__grid_container show__grid_span_3">
-                  <div className="show__date_picker_start">
-                    <label htmlFor="repeat_start_date">Start</label>
-                    <Field name="repeat_start_date" component={PickerDate} />
-                  </div>
+              <Field
+                className="grid-span--2"
+                component={Input}
+                label="Summary"
+                name="summary"
+                type="text"
+              />
+              {/**
+                  *Example of text area.  Needs to be turned into a full component to use with redux-forms.
+                  <textarea
+                    name=""
+                    id=""
+                    style={{ resize: 'none', width: '100%' }}
+                    rows="7"
+                  />*/}
 
-                  <div className="">
-                    <label htmlFor="repeat">Repeat</label>
-                    <Field name="repeat" component="input" type="checkbox" />
-                  </div>
+              <Field
+                className="grid-span--2"
+                component={Input}
+                label="Description"
+                name="description"
+                type="text"
+              />
 
-                  <div className="show__grid_span_3">
-                    {isRepeat && <Repeat />}
-                  </div>
-                </div>
+              <Field
+                label="Producer"
+                name="producer"
+                component={Input}
+                type="text"
+              />
 
-                <div className="show__grid_span_3">
-                  <label htmlFor="Summary">Summary</label>
-                  <Field name="summary" component="input" type="text" />
-                </div>
+              <Field label="Host" name="host" component={Input} type="text" />
+            </div>
 
-                <div className="show__grid_span_3">
-                  <label htmlFor="Description">Description</label>
-                  <Field name="description" component="input" type="text" />
-                </div>
+            <div className="new-show-form__buttons">
+              <Button color="primary" type="submit">
+                Save
+              </Button>
 
-                <div>
-                  <label htmlFor="Producer">Producer</label>
-                  <Field name="producer" component="input" type="text" />
-                </div>
-
-                <div>
-                  <label htmlFor="Host">Host</label>
-                  <Field name="host" component="input" type="text" />
-                </div>
-
-                <div>
-                  <label htmlFor="Playlist">Playlist</label>
-                  <Field name="playlist" component="input" type="text" />
-                </div>
-
-                <div className="show__grid_container show__grid_span_3">
-                  <div className="">
-                    <Button color="primary" type="submit">
-                      Save
-                    </Button>
-                  </div>
-
-                  <div>
-                    <ModalClose />
-                  </div>
-                </div>
-              </div>
-            </form>
-          </Card>
-        </section>
-      </main>
+              <ModalClose />
+            </div>
+          </form>
+        </CardBody>
+      </Card>
     );
   }
 }
 
 const selector = formValueSelector('newShow');
-function mapStateToProps(state) {
-  const isRepeat = selector(state, 'repeat');
 
+function mapStateToProps(state) {
   const initialValues = state => {
     const selectedShow = getShowSelected(state.show);
+
     return {
       show_start_time_utc: moment(selectedShow.start),
       show_end_time_utc: moment(selectedShow.end),
@@ -125,6 +154,8 @@ function mapStateToProps(state) {
       repeat: false,
     };
   };
+
+  const isRepeat = selector(state, 'repeat');
 
   return {
     initialValues: initialValues(state),

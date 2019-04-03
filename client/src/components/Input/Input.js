@@ -6,12 +6,12 @@ export const ICON_SET = {
   user: <i className="icon fas fa-user" />,
 };
 
-const InputError = props => {
+export const InputError = props => {
   const { children } = props;
   return <div className="input__error">{children}</div>;
 };
 
-const InputLabel = props => {
+export const InputLabel = props => {
   const {
     active,
     children,

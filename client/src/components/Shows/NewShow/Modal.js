@@ -9,18 +9,23 @@ import { setModalVisibility } from '../../../redux/modal';
 
 class ShowModal extends Component {
   handleFormSubmit = () => {
-    this.props.setModalVisibility(null, false, null);
+    const { setModalVisibility } = this.props;
+    setModalVisibility(null, false, null);
   };
 
   submit = values => {
-    this.props.postShow(values, this.handleFormSubmit);
-    console.log(values);
+    const { handleFormSubmit, props } = this;
+    const { postShow } = props;
+    postShow(values, handleFormSubmit);
   };
 
   render() {
+    const { submit, props } = this;
+    const { modalVisibility, data } = props;
+
     return (
-      <Modal show={this.props.modalVisibility}>
-        <Form onSubmit={this.submit} data={this.props.data} />
+      <Modal show={modalVisibility}>
+        <Form onSubmit={submit} data={data} />
       </Modal>
     );
   }

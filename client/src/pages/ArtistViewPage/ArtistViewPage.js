@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import ReactTable from 'react-table';
-
 import Card, { CardBody } from '../../components/Card';
 import FormArtistUpdateName from '../../components/FormArtistUpdateName';
+import TableAlbums from '../../components/TableAlbums';
 
 import { artistFindAlbums } from '../../redux/artist';
 
@@ -31,31 +30,6 @@ class ArtistViewPage extends Component {
   render() {
     const { props } = this;
 
-    const columns = [
-      {
-        Header: 'Name',
-        accessor: 'name',
-      },
-      {
-        Header: 'Number of Tracks',
-        accessor: 'number_of_tracks',
-      },
-      {
-        Header: 'Label',
-        accessor: 'label',
-      },
-      {
-        Header: 'Updated At',
-        accessor: 'updated_at',
-        Cell: row => {
-          let dateObj = new Date(row.value);
-          return (
-            dateObj.toLocaleDateString() + ' ' + dateObj.toLocaleTimeString()
-          );
-        },
-      },
-    ];
-
     return (
       <div className="artist-view-page">
         <Card>
@@ -66,18 +40,12 @@ class ArtistViewPage extends Component {
         <Card>
           <CardBody>
             <h2>Albums</h2>
-            <div className="artist-view-page__album-table">
+            <div className="artist-view-page__album-table-container">
               {!props.loadingAlbums && (
-                <ReactTable
-                  className="-highlight clickable-rows"
-                  columns={columns}
-                  data={props.artist.albums}
+                <TableAlbums
+                  albums={props.artist.albums}
                   loading={props.artist.loading}
-                  showPageSizeOptions={false}
-                  defaultPageSize={100}
-                  minRows={3} // so the formatting does not look weird when there are 0 records
-                  noDataText="This artist does not have any albums"
-                  getTdProps={this.navigateToAlbum}
+                  onRowClick={this.navigateToAlbum}
                 />
               )}
             </div>

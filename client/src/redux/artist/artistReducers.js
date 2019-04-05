@@ -1,4 +1,5 @@
 import {
+  ARTIST_ADD,
   ARTIST_ALERT,
   ARTIST_FIND_ALBUMS,
   ARTIST_FIND_ONE,
@@ -18,6 +19,12 @@ const initialState = {
 
 export const artistReducer = (state = initialState, { type, payload }) => {
   switch (type) {
+    case ARTIST_ADD:
+      return {
+        doc: {
+          ...payload,
+        },
+      };
     case ARTIST_ALERT:
       return {
         ...state,
@@ -33,7 +40,6 @@ export const artistReducer = (state = initialState, { type, payload }) => {
         albums: payload,
       };
     case ARTIST_FIND_ONE:
-      let dateObj = new Date(payload.updated_at);
       return {
         ...state,
         loading: false,

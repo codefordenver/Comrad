@@ -254,8 +254,8 @@ class LibrarySearchPage extends Component {
               </div>
               <div>
                 <Dropdown type="plus" text="Add">
-                  <DropdownItem to="artist/add">Artist</DropdownItem>
-                  <DropdownItem to="album/add">Album</DropdownItem>
+                  <DropdownItem to="library/artist/add">Artist</DropdownItem>
+                  <DropdownItem to="library/album/add">Album</DropdownItem>
                 </Dropdown>
               </div>
             </div>

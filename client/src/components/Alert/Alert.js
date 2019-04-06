@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 
+export const ALERT_TYPES = ['success', 'info', 'danger', 'warning'];
+
 export const ALERT_CLASS = {
   success: 'alert--success',
   info: 'alert--info',
@@ -9,7 +11,7 @@ export const ALERT_CLASS = {
   warning: 'alert--warning',
 };
 
-export const ICON_SET = {
+export const ALERT_ICON = {
   success: <i className="fas fa-check-circle" />,
   info: <i className="fas fa-info-circle" />,
   danger: <i className="fas fa-exclamation-circle" />,
@@ -29,35 +31,34 @@ class Alert extends Component {
     /**
      * Body Text
      */
-    text: PropTypes.string,
+    message: PropTypes.string,
     /**
      * Background color based on type
      */
-    type: PropTypes.oneOf(['success', 'info', 'danger', 'warning']),
+    type: PropTypes.oneOf(ALERT_TYPES).isRequired,
+  };
+
+  static defaultProps = {
+    className: null,
+    header: 'Alert',
+    message: null,
   };
 
   render() {
     const { props } = this;
-    const { display, header, className, type, text } = props;
+    const { className, header, type, message } = props;
 
     return (
-      <div
-        className={classnames(
-          'alert',
-          ALERT_CLASS[type],
-          display ? 'open' : 'close',
-          className,
-        )}
-      >
+      <div className={classnames('alert', ALERT_CLASS[type], className)}>
         {/* TODO: Need to figure out how to handle clicks */}
 
         {/* <div className="alert__times" onClick={handleToggle}>
           <i className="fas fa-times" />
         </div> */}
-        <div className="alert__symbol">{ICON_SET[type]}</div>
+        <div className="alert__icon">{ALERT_ICON[type]}</div>
         <div className="alert__body">
           <div className="alert__header">{header}</div>
-          <div className="alert__message">{text}</div>
+          <div className="alert__message">{message}</div>
         </div>
       </div>
     );

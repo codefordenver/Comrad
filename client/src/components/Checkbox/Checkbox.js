@@ -1,9 +1,21 @@
 import React from 'react';
+import './_Checkbox.scss';
 
 const Checkbox = props => {
   const { className, ...rest } = props;
-
-  return <input className={`check-box ${className || ''}`} {...rest} />;
+  const label = 'test box'; //this will be passed in from parent component as props
+  return (
+    <div className="checkbox-container">
+      {label}
+      <input
+        type="checkbox"
+        name={label}
+        className={`check-box ${className || ''}`}
+        {...rest}
+      />
+      <span className="checkmark" />
+    </div>
+  );
 };
 
 export default Checkbox;

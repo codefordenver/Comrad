@@ -49,13 +49,6 @@ const columns = [
 ];
 
 class TableUsers extends Component {
-  componentDidMount() {
-    const { user, userSearch } = this.props;
-    const { search } = user;
-
-    userSearch(search);
-  }
-
   render() {
     const { user } = this.props;
     const { docs } = user;

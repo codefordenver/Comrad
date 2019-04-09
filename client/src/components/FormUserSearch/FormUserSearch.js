@@ -17,11 +17,11 @@ class FormUserSearch extends Component {
 
   render() {
     const { props, submit } = this;
-    const { handleSubmit, handleUserSubmit } = props;
+    const { handleSubmit } = props;
 
     return (
-      <form className="f-user-search mb-2" onSubmit={handleSubmit(submit)}>
-        <div className="f-user-search__field">
+      <form className="fus mb-2" onSubmit={handleSubmit(submit)}>
+        <div className="fus__field">
           <Field
             className="mb-1"
             component={Input}
@@ -31,7 +31,7 @@ class FormUserSearch extends Component {
           />
           <Button type="submit">Search</Button>
         </div>
-        <div className="f-user-search__filter">
+        <div className="fus__filter">
           <Filter name="filter" text="All" value="All" />
           <Filter name="filter" text="Active" value="Active" />
           <Filter name="filter" text="Inactive" value="Inactive" />

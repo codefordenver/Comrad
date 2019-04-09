@@ -6,16 +6,21 @@ import Button from '../Button';
 import Filter from '../Filter';
 import Input from '../Input';
 
+import { userSearch } from '../../redux/user';
+
 class FormUserSearch extends Component {
+  submit = values => {
+    const { userSearch } = this.props;
+
+    userSearch(values);
+  };
+
   render() {
-    const { props } = this;
+    const { props, submit } = this;
     const { handleSubmit, handleUserSubmit } = props;
 
     return (
-      <form
-        className="f-user-search mb-2"
-        onSubmit={handleSubmit(handleUserSubmit)}
-      >
+      <form className="f-user-search mb-2" onSubmit={handleSubmit(submit)}>
         <div className="f-user-search__field">
           <Field
             className="mb-1"
@@ -40,16 +45,16 @@ const ReduxFormUserSearch = reduxForm({
   form: 'userSearch',
 })(FormUserSearch);
 
-function mapStateToProps(state) {
+function mapStateToProps({ user }) {
+  const { search } = user;
+
   return {
-    initialValues: {
-      s: '',
-      filter: 'All',
-    },
+    user,
+    initialValues: { ...search },
   };
 }
 
 export default connect(
   mapStateToProps,
-  {},
+  { userSearch },
 )(ReduxFormUserSearch);

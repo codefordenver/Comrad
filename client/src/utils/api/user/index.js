@@ -1,5 +1,5 @@
 import { search } from './search';
 
-export const user = {
+export const userAPI = {
   search,
 };

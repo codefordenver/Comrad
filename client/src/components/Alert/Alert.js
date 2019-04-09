@@ -44,6 +44,12 @@ class Alert extends Component {
     message: null,
   };
 
+  componentWillUnmount() {
+    const { alertClose } = this.props;
+
+    alertClose();
+  }
+
   render() {
     const { props } = this;
     const { alertClose, className, display, header, type, message } = props;
@@ -58,7 +64,6 @@ class Alert extends Component {
         )}
       >
         {/* TODO: Need to figure out how to handle clicks */}
-
         <div className="alert__times" onClick={alertClose}>
           <i className="fas fa-times" />
         </div>

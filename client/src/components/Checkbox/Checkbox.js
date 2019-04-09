@@ -6,7 +6,6 @@ const Checkbox = props => {
   const label = 'test box'; //this will be passed in from parent component as props
   return (
     <div className="checkbox-container">
-      {label}
       <input
         type="checkbox"
         name={label}
@@ -14,6 +13,7 @@ const Checkbox = props => {
         {...rest}
       />
       <span className="checkmark" />
+      <div className="checkbox-label">{label}</div>
     </div>
   );
 };

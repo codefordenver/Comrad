@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 import Card, { CardBody } from '../../components/Card';
 import FormArtistUpdateName from '../../components/FormArtistUpdateName';
+import LargeText from '../../components/LargeText';
 import TableAlbums from '../../components/TableAlbums';
 
 import { artistFindAlbums } from '../../redux/artist';
@@ -28,7 +29,11 @@ class ArtistViewPage extends Component {
   };
 
   render() {
-    const { props } = this;
+    const { navigateToAlbum, props } = this;
+    const { loadingAlbums, artist } = props;
+    const { albums, loading } = artist;
+
+    console.log(albums);
 
     return (
       <div className="artist-view-page">
@@ -41,12 +46,14 @@ class ArtistViewPage extends Component {
           <CardBody>
             <h2>Albums</h2>
             <div className="artist-view-page__album-table-container">
-              {!props.loadingAlbums && (
+              {!loadingAlbums && albums.length !== 0 ? (
                 <TableAlbums
-                  albums={props.artist.albums}
-                  loading={props.artist.loading}
-                  onRowClick={this.navigateToAlbum}
+                  albums={albums}
+                  loading={loading}
+                  onRowClick={navigateToAlbum}
                 />
+              ) : (
+                <LargeText>No Albums</LargeText>
               )}
             </div>
           </CardBody>

@@ -16,7 +16,9 @@ class DashboardHomePage extends Component {
           <h1>Currently On Air</h1>
         </div>
         <div>
-          <Checkbox /> checkbox test
+          <label>
+            <Checkbox />
+          </label>
         </div>
       </div>
     );

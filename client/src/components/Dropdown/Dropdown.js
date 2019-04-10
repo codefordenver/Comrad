@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import classnames from 'classnames';
+import classNames from 'classnames';
 
 import { DropdownIcon } from './DropdownIcon';
 import { DropdownPlus } from './DropdownPlus';
@@ -44,7 +44,7 @@ class Dropdown extends Component {
     }
 
     return (
-      <div className={classnames('dropdown', className)}>
+      <div className={classNames('dropdown', className)}>
         <div className="dropdown__button" onClick={this.handleClick}>
           {button}
         </div>

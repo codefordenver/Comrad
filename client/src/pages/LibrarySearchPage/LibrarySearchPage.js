@@ -10,6 +10,7 @@ import Dropdown, { DropdownItem } from '../../components/Dropdown';
 import Input from '../../components/Input';
 
 class LibrarySearchPage extends Component {
+  container = React.createRef();
   state = {
     activeFilter: 'all',
     docs: [],
@@ -18,11 +19,23 @@ class LibrarySearchPage extends Component {
     loading: true,
     loadingError: false,
     searchString: false,
+    dropDownButtonOpen: false,
     sort: {
       id: null,
       desc: null,
     },
   };
+
+  // The event listeners listed in componentDidMount and componentWillUnmount register
+  // when the user clicks an area of the page outside of the Dropdown component. This allows
+  // the menu to close when an area of the page other than the dropdown button is clicked.
+
+  componentDidMount() {
+    document.addEventListener('mousedown', this.handleClickOutside);
+  }
+  componentWillUnmount() {
+    document.removeEventListener('mousedown', this.handleClickOutside);
+  }
 
   fetchData = (state, instance) => {
     this.setState({ loading: true }); //show loading overlay
@@ -109,6 +122,25 @@ class LibrarySearchPage extends Component {
         this.searchLibrary({ q: this.state.searchString });
       },
     );
+  };
+
+  // This function controls the add button with the dropdown menu
+  handleDropDownClick = () => {
+    this.setState({
+      dropDownButtonOpen: !this.state.dropDownButtonOpen,
+    });
+  };
+
+  // This function closes the dropdown menu when an area outside the dropdown button is clicked
+  handleClickOutside = event => {
+    if (
+      this.container.current &&
+      this.container.current.contains(event.target) === false
+    ) {
+      this.setState({
+        dropDownButtonOpen: false,
+      });
+    }
   };
 
   render() {
@@ -252,8 +284,13 @@ class LibrarySearchPage extends Component {
                   </span>
                 </div>
               </div>
-              <div>
-                <Dropdown type="plus" text="Add">
+              <div className="dropdown-button-wrapper" ref={this.container}>
+                <Dropdown
+                  click={this.handleDropDownClick}
+                  active={this.state.dropDownButtonOpen}
+                  type="plus"
+                  text="Add"
+                >
                   <DropdownItem to="artist/add">Artist</DropdownItem>
                   <DropdownItem to="album/add">Album</DropdownItem>
                 </Dropdown>

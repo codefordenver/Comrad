@@ -5,20 +5,14 @@ import { DropdownIcon } from './DropdownIcon';
 import { DropdownPlus } from './DropdownPlus';
 
 class Dropdown extends Component {
-  state = {
-    active: false,
-  };
-
-  handleClick = e => {
-    this.setState(prevProps => ({
-      active: !prevProps.active,
-    }));
-  };
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
 
   render() {
     const { props, state } = this;
     const { children, className, dropdownPosition, type } = props;
-    const { active } = state;
 
     let button = [];
     switch (type) {
@@ -45,12 +39,12 @@ class Dropdown extends Component {
 
     return (
       <div className={classNames('dropdown', className)}>
-        <div className="dropdown__button" onClick={this.handleClick}>
+        <div className="dropdown__button" onClick={this.props.click}>
           {button}
         </div>
         <div
           className={`dropdown__list ${
-            active ? 'active' : ''
+            this.props.active ? 'active' : ''
           } ${dropdownListAdditionalClass}`}
         >
           {children}

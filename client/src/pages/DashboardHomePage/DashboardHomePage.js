@@ -3,7 +3,9 @@ import React, { Component } from 'react';
 import Checkbox from '../../components/Checkbox';
 
 class DashboardHomePage extends Component {
-  state = {};
+  state = {
+    checkboxlabel: 'Test Label',
+  };
 
   render() {
     return (
@@ -17,7 +19,7 @@ class DashboardHomePage extends Component {
         </div>
         <div>
           <label>
-            <Checkbox />
+            <Checkbox label={this.state.checkboxlabel} />
           </label>
         </div>
       </div>

@@ -44,17 +44,29 @@ class Alert extends Component {
     message: null,
   };
 
+  componentWillUnmount() {
+    const { alertClose } = this.props;
+
+    alertClose();
+  }
+
   render() {
     const { props } = this;
-    const { className, header, type, message } = props;
+    const { alertClose, className, display, header, type, message } = props;
 
     return (
-      <div className={classnames('alert', ALERT_CLASS[type], className)}>
+      <div
+        className={classnames(
+          'alert',
+          ALERT_CLASS[type],
+          display ? 'open' : 'close',
+          className,
+        )}
+      >
         {/* TODO: Need to figure out how to handle clicks */}
-
-        {/* <div className="alert__times" onClick={handleToggle}>
+        <div className="alert__times" onClick={alertClose}>
           <i className="fas fa-times" />
-        </div> */}
+        </div>
         <div className="alert__icon">{ALERT_ICON[type]}</div>
         <div className="alert__body">
           <div className="alert__header">{header}</div>

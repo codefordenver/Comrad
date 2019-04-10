@@ -1,6 +1,7 @@
 import axios from 'axios';
 import {
   USER_ALERT,
+  USER_ALERT_CLOSE,
   USER_FIND_ONE,
   USER_ADD,
   USER_LOADING,
@@ -8,6 +9,8 @@ import {
   USER_SEARCH,
   USER_CLEAR,
 } from './userTypes';
+
+import { userAPI } from '../../utils/api';
 
 export const userFindOne = id => async dispatch => {
   try {
@@ -45,28 +48,23 @@ export const userFindAll = () => async dispatch => {
   }
 };
 
-export const userSearch = values => async dispatch => {
+export const userSearch = ({ filter, s }) => async dispatch => {
   try {
-    let loadTimeOut;
+    dispatch({ type: USER_LOADING });
 
-    loadTimeOut = setTimeout(() => {
-      dispatch({ type: USER_LOADING });
-    }, 2000);
+    const { data: docs } = await userAPI.search({ filter, s });
+    const search = { filter, s };
 
-    const { filter, query } = values;
-
-    const response = await axios.get(
-      `/api/user/search?q=${query || ''}&f=${filter}`,
-    );
-
-    clearTimeout(loadTimeOut);
-
-    dispatch({
-      type: USER_SEARCH,
-      payload: { docs: response.data, query, filter },
-    });
+    dispatch({ type: USER_SEARCH, payload: { docs, search } });
   } catch (e) {
-    console.log(e);
+    const alert = {
+      display: true,
+      header: 'ERROR',
+      message: 'Error With Searching For Users',
+      type: 'danger',
+    };
+
+    dispatch({ type: USER_ALERT, payload: { alert } });
   }
 };
 
@@ -88,6 +86,14 @@ export const userAdd = (input, callback) => async dispatch => {
 export const userClear = () => async dispatch => {
   try {
     dispatch({ type: USER_CLEAR });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const userAlertClose = () => async dispatch => {
+  try {
+    dispatch({ type: USER_ALERT_CLOSE });
   } catch (err) {
     console.log(err);
   }

@@ -1,5 +1,4 @@
 .alert {
-  display: grid;
   grid-template-columns: 5rem auto;
   grid-column-gap: 0.5rem;
   position: relative;
@@ -14,10 +13,6 @@
 
   &.close {
     display: none;
-  }
-
-  &:not(:last-child) {
-    margin-bottom: 2rem;
   }
 
   &__times {

@@ -23,7 +23,7 @@ module.exports = {
 
     const { permission } = req.user.station;
 
-    if (permission !== 'admin') {
+    if (permission !== 'Admin') {
       return res.status(422).json('User must have admin access');
     }
 

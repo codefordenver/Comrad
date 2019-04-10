@@ -60,7 +60,7 @@ export const userSearch = ({ filter, s }) => async dispatch => {
     const alert = {
       display: true,
       header: 'ERROR',
-      message: 'Error with searching for users',
+      message: 'Error With Searching For Users',
       type: 'danger',
     };
 

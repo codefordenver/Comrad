@@ -20,7 +20,15 @@ export const BUTTON_TYPE = {
 class ButtonIcon extends Component {
   render() {
     const { props } = this;
-    const { className, icon, onClick, onMouseDown, size, type } = props;
+    const {
+      className,
+      icon,
+      onClick,
+      onMouseDown,
+      size,
+      submitting,
+      type,
+    } = props;
 
     return (
       <button
@@ -30,6 +38,7 @@ class ButtonIcon extends Component {
           BUTTON_SIZE[size],
           className,
         )}
+        disabled={submitting}
         onClick={onClick}
         onMouseDown={onMouseDown}
         type={BUTTON_TYPE[type]}

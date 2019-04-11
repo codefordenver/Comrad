@@ -25,7 +25,7 @@ class FormAuthLogin extends Component {
 
     return (
       <form onSubmit={handleSubmit(submit)}>
-        {display && <Alert {...alert} />}
+        {/* {display && <Alert {...alert} />} */}
         <Field
           className="mb-3"
           component={Input}

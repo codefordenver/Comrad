@@ -1,5 +1,6 @@
 import {
   ARTIST_ALERT,
+  ARTIST_ALERT_CLOSE,
   ARTIST_FIND_ALBUMS,
   ARTIST_FIND_ONE,
   ARTIST_EDITING_NAME,
@@ -9,7 +10,12 @@ import {
 } from './artistTypes';
 
 const initialState = {
-  albums: [],
+  alert: {
+    display: false,
+    header: '',
+    message: '',
+    type: '',
+  },
   doc: {},
   error: null,
   loading: false,
@@ -33,13 +39,10 @@ export const artistReducer = (state = initialState, { type, payload }) => {
         albums: payload,
       };
     case ARTIST_FIND_ONE:
-      let dateObj = new Date(payload.updated_at);
       return {
         ...state,
+        ...payload,
         loading: false,
-        doc: {
-          ...payload,
-        },
       };
     case ARTIST_EDITING_NAME:
       return {
@@ -60,9 +63,16 @@ export const artistReducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         doc: {
+          ...state.doc,
           ...payload,
         },
-        loading: false,
+      };
+    case ARTIST_ALERT_CLOSE:
+      const { alert } = initialState;
+
+      return {
+        ...state,
+        alert,
       };
     default:
       return state;

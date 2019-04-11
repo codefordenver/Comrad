@@ -13,16 +13,6 @@ class FormArtistUpdateName extends Component {
     editMode: false,
   };
 
-  componentDidMount() {
-    const { artist, artistFindOne, match } = this.props;
-    const { _id } = artist.doc;
-    const { id } = match.params;
-
-    if (id !== _id) {
-      artistFindOne(id);
-    }
-  }
-
   handleEditClick = () => {
     const { initialize, initialValues } = this.props;
 
@@ -41,7 +31,7 @@ class FormArtistUpdateName extends Component {
   submit = values => {
     const { artistUpdate } = this.props;
 
-    artistUpdate(values, () => {
+    return artistUpdate(values, () => {
       this.setState({
         editMode: false,
       });
@@ -50,7 +40,7 @@ class FormArtistUpdateName extends Component {
 
   render() {
     const { handleDefault, handleEditClick, props, state, submit } = this;
-    const { artist, handleSubmit } = props;
+    const { artist, handleSubmit, submitting } = props;
     const { editMode } = state;
     const { doc } = artist;
     const { name } = doc;
@@ -60,23 +50,25 @@ class FormArtistUpdateName extends Component {
         {editMode ? (
           <form className="faun__form" onSubmit={handleSubmit(submit)}>
             <Field
+              autoFocus
               component={Input}
               label="Artist Name"
+              onBlur={handleSubmit(submit)}
               name="name"
               type="text"
-              autoFocus
-              onBlur={handleSubmit(submit)}
               validate={requiredValidate}
             />
             <ButtonIcon
               icon="confirm"
               onClick={handleSubmit(submit)}
               onMouseDown={handleDefault}
+              submitting={submitting}
             />
             <ButtonIcon
               icon="cancel"
               onClick={handleSubmit(handleEditClick)}
               onMouseDown={handleDefault}
+              submitting={submitting}
             />
           </form>
         ) : (

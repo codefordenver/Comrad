@@ -10,7 +10,6 @@ import Dropdown, { DropdownItem } from '../../components/Dropdown';
 import Input from '../../components/Input';
 
 class LibrarySearchPage extends Component {
-  //container = React.createRef();
   state = {
     activeFilter: 'all',
     docs: [],
@@ -24,17 +23,6 @@ class LibrarySearchPage extends Component {
       desc: null,
     },
   };
-
-  // The event listeners listed in componentDidMount and componentWillUnmount register
-  // when the user clicks an area of the page outside of the Dropdown component. This allows
-  // the menu to close when an area of the page other than the dropdown button is clicked.
-
-  /*componentDidMount() {
-    document.addEventListener('mousedown', this.handleClickOutside);
-  }
-  componentWillUnmount() {
-    document.removeEventListener('mousedown', this.handleClickOutside);
-  }*/
 
   fetchData = (state, instance) => {
     this.setState({ loading: true }); //show loading overlay
@@ -264,7 +252,7 @@ class LibrarySearchPage extends Component {
                   </span>
                 </div>
               </div>
-              <div className="dropdown-button-wrapper" /*ref={this.container}*/>
+              <div className="dropdown-button-wrapper">
                 <Dropdown type="plus" text="Add">
                   <DropdownItem to="artist/add">Artist</DropdownItem>
                   <DropdownItem to="album/add">Album</DropdownItem>

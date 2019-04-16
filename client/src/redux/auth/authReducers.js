@@ -1,10 +1,16 @@
-import { AUTH_ALERT, AUTH_LOADING, AUTH_LOGIN, AUTH_LOGOUT } from './authTypes';
+import {
+  AUTH_ALERT,
+  AUTH_ALERT_CLOSE,
+  AUTH_LOADING,
+  AUTH_LOGIN,
+  AUTH_LOGOUT,
+} from './authTypes';
 
 const initialState = {
   alert: {
     display: false,
     header: '',
-    text: '',
+    message: '',
     type: '',
   },
   doc: {},
@@ -36,6 +42,15 @@ export const authReducer = (state = initialState, { type, payload }) => {
           ...payload,
         },
         permission: null,
+      };
+    case AUTH_ALERT_CLOSE:
+      const { alert } = initialState;
+
+      console.log(alert);
+
+      return {
+        ...state,
+        alert,
       };
 
     case AUTH_LOADING:

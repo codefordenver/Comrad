@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 
-import { authLogin } from '../../redux/auth';
+import { authAlertClose, authLogin } from '../../redux/auth';
 import { emailValidate, requiredValidate } from '../../utils/validation.js';
 
 import Alert from '../Alert';
@@ -12,20 +12,18 @@ import Input from '../Input';
 class FormAuthLogin extends Component {
   submit = values => {
     const { authLogin, history } = this.props;
-    authLogin(values, () => {
+
+    return authLogin(values, () => {
       history.push('/admin');
     });
   };
 
   render() {
     const { props, submit } = this;
-    const { auth, handleSubmit } = props;
-    const { alert } = auth;
-    const { display } = alert;
+    const { handleSubmit, submitting } = props;
 
     return (
       <form onSubmit={handleSubmit(submit)}>
-        {/* {display && <Alert {...alert} />} */}
         <Field
           className="mb-3"
           component={Input}
@@ -42,7 +40,9 @@ class FormAuthLogin extends Component {
           type="password"
           validate={requiredValidate}
         />
-        <Button type="submit">Submit</Button>
+        <Button submitting={submitting} type="submit">
+          Submit
+        </Button>
       </form>
     );
   }
@@ -52,9 +52,7 @@ const ReduxFormAuthLogin = reduxForm({
   form: 'authLogin',
 })(FormAuthLogin);
 
-function mapStateToProps(state) {
-  const auth = state.auth;
-
+function mapStateToProps({ auth }) {
   return {
     auth,
   };
@@ -62,5 +60,5 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  { authLogin },
+  { authAlertClose, authLogin },
 )(ReduxFormAuthLogin);

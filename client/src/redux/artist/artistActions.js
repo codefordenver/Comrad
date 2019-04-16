@@ -2,7 +2,6 @@ import axios from 'axios';
 import { SubmissionError } from 'redux-form';
 
 import {
-  ARTIST_ADD,
   ARTIST_ALERT,
   ARTIST_ALERT_CLOSE,
   ARTIST_FIND_ALBUMS,
@@ -12,22 +11,6 @@ import {
   ARTIST_LOAD_ALBUMS,
   ARTIST_UPDATE,
 } from './artistTypes';
-
-export const artistAdd = (input, callback) => async dispatch => {
-  try {
-    const response = await axios.post('/api/artist', input);
-
-    dispatch({ type: ARTIST_ADD, payload: response.data });
-
-    callback(response.data._id);
-  } catch (e) {
-    console.error(e);
-    dispatch({
-      type: ARTIST_ALERT,
-      payload: { type: 'error', text: e.response.data.errorMessage },
-    });
-  }
-};
 
 export const artistFindAlbums = artistId => async dispatch => {
   try {

@@ -21,13 +21,14 @@
     border: 2px solid $color-primary-light;
     border-radius: $border-radius;
     display: block;
-    height: 3.8rem;
+    height: 12rem;
     padding: 1rem;
     padding-left: 1.4rem;
     position: relative;
     width: 100%;
     z-index: 1;
-  
+    resize: none;
+    
     transition: all 0.2s;
   
     &:focus {

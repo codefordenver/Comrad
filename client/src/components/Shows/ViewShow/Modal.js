@@ -5,7 +5,7 @@ import Modal from '../../Modal';
 
 const ShowModal = props => {
   return (
-    <Modal show={props.modalVisibility}>
+    <Modal isOpen={props.modalVisibility}>
       <Form data={props.data} />
     </Modal>
   );

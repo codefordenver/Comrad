@@ -9,7 +9,7 @@ const ShowModal = props => {
   }
 
   return (
-    <Modal show={props.modalVisibility}>
+    <Modal isOpen={props.modalVisibility}>
       <Form onSubmit={submit} data={props.data} />
     </Modal>
   );

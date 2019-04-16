@@ -1,13 +1,19 @@
 import React from 'react';
+import ReactModal from 'react-modal';
 
 const Modal = props => {
-  const { handleClose, show, children, styleName, ...rest } = props;
-
-  const showHideClassName = show ? 'modal display-block' : 'modal display-none';
+  const { isOpen, children, styleName, ...rest } = props;
 
   return (
-    <div className={`modal ${styleName || ''} ${showHideClassName}`} {...rest}>
-      <section className="modal-main">{children}</section>
+    <div>
+      <ReactModal
+        className={`modal-main z-index--100`}
+        overlayClassName={`modal-overlay`}
+        isOpen
+        {...rest}
+      >
+        {children}
+      </ReactModal>
     </div>
   );
 };

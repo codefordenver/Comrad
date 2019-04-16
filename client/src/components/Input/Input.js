@@ -6,19 +6,27 @@ export const ICON_SET = {
   user: <i className="icon fas fa-user" />,
 };
 
-const InputError = props => {
+export const InputError = props => {
   const { children } = props;
   return <div className="input__error">{children}</div>;
 };
 
-const InputLabel = props => {
-  const { active, children, dirty, error, touched, dirtyOverride } = props;
+export const InputLabel = props => {
+  const {
+    active,
+    children,
+    dirty,
+    error,
+    initial,
+    touched,
+    dirtyOverride,
+  } = props;
 
   return (
     <div
       className={classnames(
         'input__label',
-        active && 'active',
+        (active || initial) && 'active',
         (dirty || dirtyOverride) && 'dirty',
         touched && error && 'error',
       )}
@@ -33,8 +41,10 @@ class Input extends Component {
     const { props } = this;
 
     const {
+      autoFocus,
       className,
       icon,
+      inline,
       input,
       label,
       meta,
@@ -42,14 +52,20 @@ class Input extends Component {
       dirtyOverride = false,
       ...other
     } = props;
-    const { error, touched } = meta;
+    const { error, touched, submitting } = meta;
 
     return (
-      <div className={classnames('form-group', className)}>
+      <div
+        className={classnames('form-group', className, {
+          'form-group--inline': inline,
+        })}
+      >
         <input
           {...input}
           {...other}
+          autoFocus={autoFocus}
           className={classnames('input', touched && error && 'error')}
+          disabled={submitting}
           type={type}
           onBlur={() => input.onBlur()}
         />

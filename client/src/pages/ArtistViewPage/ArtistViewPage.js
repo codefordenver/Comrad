@@ -1,57 +1,76 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import axios from 'axios';
+import { isEmpty } from 'lodash';
 
+import Alert from '../../components/Alert';
 import Card, { CardBody } from '../../components/Card';
+import FormArtistUpdateName from '../../components/FormArtistUpdateName';
+import LargeText from '../../components/LargeText';
+import TableArtistAlbums from '../../components/TableArtistAlbums';
+
+import { artistAlertClose, artistFindOne } from '../../redux/artist';
 
 class ArtistViewPage extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      artist: null,
-      last_updated: '',
-    };
+  componentDidMount() {
+    const { artist, artistFindOne, match } = this.props;
+    const { _id } = artist.doc;
+    const { id } = match.params;
 
-    axios.get('/api/artist/' + this.props.match.params.id).then(response => {
-      let dateObj = new Date(response.data.updated_at);
-      this.setState({
-        artist: response.data,
-        last_updated:
-          dateObj.toLocaleDateString() + ' ' + dateObj.toLocaleTimeString(),
-      });
-    });
+    if (id !== _id) {
+      artistFindOne(id);
+    }
   }
 
+  navigateToAlbum = (state, rowInfo, column, instance) => {
+    return {
+      onClick: (e, handleOriginal) => {
+        //navigate to the view page for this album
+        this.props.history.push('/library/album/' + rowInfo.original._id);
+      },
+    };
+  };
+
   render() {
+    const { navigateToAlbum, props } = this;
+    const { match, artist, artistAlertClose } = props;
+    const { alert, doc, loading } = artist;
+    const { albums } = doc;
+
     return (
-      <div className="artist-view-page">
-        {this.state.artist != null && (
-          <div>
+      <div className="artist-view">
+        <Alert alertClose={artistAlertClose} {...alert} />
+        {!loading ? (
+          <>
             <Card>
               <CardBody>
-                <div className="float-right">
-                  Last updated: {this.state.last_updated}
-                </div>
-                <h1 className="mb-0">
-                  {this.state.artist.name} <button className="edit-button" />
-                </h1>
+                <FormArtistUpdateName match={match} />
               </CardBody>
             </Card>
-          </div>
-        )}
+
+            <Card>
+              <CardBody>
+                <h2 className="mb-1">Albums</h2>
+                {isEmpty(albums) ? (
+                  <LargeText align="left">No Albums</LargeText>
+                ) : (
+                  <TableArtistAlbums onRowClick={navigateToAlbum} />
+                )}
+              </CardBody>
+            </Card>
+          </>
+        ) : null}
       </div>
     );
   }
 }
 
-function mapStateToProps(state) {
-  const { error } = state.library;
+function mapStateToProps({ artist }) {
   return {
-    error,
+    artist,
   };
 }
 
 export default connect(
   mapStateToProps,
-  {},
+  { artistAlertClose, artistFindOne },
 )(ArtistViewPage);

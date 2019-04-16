@@ -1,35 +1,39 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { userSearch } from '../../redux/user';
 
+import Alert from '../../components/Alert';
 import Card, { CardBody } from '../../components/Card';
-import FilterUsers from '../../components/FilterUsers';
 import FormUserSearch from '../../components/FormUserSearch';
 import TableUsers from '../../components/TableUsers';
+
+import { userAlertClose, userSearch } from '../../redux/user';
 
 class UserSearchPage extends Component {
   componentDidMount() {
     const { user, userSearch } = this.props;
     const { search } = user;
+
     userSearch(search);
   }
 
   render() {
+    const { user, userAlertClose } = this.props;
+    const { alert } = user;
+
     return (
       <div className="user-search">
+        {/* Error Alert */}
+        <Alert alertClose={userAlertClose} {...alert} />
+
         <Card>
           <CardBody>
             <h1 className="mb-0">Users</h1>
           </CardBody>
         </Card>
+
         <Card>
           <CardBody>
-            <div className="user-search__form">
-              <FormUserSearch />
-            </div>
-            <div className="user-search__filter">
-              <FilterUsers />
-            </div>
+            <FormUserSearch />
             <TableUsers />
           </CardBody>
         </Card>
@@ -38,8 +42,7 @@ class UserSearchPage extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  const user = state.user;
+function mapStateToProps({ user }) {
   return {
     user,
   };
@@ -47,5 +50,5 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  { userSearch },
+  { userAlertClose, userSearch },
 )(UserSearchPage);

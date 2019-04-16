@@ -1,0 +1,8 @@
+.SingleDatePicker {
+  border-radius: $border-radius;
+  border: 2px solid $color-primary-light;
+  &:focus {
+    outline: none;
+    border: 2px solid $color-primary;
+  }
+}

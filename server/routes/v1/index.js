@@ -13,17 +13,17 @@ const traffic = require('./traffic');
 const user = require('./user');
 const venue = require('./venue');
 
-router.use('/album', album);
-router.use('/announcement', announcement);
-router.use('/artist', artist);
-router.use('/auth', auth);
-router.use('/feature', feature);
-router.use('/giveaway', giveaway);
+router.use('/albums', album);
+router.use('/announcements', announcement);
+router.use('/artists', artist);
+router.use('/auths', auth);
+router.use('/features', feature);
+router.use('/giveaways', giveaway);
 router.use('/library', library);
-router.use('/show', show);
-router.use('/track', track);
-router.use('/traffic', traffic);
-router.use('/user', user);
-router.use('/venue', venue);
+router.use('/shows', show);
+router.use('/tracks', track);
+router.use('/traffics', traffic);
+router.use('/users', user);
+router.use('/venues', venue);
 
 module.exports = router;

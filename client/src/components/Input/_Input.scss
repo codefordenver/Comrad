@@ -1,5 +1,15 @@
 .form-group {
   position: relative;
+  
+  &--inline {
+    display: inline; 
+    margin-right: 0.5rem;
+    
+    .input {
+      width: auto;
+      display: inline;
+    } 
+  }
 }
 
 .input {
@@ -19,11 +29,15 @@
   width: 100%;
   z-index: 1;
 
-  transition: all 0.2s;
+  transition: outline 0.2s border 0.2s;
 
   &:focus {
     outline: none;
     border: 2px solid $color-primary;
+  }
+
+  &:disabled {
+    opacity: 0.5;
   }
 
   &.error,

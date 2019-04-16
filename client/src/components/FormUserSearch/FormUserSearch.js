@@ -1,21 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
-import { userSearch } from '../../redux/user';
 
 import Button from '../Button';
+import Filter from '../Filter';
 import Input from '../Input';
+
+import { userSearch } from '../../redux/user';
 
 class FormUserSearch extends Component {
   submit = values => {
-    const {
-      userSearch,
-      user: {
-        search: { filter },
-      },
-    } = this.props;
+    const { userSearch } = this.props;
 
-    userSearch({ ...values, filter });
+    userSearch(values);
   };
 
   render() {
@@ -23,15 +20,22 @@ class FormUserSearch extends Component {
     const { handleSubmit } = props;
 
     return (
-      <form className="user-search-form mb-2" onSubmit={handleSubmit(submit)}>
-        <Field
-          className="mb-1"
-          component={Input}
-          label="Search"
-          name="query"
-          type="text"
-        />
-        <Button type="submit">Search</Button>
+      <form className="fus mb-2" onSubmit={handleSubmit(submit)}>
+        <div className="fus__field">
+          <Field
+            className="mb-1"
+            component={Input}
+            label="Search"
+            name="s"
+            type="text"
+          />
+          <Button type="submit">Search</Button>
+        </div>
+        <div className="fus__filter">
+          <Filter name="filter" text="All" value="All" />
+          <Filter name="filter" text="Active" value="Active" />
+          <Filter name="filter" text="Inactive" value="Inactive" />
+        </div>
       </form>
     );
   }
@@ -41,11 +45,12 @@ const ReduxFormUserSearch = reduxForm({
   form: 'userSearch',
 })(FormUserSearch);
 
-function mapStateToProps(state) {
-  const user = state.user;
+function mapStateToProps({ user }) {
+  const { search } = user;
 
   return {
     user,
+    initialValues: { ...search },
   };
 }
 

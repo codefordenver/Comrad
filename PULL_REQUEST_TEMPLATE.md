@@ -9,4 +9,4 @@ This issue resolves #[Insert issue number]
 
 ## Description
 
-_Description of pull request_
+_Please describe functionality and style with exact details so that admins can test to make sure we keep the same as intended_

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
+
 import { authLogin } from '../../redux/auth';
 import { emailValidate, requiredValidate } from '../../utils/validation.js';
 
@@ -24,7 +25,7 @@ class FormAuthLogin extends Component {
 
     return (
       <form onSubmit={handleSubmit(submit)}>
-        {display && <Alert {...alert} />}
+        {/* {display && <Alert {...alert} />} */}
         <Field
           className="mb-3"
           component={Input}

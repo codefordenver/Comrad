@@ -23,6 +23,8 @@
     "postinstall": "npm install --prefix client",
     "seed:test": "cross-env NODE_ENV=test npm run seed",
     "seed:dev": "cross-env NODE_ENV=development npm run seed",
+    "styleguide": "npm run styleguide --prefix client",
+    "styleguide:build": "npm run styleguidist build --prefix client",
     "lint": "eslint .",
     "lint:fix": "npm run lint -- --fix",
     "test:server": "jest",

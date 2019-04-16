@@ -64,7 +64,7 @@ class TextArea extends Component {
           {...input}
           {...other}
           autoFocus={autoFocus}
-          className={classnames('input', touched && error && 'error')}
+          className={classnames('textarea', touched && error && 'error')}
           type={type}
           onBlur={() => input.onBlur()}
         />

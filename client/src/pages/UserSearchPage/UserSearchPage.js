@@ -19,11 +19,12 @@ class UserSearchPage extends Component {
   render() {
     const { user, userAlertClose } = this.props;
     const { alert } = user;
+    const { display } = alert;
 
     return (
       <div className="user-search">
         {/* Error Alert */}
-        <Alert alertClose={userAlertClose} {...alert} />
+        {display && <Alert alertClose={userAlertClose} {...alert} />}
 
         <Card>
           <CardBody>

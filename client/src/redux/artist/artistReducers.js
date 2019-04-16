@@ -1,5 +1,4 @@
 import {
-  ARTIST_ADD,
   ARTIST_ALERT,
   ARTIST_ALERT_CLOSE,
   ARTIST_FIND_ALBUMS,
@@ -25,12 +24,6 @@ const initialState = {
 
 export const artistReducer = (state = initialState, { type, payload }) => {
   switch (type) {
-    case ARTIST_ADD:
-      return {
-        doc: {
-          ...payload,
-        },
-      };
     case ARTIST_ALERT:
       return {
         ...state,

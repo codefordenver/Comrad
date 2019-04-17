@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import classNames from 'classnames';
+import classnames from 'classnames';
 
 import { DropdownIcon } from './DropdownIcon';
 import { DropdownPlus } from './DropdownPlus';
@@ -12,14 +12,11 @@ class Dropdown extends Component {
   }
 
   handleClick = event => {
-    console.log('handle click', this.node.contains(event.target));
     if (this.node.contains(event.target)) {
-      console.log('contains');
       this.setState(prevProps => ({
         active: !prevProps.active,
       }));
     } else {
-      console.log("doesn't contain");
       this.setState({
         active: false,
       });
@@ -71,7 +68,7 @@ class Dropdown extends Component {
     }
 
     return (
-      <div className={classNames('dropdown', className)}>
+      <div className={classnames('dropdown', className)}>
         <div ref={node => (this.node = node)}>
           <div className="dropdown__button" onClick={this.handleClick}>
             {button}

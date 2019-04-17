@@ -5,7 +5,7 @@ const Modal = props => {
   const { isOpen, children, styleName, ...rest } = props;
 
   return (
-    <div>
+    <>
       <ReactModal
         className={`modal-main z-index--100`}
         overlayClassName={`modal-overlay`}
@@ -14,7 +14,7 @@ const Modal = props => {
       >
         {children}
       </ReactModal>
-    </div>
+    </>
   );
 };
 

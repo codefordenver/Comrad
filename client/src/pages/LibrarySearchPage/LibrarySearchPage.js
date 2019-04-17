@@ -252,7 +252,7 @@ class LibrarySearchPage extends Component {
                   </span>
                 </div>
               </div>
-              <div className="dropdown-button-wrapper">
+              <div>
                 <Dropdown type="plus" text="Add">
                   <DropdownItem to="artist/add">Artist</DropdownItem>
                   <DropdownItem to="album/add">Album</DropdownItem>

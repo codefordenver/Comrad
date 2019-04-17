@@ -49,7 +49,7 @@ class UserAddPage extends Component {
   render() {
     return (
       <div>Test</div>
-      <Form handleFormSubmit={this.handleFormSubmit}>
+      /*<Form handleFormSubmit={this.handleFormSubmit}>
         <Label text="Email" />
         <Input
           name="email"
@@ -113,7 +113,7 @@ class UserAddPage extends Component {
         />
         <button type="submit">Submit</button>
         <Link to="/user">Go Back</Link>
-      </Form>
+      </Form>*/
     );
   }
 }

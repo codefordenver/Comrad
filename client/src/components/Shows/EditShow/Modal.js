@@ -1,18 +1,23 @@
-import React from 'react';
+import React, { Component } from 'react';
 
 import Form from './Form';
 import Modal from '../../Modal';
 
-const ShowModal = props => {
-  function submit(values) {
+class ShowModal extends Component {
+  submit = values => {
     console.log(values);
-  }
+  };
 
-  return (
-    <Modal isOpen={props.modalVisibility}>
-      <Form onSubmit={submit} data={props.data} />
-    </Modal>
-  );
-};
+  render() {
+    const { submit, props } = this;
+    const { data, modalVisibility } = props;
+
+    return (
+      <Modal isOpen={modalVisibility}>
+        <Form onSubmit={submit} data={data} />
+      </Modal>
+    );
+  }
+}
 
 export default ShowModal;

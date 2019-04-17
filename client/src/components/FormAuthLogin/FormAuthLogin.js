@@ -5,7 +5,6 @@ import { Field, reduxForm } from 'redux-form';
 import { authAlertClose, authLogin } from '../../redux/auth';
 import { emailValidate, requiredValidate } from '../../utils/validation.js';
 
-import Alert from '../Alert';
 import Button from '../Button';
 import Input from '../Input';
 

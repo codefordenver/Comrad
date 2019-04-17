@@ -5,7 +5,6 @@ import classnames from 'classnames';
 import { emailValidate, requiredValidate } from '../../utils/validation.js';
 import { authPasswordReset } from '../../redux/auth';
 
-import Alert from '../Alert';
 import Button from '../Button';
 import Input from '../Input';
 
@@ -17,12 +16,10 @@ class FormPasswordReset extends Component {
 
   render() {
     const { props, submit } = this;
-    const { alert, className, handleSubmit } = props;
-    const { display } = alert;
+    const { className, handleSubmit } = props;
 
     return (
       <form className={classnames(className)} onSubmit={handleSubmit(submit)}>
-        {display && <Alert {...alert} />}
         <Field
           className="mb-3"
           component={Input}

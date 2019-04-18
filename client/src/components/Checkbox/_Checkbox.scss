@@ -22,10 +22,10 @@
   
   // custom checkbox
   .checkmark {
-    height: 25px;
-    width: 25px;
-    background-color: #fffff4;
-    border: 1px solid #505151;
+    height: 15px;  //25
+    width: 15px;  //25
+    background-color: #ffffff;
+    border: 1px solid #007283;
     border-radius: 5px;
     order: 1;
     display: inline-block;
@@ -33,12 +33,12 @@
   
   // background color on mouse over
   .checkbox-container:hover input ~ .checkmark {
-    background-color: #D3D3D3;
+    background-color: #A4A9AD;
   }
   
   // background color change when checked
   .checkbox-container input:checked ~ .checkmark {
-    background-color: #fffff4;
+    background-color: #007283;
   }
   
   // checkmark indicator
@@ -55,15 +55,15 @@
   
   // checkmark style
   .checkbox-container .checkmark:after {
-    left: 8px;
-    top: 9px;
-    width: 8px;
-    height: 16px;
-    border: solid black;
-    border-width: 0 3px 3px 0;
+    left: 5px;  
+    top: 13px; 
+    width: 5px;
+    height: 10px;
+    border: solid #ffffff;
+    border-width: 0px 2px 2px 0px;
     -webkit-transform: rotate(45deg);
     -ms-transform: rotate(45deg);
-    transform: rotate(45deg);
+    transform: rotate(35deg);
   }
 
   .checkbox-label {

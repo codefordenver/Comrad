@@ -1,4 +1,7 @@
 .user-search {
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-row-gap: 1rem;
 
   &__header {
     display: grid;

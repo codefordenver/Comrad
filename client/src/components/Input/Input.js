@@ -6,12 +6,12 @@ export const ICON_SET = {
   user: <i className="icon fas fa-user" />,
 };
 
-const InputError = props => {
+export const InputError = props => {
   const { children } = props;
   return <div className="input__error">{children}</div>;
 };
 
-const InputLabel = props => {
+export const InputLabel = props => {
   const {
     active,
     children,
@@ -52,7 +52,7 @@ class Input extends Component {
       dirtyOverride = false,
       ...other
     } = props;
-    const { error, touched } = meta;
+    const { error, touched, submitting } = meta;
 
     return (
       <div
@@ -65,6 +65,7 @@ class Input extends Component {
           {...other}
           autoFocus={autoFocus}
           className={classnames('input', touched && error && 'error')}
+          disabled={submitting}
           type={type}
           onBlur={() => input.onBlur()}
         />

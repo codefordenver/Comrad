@@ -1,6 +1,7 @@
 import {
   USER_ADD,
   USER_ALERT,
+  USER_ALERT_CLOSE,
   USER_CLEAR,
   USER_ERROR,
   USER_FIND_ALL,
@@ -12,7 +13,7 @@ const initialState = {
   alert: {
     display: false,
     header: '',
-    text: '',
+    message: '',
     type: '',
   },
   doc: {},
@@ -20,8 +21,8 @@ const initialState = {
   error: null,
   loading: false,
   search: {
-    filter: 'all',
-    query: '',
+    filter: 'All',
+    s: '',
   },
 };
 
@@ -53,23 +54,24 @@ export const userReducer = (state = initialState, { type, payload }) => {
     case USER_ALERT:
       return {
         ...state,
-        alert: {
-          display: true,
-          ...payload,
-        },
+        ...payload,
         loading: false,
       };
     case USER_SEARCH:
-      const { docs, filter, query } = payload;
+      return {
+        ...state,
+        ...payload,
+        alert: {
+          ...initialState.alert,
+        },
+        loading: false,
+      };
+    case USER_ALERT_CLOSE:
+      const { alert } = initialState;
 
       return {
         ...state,
-        docs,
-        loading: false,
-        search: {
-          filter,
-          query,
-        },
+        alert,
       };
     default:
       return state;

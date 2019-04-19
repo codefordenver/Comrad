@@ -1,5 +1,6 @@
 export const USER_ADD = 'user_add';
 export const USER_ALERT = 'user_alert';
+export const USER_ALERT_CLOSE = 'user_alert_close';
 export const USER_CLEAR = 'user_clear';
 export const USER_ERROR = 'user_error';
 export const USER_FIND_ONE = 'user_find_one';

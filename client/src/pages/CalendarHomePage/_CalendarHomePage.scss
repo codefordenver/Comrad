@@ -4,7 +4,9 @@
   grid-column-gap: 2rem;
   
   &__sidebar {
-    /* override react-dates styles */
+    /* 
+      START - override react-dates styles 
+    */
     .DayPicker__horizontal,.CalendarMonth, .CalendarMonthGrid {
       background: none;
     }
@@ -47,5 +49,8 @@
     .CalendarDay__selected {
       background: $color-primary;
     }
+    /* 
+      END - override react-dates styles 
+    */
   }
 }

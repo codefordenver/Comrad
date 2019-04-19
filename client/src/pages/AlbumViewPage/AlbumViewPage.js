@@ -30,7 +30,7 @@ class AlbumViewPage extends Component {
 
   render() {
     const { navigateToTrack, props } = this;
-    const { album, loading, loadingTracks } = props;
+    const { album, loading } = props;
     const { artist, name, tracks, updated_at } = album.doc;
     const dateObj = updated_at == null ? null : new Date(updated_at);
     const lastUpdatedText =

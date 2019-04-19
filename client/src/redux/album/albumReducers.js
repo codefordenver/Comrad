@@ -5,7 +5,6 @@ const initialState = {
   doc: {},
   error: null,
   loading: false,
-  loadingTracks: false,
 };
 
 export const albumReducer = (state = initialState, { type, payload }) => {

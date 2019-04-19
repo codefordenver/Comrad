@@ -1,0 +1,48 @@
+.calendar {
+  display: grid;
+  grid-template-columns: 20rem auto;
+  grid-column-gap: 2rem;
+  
+  &__sidebar {
+    /* override react-dates styles */
+    .DayPicker__horizontal,.CalendarMonth, .CalendarMonthGrid {
+      background: none;
+    }
+    .DayPicker_weekHeaders__horizontal {
+      margin-left: 0px;
+    }
+    .DayPickerNavigation_leftButton__horizontalDefault,.CalendarMonthGrid__horizontal {
+      left: 0px;
+    }
+    .DayPickerNavigation_rightButton__horizontalDefault {
+      right: 0px;
+    }
+    .DayPickerNavigation_leftButton__horizontalDefault,.DayPickerNavigation_rightButton__horizontalDefault {
+      top: -4px;
+    }
+    .DayPickerNavigation_button {
+      background: none;
+      border: none;
+    }
+    .CalendarMonth_caption {
+      font-size: 15px;
+      padding-top: 0px;
+    }
+    .DayPicker_weekHeader {
+      top: 37px;
+    }
+    .CalendarDay__default,.DayPicker_weekHeader_li {
+      width: 28px;
+      height: 28px !important;
+      line-height: 28px;
+    }
+    .CalendarDay__default {
+      border: 0;
+      background: none;
+      border-radius: 14px;
+    }
+    .CalendarDay__selected {
+      background: $color-primary;
+    }
+  }
+}

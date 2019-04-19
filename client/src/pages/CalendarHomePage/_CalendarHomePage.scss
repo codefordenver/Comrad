@@ -15,7 +15,7 @@
       left: 0px;
     }
     .DayPickerNavigation_rightButton__horizontalDefault {
-      right: 0px;
+      right: 16px;
     }
     .DayPickerNavigation_leftButton__horizontalDefault,.DayPickerNavigation_rightButton__horizontalDefault {
       top: -4px;
@@ -40,6 +40,9 @@
       border: 0;
       background: none;
       border-radius: 14px;
+    }
+    .CalendarDay__today {
+      font-weight: 700;
     }
     .CalendarDay__selected {
       background: $color-primary;

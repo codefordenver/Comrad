@@ -23,13 +23,13 @@ class Dropdown extends Component {
     let button = [];
     switch (type) {
       case 'icon':
-        button.push(<DropdownIcon icon={this.props.icon} />);
+        button.push(<DropdownIcon key="icon" icon={this.props.icon} />);
         break;
       case 'circle':
         break;
       case 'plus':
       default:
-        button.push(<DropdownPlus text={this.props.text} />);
+        button.push(<DropdownPlus key="plus" text={this.props.text} />);
     }
 
     let dropdownListAdditionalClass = '';

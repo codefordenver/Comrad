@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import {
-  DayPickerSingleDateController,
-  VERTICAL_ORIENTATION,
-} from 'react-dates';
+import { DayPickerSingleDateController } from 'react-dates';
 import 'react-dates/lib/css/_datepicker.css';
 
 import Alert from '../../components/Alert';
@@ -24,26 +21,44 @@ class CalendarHomePage extends Component {
 
     this.state = {
       newShow: null,
+      selectedDate: moment(),
       shows: {},
     };
   }
 
+  dateChangeHandler = date => {
+    if (date instanceof Date) {
+      this.setState({ selectedDate: moment(date) });
+    } else {
+      this.setState({ selectedDate: date });
+    }
+  };
+
   render() {
     const { showsError } = this.props;
+    const { selectedDate } = this.state;
+
+    // we will set a key for the month/year that is currently selected
+    // so that the displayed month in DayPickerSingleDateController will auto-update
+    // as the selected date property changes
+    // (workaround for this issue: https://github.com/airbnb/react-dates/issues/48)
+    // unfortunately, this also causes the calendar to flash briefly while selecting a date in a different month
+    const dayPickerKey =
+      String(selectedDate.month()) + String(selectedDate.year());
 
     return (
       <div className="calendar">
         <div className="calendar__sidebar">
           <DayPickerSingleDateController
-            date={moment()}
-            horizontalMonthPadding="0"
+            key={dayPickerKey}
+            date={selectedDate}
+            horizontalMonthPadding={0}
             noBorder={true}
-            daySize="26"
-            numberOfMonths="1"
-            onDateChange={date => console.log(date)}
+            daySize={28}
+            numberOfMonths={1}
+            onDateChange={this.dateChangeHandler}
             focused={true}
             onFocusChange={({ focused }) => this.setState({ focused: true })} // Force the focused states to always be truthy so that date is always selectable
-            id="sidebar_calendar"
           />
         </div>
         <div className="calendar__view">
@@ -54,7 +69,10 @@ class CalendarHomePage extends Component {
               text={showsError.response.data.message}
             />
           )}
-          <ShowCalendar />
+          <ShowCalendar
+            date={selectedDate.toDate()}
+            onDateChange={this.dateChangeHandler}
+          />
         </div>
       </div>
     );

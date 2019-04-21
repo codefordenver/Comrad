@@ -59,6 +59,7 @@ class CalendarHomePage extends Component {
             onDateChange={this.dateChangeHandler}
             focused={true}
             onFocusChange={({ focused }) => this.setState({ focused: true })} // Force the focused states to always be truthy so that date is always selectable
+            hideKeyboardShortcutsPanel={true}
           />
         </div>
         <div className="calendar__view">

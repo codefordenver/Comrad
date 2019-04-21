@@ -119,9 +119,7 @@ class Calendar extends Component {
     const localizer = BigCalendar.momentLocalizer(moment);
 
     //if date provided in properties, always have the calendar display that date
-    //otherwise, just start with today
-    let calendarDateProperty =
-      typeof date == 'undefined' ? { defaultDate: new Date() } : { date: date };
+    let calendarDateProperty = typeof date == 'undefined' ? {} : { date: date };
 
     return (
       <div>
@@ -130,6 +128,7 @@ class Calendar extends Component {
           localizer={localizer}
           events={this.convertShowsToArray(shows)}
           defaultView={BigCalendar.Views.WEEK}
+          defaultDate={new Date()}
           {...calendarDateProperty}
           //onSelectEvent={show => this.showViewShowModal(show)}
           onSelectSlot={show => this.showNewShowModal(show)}

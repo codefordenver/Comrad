@@ -78,25 +78,27 @@ class RichTextArea extends Component {
           'form-group--inline': inline,
         })}
       >
-        <Editor
-          {...input}
-          {...other}
-          editorState={this.state.editorState}
-          onChange={this.onChange}
-          autoFocus={autoFocus}
-          handleKeyCommand={this.handleKeyCommand}
-          className={classnames('richtextarea', touched && error && 'error')}
-          type={type}
-          onBlur={() => input.onBlur()}
-        />
+        <div className="editor-container">
+          <Editor
+            {...input}
+            {...other}
+            editorState={this.state.editorState}
+            onChange={this.onChange}
+            autoFocus={autoFocus}
+            handleKeyCommand={this.handleKeyCommand}
+            className={classnames('richtextarea', touched && error && 'error')}
+            type={type}
+            onBlur={() => input.onBlur()}
+          />
 
-        {label && (
-          <RichTextAreaLabel {...meta} dirtyOverride={dirtyOverride}>
-            {label}
-          </RichTextAreaLabel>
-        )}
-        {touched && error && <RichTextAreaError>{error}</RichTextAreaError>}
-        {icon && ICON_SET[icon]}
+          {label && (
+            <RichTextAreaLabel {...meta} dirtyOverride={dirtyOverride}>
+              {label}
+            </RichTextAreaLabel>
+          )}
+          {touched && error && <RichTextAreaError>{error}</RichTextAreaError>}
+          {icon && ICON_SET[icon]}
+        </div>
       </div>
     );
   }

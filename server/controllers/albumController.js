@@ -19,6 +19,13 @@ module.exports = {
       .catch(err => res.status(422).json(err));
   },
 
+  findTracks: (req, res) => {
+    db.Track.find({ album: req.params.id })
+      .sort({ disk_number: 1, track_number: 1 })
+      .then(async results => res.json(results))
+      .catch(err => res.status(422).json(err));
+  },
+
   search: (req, res) => {
     const q = new RegExp(req.body.name, 'i');
 

@@ -19,11 +19,9 @@ Use `npm run` to see a list of available commands.
 
 To configure your environment variables (e.g. for database connection) ask a maintainer for the details.
 
-Troubleshooting
-===============
+## Troubleshooting
 
-Create React App / babel-loader dependency issue
----------------
+### Create React App / babel-loader dependency issue
 
 If, on using `npm run [command]`, you receive an error like the following:
 

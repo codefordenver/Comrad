@@ -1,9 +1,8 @@
-const db = require('../../../models/v1');
 const moment = require('moment');
 const { RRule } = require('rrule');
 const _ = require('lodash');
 
-function create_new_show(req, res) {
+function createNewShow(req, res) {
   let { repeatType } = req.body;
 
   if (repeatType) {
@@ -193,51 +192,7 @@ function findShowQueryByDateRange(start, end) {
 }
 
 module.exports = {
+  createNewShow,
   repeatRuleShows,
-  returnDatesArrayByRepeatRule,
-  reduceShowsByRepeatProperty,
-
-  findById: (req, res) => {
-    db.Show.findById(req.params.id)
-      .then(dbShow => res.json(dbShow))
-      .catch(err => res.status(422).json(err));
-  },
-
-  findByDate: (req, res) => {
-    let { startDate, endDate } = req.query;
-    startDate = JSON.parse(startDate);
-    endDate = JSON.parse(endDate);
-
-    db.Show.find()
-      .and(findShowQueryByDateRange(startDate, endDate))
-      .populate('show_details.host', [
-        'profile.first_name',
-        'profile.last_name',
-      ])
-      .then(dbShow => {
-        res.json(repeatRuleShows(dbShow));
-      })
-      .catch(err => res.status(422).json(err));
-  },
-
-  create: (req, res) => {
-    db.Show.create(create_new_show(req, res))
-      .then(dbShow => {
-        res.json(repeatRuleShows([dbShow]));
-      })
-      .catch(err => res.status(422).json(err));
-  },
-
-  update: (req, res) => {
-    db.Show.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true })
-      .then(dbShow => res.json(dbShow))
-      .catch(err => res.status(422).json(err));
-  },
-
-  remove: (req, res) => {
-    db.Show.findById({ _id: req.params.id })
-      .then(dbShow => dbShow.remove())
-      .then(dbShow => res.json(dbShow))
-      .catch(err => res.status(422).json(err));
-  },
+  findShowQueryByDateRange,
 };

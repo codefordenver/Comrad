@@ -25,20 +25,20 @@
     height: 15px;
     width: 15px;
     background-color: #ffffff;
-    border: 1px solid #007283;
+    border: 1px solid $color-primary;
     border-radius: 5px;
     order: 1;
     display: inline-block;
   }
   
-  /* background color on mouse over */
-  .checkbox-container:hover input ~ .checkmark {
-    background-color: #A4A9AD;
+  /* color of checkbox when disabled */
+  .checkbox-container input:disabled ~ .checkmark{
+    background-color: $color-grey-3;
   }
   
   /* background color change when checked */
   .checkbox-container input:checked ~ .checkmark {
-    background-color: #007283;
+    background-color: $color-primary;
   }
   
   /* checkmark indicator */

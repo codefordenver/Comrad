@@ -24,7 +24,7 @@
   .checkmark {
     height: 15px;
     width: 15px;
-    background-color: #ffffff;
+    background-color: $color-white;
     border: 1px solid $color-primary;
     border-radius: 5px;
     order: 1;
@@ -59,7 +59,7 @@
     top: 13px; 
     width: 5px;
     height: 10px;
-    border: solid #ffffff;
+    border: solid $color-white;
     border-width: 0px 2px 2px 0px;
     -webkit-transform: rotate(45deg);
     -ms-transform: rotate(45deg);

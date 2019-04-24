@@ -26,7 +26,7 @@ class DropdownHost extends Component {
       return;
     }
 
-    userSearch({ filter: 'all', query: value });
+    userSearch({ filter: 'all', q: value });
   };
 
   onSelect = selection => {

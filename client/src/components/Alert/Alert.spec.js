@@ -1,64 +1,57 @@
 import React from 'react';
+import Chance from 'chance';
 import { mount } from 'enzyme';
-import Alert, { ALERT_CLASS } from './Alert';
+import { randArrItem } from '../../utils/lib';
 
-let wrapper;
+import Alert, { ALERT_CLASS, ALERT_TYPES, ALERT_ICON } from './Alert';
 
-beforeEach(() => {
-  wrapper = mount(<Alert />);
-});
+const chance = new Chance();
+const randMessage = chance.sentence({ words: 20 });
+const randWord = chance.word();
+const randType = randArrItem(ALERT_TYPES);
 
-afterEach(() => {
-  wrapper.unmount();
-});
+const setup = propOverrides => {
+  const props = Object.assign(
+    {
+      type: randType,
+    },
+    propOverrides,
+  );
+
+  const wrapper = mount(<Alert {...props} />);
+
+  return {
+    props,
+    wrapper,
+  };
+};
 
 describe('<Alert />', () => {
-  it('receives class of close when display state updated to close', () => {
-    wrapper.setState({ display: false });
-    expect(wrapper.find('.alert').hasClass('close')).toEqual(true);
-  });
+  it('displays message prop in good order', () => {
+    const { wrapper } = setup({ message: randMessage });
 
-  it('receives class of open when display state updated to open', () => {
-    wrapper.setState({ display: true });
-    expect(wrapper.find('.alert').hasClass('open')).toEqual(true);
+    expect(wrapper.find('.alert__message').text()).toEqual(randMessage);
   });
 
   it('displays header prop in good order', () => {
-    wrapper.setProps({ header: 'This is a Header' });
-    expect(wrapper.find('.alert__header').text()).toEqual('This is a Header');
+    const { wrapper } = setup({ header: randWord });
+
+    expect(wrapper.find('.alert__header').text()).toEqual(randWord);
   });
 
-  it('displays text prop in good order', () => {
-    wrapper.setProps({
-      text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-    });
-    expect(wrapper.find('.alert__message').text()).toEqual(
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  it('applys correct class in good order', () => {
+    const { wrapper } = setup();
+
+    expect(wrapper.find('.alert').hasClass(ALERT_CLASS[randType])).toEqual(
+      true,
     );
   });
 
-  it('receives class alert--success with type props of success', () => {
-    wrapper.setProps({ type: 'success' });
-    expect(wrapper.find('.alert').hasClass(ALERT_CLASS.success)).toEqual(true);
-  });
+  it('displays icon element in good order', () => {
+    const { wrapper } = setup();
 
-  it('receives class alert--info with type props of info', () => {
-    wrapper.setProps({ type: 'info' });
-    expect(wrapper.find('.alert').hasClass(ALERT_CLASS.info)).toEqual(true);
-  });
-
-  it('receives class alert--danger with type props of danger', () => {
-    wrapper.setProps({ type: 'danger' });
-    expect(wrapper.find('.alert').hasClass(ALERT_CLASS.danger)).toEqual(true);
-  });
-
-  it('receives class alert--warning with type props of warning', () => {
-    wrapper.setProps({ type: 'warning' });
-    expect(wrapper.find('.alert').hasClass(ALERT_CLASS.warning)).toEqual(true);
-  });
-
-  it('updates state when the x is clicked in corner', () => {
-    wrapper.find('.alert__times').simulate('click');
-    expect(wrapper.state('display')).toEqual(false);
+    expect(wrapper.find('.alert__icon').contains(ALERT_ICON[randType])).toEqual(
+      true,
+    );
   });
 });

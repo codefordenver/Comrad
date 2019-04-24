@@ -22,7 +22,7 @@ const initialState = {
   loading: false,
   search: {
     filter: 'All',
-    s: '',
+    q: '',
   },
 };
 

@@ -5,8 +5,8 @@ export const albumFindOne = id => async dispatch => {
   try {
     dispatch({ type: ALBUM_LOAD });
 
-    const { data: album } = await axios.get(`/api/album/${id}`);
-    const { data: tracks } = await axios.get(`/api/album/${id}/tracks`);
+    const { data: album } = await axios.get(`/v1/albums/${id}`);
+    const { data: tracks } = await axios.get(`/v1/albums/${id}/tracks`);
 
     const doc = {
       tracks,

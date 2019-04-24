@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import { Editor, EditorState, RichUtils } from 'draft-js';
+import Editor from 'draft-js-plugins-editor';
+import { EditorState, RichUtils } from 'draft-js';
+import createToolbarPlugin from 'draft-js-static-toolbar-plugin';
+const staticToolbarPlugin = createToolbarPlugin();
+const { Toolbar } = staticToolbarPlugin;
+const plugins = [staticToolbarPlugin];
 
 export const ICON_SET = {
   search: <i className="icon fas fa-search" />,
@@ -42,6 +47,9 @@ class RichTextArea extends Component {
     super(props);
     this.state = { editorState: EditorState.createEmpty() };
     this.onChange = editorState => this.setState({ editorState });
+    this.focus = () => {
+      this.editor.focus();
+    };
     this.handleKeyCommand = this.handleKeyCommand.bind(this);
   }
 
@@ -78,7 +86,8 @@ class RichTextArea extends Component {
           'form-group--inline': inline,
         })}
       >
-        <div className="editor-container">
+        <div className="editor-container" onClick={this.focus}>
+          <Toolbar className="toolbar" />
           <Editor
             {...input}
             {...other}
@@ -86,6 +95,10 @@ class RichTextArea extends Component {
             onChange={this.onChange}
             autoFocus={autoFocus}
             handleKeyCommand={this.handleKeyCommand}
+            plugins={plugins}
+            ref={element => {
+              this.editor = element;
+            }}
             className={classnames('richtextarea', touched && error && 'error')}
             type={type}
             onBlur={() => input.onBlur()}

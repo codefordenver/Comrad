@@ -9,7 +9,7 @@ const {
 beforeEach(connect);
 afterEach(disconnect);
 
-const route = '/api/announcement';
+const route = '/v1/announcement';
 
 describe(`${route}/`, () => {
   canGetArray(request(app), route);

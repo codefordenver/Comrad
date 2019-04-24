@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 
 class DashboardHomePage extends Component {
-  state = {};
-
   render() {
     return (
       <div className="dashboard__home">

@@ -14,7 +14,7 @@ import { userAPI } from '../../utils/api';
 
 export const userFindOne = id => async dispatch => {
   try {
-    const response = await axios.get(`/api/user/${id}`);
+    const response = await axios.get(`/v1/users/${id}`);
 
     dispatch({ type: USER_FIND_ONE, payload: response.data });
   } catch (err) {
@@ -26,7 +26,7 @@ export const userFindAll = () => async dispatch => {
   try {
     dispatch({ type: USER_LOADING });
 
-    const response = await axios.get(`/api/user`);
+    const response = await axios.get(`/v1/users`);
 
     const { data: docs } = response;
 
@@ -48,12 +48,12 @@ export const userFindAll = () => async dispatch => {
   }
 };
 
-export const userSearch = ({ filter, s }) => async dispatch => {
+export const userSearch = ({ filter, q }) => async dispatch => {
   try {
     dispatch({ type: USER_LOADING });
 
-    const { data: docs } = await userAPI.search({ filter, s });
-    const search = { filter, s };
+    const { data: docs } = await userAPI.search({ filter, q });
+    const search = { filter, q };
 
     dispatch({ type: USER_SEARCH, payload: { docs, search } });
   } catch (e) {
@@ -70,7 +70,7 @@ export const userSearch = ({ filter, s }) => async dispatch => {
 
 export const userAdd = (input, callback) => async dispatch => {
   try {
-    const response = await axios.post('/api/user', input);
+    const response = await axios.post('/v1/users', input);
 
     dispatch({ type: USER_ADD, payload: response.data });
 

@@ -11,11 +11,11 @@ export const authLogin = ({ email, password }, callback) => async dispatch => {
   try {
     dispatch({ type: AUTH_LOADING });
 
-    const response = await axios.post('/api/auth/login', { email, password });
+    const response = await axios.post('/v1/auth/login', { email, password });
 
-    callback();
+    dispatch({ type: AUTH_LOGIN, payload: response.data });
 
-    return dispatch({ type: AUTH_LOGIN, payload: response.data });
+    return callback();
   } catch (e) {
     dispatch({
       type: AUTH_ALERT,
@@ -30,7 +30,7 @@ export const authLogin = ({ email, password }, callback) => async dispatch => {
 
 export const authLogout = callback => async dispatch => {
   try {
-    await axios.get('/api/auth/logout');
+    await axios.get('/v1/auth/logout');
 
     dispatch({ type: AUTH_LOGOUT });
 
@@ -44,7 +44,7 @@ export const authFetch = () => async dispatch => {
   try {
     dispatch({ type: AUTH_LOADING });
 
-    const response = await axios.get('/api/auth/current');
+    const response = await axios.get('/v1/auth/current');
 
     dispatch({ type: AUTH_LOGIN, payload: response.data });
   } catch (e) {
@@ -56,7 +56,7 @@ export const authPasswordReset = ({ email }) => async dispatch => {
   try {
     dispatch({ type: AUTH_LOADING });
 
-    await axios.put(`/api/auth/password/reset`, { email });
+    await axios.put(`/v1/auth/password/reset`, { email });
 
     dispatch({
       type: AUTH_ALERT,
@@ -85,7 +85,7 @@ export const authPasswordNew = (
   try {
     dispatch({ type: AUTH_LOADING });
 
-    await axios.put(`/api/auth/password/new`, {
+    await axios.put(`/v1/auth/password/new`, {
       passwordConfirm,
       passwordNew,
       resetToken,

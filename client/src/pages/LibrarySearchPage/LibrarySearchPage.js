@@ -14,7 +14,7 @@ class LibrarySearchPage extends Component {
     activeFilter: 'all',
     docs: [],
     totalPages: null,
-    pageUrls: ['/api/library'],
+    pageUrls: ['/v1/library'],
     loading: true,
     loadingError: false,
     searchString: false,
@@ -35,7 +35,7 @@ class LibrarySearchPage extends Component {
         state.sorted[0].desc !== this.state.sort.desc)
     ) {
       url =
-        '/api/library?sortBy=' +
+        '/v1/library?sortBy=' +
         state.sorted[0].id +
         '&sortDescending=' +
         (state.sorted[0].desc ? '1' : '0');
@@ -88,7 +88,7 @@ class LibrarySearchPage extends Component {
 
   searchLibrary = form => {
     let url =
-      '/api/library/search?s=' + form.q + '&type=' + this.state.activeFilter;
+      '/v1/library/search?s=' + form.q + '&type=' + this.state.activeFilter;
     this.setState(
       {
         pageUrls: [url],

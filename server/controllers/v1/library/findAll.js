@@ -157,7 +157,7 @@ async function findAll(req, res) {
     resultsJson.nextPage = {
       page: page,
       url:
-        '/api/library?page=' +
+        '/v1/library?page=' +
         page +
         '&artistSkip=' +
         artistSkip +

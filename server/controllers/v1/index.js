@@ -1,27 +1,27 @@
-const album = require('./album');
-const announcement = require('./announcement');
-const artist = require('./artist');
+const albums = require('./albums');
+const announcements = require('./announcements');
+const artists = require('./artists');
 const auth = require('./auth');
-const feature = require('./feature');
-const giveaway = require('./giveaway');
+const features = require('./features');
+const giveaways = require('./giveaways');
 const library = require('./library');
-const show = require('./show');
-const track = require('./track');
+const shows = require('./shows');
+const tracks = require('./tracks');
 const traffic = require('./traffic');
-const user = require('./user');
-const venue = require('./venue');
+const users = require('./users');
+const venues = require('./venues');
 
 module.exports = {
-  album,
-  announcement,
-  artist,
+  albums,
+  announcements,
+  artists,
   auth,
-  feature,
-  giveaway,
+  features,
+  giveaways,
   library,
-  show,
-  track,
+  shows,
+  tracks,
   traffic,
-  user,
-  venue,
+  users,
+  venues,
 };

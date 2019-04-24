@@ -8,13 +8,13 @@ function search(req, res) {
 
   const { permission } = req.user.station;
 
-  if (permission !== 'admin') {
+  if (permission !== 'Admin') {
     return res.status(422).json('User must have admin access');
   }
 
-  const { f = 'all', q } = req.query;
+  const { filter = 'All', q } = req.query;
 
-  const conditions = f === 'all' ? {} : { 'station.status': f };
+  const conditions = filter === 'All' ? {} : { 'station.status': filter };
 
   db.User.find(conditions)
     .then(dbUsers => {

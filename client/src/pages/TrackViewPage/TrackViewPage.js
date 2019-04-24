@@ -13,7 +13,7 @@ class TrackViewPage extends Component {
       last_updated: '',
     };
 
-    axios.get('/api/track/' + this.props.match.params.id).then(response => {
+    axios.get('/v1/track/' + this.props.match.params.id).then(response => {
       let dateObj = new Date(response.data.updated_at);
       this.setState({
         track: response.data,

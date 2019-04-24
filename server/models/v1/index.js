@@ -1,13 +1,25 @@
+const Album = require('./album');
+const Announcement = require('./announcement');
+const Artist = require('./artist');
+const Feature = require('./feature');
+const Giveaway = require('./giveaway');
+const Genre = require('./genre');
+const Show = require('./show');
+const Track = require('./track');
+const Traffic = require('./traffic');
+const User = require('./user');
+const Venue = require('./venue');
+
 module.exports = {
-  Album: require('./album'),
-  Announcement: require('./announcement'),
-  Artist: require('./artist'),
-  Feature: require('./feature'),
-  Giveaway: require('./giveaway'),
-  Genre: require('./genre'),
-  Show: require('./show'),
-  Track: require('./track'),
-  Traffic: require('./traffic'),
-  User: require('./user'),
-  Venue: require('./venue'),
+  Album,
+  Announcement,
+  Artist,
+  Feature,
+  Giveaway,
+  Genre,
+  Show,
+  Track,
+  Traffic,
+  User,
+  Venue,
 };

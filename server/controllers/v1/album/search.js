@@ -5,8 +5,6 @@ function search(req, res) {
 
   const nameRE = new RegExp(name, 'i');
 
-  console.log(nameRE);
-
   db.Album.find({
     name: nameRE,
   })

@@ -15,4 +15,6 @@ router
   .put(album.update)
   .delete(album.remove);
 
+router.route('/:id/tracks').get(album.findTracks);
+
 module.exports = router;

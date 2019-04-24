@@ -13,7 +13,7 @@ class FormAuthLogin extends Component {
     const { authLogin, history } = this.props;
 
     return authLogin(values, () => {
-      history.push('/admin');
+      history.push('/dashboard');
     });
   };
 

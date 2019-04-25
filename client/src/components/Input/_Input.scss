@@ -29,11 +29,15 @@
   width: 100%;
   z-index: 1;
 
-  transition: all 0.2s;
+  transition: outline 0.2s border 0.2s;
 
   &:focus {
     outline: none;
     border: 2px solid $color-primary;
+  }
+
+  &:disabled {
+    opacity: 0.5;
   }
 
   &.error,

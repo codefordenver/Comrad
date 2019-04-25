@@ -12,7 +12,7 @@ import {
 
 export const getShow = show => async dispatch => {
   try {
-    const response = await axios.get(`/api/show/${show}`);
+    const response = await axios.get(`/v1/shows/${show}`);
 
     dispatch({ type: SHOW_GET, payload: response.data });
   } catch (e) {
@@ -25,7 +25,7 @@ export const postShow = (input, callback) => async dispatch => {
   console.log(input);
   const show = input;
   try {
-    const response = await axios.post(`/api/show/`, show);
+    const response = await axios.post(`/v1/shows/`, show);
 
     dispatch({ type: SHOW_POST, payload: response.data });
 
@@ -38,7 +38,7 @@ export const postShow = (input, callback) => async dispatch => {
 
 export const updateShowHost = (show_id, host) => async dispatch => {
   try {
-    const response = await axios.patch(`/api/show/${show_id}/host`, { host });
+    const response = await axios.patch(`/v1/shows/${show_id}`, { host });
     dispatch({ type: SHOW_UPDATE_HOST, payload: response.data });
   } catch (e) {
     dispatch({ type: SHOW_ERROR, payload: 'Updating Show Error' });
@@ -47,7 +47,7 @@ export const updateShowHost = (show_id, host) => async dispatch => {
 
 export const deleteShow = show => async dispatch => {
   try {
-    const response = await axios.delete(`/api/show/${show}`);
+    const response = await axios.delete(`/v1/shows/${show}`);
     dispatch({ type: SHOW_DELETE, payload: response.data });
   } catch (e) {
     dispatch({ type: SHOW_ERROR, payload: e });
@@ -56,7 +56,7 @@ export const deleteShow = show => async dispatch => {
 
 export const deleteShowSeries = show => async dispatch => {
   try {
-    const response = await axios.delete(`/api/show/${show}`);
+    const response = await axios.delete(`/v1/shows/${show}`);
     dispatch({ type: SHOW_DELETE_SERIES, payload: response.data });
   } catch (e) {
     dispatch({ type: SHOW_ERROR, payload: e });
@@ -65,7 +65,7 @@ export const deleteShowSeries = show => async dispatch => {
 
 export const searchShow = (startDate, endDate) => async dispatch => {
   try {
-    const response = await axios.get(`/api/show/`, {
+    const response = await axios.get(`/v1/shows/`, {
       params: { startDate, endDate },
     });
 

@@ -52,7 +52,7 @@ class Input extends Component {
       dirtyOverride = false,
       ...other
     } = props;
-    const { error, touched } = meta;
+    const { error, touched, submitting } = meta;
 
     return (
       <div
@@ -65,6 +65,7 @@ class Input extends Component {
           {...other}
           autoFocus={autoFocus}
           className={classnames('input', touched && error && 'error')}
+          disabled={submitting}
           type={type}
           onBlur={() => input.onBlur()}
         />

@@ -24,7 +24,7 @@ class ShowModal extends Component {
     const { modalVisibility, data } = props;
 
     return (
-      <Modal show={modalVisibility}>
+      <Modal isOpen={modalVisibility}>
         <Form onSubmit={submit} data={data} />
       </Modal>
     );

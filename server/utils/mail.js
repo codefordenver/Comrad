@@ -17,5 +17,7 @@ const emailTemplate = text => `
   </div>
 `;
 
-exports.transport = transport;
-exports.emailTemplate = emailTemplate;
+module.exports = {
+  transport,
+  emailTemplate,
+};

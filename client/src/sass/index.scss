@@ -24,7 +24,7 @@
 @import '../components/Dropdown/Dropdown';
 @import '../components/Filter/Filter';
 @import '../components/Footer/Footer';
-@import '../components/Form/Form';
+@import '../components/FormArtistAdd/FormArtistAdd';
 @import '../components/FormArtistUpdateName/FormArtistUpdateName';
 @import '../components/FormUserSearch/FormUserSearch';
 @import '../components/Input/Input';
@@ -52,6 +52,7 @@
 // pages
 @import '../pages/AdminHomePage/AdminHomePage';
 @import '../pages/AlbumViewPage/AlbumViewPage';
+@import '../pages/ArtistAddPage/ArtistAddPage';
 @import '../pages/ArtistViewPage/ArtistViewPage';
 @import '../pages/BuilderHomePage/BuilderHomePage';
 @import '../pages/CalendarHomePage/CalendarHomePage';

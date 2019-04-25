@@ -6,7 +6,7 @@ import axios from 'axios';
 import ReactTable from 'react-table';
 
 import Card, { CardBody } from '../../components/Card';
-import Dropdown, { DropdownItem } from '../../components/Dropdown';
+import Dropdown from '../../components/Dropdown';
 import Input from '../../components/Input';
 
 class LibrarySearchPage extends Component {
@@ -253,9 +253,9 @@ class LibrarySearchPage extends Component {
                 </div>
               </div>
               <div>
-                <Dropdown type="plus" text="Add">
-                  <DropdownItem to="library/artist/add">Artist</DropdownItem>
-                  <DropdownItem to="library/album/add">Album</DropdownItem>
+                <Dropdown position="bottom-right" type="button" text="Add">
+                  <Dropdown.Item to="library/artist/add">Artist</Dropdown.Item>
+                  <Dropdown.Item to="library/album/add">Album</Dropdown.Item>
                 </Dropdown>
               </div>
             </div>

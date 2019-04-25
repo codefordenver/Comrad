@@ -1,11 +1,37 @@
 .dropdown {
-  $height: 3.8rem;
-
-  position: relative;
   display: inline-block;
+  position: relative;
+  width: max-content;
 
   &__button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
+    color: white;
+
+    background-color: $color-primary;
+    border-radius: $border-radius;
+    cursor: pointer;
+    height: 3.8rem;
+
+    transition: background-color 0.1s;
+
+    &-text {
+      font-size: 1.8rem;
+
+      border-right: 1px solid rgba(0,0,0,0.3);
+      padding: 0 1rem;
+    }
+
+    & .fas {
+      padding: 0 1rem;
+    }
+
+    &.active,
+    &:hover {
+      background-color: $color-primary-dark;
+    }
   }
   
   &__icon {
@@ -20,66 +46,17 @@
     }
   }
 
-  &__circle {
-    display: grid;
-    justify-content: center;
-    align-content: center;
-
-    border-radius: 50%;
-    border: 1px solid $color-primary;
-    cursor: pointer;
-    height: 2rem;
-    position: relative;
-    width: 2rem;
-
-    & > .fa-ellipsis-h {
-      color: $color-primary;
-    }
-  }
-
-  &__plus {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    color: white;
-
-    background-color: $color-primary;
-    border-radius: $border-radius;
-    cursor: pointer;
-    
-    span {
-      padding: 0px 1rem;
-      border-right: 1px solid rgba(0,0,0,0.3);
-      font-size: 18px;
-      height: $height;
-      line-height: $height;
-    }
-    
-    i {
-      display: grid;
-      align-content: center;
-      
-      padding: 1rem;
-      height: $height;
-    }
-  }
-
   &__list {
     border: 2px solid $color-primary-light;
     border-radius: $border-radius;
     background-color: white;
     opacity: 0;
-    margin-top: 0.5rem;
     position: absolute;
     min-width: 20rem;
     transform: translateY(-3px);
-    transition: all 0.2s;
     z-index: -1;
     
-    &--below-and-align-against-right {
-      right: 0px;
-    }
+    transition: all 0.2s;
 
     &.active {
       display: block;
@@ -100,5 +77,25 @@
     &:hover {
       background-color: $color-grey-1;
     }
+  }
+
+  & .bottom-left {
+    margin-top: 4px;
+    right: 0px;
+  }
+
+  & .bottom-right {
+    margin-top: 4px;
+  }
+
+  & .top-left {
+    bottom: 0px;
+    margin-bottom: 4.2rem;
+    right: 0px;
+  }
+
+  & .top-right {
+    bottom: 0px;
+    margin-bottom: 4.2rem;
   }
 }

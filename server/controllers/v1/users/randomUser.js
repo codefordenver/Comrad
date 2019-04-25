@@ -31,10 +31,8 @@ async function randomUser(req, res) {
     day: randNumGen(0, 27),
     year: randNumGen(1970, 2018),
   });
-  const { data: image } = await axios.get(
-    `https://avatars.dicebear.com/v2/${randGender}/${first_name +
-      last_name}.svg`,
-  );
+  const image = `https://avatars.dicebear.com/v2/${randGender}/${first_name +
+    last_name}.svg`;
 
   // Location
   const street = `${randNumGen(100, 9999)} ${chance.street()}`;

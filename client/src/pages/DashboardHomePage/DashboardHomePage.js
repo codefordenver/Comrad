@@ -1,11 +1,7 @@
 import React, { Component } from 'react';
 
-import Checkbox from '../../components/Checkbox';
-
 class DashboardHomePage extends Component {
-  state = {
-    checkboxlabel: 'Test Label',
-  };
+  state = {};
 
   render() {
     return (
@@ -16,11 +12,6 @@ class DashboardHomePage extends Component {
         </div>
         <div className="dashboard__currently-on-air">
           <h1>Currently On Air</h1>
-        </div>
-        <div>
-          <label>
-            <Checkbox label={this.state.checkboxlabel} />
-          </label>
         </div>
       </div>
     );

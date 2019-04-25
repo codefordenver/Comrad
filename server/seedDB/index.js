@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const keys = require('../config/keys');
 const seed = require('./data');
-const db = require('../models');
+const db = require('../models/v1');
 
 async function seedDB() {
   try {
@@ -75,7 +75,25 @@ async function seedDB() {
 
     // Shows
     console.log('seeding shows...');
-    await Promise.all(seed.show.map(async show => db.Show.create(show)));
+    await Promise.all(
+      seed.show.map(async show => {
+        let user = await db.User.findOne({
+          'station.on_air_name': show.show_details.host,
+        });
+        if (user == null) {
+          user = await db.User.create({
+            'station.on_air_name': show.show_details.host,
+          });
+        } else {
+          show.show_details.host = user;
+        }
+        delete show.show_details.host;
+        if (show.instaces) {
+          delete show.instaces;
+        }
+        db.Show.create(show);
+      }),
+    );
 
     // Traffic
     console.log('seeding traffic...');

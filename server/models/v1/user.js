@@ -7,12 +7,12 @@ const userSchema = new Schema({
   profile: {
     first_name: {
       type: String,
-      required: true,
+      required: false, //TODO: what about when we don't have these?
     },
 
     last_name: {
       type: String,
-      required: true,
+      required: false,
     },
 
     date_of_birth: {
@@ -53,13 +53,14 @@ const userSchema = new Schema({
   contact: {
     phone: {
       type: String,
-      require: true,
+      require: false,
     },
 
     email: {
       type: String,
-      required: true,
+      required: false,
       unique: true,
+      sparse: true,
       lowercase: true,
       validate: {
         validator: v => {
@@ -112,7 +113,7 @@ const userSchema = new Schema({
   auth: {
     password: {
       type: String,
-      required: true,
+      required: false,
     },
 
     reset_token: {

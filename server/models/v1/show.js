@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const showSchema = new Schema({
-  status: String,
+  status: String, //what are the possible values?
   show_details: {
     title: String,
     summary: String,
@@ -10,7 +10,6 @@ const showSchema = new Schema({
     producer: String,
     host: { type: Schema.Types.ObjectId, ref: 'User' },
     guests: [String],
-    playlist: String,
     custom: Schema.Types.Mixed, // this will be an object that can contain any number of custom properties
   },
 
@@ -18,10 +17,11 @@ const showSchema = new Schema({
   show_end_time_utc: Date,
 
   master_show_uid: Number,
-  replace_show_date: Date,
+  replace_show_date: Date, //is this necessary, or redundant with show_start_time_utc?
 
   is_recurring: Boolean,
   repeat_rule: {
+    //an rrule - https://www.npmjs.com/package/rrule
     frequency: Number,
     repeat_start_date: Date,
     repeat_end_date: Date,
@@ -33,8 +33,8 @@ const showSchema = new Schema({
     bymonthday: Number,
   },
 
-  exclude_rule: String,
-  exclude_dates: [Date],
+  exclude_rule: String, //an rrule, for dates to exclude
+  exclude_dates: [Date], //individual dates to exclude from the repeating
 
   created_at: {
     type: Date,

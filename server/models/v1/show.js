@@ -11,7 +11,7 @@ const showSchema = new Schema({
     host: { type: Schema.Types.ObjectId, ref: 'User' },
     guests: [String],
     playlist: String,
-    custom: String,
+    custom: Schema.Types.Mixed, // this will be an object that can contain any number of custom properties
   },
 
   show_start_time_utc: Date,

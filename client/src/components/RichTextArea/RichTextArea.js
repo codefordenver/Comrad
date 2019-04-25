@@ -3,6 +3,8 @@ import classnames from 'classnames';
 import Editor from 'draft-js-plugins-editor';
 import { EditorState, RichUtils } from 'draft-js';
 import createToolbarPlugin from 'draft-js-static-toolbar-plugin';
+import 'draft-js-static-toolbar-plugin/lib/plugin.css';
+
 const staticToolbarPlugin = createToolbarPlugin();
 const { Toolbar } = staticToolbarPlugin;
 const plugins = [staticToolbarPlugin];

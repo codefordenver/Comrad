@@ -42,10 +42,8 @@ function createNewShow(req, res) {
   };
 }
 
-function repeatRuleShows(shows) {
+function showList(shows) {
   const allRepeatShows = reduceShowsByRepeatProperty(shows, true);
-  const allNonRepeatShows = reduceShowsByRepeatProperty(shows, false);
-
   const allRepeatShowsExpanded = allRepeatShows.map(show => {
     const allShowDates = returnDatesArrayByRepeatRule(show);
     const allRepeatedShowsExpandedByDates = returnShowsArrayWithNewDates(
@@ -54,6 +52,21 @@ function repeatRuleShows(shows) {
     );
 
     return allRepeatedShowsExpandedByDates;
+  });
+
+  let allNonRepeatShows = reduceShowsByRepeatProperty(shows, false);
+  allNonRepeatShows = allNonRepeatShows.map(show => {
+    const date = show.repeat_rule.repeat_start_date;
+    show.show_start_time_utc = momentCombineDayAndTime(
+      date,
+      show.show_start_time_utc,
+    );
+    show.show_end_time_utc = momentCombineDayAndTime(
+      date,
+      show.show_end_time_utc,
+    );
+
+    return show;
   });
 
   //Need to check for master_show_uid and then replace those shows within allShows
@@ -193,6 +206,6 @@ function findShowQueryByDateRange(start, end) {
 
 module.exports = {
   createNewShow,
-  repeatRuleShows,
+  showList,
   findShowQueryByDateRange,
 };

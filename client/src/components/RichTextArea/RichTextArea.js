@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import Editor from 'draft-js-plugins-editor';
 import { EditorState, RichUtils } from 'draft-js';
-import createToolbarPlugin, { Separator } from 'draft-js-static-toolbar-plugin';
+import createToolbarPlugin from 'draft-js-static-toolbar-plugin';
 import 'draft-js-static-toolbar-plugin/lib/plugin.css';
 import {
   ItalicButton,
@@ -17,7 +17,6 @@ import {
   BlockquoteButton,
   CodeBlockButton,
 } from 'draft-js-buttons';
-import editorStyles from './editorStyles.css';
 
 class HeadlinesPicker extends Component {
   componentDidMount() {
@@ -36,7 +35,7 @@ class HeadlinesPicker extends Component {
     this.props.onOverrideContent(undefined);
 
   render() {
-    const buttons = [HeadlineOneButton, HeadlineTwoButton, HeadlineThreeButton];
+    const buttons = [HeadlineTwoButton, HeadlineThreeButton];
     return (
       <div>
         {buttons.map((

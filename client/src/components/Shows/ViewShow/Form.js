@@ -68,6 +68,7 @@ class NewShowForm extends Component {
   };
 
   getHost = host => {
+    console.log(host);
     if (host) {
       const { first_name, last_name } = host.profile;
       let firstname = first_name || '';

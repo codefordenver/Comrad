@@ -3,8 +3,6 @@ const db = require('../../../models/v1');
 function update(req, res) {
   const { id } = req.params;
   const { data } = req.body;
-  console.log('In update show');
-  console.log(data);
 
   db.Show.findOneAndUpdate({ _id: id }, data, { new: true })
     .populate('show_details.host', ['profile.first_name', 'profile.last_name'])

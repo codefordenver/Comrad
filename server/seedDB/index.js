@@ -74,26 +74,70 @@ async function seedDB() {
     );
 
     // Shows
+    console.log('seeding hosts for shows...');
+    let hostsToAdd = [];
+    seed.show.forEach(show => {
+      if (
+        show.show_details.host != null &&
+        hostsToAdd.indexOf(show.show_details.host) === -1
+      ) {
+        hostsToAdd.push(show.show_details.host);
+      }
+      if (show.instances.length > 0) {
+        show.instances.forEach(instance => {
+          if (
+            instance.show_details != null &&
+            instance.show_details.host != null &&
+            hostsToAdd.indexOf(instance.show_details.host) === -1
+          ) {
+            hostsToAdd.push(instance.show_details.host);
+          }
+        });
+      }
+    });
+    for (let i = 0; i < hostsToAdd.length; i++) {
+      await userByOnAirName(hostsToAdd[i]);
+    }
+
     console.log('seeding shows...');
+    bulkOperations = [];
     await Promise.all(
       seed.show.map(async show => {
-        let user = await db.User.findOne({
-          'station.on_air_name': show.show_details.host,
-        });
-        if (user == null) {
-          user = await db.User.create({
-            'station.on_air_name': show.show_details.host,
-          });
-        } else {
-          show.show_details.host = user;
+        if (show.show_details.host != null) {
+          show.show_details.host = await userByOnAirName(
+            show.show_details.host,
+          );
         }
-        delete show.show_details.host;
-        if (show.instaces) {
-          delete show.instaces;
+        let showInstances = [];
+        if (show.instances) {
+          showInstances = show.instances;
+          delete show.instances;
         }
-        db.Show.create(show);
+        const newShow = await db.Show.create(show);
+        if (showInstances.length > 0) {
+          await Promise.all(
+            showInstances.map(async instance => {
+              instance.master_show_uid = newShow;
+              if (
+                instance.show_details != null &&
+                instance.show_details.host != null
+              ) {
+                instance.show_details.host = await userByOnAirName(
+                  instance.show_details.host,
+                );
+              }
+              bulkOperations.push({
+                insertOne: {
+                  document: instance,
+                },
+              });
+            }),
+          );
+        }
       }),
     );
+    console.log('seeding ' + bulkOperations.length + ' show instances...');
+    await db.Show.bulkWrite(bulkOperations);
 
     // Traffic
     console.log('seeding traffic...');
@@ -108,6 +152,29 @@ async function seedDB() {
     console.log(err);
     throw err;
   }
+}
+
+let usersByOnAirName = {};
+async function userByOnAirName(onAirName) {
+  if (typeof usersByOnAirName[onAirName] != 'undefined') {
+    return usersByOnAirName[onAirName];
+  }
+  console.log(
+    'not using saved name for on air name: ' +
+      onAirName +
+      '(' +
+      typeof usersByOnAirName[onAirName],
+  );
+  let user = await db.User.findOne({
+    'station.on_air_name': onAirName,
+  });
+  if (user == null) {
+    user = await db.User.create({
+      'station.on_air_name': onAirName,
+    });
+  }
+  usersByOnAirName[onAirName] = user;
+  return user;
 }
 
 if (require.main === module) {

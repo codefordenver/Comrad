@@ -2,7 +2,11 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const showSchema = new Schema({
-  status: String, //what are the possible values?
+  status: {
+    //active or deleted/canceled
+    type: String,
+    default: 'active',
+  },
   show_details: {
     title: String,
     summary: String,
@@ -16,7 +20,7 @@ const showSchema = new Schema({
   show_start_time_utc: Date,
   show_end_time_utc: Date,
 
-  master_show_uid: Number,
+  master_show_uid: { type: Schema.Types.ObjectId, ref: 'Show' },
   replace_show_date: Date, //is this necessary, or redundant with show_start_time_utc?
 
   is_recurring: Boolean,

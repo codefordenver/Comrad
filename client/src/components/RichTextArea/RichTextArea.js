@@ -54,6 +54,7 @@ class RichTextArea extends Component {
       [{ header: [2, 3, false] }],
       ['bold', 'italic', 'underline'],
       ['link'],
+      ['clean'],
     ],
   };
 

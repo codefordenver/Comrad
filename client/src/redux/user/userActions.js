@@ -1,24 +1,36 @@
 import axios from 'axios';
 import {
+  USER_ADD,
   USER_ALERT,
   USER_ALERT_CLOSE,
-  USER_FIND_ONE,
-  USER_ADD,
-  USER_LOADING,
-  USER_FIND_ALL,
-  USER_SEARCH,
   USER_CLEAR,
+  USER_FIND_ALL,
+  USER_FIND_ONE,
+  USER_LOADING,
+  USER_SEARCH,
 } from './userTypes';
 
-import { userAPI } from '../../utils/api';
+import { userAPI } from '../../api';
 
 export const userFindOne = id => async dispatch => {
   try {
-    const response = await axios.get(`/v1/users/${id}`);
+    dispatch({ type: USER_LOADING });
+
+    const response = await userAPI.findOne(id);
 
     dispatch({ type: USER_FIND_ONE, payload: response.data });
   } catch (err) {
-    console.log(err);
+    const alert = {
+      display: true,
+      header: 'Error',
+      message: 'User was not found',
+      type: 'danger',
+    };
+
+    dispatch({
+      type: USER_ALERT,
+      payload: alert,
+    });
   }
 };
 
@@ -64,7 +76,7 @@ export const userSearch = ({ filter, q }) => async dispatch => {
       type: 'danger',
     };
 
-    dispatch({ type: USER_ALERT, payload: { alert } });
+    dispatch({ type: USER_ALERT, payload: alert });
   }
 };
 
@@ -86,14 +98,22 @@ export const userAdd = (input, callback) => async dispatch => {
 export const userClear = () => async dispatch => {
   try {
     dispatch({ type: USER_CLEAR });
-  } catch (err) {
-    console.log(err);
+  } catch (e) {
+    console.log(e);
   }
 };
 
 export const userAlertClose = () => async dispatch => {
   try {
     dispatch({ type: USER_ALERT_CLOSE });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const userCreate = (values, cabllack) => async dispatch => {
+  try {
+    userAPI.create(values);
   } catch (err) {
     console.log(err);
   }

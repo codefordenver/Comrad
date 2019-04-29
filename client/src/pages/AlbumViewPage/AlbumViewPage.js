@@ -1,44 +1,69 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import axios from 'axios';
+import { isEmpty } from 'lodash';
 
 import Card, { CardBody } from '../../components/Card';
+import LargeText from '../../components/LargeText';
+import TableAlbumTracks from '../../components/TableAlbumTracks';
+
+import { albumFindOne } from '../../redux/album';
 
 class AlbumViewPage extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      album: null,
-      last_updated: '',
-    };
+  componentDidMount() {
+    const { album, albumFindOne, match } = this.props;
+    const { _id } = album.doc;
+    const { id } = match.params;
 
-    axios.get('/api/album/' + this.props.match.params.id).then(response => {
-      let dateObj = new Date(response.data.updated_at);
-      this.setState({
-        album: response.data,
-        last_updated:
-          dateObj.toLocaleDateString() + ' ' + dateObj.toLocaleTimeString(),
-      });
-    });
+    if (id !== _id) {
+      albumFindOne(id);
+    }
   }
 
+  navigateToTrack = (state, rowInfo, column, instance) => {
+    return {
+      onClick: (e, handleOriginal) => {
+        //navigate to the view page for this track
+        this.props.history.push('/library/track/' + rowInfo.original._id);
+      },
+    };
+  };
+
   render() {
+    const { navigateToTrack, props } = this;
+    const { album, loading } = props;
+    const { artist, name, tracks, updated_at } = album.doc;
+    const dateObj = updated_at == null ? null : new Date(updated_at);
+    const lastUpdatedText =
+      updated_at == null
+        ? ''
+        : dateObj.toLocaleDateString() + ' ' + dateObj.toLocaleTimeString();
+
     return (
       <div className="album-view-page">
-        {this.state.album != null && (
+        {!loading && (
           <div>
             <Card>
               <CardBody>
                 <div className="float-right">
-                  Last updated: {this.state.last_updated}
+                  Last updated: {lastUpdatedText}
                 </div>
-                <h1 className="mb-0">{this.state.album.name}</h1>
-                <div>
-                  by{' '}
-                  <a href={'/library/artist/' + this.state.album.artist._id}>
-                    {this.state.album.artist.name}
-                  </a>
-                </div>
+                <h1 className="mb-0">{name}</h1>
+                {artist != null && (
+                  <div>
+                    by{' '}
+                    <a href={'/library/artist/' + artist._id}>{artist.name}</a>
+                  </div>
+                )}
+              </CardBody>
+            </Card>
+            <Card>
+              <CardBody>
+                <h2 className="mb-1">Tracks</h2>
+                {isEmpty(tracks) ? (
+                  <LargeText align="left">No Tracks</LargeText>
+                ) : (
+                  <TableAlbumTracks onRowClick={navigateToTrack} />
+                )}
               </CardBody>
             </Card>
           </div>
@@ -48,14 +73,13 @@ class AlbumViewPage extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  const { error } = state.library;
+function mapStateToProps({ album }) {
   return {
-    error,
+    album,
   };
 }
 
 export default connect(
   mapStateToProps,
-  {},
+  { albumFindOne },
 )(AlbumViewPage);

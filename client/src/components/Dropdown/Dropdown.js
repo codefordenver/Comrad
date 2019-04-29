@@ -1,57 +1,124 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
-import { DropdownIcon } from './DropdownIcon';
-import { DropdownPlus } from './DropdownPlus';
+const DROPDOWN_TYPE = {
+  button: ({ text }, { active }) => (
+    <div className={classnames('dropdown__button', active && 'active')}>
+      <div className="dropdown__button-text">{text}</div>
+      <i className="fas fa-plus" />
+    </div>
+  ),
+  icon: ({ src }) => (
+    <div className="dropdown__icon">
+      {src ? (
+        <img alt="profile=" className="dropdown__img" src={src} />
+      ) : (
+        <i className="fas fa-user" />
+      )}
+    </div>
+  ),
+};
 
 class Dropdown extends Component {
+  static propTypes = {
+    children: PropTypes.oneOfType([
+      PropTypes.arrayOf(PropTypes.node),
+      PropTypes.node,
+    ]),
+    /**
+     * Additional classes added to element
+     */
+    className: PropTypes.string,
+    /**
+     * Direction dropdown will appear
+     */
+    position: PropTypes.oneOf([
+      'bottom-left',
+      'bottom-right',
+      'top-left',
+      'top-right',
+    ]),
+    /**
+     * What the shape of the dropdown will look like
+     */
+    type: PropTypes.oneOf(['button', 'icon']),
+  };
+
+  static defaultProps = {
+    className: null,
+  };
+
+  static Item = props => {
+    const { children, to } = props;
+
+    if (to) {
+      return (
+        <Link className="dropdown__item" to={to}>
+          {children}
+        </Link>
+      );
+    }
+
+    return <div className="dropdown__item">{children}</div>;
+  };
+
   state = {
     active: false,
   };
 
-  handleClick = e => {
-    this.setState(prevProps => ({
-      active: !prevProps.active,
-    }));
+  node = React.createRef();
+
+  componentDidUpdate() {
+    const { setClickListener, state, removeClickListener } = this;
+    const { active } = state;
+
+    if (active) {
+      setClickListener();
+    } else {
+      removeClickListener();
+    }
+  }
+
+  handleOnClick = e => {
+    const { node } = this;
+    const { target } = e;
+
+    if (node && node.contains(target)) {
+      this.setState(prevProps => ({
+        active: !prevProps.active,
+      }));
+    } else {
+      this.setState({
+        active: false,
+      });
+    }
+  };
+
+  setClickListener = () => {
+    document.addEventListener('click', this.handleOnClick);
+  };
+
+  removeClickListener = () => {
+    document.removeEventListener('click', this.handleOnClick);
   };
 
   render() {
-    const { props, state } = this;
-    const { children, className, dropdownPosition, type } = props;
+    const { handleOnClick, props, state } = this;
+    const { children, className, position, type } = props;
     const { active } = state;
 
-    let button = [];
-    switch (type) {
-      case 'icon':
-        button.push(<DropdownIcon key="icon" icon={this.props.icon} />);
-        break;
-      case 'circle':
-        break;
-      case 'plus':
-      default:
-        button.push(<DropdownPlus key="plus" text={this.props.text} />);
-    }
-
-    let dropdownListAdditionalClass = '';
-    if (typeof dropdownPosition !== 'undefined') {
-      switch (dropdownPosition) {
-        case 'belowAndAlignAgainstRight':
-          dropdownListAdditionalClass =
-            'dropdown__list--below-and-align-against-right';
-          break;
-        default:
-      }
-    }
-
     return (
-      <div className={classnames('dropdown', className)}>
-        <div className="dropdown__button" onClick={this.handleClick}>
-          {button}
+      <div
+        className={classnames('dropdown', className)}
+        ref={ref => (this.node = ref)}
+      >
+        <div className="dropdown__type" onClick={handleOnClick}>
+          {DROPDOWN_TYPE[type](props, state)}
         </div>
         <div
-          className={`dropdown__list ${
-            active ? 'active' : ''
-          } ${dropdownListAdditionalClass}`}
+          className={classnames('dropdown__list', active && 'active', position)}
         >
           {children}
         </div>

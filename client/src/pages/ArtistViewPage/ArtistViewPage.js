@@ -34,7 +34,9 @@ class ArtistViewPage extends Component {
     const { navigateToAlbum, props } = this;
     const { match, artist, artistAlertClose } = props;
     const { alert, doc, loading } = artist;
-    const { albums } = doc;
+    const { albums, updated_at } = doc;
+    const dateObj = new Date(updated_at);
+    const lastUpdated = `${dateObj.toLocaleDateString()} ${dateObj.toLocaleTimeString()}`;
 
     return (
       <div className="artist-view">
@@ -43,6 +45,7 @@ class ArtistViewPage extends Component {
           <>
             <Card>
               <CardBody>
+                <div className="float-right">Last updated: {lastUpdated}</div>
                 <FormArtistUpdateName match={match} />
               </CardBody>
             </Card>

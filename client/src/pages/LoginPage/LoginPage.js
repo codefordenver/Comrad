@@ -14,8 +14,6 @@ class LoginPage extends Component {
     const { alert } = auth;
     const { display } = alert;
 
-    console.log(this.props);
-
     return (
       <div className="login-page">
         {display && (

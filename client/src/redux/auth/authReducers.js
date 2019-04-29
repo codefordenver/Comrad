@@ -46,8 +46,6 @@ export const authReducer = (state = initialState, { type, payload }) => {
     case AUTH_ALERT_CLOSE:
       const { alert } = initialState;
 
-      console.log(alert);
-
       return {
         ...state,
         alert,

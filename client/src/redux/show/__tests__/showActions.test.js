@@ -20,7 +20,7 @@ describe('getShow actions', () => {
   it('should create an action to GET a new show', () => {
     const store = mockStore({ shows: [] });
     const show_id = '123';
-    const show_id_url = '/api/show/123';
+    const show_id_url = '/v1/show/123';
     const show_payload = [
       {
         name: 'Test Show',
@@ -50,7 +50,7 @@ describe('postShow actions', () => {
 
   it('should create an action to POST a new show', () => {
     const store = mockStore({ shows: [] });
-    const show_id_url = '/api/show/';
+    const show_id_url = '/v1/show/';
     const show_post = [
       {
         name: 'Test Show',

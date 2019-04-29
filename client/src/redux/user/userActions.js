@@ -4,6 +4,7 @@ import {
   USER_ALERT,
   USER_ALERT_CLOSE,
   USER_CLEAR,
+  USER_CREATE,
   USER_FIND_ALL,
   USER_FIND_ONE,
   USER_LOADING,
@@ -111,10 +112,34 @@ export const userAlertClose = () => async dispatch => {
   }
 };
 
-export const userCreate = (values, cabllack) => async dispatch => {
+export const userCreate = (values, callback) => async dispatch => {
   try {
-    userAPI.create(values);
+    dispatch({ type: USER_LOADING });
+
+    const response = await userAPI.create(values);
+
+    const payload = {
+      doc: response,
+      alert: {
+        display: true,
+        header: 'SUCCESS',
+        message: 'User successfully created!',
+        type: 'success',
+      },
+    };
+
+    callback();
+
+    dispatch({ type: USER_CREATE, payload });
   } catch (err) {
     console.log(err);
+    const alert = {
+      display: true,
+      header: 'ERROR',
+      message: 'Create User Fail',
+      type: 'danger',
+    };
+
+    dispatch({ type: USER_ALERT, payload: alert });
   }
 };

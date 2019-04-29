@@ -3,6 +3,7 @@ import {
   USER_ALERT,
   USER_ALERT_CLOSE,
   USER_CLEAR,
+  USER_CREATE,
   USER_FIND_ALL,
   USER_FIND_ONE,
   USER_LOADING,
@@ -62,6 +63,12 @@ export const userReducer = (state = initialState, { type, payload }) => {
     case USER_CLEAR:
       return {
         ...initialState,
+      };
+
+    case USER_CREATE:
+      return {
+        ...state,
+        ...payload,
       };
 
     case USER_LOADING:

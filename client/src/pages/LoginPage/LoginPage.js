@@ -27,11 +27,7 @@ class LoginPage extends Component {
           <Button to="/reset">Reset Password</Button>
         </div>
         <div className="login-page__new-user">
-          <p>
-            <b>New to Comrad?</b>
-          </p>
-
-          <p>Sign Up for your free account!</p>
+          <p>Sign Up To Help Contribute to Comrad</p>
 
           <Button to="/signup" color="primary">
             Sign Up

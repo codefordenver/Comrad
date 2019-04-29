@@ -9,10 +9,10 @@ import Input from '../Input';
 import { userSearch } from '../../redux/user';
 
 class FormUserSearch extends Component {
-  handleOnChange = (e, filter) => {
+  handleOnChange = (e, newValue) => {
     const { q, userSearch } = this.props;
 
-    userSearch({ filter, q });
+    userSearch({ filter: newValue, q });
   };
 
   submit = values => {

@@ -60,7 +60,9 @@ class UserProfilePage extends Component {
                         {first_name} {last_name}
                       </p>
                       <h5>Date of Birth</h5>
-                      <p>{moment(date_of_birth).format('MMMM D, YYYY')}</p>
+                      {date_of_birth && (
+                        <p>{moment(date_of_birth).format('MMMM D, YYYY')}</p>
+                      )}
                     </div>
                   </CardBody>
                 </Card>
@@ -71,9 +73,9 @@ class UserProfilePage extends Component {
                     <div className="user-profile__contact">
                       <h3>Contact</h3>
                       <h5>Phone</h5>
-                      <p>{phone}</p>
+                      {phone && <p>{phone}</p>}
                       <h5>Email</h5>
-                      <p>{email}</p>
+                      {email && <p>{email}</p>}
                     </div>
                   </CardBody>
                 </Card>
@@ -83,9 +85,11 @@ class UserProfilePage extends Component {
                   <CardBody>
                     <div className="user-profile__location">
                       <h3>Location</h3>
-                      <p>
-                        {street} {city}, {state} {zip_code}
-                      </p>
+                      {street && (
+                        <p>
+                          {street} {city}, {state} {zip_code}}
+                        </p>
+                      )}
                     </div>
                   </CardBody>
                 </Card>
@@ -96,7 +100,7 @@ class UserProfilePage extends Component {
                     <div className="user-profile__station">
                       <h3>Station</h3>
                       <h5>On Air Name</h5>
-                      <p>{on_air_name}</p>
+                      {on_air_name && <p>{on_air_name}</p>}
                     </div>
                   </CardBody>
                 </Card>

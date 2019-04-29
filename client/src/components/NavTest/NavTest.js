@@ -31,6 +31,10 @@ class NavTest extends Component {
         text: 'Dashboard',
         route: '/dashboard',
       },
+      {
+        text: 'Login Page',
+        route: '/',
+      },
     ];
 
     const { permission } = this.props.auth;

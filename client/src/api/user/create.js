@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { ROOT_USERS_URL } from '../root';
 
-export async function create(values) {
+export function create(values) {
   const { first_name, last_name, email, password } = values;
 
   const userObj = {

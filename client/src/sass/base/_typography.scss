@@ -46,6 +46,17 @@ h4,
   margin-bottom: 1.4rem;
 }
 
+h5,
+.h5 {
+  color: $color-primary-light;
+  font-family: $font-family-primary;
+  font-weight: $font-weight-light;
+  font-size: 1.8rem;
+  line-height: 1.15;
+
+  margin-bottom: 0.5rem;
+}
+
 p,
 .p {
   font-size: 1.6rem;

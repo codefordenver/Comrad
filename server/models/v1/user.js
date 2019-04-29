@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const mongoosePaginate = require('mongoose-paginate');
 const Schema = mongoose.Schema;
 const bcrypt = require('bcrypt-nodejs');
 
@@ -86,20 +85,17 @@ const userSchema = new Schema({
     permission: {
       type: String,
       enum: ['DJ', 'Underwriting', 'Show Producer', 'Full Access', 'Admin'],
-      required: true,
       default: 'DJ',
     },
 
     status: {
       type: String,
       enum: ['Active', 'Inactive'],
-      required: true,
       default: 'Active',
     },
 
     can_delete: {
       type: Boolean,
-      required: true,
       default: true,
     },
 
@@ -128,6 +124,11 @@ const userSchema = new Schema({
     api_key: {
       type: String,
       default: null,
+    },
+
+    last_logged: {
+      type: Date,
+      default: Date.now,
     },
   },
 });
@@ -160,8 +161,6 @@ userSchema.methods.comparePassword = function(candidatePassword, callback) {
     callback(null, isMatch);
   });
 };
-
-userSchema.plugin(mongoosePaginate);
 
 const User = mongoose.model('User', userSchema);
 

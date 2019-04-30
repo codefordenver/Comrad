@@ -3,10 +3,8 @@ const { shows } = require('../../controllers/v1');
 
 router
   .route('/')
-  .get(shows.findAll)
+  .get(shows.find)
   .post(shows.create);
-
-router.route('/date').get(shows.findByDate);
 
 router
   .route('/:id')

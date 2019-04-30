@@ -75,6 +75,32 @@ class LibrarySearchPage extends Component {
       });
   };
 
+  fetchTableDataByType = type => {
+    console.log(type, `/api/library/${type}`);
+    axios
+      .get(`/api/library/${type}`)
+      .then(response => {
+        console.log('in response', response);
+        let pageUrls = this.state.pageUrls;
+        if (typeof response.data.nextPage !== 'undefined') {
+          pageUrls.push(response.data.nextPage.url);
+        }
+        this.setState({
+          docs: response.data.results,
+          totalPages: response.data.totalPages,
+          pageUrls: pageUrls,
+          loading: false,
+          loadingError: false,
+        });
+      })
+      .catch(response => {
+        console.error(response);
+        this.setState({
+          loadingError: true,
+        });
+      });
+  };
+
   navigateToRecord = (state, rowInfo, column, instance) => {
     return {
       onClick: (e, handleOriginal) => {
@@ -106,7 +132,11 @@ class LibrarySearchPage extends Component {
         activeFilter: event.target.getAttribute('value'),
       },
       function() {
-        this.searchLibrary({ q: this.state.searchString });
+        if (this.state.activeFilter === 'all') {
+          this.searchLibrary({ q: this.state.searchString });
+        } else {
+          this.fetchTableDataByType(this.state.activeFilter);
+        }
       },
     );
   };

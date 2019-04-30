@@ -6,6 +6,7 @@
 
 - [What is Comrad?](./docs/comrad.md)
 - Guides
+    - [Getting Started](./docs/getting_started.md)
     - [Testing](./docs/testing.md)
 
 ## What is Comrad?

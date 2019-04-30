@@ -10,7 +10,7 @@ import {
 
 export const getTraffic = traffic => async dispatch => {
   try {
-    const response = await axios.get(`/api/traffic/${traffic}`);
+    const response = await axios.get(`/v1/traffic/${traffic}`);
 
     dispatch({ type: TRAFFIC_GET, payload: response.data });
   } catch (e) {

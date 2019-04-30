@@ -11,7 +11,7 @@ import { userSearch } from '../../redux/user';
 class FormUserSearch extends Component {
   submit = values => {
     const { userSearch } = this.props;
-
+    console.log(values);
     userSearch(values);
   };
 
@@ -26,7 +26,7 @@ class FormUserSearch extends Component {
             className="mb-1"
             component={Input}
             label="Search"
-            name="s"
+            name="q"
             type="text"
           />
           <Button type="submit">Search</Button>

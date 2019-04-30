@@ -1,15 +1,32 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import Downshift from 'downshift';
 import { connect } from 'react-redux';
 import { change, Field, reduxForm } from 'redux-form';
 
 import { updateShowHost } from '../../../redux/show';
 import { userSearch, userClear } from '../../../redux/user';
-
-import { DropdownItem } from '../../Dropdown';
 import Input from '../../Input';
 
 const DOWNSHIFT_NONE = 'none';
+
+export const DropdownItem = props => {
+  const { children, to, handleOnClick } = props;
+
+  if (to) {
+    return (
+      <Link className="dropdown__item" to={to}>
+        {children}
+      </Link>
+    );
+  }
+
+  return (
+    <div className="dropdown__item" onClick={handleOnClick}>
+      {children}
+    </div>
+  );
+};
 
 class DropdownHost extends Component {
   componentDidMount() {
@@ -26,14 +43,15 @@ class DropdownHost extends Component {
       return;
     }
 
-    userSearch({ filter: 'all', query: value });
+    userSearch({ filter: 'All', q: value });
   };
 
   onSelect = selection => {
     const { updateShowHost, dispatch, _id } = this.props;
     const { value } = selection;
+    const host_id = selection._id;
 
-    updateShowHost(_id, selection._id);
+    updateShowHost(_id, { 'show_details.host': host_id });
     dispatch(change('hostSearch', 'host', value));
   };
 

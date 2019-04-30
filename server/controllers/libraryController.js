@@ -1,4 +1,4 @@
-const db = require('../models');
+const db = require('../models/v1');
 const keys = require('../config/keys');
 
 /**

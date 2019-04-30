@@ -159,12 +159,6 @@ async function userByOnAirName(onAirName) {
   if (typeof usersByOnAirName[onAirName] != 'undefined') {
     return usersByOnAirName[onAirName];
   }
-  console.log(
-    'not using saved name for on air name: ' +
-      onAirName +
-      '(' +
-      typeof usersByOnAirName[onAirName],
-  );
   let user = await db.User.findOne({
     'station.on_air_name': onAirName,
   });

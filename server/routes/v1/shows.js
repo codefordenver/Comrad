@@ -10,6 +10,7 @@ router
   .route('/:id')
   .get(shows.findById)
   .delete(shows.remove)
-  .put(shows.update);
+  .put(shows.update)
+  .patch(shows.update);
 
 module.exports = router;

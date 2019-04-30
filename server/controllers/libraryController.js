@@ -107,7 +107,6 @@ module.exports = {
 
     let sortObj = {};
     sortObj[sortBy] = sortDescending ? -1 : 1;
-    console.log(sortBy);
     //query 100 items of each type from the mongo database
     const artistResults = await db.Artist.find({}, null, {
       sort: sortObj,
@@ -262,7 +261,6 @@ module.exports = {
   },
 
   async findAllByArtists(req, res) {
-    console.log('IN find by artists');
     let { sortBy, sortDescending, page } = req.query;
 
     //set defaults for variables & cast variables to correct data type

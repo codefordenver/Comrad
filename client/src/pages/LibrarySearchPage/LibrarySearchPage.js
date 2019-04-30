@@ -76,11 +76,9 @@ class LibrarySearchPage extends Component {
   };
 
   fetchTableDataByType = type => {
-    console.log(type, `/api/library/${type}`);
     axios
-      .get(`/api/library/${type}`)
+      .get(`/v1/library/${type}`)
       .then(response => {
-        console.log('in response', response);
         let pageUrls = this.state.pageUrls;
         if (typeof response.data.nextPage !== 'undefined') {
           pageUrls.push(response.data.nextPage.url);

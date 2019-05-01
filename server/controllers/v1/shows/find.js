@@ -5,9 +5,7 @@ const {
 } = require('./utils');
 
 function find(req, res) {
-  console.log(req);
   let { startDate, endDate } = req.query;
-  console.log(startDate);
   startDate = startDate ? JSON.parse(startDate) : null;
   endDate = endDate ? JSON.parse(endDate) : null;
 
@@ -19,7 +17,7 @@ function find(req, res) {
     .and(showDateFilter)
     .populate('show_details.host', ['profile.first_name', 'profile.last_name'])
     .then(dbShow => {
-      res.json(showList(dbShow));
+      res.json(showList(dbShow, startDate, endDate));
     })
     .catch(err => res.status(422).json(err));
 }

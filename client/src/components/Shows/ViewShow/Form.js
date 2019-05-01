@@ -9,7 +9,8 @@ import Button from '../../Button';
 import DownshiftHost from './DownshiftHost';
 
 const FORM_OPTIONS = {
-  series: (data, deleteSereisShow) => {
+  series: (data, deleteSeriesShow) => {
+    console.log(data);
     return (
       <div className="series">
         <div className="series__show-instance">Edit Show Instance</div>
@@ -18,7 +19,7 @@ const FORM_OPTIONS = {
         <Button
           className="series__btn-delete"
           color="danger"
-          onClick={() => deleteSereisShow(data)}
+          onClick={() => deleteSeriesShow(data)}
         >
           Delete Series
         </Button>
@@ -103,7 +104,8 @@ class NewShowForm extends Component {
     const { getShowType, getShowFunction, props, getHost } = this;
     const { show, shows } = props;
     const { _id } = show;
-    const { host } = shows[_id].show_details;
+    const clickedShow = shows[_id];
+    const { host } = clickedShow.show_details;
 
     const showType = getShowType(show);
     const showFunction = getShowFunction(showType);
@@ -111,6 +113,9 @@ class NewShowForm extends Component {
     return (
       <main className="show show__padding">
         <section className="show__body">
+          {clickedShow.show_details.title}
+          <div />
+          {clickedShow._id}
           <DownshiftHost key={_id} _id={_id} host={getHost(host)} />
           {FORM_OPTIONS[showType](show, showFunction)}
         </section>

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import { requiredValidate } from '../../utils/validation';
-import { trackAdd } from '../../redux/artist'; //need to set up correct path
+import { trackAdd } from '../../redux/track'; //need to set up correct path
 
 import Button from '../Button';
 import Input from '../Input';

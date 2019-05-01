@@ -7,12 +7,12 @@ const userSchema = new Schema({
   profile: {
     first_name: {
       type: String,
-      required: false, //TODO: what about when we don't have these?
+      required: true,
     },
 
     last_name: {
       type: String,
-      required: false,
+      required: true,
     },
 
     date_of_birth: {
@@ -58,9 +58,8 @@ const userSchema = new Schema({
 
     email: {
       type: String,
-      required: false,
+      required: true,
       unique: true,
-      sparse: true,
       lowercase: true,
       validate: {
         validator: v => {

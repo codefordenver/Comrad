@@ -163,7 +163,23 @@ async function userByOnAirName(onAirName) {
     'station.on_air_name': onAirName,
   });
   if (user == null) {
+    //make a first name, last name, and email from the onAirName
+    const onAirNameParts = onAirName.split(' ');
+    const firstName = onAirNameParts[0];
+    let lastName = '(none)';
+    if (onAirNameParts.length > 1) {
+      lastName = '';
+      onAirNameParts.forEach(function(part) {
+        lastName += ' ' + part;
+      });
+      lastName = lastName.trim();
+    }
+    const emailAddress =
+      onAirName.replace(/[^a-zA-Z0-9]/gi, '') + '@fake-dj-email.kgnu.org';
     user = await db.User.create({
+      'profile.first_name': firstName,
+      'profile.last_name': lastName,
+      'contact.email': emailAddress,
       'station.on_air_name': onAirName,
     });
   }

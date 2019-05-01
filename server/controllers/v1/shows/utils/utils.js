@@ -228,7 +228,23 @@ function createRRule(show, queryStartDate, queryEndDate) {
   }
 
   if (byweekday) {
-    newRRule.byweekday = byweekday.map(day => RRule[day]);
+    newRRule.byweekday = byweekday.map(day => {
+      const dayList = {
+        0: 'MO',
+        1: 'TU',
+        2: 'WE',
+        3: 'TH',
+        4: 'FR',
+        5: 'SA',
+        6: 'SU',
+      };
+
+      if (dayList[day]) {
+        day = dayList[day];
+      }
+
+      return RRule[day];
+    });
   }
 
   if (bymonth) {

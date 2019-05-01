@@ -116,6 +116,14 @@ class NewShowForm extends Component {
           {clickedShow.show_details.title}
           <div />
           {clickedShow._id}
+          <div />
+          {'Start Time: ' + clickedShow.show_start_time_utc}
+          <div />
+          {'End Time: ' + clickedShow.show_end_time_utc}
+          <div />
+          {'Start Date: ' + clickedShow.repeat_rule.repeat_start_date}
+          <div />
+          {'End Date: ' + clickedShow.repeat_rule.repeat_end_date}
           <DownshiftHost key={_id} _id={_id} host={getHost(host)} />
           {FORM_OPTIONS[showType](show, showFunction)}
         </section>

@@ -4,22 +4,13 @@ import Downshift from 'downshift';
 import { connect } from 'react-redux';
 import { change, Field, reduxForm } from 'redux-form';
 
-import { updateShowHost } from '../../../redux/show';
-import { hostSearch } from '../../../redux/user';
-import Input from '../../Input';
+import { hostSearch } from '../../redux/user';
+import Input from '../Input';
 
-const DOWNSHIFT_NONE = 'none';
+const ADD_NEW_HOST = 'add_new_host';
 
-export const DropdownItem = props => {
-  const { children, to, handleOnClick } = props;
-
-  if (to) {
-    return (
-      <Link className="dropdown__item" to={to}>
-        {children}
-      </Link>
-    );
-  }
+export const HostListItem = props => {
+  const { children, handleOnClick } = props;
 
   return (
     <div className="dropdown__item" onClick={handleOnClick}>
@@ -29,52 +20,61 @@ export const DropdownItem = props => {
 };
 
 class DropdownHost extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      hasFocus: false,
+    };
+  }
+
   componentDidMount() {
     const { dispatch, host } = this.props;
 
     dispatch(change('hostSearch', 'host', host));
   }
 
-  inputOnChange = e => {
-    const { hostSearch } = this.props;
+  handleChange = e => {
+    const { hostSearch, filterByStatus = 'All' } = this.props;
     const { value } = e.target;
 
     if (!value) {
       return;
     }
 
-    hostSearch({ filter: 'All', q: value });
+    hostSearch({ filter: filterByStatus, q: value });
   };
 
-  onSelect = selection => {
-    const { updateShowHost, dispatch, _id } = this.props;
-    const { value } = selection;
-    const host_id = selection._id;
-
-    updateShowHost(_id, { 'show_details.host': host_id });
-    dispatch(change('hostSearch', 'host', value));
+  handleFocus = () => {
+    this.setState({ hasFocus: true });
   };
 
   handleBlur = () => {
     const { dispatch, host } = this.props;
-
+    this.setState({ hasFocus: false });
     dispatch(change('hostSearch', 'host', host));
   };
 
-  renderDropdown = (item, loading) => {
+  onSelect = selection => {
+    const { onHostSelect, dispatch } = this.props;
+    const { value } = selection;
+
+    if (typeof onHostSelect == 'function') {
+      onHostSelect(selection);
+    }
+    dispatch(change('hostSearch', 'host', value));
+  };
+
+  renderHostListItem = (item, loading) => {
     const { email, value } = item;
 
-    if (!loading) {
-      if (value !== DOWNSHIFT_NONE) {
-        return (
-          <DropdownItem key={value._id}>{`${value} ${email}`}</DropdownItem>
-        );
-      }
-      //Add a new user component or redirect here
-      return (
-        <DropdownItem key={value}>{`ADD NEW USER COMPOMENT HERE`}</DropdownItem>
-      );
+    if (item !== ADD_NEW_HOST) {
+      return <HostListItem key={value._id}>{`${value}`}</HostListItem>;
     }
+    //Add a new user component or redirect here
+    return (
+      <HostListItem key={value}>{`ADD NEW USER COMPOMENT HERE`}</HostListItem>
+    );
     //Can return loading indictor here
   };
 
@@ -85,14 +85,17 @@ class DropdownHost extends Component {
   render() {
     const {
       dirtyOverride,
+      handleChange,
+      handleFocus,
       handleBlur,
       initialValue,
-      inputOnChange,
       onSelect,
       props,
-      renderDropdown,
+      renderHostListItem,
+      state,
     } = this;
     const { host, user } = props;
+    const { hasFocus } = state;
     const { docs, loading } = user;
 
     let items = docs.map(user => {
@@ -109,9 +112,11 @@ class DropdownHost extends Component {
       };
     });
 
-    if (items.length === 0) {
-      items = [{ value: DOWNSHIFT_NONE }];
+    if (items.length > 0) {
+      //by default, display an option for the current user
     }
+
+    items.push(ADD_NEW_HOST);
 
     return (
       <Downshift
@@ -129,8 +134,6 @@ class DropdownHost extends Component {
           selectedItem,
         }) => (
           <div>
-            {/*<label {...getLabelProps()}>Select a DJ:</label>*/}
-
             <Field
               className="mb-1"
               component={Input}
@@ -138,13 +141,14 @@ class DropdownHost extends Component {
               name="host"
               type="text"
               {...getInputProps({
-                onChange: inputOnChange,
+                onChange: handleChange,
                 onBlur: handleBlur,
+                onFocus: handleFocus,
               })}
               dirtyOverride={dirtyOverride(host)}
             />
 
-            {isOpen && inputValue ? (
+            {hasFocus ? (
               <div className="dropdown__list active">
                 {items.map((item, index) => (
                   <div
@@ -159,7 +163,7 @@ class DropdownHost extends Component {
                       },
                     })}
                   >
-                    {renderDropdown(item, loading)}
+                    {renderHostListItem(item, loading)}
                   </div>
                 ))}
               </div>
@@ -184,7 +188,6 @@ function mapStateToProps({ user }) {
 export default connect(
   mapStateToProps,
   {
-    updateShowHost,
     hostSearch,
   },
 )(DropdownHost);

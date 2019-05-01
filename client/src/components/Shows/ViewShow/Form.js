@@ -2,11 +2,15 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { setModalVisibility } from '../../../redux/modal';
-import { deleteShow, deleteShowSeries } from '../../../redux/show';
+import {
+  deleteShow,
+  deleteShowSeries,
+  updateShowHost,
+} from '../../../redux/show';
 import { MODAL_EDIT_SHOW } from '../ShowModalController';
 
 import Button from '../../Button';
-import DownshiftHost from './DownshiftHost';
+import DropdownHost from '../../DropdownHost';
 
 const FORM_OPTIONS = {
   series: (data, deleteSereisShow) => {
@@ -99,6 +103,13 @@ class NewShowForm extends Component {
     return showFunction[showType];
   };
 
+  handleHostSelect = host => {
+    const { props } = this;
+    const { updateShowHost, show } = props;
+    const { _id } = show;
+    updateShowHost(_id, { 'show_details.host': host._id });
+  };
+
   render() {
     const { getShowType, getShowFunction, props, getHost } = this;
     const { show, shows } = props;
@@ -111,7 +122,13 @@ class NewShowForm extends Component {
     return (
       <main className="show show__padding">
         <section className="show__body">
-          <DownshiftHost key={_id} _id={_id} host={getHost(host)} />
+          <DropdownHost
+            key={_id}
+            _id={_id}
+            host={getHost(host)}
+            onHostSelect={this.handleHostSelect}
+            filterByStatus="Active"
+          />
           {FORM_OPTIONS[showType](show, showFunction)}
         </section>
       </main>
@@ -130,6 +147,7 @@ export default connect(
   {
     deleteShow,
     deleteShowSeries,
+    updateShowHost,
     setModalVisibility,
   },
 )(NewShowForm);

@@ -113,6 +113,14 @@ async function seedDB() {
           showInstances = show.instances;
           delete show.instances;
         }
+
+        //If the end date does not exist, just put an infinite end date
+        if (show.repeat_rule) {
+          if (!show.repeat_rule.repeat_end_date) {
+            show.repeat_rule.repeat_end_date = new Date('9999-01-01T00:00:00');
+          }
+        }
+
         const newShow = await db.Show.create(show);
         if (showInstances.length > 0) {
           await Promise.all(
@@ -126,6 +134,15 @@ async function seedDB() {
                   instance.show_details.host,
                 );
               }
+
+              //This assume that all instances are a single day so the start and end date are the same
+              if (instance.repeat_rule) {
+                if (!instance.repeat_rule.repeat_end_date) {
+                  instance.repeat_rule.repeat_end_date =
+                    instance.repeat_rule.repeat_start_date;
+                }
+              }
+
               bulkOperations.push({
                 insertOne: {
                   document: instance,

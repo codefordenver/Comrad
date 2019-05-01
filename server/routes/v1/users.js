@@ -8,6 +8,7 @@ router
 
 router.route('/random').post(users.randomUser);
 router.route('/search').get(users.search);
+router.route('/search-hosts').get(users.searchHosts);
 
 router
   .route('/:id')

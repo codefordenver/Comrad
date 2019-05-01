@@ -1,3 +1,4 @@
+export const HOST_SEARCH = 'host_search';
 export const USER_ADD = 'user_add';
 export const USER_ALERT = 'user_alert';
 export const USER_ALERT_CLOSE = 'user_alert_close';

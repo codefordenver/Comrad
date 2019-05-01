@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {
+  HOST_SEARCH,
   USER_ALERT,
   USER_ALERT_CLOSE,
   USER_FIND_ONE,
@@ -11,6 +12,26 @@ import {
 } from './userTypes';
 
 import { userAPI } from '../../utils/api';
+
+export const hostSearch = ({ filter, q }) => async dispatch => {
+  try {
+    dispatch({ type: USER_LOADING });
+
+    const { data: docs } = await userAPI.searchHosts({ filter, q });
+    const search = { filter, q };
+
+    dispatch({ type: HOST_SEARCH, payload: { docs, search } });
+  } catch (e) {
+    const alert = {
+      display: true,
+      header: 'ERROR',
+      message: 'Error With Searching For Users',
+      type: 'danger',
+    };
+
+    dispatch({ type: USER_ALERT, payload: { alert } });
+  }
+};
 
 export const userFindOne = id => async dispatch => {
   try {

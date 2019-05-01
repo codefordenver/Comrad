@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { change, Field, reduxForm } from 'redux-form';
 
 import { updateShowHost } from '../../../redux/show';
-import { userSearch, userClear } from '../../../redux/user';
+import { hostSearch } from '../../../redux/user';
 import Input from '../../Input';
 
 const DOWNSHIFT_NONE = 'none';
@@ -36,14 +36,14 @@ class DropdownHost extends Component {
   }
 
   inputOnChange = e => {
-    const { userSearch } = this.props;
+    const { hostSearch } = this.props;
     const { value } = e.target;
 
     if (!value) {
       return;
     }
 
-    userSearch({ filter: 'All', q: value });
+    hostSearch({ filter: 'All', q: value });
   };
 
   onSelect = selection => {
@@ -66,7 +66,9 @@ class DropdownHost extends Component {
 
     if (!loading) {
       if (value !== DOWNSHIFT_NONE) {
-        return <DropdownItem key={value}>{`${value} ${email}`}</DropdownItem>;
+        return (
+          <DropdownItem key={value._id}>{`${value} ${email}`}</DropdownItem>
+        );
       }
       //Add a new user component or redirect here
       return (
@@ -94,14 +96,16 @@ class DropdownHost extends Component {
     const { docs, loading } = user;
 
     let items = docs.map(user => {
-      const { contact, _id, profile } = user;
-      const { email } = contact;
+      const { _id, profile, station = { on_air_name: null } } = user;
       const { first_name, last_name } = profile;
+      const { on_air_name } = station;
 
       return {
         _id,
-        value: `${first_name} ${last_name}`,
-        email: `| ${email}`,
+        value:
+          on_air_name != null && on_air_name.length > 0
+            ? on_air_name
+            : `${first_name} ${last_name}`,
       };
     });
 
@@ -181,7 +185,6 @@ export default connect(
   mapStateToProps,
   {
     updateShowHost,
-    userSearch,
-    userClear,
+    hostSearch,
   },
 )(DropdownHost);

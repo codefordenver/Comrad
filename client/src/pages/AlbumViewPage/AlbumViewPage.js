@@ -35,6 +35,7 @@ class AlbumViewPage extends Component {
     const { album, loading } = props;
     const { artist, name, tracks, updated_at } = album.doc;
     const dateObj = updated_at == null ? null : new Date(updated_at);
+    const { url } = this.props.match;
     const lastUpdatedText =
       updated_at == null
         ? ''
@@ -66,7 +67,7 @@ class AlbumViewPage extends Component {
                 ) : (
                   <TableAlbumTracks onRowClick={navigateToTrack} />
                 )}
-                <Link to="library/track/add">Add Track</Link>
+                <Link to={`${url}/add`}>Add Track</Link>
               </CardBody>
             </Card>
           </div>

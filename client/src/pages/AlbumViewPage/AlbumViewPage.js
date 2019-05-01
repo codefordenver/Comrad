@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
 import { isEmpty } from 'lodash';
 
@@ -7,6 +8,7 @@ import LargeText from '../../components/LargeText';
 import TableAlbumTracks from '../../components/TableAlbumTracks';
 
 import { albumFindOne } from '../../redux/album';
+import { Link } from 'react-router-dom';
 
 class AlbumViewPage extends Component {
   componentDidMount() {
@@ -64,6 +66,7 @@ class AlbumViewPage extends Component {
                 ) : (
                   <TableAlbumTracks onRowClick={navigateToTrack} />
                 )}
+                <Link to="library/track/add">Add Track</Link>
               </CardBody>
             </Card>
           </div>

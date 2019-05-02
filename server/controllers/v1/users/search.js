@@ -12,9 +12,12 @@ function search(req, res) {
     return res.status(422).json('User must have admin access');
   }
 
-  const { filter = 'All', q } = req.query;
+  const { filter = 'all', q = '' } = req.query;
 
-  const conditions = filter === 'All' ? {} : { 'station.status': filter };
+  const conditions =
+    filter.toLowerCase() === 'all'
+      ? {}
+      : { 'station.status': new RegExp(`^${filter}$`, 'i') };
 
   db.User.find(conditions)
     .then(dbUsers => {
@@ -25,7 +28,7 @@ function search(req, res) {
         distance: 100,
         maxPatternLength: 32,
         minMatchCharLength: 1,
-        keys: ['profile.last_name', 'profile_first_name', 'contact.email'],
+        keys: ['profile.last_name', 'profile.first_name', 'contact.email'],
       };
 
       if (q) {

@@ -43,6 +43,7 @@ class Input extends Component {
     const {
       autoFocus,
       className,
+      disabled,
       icon,
       inline,
       input,
@@ -69,7 +70,7 @@ class Input extends Component {
           {...other}
           autoFocus={autoFocus}
           className={classnames('input', touched && error && 'error')}
-          disabled={submitting}
+          disabled={disabled || submitting}
           type={type}
           onBlur={event => {
             if (input != null) {

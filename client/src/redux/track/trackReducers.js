@@ -1,4 +1,4 @@
-import { TRACK_ADD } from './albumTypes';
+import { TRACK_ADD } from './trackTypes';
 
 const initialState = {
   tracks: [],

@@ -61,6 +61,12 @@ class Calendar extends Component {
     }
   };
 
+  handleNavigate = date => {
+    if (typeof this.props.onDateChange == 'function') {
+      this.props.onDateChange(date);
+    }
+  };
+
   convertShowsToArray = shows => {
     return shows ? _.values(shows) : [];
   };
@@ -109,8 +115,11 @@ class Calendar extends Component {
   };
 
   render() {
-    const { shows } = this.props;
+    const { date, shows } = this.props;
     const localizer = BigCalendar.momentLocalizer(moment);
+
+    //if date provided in properties, always have the calendar display that date
+    let calendarDateProperty = typeof date == 'undefined' ? {} : { date: date };
 
     return (
       <div>
@@ -118,15 +127,16 @@ class Calendar extends Component {
           selectable
           localizer={localizer}
           events={this.convertShowsToArray(shows)}
-          defaultDate={new Date()}
           defaultView={BigCalendar.Views.WEEK}
+          defaultDate={new Date()}
+          {...calendarDateProperty}
           //onSelectEvent={show => this.showViewShowModal(show)}
           onSelectSlot={show => this.showNewShowModal(show)}
           titleAccessor={show => show.show_details.title}
           startAccessor={show => new Date(show.show_start_time_utc)}
           endAccessor={show => new Date(show.show_end_time_utc)}
           onRangeChange={dateRange => this.handleDateChange(dateRange)}
-          onNavigate={view => console.log(view)}
+          onNavigate={date => this.handleNavigate(date)}
           eventPropGetter={this.eventStyleGetter}
           components={{
             eventWrapper: this.customEventWrapper,

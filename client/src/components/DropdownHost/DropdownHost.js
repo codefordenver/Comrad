@@ -22,6 +22,7 @@ class DropdownHost extends Component {
     }
 
     this.state = {
+      addHostBeingDisplayed: false, // true while the add host form is in the process of displaying
       addHostVisible: false,
       cachedSearches: {},
       currentInputValue: hostDisplayName,
@@ -31,6 +32,10 @@ class DropdownHost extends Component {
       selectedHost: host ? { _id: host.id, value: hostDisplayName } : null,
     };
   }
+
+  addHostFormDisplayed = () => {
+    this.setState({ addHostBeingDisplayed: false });
+  };
 
   componentDidUpdate() {
     const { user } = this.props;
@@ -55,12 +60,6 @@ class DropdownHost extends Component {
     return on_air_name != null && on_air_name.length > 0
       ? on_air_name
       : `${first_name} ${last_name}`;
-  };
-
-  handleAddHostClick = () => {
-    this.setState({
-      addHostVisible: true,
-    });
   };
 
   handleChange = e => {
@@ -89,7 +88,17 @@ class DropdownHost extends Component {
   };
 
   handleBlur = e => {
-    const { selectedHost } = this.state;
+    const { addHostBeingDisplayed, selectedHost } = this.state;
+
+    //don't close if the focus is in the FormHostAdd element
+    const formHostElements = document.getElementsByClassName('form-host-add');
+    if (
+      addHostBeingDisplayed ||
+      (formHostElements.length > 0 &&
+        formHostElements[0].contains(document.activeElement))
+    ) {
+      return;
+    }
 
     this.setState({
       addHostVisible: false,
@@ -112,9 +121,7 @@ class DropdownHost extends Component {
   };
 
   handleFormHostAddCancel = () => {
-    this.setState({
-      addHostVisible: false,
-    });
+    document.activeElement.blur();
   };
 
   handleFormHostAddSubmit = user => {
@@ -126,6 +133,10 @@ class DropdownHost extends Component {
     const { input, onHostSelect } = this.props;
 
     if (selection === ADD_NEW_HOST) {
+      this.setState({
+        addHostBeingDisplayed: true,
+        addHostVisible: true,
+      });
       return;
     }
 
@@ -161,11 +172,7 @@ class DropdownHost extends Component {
       return <div key={value._id}>{`${value}`}</div>;
     }
     //Add new user component
-    return (
-      <div key={value} onClick={this.handleAddHostClick}>
-        Add New Host
-      </div>
-    );
+    return <div key={value}>Add New Host</div>;
   };
 
   dirtyOverride = currentInputValue => {
@@ -174,6 +181,7 @@ class DropdownHost extends Component {
 
   render() {
     const {
+      addHostFormDisplayed,
       dirtyOverride,
       handleChange,
       handleFocus,
@@ -280,6 +288,7 @@ class DropdownHost extends Component {
                 <h3>Add New Host</h3>
                 <FormHostAdd
                   cancelCallback={handleFormHostAddCancel}
+                  onMount={addHostFormDisplayed}
                   submitCallback={handleFormHostAddSubmit}
                 />
               </div>

@@ -17,6 +17,13 @@ class FormHostAdd extends Component {
     userAdd(values, submitCallback);
   };
 
+  componentDidMount = () => {
+    const { onMount } = this.props;
+    if (typeof onMount == 'function') {
+      onMount();
+    }
+  };
+
   render() {
     const { props, submit } = this;
     const { cancelCallback, handleSubmit } = props;
@@ -24,6 +31,7 @@ class FormHostAdd extends Component {
     return (
       <form className="form-host-add" onSubmit={handleSubmit(submit)}>
         <Field
+          className="mb-3"
           component={Input}
           label="First Name"
           name="first_name"
@@ -31,12 +39,14 @@ class FormHostAdd extends Component {
           validate={requiredValidate}
         />
         <Field
+          className="mb-3"
           component={Input}
           label="Last Name"
           name="last_name"
           validate={requiredValidate}
         />
         <Field
+          className="mb-3"
           component={Input}
           label="Custom On-Air Name (optional)"
           name="on_air_name"
@@ -65,7 +75,7 @@ class FormHostAdd extends Component {
           type="password"
           validate={[requiredValidate, passwordConfirmValidate]}
         />
-        <div>
+        <div className="form-host-add__buttons">
           <Button color="neutral" onClick={cancelCallback}>
             Cancel
           </Button>

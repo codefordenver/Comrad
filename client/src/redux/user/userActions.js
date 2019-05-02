@@ -1,6 +1,7 @@
 import axios from 'axios';
 import {
   HOST_SEARCH,
+  USER_ADD,
   USER_ALERT,
   USER_ALERT_CLOSE,
   USER_CLEAR,
@@ -98,6 +99,21 @@ export const userSearch = ({ filter, q }) => async dispatch => {
     };
 
     dispatch({ type: USER_ALERT, payload: alert });
+  }
+};
+
+export const userAdd = (input, callback) => async dispatch => {
+  try {
+    const response = await axios.post('/v1/users', input);
+
+    dispatch({ type: USER_ADD, payload: response.data });
+
+    callback();
+  } catch (e) {
+    dispatch({
+      type: USER_ALERT,
+      payload: { type: 'error', text: e.response.data.errorMessage },
+    });
   }
 };
 

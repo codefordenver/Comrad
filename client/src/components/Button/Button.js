@@ -90,6 +90,7 @@ Button.propTypes = {
     'primary',
     'success',
     'info',
+    'neutral',
     'danger',
     'warning',
     'link',

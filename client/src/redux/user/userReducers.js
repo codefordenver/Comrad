@@ -1,5 +1,6 @@
 import {
   HOST_SEARCH,
+  USER_ADD,
   USER_ALERT,
   USER_ALERT_CLOSE,
   USER_CLEAR,
@@ -62,6 +63,11 @@ export const userReducer = (state = initialState, { type, payload }) => {
           ...initialState.alert,
         },
         loading: false,
+      };
+
+    case USER_ADD:
+      return {
+        ...payload,
       };
 
     case USER_CLEAR:

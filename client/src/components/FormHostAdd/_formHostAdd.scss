@@ -1,0 +1,10 @@
+.form-host-add {
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-column-gap: 3rem;
+  grid-row-gap: 3rem;
+  
+  &__buttons {
+    grid-column-start: span 2;
+  }
+}

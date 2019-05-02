@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import ReactQuill, { Quill, Mixin, Toolbar } from 'react-quill';
+import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
 export const ICON_SET = {
@@ -42,7 +42,6 @@ class RichTextArea extends Component {
   constructor(props) {
     super(props);
     this.state = { text: '' };
-    //this.handleChange = this.handleChange.bind(this);
   }
 
   handleChange(value) {
@@ -97,10 +96,8 @@ class RichTextArea extends Component {
       >
         <div className="editor-container" onClick={this.focus}>
           <ReactQuill
-            //value={this.state.text}
             {...input}
             {...other}
-            //onChange={this.handleChange}
             autoFocus={autoFocus}
             ref={element => {
               this.editor = element;

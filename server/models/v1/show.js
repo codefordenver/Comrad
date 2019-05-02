@@ -21,7 +21,7 @@ const showSchema = new Schema({
   show_end_time_utc: Date,
 
   master_show_uid: { type: Schema.Types.ObjectId, ref: 'Show' },
-  replace_show_date: Date, //is this necessary, or redundant with show_start_time_utc?
+  replace_show_date: Date, //The date of the show to replace in the master repeating series. For the most part, will be the same as show_start_time_utc. But if on the instance you want to reschedule it for some reason, you need one of the fields to be the new date/time while still matching with the original to replace it.
 
   is_recurring: Boolean,
   repeat_rule: {

@@ -149,7 +149,7 @@ export const userCreate = (values, callback) => async dispatch => {
       },
     };
 
-    callback();
+    callback(response.data);
 
     dispatch({ type: USER_CREATE, payload });
   } catch (err) {

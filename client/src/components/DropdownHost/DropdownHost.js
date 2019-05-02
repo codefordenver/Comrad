@@ -3,9 +3,10 @@ import classnames from 'classnames';
 import Downshift from 'downshift';
 import { connect } from 'react-redux';
 
-import { hostSearch } from '../../redux/user';
+import { hostSearch, userAlertClose } from '../../redux/user';
 import FormHostAdd from '../FormHostAdd';
 import Input from '../Input';
+import Modal from '../Modal';
 
 const ADD_NEW_HOST = 'add_new_host';
 
@@ -22,20 +23,15 @@ class DropdownHost extends Component {
     }
 
     this.state = {
-      addHostBeingDisplayed: false, // true while the add host form is in the process of displaying
-      addHostVisible: false,
       cachedSearches: {},
       currentInputValue: hostDisplayName,
       haveSelectedTextOnClick: false,
       hostSearchTimeout: null,
       hasFocus: false,
       selectedHost: host ? { _id: host.id, value: hostDisplayName } : null,
+      showAddHostModal: false,
     };
   }
-
-  addHostFormDisplayed = () => {
-    this.setState({ addHostBeingDisplayed: false });
-  };
 
   componentDidUpdate() {
     const { user } = this.props;
@@ -88,20 +84,13 @@ class DropdownHost extends Component {
   };
 
   handleBlur = e => {
-    const { addHostBeingDisplayed, selectedHost } = this.state;
+    const { selectedHost, showAddHostModal } = this.state;
 
-    //don't close if the focus is in the FormHostAdd element
-    const formHostElements = document.getElementsByClassName('form-host-add');
-    if (
-      addHostBeingDisplayed ||
-      (formHostElements.length > 0 &&
-        formHostElements[0].contains(document.activeElement))
-    ) {
+    if (showAddHostModal) {
       return;
     }
 
     this.setState({
-      addHostVisible: false,
       currentInputValue: selectedHost != null ? selectedHost.value : '',
       hasFocus: false,
       haveSelectedTextOnClick: false,
@@ -121,22 +110,30 @@ class DropdownHost extends Component {
   };
 
   handleFormHostAddCancel = () => {
-    document.activeElement.blur();
+    this.setState({ showAddHostModal: false });
+    this.props.userAlertClose();
   };
 
   handleFormHostAddSubmit = user => {
-    console.log('submitted');
-    console.log(user);
+    this.setState({ showAddHostModal: false });
+    this.onSelect({
+      _id: user._id,
+      value: this.formatHostName(user),
+    });
   };
 
-  onSelect = selection => {
+  onSelect = (selection, stateAndHelpers) => {
     const { input, onHostSelect } = this.props;
+
+    if (selection === null) {
+      return;
+    }
 
     if (selection === ADD_NEW_HOST) {
       this.setState({
-        addHostBeingDisplayed: true,
-        addHostVisible: true,
+        showAddHostModal: true,
       });
+      stateAndHelpers.clearSelection(); // clear the Downshift selection so that we can click the "add new host" button again
       return;
     }
 
@@ -198,10 +195,10 @@ class DropdownHost extends Component {
     } = this;
     const { auth, user } = props;
     const {
-      addHostVisible,
       cachedSearches,
       currentInputValue,
       hasFocus,
+      showAddHostModal,
     } = state;
     const { loading } = user;
 
@@ -261,7 +258,7 @@ class DropdownHost extends Component {
               value={currentInputValue}
             />
 
-            {hasFocus && !addHostVisible ? (
+            {hasFocus && !showAddHostModal ? (
               <div className="dropdown__list dropdown__list--host-list active">
                 {items.map((item, index) => (
                   <div
@@ -283,15 +280,16 @@ class DropdownHost extends Component {
               </div>
             ) : null}
 
-            {addHostVisible ? (
-              <div className="host-field__add-panel">
-                <h3>Add New Host</h3>
-                <FormHostAdd
-                  cancelCallback={handleFormHostAddCancel}
-                  onMount={addHostFormDisplayed}
-                  submitCallback={handleFormHostAddSubmit}
-                />
-              </div>
+            {showAddHostModal ? (
+              <Modal isOpen={true}>
+                <div className="host-field__add-modal">
+                  <h3>Add New Host</h3>
+                  <FormHostAdd
+                    cancelCallback={handleFormHostAddCancel}
+                    submitCallback={handleFormHostAddSubmit}
+                  />
+                </div>
+              </Modal>
             ) : null}
           </div>
         )}
@@ -311,5 +309,6 @@ export default connect(
   mapStateToProps,
   {
     hostSearch,
+    userAlertClose,
   },
 )(DropdownHost);

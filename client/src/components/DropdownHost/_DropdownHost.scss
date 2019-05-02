@@ -6,14 +6,13 @@
   }
 }
 .host-field {
-  &__add-panel {
+  &__add-modal {
     border: 2px solid $color-primary-light;
     border-radius: $border-radius;
     background-color: white;
-    position: absolute;
-    min-width: 20rem;
+    width: 48rem;
     display: block;
     color: $color-primary;
-    z-index: 10;
+    padding: 1rem;
   }
 }

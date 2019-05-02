@@ -112,7 +112,7 @@ const userSchema = new Schema({
   auth: {
     password: {
       type: String,
-      required: false,
+      required: true,
     },
 
     reset_token: {

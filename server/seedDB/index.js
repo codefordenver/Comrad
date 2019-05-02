@@ -198,6 +198,7 @@ async function userByOnAirName(onAirName) {
       'profile.last_name': lastName,
       'contact.email': emailAddress,
       'station.on_air_name': onAirName,
+      'auth.password': 'temppassword',
     });
   }
   usersByOnAirName[onAirName] = user;

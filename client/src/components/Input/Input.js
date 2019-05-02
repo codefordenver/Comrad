@@ -47,7 +47,11 @@ class Input extends Component {
       inline,
       input,
       label,
-      meta,
+      meta = {
+        error: false,
+        touched: false,
+        submitting: false,
+      } /* default values for when component is not used within React Form */,
       type,
       dirtyOverride = false,
       ...other
@@ -67,7 +71,13 @@ class Input extends Component {
           className={classnames('input', touched && error && 'error')}
           disabled={submitting}
           type={type}
-          onBlur={() => input.onBlur()}
+          onBlur={event => {
+            if (input != null) {
+              input.onBlur();
+            } else if (typeof props.onBlur == 'function') {
+              props.onBlur(event);
+            }
+          }}
         />
 
         {label && (

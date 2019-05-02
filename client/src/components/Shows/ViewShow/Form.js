@@ -71,18 +71,6 @@ class NewShowForm extends Component {
     setModalVisibility(null, false, null);
   };
 
-  getHost = host => {
-    if (host) {
-      const { first_name, last_name } = host.profile;
-      let firstname = first_name || '';
-      let lastname = last_name || '';
-
-      return `${firstname} ${lastname}`;
-    }
-
-    return null;
-  };
-
   getShowType(show) {
     if (show._id.includes('-')) {
       return 'series';
@@ -111,7 +99,7 @@ class NewShowForm extends Component {
   };
 
   render() {
-    const { getShowType, getShowFunction, props, getHost } = this;
+    const { getShowType, getShowFunction, props } = this;
     const { show, shows } = props;
     const { _id } = show;
     const { host } = shows[_id].show_details;
@@ -125,7 +113,7 @@ class NewShowForm extends Component {
           <DropdownHost
             key={_id}
             _id={_id}
-            host={getHost(host)}
+            host={host}
             onHostSelect={this.handleHostSelect}
             filterByStatus="Active"
           />

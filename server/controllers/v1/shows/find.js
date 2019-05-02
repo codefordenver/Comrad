@@ -17,7 +17,11 @@ function find(req, res) {
 
   db.Show.find({})
     .and(showDateFilter)
-    .populate('show_details.host', ['profile.first_name', 'profile.last_name'])
+    .populate('show_details.host', [
+      'profile.first_name',
+      'profile.last_name',
+      'station.on_air_name',
+    ])
     .then(dbShow => {
       res.json(showList(dbShow));
     })

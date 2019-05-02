@@ -1,85 +1,175 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import classnames from 'classnames';
 import Downshift from 'downshift';
 import { connect } from 'react-redux';
-import { change, Field, reduxForm } from 'redux-form';
 
 import { hostSearch } from '../../redux/user';
+import FormHostAdd from '../FormHostAdd';
 import Input from '../Input';
 
 const ADD_NEW_HOST = 'add_new_host';
-
-export const HostListItem = props => {
-  const { children, handleOnClick } = props;
-
-  return (
-    <div className="dropdown__item" onClick={handleOnClick}>
-      {children}
-    </div>
-  );
-};
 
 class DropdownHost extends Component {
   constructor(props) {
     super(props);
 
+    const { filterByStatus = 'All', host, hostSearch } = this.props;
+    const hostDisplayName = host != null ? this.formatHostName(host) : '';
+
+    //run a host search on the existing value so that the host list is populated with information
+    if (hostDisplayName.length > 0) {
+      hostSearch({ filter: filterByStatus, q: hostDisplayName });
+    }
+
     this.state = {
+      addHostVisible: false,
+      cachedSearches: {},
+      currentInputValue: hostDisplayName,
+      haveSelectedTextOnClick: false,
+      hostSearchTimeout: null,
       hasFocus: false,
+      selectedHost: host ? { _id: host.id, value: hostDisplayName } : null,
     };
   }
 
-  componentDidMount() {
-    const { dispatch, host } = this.props;
+  componentDidUpdate() {
+    const { user } = this.props;
+    const { cachedSearches } = this.state;
+    const { docs, search } = user;
 
-    dispatch(change('hostSearch', 'host', host));
+    // cache the search query in state
+    if (
+      search != null &&
+      search.q != null &&
+      !(search.q.toLowerCase() in cachedSearches)
+    ) {
+      cachedSearches[search.q.toLowerCase()] = docs;
+      this.setState({ cachedSearches: cachedSearches });
+    }
   }
+
+  formatHostName = user => {
+    const { profile, station = { on_air_name: null } } = user;
+    const { first_name, last_name } = profile;
+    const { on_air_name } = station;
+    return on_air_name != null && on_air_name.length > 0
+      ? on_air_name
+      : `${first_name} ${last_name}`;
+  };
+
+  handleAddHostClick = () => {
+    this.setState({
+      addHostVisible: true,
+    });
+  };
 
   handleChange = e => {
     const { hostSearch, filterByStatus = 'All' } = this.props;
+    const { cachedSearches, hostSearchTimeout } = this.state;
     const { value } = e.target;
 
     if (!value) {
       return;
     }
 
-    hostSearch({ filter: filterByStatus, q: value });
+    if (!(value.toLowerCase() in cachedSearches)) {
+      //throttle the hostSearch function so we are not calling it rapidly if users are quickly deleting or typing text
+      if (hostSearchTimeout != null) {
+        clearTimeout(hostSearchTimeout);
+      }
+      this.setState({
+        hostSearchTimeout: setTimeout(
+          () => hostSearch({ filter: filterByStatus, q: value }),
+          150,
+        ),
+      });
+    }
+
+    this.setState({ currentInputValue: value });
+  };
+
+  handleBlur = e => {
+    const { selectedHost } = this.state;
+
+    this.setState({
+      addHostVisible: false,
+      currentInputValue: selectedHost != null ? selectedHost.value : '',
+      hasFocus: false,
+      haveSelectedTextOnClick: false,
+    });
   };
 
   handleFocus = () => {
     this.setState({ hasFocus: true });
   };
 
-  handleBlur = () => {
-    const { dispatch, host } = this.props;
-    this.setState({ hasFocus: false });
-    dispatch(change('hostSearch', 'host', host));
+  handleInputClick = e => {
+    //select all text when clicking into the field for the first time
+    if (!this.state.haveSelectedTextOnClick) {
+      e.target.setSelectionRange(0, e.target.value.length);
+      this.setState({ haveSelectedTextOnClick: true });
+    }
+  };
+
+  handleFormHostAddCancel = () => {
+    this.setState({
+      addHostVisible: false,
+    });
+  };
+
+  handleFormHostAddSubmit = user => {
+    console.log('submitted');
+    console.log(user);
   };
 
   onSelect = selection => {
-    const { onHostSelect, dispatch } = this.props;
-    const { value } = selection;
+    const { input, onHostSelect } = this.props;
+
+    if (selection === ADD_NEW_HOST) {
+      return;
+    }
+
+    //if "No Host" was selected, give the selection a display text of an empty string
+    if (selection._id == null) {
+      selection.value = '';
+    }
+
+    if (input != null && input.onChange) {
+      //redux form onChange handler
+      input.onChange(selection._id);
+    }
 
     if (typeof onHostSelect == 'function') {
       onHostSelect(selection);
     }
-    dispatch(change('hostSearch', 'host', value));
+
+    this.setState(
+      {
+        currentInputValue: selection != null ? selection.value : '',
+        selectedHost: selection || null,
+      },
+      function() {
+        document.activeElement.blur(); //remove focus from the Host text field
+      },
+    );
   };
 
   renderHostListItem = (item, loading) => {
-    const { email, value } = item;
+    const { value } = item;
 
     if (item !== ADD_NEW_HOST) {
-      return <HostListItem key={value._id}>{`${value}`}</HostListItem>;
+      return <div key={value._id}>{`${value}`}</div>;
     }
-    //Add a new user component or redirect here
+    //Add new user component
     return (
-      <HostListItem key={value}>{`ADD NEW USER COMPOMENT HERE`}</HostListItem>
+      <div key={value} onClick={this.handleAddHostClick}>
+        Add New Host
+      </div>
     );
-    //Can return loading indictor here
   };
 
-  dirtyOverride = host => {
-    return host ? true : false;
+  dirtyOverride = currentInputValue => {
+    return currentInputValue ? true : false;
   };
 
   render() {
@@ -87,34 +177,48 @@ class DropdownHost extends Component {
       dirtyOverride,
       handleChange,
       handleFocus,
+      handleFormHostAddCancel,
+      handleFormHostAddSubmit,
+      handleInputClick,
       handleBlur,
+      formatHostName,
       initialValue,
       onSelect,
       props,
       renderHostListItem,
       state,
     } = this;
-    const { host, user } = props;
-    const { hasFocus } = state;
-    const { docs, loading } = user;
+    const { auth, user } = props;
+    const {
+      addHostVisible,
+      cachedSearches,
+      currentInputValue,
+      hasFocus,
+    } = state;
+    const { loading } = user;
+
+    // get the documents from the cachedResults property rather than Redux,
+    // because Redux might not have the search results of the current input value if there
+    // were multiple host search XHR requests that didn't finish in the order they were called
+    const docs = cachedSearches[currentInputValue.toLowerCase()] || [];
 
     let items = docs.map(user => {
-      const { _id, profile, station = { on_air_name: null } } = user;
-      const { first_name, last_name } = profile;
-      const { on_air_name } = station;
+      const { _id } = user;
 
       return {
         _id,
-        value:
-          on_air_name != null && on_air_name.length > 0
-            ? on_air_name
-            : `${first_name} ${last_name}`,
+        value: formatHostName(user),
       };
     });
 
-    if (items.length > 0) {
-      //by default, display an option for the current user
+    if (items.length === 0) {
+      items.push({
+        _id: auth.doc._id,
+        value: formatHostName(auth.doc) + ' (Me)',
+      });
     }
+
+    items.push({ _id: null, value: 'No Host' });
 
     items.push(ADD_NEW_HOST);
 
@@ -133,39 +237,51 @@ class DropdownHost extends Component {
           highlightedIndex,
           selectedItem,
         }) => (
-          <div>
-            <Field
-              className="mb-1"
-              component={Input}
+          <div key="host-field" className="mb-1">
+            <Input
+              className=""
               label="Host"
               name="host"
               type="text"
               {...getInputProps({
                 onChange: handleChange,
+                onClick: handleInputClick,
                 onBlur: handleBlur,
                 onFocus: handleFocus,
               })}
-              dirtyOverride={dirtyOverride(host)}
+              dirtyOverride={dirtyOverride(currentInputValue)}
+              value={currentInputValue}
             />
 
-            {hasFocus ? (
-              <div className="dropdown__list active">
+            {hasFocus && !addHostVisible ? (
+              <div className="dropdown__list dropdown__list--host-list active">
                 {items.map((item, index) => (
                   <div
+                    key={index}
                     {...getItemProps({
-                      key: item.value,
-                      index,
+                      key: index,
+                      className: classnames(
+                        'dropdown__item',
+                        highlightedIndex === index && 'selected',
+                        (item === ADD_NEW_HOST || item._id === null) &&
+                          'dropdown__item--grey',
+                      ),
                       item,
-                      style: {
-                        backgroundColor:
-                          highlightedIndex === index ? 'lightgray' : 'white',
-                        fontWeight: selectedItem === item ? 'bold' : 'normal',
-                      },
                     })}
                   >
                     {renderHostListItem(item, loading)}
                   </div>
                 ))}
+              </div>
+            ) : null}
+
+            {addHostVisible ? (
+              <div className="host-field__add-panel">
+                <h3>Add New Host</h3>
+                <FormHostAdd
+                  cancelCallback={handleFormHostAddCancel}
+                  submitCallback={handleFormHostAddSubmit}
+                />
               </div>
             ) : null}
           </div>
@@ -175,12 +291,9 @@ class DropdownHost extends Component {
   }
 }
 
-DropdownHost = reduxForm({
-  form: 'hostSearch',
-})(DropdownHost);
-
-function mapStateToProps({ user }) {
+function mapStateToProps({ auth, user }) {
   return {
+    auth,
     user,
   };
 }

@@ -7,6 +7,7 @@ export const BUTTON_CLASS = {
   primary: 'button--primary',
   success: 'button--success',
   info: 'button--info',
+  neutral: 'button--neutral',
   danger: 'button--danger',
   warning: 'button--warning',
   link: 'button--link',

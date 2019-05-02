@@ -53,7 +53,7 @@ const userSchema = new Schema({
   contact: {
     phone: {
       type: String,
-      require: true,
+      require: false,
     },
 
     email: {

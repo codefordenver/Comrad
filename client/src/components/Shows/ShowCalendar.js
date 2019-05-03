@@ -68,7 +68,38 @@ class Calendar extends Component {
   };
 
   convertShowsToArray = shows => {
-    return shows ? _.values(shows) : [];
+    const showsArray = shows ? _.values(shows) : [];
+    let newShowsArray = [];
+    showsArray.forEach(show => {
+      let { show_start_time_utc, show_end_time_utc } = show;
+
+      //Basic check for shows that start and end at midnight.
+      if (moment(show_start_time_utc).format('HH') === '00') {
+        show.show_start_time_utc = new Date(
+          moment(show_start_time_utc).add(1, 'second'),
+        );
+      }
+
+      if (moment(show_end_time_utc).format('HH') === '00') {
+        show.show_end_time_utc = new Date(
+          moment(show_end_time_utc).add(-1, 'second'),
+        );
+      }
+
+      //Should be setup to check if shows span across midnight
+      if (
+        parseInt(moment(show_start_time_utc).format('HH')) >
+        parseInt(moment(show_end_time_utc).format('HH'))
+      ) {
+        //Use this to push multiple shows if they span across midnight
+        //newShowsArray.push(show2) //add show (1) and show (2)
+        newShowsArray.push(show);
+      } else {
+        newShowsArray.push(show);
+      }
+    });
+
+    return newShowsArray;
   };
 
   showNewShowModal = show => {

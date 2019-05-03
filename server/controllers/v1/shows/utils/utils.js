@@ -148,21 +148,15 @@ function momentCombineDayAndTime(desiredDate, desiredTime) {
 function returnShowsArrayWithNewDates(dateArray, show) {
   const returnedShows = dateArray.map((date, i) => {
     let newShow = { ...show.toObject() };
-    const show_start_time_utc = momentCombineDayAndTime(
-      date,
-      show.show_start_time_utc,
-    );
-    const show_end_time_utc = momentCombineDayAndTime(
-      date,
-      show.show_end_time_utc,
-    );
+    let { show_start_time_utc, show_end_time_utc } = show;
+
+    show_start_time_utc = momentCombineDayAndTime(date, show_start_time_utc);
+    show_end_time_utc = momentCombineDayAndTime(date, show_end_time_utc);
+
     newShow.master_show_uid = newShow._id;
     newShow._id = newShow._id + '-' + show_start_time_utc;
     newShow.show_start_time_utc = show_start_time_utc;
     newShow.show_end_time_utc = show_end_time_utc;
-    if (newShow.master_show_uid == '5cc913ad0d5a944a256139fc') {
-      console.log(newShow);
-    }
     return newShow;
   });
   return returnedShows;

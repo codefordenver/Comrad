@@ -8,7 +8,7 @@ function search(req, res) {
 
   const { permission } = req.user.station;
 
-  if (permission !== 'Admin') {
+  if (permission.toLowerCase() !== 'admin') {
     return res.status(422).json('User must have admin access');
   }
 

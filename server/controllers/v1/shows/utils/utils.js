@@ -188,35 +188,21 @@ function createRRule(show, queryStartDate, queryEndDate) {
     newRRule.freq = frequency;
   }
 
-  if (repeat_start_date) {
+  queryStartDate = new Date(
+    moment(queryStartDate).format('YYYY-MM-DDTHH:mm:ssZ'),
+  );
+  if (moment(repeat_start_date).isAfter(moment(queryStartDate))) {
     //Need to use query start date to reduce repeat size
-    newRRule.dtstart = new Date(
-      moment(repeat_start_date).format('YYYY-MM-DDTHH:mm:ssZ'),
-    );
-  }
-
-  if (!queryEndDate) {
-    //Need a better way to get an end date on creation.
-    queryEndDate = new Date(
-      moment()
-        .add(1, 'year')
-        .format('YYYY-MM-DDTHH:mm:ssZ'),
-    );
+    newRRule.dtstart = repeat_start_date;
   } else {
-    queryEndDate = new Date(
-      moment(queryEndDate).format('YYYY-MM-DDTHH:mm:ssZ'),
-    );
+    newRRule.dtstart = queryStartDate;
   }
 
+  queryEndDate = new Date(moment(queryEndDate).format('YYYY-MM-DDTHH:mm:ssZ'));
   if (moment(repeat_end_date).isBefore(moment(queryEndDate))) {
-    console.log(moment(repeat_end_date));
-    console.log(queryEndDate);
     newRRule.until = repeat_end_date;
-  } else if (queryEndDate) {
-    console.log('Using Query End Date');
-    newRRule.until = queryEndDate;
   } else {
-    //Do Nothing
+    newRRule.until = queryEndDate;
   }
 
   if (count) {

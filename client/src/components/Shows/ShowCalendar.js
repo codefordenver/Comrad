@@ -47,15 +47,15 @@ class Calendar extends Component {
         searchShow(dayStart, dayEnd);
       } else {
         //For when changing weeks
-        const rangeStart = moment(dates[0]).subtract(1, 'months');
-        const rangeEnd = moment(dates[dates.length - 1]).add(1, 'months');
+        const rangeStart = moment(dates[0]).subtract(2, 'weeks');
+        const rangeEnd = moment(dates[dates.length - 1]).add(2, 'weeks');
 
         searchShow(rangeStart, rangeEnd);
       }
     } else {
       //For when changing months/agenda
-      const objectStart = moment(dates.start).subtract(2, 'month');
-      const objectEnd = moment(dates.end).add(2, 'month');
+      const objectStart = moment(dates.start).subtract(1, 'month');
+      const objectEnd = moment(dates.end).add(1, 'month');
 
       searchShow(objectStart, objectEnd);
     }

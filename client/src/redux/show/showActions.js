@@ -64,12 +64,16 @@ export const deleteShowSeries = show => async dispatch => {
 };
 
 export const searchShow = (startDate, endDate) => async dispatch => {
+  const params = { startDate, endDate };
   try {
     const response = await axios.get(`/v1/shows/`, {
-      params: { startDate, endDate },
+      params: params,
     });
 
-    dispatch({ type: SHOW_SEARCH, payload: response.data });
+    dispatch({
+      type: SHOW_SEARCH,
+      payload: { data: response.data, params: params },
+    });
   } catch (e) {
     dispatch({ type: SHOW_ERROR, payload: e });
   }

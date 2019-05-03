@@ -17,6 +17,7 @@ const initialState = {
   data: [],
   fetching: false,
   error: false,
+  search: {},
 };
 
 export function showReducer(state = initialState, { type, payload }) {
@@ -39,11 +40,17 @@ export function showReducer(state = initialState, { type, payload }) {
       };
 
     case SHOW_SEARCH:
+      const searchData = payload.data;
+      const searchParams = payload.params;
       return {
         ...state,
-        data: { ...state.data, ..._.mapKeys(payload, '_id') },
+        data: { ...state.data, ..._.mapKeys(searchData, '_id') },
         fetching: false,
         error: false,
+        search: {
+          start: searchParams.startDate,
+          end: searchParams.endDate,
+        },
       };
 
     case SHOW_DELETE:
@@ -136,6 +143,10 @@ export function showReducer(state = initialState, { type, payload }) {
 
 export function getShowsData(state = initialState) {
   return state.data;
+}
+
+export function getSearchDate(state = initialState) {
+  return state.search;
 }
 
 export function getShowSelected(state = initialState) {

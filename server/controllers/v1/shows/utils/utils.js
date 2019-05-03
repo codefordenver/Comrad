@@ -26,16 +26,15 @@ function createNewShow(req, res, showStatus = 'Active') {
         break;
       case 'title':
         formatedShow.show_details.title = value;
+        break;
       default:
         console.log('Hi default');
     }
     //console.log(`${key} = ${value}`);
   }
-  console.log(formatedShow);
   if (!req.body.repeat_end_date) {
     show.repeat_end_date = moment('9999', 'YYYY');
   }
-  console.log(moment(show.repeat_end_date).endOf('day'));
 
   return {
     status: 'Active',
@@ -72,8 +71,8 @@ function showList(shows, startDate = null, endDate = null) {
   const allRepeatShows = reduceShowsByRepeatProperty(shows, true);
   const allRepeatShowsExpanded = allRepeatShows.map(show => {
     const allShowDates = returnDatesArrayByRepeatRule(show, startDate, endDate);
-    console.log(allShowDates.slice(-20));
-    console.log('Completed RRule');
+    //console.log(allShowDates.slice(-20));
+    //console.log('Completed RRule');
     const allRepeatedShowsExpandedByDates = returnShowsArrayWithNewDates(
       allShowDates,
       show,
@@ -118,7 +117,6 @@ function reduceShowsByRepeatProperty(shows, recurringCheckValue) {
 
 function returnDatesArrayByRepeatRule(show, startDate = null, endDate = null) {
   const { is_recurring } = show;
-  console.log(show);
 
   if (is_recurring) {
     const rule = new RRule(createRRule(show, startDate, endDate));
@@ -142,7 +140,7 @@ function momentCombineDayAndTime(desiredDate, desiredTime) {
     'YYYYMMDD HH:mm:ssZ',
   ).format('YYYY-MM-DDTHH:mm:ssZ');
 
-  console.log(`${desiredDate} - ${moment(returnedValue).isDST()}`);
+  //console.log(`${desiredDate} - ${moment(returnedValue).isDST()}`);
 
   return returnedValue;
 }
@@ -158,12 +156,13 @@ function returnShowsArrayWithNewDates(dateArray, show) {
       date,
       show.show_end_time_utc,
     );
-
     newShow.master_show_uid = newShow._id;
-    newShow._id = newShow._id + '-' + i;
+    newShow._id = newShow._id + '-' + show_start_time_utc;
     newShow.show_start_time_utc = show_start_time_utc;
     newShow.show_end_time_utc = show_end_time_utc;
-
+    if (newShow.master_show_uid == '5cc913ad0d5a944a256139fc') {
+      console.log(newShow);
+    }
     return newShow;
   });
   return returnedShows;
@@ -245,7 +244,13 @@ function createRRule(show, queryStartDate, queryEndDate) {
     newRRule.bymonthday = [bymonthday];
   }
 
-  console.log(newRRule);
+  /**
+   * Partial fix for DST.
+   * By setting the time to 6 UTC instead of 0 UTC, it does not shift by a date in moment
+   *  */
+  newRRule.byhour = [6];
+
+  //console.log(newRRule);
 
   return newRRule;
 }

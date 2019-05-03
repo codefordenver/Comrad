@@ -15,8 +15,6 @@ class Navbar extends Component {
   };
 
   render() {
-    const profile = this.props.auth.doc.profile || null;
-
     return (
       <div className="navbar">
         <div className="navbar__logo">

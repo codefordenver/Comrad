@@ -4,6 +4,7 @@ const findById = require('./findById');
 const randomUser = require('./randomUser');
 const remove = require('./remove');
 const search = require('./search');
+const searchHosts = require('./searchHosts');
 const update = require('./update');
 const updatePermission = require('./updatePermission');
 
@@ -14,6 +15,7 @@ module.exports = {
   randomUser,
   remove,
   search,
+  searchHosts,
   update,
   updatePermission,
 };

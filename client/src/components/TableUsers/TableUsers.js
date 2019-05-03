@@ -49,16 +49,33 @@ const columns = [
 ];
 
 class TableUsers extends Component {
+  handleRowClick = (state, rowInfo) => {
+    if (rowInfo) {
+      return {
+        onClick: () => {
+          const { _id } = rowInfo.original;
+          const { history } = this.props;
+
+          history.push(`/user/profile/${_id}`);
+        },
+      };
+    }
+
+    return false;
+  };
+
   render() {
-    const { user } = this.props;
+    const { handleRowClick, props } = this;
+    const { user } = props;
     const { docs } = user;
 
     return (
       <ReactTable
-        className="-highlight"
+        className="-highlight clickable-rows"
         columns={columns}
         data={docs}
         defaultPageSize={15}
+        getTdProps={handleRowClick}
         noDataText="No Data Found"
         showPageSizeOptions={false}
       />

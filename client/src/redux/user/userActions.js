@@ -1,24 +1,39 @@
 import axios from 'axios';
 import {
+  USER_ADD,
   USER_ALERT,
   USER_ALERT_CLOSE,
-  USER_FIND_ONE,
-  USER_ADD,
-  USER_LOADING,
-  USER_FIND_ALL,
-  USER_SEARCH,
   USER_CLEAR,
+  USER_CLEAR_SEARCH,
+  USER_CREATE,
+  USER_FIND_ALL,
+  USER_FIND_ONE,
+  USER_LOADING,
+  USER_SEARCH,
+  USER_SEARCH_HOSTS,
 } from './userTypes';
 
-import { userAPI } from '../../utils/api';
+import { userAPI } from '../../api';
 
 export const userFindOne = id => async dispatch => {
   try {
-    const response = await axios.get(`/v1/users/${id}`);
+    dispatch({ type: USER_LOADING });
+
+    const response = await userAPI.findOne(id);
 
     dispatch({ type: USER_FIND_ONE, payload: response.data });
   } catch (err) {
-    console.log(err);
+    const alert = {
+      display: true,
+      header: 'Error',
+      message: 'User was not found',
+      type: 'danger',
+    };
+
+    dispatch({
+      type: USER_ALERT,
+      payload: alert,
+    });
   }
 };
 
@@ -64,6 +79,26 @@ export const userSearch = ({ filter, q }) => async dispatch => {
       type: 'danger',
     };
 
+    dispatch({ type: USER_ALERT, payload: alert });
+  }
+};
+
+export const userSearchHosts = ({ filter, q }) => async dispatch => {
+  try {
+    dispatch({ type: USER_LOADING });
+
+    const { data: docs } = await userAPI.searchHosts({ filter, q });
+    const search = { filter, q };
+
+    dispatch({ type: USER_SEARCH_HOSTS, payload: { docs, search } });
+  } catch (e) {
+    const alert = {
+      display: true,
+      header: 'ERROR',
+      message: 'Error With Searching For Users',
+      type: 'danger',
+    };
+
     dispatch({ type: USER_ALERT, payload: { alert } });
   }
 };
@@ -86,14 +121,54 @@ export const userAdd = (input, callback) => async dispatch => {
 export const userClear = () => async dispatch => {
   try {
     dispatch({ type: USER_CLEAR });
-  } catch (err) {
-    console.log(err);
+  } catch (e) {
+    console.log(e);
   }
 };
 
 export const userAlertClose = () => async dispatch => {
   try {
     dispatch({ type: USER_ALERT_CLOSE });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const userCreate = (values, callback) => async dispatch => {
+  try {
+    dispatch({ type: USER_LOADING });
+
+    const response = await userAPI.create(values);
+
+    const payload = {
+      doc: response,
+      alert: {
+        display: true,
+        header: 'SUCCESS',
+        message: 'User successfully created!',
+        type: 'success',
+      },
+    };
+
+    callback(response.data);
+
+    dispatch({ type: USER_CREATE, payload });
+  } catch (err) {
+    console.log(err);
+    const alert = {
+      display: true,
+      header: 'ERROR',
+      message: 'Create User Fail',
+      type: 'danger',
+    };
+
+    dispatch({ type: USER_ALERT, payload: alert });
+  }
+};
+
+export const userClearSearch = () => async dispatch => {
+  try {
+    dispatch({ type: USER_CLEAR_SEARCH });
   } catch (err) {
     console.log(err);
   }

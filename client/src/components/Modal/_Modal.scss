@@ -17,5 +17,5 @@
   right: 0;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.8);
-  z-index: 9; /* ensure modal-overlay appears above the react-dates calendar widget on the calendar main page */
+  z-index: 1071; /* display above .rc-tooltip */
 }

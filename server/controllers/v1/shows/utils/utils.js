@@ -242,7 +242,7 @@ function createRRule(show, queryStartDate, queryEndDate) {
    * Partial fix for DST.
    * By setting the time to 6 UTC instead of 0 UTC, it does not shift by a date in moment
    *  */
-  newRRule.byhour = [6];
+  newRRule.byhour = [12];
 
   //console.log(newRRule);
 

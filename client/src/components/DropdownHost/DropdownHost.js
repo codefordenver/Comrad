@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import Downshift from 'downshift';
 import { connect } from 'react-redux';
 
-import { hostSearch, userAlertClose } from '../../redux/user';
+import { userAlertClose, userClear, userSearchHosts } from '../../redux/user';
 import FormHostAdd from '../FormHostAdd';
 import Input from '../Input';
 import Modal from '../Modal';
@@ -14,12 +14,12 @@ class DropdownHost extends Component {
   constructor(props) {
     super(props);
 
-    const { filterByStatus = 'All', host, hostSearch } = this.props;
+    const { filterByStatus = 'All', host, userSearchHosts } = this.props;
     const hostDisplayName = host != null ? this.formatHostName(host) : '';
 
     //run a host search on the existing value so that the host list is populated with information
     if (hostDisplayName.length > 0) {
-      hostSearch({ filter: filterByStatus, q: hostDisplayName });
+      userSearchHosts({ filter: filterByStatus, q: hostDisplayName });
     }
 
     this.state = {
@@ -49,6 +49,11 @@ class DropdownHost extends Component {
     }
   }
 
+  componentWillUnmount() {
+    const { userClear } = this.props;
+    userClear();
+  }
+
   formatHostName = user => {
     const { profile, station = { on_air_name: null } } = user;
     const { first_name, last_name } = profile;
@@ -59,7 +64,7 @@ class DropdownHost extends Component {
   };
 
   handleChange = e => {
-    const { hostSearch, filterByStatus = 'All' } = this.props;
+    const { userSearchHosts, filterByStatus = 'All' } = this.props;
     const { cachedSearches, hostSearchTimeout } = this.state;
     const { value } = e.target;
 
@@ -74,7 +79,7 @@ class DropdownHost extends Component {
       }
       this.setState({
         hostSearchTimeout: setTimeout(
-          () => hostSearch({ filter: filterByStatus, q: value }),
+          () => userSearchHosts({ filter: filterByStatus, q: value }),
           150,
         ),
       });
@@ -308,7 +313,8 @@ function mapStateToProps({ auth, user }) {
 export default connect(
   mapStateToProps,
   {
-    hostSearch,
     userAlertClose,
+    userClear,
+    userSearchHosts,
   },
 )(DropdownHost);

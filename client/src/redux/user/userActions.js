@@ -1,38 +1,19 @@
 import axios from 'axios';
 import {
-  HOST_SEARCH,
   USER_ADD,
   USER_ALERT,
   USER_ALERT_CLOSE,
   USER_CLEAR,
+  USER_CLEAR_SEARCH,
   USER_CREATE,
   USER_FIND_ALL,
   USER_FIND_ONE,
   USER_LOADING,
   USER_SEARCH,
+  USER_SEARCH_HOSTS,
 } from './userTypes';
 
 import { userAPI } from '../../api';
-
-export const hostSearch = ({ filter, q }) => async dispatch => {
-  try {
-    dispatch({ type: USER_LOADING });
-
-    const { data: docs } = await userAPI.searchHosts({ filter, q });
-    const search = { filter, q };
-
-    dispatch({ type: HOST_SEARCH, payload: { docs, search } });
-  } catch (e) {
-    const alert = {
-      display: true,
-      header: 'ERROR',
-      message: 'Error With Searching For Users',
-      type: 'danger',
-    };
-
-    dispatch({ type: USER_ALERT, payload: { alert } });
-  }
-};
 
 export const userFindOne = id => async dispatch => {
   try {
@@ -102,6 +83,26 @@ export const userSearch = ({ filter, q }) => async dispatch => {
   }
 };
 
+export const userSearchHosts = ({ filter, q }) => async dispatch => {
+  try {
+    dispatch({ type: USER_LOADING });
+
+    const { data: docs } = await userAPI.searchHosts({ filter, q });
+    const search = { filter, q };
+
+    dispatch({ type: USER_SEARCH_HOSTS, payload: { docs, search } });
+  } catch (e) {
+    const alert = {
+      display: true,
+      header: 'ERROR',
+      message: 'Error With Searching For Users',
+      type: 'danger',
+    };
+
+    dispatch({ type: USER_ALERT, payload: { alert } });
+  }
+};
+
 export const userAdd = (input, callback) => async dispatch => {
   try {
     const response = await axios.post('/v1/users', input);
@@ -162,5 +163,13 @@ export const userCreate = (values, callback) => async dispatch => {
     };
 
     dispatch({ type: USER_ALERT, payload: alert });
+  }
+};
+
+export const userClearSearch = () => async dispatch => {
+  try {
+    dispatch({ type: USER_CLEAR_SEARCH });
+  } catch (err) {
+    console.log(err);
   }
 };

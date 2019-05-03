@@ -1,14 +1,15 @@
 import {
-  HOST_SEARCH,
   USER_ADD,
   USER_ALERT,
   USER_ALERT_CLOSE,
   USER_CLEAR,
+  USER_CLEAR_SEARCH,
   USER_CREATE,
   USER_FIND_ALL,
   USER_FIND_ONE,
   USER_LOADING,
   USER_SEARCH,
+  USER_SEARCH_HOSTS,
 } from './userTypes';
 
 const initialState = {
@@ -30,15 +31,6 @@ const initialState = {
 
 export const userReducer = (state = initialState, { type, payload }) => {
   switch (type) {
-    case HOST_SEARCH:
-      return {
-        ...state,
-        ...payload,
-        alert: {
-          ...initialState.alert,
-        },
-        loading: false,
-      };
     case USER_FIND_ONE:
       return {
         ...state,
@@ -65,6 +57,16 @@ export const userReducer = (state = initialState, { type, payload }) => {
         loading: false,
       };
 
+    case USER_SEARCH_HOSTS:
+      return {
+        ...state,
+        ...payload,
+        alert: {
+          ...initialState.alert,
+        },
+        loading: false,
+      };
+
     case USER_ADD:
       return {
         ...payload,
@@ -73,6 +75,14 @@ export const userReducer = (state = initialState, { type, payload }) => {
     case USER_CLEAR:
       return {
         ...initialState,
+      };
+
+    case USER_CLEAR_SEARCH:
+      return {
+        ...state,
+        search: {
+          ...initialState.search,
+        },
       };
 
     case USER_CREATE:

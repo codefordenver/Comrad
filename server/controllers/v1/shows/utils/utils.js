@@ -132,13 +132,13 @@ function returnDatesArrayByRepeatRule(show, startDate = null, endDate = null) {
 function momentCombineDayAndTime(desiredDate, desiredTime) {
   //https://stackoverflow.com/questions/21918095/moment-js-how-to-detect-daylight-savings-time-and-add-one-day
   //Need to detect and handle DST, days are offset by 1 day in november/march.
-  const newDate = moment(desiredDate).format('YYYYMMDD');
-  const newTime = moment(desiredTime).format('HH:mm:ssZ');
-  const newDateAndTimeFormat = newDate + ' ' + newTime;
-  const returnedValue = moment(
-    newDateAndTimeFormat,
-    'YYYYMMDD HH:mm:ssZ',
-  ).format('YYYY-MM-DDTHH:mm:ssZ');
+  const hours = moment(desiredTime).hours();
+  const minutes = moment(desiredTime).minutes();
+
+  const returnedValue = moment(desiredDate)
+    .hours(hours)
+    .minutes(minutes)
+    .seconds(0);
 
   //console.log(`${desiredDate} - ${moment(returnedValue).isDST()}`);
 
@@ -149,9 +149,33 @@ function returnShowsArrayWithNewDates(dateArray, show) {
   const returnedShows = dateArray.map((date, i) => {
     let newShow = { ...show.toObject() };
     let { show_start_time_utc, show_end_time_utc } = show;
-
+    if (show._id == '5cc913ad0d5a944a256139f7') {
+      console.log(show.show_details.title);
+      console.log(date);
+      console.log(show_start_time_utc);
+      console.log(show_end_time_utc);
+      console.log(moment(date).isDST());
+      console.log(moment(show_start_time_utc).isDST());
+      console.log(moment(show_end_time_utc).isDST());
+    }
     show_start_time_utc = momentCombineDayAndTime(date, show_start_time_utc);
     show_end_time_utc = momentCombineDayAndTime(date, show_end_time_utc);
+
+    if (show._id == '5cc913ad0d5a944a256139f7') {
+      console.log('---After Processing---');
+      console.log(
+        moment(show_start_time_utc)
+          .utc()
+          .format(),
+      );
+      console.log(
+        moment(show_end_time_utc)
+          .utc()
+          .format(),
+      );
+      console.log(moment(show_start_time_utc).isDST());
+      console.log(moment(show_end_time_utc).isDST());
+    }
 
     newShow.master_show_uid = newShow._id;
     newShow._id = newShow._id + '-' + show_start_time_utc;

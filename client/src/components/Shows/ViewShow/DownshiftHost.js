@@ -43,14 +43,15 @@ class DropdownHost extends Component {
       return;
     }
 
-    userSearch({ filter: 'all', q: value });
+    userSearch({ filter: 'All', q: value });
   };
 
   onSelect = selection => {
     const { updateShowHost, dispatch, _id } = this.props;
     const { value } = selection;
+    const host_id = selection._id;
 
-    updateShowHost(_id, selection._id);
+    updateShowHost(_id, { 'show_details.host': host_id });
     dispatch(change('hostSearch', 'host', value));
   };
 

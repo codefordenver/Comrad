@@ -18,3 +18,23 @@ _Note the use of the npm `ci` command instead of `install`: this installs the ex
 Use `npm run` to see a list of available commands.
 
 To configure your environment variables (e.g. for database connection) ask a maintainer for the details.
+
+## Troubleshooting
+
+### Create React App / babel-loader dependency issue
+
+If, on using `npm run [command]`, you receive an error like the following:
+
+```
+[1] There might be a problem with the project dependency tree.
+[1] It is likely not a bug in Create React App, but something you need to fix locally.
+[1]
+[1] The react-scripts package provided by Create React App requires a dependency:
+[1]
+[1]   "babel-loader": "8.0.4"
+[1]
+[1] Don't try to install it manually: your package manager does it automatically.
+[1] However, a different version of babel-loader was detected higher up in the tree:
+```
+
+Then, open/create the `.env` file in the client folder and add the line `SKIP_PREFLIGHT_CHECK=true`

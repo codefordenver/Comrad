@@ -21,8 +21,31 @@ class FormTrackAdd extends Component {
       <form className="form-track-add" onSubmit={handleSubmit(submit)}>
         <Field
           component={Input}
+          label="Disk Number"
+          name="disk-number"
+          type="number"
+          autoFocus
+          validate={requiredValidate}
+        />
+        <Field
+          component={Input}
+          label="Track Number"
+          name="track-number"
+          type="number"
+          autoFocus
+          validate={requiredValidate}
+        />
+        <Field
+          component={Input}
           label="Name"
           name="name"
+          autoFocus
+          validate={requiredValidate}
+        />
+        <Field
+          component={Input}
+          label="Duration"
+          name="duration"
           autoFocus
           validate={requiredValidate}
         />

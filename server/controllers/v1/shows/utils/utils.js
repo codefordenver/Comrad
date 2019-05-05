@@ -2,77 +2,95 @@ const moment = require('moment');
 const { RRule } = require('rrule');
 const _ = require('lodash');
 
-function createNewShow(req, res, showStatus = 'Active') {
-  const show = req.body;
-  let { repeatType } = show;
-  let formatedShow = {
-    show_details: {},
-    repeat_rule: {},
-  };
+function createRRule(show, queryStartDate, queryEndDate) {
+  const {
+    frequency,
+    repeat_start_date,
+    repeat_end_date,
+    interval,
+    count,
+    byweekday,
+    bymonth,
+    bysetpos,
+    bymonthday,
+  } = show.repeat_rule;
 
-  show.status = showStatus;
+  let newRRule = {};
 
-  if (repeatType) {
-    show.repeatType = JSON.parse(repeatType);
+  if (frequency) {
+    newRRule.freq = frequency;
+  }
+
+  queryStartDate = new Date(
+    moment(queryStartDate).format('YYYY-MM-DDTHH:mm:ssZ'),
+  );
+  if (moment(repeat_start_date).isAfter(moment(queryStartDate))) {
+    newRRule.dtstart = repeat_start_date;
   } else {
-    show.repeatType = {};
+    newRRule.dtstart = queryStartDate;
   }
 
-  const showEntries = Object.entries(show);
-  for (const [key, value] of showEntries) {
-    switch (key) {
-      case 'status':
-        formatedShow.status = value;
-        break;
-      case 'title':
-        formatedShow.show_details.title = value;
-        break;
-      default:
-        console.log('Hi default');
-    }
-    //console.log(`${key} = ${value}`);
-  }
-  if (!req.body.repeat_end_date) {
-    show.repeat_end_date = moment('9999', 'YYYY');
+  queryEndDate = new Date(moment(queryEndDate).format('YYYY-MM-DDTHH:mm:ssZ'));
+  if (moment(repeat_end_date).isBefore(moment(queryEndDate))) {
+    newRRule.until = repeat_end_date;
+  } else {
+    newRRule.until = queryEndDate;
   }
 
-  return {
-    status: 'Active',
-    show_details: {
-      title: req.body.title,
-      summary: req.body.summary,
-      description: req.body.description,
-      producer: req.body.producer,
-      host: req.body.host,
-      guests: req.body.guests,
-      playlist: req.body.playlist,
-      custom: req.body.custom,
-    },
+  if (count) {
+    newRRule.count = count;
+  }
 
-    show_start_time_utc: req.body.show_start_time_utc,
-    show_end_time_utc: req.body.show_end_time_utc,
+  if (interval) {
+    newRRule.interval = interval;
+  }
 
-    is_recurring: req.body.repeat,
-    repeat_rule: {
-      frequency: show.repeatType.freq,
-      repeat_start_date: moment(show.repeat_start_date).startOf('day'),
-      repeat_end_date: moment(show.repeat_end_date).endOf('day'),
-      count: show.repeatType.count,
-      interval: show.repeatType.interval,
-      byweekday: show.repeatType.byweekday,
-      bymonth: show.repeatType.bymonth,
-      bysetpos: show.repeatType.bysetpos,
-      bymonthday: show.repeatType.bymonthday,
-    },
-  };
+  if (byweekday) {
+    newRRule.byweekday = byweekday.map(day => {
+      // dayList is used for imported shows
+      const dayList = {
+        0: 'MO',
+        1: 'TU',
+        2: 'WE',
+        3: 'TH',
+        4: 'FR',
+        5: 'SA',
+        6: 'SU',
+      };
+
+      if (dayList[day]) {
+        day = dayList[day];
+      }
+
+      return RRule[day];
+    });
+  }
+
+  if (bymonth) {
+    newRRule.bymonth = [bymonth];
+  }
+
+  if (bysetpos) {
+    newRRule.bysetpos = [bysetpos];
+  }
+
+  if (bymonthday) {
+    newRRule.bymonthday = [bymonthday];
+  }
+
+  /**
+   * Partial fix for DST.
+   * By setting the time to 12 UTC instead of 0 UTC, it does not shift by a date in moment as the time is not midnight before DST correction.
+   *  */
+  newRRule.byhour = [12];
+
+  return newRRule;
 }
 
 function showList(shows, startDate = null, endDate = null) {
   const allRepeatShows = reduceShowsByRepeatProperty(shows, true);
   const allRepeatShowsExpanded = allRepeatShows.map(show => {
     const allShowDates = returnDatesArrayByRepeatRule(show, startDate, endDate);
-    //console.log(allShowDates.slice(-20));
-    //console.log('Completed RRule');
     const allRepeatedShowsExpandedByDates = returnShowsArrayWithNewDates(
       allShowDates,
       show,
@@ -149,33 +167,33 @@ function returnShowsArrayWithNewDates(dateArray, show) {
   const returnedShows = dateArray.map((date, i) => {
     let newShow = { ...show.toObject() };
     let { show_start_time_utc, show_end_time_utc } = show;
-    if (show._id == '5cc913ad0d5a944a256139f7') {
-      console.log(show.show_details.title);
-      console.log(date);
-      console.log(show_start_time_utc);
-      console.log(show_end_time_utc);
-      console.log(moment(date).isDST());
-      console.log(moment(show_start_time_utc).isDST());
-      console.log(moment(show_end_time_utc).isDST());
-    }
+    // if (show._id == '5cc913ad0d5a944a256139f7') {
+    //   console.log(show.show_details.title);
+    //   console.log(date);
+    //   console.log(show_start_time_utc);
+    //   console.log(show_end_time_utc);
+    //   console.log(moment(date).isDST());
+    //   console.log(moment(show_start_time_utc).isDST());
+    //   console.log(moment(show_end_time_utc).isDST());
+    // }
     show_start_time_utc = momentCombineDayAndTime(date, show_start_time_utc);
     show_end_time_utc = momentCombineDayAndTime(date, show_end_time_utc);
 
-    if (show._id == '5cc913ad0d5a944a256139f7') {
-      console.log('---After Processing---');
-      console.log(
-        moment(show_start_time_utc)
-          .utc()
-          .format(),
-      );
-      console.log(
-        moment(show_end_time_utc)
-          .utc()
-          .format(),
-      );
-      console.log(moment(show_start_time_utc).isDST());
-      console.log(moment(show_end_time_utc).isDST());
-    }
+    // if (show._id == '5cc913ad0d5a944a256139f7') {
+    //   console.log('---After Processing---');
+    //   console.log(
+    //     moment(show_start_time_utc)
+    //       .utc()
+    //       .format(),
+    //   );
+    //   console.log(
+    //     moment(show_end_time_utc)
+    //       .utc()
+    //       .format(),
+    //   );
+    //   console.log(moment(show_start_time_utc).isDST());
+    //   console.log(moment(show_end_time_utc).isDST());
+    // }
 
     newShow.master_show_uid = newShow._id;
     newShow._id = newShow._id + '-' + show_start_time_utc;
@@ -184,93 +202,6 @@ function returnShowsArrayWithNewDates(dateArray, show) {
     return newShow;
   });
   return returnedShows;
-}
-
-function createRRule(show, queryStartDate, queryEndDate) {
-  const {
-    frequency,
-    repeat_start_date,
-    repeat_end_date,
-    interval,
-    count,
-    byweekday,
-    bymonth,
-    bysetpos,
-    bymonthday,
-  } = show.repeat_rule;
-
-  let newRRule = {};
-
-  if (frequency) {
-    newRRule.freq = frequency;
-  }
-
-  queryStartDate = new Date(
-    moment(queryStartDate).format('YYYY-MM-DDTHH:mm:ssZ'),
-  );
-  if (moment(repeat_start_date).isAfter(moment(queryStartDate))) {
-    //Need to use query start date to reduce repeat size
-    newRRule.dtstart = repeat_start_date;
-  } else {
-    newRRule.dtstart = queryStartDate;
-  }
-
-  queryEndDate = new Date(moment(queryEndDate).format('YYYY-MM-DDTHH:mm:ssZ'));
-  if (moment(repeat_end_date).isBefore(moment(queryEndDate))) {
-    newRRule.until = repeat_end_date;
-  } else {
-    newRRule.until = queryEndDate;
-  }
-
-  if (count) {
-    newRRule.count = count;
-  }
-
-  if (interval) {
-    newRRule.interval = interval;
-  }
-
-  if (byweekday) {
-    newRRule.byweekday = byweekday.map(day => {
-      const dayList = {
-        0: 'MO',
-        1: 'TU',
-        2: 'WE',
-        3: 'TH',
-        4: 'FR',
-        5: 'SA',
-        6: 'SU',
-      };
-
-      if (dayList[day]) {
-        day = dayList[day];
-      }
-
-      return RRule[day];
-    });
-  }
-
-  if (bymonth) {
-    newRRule.bymonth = [bymonth];
-  }
-
-  if (bysetpos) {
-    newRRule.bysetpos = [bysetpos];
-  }
-
-  if (bymonthday) {
-    newRRule.bymonthday = [bymonthday];
-  }
-
-  /**
-   * Partial fix for DST.
-   * By setting the time to 6 UTC instead of 0 UTC, it does not shift by a date in moment
-   *  */
-  newRRule.byhour = [12];
-
-  //console.log(newRRule);
-
-  return newRRule;
 }
 
 function findShowQueryByDateRange(start, end) {
@@ -289,7 +220,6 @@ function findShowQueryByDateRange(start, end) {
 }
 
 module.exports = {
-  createNewShow,
   showList,
   findShowQueryByDateRange,
 };

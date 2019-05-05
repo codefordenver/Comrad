@@ -62,14 +62,14 @@ class AlbumViewPage extends Component {
             <Card>
               <CardBody>
                 <h2 className="mb-1">Tracks</h2>
+                <Link className="add-track-button" to={`${url}/add`}>
+                  Add Track
+                </Link>
                 {isEmpty(tracks) ? (
                   <LargeText align="left">No Tracks</LargeText>
                 ) : (
                   <TableAlbumTracks onRowClick={navigateToTrack} />
                 )}
-                <Link className="add-track-button" to={`${url}/add`}>
-                  Add Track
-                </Link>
               </CardBody>
             </Card>
           </div>

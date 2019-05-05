@@ -17,11 +17,13 @@ class Library extends Component {
     return (
       <MainLayout>
         <Route exact path={`${url}`} component={LibrarySearchPage} />
-        <Route path={`${url}/album/:id`} component={AlbumViewPage} />
+        <Switch>
+          <Route path={`${url}/album/:id/add`} component={TrackAddPage} />
+          <Route path={`${url}/album/:id`} component={AlbumViewPage} />
+        </Switch>
         <Switch>
           <Route path={`${url}/artist/add`} component={ArtistAddPage} />
           <Route path={`${url}/artist/:id`} component={ArtistViewPage} />
-          <Route path={`${url}/album/:id/add`} component={TrackAddPage} />
         </Switch>
         <Route path={`${url}/track/:id`} component={TrackViewPage} />
       </MainLayout>

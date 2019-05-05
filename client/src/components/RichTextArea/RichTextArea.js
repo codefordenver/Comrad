@@ -96,6 +96,7 @@ class RichTextArea extends Component {
       >
         <div className="editor-container" onClick={this.focus}>
           <ReactQuill
+            theme="snow"
             {...input}
             {...other}
             autoFocus={autoFocus}

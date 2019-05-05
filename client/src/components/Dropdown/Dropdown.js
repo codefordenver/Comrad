@@ -39,6 +39,8 @@ class Dropdown extends Component {
       'bottom-right',
       'top-left',
       'top-right',
+      'right-top',
+      'right-centered',
     ]),
     /**
      * What the shape of the dropdown will look like

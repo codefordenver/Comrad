@@ -1,5 +1,4 @@
-.artist-view-page {
-  &__album-table-container {
-    margin-top: 1rem;
-  }
+.artist-view{
+  display: grid;
+  grid-row-gap: 1rem;
 }

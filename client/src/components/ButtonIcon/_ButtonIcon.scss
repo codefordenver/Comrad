@@ -22,7 +22,9 @@
 
   &.fa-times {
     color: $color-danger;
+  } 
+
+  &:disabled {
+    opacity: 0.5;
   }
-
-
 }

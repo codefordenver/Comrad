@@ -6,7 +6,7 @@ import axios from 'axios';
 import ReactTable from 'react-table';
 
 import Card, { CardBody } from '../../components/Card';
-import Dropdown, { DropdownItem } from '../../components/Dropdown';
+import Dropdown from '../../components/Dropdown';
 import Input from '../../components/Input';
 
 class LibrarySearchPage extends Component {
@@ -14,7 +14,7 @@ class LibrarySearchPage extends Component {
     activeFilter: 'all',
     docs: [],
     totalPages: null,
-    pageUrls: ['/api/library'],
+    pageUrls: ['/v1/library'],
     loading: true,
     loadingError: false,
     searchString: false,
@@ -35,7 +35,7 @@ class LibrarySearchPage extends Component {
         state.sorted[0].desc !== this.state.sort.desc)
     ) {
       url =
-        '/api/library?sortBy=' +
+        '/v1/library?sortBy=' +
         state.sorted[0].id +
         '&sortDescending=' +
         (state.sorted[0].desc ? '1' : '0');
@@ -88,7 +88,7 @@ class LibrarySearchPage extends Component {
 
   searchLibrary = form => {
     let url =
-      '/api/library/search?s=' + form.q + '&type=' + this.state.activeFilter;
+      '/v1/library/search?s=' + form.q + '&type=' + this.state.activeFilter;
     this.setState(
       {
         pageUrls: [url],
@@ -253,9 +253,9 @@ class LibrarySearchPage extends Component {
                 </div>
               </div>
               <div>
-                <Dropdown type="plus" text="Add">
-                  <DropdownItem to="artist/add">Artist</DropdownItem>
-                  <DropdownItem to="album/add">Album</DropdownItem>
+                <Dropdown position="bottom-right" type="button" text="Add">
+                  <Dropdown.Item to="library/artist/add">Artist</Dropdown.Item>
+                  <Dropdown.Item to="library/album/add">Album</Dropdown.Item>
                 </Dropdown>
               </div>
             </div>

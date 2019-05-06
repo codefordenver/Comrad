@@ -1,21 +1,27 @@
 import axios from 'axios';
-import { AUTH_ALERT, AUTH_LOADING, AUTH_LOGIN, AUTH_LOGOUT } from './authTypes';
+import {
+  AUTH_ALERT,
+  AUTH_ALERT_CLOSE,
+  AUTH_LOADING,
+  AUTH_LOGIN,
+  AUTH_LOGOUT,
+} from './authTypes';
 
 export const authLogin = ({ email, password }, callback) => async dispatch => {
   try {
     dispatch({ type: AUTH_LOADING });
 
-    const response = await axios.post('/api/auth/login', { email, password });
+    const response = await axios.post('/v1/auth/login', { email, password });
 
     dispatch({ type: AUTH_LOGIN, payload: response.data });
 
-    callback();
+    return callback();
   } catch (e) {
     dispatch({
       type: AUTH_ALERT,
       payload: {
         header: 'Error',
-        text: 'Invalid login credentials',
+        message: 'Invalid login credentials',
         type: 'danger',
       },
     });
@@ -24,7 +30,7 @@ export const authLogin = ({ email, password }, callback) => async dispatch => {
 
 export const authLogout = callback => async dispatch => {
   try {
-    await axios.get('/api/auth/logout');
+    await axios.get('/v1/auth/logout');
 
     dispatch({ type: AUTH_LOGOUT });
 
@@ -38,7 +44,7 @@ export const authFetch = () => async dispatch => {
   try {
     dispatch({ type: AUTH_LOADING });
 
-    const response = await axios.get('/api/auth/current');
+    const response = await axios.get('/v1/auth/current');
 
     dispatch({ type: AUTH_LOGIN, payload: response.data });
   } catch (e) {
@@ -50,13 +56,13 @@ export const authPasswordReset = ({ email }) => async dispatch => {
   try {
     dispatch({ type: AUTH_LOADING });
 
-    await axios.put(`/api/auth/password/reset`, { email });
+    await axios.put(`/v1/auth/password/reset`, { email });
 
     dispatch({
       type: AUTH_ALERT,
       payload: {
         header: 'Success',
-        text: 'Please check your email for your reset link',
+        message: 'Please check your email for your reset link',
         type: 'success',
       },
     });
@@ -65,7 +71,7 @@ export const authPasswordReset = ({ email }) => async dispatch => {
       type: AUTH_ALERT,
       payload: {
         header: 'Error',
-        text: 'Error trying to reset your password',
+        message: 'Error trying to reset your password',
         type: 'danger',
       },
     });
@@ -79,7 +85,7 @@ export const authPasswordNew = (
   try {
     dispatch({ type: AUTH_LOADING });
 
-    await axios.put(`/api/auth/password/new`, {
+    await axios.put(`/v1/auth/password/new`, {
       passwordConfirm,
       passwordNew,
       resetToken,
@@ -89,7 +95,7 @@ export const authPasswordNew = (
       type: AUTH_ALERT,
       payload: {
         header: 'Success',
-        text: 'Your Password Has Been Successfully Resetted',
+        message: 'Your Password Has Been Successfully Resetted',
         type: 'success',
       },
     });
@@ -100,9 +106,17 @@ export const authPasswordNew = (
       type: AUTH_ALERT,
       payload: {
         header: 'Error',
-        text: 'Error resetting password',
+        message: 'Error resetting password',
         type: 'danger',
       },
     });
+  }
+};
+
+export const authAlertClose = () => async dispatch => {
+  try {
+    dispatch({ type: AUTH_ALERT_CLOSE });
+  } catch (err) {
+    console.log(err);
   }
 };

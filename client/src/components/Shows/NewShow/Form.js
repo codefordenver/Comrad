@@ -6,6 +6,7 @@ import moment from 'moment';
 import Button from '../../Button';
 import Card, { CardBody } from '../../Card';
 import DatePicker from '../../DatePicker';
+import DropdownHost from '../../DropdownHost';
 import Input from '../../Input';
 import ModalClose from '../../Modal/Modal__Button_Close';
 import RepeatDropdown from './RepeatDropdown';
@@ -123,7 +124,7 @@ class NewShowForm extends Component {
                 type="text"
               />
 
-              <Field label="Host" name="host" component={Input} type="text" />
+              <Field label="Host" name="host" component={DropdownHost} />
             </div>
 
             <div className="new-show-form__buttons">

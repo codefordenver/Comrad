@@ -1,4 +1,6 @@
+export const ARTIST_ADD = 'artist_add';
 export const ARTIST_ALERT = 'artist_alert';
+export const ARTIST_ALERT_CLOSE = 'artist_alert_close';
 export const ARTIST_EDITING_NAME = 'artist_editing_name';
 export const ARTIST_ERROR = 'aritist_error';
 export const ARTIST_FIND_ALBUMS = 'artist_find_albums';

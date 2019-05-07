@@ -114,10 +114,22 @@ function showList(shows, startDate = null, endDate = null) {
     return show;
   });
 
-  //Need to check for master_show_uid and then replace those shows within allShows
-  const mergedShows = _.concat(allRepeatShowsExpanded, allNonRepeatShows);
+  //Replace repeat shows with instance shows here!!!
+  const repeatFlat = _.flatten(allRepeatShowsExpanded);
+  const repeatKeyBy = _.keyBy(repeatFlat, '_id');
+  const nonRepeatTitleReplaced = allNonRepeatShows.map(show => {
+    show.show_details.title = show.show_details.title + ' (Instance Version)';
+    return show;
+  });
+  const nonRepeatKeyBy = _.keyBy(nonRepeatTitleReplaced, o => {
+    return o.master_show_uid + '-' + moment(o.replace_show_date);
+  });
+  const combinedObject = { ...repeatKeyBy, ...nonRepeatKeyBy };
+  return _.values(combinedObject);
+  //End testing of replacing repeat shows
 
-  return _.flatten(mergedShows);
+  //const mergedShows = _.concat(allRepeatShowsExpanded, allNonRepeatShows);
+  //return _.flatten(mergedShows);
 }
 
 function reduceShowsByRepeatProperty(shows, recurringCheckValue) {

@@ -55,9 +55,17 @@ class DropdownHost extends Component {
   }
 
   formatHostName = user => {
+    let first_name,
+      last_name = '';
     const { profile, station = { on_air_name: null } } = user;
-    const { first_name, last_name } = profile;
+
     const { on_air_name } = station;
+
+    if (profile) {
+      first_name = profile.first_name;
+      last_name = profile.last_name;
+    }
+
     return on_air_name != null && on_air_name.length > 0
       ? on_air_name
       : `${first_name} ${last_name}`;

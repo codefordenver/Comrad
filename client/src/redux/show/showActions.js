@@ -8,6 +8,7 @@ import {
   SHOW_SEARCH,
   SHOW_ERROR,
   SHOW_SELECTED,
+  SHOW_CREATE_INSTANCE,
 } from './showTypes';
 
 export const getShow = show => async dispatch => {
@@ -31,6 +32,15 @@ export const postShow = (input, callback) => async dispatch => {
   } catch (e) {
     console.log(e);
     dispatch({ type: SHOW_ERROR, payload: e });
+  }
+};
+
+export const createInstanceShow = (show_id, data) => async dispatch => {
+  try {
+    const response = await axios.put(`/v1/shows/${show_id}`, data);
+    dispatch({ type: SHOW_CREATE_INSTANCE, payload: response.data });
+  } catch (e) {
+    dispatch({ type: SHOW_ERROR, payload: 'Updating Show Error' });
   }
 };
 

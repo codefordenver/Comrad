@@ -13,6 +13,7 @@ import {
   searchShow,
   selectShow,
   errorShowsMessage,
+  createInstanceShow,
 } from '../../redux/show';
 
 import ShowModalController from './ShowModalController';
@@ -68,6 +69,7 @@ class Calendar extends Component {
   };
 
   convertShowsToArray = shows => {
+    console.log('reseeding events');
     const showsArray = shows ? _.values(shows) : [];
     let newShowsArray = [];
     showsArray.forEach(show => {
@@ -120,7 +122,7 @@ class Calendar extends Component {
       event: { _id, master_show_uid },
     } = props;
     const show = { _id, master_show_uid };
-
+    //console.log('Tooltip fired');
     return (
       <Tooltip
         key={_id}
@@ -133,6 +135,18 @@ class Calendar extends Component {
         {props.children}
       </Tooltip>
     );
+  };
+
+  onSelectShow_CreateInstance = show => {
+    const { createInstanceShow } = this.props;
+    let { _id, master_show_uid, show_start_time_utc, show_end_time_utc } = show;
+
+    if (master_show_uid) {
+      _id = master_show_uid;
+    }
+
+    console.log(show);
+    createInstanceShow(_id, { show_start_time_utc, show_end_time_utc });
   };
 
   eventStyleGetter = () => {
@@ -161,7 +175,7 @@ class Calendar extends Component {
           defaultView={BigCalendar.Views.WEEK}
           defaultDate={new Date()}
           {...calendarDateProperty}
-          //onSelectEvent={show => this.showViewShowModal(show)}
+          onSelectEvent={show => this.onSelectShow_CreateInstance(show)}
           onSelectSlot={show => this.showNewShowModal(show)}
           titleAccessor={show => show.show_details.title}
           startAccessor={show => new Date(show.show_start_time_utc)}
@@ -199,5 +213,6 @@ export default connect(
     setModalVisibility,
     errorShowsMessage,
     selectShow,
+    createInstanceShow,
   },
 )(Calendar);

@@ -2,6 +2,7 @@ import _ from 'lodash';
 import {
   SHOW_GET,
   SHOW_POST,
+  SHOW_CREATE_INSTANCE,
   SHOW_POSTING,
   SHOW_UPDATE,
   SHOW_UPDATE_HOST,
@@ -38,6 +39,9 @@ export function showReducer(state = initialState, { type, payload }) {
         fetching: false,
         error: false,
       };
+    case SHOW_CREATE_INSTANCE:
+      console.log(payload);
+      return { ...state };
 
     case SHOW_SEARCH:
       const searchData = payload.data;

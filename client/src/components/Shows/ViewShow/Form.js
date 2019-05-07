@@ -2,11 +2,15 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { setModalVisibility } from '../../../redux/modal';
-import { deleteShow, deleteShowSeries } from '../../../redux/show';
+import {
+  deleteShow,
+  deleteShowSeries,
+  updateShowHost,
+} from '../../../redux/show';
 import { MODAL_EDIT_SHOW } from '../ShowModalController';
 
 import Button from '../../Button';
-import DownshiftHost from './DownshiftHost';
+import DropdownHost from '../../DropdownHost';
 
 const FORM_OPTIONS = {
   series: (data, deleteSeriesShow) => {
@@ -68,18 +72,6 @@ class NewShowForm extends Component {
     setModalVisibility(null, false, null);
   };
 
-  getHost = host => {
-    if (host) {
-      const { first_name, last_name } = host.profile;
-      let firstname = first_name || '';
-      let lastname = last_name || '';
-
-      return `${firstname} ${lastname}`;
-    }
-
-    return null;
-  };
-
   getShowType(show) {
     if (show._id.includes('-')) {
       return 'series';
@@ -100,8 +92,15 @@ class NewShowForm extends Component {
     return showFunction[showType];
   };
 
+  handleHostSelect = host => {
+    const { props } = this;
+    const { updateShowHost, show } = props;
+    const { _id } = show;
+    updateShowHost(_id, { 'show_details.host': host._id });
+  };
+
   render() {
-    const { getShowType, getShowFunction, props, getHost } = this;
+    const { getShowType, getShowFunction, props } = this;
     const { show, shows } = props;
     const { _id } = show;
     const clickedShow = shows[_id];
@@ -124,7 +123,14 @@ class NewShowForm extends Component {
           {'Start Date: ' + clickedShow.repeat_rule.repeat_start_date}
           <div />
           {'End Date: ' + clickedShow.repeat_rule.repeat_end_date}
-          <DownshiftHost key={_id} _id={_id} host={getHost(host)} />
+
+          <DropdownHost
+            key={_id}
+            _id={_id}
+            host={host}
+            onHostSelect={this.handleHostSelect}
+            filterByStatus="Active"
+          />
           {FORM_OPTIONS[showType](show, showFunction)}
         </section>
       </main>
@@ -143,6 +149,7 @@ export default connect(
   {
     deleteShow,
     deleteShowSeries,
+    updateShowHost,
     setModalVisibility,
   },
 )(NewShowForm);

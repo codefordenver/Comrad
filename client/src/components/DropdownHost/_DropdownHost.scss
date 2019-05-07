@@ -1,0 +1,18 @@
+.dropdown__list--host-list {
+  border-color: $color-grey-2;
+  
+  .dropdown__item--grey {
+    color: $color-grey-3;
+  }
+}
+.host-field {
+  &__add-modal {
+    border: 2px solid $color-primary-light;
+    border-radius: $border-radius;
+    background-color: white;
+    width: 48rem;
+    display: block;
+    color: $color-primary;
+    padding: 1rem;
+  }
+}

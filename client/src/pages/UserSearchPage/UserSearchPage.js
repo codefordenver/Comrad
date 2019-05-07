@@ -17,7 +17,8 @@ class UserSearchPage extends Component {
   }
 
   render() {
-    const { user, userAlertClose } = this.props;
+    const { props } = this;
+    const { user, userAlertClose } = props;
     const { alert } = user;
     const { display } = alert;
 
@@ -35,7 +36,7 @@ class UserSearchPage extends Component {
         <Card>
           <CardBody>
             <FormUserSearch />
-            <TableUsers />
+            <TableUsers {...props} />
           </CardBody>
         </Card>
       </div>

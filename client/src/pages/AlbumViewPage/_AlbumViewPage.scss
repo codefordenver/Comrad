@@ -1,3 +1,17 @@
 .album-view-page {
 
+  &__header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-items: space-between;
+  }
+
+  &__song-name {
+    margin-bottom: 0rem;
+  }
+
+  &__last-updated {
+    justify-self: end;
+    margin-top: 1.4rem;
+  }
 }

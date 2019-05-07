@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import ReactTable from 'react-table';
-import 'react-table/react-table.css';
-
-import { userSearch } from '../../redux/user';
 
 const CellUserPermission = ({ value }) => (
   <span className="table-users__permission">{value}</span>
@@ -66,8 +63,8 @@ class TableUsers extends Component {
 
   render() {
     const { handleRowClick, props } = this;
-    const { user } = props;
-    const { docs } = user;
+    const { userState } = props;
+    const { docs } = userState;
 
     return (
       <ReactTable
@@ -85,11 +82,11 @@ class TableUsers extends Component {
 
 function mapStateToProps({ user }) {
   return {
-    user,
+    userState: user,
   };
 }
 
 export default connect(
   mapStateToProps,
-  { userSearch },
+  null,
 )(TableUsers);

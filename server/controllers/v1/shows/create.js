@@ -6,9 +6,9 @@ const {
 } = require('./utils');
 
 function create(req, res) {
-  const { startDate, endDate } = req.body;
-  debugger;
-  db.Show.create(formatShow(req, res))
+  const { body } = req;
+  const { startDate, endDate } = body;
+  db.Show.create(formatShow(body, res))
     .then(dbShow => {
       console.log(dbShow);
       db.Show.populate(dbShow, {

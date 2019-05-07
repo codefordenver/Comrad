@@ -1,8 +1,7 @@
 const moment = require('moment');
 
-function formatShow(req, res = null, showStatus = 'active') {
-  const show = req.body;
-  let { repeatType } = show;
+function formatShow(data, res = null) {
+  const show = data;
 
   //Initialize nested objects, otherwise the child keys return undefined.
   let formatedShow = {
@@ -10,17 +9,14 @@ function formatShow(req, res = null, showStatus = 'active') {
     repeat_rule: {},
   };
 
-  //Determine show status.  Is defaulted to active.
-  show.status = showStatus;
-
   //Set the show end date.  If it is empty set a date that is never ending.
-  if (!show.repeat_end_date) {
+  if (show.is_recurring && !show.repeat_end_date) {
     show.repeat_end_date = moment('9999', 'YYYY');
   }
 
   //Determine if the repeat attribute is set, convert to a JSON object.
-  if (repeatType) {
-    show.repeatType = JSON.parse(repeatType);
+  if (show.repeatType) {
+    show.repeatType = JSON.parse(show.repeatType);
   } else {
     show.repeatType = {};
   }
@@ -107,6 +103,7 @@ function formatShow(req, res = null, showStatus = 'active') {
         console.log('The following key is not assigned: ' + key);
     }
   }
+  console.log(formatedShow);
   return formatedShow;
 }
 

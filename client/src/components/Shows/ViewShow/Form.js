@@ -2,11 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { setModalVisibility } from '../../../redux/modal';
-import {
-  deleteShow,
-  deleteShowSeries,
-  updateShowHost,
-} from '../../../redux/show';
+import { deleteShow, deleteShowSeries, updateShow } from '../../../redux/show';
 import { MODAL_EDIT_SHOW } from '../ShowModalController';
 
 import Button from '../../Button';
@@ -94,9 +90,9 @@ class NewShowForm extends Component {
 
   handleHostSelect = host => {
     const { props } = this;
-    const { updateShowHost, show } = props;
+    const { updateShow, show } = props;
     const { _id } = show;
-    updateShowHost(_id, { 'show_details.host': host._id });
+    updateShow(_id, { 'show_details.host': host._id });
   };
 
   render() {
@@ -149,7 +145,7 @@ export default connect(
   {
     deleteShow,
     deleteShowSeries,
-    updateShowHost,
+    updateShow,
     setModalVisibility,
   },
 )(NewShowForm);

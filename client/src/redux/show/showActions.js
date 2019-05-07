@@ -34,7 +34,7 @@ export const postShow = (input, callback) => async dispatch => {
   }
 };
 
-export const updateShowHost = (show_id, data) => async dispatch => {
+export const updateShow = (show_id, data) => async dispatch => {
   try {
     const response = await axios.patch(`/v1/shows/${show_id}`, data);
     dispatch({ type: SHOW_UPDATE_HOST, payload: response.data });

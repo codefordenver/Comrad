@@ -1,4 +1,6 @@
 .album-view-page {
+  display: grid;
+  grid-row-gap: 1rem;
 
   &__header {
     display: grid;

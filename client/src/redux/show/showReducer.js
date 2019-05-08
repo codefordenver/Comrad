@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import 'moment';
 import {
   SHOW_GET,
   SHOW_POST,
@@ -40,8 +41,16 @@ export function showReducer(state = initialState, { type, payload }) {
         error: false,
       };
     case SHOW_CREATE_INSTANCE:
+      let deleteMasterInstance = { ...state.data };
+      delete deleteMasterInstance[payload.master_id];
       console.log(payload);
-      return { ...state };
+      return {
+        ...state,
+        data: { ...deleteMasterInstance, [payload._id]: payload },
+        posting: false,
+        fetching: false,
+        error: false,
+      };
 
     case SHOW_SEARCH:
       const searchData = payload.data;

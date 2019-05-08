@@ -61,6 +61,7 @@ class DropdownHost extends Component {
 
     const { on_air_name } = station;
 
+    //Basic check for if profile exists so the app does not crash when it is undefined.
     if (profile) {
       first_name = profile.first_name;
       last_name = profile.last_name;

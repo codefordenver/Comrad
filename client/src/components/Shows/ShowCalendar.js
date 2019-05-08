@@ -74,21 +74,8 @@ class Calendar extends Component {
     let newShowsArray = [];
     showsArray.forEach(show => {
       let { show_start_time_utc, show_end_time_utc } = show;
-
-      //Basic check for shows that start and end at midnight.
-      if (moment(show_start_time_utc).format('HH') === '00') {
-        show.show_start_time_utc = new Date(
-          moment(show_start_time_utc).add(1, 'second'),
-        );
-      }
-
-      if (moment(show_end_time_utc).format('HH') === '00') {
-        show.show_end_time_utc = new Date(
-          moment(show_end_time_utc).add(-1, 'second'),
-        );
-      }
-
       //Should be setup to check if shows span across midnight
+      //IMPORTANT:  Only offset the start/end times in the accessor
       if (
         parseInt(moment(show_start_time_utc).format('HH')) >
         parseInt(moment(show_end_time_utc).format('HH'))
@@ -121,7 +108,7 @@ class Calendar extends Component {
     const {
       event: { _id, master_show_uid },
     } = props;
-    const show = { _id, master_show_uid };
+    const show = props.event;
     //console.log('Tooltip fired');
     return (
       <Tooltip
@@ -137,16 +124,31 @@ class Calendar extends Component {
     );
   };
 
-  onSelectShow_CreateInstance = show => {
-    const { createInstanceShow } = this.props;
-    let { _id, master_show_uid, show_start_time_utc, show_end_time_utc } = show;
-
-    if (master_show_uid) {
-      _id = master_show_uid;
+  startAccessorCalc(show) {
+    const { show_start_time_utc } = show;
+    //Basic check for shows that start and end at midnight.
+    if (
+      moment(show_start_time_utc).format('HH') === '00' &&
+      moment(show_start_time_utc).format('MM') === '00'
+    ) {
+      return new Date(moment(show_start_time_utc).add(1, 'second'));
     }
+    return new Date(moment(show_start_time_utc));
+  }
 
-    console.log(show);
-    createInstanceShow(_id, { show_start_time_utc, show_end_time_utc });
+  endAccessorCalc(show) {
+    const { show_end_time_utc } = show;
+    if (
+      moment(show_end_time_utc).format('HH') === '00' &&
+      moment(show_end_time_utc).format('MM') === '00'
+    ) {
+      return new Date(moment(show_end_time_utc).add(-1, 'second'));
+    }
+    return new Date(moment(show_end_time_utc));
+  }
+
+  onSelectShow = show => {
+    //do nothing
   };
 
   eventStyleGetter = () => {
@@ -175,11 +177,11 @@ class Calendar extends Component {
           defaultView={BigCalendar.Views.WEEK}
           defaultDate={new Date()}
           {...calendarDateProperty}
-          onSelectEvent={show => this.onSelectShow_CreateInstance(show)}
+          //onSelectEvent={show => this.onSelectShow(show)}
           onSelectSlot={show => this.showNewShowModal(show)}
           titleAccessor={show => show.show_details.title}
-          startAccessor={show => new Date(show.show_start_time_utc)}
-          endAccessor={show => new Date(show.show_end_time_utc)}
+          startAccessor={show => this.startAccessorCalc(show)}
+          endAccessor={show => this.endAccessorCalc(show)}
           onRangeChange={dateRange => this.handleDateChange(dateRange)}
           onNavigate={date => this.handleNavigate(date)}
           eventPropGetter={this.eventStyleGetter}

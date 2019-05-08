@@ -3,3 +3,39 @@
     grid-row-gap: 2em;
     max-width: 30rem;
   } 
+
+.duration-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+}
+
+.minutes, .seconds {
+  width: 75px;
+}
+
+.duration-label, .duration-colon {
+  font-size: 1.8rem;
+  font-family: inherit;
+  color: $color-primary;
+}
+
+.duration-label {
+  order: 1;
+  margin-right: 5px;
+}
+
+.minutes {
+  order: 2;
+}
+
+.duration-colon {
+  order: 3;
+  width: 10px;
+  text-align: center;
+}
+
+.seconds {
+  order: 4;
+}

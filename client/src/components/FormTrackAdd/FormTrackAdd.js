@@ -42,13 +42,30 @@ class FormTrackAdd extends Component {
           autoFocus
           validate={requiredValidate}
         />
-        <Field
-          component={Input}
-          label="Duration"
-          name="duration"
-          autoFocus
-          validate={requiredValidate}
-        />
+        <div className="duration-container">
+          <div className="duration-label-container">
+            <div className="duration-label">Duration:</div>
+          </div>
+          <Field
+            component={Input}
+            name="minutes"
+            className="minutes"
+            type="number"
+            placeholder="00"
+            autoFocus
+            validate={requiredValidate}
+          />
+          <div className="duration-colon">:</div>
+          <Field
+            component={Input}
+            name="seconds"
+            className="seconds"
+            type="number"
+            placeholder="00"
+            autoFocus
+            validate={requiredValidate}
+          />
+        </div>
         <div>
           <Button type="submit">Submit</Button>
         </div>

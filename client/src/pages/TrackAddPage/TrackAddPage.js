@@ -10,12 +10,13 @@ class TrackAddPage extends Component {
   }
 
   render() {
-    console.log(this.props.match.params.id);
+    console.log(this.props);
     return (
       <div>
         <Card>
           <CardBody>
             <h1>Add Track to Album</h1>
+            <h2>Album: </h2>
             <FormTrackAdd />
           </CardBody>
         </Card>

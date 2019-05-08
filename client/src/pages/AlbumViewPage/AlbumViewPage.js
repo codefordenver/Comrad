@@ -43,6 +43,7 @@ class AlbumViewPage extends Component {
               <CardBody>
                 <div className="album-view-page__header">
                   <div className="album-view-page__song">
+                    <h5>Album</h5>
                     <h1 className="album-view-page__song-name">{name}</h1>
                     <h5 className="album-view-page__song-artist">
                       {artist ? (

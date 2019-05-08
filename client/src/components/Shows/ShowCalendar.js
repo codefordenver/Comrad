@@ -30,8 +30,8 @@ class Calendar extends Component {
   componentDidMount() {
     const { searchShow } = this.props;
 
-    const initialSearchStartDate = moment().subtract(1, 'month');
-    const initialSearchEndDate = moment().add(1, 'month');
+    const initialSearchStartDate = moment().subtract(2, 'week');
+    const initialSearchEndDate = moment().add(2, 'week');
 
     searchShow(initialSearchStartDate, initialSearchEndDate);
   }
@@ -42,14 +42,14 @@ class Calendar extends Component {
     if (Array.isArray(dates)) {
       if (dates.length === 1) {
         //For when changing days
-        const dayStart = moment(dates[0]).subtract(1, 'week');
-        const dayEnd = moment(dates[0]).add(1, 'week');
+        const dayStart = moment(dates[0]).subtract(2, 'days');
+        const dayEnd = moment(dates[0]).add(2, 'days');
 
         searchShow(dayStart, dayEnd);
       } else {
         //For when changing weeks
-        const rangeStart = moment(dates[0]).subtract(2, 'weeks');
-        const rangeEnd = moment(dates[dates.length - 1]).add(2, 'weeks');
+        const rangeStart = moment(dates[0]).subtract(8, 'days');
+        const rangeEnd = moment(dates[dates.length - 1]).add(8, 'days');
 
         searchShow(rangeStart, rangeEnd);
       }

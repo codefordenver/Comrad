@@ -4,12 +4,10 @@
 
 ## Table of Contents
 
-- [What is Comrad?](#what-is-comrad)
-- [Waffle Board](#waffle-board)
-- [Heroku Link](#heroku-link)
-- [Contribution Guide](#contribution-guide)
-- [Pull Request Guide](#pull-request-guide)
-- [On Boarding Details](#on-boarding-details)
+- [What is Comrad?](./docs/comrad.md)
+- Guides
+    - [Getting Started](./docs/getting_started.md)
+    - [Testing](./docs/testing.md)
 
 ## What is Comrad?
 
@@ -18,15 +16,3 @@ Comrad is an open-source web application for use by community radio stations tha
 This fellowship will allow the building of Comrad 2.0, permitting a standalone open source distribution in English and Spanish that will greatly benefit the small to mid-sized community radios as well as the hundreds of budget limited Lower Power FM radios just taking to the air in the United States.
 
 ![](./docs/images/ComradUI-1.png)
-
-## Waffle Board
-
-Use [the Waffle board](https://waffle.io/codefordenver/Comrad) for this repo to always know what to do next for your project!
-
-## Heroku Link
-
-## Contribution Guide
-
-Here is what you need to know:
-
-This project uses [GitHub flow](https://guides.github.com/introduction/flow/) where updates are made on feature branches. Pull requests are submitted on those branches and reviewed before being merged.

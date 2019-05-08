@@ -15,10 +15,6 @@
     display: none;
   }
 
-  &:not(:last-child) {
-    margin-bottom: 2rem;
-  }
-
   &__times {
     position: absolute;
     top: 0.5rem;
@@ -31,7 +27,7 @@
     width: 1rem;
   }
 
-  &__symbol {
+  &__icon {
     grid-column: 1;
 
     display: grid;

@@ -8,3 +8,6 @@ export const passwordsMatchValidate = (value, { passwordNew }) =>
 
 export const requiredValidate = value =>
   value || typeof value === 'number' ? undefined : 'Required';
+
+export const passwordConfirmValidate = (value, { password }) =>
+  value !== password ? 'Passwords to not match' : undefined;

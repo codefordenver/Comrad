@@ -7,6 +7,7 @@ export const BUTTON_CLASS = {
   primary: 'button--primary',
   success: 'button--success',
   info: 'button--info',
+  neutral: 'button--neutral',
   danger: 'button--danger',
   warning: 'button--warning',
   link: 'button--link',
@@ -33,6 +34,7 @@ class Button extends Component {
       loading,
       onClick,
       size,
+      submitting,
       to,
       type,
       ...rest
@@ -61,7 +63,7 @@ class Button extends Component {
           BUTTON_SIZE[size],
           className,
         )}
-        disabled={disabled}
+        disabled={submitting}
         onClick={onClick}
         size={size}
         type={BUTTON_TYPE[type]}
@@ -88,6 +90,7 @@ Button.propTypes = {
     'primary',
     'success',
     'info',
+    'neutral',
     'danger',
     'warning',
     'link',

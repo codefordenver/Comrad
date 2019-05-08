@@ -1,61 +1,102 @@
 import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import axios from 'axios';
+import { isEmpty } from 'lodash';
 
 import Card, { CardBody } from '../../components/Card';
+import LargeText from '../../components/LargeText';
+import TableAlbumTracks from '../../components/TableAlbumTracks';
+
+import { albumActions } from '../../redux';
 
 class AlbumViewPage extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      album: null,
-      last_updated: '',
-    };
+  componentDidMount() {
+    const { albumState, albumActions, match } = this.props;
+    const { _id } = albumState.doc;
+    const { id } = match.params;
 
-    axios.get('/api/album/' + this.props.match.params.id).then(response => {
-      let dateObj = new Date(response.data.updated_at);
-      this.setState({
-        album: response.data,
-        last_updated:
-          dateObj.toLocaleDateString() + ' ' + dateObj.toLocaleTimeString(),
-      });
-    });
+    if (id !== _id) {
+      albumActions.findOne(id);
+    }
   }
 
+  renderLastUpdated = () => {
+    const { updated_at } = this.props.albumState.doc;
+    const dateObj = new Date(updated_at);
+
+    // Checks to see if date is valid or not
+    return dateObj instanceof Date && !isNaN(dateObj)
+      ? `Last Updated: ${dateObj.toLocaleString()}`
+      : '';
+  };
+
   render() {
+    const { navigateToTrack, props, renderLastUpdated } = this;
+    const { albumState } = props;
+    const { artist, name, tracks } = albumState.doc;
+
     return (
       <div className="album-view-page">
-        {this.state.album != null && (
-          <div>
+        {!albumState.loading && (
+          <>
             <Card>
               <CardBody>
-                <div className="float-right">
-                  Last updated: {this.state.last_updated}
-                </div>
-                <h1 className="mb-0">{this.state.album.name}</h1>
-                <div>
-                  by{' '}
-                  <a href={'/library/artist/' + this.state.album.artist._id}>
-                    {this.state.album.artist.name}
-                  </a>
+                <div className="album-view-page__header">
+                  <div className="album-view-page__song">
+                    <h5>Album</h5>
+                    <h1 className="album-view-page__song-name">{name}</h1>
+                    <h5 className="album-view-page__song-artist">
+                      {artist ? (
+                        <>
+                          by{' '}
+                          <a
+                            className="album-view-page__artist-link"
+                            href={`/library/artist/${artist._id}`}
+                          >
+                            {artist.name}
+                          </a>
+                        </>
+                      ) : (
+                        'No Artist'
+                      )}
+                    </h5>
+                  </div>
+                  <div className="album-view-page__last-updated">
+                    {renderLastUpdated()}
+                  </div>
                 </div>
               </CardBody>
             </Card>
-          </div>
+            <Card>
+              <CardBody>
+                <h2 className="mb-1">Tracks</h2>
+                {isEmpty(tracks) ? (
+                  <LargeText align="left">No Tracks</LargeText>
+                ) : (
+                  <TableAlbumTracks onRowClick={navigateToTrack} {...props} />
+                )}
+              </CardBody>
+            </Card>
+          </>
         )}
       </div>
     );
   }
 }
 
-function mapStateToProps(state) {
-  const { error } = state.library;
+function mapStateToProps({ album }) {
   return {
-    error,
+    albumState: album,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    albumActions: bindActionCreators({ ...albumActions }, dispatch),
   };
 }
 
 export default connect(
   mapStateToProps,
-  {},
+  mapDispatchToProps,
 )(AlbumViewPage);

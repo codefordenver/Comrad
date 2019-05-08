@@ -1,14 +1,26 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 
-const LargeText = props => {
-  const { children } = props;
+class LargeText extends Component {
+  static propTypes = {
+    children: PropTypes.string,
+  };
 
-  return <div className="large-text">{children}</div>;
-};
+  static defaultProps = {
+    align: 'left',
+    children: null,
+  };
 
-LargeText.propTypes = {
-  children: PropTypes.string,
-};
+  render() {
+    const { align, children } = this.props;
+
+    return (
+      <div className={classnames('large-text', `text-${align}`)}>
+        {children}
+      </div>
+    );
+  }
+}
 
 export default LargeText;

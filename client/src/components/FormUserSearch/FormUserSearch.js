@@ -1,55 +1,84 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Field, reduxForm } from 'redux-form';
+import { Field, reduxForm, formValueSelector } from 'redux-form';
 
 import Button from '../Button';
 import Filter from '../Filter';
 import Input from '../Input';
 
+import { userSearch } from '../../redux/user';
+
 class FormUserSearch extends Component {
+  handleOnChange = (e, newValue) => {
+    const { q, userSearch } = this.props;
+
+    userSearch({ filter: newValue, q });
+  };
+
+  submit = values => {
+    const { userSearch } = this.props;
+    userSearch(values);
+  };
+
   render() {
-    const { props } = this;
-    const { handleSubmit, handleUserSubmit } = props;
+    const { handleOnChange, props, submit } = this;
+    const { handleSubmit } = props;
 
     return (
-      <form
-        className="f-user-search mb-2"
-        onSubmit={handleSubmit(handleUserSubmit)}
-      >
-        <div className="f-user-search__field">
+      <form className="fus mb-2" onSubmit={handleSubmit(submit)}>
+        <div className="fus__field">
           <Field
             className="mb-1"
             component={Input}
             label="Search"
-            name="s"
+            name="q"
             type="text"
           />
           <Button type="submit">Search</Button>
         </div>
-        <div className="f-user-search__filter">
-          <Filter name="filter" text="All" value="All" />
-          <Filter name="filter" text="Active" value="Active" />
-          <Filter name="filter" text="Inactive" value="Inactive" />
+        <div className="fus__filter">
+          <Filter
+            onChange={handleOnChange}
+            name="filter"
+            text="All"
+            value="all"
+          />
+          <Filter
+            onChange={handleOnChange}
+            name="filter"
+            text="Active"
+            value="active"
+          />
+          <Filter
+            onChange={handleOnChange}
+            name="filter"
+            text="Inactive"
+            value="inactive"
+          />
         </div>
       </form>
     );
   }
 }
 
+const selector = formValueSelector('userSearch');
+
 const ReduxFormUserSearch = reduxForm({
   form: 'userSearch',
 })(FormUserSearch);
 
 function mapStateToProps(state) {
+  const { user } = state;
+  const { search } = user;
+
   return {
-    initialValues: {
-      s: '',
-      filter: 'All',
-    },
+    user,
+    q: selector(state, 'q'),
+    initialValues: { ...search },
   };
 }
 
 export default connect(
   mapStateToProps,
-  {},
+  { userSearch },
 )(ReduxFormUserSearch);

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import ReactTable from 'react-table';
-import 'react-table/react-table.css';
 
 const CellUserPermission = ({ value }) => (
   <span className="table-users__permission">{value}</span>
@@ -46,15 +46,33 @@ const columns = [
 ];
 
 class TableUsers extends Component {
+  handleRowClick = (state, rowInfo) => {
+    if (rowInfo) {
+      return {
+        onClick: () => {
+          const { _id } = rowInfo.original;
+          const { history } = this.props;
+
+          history.push(`/user/profile/${_id}`);
+        },
+      };
+    }
+
+    return false;
+  };
+
   render() {
-    const { docs } = this.props;
+    const { handleRowClick, props } = this;
+    const { userState } = props;
+    const { docs } = userState;
 
     return (
       <ReactTable
-        className="-highlight"
+        className="-highlight clickable-rows"
         columns={columns}
         data={docs}
         defaultPageSize={15}
+        getTdProps={handleRowClick}
         noDataText="No Data Found"
         showPageSizeOptions={false}
       />
@@ -62,4 +80,13 @@ class TableUsers extends Component {
   }
 }
 
-export default TableUsers;
+function mapStateToProps({ user }) {
+  return {
+    userState: user,
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  null,
+)(TableUsers);

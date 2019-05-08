@@ -1,55 +1,42 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-// import { userSearch } from '../../redux/user';
 
-import { user } from '../../utils/api';
-
+import Alert from '../../components/Alert';
 import Card, { CardBody } from '../../components/Card';
 import FormUserSearch from '../../components/FormUserSearch';
 import TableUsers from '../../components/TableUsers';
 
+import { userAlertClose, userSearch } from '../../redux/user';
+
 class UserSearchPage extends Component {
-  state = {
-    docs: [],
-    loading: false,
-    search: {
-      filter: 'All',
-      s: '',
-    },
-  };
+  componentDidMount() {
+    const { user, userSearch } = this.props;
+    const { search } = user;
 
-  async componentDidMount() {
-    const { search } = this.state;
-    const { data } = await user.search(search);
-
-    this.setState({
-      docs: data,
-    });
+    userSearch(search);
   }
 
-  handleUserSubmit = async values => {
-    const { data } = await user.search(values);
-
-    this.setState({
-      docs: data,
-    });
-  };
-
   render() {
-    const { handleUserSubmit, state } = this;
-    const { docs } = state;
+    const { props } = this;
+    const { user, userAlertClose } = props;
+    const { alert } = user;
+    const { display } = alert;
 
     return (
       <div className="user-search">
+        {/* Error Alert */}
+        {display && <Alert alertClose={userAlertClose} {...alert} />}
+
         <Card>
           <CardBody>
             <h1 className="mb-0">Users</h1>
           </CardBody>
         </Card>
+
         <Card>
           <CardBody>
-            <FormUserSearch handleUserSubmit={handleUserSubmit} />
-            <TableUsers docs={docs} />
+            <FormUserSearch />
+            <TableUsers {...props} />
           </CardBody>
         </Card>
       </div>
@@ -57,8 +44,7 @@ class UserSearchPage extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  const user = state.user;
+function mapStateToProps({ user }) {
   return {
     user,
   };
@@ -66,5 +52,5 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  {},
+  { userAlertClose, userSearch },
 )(UserSearchPage);

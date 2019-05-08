@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const keys = require('../config/keys');
 const seed = require('./data');
-const db = require('../models');
+const db = require('../models/v1');
 
 async function seedDB() {
   try {
@@ -74,8 +74,87 @@ async function seedDB() {
     );
 
     // Shows
+    console.log('seeding hosts for shows...');
+    let hostsToAdd = [];
+    seed.show.forEach(show => {
+      if (
+        show.show_details.host != null &&
+        hostsToAdd.indexOf(show.show_details.host) === -1
+      ) {
+        hostsToAdd.push(show.show_details.host);
+      }
+      if (show.instances.length > 0) {
+        show.instances.forEach(instance => {
+          if (
+            instance.show_details != null &&
+            instance.show_details.host != null &&
+            hostsToAdd.indexOf(instance.show_details.host) === -1
+          ) {
+            hostsToAdd.push(instance.show_details.host);
+          }
+        });
+      }
+    });
+    for (let i = 0; i < hostsToAdd.length; i++) {
+      await userByOnAirName(hostsToAdd[i]);
+    }
+
     console.log('seeding shows...');
-    await Promise.all(seed.show.map(async show => db.Show.create(show)));
+    bulkOperations = [];
+    await Promise.all(
+      seed.show.map(async show => {
+        if (show.show_details.host != null) {
+          show.show_details.host = await userByOnAirName(
+            show.show_details.host,
+          );
+        }
+        let showInstances = [];
+        if (show.instances) {
+          showInstances = show.instances;
+          delete show.instances;
+        }
+
+        //If the end date does not exist, just put an infinite end date
+        if (show.repeat_rule) {
+          if (!show.repeat_rule.repeat_end_date) {
+            show.repeat_rule.repeat_end_date = new Date('9999-01-01T00:00:00');
+          }
+        }
+
+        const newShow = await db.Show.create(show);
+        if (showInstances.length > 0) {
+          await Promise.all(
+            showInstances.map(async instance => {
+              instance.master_show_uid = newShow;
+              if (
+                instance.show_details != null &&
+                instance.show_details.host != null
+              ) {
+                instance.show_details.host = await userByOnAirName(
+                  instance.show_details.host,
+                );
+              }
+
+              //This assume that all instances are a single day so the start and end date are the same
+              if (instance.repeat_rule) {
+                if (!instance.repeat_rule.repeat_end_date) {
+                  instance.repeat_rule.repeat_end_date =
+                    instance.repeat_rule.repeat_start_date;
+                }
+              }
+
+              bulkOperations.push({
+                insertOne: {
+                  document: instance,
+                },
+              });
+            }),
+          );
+        }
+      }),
+    );
+    console.log('seeding ' + bulkOperations.length + ' show instances...');
+    await db.Show.bulkWrite(bulkOperations);
 
     // Traffic
     console.log('seeding traffic...');
@@ -90,6 +169,40 @@ async function seedDB() {
     console.log(err);
     throw err;
   }
+}
+
+let usersByOnAirName = {};
+async function userByOnAirName(onAirName) {
+  if (typeof usersByOnAirName[onAirName] != 'undefined') {
+    return usersByOnAirName[onAirName];
+  }
+  let user = await db.User.findOne({
+    'station.on_air_name': onAirName,
+  });
+  if (user == null) {
+    //make a first name, last name, and email from the onAirName
+    const onAirNameParts = onAirName.split(' ');
+    const firstName = onAirNameParts[0];
+    let lastName = '(none)';
+    if (onAirNameParts.length > 1) {
+      lastName = '';
+      onAirNameParts.forEach(function(part) {
+        lastName += ' ' + part;
+      });
+      lastName = lastName.trim();
+    }
+    const emailAddress =
+      onAirName.replace(/[^a-zA-Z0-9]/gi, '') + '@fake-dj-email.kgnu.org';
+    user = await db.User.create({
+      'profile.first_name': firstName,
+      'profile.last_name': lastName,
+      'contact.email': emailAddress,
+      'station.on_air_name': onAirName,
+      'auth.password': 'temppassword',
+    });
+  }
+  usersByOnAirName[onAirName] = user;
+  return user;
 }
 
 if (require.main === module) {

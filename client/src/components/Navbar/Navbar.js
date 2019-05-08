@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import comradLogo from '../../images/comrad-logo-white.png';
-import Dropdown, { DropdownItem } from '../Dropdown';
+import Dropdown from '../Dropdown';
 import kgnuLogo from '../../images/kgnu-logo-white-gray.png';
 import Logo from '../Logo';
 import { authLogout } from '../../redux/auth';
@@ -25,18 +25,14 @@ class Navbar extends Component {
             <Logo src={kgnuLogo} />
           </div>
           <div className="navbar__user">
-            <Dropdown
-              type="icon"
-              dropdownPosition="belowAndAlignAgainstRight"
-              icon="fa-user"
-            >
-              <DropdownItem to="/profile/edit">Edit Profile</DropdownItem>
-              <DropdownItem to="/profile/change-password">
+            <Dropdown position="bottom-left" type="icon">
+              <Dropdown.Item to="/profile/edit">Edit Profile</Dropdown.Item>
+              <Dropdown.Item to="/profile/change-password">
                 Change Password
-              </DropdownItem>
-              <DropdownItem handleOnClick={this.handleSignOut}>
+              </Dropdown.Item>
+              <Dropdown.Item handleOnClick={this.handleSignOut}>
                 Sign Out
-              </DropdownItem>
+              </Dropdown.Item>
             </Dropdown>
           </div>
         </div>
@@ -45,7 +41,13 @@ class Navbar extends Component {
   }
 }
 
+function mapStateToProps({ auth }) {
+  return {
+    auth,
+  };
+}
+
 export default connect(
-  null,
+  mapStateToProps,
   { authLogout },
 )(Navbar);

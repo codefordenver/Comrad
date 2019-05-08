@@ -1,73 +1,65 @@
- .checkbox-container {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    position: relative;
-    cursor: pointer;
-    font-size: 22px;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    width: max-content;
-  }
-  
-  /* hides default checkbox */
-  .checkbox-container input {
-    position: absolute;
-    opacity: 0;
-    height: 0;
-    width: 0;
-  }
-  
-  /* custom checkbox */
-  .checkmark {
-    height: 15px;
-    width: 15px;
-    background-color: #ffffff;
-    border: 1px solid #007283;
-    border-radius: 5px;
-    order: 1;
-    display: inline-block;
-  }
-  
-  /* background color on mouse over */
-  .checkbox-container:hover input ~ .checkmark {
-    background-color: #A4A9AD;
-  }
-  
-  /* background color change when checked */
-  .checkbox-container input:checked ~ .checkmark {
-    background-color: #007283;
-  }
-  
-  /* checkmark indicator */
-  .checkmark:after {
-    content: "";
-    position: absolute;
+.checkbox {
+  display: block;
+
+  &__input {
+    cursor: default;
     display: none;
-  }
-  
-  /* show checkmark when checked */
-  .checkbox-container input:checked ~ .checkmark:after {
-    display: block;
-  }
-  
-  /* checkmark style */
-  .checkbox-container .checkmark:after {
-    left: 5px;  
-    top: 13px; 
-    width: 5px;
-    height: 10px;
-    border: solid #ffffff;
-    border-width: 0px 2px 2px 0px;
-    -webkit-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
-    transform: rotate(35deg);
+    height: initial;
+    padding: 0;
+    width: initial;
+
+    &:checked {
+      & + label:before {
+        background-color: $color-primary;
+      }
+
+      & + label:after {
+        content: '';
+        display: block;
+        position: absolute;
+        top: 5px;
+        left: 7px;
+        width: 6px;
+        height: 14px;
+        border: solid white;
+        border-width: 0 2px 2px 0;
+        transform: rotate(45deg);
+      }
+    }
   }
 
-  .checkbox-label {
-      order: 2;
+  &__label {
+    font-size: 2rem;
+
+    cursor: pointer;
+    position: relative;
+
+    &:before {
+      background-color: transparent;
+      border: 2px solid $color-primary;
+      border-radius: 2px;
+      content: '';
       display: inline-block;
-      margin-left: 15px;
+      margin-right: 1rem;
+      padding: 0.8rem;
+      vertical-align: middle;
+    }
+
+    &:hover,
+    &.hover {
+
+      &:before {
+        background-color: $color-primary-lighter;
+      }
+    }
+
+    &.disabled {
+      cursor: default;
+      opacity: 0.5;
+
+      &:before {
+        background-color: transparent;
+      }
+    }
   }
+}

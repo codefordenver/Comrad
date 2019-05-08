@@ -10,7 +10,7 @@
   border-radius: $border-radius;
   cursor: pointer;
   display: inline-block;
-  transition: all 0.1s;
+  transition: background-color 0.1s box-shadow 0.1s;
   text-decoration: none;
 
   &--normal {
@@ -35,6 +35,7 @@
   &:disabled,
   &.disabled {
     cursor: default;
+    opacity: 0.5;
   }
 
   &--primary {
@@ -78,6 +79,28 @@
     &:disabled,
     &.disabled {
       background-color: $color-success-lighter;
+    }
+  }
+  
+  &--neutral {
+    color: $color-white;
+    background-color: $color-grey-3;
+
+    &:active,
+    &.active {
+      box-shadow: 0 0 0 $border-width $color-grey-1;
+    }
+
+    &:hover,
+    &.hover,
+    &:active,
+    &.active {
+      background-color: $color-grey-4;
+    }
+
+    &:disabled,
+    &.disabled {
+      color: $color-grey-2;
     }
   }
 

@@ -7,7 +7,7 @@ function findAll(req, res) {
 
   const { permission } = req.user.station;
 
-  if (permission !== 'admin') {
+  if (permission.toLowerCase() !== 'admin') {
     return res.status(422).json('User must have admin access');
   }
 

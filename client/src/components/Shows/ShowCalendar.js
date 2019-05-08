@@ -36,6 +36,17 @@ class Calendar extends Component {
     searchShow(initialSearchStartDate, initialSearchEndDate);
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    Object.entries(this.props).forEach(
+      ([key, val]) =>
+        prevProps[key] !== val && console.log(`Prop '${key}' changed`),
+    );
+    Object.entries(this.state).forEach(
+      ([key, val]) =>
+        prevState[key] !== val && console.log(`State '${key}' changed`),
+    );
+  }
+
   handleDateChange = dates => {
     const { searchShow } = this.props;
 

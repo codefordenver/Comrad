@@ -179,7 +179,7 @@ class NewShowForm extends Component {
 
 function mapStateToProps(state) {
   return {
-    shows: state.show.data,
+    //shows: state.show.data,
   };
 }
 

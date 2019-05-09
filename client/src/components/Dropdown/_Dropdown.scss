@@ -101,18 +101,18 @@
   }
 
   & .right-centered {
-    margin-left: 8.5rem;
-    top: -1.5rem;
-    left: 0px;
-    transform: translateX(-3px);
+    position: absolute;
+    margin-left: calc(100% + 0.5rem);
+    top: 50%;
+    transform: translate(-3px, -50%);
 
     &.active {
-      transform: translateY(0);
+      transform: translate(0px, -50%);
     }
   }
 
   & .right-top {
-    margin-left: 8.5rem;
+    margin-left: calc(100% + 0.5rem);
     top: 0rem;
     left: 0rem;
     transform: translateX(-3px);

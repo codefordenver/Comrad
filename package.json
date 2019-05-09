@@ -29,7 +29,9 @@
     "lint:fix": "npm run lint -- --fix",
     "test:server": "jest",
     "test:client": "npm run test --prefix client -- --watchAll=true",
-    "test": "npm run test:server && npm run test:client"
+    "test": "npm run test:server && npm run test:client",
+    "debug:server": "nodemon --inspect server/index.js --ignore tests --delay 1",
+    "debug": "concurrently \"npm run debug:server\" \"npm run client\""
   },
   "repository": {
     "type": "git",

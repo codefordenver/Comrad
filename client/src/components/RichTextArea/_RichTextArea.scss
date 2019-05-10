@@ -20,15 +20,16 @@
     background-clip: padding-box;
     border: 2px solid $color-primary-light;
     border-radius: $border-radius;
-    display: block;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
     height: 12rem;
     padding: 1rem;
     padding-left: 1.4rem;
     position: relative;
-    width: 100%;
+    width: 300px;
     z-index: 1;
     resize: none;
-    
     transition: all 0.2s;
   
     &:focus {
@@ -122,6 +123,8 @@ em {
 
 .ql-editor {
   padding: 4px 4px;
+  height: 80px;
+  order: 1;
 }
 
 .ql-container.ql-snow {
@@ -130,4 +133,13 @@ em {
 
 .ql-toolbar.ql-snow {
   padding: 0;
+}
+
+#toolbar {
+  border-top: 1px solid;
+  border-left: 0;
+  border-right: 0;
+  border-bottom: 0;
+  bottom: 0px;
+  order: 2;
 }

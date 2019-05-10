@@ -1,15 +1,15 @@
-import { ALBUM_FIND_ONE, ALBUM_LOAD } from './albumTypes';
+import { albumTypes } from './albumTypes';
 
 const initialState = {
-  tracks: [],
   doc: {},
+  docs: [],
   error: null,
   loading: false,
 };
 
 export const albumReducer = (state = initialState, { type, payload }) => {
   switch (type) {
-    case ALBUM_FIND_ONE:
+    case albumTypes.FIND_ONE:
       return {
         ...state,
         loading: false,
@@ -17,7 +17,7 @@ export const albumReducer = (state = initialState, { type, payload }) => {
           ...payload,
         },
       };
-    case ALBUM_LOAD:
+    case albumTypes.LOAD:
       return {
         ...state,
         loading: true,

@@ -1,8 +1,8 @@
 const db = require('../../models');
 
 const {
-  formatShow,
   utils: { showList },
+  utils__mongoose: { formatShow, populateShowQuery },
 } = require('./utils');
 
 function create(req, res) {
@@ -11,10 +11,7 @@ function create(req, res) {
   db.Show.create(formatShow(body, res))
     .then(dbShow => {
       console.log(dbShow);
-      db.Show.populate(dbShow, {
-        path: 'show_details.host',
-        select: 'profile.first_name profile.last_name station.on_air_name',
-      })
+      db.Show.populate(dbShow, populateShowQuery())
         .then(dbShow => {
           console.log('TEST');
           console.log(dbShow);

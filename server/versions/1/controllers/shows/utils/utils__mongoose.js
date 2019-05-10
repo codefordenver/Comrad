@@ -107,4 +107,35 @@ function formatShow(data, res = null) {
   return formatedShow;
 }
 
-module.exports = formatShow;
+function findShowQueryByDateRange(start, end) {
+  return [
+    {
+      'repeat_rule.repeat_start_date': {
+        $lte: end,
+      },
+    },
+    {
+      'repeat_rule.repeat_end_date': {
+        $gte: start,
+      },
+    },
+  ];
+}
+
+function populateShowQuery() {
+  return {
+    path: 'show_details.host',
+    select: 'profile.first_name profile.last_name station.on_air_name',
+  };
+}
+
+function master_time_id(_id, start_time) {
+  return _id + '-' + moment(start_time);
+}
+
+module.exports = {
+  formatShow,
+  findShowQueryByDateRange,
+  populateShowQuery,
+  master_time_id,
+};

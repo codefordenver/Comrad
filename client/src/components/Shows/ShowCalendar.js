@@ -117,14 +117,14 @@ class Calendar extends Component {
 
   customEventWrapper = props => {
     const {
-      event: { _id, master_show_uid },
+      event: { _id, master_time_id },
     } = props;
     const show = props.event;
     //console.log('Tooltip fired');
     return (
       <Tooltip
-        key={_id}
-        id={_id}
+        key={master_time_id}
+        id={master_time_id}
         overlay={<ViewShowForm show={show} />}
         trigger="click"
         placement="right"

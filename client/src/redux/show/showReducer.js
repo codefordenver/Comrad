@@ -27,7 +27,7 @@ export function showReducer(state = initialState, { type, payload }) {
     case SHOW_GET:
       return {
         ...state,
-        data: { ...state.data, ..._.mapKeys([payload], '_id') },
+        data: { ...state.data, ..._.mapKeys([payload], 'master_time_id') },
         fetching: false,
         error: false,
       };
@@ -35,18 +35,17 @@ export function showReducer(state = initialState, { type, payload }) {
     case SHOW_POST:
       return {
         ...state,
-        data: { ...state.data, ..._.mapKeys(payload, '_id') },
+        data: { ...state.data, ..._.mapKeys(payload, 'master_time_id') },
         posting: false,
         fetching: false,
         error: false,
       };
+
     case SHOW_CREATE_INSTANCE:
-      let deleteMasterInstance = { ...state.data };
-      delete deleteMasterInstance[payload.master_id];
       console.log(payload);
       return {
         ...state,
-        data: { ...deleteMasterInstance, [payload._id]: payload },
+        data: { ...state.data, [payload.master_time_id]: payload },
         posting: false,
         fetching: false,
         error: false,
@@ -55,9 +54,10 @@ export function showReducer(state = initialState, { type, payload }) {
     case SHOW_SEARCH:
       const searchData = payload.data;
       const searchParams = payload.params;
+      console.log(searchData);
       return {
         ...state,
-        data: { ...state.data, ..._.mapKeys(searchData, '_id') },
+        data: { ...state.data, ..._.mapKeys(searchData, 'master_time_id') },
         fetching: false,
         error: false,
         search: {
@@ -130,7 +130,7 @@ export function showReducer(state = initialState, { type, payload }) {
     case SHOW_UPDATE_HOST:
       return {
         ...state,
-        data: { ...state.data, [payload._id]: payload },
+        data: { ...state.data, [payload.master_time_id]: payload },
         fetching: false,
         error: false,
       };

@@ -2,6 +2,8 @@ const moment = require('moment');
 const { RRule } = require('rrule');
 const _ = require('lodash');
 
+const { master_time_id } = require('./utils__mongoose');
+
 function createRRule(show, queryStartDate, queryEndDate) {
   const {
     frequency,
@@ -88,47 +90,55 @@ function createRRule(show, queryStartDate, queryEndDate) {
 }
 
 function showList(shows, startDate = null, endDate = null) {
-  const allRepeatShows = reduceShowsByRepeatProperty(shows, true);
-  const allRepeatShowsExpanded = allRepeatShows.map(show => {
+  //Filter all shows that are series
+  const allSeriesShows = reduceShowsByRepeatProperty(shows, true);
+
+  const allSeriesShowsExpanded = allSeriesShows.map(show => {
     const allShowDates = returnDatesArrayByRepeatRule(show, startDate, endDate);
-    const allRepeatedShowsExpandedByDates = returnShowsArrayWithNewDates(
+    const allSeriesShowsExpandedByDates = returnShowsArrayWithNewDates(
       allShowDates,
       show,
     );
 
-    return allRepeatedShowsExpandedByDates;
+    return allSeriesShowsExpandedByDates;
   });
 
-  let allNonRepeatShows = reduceShowsByRepeatProperty(shows, false);
-  allNonRepeatShows = allNonRepeatShows.map(show => {
-    const date = show.repeat_rule.repeat_start_date;
-    show.show_start_time_utc = momentCombineDayAndTime(
+  let allSingleInstanceShows = reduceShowsByRepeatProperty(shows, false);
+  allSingleInstanceShows = allSingleInstanceShows.map(show => {
+    let instanceShow = { ...show.toObject() };
+    const date = instanceShow.repeat_rule.repeat_start_date;
+    instanceShow.show_start_time_utc = momentCombineDayAndTime(
       date,
-      show.show_start_time_utc,
+      instanceShow.show_start_time_utc,
     );
-    show.show_end_time_utc = momentCombineDayAndTime(
+    instanceShow.show_end_time_utc = momentCombineDayAndTime(
       date,
-      show.show_end_time_utc,
+      instanceShow.show_end_time_utc,
     );
 
-    return show;
+    instanceShow.show_details.title =
+      instanceShow.show_details.title + ' (Instance Version)';
+
+    instanceShow.master_time_id = master_time_id__byShowType(instanceShow);
+
+    console.log(instanceShow);
+
+    return instanceShow;
   });
 
   //Replace repeat shows with instance shows here!!!
-  const repeatFlat = _.flatten(allRepeatShowsExpanded);
-  const repeatKeyBy = _.keyBy(repeatFlat, '_id');
-  const nonRepeatTitleReplaced = allNonRepeatShows.map(show => {
-    show.show_details.title = show.show_details.title + ' (Instance Version)';
-    return show;
+  const seriesFlattened = _.flatten(allSeriesShowsExpanded);
+  const seriesKeyBy = _.keyBy(seriesFlattened, '_id');
+
+  const instanceKeyBy = _.keyBy(allSingleInstanceShows, o => {
+    return o.master_time_id;
   });
-  const nonRepeatKeyBy = _.keyBy(nonRepeatTitleReplaced, o => {
-    return o.master_show_uid + '-' + moment(o.replace_show_date);
-  });
-  const combinedObject = { ...repeatKeyBy, ...nonRepeatKeyBy };
+
+  const combinedObject = { ...seriesKeyBy, ...instanceKeyBy };
   return _.values(combinedObject);
   //End testing of replacing repeat shows
 
-  //const mergedShows = _.concat(allRepeatShowsExpanded, allNonRepeatShows);
+  //const mergedShows = _.concat(allSeriesShowsExpanded, allSingleInstanceShows);
   //return _.flatten(mergedShows);
 }
 
@@ -208,7 +218,8 @@ function returnShowsArrayWithNewDates(dateArray, show) {
     // }
 
     newShow.master_show_uid = newShow._id;
-    newShow._id = newShow._id + '-' + show_start_time_utc;
+    newShow._id = master_time_id(newShow.master_show_uid, show_start_time_utc);
+    newShow.master_time_id = newShow._id;
     newShow.show_start_time_utc = show_start_time_utc;
     newShow.show_end_time_utc = show_end_time_utc;
     return newShow;
@@ -216,22 +227,17 @@ function returnShowsArrayWithNewDates(dateArray, show) {
   return returnedShows;
 }
 
-function findShowQueryByDateRange(start, end) {
-  return [
-    {
-      'repeat_rule.repeat_start_date': {
-        $lte: end,
-      },
-    },
-    {
-      'repeat_rule.repeat_end_date': {
-        $gte: start,
-      },
-    },
-  ];
+function master_time_id__byShowType(show) {
+  if (show.master_show_uid) {
+    //Instance Show
+    return master_time_id(show.master_show_uid, show.replace_show_date);
+  } else {
+    //Regular Show
+    return master_time_id(show._id, show.show_start_time_utc);
+  }
 }
 
 module.exports = {
   showList,
-  findShowQueryByDateRange,
+  master_time_id__byShowType,
 };

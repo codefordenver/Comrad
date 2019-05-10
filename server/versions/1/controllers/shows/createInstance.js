@@ -1,6 +1,10 @@
-const db = require('../../../models/v1');
+const db = require('../../models');
 const mongoose = require('mongoose');
 const moment = require('moment');
+
+const {
+  utils__mongoose: { populateShowQuery, master_time_id },
+} = require('./utils');
 
 function createInstance(req, res) {
   const {
@@ -29,18 +33,14 @@ function createInstance(req, res) {
     d1.isNew = true;
     d1.save()
       .then(dbShow => {
-        db.Show.populate(dbShow, {
-          path: 'show_details.host',
-          select: 'profile.first_name profile.last_name station.on_air_name',
-        })
+        db.Show.populate(dbShow, populateShowQuery())
           .then(dbShow => {
             dbShow._doc.show_details.title =
               dbShow.show_details.title + ' (Instance Version)';
-            dbShow._doc.master_id =
-              dbShow.master_show_uid + '-' + moment(dbShow.show_start_time_utc);
-            // console.log(
-            //   dbShow.master_show_uid + '-' + moment(dbShow.show_start_time_utc),
-            // );
+            dbShow._doc.master_time_id = master_time_id(
+              dbShow.master_show_uid,
+              dbShow.replace_show_date,
+            );
             console.log(dbShow);
             res.json(dbShow);
           })

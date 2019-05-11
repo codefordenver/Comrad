@@ -8,6 +8,11 @@ import Button from '../Button';
 import Input from '../Input';
 
 class FormTrackAdd extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+
   submit = (values, dispatch, props) => {
     const { trackAdd, submitCallback } = this.props;
     trackAdd(values, submitCallback);
@@ -16,6 +21,7 @@ class FormTrackAdd extends Component {
   render() {
     const { props, submit } = this;
     const { handleSubmit } = props;
+    //console.log(this.props.maxDiskNumber)
 
     return (
       <form className="form-track-add" onSubmit={handleSubmit(submit)}>
@@ -74,11 +80,17 @@ class FormTrackAdd extends Component {
   }
 }
 
+function mapStateToProps(state, ownProps) {
+  //this is incorrect
+  return {
+    initialValues: {
+      'disk-number': ownProps.maxDiskNumber,
+    },
+  };
+}
+
 const ReduxFormTrackAdd = reduxForm({
   form: 'trackAdd',
 })(FormTrackAdd);
 
-export default connect(
-  null,
-  { trackAdd },
-)(ReduxFormTrackAdd);
+export default connect(mapStateToProps)(ReduxFormTrackAdd);

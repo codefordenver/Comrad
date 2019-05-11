@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import Card, { CardBody } from '../../components/Card';
+import { connect } from 'react-redux';
 import FormTrackAdd from '../../components/FormTrackAdd';
 
 class TrackAddPage extends Component {
@@ -10,13 +11,13 @@ class TrackAddPage extends Component {
   }
 
   render() {
-    console.log(this.props);
+    const { name } = this.props.album.doc;
     return (
       <div>
         <Card>
           <CardBody>
             <h1>Add Track to Album</h1>
-            <h2>Album: </h2>
+            <h2>Album: {name}</h2>
             <FormTrackAdd />
           </CardBody>
         </Card>
@@ -25,4 +26,8 @@ class TrackAddPage extends Component {
   }
 }
 
-export default TrackAddPage;
+function mapStateToProps({ album }) {
+  return { album };
+}
+
+export default connect(mapStateToProps)(TrackAddPage);

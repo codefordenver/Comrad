@@ -83,6 +83,7 @@ function mapStateToProps(state, ownProps) {
   return {
     initialValues: {
       'disk-number': ownProps.maxDiskNumber,
+      'track-number': ownProps.maxTrackNumber + 1,
     },
   };
 }

@@ -21,7 +21,6 @@ class FormTrackAdd extends Component {
   render() {
     const { props, submit } = this;
     const { handleSubmit } = props;
-    //console.log(this.props.maxDiskNumber)
 
     return (
       <form className="form-track-add" onSubmit={handleSubmit(submit)}>
@@ -81,7 +80,6 @@ class FormTrackAdd extends Component {
 }
 
 function mapStateToProps(state, ownProps) {
-  //this is incorrect
   return {
     initialValues: {
       'disk-number': ownProps.maxDiskNumber,

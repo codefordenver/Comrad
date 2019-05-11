@@ -11,14 +11,22 @@ class TrackAddPage extends Component {
   }
 
   render() {
-    const { name } = this.props.album.doc;
+    const { name, tracks } = this.props.album.doc;
+    let array = [];
+    for (var key in tracks) {
+      array.push(tracks[key].disk_number);
+    }
+    var maxDiskNumber = array.reduce(function(a, b) {
+      return Math.max(a, b);
+    });
+
     return (
       <div>
         <Card>
           <CardBody>
             <h1>Add Track to Album</h1>
             <h2>Album: {name}</h2>
-            <FormTrackAdd />
+            <FormTrackAdd maxDiskNumber={maxDiskNumber} />
           </CardBody>
         </Card>
       </div>

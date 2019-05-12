@@ -7,12 +7,18 @@ import FormTrackAdd from '../../components/FormTrackAdd';
 class TrackAddPage extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      maxDiskNumber: 0,
+      maxTrackNumber: 0,
+    };
   }
 
-  render() {
-    const { name, tracks } = this.props.album.doc;
-    // this function calculates the maximum disk number
+  componentWillMount() {
+    this.findMaxDiskTrackNumbers();
+  }
+
+  findMaxDiskTrackNumbers() {
+    const { tracks } = this.props.album.doc;
     let array = [];
     for (var key in tracks) {
       array.push(tracks[key].disk_number);
@@ -20,20 +26,24 @@ class TrackAddPage extends Component {
     var maxDiskNumber = array.reduce(function(a, b) {
       return Math.max(a, b);
     });
-    //
 
-    // this calculates the maximum track number
-    let array2 = [];
+    array = [];
     for (var key in tracks) {
       if (tracks[key].disk_number === maxDiskNumber) {
-        array2.push(tracks[key].track_number);
+        array.push(tracks[key].track_number);
       }
     }
-
-    var maxTrackNumber = array2.reduce(function(a, b) {
+    var maxTrackNumber = array.reduce(function(a, b) {
       return Math.max(a, b);
     });
-    //
+    this.setState({
+      maxDiskNumber: maxDiskNumber,
+      maxTrackNumber: maxTrackNumber,
+    });
+  }
+
+  render() {
+    const { name, tracks } = this.props.album.doc;
     return (
       <div>
         <Card>
@@ -41,8 +51,8 @@ class TrackAddPage extends Component {
             <h1>Add Track to Album</h1>
             <h2>Album: {name}</h2>
             <FormTrackAdd
-              maxDiskNumber={maxDiskNumber}
-              maxTrackNumber={maxTrackNumber}
+              maxDiskNumber={this.state.maxDiskNumber}
+              maxTrackNumber={this.state.maxTrackNumber}
             />
           </CardBody>
         </Card>

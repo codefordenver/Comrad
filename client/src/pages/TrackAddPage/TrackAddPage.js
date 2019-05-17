@@ -49,7 +49,7 @@ class TrackAddPage extends Component {
         <Card>
           <CardBody>
             <h1>Add Track to Album</h1>
-            <h2>Album: {name}</h2>
+            <h2 className="album-name">Album: {name}</h2>
             <FormTrackAdd
               maxDiskNumber={this.state.maxDiskNumber}
               maxTrackNumber={this.state.maxTrackNumber}

@@ -82,6 +82,8 @@ class FormTrackAdd extends Component {
 function mapStateToProps(state, ownProps) {
   return {
     initialValues: {
+      Album: ownProps.albumId,
+      Artist: ownProps.artistId,
       'disk-number': ownProps.maxDiskNumber,
       'track-number': ownProps.maxTrackNumber + 1,
     },

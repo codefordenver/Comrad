@@ -13,6 +13,10 @@ class TrackAddPage extends Component {
     };
   }
 
+  addTrackCallback = id => {
+    this.props.history.push('/library/albums/:id/tracks' + id);
+  };
+
   componentWillMount() {
     this.findMaxDiskTrackNumbers();
   }
@@ -43,7 +47,7 @@ class TrackAddPage extends Component {
   }
 
   render() {
-    const { name, tracks } = this.props.album.doc;
+    const { name, tracks, _id, artist } = this.props.album.doc;
     return (
       <div>
         <Card>
@@ -53,6 +57,9 @@ class TrackAddPage extends Component {
             <FormTrackAdd
               maxDiskNumber={this.state.maxDiskNumber}
               maxTrackNumber={this.state.maxTrackNumber}
+              submitCallback={this.addTrackCallback}
+              albumId={_id}
+              artistId={artist._id}
             />
           </CardBody>
         </Card>

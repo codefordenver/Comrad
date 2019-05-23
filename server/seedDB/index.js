@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const keys = require('../config/keys');
 const seed = require('./data');
-const db = require('../models/v1');
+const db = require('../versions/1/models');
 
 async function seedDB() {
   try {

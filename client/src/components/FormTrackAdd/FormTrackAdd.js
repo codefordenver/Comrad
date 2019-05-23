@@ -13,6 +13,7 @@ class FormTrackAdd extends Component {
   }
 
   submit = (values, dispatch, props) => {
+    console.log(values);
     const { trackAdd } = this.props;
     return trackAdd(values);
   };
@@ -24,12 +25,14 @@ class FormTrackAdd extends Component {
     return (
       <form
         className="form-track-add"
-        onSubmit={handleSubmit(data =>
+        onSubmit={handleSubmit(data => {
+          const duration_in_seconds =
+            parseInt(data.seconds) + parseInt(data.minutes) * 60;
           submit({
             ...data,
-            duration_in_seconds: data.seconds + data.minutes * 60,
-          }),
-        )}
+            duration_in_seconds: duration_in_seconds,
+          });
+        })}
       >
         <Field
           component={Input}

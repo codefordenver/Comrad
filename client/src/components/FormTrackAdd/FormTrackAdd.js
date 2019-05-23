@@ -27,7 +27,7 @@ class FormTrackAdd extends Component {
         <Field
           component={Input}
           label="Disk Number"
-          name="disk-number"
+          name="disk_number"
           type="number"
           autoFocus
           validate={requiredValidate}
@@ -35,7 +35,7 @@ class FormTrackAdd extends Component {
         <Field
           component={Input}
           label="Track Number"
-          name="track-number"
+          name="track_number"
           type="number"
           autoFocus
           validate={requiredValidate}
@@ -82,10 +82,10 @@ class FormTrackAdd extends Component {
 function mapStateToProps(state, ownProps) {
   return {
     initialValues: {
-      Album: ownProps.albumId,
-      Artist: ownProps.artistId,
-      'disk-number': ownProps.maxDiskNumber,
-      'track-number': ownProps.maxTrackNumber + 1,
+      album: ownProps.albumId,
+      artists: [ownProps.artistId],
+      disk_number: ownProps.maxDiskNumber,
+      track_number: ownProps.maxTrackNumber + 1,
     },
   };
 }

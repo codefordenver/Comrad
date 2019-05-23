@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import { requiredValidate } from '../../utils/validation';
-import { trackAdd } from '../../redux/track'; //need to set up correct path
-import { albumFindOne } from '../../redux/album';
+import { trackAdd } from '../../redux/track';
 import Button from '../Button';
 import Input from '../Input';
 
@@ -14,8 +13,8 @@ class FormTrackAdd extends Component {
   }
 
   submit = (values, dispatch, props) => {
-    const { trackAdd, submitCallback } = this.props;
-    return trackAdd(values, submitCallback);
+    const { trackAdd } = this.props;
+    return trackAdd(values);
   };
 
   render() {

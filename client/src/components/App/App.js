@@ -13,6 +13,7 @@ import ErrorRoutes from '../../routes/ErrorRoutes';
 import HomeRoutes from '../../routes/HomeRoutes';
 import LibraryRoutes from '../../routes/LibraryRoutes';
 import ReportRoutes from '../../routes/ReportRoutes';
+import TrafficCalendarRoutes from '../../routes/TrafficCalendarRoutes';
 import UserRoutes from '../../routes/UserRoutes';
 
 class App extends Component {
@@ -34,6 +35,7 @@ class App extends Component {
             <Route path="/error" component={ErrorRoutes} />
             <Route path="/library" component={LibraryRoutes} />
             <Route path="/report" component={ReportRoutes} />
+            <Route path="/traffic" component={TrafficCalendarRoutes} />
             <Route path="/user" component={UserRoutes} />
             <Route component={HomeRoutes} />
           </Switch>

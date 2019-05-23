@@ -29,7 +29,8 @@
     "redux": "^4.0.0",
     "redux-form": "^8.1.0",
     "redux-promise": "^0.6.0",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "fullcalendar": "^3.10.0"
   },
   "devDependencies": {
     "axios-mock-adapter": "^1.15.0",

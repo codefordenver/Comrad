@@ -1,0 +1,56 @@
+.traffic-calendar {
+  .rbc-event {
+    background: $color-primary;
+  }
+
+  .event--show {
+    max-width: 40px;
+    min-width: 40px;
+  }
+  .event--legal_id {
+    background: #008800;
+  }
+  .event--underwriting {
+    background: #880000;
+  }
+  
+  .rbc-events-container {
+    margin-left: 3.5em;
+  }
+  
+  .sleepless {
+    display: grid;
+    position: relative;
+    
+    &::before {
+      background: $color-grey-4;
+      width: 3.5em;
+      padding-left: 0.4em;
+      position: relative;
+      top: -1px;
+      content: " ";
+    }
+    &::after {
+        width:3.5em;
+        position: absolute;
+        bottom: -1px;
+        height: 2px;
+        background: $color-grey-4;
+        content: " ";
+      }
+    
+    &--start {
+      &::before {
+        content: "SN";
+        color: #fff;
+      }
+    }
+    
+    &--end {
+      &::after {
+        display: none;
+      }
+    }
+  }
+
+}

@@ -22,7 +22,15 @@ class FormTrackAdd extends Component {
     const { handleSubmit } = props;
 
     return (
-      <form className="form-track-add" onSubmit={handleSubmit(submit)}>
+      <form
+        className="form-track-add"
+        onSubmit={handleSubmit(data =>
+          submit({
+            ...data,
+            duration_in_seconds: data.seconds + data.minutes * 60,
+          }),
+        )}
+      >
         <Field
           component={Input}
           label="Disk Number"

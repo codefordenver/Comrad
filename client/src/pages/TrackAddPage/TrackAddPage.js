@@ -13,10 +13,6 @@ class TrackAddPage extends Component {
     };
   }
 
-  addTrackCallback = id => {
-    this.props.history.push('/library/albums/:id/tracks' + id);
-  };
-
   componentWillMount() {
     this.findMaxDiskTrackNumbers();
   }

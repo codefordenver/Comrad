@@ -6,7 +6,7 @@ const appV1 = require('./v1/app');
 const PORT = process.env.PORT || 5000;
 
 mongoose.connect(
-  'mongodb://localhost/comrad',
+  keys.mongoURI,
   { useNewUrlParser: true },
 );
 

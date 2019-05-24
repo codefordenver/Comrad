@@ -16,12 +16,13 @@ class DropdownHost extends Component {
   constructor(props) {
     super(props);
 
-    const { filterByStatus = 'All', host, userSearchHosts } = this.props;
-    const hostDisplayName = host != null ? this.formatHostName(host) : '';
+    const { filterByStatus = 'All', host, userActions } = this.props;
+    console.log(this.props);
+    const hostDisplayName = host !== null ? this.formatHostName(host) : '';
 
     //run a host search on the existing value so that the host list is populated with information
     if (hostDisplayName.length > 0) {
-      userSearchHosts({ filter: filterByStatus, q: hostDisplayName });
+      userActions.searchHosts({ status: filterByStatus, q: hostDisplayName });
     }
 
     this.state = {
@@ -42,25 +43,19 @@ class DropdownHost extends Component {
     // cache the search query in state so that we can quickly update the search results
     if (
       userState.search != null &&
-      userState.search.q != null &&
-      !(userState.search.q.toLowerCase() in cachedSearches)
+      userState.searchParams.q != null &&
+      !(userState.searchParams.q.toLowerCase() in cachedSearches)
     ) {
-      cachedSearches[userState.search.q.toLowerCase()] = userState.docs;
+      cachedSearches[userState.searchParams.q.toLowerCase()] = userState.docs;
       this.setState({ cachedSearches: cachedSearches });
     }
   }
 
   // format the name to display for the host
   formatHostName = user => {
-    if (user) {
-      return;
-    }
-
     const { first_name, last_name, on_air_name } = user;
 
-    return on_air_name !== null && on_air_name.length > 0
-      ? on_air_name
-      : `${first_name} ${last_name}`;
+    return on_air_name || `${first_name} ${last_name}`;
   };
 
   //handles input box change

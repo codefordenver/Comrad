@@ -11,7 +11,7 @@ import Input from '../../Input';
 import ModalClose from '../../Modal/Modal__Button_Close';
 import RepeatDropdown from './RepeatDropdown';
 
-import { getShowSelected } from '../../../redux/show';
+import { getShowSelected, getSearchDate } from '../../../redux/show';
 import { requiredValidate } from '../../../utils/validation';
 
 class NewShowForm extends Component {
@@ -144,14 +144,18 @@ class NewShowForm extends Component {
 const selector = formValueSelector('newShow');
 
 function mapStateToProps(state) {
+  //console.log(state);
   const initialValues = state => {
     const selectedShow = getShowSelected(state.show);
+    const searchDates = getSearchDate(state.show);
 
     return {
       show_start_time_utc: moment(selectedShow.start),
       show_end_time_utc: moment(selectedShow.end),
       repeat_start_date: moment(selectedShow.start),
       repeat_end_date: moment(selectedShow.end),
+      startDate: searchDates.start,
+      endDate: searchDates.end,
       repeat: false,
     };
   };

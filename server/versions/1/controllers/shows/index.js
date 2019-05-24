@@ -1,4 +1,5 @@
 const create = require('./create');
+const createInstance = require('./createInstance');
 const find = require('./find');
 const findById = require('./findById');
 const remove = require('./remove');
@@ -8,6 +9,7 @@ module.exports = {
   find,
   findById,
   create,
+  createInstance,
   update,
   remove,
 };

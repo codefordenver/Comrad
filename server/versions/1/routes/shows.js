@@ -10,7 +10,7 @@ router
   .route('/:id')
   .get(showsController.findById)
   .delete(showsController.remove)
-  .put(showsController.update)
+  .put(showsController.createInstance)
   .patch(showsController.update);
 
 module.exports = router;

@@ -57,9 +57,18 @@ class DropdownHost extends Component {
 
   // format the name to display for the host
   formatHostName = user => {
+    let first_name,
+      last_name = '';
     const { profile, station = { on_air_name: null } } = user;
-    const { first_name, last_name } = profile;
+
     const { on_air_name } = station;
+
+    //Basic check for if profile exists so the app does not crash when it is undefined.
+    if (profile) {
+      first_name = profile.first_name;
+      last_name = profile.last_name;
+    }
+
     return on_air_name != null && on_air_name.length > 0
       ? on_air_name
       : `${first_name} ${last_name}`;

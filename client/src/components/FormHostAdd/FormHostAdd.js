@@ -25,7 +25,7 @@ class FormHostAdd extends Component {
 
     return (
       <div>
-        {alert.display && alert.type != 'success' && (
+        {alert.display && alert.type !== 'success' && (
           <Alert className="mb-1" alertClose={userAlertClose} {...alert} />
         )}
         <form className="form-host-add" onSubmit={handleSubmit(submit)}>

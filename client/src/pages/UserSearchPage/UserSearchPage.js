@@ -12,7 +12,7 @@ class UserSearchPage extends Component {
   componentDidMount() {
     const { userActions, userState } = this.props;
 
-    userActions.search(userState.searchParams);
+    userActions.search(userState.search);
   }
 
   render() {

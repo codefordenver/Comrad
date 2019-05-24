@@ -18,11 +18,11 @@ class DropdownHost extends Component {
 
     const { filterByStatus = 'All', host, userActions } = this.props;
     console.log(this.props);
-    const hostDisplayName = host !== null ? this.formatHostName(host) : '';
+    const hostDisplayName = host ? this.formatHostName(host) : '';
 
     //run a host search on the existing value so that the host list is populated with information
     if (hostDisplayName.length > 0) {
-      userActions.searchHosts({ status: filterByStatus, q: hostDisplayName });
+      userActions.searchHosts({ filter: filterByStatus, q: hostDisplayName });
     }
 
     this.state = {
@@ -43,10 +43,10 @@ class DropdownHost extends Component {
     // cache the search query in state so that we can quickly update the search results
     if (
       userState.search != null &&
-      userState.searchParams.q != null &&
-      !(userState.searchParams.q.toLowerCase() in cachedSearches)
+      userState.search.q != null &&
+      !(userState.search.q.toLowerCase() in cachedSearches)
     ) {
-      cachedSearches[userState.searchParams.q.toLowerCase()] = userState.docs;
+      cachedSearches[userState.search.q.toLowerCase()] = userState.docs;
       this.setState({ cachedSearches: cachedSearches });
     }
   }
@@ -167,9 +167,10 @@ class DropdownHost extends Component {
   //function for rendering the options in the host dropdown results
   renderHostListItem = (item, loading) => {
     if (item !== ADD_NEW_HOST) {
-      return <div key={item._id}>{`${item}`}</div>;
+      return <div key={item._id}>{`${item.value}`}</div>;
     }
     //Add new user component
+    //NOT COMPLETE
     return <div key={item}>Add New Host</div>;
   };
 
@@ -208,7 +209,7 @@ class DropdownHost extends Component {
 
     let items = docs.map(user => {
       const { _id } = user;
-
+      console.log(user);
       return {
         _id,
         value: formatHostName(user),

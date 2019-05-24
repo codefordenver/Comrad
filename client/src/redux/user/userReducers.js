@@ -4,8 +4,8 @@ const initialState = {
   doc: {},
   docs: [],
   loading: false,
-  searchParams: {
-    status: 'all',
+  search: {
+    filter: 'all',
     q: '',
   },
 };

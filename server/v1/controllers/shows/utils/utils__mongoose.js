@@ -124,7 +124,7 @@ function findShowQueryByDateRange(start, end) {
 function populateShowQuery() {
   return {
     path: 'show_details.host',
-    select: 'profile.first_name profile.last_name station.on_air_name',
+    select: 'first_name last_name on_air_name',
   };
 }
 

@@ -1,12 +1,12 @@
 const db = require('../../models');
 const { randomBytes } = require('crypto');
 const { promisify } = require('util');
-const { emailTemplate, transport } = require('../../../../utils');
+const { emailTemplate, transport } = require('../../utils/mail');
 
 async function passwordReset(req, res) {
   const { email } = req.body;
 
-  const user = await db.User.findOne({ 'contact.email': email });
+  const user = await db.User.findOne({ email });
 
   if (!user) {
     return res.status(404).json('Email does not exist!');
@@ -17,10 +17,10 @@ async function passwordReset(req, res) {
   const resetTokenExpiry = Date.now() + 3600000;
 
   await db.User.findOneAndUpdate(
-    { 'contact.email': email },
+    { email },
     {
-      'auth.reset_token': resetToken,
-      'auth.reset_token_expiry': resetTokenExpiry,
+      reset_token: resetToken,
+      reset_token_expiry: resetTokenExpiry,
     },
     { new: true },
   )
@@ -31,7 +31,7 @@ async function passwordReset(req, res) {
 
   await transport.sendMail({
     from: 'comrad.development@gmail.com',
-    to: user.contact.email,
+    to: user.email,
     subject: 'Your Password Reset Token',
     html: emailTemplate(
       `<a target="_blank" href="${PORT}/new?rt=${resetToken}">Click Here</a>`,

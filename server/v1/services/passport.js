@@ -1,6 +1,6 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
-const db = require('../versions/1/models');
+const db = require('../models');
 
 passport.serializeUser((user, done) => {
   done(null, user.id);
@@ -16,7 +16,7 @@ const localOptions = { usernameField: 'email' };
 
 passport.use(
   new LocalStrategy(localOptions, async (email, password, done) => {
-    db.User.findOne({ 'contact.email': email }, (err, dbUser) => {
+    db.User.findOne({ email }, (err, dbUser) => {
       if (err) {
         return done(err);
       }
@@ -33,11 +33,6 @@ passport.use(
         if (!isMatch) {
           return done(null, false);
         }
-
-        await db.User.findOneAndUpdate(
-          { 'contact.email': email },
-          { 'auth.last_logged': new Date() },
-        );
 
         return done(null, dbUser);
       });

@@ -6,18 +6,18 @@ function searchHosts(req, res) {
     return res.status(401).json('Must be logged in');
   }
 
-  const { filter = 'All', q, maxResults = 10 } = req.query;
+  const { filter = 'all', q, maxResults = 10 } = req.query;
 
-  if (q == null || q.length == 0) {
-    return res.status(422).json('Must provide a search string');
+  if (q === null || q.length === 0) {
+    return res.status(422).json({ message: 'Must provide a search string' });
   }
 
-  const conditions = filter === 'All' ? {} : { 'station.status': filter };
+  const conditions = filter.toLowerCase() === 'all' ? {} : { status: filter };
 
   db.User.find(conditions, {
-    'station.on_air_name': 1,
-    'profile.first_name': 1,
-    'profile.last_name': 1,
+    on_air_name: 1,
+    first_name: 1,
+    last_name: 1,
   })
     .then(dbUsers => {
       const options = {
@@ -27,11 +27,7 @@ function searchHosts(req, res) {
         distance: 100,
         maxPatternLength: 32,
         minMatchCharLength: 1,
-        keys: [
-          'station.on_air_name',
-          'profile.last_name',
-          'profile_first_name',
-        ],
+        keys: ['on_air_name', 'last_name', 'first_name'],
       };
 
       const fuse = new Fuse(dbUsers, options);

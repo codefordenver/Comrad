@@ -3,7 +3,7 @@ const session = require('express-session');
 const passport = require('passport');
 const bodyParser = require('body-parser');
 const keys = require('./config/keys');
-const apiVersion = require('./versions/1');
+const routes = require('./routes');
 require('./services/passport');
 require('console.table');
 
@@ -13,7 +13,9 @@ app.use(bodyParser.json());
 app.use(session({ secret: keys.secretKey, resave: false }));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(apiVersion);
+
+// Routes
+app.use('/v1', routes);
 
 if (['production'].includes(process.env.NODE_ENV)) {
   app.use(express.static('client/build'));

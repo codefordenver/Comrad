@@ -1,5 +1,5 @@
 const db = require('../../models');
-const keys = require('../../../../config/keys');
+const keys = require('../../config/keys');
 
 /**
  * Queries all records in the music library: artists, albums, and tracks.

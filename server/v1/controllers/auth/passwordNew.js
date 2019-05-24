@@ -2,19 +2,19 @@ const bcrypt = require('bcrypt-nodejs');
 const db = require('../../models');
 
 async function passwordNew(req, res) {
-  const { passwordConfirm, passwordNew, resetToken } = req.body;
+  const { passConfirm, passNew, resetToken } = req.body;
 
-  if (!passwordConfirm || !passwordNew) {
+  if (!passConfirm || !passNew) {
     return res.status(401).json('Password Confirm and/or Password New Missing');
   }
 
-  if (passwordConfirm !== passwordNew) {
+  if (passConfirm !== passNew) {
     return res.status(401).json('Your passwords do not match!');
   }
 
   const user = await db.User.findOne({
-    'auth.reset_token': resetToken,
-    'auth.reset_token_expiry': {
+    reset_token: resetToken,
+    reset_token_expiry: {
       $gte: Date.now() - 3600000,
     },
   });
@@ -28,17 +28,17 @@ async function passwordNew(req, res) {
       return res.status(422).json(err);
     }
 
-    bcrypt.hash(passwordNew, salt, null, async (err, hash) => {
+    bcrypt.hash(passNew, salt, null, async (err, hash) => {
       if (err) {
         return res.status(422).json(err);
       }
 
       const updatedUser = await db.User.findOneAndUpdate(
-        { 'contact.email': user.contact.email },
+        { email: user.email },
         {
-          'auth.password': hash,
-          'auth.reset_token': null,
-          'auth.reset_token_expiry': null,
+          password: hash,
+          reset_token: null,
+          reset_token_expiry: null,
         },
         { new: true },
       );

@@ -12,6 +12,7 @@ class HomeLayout extends Component {
 
     alertInactive();
   }
+
   render() {
     const { alertState, children } = this.props;
 

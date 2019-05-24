@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import moment from 'moment';
 import { isEmpty } from 'lodash';
 
-import { userActions } from '../../redux/user';
+import { userActions } from '../../redux';
 
-import Alert from '../../components/Alert';
 import Button from '../../components/Button';
 import Card, { CardBody } from '../../components/Card';
 import { bindActionCreators } from 'redux';
@@ -26,13 +24,11 @@ class UserProfilePage extends Component {
 
     const {
       city,
-      date_of_birth,
       email,
       first_name,
       image,
       last_name,
       on_air_name,
-      phone,
       state,
       street,
       zip_code,
@@ -53,10 +49,6 @@ class UserProfilePage extends Component {
                     <p>
                       {first_name} {last_name}
                     </p>
-                    <h5>Date of Birth</h5>
-                    {date_of_birth && (
-                      <p>{moment(date_of_birth).format('MMMM D, YYYY')}</p>
-                    )}
                   </div>
                 </CardBody>
               </Card>
@@ -66,8 +58,6 @@ class UserProfilePage extends Component {
                 <CardBody>
                   <div className="user-profile__contact">
                     <h3>Contact</h3>
-                    <h5>Phone</h5>
-                    {phone && <p>{phone}</p>}
                     <h5>Email</h5>
                     {email && <p>{email}</p>}
                   </div>

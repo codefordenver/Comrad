@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
 import classnames from 'classnames';
 import Downshift from 'downshift';
 import { connect } from 'react-redux';
 
-import { userAlertClose, userClear, userSearchHosts } from '../../redux/user';
+import { authActions } from '../../redux/auth';
+import { userActions } from '../../redux/user';
 import FormHostAdd from '../FormHostAdd';
 import Input from '../Input';
 import Modal from '../Modal';
@@ -34,40 +36,36 @@ class DropdownHost extends Component {
   }
 
   componentDidUpdate() {
-    const { user } = this.props;
+    const { userState } = this.props;
     const { cachedSearches } = this.state;
-    const { docs, search } = user;
 
     // cache the search query in state so that we can quickly update the search results
     if (
-      search != null &&
-      search.q != null &&
-      !(search.q.toLowerCase() in cachedSearches)
+      userState.search != null &&
+      userState.search.q != null &&
+      !(userState.search.q.toLowerCase() in cachedSearches)
     ) {
-      cachedSearches[search.q.toLowerCase()] = docs;
+      cachedSearches[userState.search.q.toLowerCase()] = userState.docs;
       this.setState({ cachedSearches: cachedSearches });
     }
   }
 
-  //clear redux state on unmount
-  componentWillUnmount() {
-    const { userClear } = this.props;
-    userClear();
-  }
-
   // format the name to display for the host
   formatHostName = user => {
-    const { profile, station = { on_air_name: null } } = user;
-    const { first_name, last_name } = profile;
-    const { on_air_name } = station;
-    return on_air_name != null && on_air_name.length > 0
+    if (user) {
+      return;
+    }
+
+    const { first_name, last_name, on_air_name } = user;
+
+    return on_air_name !== null && on_air_name.length > 0
       ? on_air_name
       : `${first_name} ${last_name}`;
   };
 
   //handles input box change
   handleChange = e => {
-    const { userSearchHosts, filterByStatus = 'All' } = this.props;
+    const { userActions, filterByStatus = 'All' } = this.props;
     const { cachedSearches, hostSearchTimeout } = this.state;
     const { value } = e.target;
 
@@ -78,7 +76,7 @@ class DropdownHost extends Component {
       }
       this.setState({
         hostSearchTimeout: setTimeout(
-          () => userSearchHosts({ filter: filterByStatus, q: value }),
+          () => userActions.searchHosts({ filter: filterByStatus, q: value }),
           150,
         ),
       });
@@ -173,13 +171,11 @@ class DropdownHost extends Component {
 
   //function for rendering the options in the host dropdown results
   renderHostListItem = (item, loading) => {
-    const { value } = item;
-
     if (item !== ADD_NEW_HOST) {
-      return <div key={value._id}>{`${value}`}</div>;
+      return <div key={item._id}>{`${item}`}</div>;
     }
     //Add new user component
-    return <div key={value}>Add New Host</div>;
+    return <div key={item}>Add New Host</div>;
   };
 
   dirtyOverride = currentInputValue => {
@@ -202,14 +198,13 @@ class DropdownHost extends Component {
       renderHostListItem,
       state,
     } = this;
-    const { auth, user } = props;
+    const { authState, userState } = props;
     const {
       cachedSearches,
       currentInputValue,
       hasFocus,
       showAddHostModal,
     } = state;
-    const { loading } = user;
 
     // get the documents from the cachedResults property rather than Redux,
     // because Redux might not have the search results of the current input value if there
@@ -227,8 +222,8 @@ class DropdownHost extends Component {
 
     if (items.length === 0) {
       items.push({
-        _id: auth.doc._id,
-        value: formatHostName(auth.doc) + ' (Me)',
+        _id: authState.doc._id,
+        value: formatHostName(authState.doc) + ' (Me)',
       });
     }
 
@@ -284,7 +279,7 @@ class DropdownHost extends Component {
                       item,
                     })}
                   >
-                    {renderHostListItem(item, loading)}
+                    {renderHostListItem(item, userState.loading)}
                   </div>
                 ))}
               </div>
@@ -311,16 +306,19 @@ class DropdownHost extends Component {
 
 function mapStateToProps({ auth, user }) {
   return {
-    auth,
-    user,
+    authState: auth,
+    userState: user,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    authActions: bindActionCreators({ ...authActions }, dispatch),
+    userActions: bindActionCreators({ ...userActions }, dispatch),
   };
 }
 
 export default connect(
   mapStateToProps,
-  {
-    userAlertClose,
-    userClear,
-    userSearchHosts,
-  },
+  mapDispatchToProps,
 )(DropdownHost);

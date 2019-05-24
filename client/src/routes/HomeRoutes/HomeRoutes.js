@@ -9,7 +9,7 @@ import SignupPage from '../../pages/SignupPage';
 
 const LoginRoutes = props => {
   return (
-    <HomeLayout>
+    <HomeLayout {...props}>
       <Route exact path={`/`} component={LoginPage} />
       <Route exact path={`/new`} component={PasswordNewPage} />
       <Route exact path={`/reset`} component={PasswordResetPage} />

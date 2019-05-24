@@ -11,3 +11,4 @@ export const SHOW_UPDATE = 'show_update';
 export const SHOW_UPDATE_HOST = 'show_update_host';
 export const SHOW_SELECTED = 'show_selected';
 export const SHOW_UNSELECTED = 'show_unselected';
+export const SHOW_CREATE_INSTANCE = 'show_create_instance';

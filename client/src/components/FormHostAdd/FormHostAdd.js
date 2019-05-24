@@ -14,13 +14,13 @@ import Input from '../Input';
 
 class FormHostAdd extends Component {
   submit = (values, dispatch, props) => {
-    const { userCreate, submitCallback } = this.props;
-    userCreate(values, submitCallback);
+    const { userActions, submitCallback } = this.props;
+    userActions.create(values, submitCallback);
   };
 
   render() {
     const { props, submit } = this;
-    const { cancelCallback, handleSubmit, user } = props;
+    const { cancelCallback, handleSubmit } = props;
 
     return (
       <div>
@@ -90,12 +90,6 @@ const ReduxFormHostAdd = reduxForm({
   form: 'hostAdd',
 })(FormHostAdd);
 
-function mapStateToProps({ user }) {
-  return {
-    user,
-  };
-}
-
 function mapDispatchToProps(dispatch) {
   return {
     userActions: bindActionCreators({ ...userActions }, dispatch),
@@ -103,6 +97,6 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps,
 )(ReduxFormHostAdd);

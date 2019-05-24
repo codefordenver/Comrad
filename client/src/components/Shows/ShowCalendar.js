@@ -13,6 +13,7 @@ import {
   searchShow,
   selectShow,
   errorShowsMessage,
+  createInstanceShow,
 } from '../../redux/show';
 
 import ShowModalController from './ShowModalController';
@@ -29,10 +30,21 @@ class Calendar extends Component {
   componentDidMount() {
     const { searchShow } = this.props;
 
-    const initialSearchStartDate = moment().subtract(1, 'month');
-    const initialSearchEndDate = moment().add(1, 'month');
+    const initialSearchStartDate = moment().subtract(2, 'week');
+    const initialSearchEndDate = moment().add(2, 'week');
 
     searchShow(initialSearchStartDate, initialSearchEndDate);
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    Object.entries(this.props).forEach(
+      ([key, val]) =>
+        prevProps[key] !== val && console.log(`Prop '${key}' changed`),
+    );
+    Object.entries(this.state).forEach(
+      ([key, val]) =>
+        prevState[key] !== val && console.log(`State '${key}' changed`),
+    );
   }
 
   handleDateChange = dates => {
@@ -41,21 +53,21 @@ class Calendar extends Component {
     if (Array.isArray(dates)) {
       if (dates.length === 1) {
         //For when changing days
-        const dayStart = moment(dates[0]).subtract(1, 'week');
-        const dayEnd = moment(dates[0]).add(1, 'week');
+        const dayStart = moment(dates[0]).subtract(2, 'days');
+        const dayEnd = moment(dates[0]).add(2, 'days');
 
         searchShow(dayStart, dayEnd);
       } else {
         //For when changing weeks
-        const rangeStart = moment(dates[0]).subtract(1, 'months');
-        const rangeEnd = moment(dates[dates.length - 1]).add(1, 'months');
+        const rangeStart = moment(dates[0]).subtract(8, 'days');
+        const rangeEnd = moment(dates[dates.length - 1]).add(8, 'days');
 
         searchShow(rangeStart, rangeEnd);
       }
     } else {
       //For when changing months/agenda
-      const objectStart = moment(dates.start).subtract(2, 'month');
-      const objectEnd = moment(dates.end).add(2, 'month');
+      const objectStart = moment(dates.start).subtract(1, 'month');
+      const objectEnd = moment(dates.end).add(1, 'month');
 
       searchShow(objectStart, objectEnd);
     }
@@ -68,7 +80,26 @@ class Calendar extends Component {
   };
 
   convertShowsToArray = shows => {
-    return shows ? _.values(shows) : [];
+    //console.log('Updating Calendar Events');
+    const showsArray = shows ? _.values(shows) : [];
+    let newShowsArray = [];
+    showsArray.forEach(show => {
+      let { show_start_time_utc, show_end_time_utc } = show;
+      //Should be setup to check if shows span across midnight
+      //IMPORTANT:  Only offset the start/end times in the accessor
+      if (
+        parseInt(moment(show_start_time_utc).format('HH')) >
+        parseInt(moment(show_end_time_utc).format('HH'))
+      ) {
+        //Use this to push multiple shows if they span across midnight
+        //newShowsArray.push(show2) //add show (1) and show (2)
+        newShowsArray.push(show);
+      } else {
+        newShowsArray.push(show);
+      }
+    });
+
+    return newShowsArray;
   };
 
   showNewShowModal = show => {
@@ -86,14 +117,14 @@ class Calendar extends Component {
 
   customEventWrapper = props => {
     const {
-      event: { _id, master_show_uid },
+      event: { master_time_id },
     } = props;
-    const show = { _id, master_show_uid };
+    const show = props.event;
 
     return (
       <Tooltip
-        key={_id}
-        id={_id}
+        key={master_time_id}
+        id={master_time_id}
         overlay={<ViewShowForm show={show} />}
         trigger="click"
         placement="right"
@@ -102,6 +133,33 @@ class Calendar extends Component {
         {props.children}
       </Tooltip>
     );
+  };
+
+  startAccessorCalc(show) {
+    const { show_start_time_utc } = show;
+    //Basic check for shows that start and end at midnight.
+    if (
+      moment(show_start_time_utc).format('HH') === '00' &&
+      moment(show_start_time_utc).format('MM') === '00'
+    ) {
+      return new Date(moment(show_start_time_utc).add(1, 'second'));
+    }
+    return new Date(moment(show_start_time_utc));
+  }
+
+  endAccessorCalc(show) {
+    const { show_end_time_utc } = show;
+    if (
+      moment(show_end_time_utc).format('HH') === '00' &&
+      moment(show_end_time_utc).format('MM') === '00'
+    ) {
+      return new Date(moment(show_end_time_utc).add(-1, 'second'));
+    }
+    return new Date(moment(show_end_time_utc));
+  }
+
+  onSelectShow = show => {
+    //do nothing
   };
 
   eventStyleGetter = () => {
@@ -130,11 +188,11 @@ class Calendar extends Component {
           defaultView={BigCalendar.Views.WEEK}
           defaultDate={new Date()}
           {...calendarDateProperty}
-          //onSelectEvent={show => this.showViewShowModal(show)}
+          //onSelectEvent={show => this.onSelectShow(show)}
           onSelectSlot={show => this.showNewShowModal(show)}
           titleAccessor={show => show.show_details.title}
-          startAccessor={show => new Date(show.show_start_time_utc)}
-          endAccessor={show => new Date(show.show_end_time_utc)}
+          startAccessor={show => this.startAccessorCalc(show)}
+          endAccessor={show => this.endAccessorCalc(show)}
           onRangeChange={dateRange => this.handleDateChange(dateRange)}
           onNavigate={date => this.handleNavigate(date)}
           eventPropGetter={this.eventStyleGetter}
@@ -168,5 +226,6 @@ export default connect(
     setModalVisibility,
     errorShowsMessage,
     selectShow,
+    createInstanceShow,
   },
 )(Calendar);

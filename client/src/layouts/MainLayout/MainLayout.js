@@ -13,10 +13,13 @@ class MainLayout extends Component {
         <section className="main-layout__navbar">
           <Navbar />
         </section>
+
         <section className="main-layout__sidebar">
           <Sidebar />
         </section>
+
         <section className="main-layout__body">{children}</section>
+
         <section className="main-layout__footer">
           <Footer />
         </section>

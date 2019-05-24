@@ -125,7 +125,7 @@ class NewShowForm extends Component {
     const { updateShow, show } = props;
     const { _id, master_show_uid } = show;
     const showType = this.getShowType(show);
-
+    console.log(host);
     if (showType === 'series') {
       const { createInstanceShow } = this.props;
       show.show_details.host = host._id;

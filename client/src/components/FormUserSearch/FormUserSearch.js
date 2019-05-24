@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Field, reduxForm, formValueSelector } from 'redux-form';
 
@@ -6,18 +7,18 @@ import Button from '../Button';
 import Filter from '../Filter';
 import Input from '../Input';
 
-import { userSearch } from '../../redux/user';
+import { userActions } from '../../redux/user';
 
 class FormUserSearch extends Component {
   handleOnChange = (e, newValue) => {
-    const { q, userSearch } = this.props;
+    const { q, userActions } = this.props;
 
-    userSearch({ filter: newValue, q });
+    userActions.search({ status: newValue, q });
   };
 
   submit = values => {
-    const { userSearch } = this.props;
-    userSearch(values);
+    const { userActions } = this.props;
+    userActions.search(values);
   };
 
   render() {
@@ -36,22 +37,25 @@ class FormUserSearch extends Component {
           />
           <Button type="submit">Search</Button>
         </div>
+
         <div className="fus__filter">
           <Filter
             onChange={handleOnChange}
-            name="filter"
+            name="status"
             text="All"
             value="all"
           />
+
           <Filter
             onChange={handleOnChange}
-            name="filter"
+            name="status"
             text="Active"
             value="active"
           />
+
           <Filter
             onChange={handleOnChange}
-            name="filter"
+            name="status"
             text="Inactive"
             value="inactive"
           />
@@ -69,16 +73,21 @@ const ReduxFormUserSearch = reduxForm({
 
 function mapStateToProps(state) {
   const { user } = state;
-  const { search } = user;
 
   return {
     user,
     q: selector(state, 'q'),
-    initialValues: { ...search },
+    initialValues: { ...user.searchParams },
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    userActions: bindActionCreators({ ...userActions }, dispatch),
   };
 }
 
 export default connect(
   mapStateToProps,
-  { userSearch },
+  mapDispatchToProps,
 )(ReduxFormUserSearch);

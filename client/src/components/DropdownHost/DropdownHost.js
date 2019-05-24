@@ -209,7 +209,7 @@ class DropdownHost extends Component {
 
     let items = docs.map(user => {
       const { _id } = user;
-      console.log(user);
+
       return {
         _id,
         value: formatHostName(user),

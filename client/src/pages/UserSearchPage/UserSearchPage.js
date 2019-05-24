@@ -1,32 +1,23 @@
 import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import Alert from '../../components/Alert';
 import Card, { CardBody } from '../../components/Card';
 import FormUserSearch from '../../components/FormUserSearch';
 import TableUsers from '../../components/TableUsers';
 
-import { userAlertClose, userSearch } from '../../redux/user';
+import { userActions } from '../../redux';
 
 class UserSearchPage extends Component {
   componentDidMount() {
-    const { user, userSearch } = this.props;
-    const { search } = user;
+    const { userActions, userState } = this.props;
 
-    userSearch(search);
+    userActions.search(userState.searchParams);
   }
 
   render() {
-    const { props } = this;
-    const { user, userAlertClose } = props;
-    const { alert } = user;
-    const { display } = alert;
-
     return (
       <div className="user-search">
-        {/* Error Alert */}
-        {display && <Alert alertClose={userAlertClose} {...alert} />}
-
         <Card>
           <CardBody>
             <h1 className="mb-0">Users</h1>
@@ -36,7 +27,8 @@ class UserSearchPage extends Component {
         <Card>
           <CardBody>
             <FormUserSearch />
-            <TableUsers {...props} />
+
+            <TableUsers {...this.props} />
           </CardBody>
         </Card>
       </div>
@@ -46,11 +38,17 @@ class UserSearchPage extends Component {
 
 function mapStateToProps({ user }) {
   return {
-    user,
+    userState: user,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    userActions: bindActionCreators({ ...userActions }, dispatch),
   };
 }
 
 export default connect(
   mapStateToProps,
-  { userAlertClose, userSearch },
+  mapDispatchToProps,
 )(UserSearchPage);

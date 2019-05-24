@@ -13,11 +13,13 @@ class FormUserSearch extends Component {
   handleOnChange = (e, newValue) => {
     const { q, userActions } = this.props;
 
-    userActions.search({ status: newValue, q });
+    userActions.search({ filter: newValue, q });
   };
 
   submit = values => {
     const { userActions } = this.props;
+
+    console.log(values);
     userActions.search(values);
   };
 
@@ -41,21 +43,21 @@ class FormUserSearch extends Component {
         <div className="fus__filter">
           <Filter
             onChange={handleOnChange}
-            name="status"
+            name="filter"
             text="All"
             value="all"
           />
 
           <Filter
             onChange={handleOnChange}
-            name="status"
+            name="filter"
             text="Active"
             value="active"
           />
 
           <Filter
             onChange={handleOnChange}
-            name="status"
+            name="filter"
             text="Inactive"
             value="inactive"
           />
@@ -77,7 +79,7 @@ function mapStateToProps(state) {
   return {
     user,
     q: selector(state, 'q'),
-    initialValues: { ...user.searchParams },
+    initialValues: { ...user.search },
   };
 }
 

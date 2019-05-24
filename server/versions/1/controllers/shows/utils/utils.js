@@ -2,7 +2,10 @@ const moment = require('moment');
 const { RRule } = require('rrule');
 const _ = require('lodash');
 
-const { master_time_id } = require('./utils__mongoose');
+const {
+  master_time_id,
+  master_time_id__byShowType,
+} = require('./utils__mongoose');
 
 function createRRule(show, queryStartDate, queryEndDate) {
   const {
@@ -95,7 +98,7 @@ function showList(shows, startDate = null, endDate = null) {
 
   const allSeriesShowsExpanded = allSeriesShows.map(show => {
     const allShowDates = returnDatesArrayByRepeatRule(show, startDate, endDate);
-    const allSeriesShowsExpandedByDates = returnShowsArrayWithNewDates(
+    const allSeriesShowsExpandedByDates = returnSeriesShowsArrayWithNewDates(
       allShowDates,
       show,
     );
@@ -103,43 +106,22 @@ function showList(shows, startDate = null, endDate = null) {
     return allSeriesShowsExpandedByDates;
   });
 
-  let allSingleInstanceShows = reduceShowsByRepeatProperty(shows, false);
-  allSingleInstanceShows = allSingleInstanceShows.map(show => {
-    let instanceShow = { ...show.toObject() };
-    const date = instanceShow.repeat_rule.repeat_start_date;
-    instanceShow.show_start_time_utc = momentCombineDayAndTime(
-      date,
-      instanceShow.show_start_time_utc,
-    );
-    instanceShow.show_end_time_utc = momentCombineDayAndTime(
-      date,
-      instanceShow.show_end_time_utc,
-    );
+  //Filter all shows that are instances
+  const allInstanceShows = reduceShowsByRepeatProperty(shows, false);
+  const allInstanceShowsExpanded = returnInstanceShowsArray(allInstanceShows);
 
-    instanceShow.show_details.title =
-      instanceShow.show_details.title + ' (Instance Version)';
-
-    instanceShow.master_time_id = master_time_id__byShowType(instanceShow);
-
-    console.log(instanceShow);
-
-    return instanceShow;
-  });
-
-  //Replace repeat shows with instance shows here!!!
+  //Replace repeat shows with instance shows here
   const seriesFlattened = _.flatten(allSeriesShowsExpanded);
   const seriesKeyBy = _.keyBy(seriesFlattened, '_id');
 
-  const instanceKeyBy = _.keyBy(allSingleInstanceShows, o => {
+  const instanceKeyBy = _.keyBy(allInstanceShowsExpanded, o => {
     return o.master_time_id;
   });
 
+  //Combined series and instance shows by object ID and then return the final array
   const combinedObject = { ...seriesKeyBy, ...instanceKeyBy };
-  return _.values(combinedObject);
-  //End testing of replacing repeat shows
-
-  //const mergedShows = _.concat(allSeriesShowsExpanded, allSingleInstanceShows);
-  //return _.flatten(mergedShows);
+  const convertedShowsObjectToArray = _.values(combinedObject);
+  return convertedShowsObjectToArray;
 }
 
 function reduceShowsByRepeatProperty(shows, recurringCheckValue) {
@@ -163,6 +145,7 @@ function returnDatesArrayByRepeatRule(show, startDate = null, endDate = null) {
     try {
       return rule.all();
     } catch (e) {
+      console.log('Error in returnDatesArrayByRepeatRule');
       console.log(e);
       return null;
     }
@@ -180,42 +163,16 @@ function momentCombineDayAndTime(desiredDate, desiredTime) {
     .minutes(minutes)
     .seconds(0);
 
-  //console.log(`${desiredDate} - ${moment(returnedValue).isDST()}`);
-
   return returnedValue;
 }
 
-function returnShowsArrayWithNewDates(dateArray, show) {
+function returnSeriesShowsArrayWithNewDates(dateArray, show) {
   const returnedShows = dateArray.map((date, i) => {
     let newShow = { ...show.toObject() };
     let { show_start_time_utc, show_end_time_utc } = show;
-    // if (show._id == '5cc913ad0d5a944a256139f7') {
-    //   console.log(show.show_details.title);
-    //   console.log(date);
-    //   console.log(show_start_time_utc);
-    //   console.log(show_end_time_utc);
-    //   console.log(moment(date).isDST());
-    //   console.log(moment(show_start_time_utc).isDST());
-    //   console.log(moment(show_end_time_utc).isDST());
-    // }
+
     show_start_time_utc = momentCombineDayAndTime(date, show_start_time_utc);
     show_end_time_utc = momentCombineDayAndTime(date, show_end_time_utc);
-
-    // if (show._id == '5cc913ad0d5a944a256139f7') {
-    //   console.log('---After Processing---');
-    //   console.log(
-    //     moment(show_start_time_utc)
-    //       .utc()
-    //       .format(),
-    //   );
-    //   console.log(
-    //     moment(show_end_time_utc)
-    //       .utc()
-    //       .format(),
-    //   );
-    //   console.log(moment(show_start_time_utc).isDST());
-    //   console.log(moment(show_end_time_utc).isDST());
-    // }
 
     newShow.master_show_uid = newShow._id;
     newShow._id = master_time_id(newShow.master_show_uid, show_start_time_utc);
@@ -227,17 +184,28 @@ function returnShowsArrayWithNewDates(dateArray, show) {
   return returnedShows;
 }
 
-function master_time_id__byShowType(show) {
-  if (show.master_show_uid) {
-    //Instance Show
-    return master_time_id(show.master_show_uid, show.replace_show_date);
-  } else {
-    //Regular Show
-    return master_time_id(show._id, show.show_start_time_utc);
-  }
-}
+const returnInstanceShowsArray = shows => {
+  return shows.map(show => {
+    let instanceShow = { ...show.toObject() };
+    const date = instanceShow.repeat_rule.repeat_start_date;
+    instanceShow.show_start_time_utc = momentCombineDayAndTime(
+      date,
+      instanceShow.show_start_time_utc,
+    );
+    instanceShow.show_end_time_utc = momentCombineDayAndTime(
+      date,
+      instanceShow.show_end_time_utc,
+    );
+
+    instanceShow.show_details.title =
+      instanceShow.show_details.title + ' (Show List - Instance Version)';
+
+    instanceShow.master_time_id = master_time_id__byShowType(instanceShow);
+
+    return instanceShow;
+  });
+};
 
 module.exports = {
   showList,
-  master_time_id__byShowType,
 };

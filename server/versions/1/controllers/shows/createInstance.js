@@ -14,8 +14,6 @@ function createInstance(req, res) {
   } = req.body;
   const { id } = req.params;
 
-  console.log(show_start_time_utc);
-
   db.Show.findById(id).exec(function(err, doc) {
     let d1 = doc;
     d1._id = mongoose.Types.ObjectId();
@@ -35,14 +33,14 @@ function createInstance(req, res) {
       .then(dbShow => {
         db.Show.populate(dbShow, populateShowQuery())
           .then(dbShow => {
-            dbShow._doc.show_details.title =
-              dbShow.show_details.title + ' (Instance Version)';
-            dbShow._doc.master_time_id = master_time_id(
+            let newDbShow = { ...dbShow.toObject() };
+            newDbShow.show_details.title =
+              dbShow.show_details.title + ' (Updated Host - Instance Version)';
+            newDbShow.master_time_id = master_time_id(
               dbShow.master_show_uid,
               dbShow.replace_show_date,
             );
-            console.log(dbShow);
-            res.json(dbShow);
+            res.json(newDbShow);
           })
           .catch(err => {
             console.error(err);

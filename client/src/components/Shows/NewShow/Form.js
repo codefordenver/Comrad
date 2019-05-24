@@ -144,7 +144,7 @@ class NewShowForm extends Component {
 const selector = formValueSelector('newShow');
 
 function mapStateToProps(state) {
-  console.log(state);
+  //console.log(state);
   const initialValues = state => {
     const selectedShow = getShowSelected(state.show);
     const searchDates = getSearchDate(state.show);

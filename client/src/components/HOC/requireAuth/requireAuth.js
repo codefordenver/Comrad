@@ -4,30 +4,29 @@ import { connect } from 'react-redux';
 export default ChildComponent => {
   class ComposedComponent extends Component {
     shouldNavigateAway = () => {
-      const { props } = this;
-      const { loading, permission } = props;
+      const { authState } = this.props;
 
-      if (loading) {
+      if (authState.loading) {
         return null;
-      } else if (permission === null) {
+      } else if (authState.loggedIn === null) {
         return <div>Not authorized</div>;
       } else {
-        return <ChildComponent {...props} />;
+        return <ChildComponent {...this.props} />;
       }
     };
 
     componentDidMount() {
-      const { history, permission } = this.props;
+      const { authState, history } = this.props;
 
-      if (!permission) {
+      if (!authState.loggedIn) {
         history.push('/');
       }
     }
 
     componentDidUpdate() {
-      const { history, permission } = this.props;
+      const { authState, history } = this.props;
 
-      if (!permission) {
+      if (!authState.loggedIn) {
         history.push('/');
       }
     }
@@ -37,12 +36,9 @@ export default ChildComponent => {
     }
   }
 
-  function mapStateToProps(state) {
-    const { loading, permission } = state.auth;
-
+  function mapStateToProps({ auth }) {
     return {
-      loading,
-      permission,
+      authState: auth,
     };
   }
 

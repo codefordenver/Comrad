@@ -42,7 +42,6 @@ export function showReducer(state = initialState, { type, payload }) {
       };
 
     case SHOW_CREATE_INSTANCE:
-      console.log(payload);
       return {
         ...state,
         data: { ...state.data, [payload.master_time_id]: payload },
@@ -54,7 +53,6 @@ export function showReducer(state = initialState, { type, payload }) {
     case SHOW_SEARCH:
       const searchData = payload.data;
       const searchParams = payload.params;
-      console.log(searchData);
       return {
         ...state,
         data: { ...state.data, ..._.mapKeys(searchData, 'master_time_id') },

@@ -80,7 +80,7 @@ class Calendar extends Component {
   };
 
   convertShowsToArray = shows => {
-    console.log('reseeding events');
+    //console.log('Updating Calendar Events');
     const showsArray = shows ? _.values(shows) : [];
     let newShowsArray = [];
     showsArray.forEach(show => {
@@ -117,10 +117,10 @@ class Calendar extends Component {
 
   customEventWrapper = props => {
     const {
-      event: { _id, master_time_id },
+      event: { master_time_id },
     } = props;
     const show = props.event;
-    //console.log('Tooltip fired');
+
     return (
       <Tooltip
         key={master_time_id}

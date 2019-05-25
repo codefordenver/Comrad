@@ -2,9 +2,17 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import ReactTable from 'react-table';
 
-const CellUserPermission = ({ value }) => (
-  <span className="table-users__permission">{value}</span>
-);
+const CellUserPermission = ({ value }) => {
+  return (
+    <>
+      {value.map(permission => (
+        <span key={permission} className="table-users__permission">
+          {permission}
+        </span>
+      ))}
+    </>
+  );
+};
 
 const CellUserStatus = ({ value }) => {
   const status = value === 'Active';
@@ -19,28 +27,28 @@ const CellUserStatus = ({ value }) => {
 const columns = [
   {
     Header: 'First Name',
-    accessor: 'profile.first_name', // String-based value accessors!
+    accessor: 'first_name', // String-based value accessors!
   },
   {
     Header: 'Last Name',
-    accessor: 'profile.last_name',
+    accessor: 'last_name',
   },
   {
     Header: 'Email',
-    accessor: 'contact.email',
+    accessor: 'email',
   },
   {
     Header: 'On Air Name',
-    accessor: 'station.on_air_name',
+    accessor: 'on_air_name',
   },
   {
     Header: 'Permissions',
-    accessor: 'station.permission',
+    accessor: 'permissions',
     Cell: row => <CellUserPermission {...row} />,
   },
   {
     Header: 'Status',
-    accessor: 'station.status',
+    accessor: 'status',
     Cell: row => <CellUserStatus {...row} />,
   },
 ];

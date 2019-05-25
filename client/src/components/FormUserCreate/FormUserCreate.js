@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { Field, reduxForm } from 'redux-form';
 
-import { userCreate } from '../../redux/user';
+import { userActions } from '../../redux/user';
 import {
   emailValidate,
   passwordConfirmValidate,
@@ -85,7 +86,13 @@ function mapStateToProps({ user }) {
   };
 }
 
+function mapDispatchToProps(dispatch) {
+  return {
+    userActions: bindActionCreators({ ...userActions }, dispatch),
+  };
+}
+
 export default connect(
   mapStateToProps,
-  { userCreate },
+  mapDispatchToProps,
 )(ReduxFormUserCreate);

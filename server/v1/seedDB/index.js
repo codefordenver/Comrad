@@ -154,7 +154,9 @@ async function seedDB() {
       }),
     );
     console.log('seeding ' + bulkOperations.length + ' show instances...');
-    await db.Show.bulkWrite(bulkOperations);
+    if (bulkOperations.length > 0) {
+      await db.Show.bulkWrite(bulkOperations);
+    }
 
     // Traffic
     console.log('seeding traffic...');

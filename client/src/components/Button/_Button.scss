@@ -81,6 +81,28 @@
       background-color: $color-success-lighter;
     }
   }
+  
+  &--neutral {
+    color: $color-white;
+    background-color: $color-grey-3;
+
+    &:active,
+    &.active {
+      box-shadow: 0 0 0 $border-width $color-grey-1;
+    }
+
+    &:hover,
+    &.hover,
+    &:active,
+    &.active {
+      background-color: $color-grey-4;
+    }
+
+    &:disabled,
+    &.disabled {
+      color: $color-grey-2;
+    }
+  }
 
   &--info {
     color: $color-white;

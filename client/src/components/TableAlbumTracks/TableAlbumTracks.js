@@ -1,8 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import ReactTable from 'react-table';
+import isEmpty from 'lodash/isEmpty';
 
 import { formatTotalSecondsAsMMSS } from '../../utils/formatters';
+
+const CellDuration = ({ value }) =>
+  value ? (
+    <span className="table-album-tracks__duration">
+      {formatTotalSecondsAsMMSS(value)}
+    </span>
+  ) : null;
 
 const columns = [
   {
@@ -20,16 +28,30 @@ const columns = [
   {
     Header: 'Duration',
     accessor: 'duration_in_seconds',
-    Cell: row => {
-      return row.value == null ? '' : formatTotalSecondsAsMMSS(row.value);
-    },
+    Cell: row => <CellDuration {...row} />,
   },
 ];
 
 class TableAlbumTracks extends Component {
+  handleRowClick = (state, rowInfo) => {
+    if (!isEmpty(rowInfo)) {
+      return {
+        onClick: () => {
+          const { _id } = rowInfo.original;
+          const { history } = this.props;
+
+          history.push(`/library/track/${_id}`);
+        },
+      };
+    }
+
+    return false;
+  };
+
   render() {
-    const { album, onRowClick } = this.props;
-    const { tracks } = album.doc;
+    const { handleRowClick, props } = this;
+    const { albumState } = props;
+    const { tracks } = albumState.doc;
 
     return (
       <ReactTable
@@ -40,7 +62,7 @@ class TableAlbumTracks extends Component {
         defaultPageSize={100}
         minRows={3} // so the formatting does not look weird when there are 0 records
         noDataText="This album does not have any tracks"
-        getTdProps={onRowClick}
+        getTdProps={handleRowClick}
       />
     );
   }
@@ -48,7 +70,7 @@ class TableAlbumTracks extends Component {
 
 function mapStateToProps({ album }) {
   return {
-    album,
+    albumState: album,
   };
 }
 

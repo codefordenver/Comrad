@@ -1,78 +1,77 @@
-import {
-  USER_ADD,
-  USER_ALERT,
-  USER_ALERT_CLOSE,
-  USER_CLEAR,
-  USER_ERROR,
-  USER_FIND_ALL,
-  USER_LOADING,
-  USER_SEARCH,
-} from './userTypes';
+import { userTypes } from './userTypes';
 
 const initialState = {
-  alert: {
-    display: false,
-    header: '',
-    message: '',
-    type: '',
-  },
   doc: {},
   docs: [],
-  error: null,
   loading: false,
   search: {
-    filter: 'All',
+    filter: 'all',
     q: '',
   },
 };
 
 export const userReducer = (state = initialState, { type, payload }) => {
   switch (type) {
-    case USER_ADD:
+    case userTypes.FIND_ONE:
       return {
-        ...payload,
+        ...state,
+        doc: {
+          ...payload,
+        },
+        loading: false,
       };
-    case USER_FIND_ALL:
+
+    case userTypes.FIND_ALL:
       return {
         ...state,
         ...payload,
         loading: false,
       };
-    case USER_CLEAR:
+
+    case userTypes.SEARCH:
       return {
-        ...initialState,
+        ...state,
+        ...payload,
+        loading: false,
       };
-    case USER_ERROR:
+
+    case userTypes.SEARCH_HOSTS:
+      return {
+        ...state,
+        ...payload,
+        loading: false,
+      };
+
+    case userTypes.ADD:
       return {
         ...payload,
       };
-    case USER_LOADING:
+
+    case userTypes.CLEAR:
+      return {
+        ...initialState,
+      };
+
+    case userTypes.CLEAR_SEARCH:
+      return {
+        ...state,
+        search: {
+          ...initialState.search,
+        },
+      };
+
+    case userTypes.CREATE:
+      return {
+        ...state,
+        ...payload,
+      };
+
+    case userTypes.LOADING:
       return {
         ...state,
         loading: true,
       };
-    case USER_ALERT:
-      return {
-        ...state,
-        ...payload,
-        loading: false,
-      };
-    case USER_SEARCH:
-      return {
-        ...state,
-        ...payload,
-        alert: {
-          ...initialState.alert,
-        },
-        loading: false,
-      };
-    case USER_ALERT_CLOSE:
-      const { alert } = initialState;
 
-      return {
-        ...state,
-        alert,
-      };
     default:
       return state;
   }

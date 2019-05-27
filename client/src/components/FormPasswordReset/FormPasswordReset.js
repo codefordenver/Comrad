@@ -1,17 +1,22 @@
 import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import classnames from 'classnames';
 import { emailValidate, requiredValidate } from '../../utils/validation.js';
-import { authPasswordReset } from '../../redux/auth';
 
 import Button from '../Button';
 import Input from '../Input';
 
+import { authActions } from '../../redux/auth';
+
 class FormPasswordReset extends Component {
   submit = values => {
-    const { authPasswordReset } = this.props;
-    authPasswordReset(values);
+    const { authActions, history } = this.props;
+
+    return authActions.passwordReset(values, () => {
+      history.push('/');
+    });
   };
 
   render() {
@@ -34,19 +39,23 @@ class FormPasswordReset extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  const { alert } = state.auth;
-
-  return {
-    alert,
-  };
-}
-
 const ReduxFormPasswordReset = reduxForm({
   form: 'passwordReset',
 })(FormPasswordReset);
 
+function mapStateToProps({ auth }) {
+  return {
+    authState: auth,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    authActions: bindActionCreators({ ...authActions }, dispatch),
+  };
+}
+
 export default connect(
   mapStateToProps,
-  { authPasswordReset },
+  mapDispatchToProps,
 )(ReduxFormPasswordReset);

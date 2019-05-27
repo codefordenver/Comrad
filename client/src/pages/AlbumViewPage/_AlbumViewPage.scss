@@ -1,4 +1,6 @@
 .album-view-page {
+  display: grid;
+  grid-row-gap: 1rem;
 
 }
 
@@ -14,4 +16,18 @@
     transition: background-color 0.1s;
     font-size: 1.8rem;
     border-radius: $border-radius;  
+  &__header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-items: space-between;
+  }
+
+  &__song-name {
+    margin-bottom: 0rem;
+  }
+
+  &__last-updated {
+    justify-self: end;
+    margin-top: 1.4rem;
+  }
 }

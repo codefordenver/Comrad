@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { userAdd } from '../../redux/user';
+import { userActions } from '../../redux/user';
+import { bindActionCreators } from 'redux';
 
 class UserAddPage extends Component {
   state = {
@@ -118,7 +119,13 @@ class UserAddPage extends Component {
   }
 }
 
+function mapDispatchToProps(dispatch) {
+  return {
+    userActions: bindActionCreators({ ...userActions }, dispatch),
+  };
+}
+
 export default connect(
   null,
-  { userAdd },
+  mapDispatchToProps,
 )(UserAddPage);

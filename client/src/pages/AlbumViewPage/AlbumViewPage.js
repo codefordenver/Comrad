@@ -35,14 +35,9 @@ class AlbumViewPage extends Component {
 
   render() {
     const { navigateToTrack, props, renderLastUpdated } = this;
-    const { album, loading, albumState } = props;
-    const { artist, name, tracks, updated_at } = album.doc;
-    const dateObj = updated_at == null ? null : new Date(updated_at);
+    const { albumState } = props;
+    const { artist, name, tracks } = albumState.doc;
     const { url } = this.props.match;
-    const lastUpdatedText =
-      updated_at == null
-        ? ''
-        : dateObj.toLocaleDateString() + ' ' + dateObj.toLocaleTimeString();
 
     return (
       <div className="album-view-page">

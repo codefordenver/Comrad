@@ -20,26 +20,52 @@ function createRRule(show, queryStartDate, queryEndDate) {
     bymonthday,
   } = show.repeat_rule;
 
+  const { show_start_time_utc, show_end_time_utc } = show;
+
   let newRRule = {};
 
   if (frequency) {
     newRRule.freq = frequency;
   }
 
-  queryStartDate = new Date(
-    moment(queryStartDate).format('YYYY-MM-DDTHH:mm:ssZ'),
-  );
-  if (moment(repeat_start_date).isAfter(moment(queryStartDate))) {
-    newRRule.dtstart = repeat_start_date;
+  //Format RRULE start date by UTC Time
+  const sstu = moment(show_start_time_utc);
+  const qsd = moment(queryStartDate)
+    .hours(sstu.hours())
+    .minutes(sstu.minutes())
+    .seconds(0)
+    .utc();
+
+  const rsd = moment(repeat_start_date)
+    .hours(sstu.hours())
+    .minutes(sstu.minutes())
+    .seconds(0)
+    .utc();
+
+  if (rsd.isAfter(qsd)) {
+    newRRule.dtstart = new Date(rsd.format());
   } else {
-    newRRule.dtstart = queryStartDate;
+    newRRule.dtstart = new Date(qsd.format());
   }
 
-  queryEndDate = new Date(moment(queryEndDate).format('YYYY-MM-DDTHH:mm:ssZ'));
-  if (moment(repeat_end_date).isBefore(moment(queryEndDate))) {
-    newRRule.until = repeat_end_date;
+  //Format RRULE end date by UTC Time
+  const setu = moment(show_end_time_utc);
+  const qed = moment(queryEndDate)
+    .hours(setu.hours())
+    .minutes(setu.minutes())
+    .seconds(0)
+    .utc();
+
+  const red = moment(repeat_end_date)
+    .hours(setu.hours())
+    .minutes(setu.minutes())
+    .seconds(0)
+    .utc();
+
+  if (red.isBefore(qed)) {
+    newRRule.until = new Date(red.format());
   } else {
-    newRRule.until = queryEndDate;
+    newRRule.until = new Date(qed.format());
   }
 
   if (count) {
@@ -52,21 +78,6 @@ function createRRule(show, queryStartDate, queryEndDate) {
 
   if (byweekday) {
     newRRule.byweekday = byweekday.map(day => {
-      // dayList is used for imported shows
-      const dayList = {
-        0: 'MO',
-        1: 'TU',
-        2: 'WE',
-        3: 'TH',
-        4: 'FR',
-        5: 'SA',
-        6: 'SU',
-      };
-
-      if (dayList[day]) {
-        day = dayList[day];
-      }
-
       return RRule[day];
     });
   }
@@ -82,12 +93,6 @@ function createRRule(show, queryStartDate, queryEndDate) {
   if (bymonthday) {
     newRRule.bymonthday = [bymonthday];
   }
-
-  /**
-   * Partial fix for DST.
-   * By setting the time to 12 UTC instead of 0 UTC, it does not shift by a date in moment as the time is not midnight before DST correction.
-   *  */
-  newRRule.byhour = [12];
 
   return newRRule;
 }
@@ -161,7 +166,9 @@ function momentCombineDayAndTime(desiredDate, desiredTime) {
   const returnedValue = moment(desiredDate)
     .hours(hours)
     .minutes(minutes)
-    .seconds(0);
+    .seconds(0)
+    .utc()
+    .format();
 
   return returnedValue;
 }

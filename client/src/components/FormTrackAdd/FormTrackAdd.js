@@ -13,8 +13,18 @@ class FormTrackAdd extends Component {
   }
 
   submit = (values, dispatch, props) => {
-    console.log(values);
+    const tracks = this.props.tracks;
     const { trackAdd } = this.props;
+    for (var key in tracks) {
+      if (parseInt(tracks[key].disk_number) === parseInt(values.disk_number)) {
+        if (
+          parseInt(tracks[key].track_number) === parseInt(values.track_number)
+        ) {
+          return console.log('error'); // handle error when disk and track numbers match those of existing track
+        }
+      }
+    }
+
     return trackAdd(values);
   };
 

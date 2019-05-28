@@ -56,6 +56,7 @@ class TrackAddPage extends Component {
               submitCallback={this.addTrackCallback}
               albumId={_id}
               artistId={artist._id}
+              tracks={tracks}
             />
           </CardBody>
         </Card>

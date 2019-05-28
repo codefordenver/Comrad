@@ -8,8 +8,8 @@ class TrackAddPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      maxDiskNumber: 0,
-      maxTrackNumber: 0,
+      maxDiskNumber: 1,
+      maxTrackNumber: 1,
     };
   }
 
@@ -19,27 +19,31 @@ class TrackAddPage extends Component {
 
   findMaxDiskTrackNumbers() {
     const { tracks } = this.props.album.doc;
+    console.log(tracks.length);
     let array = [];
-    for (var key in tracks) {
-      array.push(tracks[key].disk_number);
-    }
-    var maxDiskNumber = array.reduce(function(a, b) {
-      return Math.max(a, b);
-    });
-
-    array = [];
-    for (var key in tracks) {
-      if (tracks[key].disk_number === maxDiskNumber) {
-        array.push(tracks[key].track_number);
+    if (tracks.length) {
+      //if there are no existing tracks, default disk and track number is 1
+      for (var key in tracks) {
+        array.push(tracks[key].disk_number);
       }
+      var maxDiskNumber = array.reduce(function(a, b) {
+        return Math.max(a, b);
+      });
+
+      array = [];
+      for (var key in tracks) {
+        if (tracks[key].disk_number === maxDiskNumber) {
+          array.push(tracks[key].track_number);
+        }
+      }
+      var maxTrackNumber = array.reduce(function(a, b) {
+        return Math.max(a, b);
+      });
+      this.setState({
+        maxDiskNumber: maxDiskNumber,
+        maxTrackNumber: maxTrackNumber,
+      });
     }
-    var maxTrackNumber = array.reduce(function(a, b) {
-      return Math.max(a, b);
-    });
-    this.setState({
-      maxDiskNumber: maxDiskNumber,
-      maxTrackNumber: maxTrackNumber,
-    });
   }
 
   render() {

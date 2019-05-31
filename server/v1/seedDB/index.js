@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const keys = require('../config/keys');
 const seed = require('./data');
-const db = require('../versions/1/models');
+const db = require('../models');
 
 async function seedDB() {
   try {
@@ -198,11 +198,11 @@ async function userByOnAirName(onAirName) {
     const emailAddress =
       onAirName.replace(/[^a-zA-Z0-9]/gi, '') + '@fake-dj-email.kgnu.org';
     user = await db.User.create({
-      'profile.first_name': firstName,
-      'profile.last_name': lastName,
-      'contact.email': emailAddress,
-      'station.on_air_name': onAirName,
-      'auth.password': 'temppassword',
+      first_name: firstName,
+      last_name: lastName,
+      email: emailAddress,
+      on_air_name: onAirName,
+      password: 'temppassword',
     });
   }
   usersByOnAirName[onAirName] = user;

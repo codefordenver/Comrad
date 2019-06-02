@@ -15,9 +15,9 @@ import Input from '../Input';
 
 class FormUserCreate extends Component {
   submit = values => {
-    const { history, userCreate } = this.props;
+    const { history, userActions } = this.props;
 
-    return userCreate(values, () => {
+    return userActions.create(values, () => {
       history.push('/');
     });
   };

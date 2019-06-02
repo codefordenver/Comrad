@@ -51,13 +51,21 @@ class Dropdown extends Component {
   };
 
   static Item = props => {
-    const { children, to } = props;
+    const { children, handleOnClick, to } = props;
 
     if (to) {
       return (
         <Link className="dropdown__item" to={to}>
           {children}
         </Link>
+      );
+    }
+
+    if (handleOnClick) {
+      return (
+        <div className="dropdown__item" onClick={handleOnClick}>
+          {children}
+        </div>
       );
     }
 

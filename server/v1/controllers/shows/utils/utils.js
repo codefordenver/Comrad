@@ -29,18 +29,8 @@ function createRRule(show, queryStartDate, queryEndDate) {
   }
 
   //Format RRULE start date by UTC Time
-  const sstu = moment(show_start_time_utc);
-  const qsd = moment(queryStartDate)
-    .hours(sstu.hours())
-    .minutes(sstu.minutes())
-    .seconds(0)
-    .utc();
-
-  const rsd = moment(repeat_start_date)
-    .hours(sstu.hours())
-    .minutes(sstu.minutes())
-    .seconds(0)
-    .utc();
+  const qsd = combineDayAndTime(queryStartDate, show_start_time_utc);
+  const rsd = combineDayAndTime(repeat_start_date, show_start_time_utc);
 
   if (rsd.isAfter(qsd)) {
     newRRule.dtstart = new Date(rsd.format());
@@ -49,18 +39,8 @@ function createRRule(show, queryStartDate, queryEndDate) {
   }
 
   //Format RRULE end date by UTC Time
-  const setu = moment(show_end_time_utc);
-  const qed = moment(queryEndDate)
-    .hours(setu.hours())
-    .minutes(setu.minutes())
-    .seconds(0)
-    .utc();
-
-  const red = moment(repeat_end_date)
-    .hours(setu.hours())
-    .minutes(setu.minutes())
-    .seconds(0)
-    .utc();
+  const qed = combineDayAndTime(queryEndDate, show_end_time_utc);
+  const red = combineDayAndTime(repeat_end_date, show_end_time_utc);
 
   if (red.isBefore(qed)) {
     newRRule.until = new Date(red.format());
@@ -157,7 +137,7 @@ function returnDatesArrayByRepeatRule(show, startDate = null, endDate = null) {
   }
 }
 
-function momentCombineDayAndTime(desiredDate, desiredTime) {
+function combineDayAndTime(desiredDate, desiredTime, format = 'MOMENT') {
   //https://stackoverflow.com/questions/21918095/moment-js-how-to-detect-daylight-savings-time-and-add-one-day
   //Need to detect and handle DST, days are offset by 1 day in november/march.
   const hours = moment(desiredTime).hours();
@@ -167,10 +147,16 @@ function momentCombineDayAndTime(desiredDate, desiredTime) {
     .hours(hours)
     .minutes(minutes)
     .seconds(0)
-    .utc()
-    .format();
+    .utc();
 
-  return returnedValue;
+  if (format === 'MOMENT') {
+    return returnedValue;
+  } else if (format === 'STRING') {
+    return returnedValue.format();
+  } else {
+    console.error('Date string format does not exist in case check');
+    return null;
+  }
 }
 
 function returnSeriesShowsArrayWithNewDates(dateArray, show) {
@@ -178,8 +164,12 @@ function returnSeriesShowsArrayWithNewDates(dateArray, show) {
     let newShow = { ...show.toObject() };
     let { show_start_time_utc, show_end_time_utc } = show;
 
-    show_start_time_utc = momentCombineDayAndTime(date, show_start_time_utc);
-    show_end_time_utc = momentCombineDayAndTime(date, show_end_time_utc);
+    show_start_time_utc = combineDayAndTime(
+      date,
+      show_start_time_utc,
+      'STRING',
+    );
+    show_end_time_utc = combineDayAndTime(date, show_end_time_utc, 'STRING');
 
     newShow.master_show_uid = newShow._id;
     newShow._id = master_time_id(newShow.master_show_uid, show_start_time_utc);
@@ -195,13 +185,15 @@ const returnInstanceShowsArray = shows => {
   return shows.map(show => {
     let instanceShow = { ...show.toObject() };
     const date = instanceShow.repeat_rule.repeat_start_date;
-    instanceShow.show_start_time_utc = momentCombineDayAndTime(
+    instanceShow.show_start_time_utc = combineDayAndTime(
       date,
       instanceShow.show_start_time_utc,
+      'STRING',
     );
-    instanceShow.show_end_time_utc = momentCombineDayAndTime(
+    instanceShow.show_end_time_utc = combineDayAndTime(
       date,
       instanceShow.show_end_time_utc,
+      'STRING',
     );
 
     instanceShow.show_details.title =

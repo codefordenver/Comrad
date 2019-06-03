@@ -103,6 +103,7 @@ function showList(shows, startDate = null, endDate = null) {
     return o.master_time_id;
   });
 
+  //console.log(instanceKeyBy);
   //Combined series and instance shows by object ID and then return the final array
   const combinedObject = { ...seriesKeyBy, ...instanceKeyBy };
   const convertedShowsObjectToArray = _.values(combinedObject);
@@ -111,7 +112,10 @@ function showList(shows, startDate = null, endDate = null) {
 
 function reduceShowsByRepeatProperty(shows, recurringCheckValue) {
   const reducer = (accShows, currentShow) => {
-    if (currentShow.is_recurring === recurringCheckValue) {
+    if (
+      currentShow.is_recurring === recurringCheckValue ||
+      (currentShow.is_recurring === undefined && recurringCheckValue === false)
+    ) {
       return [...accShows, currentShow];
     }
     return accShows;
@@ -140,8 +144,16 @@ function returnDatesArrayByRepeatRule(show, startDate = null, endDate = null) {
 function combineDayAndTime(desiredDate, desiredTime, format = 'MOMENT') {
   //https://stackoverflow.com/questions/21918095/moment-js-how-to-detect-daylight-savings-time-and-add-one-day
   //Need to detect and handle DST, days are offset by 1 day in november/march.
-  const hours = moment(desiredTime).hours();
-  const minutes = moment(desiredTime).minutes();
+  let hours = moment(desiredTime).hours();
+  let minutes = moment(desiredTime).minutes();
+
+  if (hours === 0 && minutes === 0) {
+    //If a show happens at midnight,
+    //and the hours are applied to the current day,
+    //the day moves back by 1, so just set hours manually
+    hours = 23;
+    minutes = 59;
+  }
 
   const returnedValue = moment(desiredDate)
     .hours(hours)
@@ -169,6 +181,7 @@ function returnSeriesShowsArrayWithNewDates(dateArray, show) {
       show_start_time_utc,
       'STRING',
     );
+
     show_end_time_utc = combineDayAndTime(date, show_end_time_utc, 'STRING');
 
     newShow.master_show_uid = newShow._id;

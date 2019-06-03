@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import 'moment';
 import {
+  SHOW_CLEAR,
   SHOW_GET,
   SHOW_POST,
   SHOW_CREATE_INSTANCE,
@@ -24,6 +25,12 @@ const initialState = {
 
 export function showReducer(state = initialState, { type, payload }) {
   switch (type) {
+    case SHOW_CLEAR:
+      return {
+        ...state,
+        data: {},
+      };
+
     case SHOW_GET:
       return {
         ...state,

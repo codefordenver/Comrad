@@ -151,13 +151,14 @@ function populateShowQuery() {
 }
 
 function master_time_id(_id, start_time) {
+  console.log(_id + '-' + moment(start_time));
   return _id + '-' + moment(start_time);
 }
 
 function master_time_id__byShowType(show) {
   if (show.master_show_uid) {
     //Instance Show
-    return master_time_id(show.master_show_uid, show.replace_show_date);
+    return master_time_id(show.master_show_uid, show.show_start_time_utc);
   } else {
     //Regular Show
     return master_time_id(show._id, show.show_start_time_utc);

@@ -14,8 +14,7 @@ function find(req, res) {
   const showDateFilter =
     startDate && endDate ? findShowQueryByDateRange(startDate, endDate) : {};
 
-  db.Show.find({})
-    .and(showDateFilter)
+  db.Show.find(showDateFilter[0])
     .populate(populateShowQuery())
     .then(dbShow => {
       res.json(showList(dbShow, startDate, endDate));

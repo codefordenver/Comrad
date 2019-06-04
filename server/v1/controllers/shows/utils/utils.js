@@ -1,6 +1,7 @@
 const moment = require('moment');
 const { RRule } = require('rrule');
 const _ = require('lodash');
+const db = require('../../../models');
 
 const {
   master_time_id,
@@ -36,9 +37,7 @@ function showList(shows, startDate = null, endDate = null) {
 
   //console.log(instanceKeyBy);
   //Combined series and instance shows by object ID and then return the final array
-  const combinedObject = { ...seriesKeyBy, ...instanceKeyBy };
-  const convertedShowsObjectToArray = _.values(combinedObject);
-  return convertedShowsObjectToArray;
+  return { ...seriesKeyBy, ...instanceKeyBy };
 }
 
 function createRRule(show, queryStartDate, queryEndDate) {
@@ -223,7 +222,7 @@ function returnSeriesShowsArrayWithNewDates(dateArray, show) {
 const returnInstanceShowsArray = shows => {
   return shows.map(show => {
     let instanceShow = { ...show.toObject() };
-    const date = instanceShow.repeat_rule.repeat_start_date;
+    const date = instanceShow.show_start_time_utc;
     instanceShow.show_start_time_utc = combineDayAndTime(
       date,
       instanceShow.show_start_time_utc,
@@ -236,12 +235,24 @@ const returnInstanceShowsArray = shows => {
       'END',
     );
 
-    instanceShow.show_details.title =
-      instanceShow.show_details.title + ' (Show List - Instance Version)';
+    const { title } = instanceShow.show_details;
+    if (!title) {
+      //When an instance needs to get the title from the master show
+      const masterShow = { show_details: { title: 'Add async title lookup' } };
+      //const masterShow = await db.Show.findById(instanceShow.master_show_uid);
+      instanceShow.show_details.title =
+        masterShow.show_details.title + ' (No Instance Title)';
+      instanceShow.master_time_id = master_time_id__byShowType(instanceShow);
 
-    instanceShow.master_time_id = master_time_id__byShowType(instanceShow);
+      return instanceShow;
+    } else {
+      //When an instance has a title
+      instanceShow.show_details.title =
+        instanceShow.show_details.title + ' (Show List - Instance Version)';
+      instanceShow.master_time_id = master_time_id__byShowType(instanceShow);
 
-    return instanceShow;
+      return instanceShow;
+    }
   });
 };
 

@@ -5,12 +5,15 @@ import comradLogo from '../../images/comrad-logo-white.png';
 import Dropdown from '../Dropdown';
 import kgnuLogo from '../../images/kgnu-logo-white-gray.png';
 import Logo from '../Logo';
-import { authLogout } from '../../redux/auth';
+import { authActions } from '../../redux/auth';
+import { bindActionCreators } from 'redux';
 
 class Navbar extends Component {
   handleSignOut = () => {
-    this.props.authLogout(() => {
-      this.props.history.push('/');
+    const { authActions, history } = this.props;
+
+    authActions.logout(() => {
+      history.push('/');
     });
   };
 
@@ -43,11 +46,17 @@ class Navbar extends Component {
 
 function mapStateToProps({ auth }) {
   return {
-    auth,
+    authState: auth,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    authActions: bindActionCreators({ ...authActions }, dispatch),
   };
 }
 
 export default connect(
   mapStateToProps,
-  { authLogout },
+  mapDispatchToProps,
 )(Navbar);

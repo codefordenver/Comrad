@@ -1,7 +1,9 @@
 import _ from 'lodash';
+import 'moment';
 import {
   SHOW_GET,
   SHOW_POST,
+  SHOW_CREATE_INSTANCE,
   SHOW_POSTING,
   SHOW_UPDATE,
   SHOW_UPDATE_HOST,
@@ -17,6 +19,7 @@ const initialState = {
   data: [],
   fetching: false,
   error: false,
+  search: {},
 };
 
 export function showReducer(state = initialState, { type, payload }) {
@@ -24,7 +27,7 @@ export function showReducer(state = initialState, { type, payload }) {
     case SHOW_GET:
       return {
         ...state,
-        data: { ...state.data, ..._.mapKeys([payload], '_id') },
+        data: { ...state.data, ..._.mapKeys([payload], 'master_time_id') },
         fetching: false,
         error: false,
       };
@@ -32,18 +35,33 @@ export function showReducer(state = initialState, { type, payload }) {
     case SHOW_POST:
       return {
         ...state,
-        data: { ...state.data, ..._.mapKeys(payload, '_id') },
+        data: { ...state.data, ..._.mapKeys(payload, 'master_time_id') },
+        posting: false,
+        fetching: false,
+        error: false,
+      };
+
+    case SHOW_CREATE_INSTANCE:
+      return {
+        ...state,
+        data: { ...state.data, [payload.master_time_id]: payload },
         posting: false,
         fetching: false,
         error: false,
       };
 
     case SHOW_SEARCH:
+      const searchData = payload.data;
+      const searchParams = payload.params;
       return {
         ...state,
-        data: { ...state.data, ..._.mapKeys(payload, '_id') },
+        data: { ...state.data, ..._.mapKeys(searchData, 'master_time_id') },
         fetching: false,
         error: false,
+        search: {
+          start: searchParams.startDate,
+          end: searchParams.endDate,
+        },
       };
 
     case SHOW_DELETE:
@@ -110,7 +128,7 @@ export function showReducer(state = initialState, { type, payload }) {
     case SHOW_UPDATE_HOST:
       return {
         ...state,
-        data: { ...state.data, [payload._id]: payload },
+        data: { ...state.data, [payload.master_time_id]: payload },
         fetching: false,
         error: false,
       };
@@ -136,6 +154,10 @@ export function showReducer(state = initialState, { type, payload }) {
 
 export function getShowsData(state = initialState) {
   return state.data;
+}
+
+export function getSearchDate(state = initialState) {
+  return state.search;
 }
 
 export function getShowSelected(state = initialState) {

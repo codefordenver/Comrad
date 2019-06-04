@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Field, reduxForm, formValueSelector } from 'redux-form';
 
@@ -6,18 +7,20 @@ import Button from '../Button';
 import Filter from '../Filter';
 import Input from '../Input';
 
-import { userSearch } from '../../redux/user';
+import { userActions } from '../../redux/user';
 
 class FormUserSearch extends Component {
   handleOnChange = (e, newValue) => {
-    const { q, userSearch } = this.props;
+    const { q, userActions } = this.props;
 
-    userSearch({ filter: newValue, q });
+    userActions.search({ filter: newValue, q });
   };
 
   submit = values => {
-    const { userSearch } = this.props;
-    userSearch(values);
+    const { userActions } = this.props;
+
+    console.log(values);
+    userActions.search(values);
   };
 
   render() {
@@ -36,6 +39,7 @@ class FormUserSearch extends Component {
           />
           <Button type="submit">Search</Button>
         </div>
+
         <div className="fus__filter">
           <Filter
             onChange={handleOnChange}
@@ -43,12 +47,14 @@ class FormUserSearch extends Component {
             text="All"
             value="all"
           />
+
           <Filter
             onChange={handleOnChange}
             name="filter"
             text="Active"
             value="active"
           />
+
           <Filter
             onChange={handleOnChange}
             name="filter"
@@ -69,16 +75,21 @@ const ReduxFormUserSearch = reduxForm({
 
 function mapStateToProps(state) {
   const { user } = state;
-  const { search } = user;
 
   return {
     user,
     q: selector(state, 'q'),
-    initialValues: { ...search },
+    initialValues: { ...user.search },
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    userActions: bindActionCreators({ ...userActions }, dispatch),
   };
 }
 
 export default connect(
   mapStateToProps,
-  { userSearch },
+  mapDispatchToProps,
 )(ReduxFormUserSearch);

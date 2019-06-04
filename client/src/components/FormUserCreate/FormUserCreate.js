@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { Field, reduxForm } from 'redux-form';
 
-import { userCreate } from '../../redux/user';
+import { userActions } from '../../redux/user';
 import {
   emailValidate,
   passwordConfirmValidate,
@@ -14,9 +15,9 @@ import Input from '../Input';
 
 class FormUserCreate extends Component {
   submit = values => {
-    const { history, userCreate } = this.props;
+    const { history, userActions } = this.props;
 
-    return userCreate(values, () => {
+    return userActions.create(values, () => {
       history.push('/');
     });
   };
@@ -85,7 +86,13 @@ function mapStateToProps({ user }) {
   };
 }
 
+function mapDispatchToProps(dispatch) {
+  return {
+    userActions: bindActionCreators({ ...userActions }, dispatch),
+  };
+}
+
 export default connect(
   mapStateToProps,
-  { userCreate },
+  mapDispatchToProps,
 )(ReduxFormUserCreate);

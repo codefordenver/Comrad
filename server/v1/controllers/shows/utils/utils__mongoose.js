@@ -109,14 +109,36 @@ function formatShow(data, res = null) {
 function findShowQueryByDateRange(start, end) {
   return [
     {
-      'repeat_rule.repeat_start_date': {
-        $lte: end,
-      },
-    },
-    {
-      'repeat_rule.repeat_end_date': {
-        $gte: start,
-      },
+      $or: [
+        {
+          $and: [
+            {
+              'repeat_rule.repeat_start_date': {
+                $lte: end,
+              },
+            },
+            {
+              'repeat_rule.repeat_end_date': {
+                $gte: start,
+              },
+            },
+          ],
+        },
+        {
+          $and: [
+            {
+              show_start_time_utc: {
+                $lte: end,
+              },
+            },
+            {
+              show_end_time_utc: {
+                $gte: start,
+              },
+            },
+          ],
+        },
+      ],
     },
   ];
 }

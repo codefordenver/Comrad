@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { isEmpty } from 'lodash';
 
@@ -6,54 +7,64 @@ import Card, { CardBody } from '../../components/Card';
 import LargeText from '../../components/LargeText';
 import TableAlbumTracks from '../../components/TableAlbumTracks';
 
-import { albumFindOne } from '../../redux/album';
+import { albumActions } from '../../redux';
 
 class AlbumViewPage extends Component {
   componentDidMount() {
-    const { album, albumFindOne, match } = this.props;
-    const { _id } = album.doc;
+    const { albumState, albumActions, match } = this.props;
+    const { _id } = albumState.doc;
     const { id } = match.params;
 
     if (id !== _id) {
-      albumFindOne(id);
+      albumActions.findOne(id);
     }
   }
 
-  navigateToTrack = (state, rowInfo, column, instance) => {
-    return {
-      onClick: (e, handleOriginal) => {
-        //navigate to the view page for this track
-        this.props.history.push('/library/track/' + rowInfo.original._id);
-      },
-    };
+  renderLastUpdated = () => {
+    const { updated_at } = this.props.albumState.doc;
+    const dateObj = new Date(updated_at);
+
+    // Checks to see if date is valid or not
+    return dateObj instanceof Date && !isNaN(dateObj)
+      ? `Last Updated: ${dateObj.toLocaleString()}`
+      : '';
   };
 
   render() {
-    const { navigateToTrack, props } = this;
-    const { album, loading } = props;
-    const { artist, name, tracks, updated_at } = album.doc;
-    const dateObj = updated_at == null ? null : new Date(updated_at);
-    const lastUpdatedText =
-      updated_at == null
-        ? ''
-        : dateObj.toLocaleDateString() + ' ' + dateObj.toLocaleTimeString();
+    const { navigateToTrack, props, renderLastUpdated } = this;
+    const { albumState } = props;
+    const { artist, name, tracks } = albumState.doc;
 
     return (
       <div className="album-view-page">
-        {!loading && (
-          <div>
+        {!albumState.loading && (
+          <>
             <Card>
               <CardBody>
-                <div className="float-right">
-                  Last updated: {lastUpdatedText}
-                </div>
-                <h1 className="mb-0">{name}</h1>
-                {artist != null && (
-                  <div>
-                    by{' '}
-                    <a href={'/library/artist/' + artist._id}>{artist.name}</a>
+                <div className="album-view-page__header">
+                  <div className="album-view-page__song">
+                    <h5>Album</h5>
+                    <h1 className="album-view-page__song-name">{name}</h1>
+                    <h5 className="album-view-page__song-artist">
+                      {artist ? (
+                        <>
+                          by{' '}
+                          <a
+                            className="album-view-page__artist-link"
+                            href={`/library/artist/${artist._id}`}
+                          >
+                            {artist.name}
+                          </a>
+                        </>
+                      ) : (
+                        'No Artist'
+                      )}
+                    </h5>
                   </div>
-                )}
+                  <div className="album-view-page__last-updated">
+                    {renderLastUpdated()}
+                  </div>
+                </div>
               </CardBody>
             </Card>
             <Card>
@@ -62,11 +73,11 @@ class AlbumViewPage extends Component {
                 {isEmpty(tracks) ? (
                   <LargeText align="left">No Tracks</LargeText>
                 ) : (
-                  <TableAlbumTracks onRowClick={navigateToTrack} />
+                  <TableAlbumTracks onRowClick={navigateToTrack} {...props} />
                 )}
               </CardBody>
             </Card>
-          </div>
+          </>
         )}
       </div>
     );
@@ -75,11 +86,17 @@ class AlbumViewPage extends Component {
 
 function mapStateToProps({ album }) {
   return {
-    album,
+    albumState: album,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    albumActions: bindActionCreators({ ...albumActions }, dispatch),
   };
 }
 
 export default connect(
   mapStateToProps,
-  { albumFindOne },
+  mapDispatchToProps,
 )(AlbumViewPage);

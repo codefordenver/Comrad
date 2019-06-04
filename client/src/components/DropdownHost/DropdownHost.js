@@ -38,7 +38,7 @@ class DropdownHost extends Component {
     const { cachedSearches } = this.state;
     const { docs, search } = user;
 
-    // cache the search query in state
+    // cache the search query in state so that we can quickly update the search results
     if (
       search != null &&
       search.q != null &&
@@ -49,11 +49,13 @@ class DropdownHost extends Component {
     }
   }
 
+  //clear redux state on unmount
   componentWillUnmount() {
     const { userClear } = this.props;
     userClear();
   }
 
+  // format the name to display for the host
   formatHostName = user => {
     const { profile, station = { on_air_name: null } } = user;
     const { first_name, last_name } = profile;
@@ -63,16 +65,13 @@ class DropdownHost extends Component {
       : `${first_name} ${last_name}`;
   };
 
+  //handles input box change
   handleChange = e => {
     const { userSearchHosts, filterByStatus = 'All' } = this.props;
     const { cachedSearches, hostSearchTimeout } = this.state;
     const { value } = e.target;
 
-    if (!value) {
-      return;
-    }
-
-    if (!(value.toLowerCase() in cachedSearches)) {
+    if (value.length && !(value.toLowerCase() in cachedSearches)) {
       //throttle the hostSearch function so we are not calling it rapidly if users are quickly deleting or typing text
       if (hostSearchTimeout != null) {
         clearTimeout(hostSearchTimeout);
@@ -85,9 +84,11 @@ class DropdownHost extends Component {
       });
     }
 
+    //update the textbox value
     this.setState({ currentInputValue: value });
   };
 
+  //on blur from the input box, reset the dropdown to its original value
   handleBlur = e => {
     const { selectedHost, showAddHostModal } = this.state;
 
@@ -114,11 +115,13 @@ class DropdownHost extends Component {
     }
   };
 
+  // close the Add Host modal
   handleFormHostAddCancel = () => {
     this.setState({ showAddHostModal: false });
     this.props.userAlertClose();
   };
 
+  // callback for submitting the Add Host modal
   handleFormHostAddSubmit = user => {
     this.setState({ showAddHostModal: false });
     this.onSelect({
@@ -127,6 +130,7 @@ class DropdownHost extends Component {
     });
   };
 
+  // process a host being selected
   onSelect = (selection, stateAndHelpers) => {
     const { input, onHostSelect } = this.props;
 
@@ -167,6 +171,7 @@ class DropdownHost extends Component {
     );
   };
 
+  //function for rendering the options in the host dropdown results
   renderHostListItem = (item, loading) => {
     const { value } = item;
 
@@ -183,7 +188,6 @@ class DropdownHost extends Component {
 
   render() {
     const {
-      addHostFormDisplayed,
       dirtyOverride,
       handleChange,
       handleFocus,
@@ -263,6 +267,7 @@ class DropdownHost extends Component {
               value={currentInputValue}
             />
 
+            {/* Host dropdown */}
             {hasFocus && !showAddHostModal ? (
               <div className="dropdown__list dropdown__list--host-list active">
                 {items.map((item, index) => (
@@ -285,6 +290,7 @@ class DropdownHost extends Component {
               </div>
             ) : null}
 
+            {/* Add Host modal */}
             {showAddHostModal ? (
               <Modal isOpen={true}>
                 <div className="host-field__add-modal">

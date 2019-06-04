@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import { reducer as formReducer } from 'redux-form';
 
-import { albumReducer } from './album';
+import { albumActions, albumReducer, albumTypes } from './album';
 import { artistReducer } from './artist';
 import { authReducer } from './auth';
 import { libraryReducer } from './library';
@@ -21,3 +21,5 @@ export default combineReducers({
   traffic: trafficReducer,
   user: userReducer,
 });
+
+export * from './album';

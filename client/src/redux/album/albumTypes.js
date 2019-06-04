@@ -1,2 +1,4 @@
-export const ALBUM_FIND_ONE = 'artist_find_one';
-export const ALBUM_LOAD = 'album_load';
+export const albumTypes = {
+  FIND_ONE: 'album_find_one',
+  LOAD: 'album_load',
+};

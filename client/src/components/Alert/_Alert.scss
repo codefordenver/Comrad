@@ -1,4 +1,5 @@
 .alert {
+  display: grid;
   grid-template-columns: 5rem auto;
   grid-column-gap: 0.5rem;
   position: relative;
@@ -6,6 +7,7 @@
   border-radius: $border-radius;
   color: white;
   padding: 0.5rem;
+  margin-bottom: 1rem;
 
   &.open {
     display: grid;
@@ -33,15 +35,15 @@
     display: grid;
     justify-items: center;
     align-items: center;
-    
+
     font-size: 3.6rem;
 
     padding: 0.5rem;
   }
 
-  &__body {
+  &__container {
     grid-column: 2;
-    
+
     padding: 0.5rem;
   }
 
@@ -50,7 +52,7 @@
     font-size: 2.2rem;
   }
 
-  &__message {
+  &__body {
     font-size: 1.6rem;
   }
 

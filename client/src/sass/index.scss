@@ -22,10 +22,12 @@
 @import '../components/DatePicker/DatePicker';
 @import '../components/Shows/Shows';
 @import '../components/Dropdown/Dropdown';
+@import '../components/DropdownHost/DropdownHost';
 @import '../components/Filter/Filter';
 @import '../components/Footer/Footer';
 @import '../components/FormArtistAdd/FormArtistAdd';
 @import '../components/FormArtistUpdateName/FormArtistUpdateName';
+@import '../components/FormHostAdd/FormHostAdd';
 @import '../components/FormUserSearch/FormUserSearch';
 @import '../components/Input/Input';
 @import '../components/Logo/Logo';
@@ -41,6 +43,7 @@
 @import '../components/Sidebar/Sidebar';
 @import '../components/Table/Table';
 @import '../components/TableUsers/TableUsers';
+@import '../components/TextArea/TextArea';
 @import '../components/Tooltip/Tooltip';
 @import '../components/Unauthorized/Unauthorized';
 
@@ -62,6 +65,7 @@
 @import '../pages/ReportHomePage/ReportHomePage';
 @import '../pages/UserAddPage/UserAddPage';
 @import '../pages/UserEditPage/UserEditPage';
+@import '../pages/UserProfilePage/UserProfilePage';
 @import '../pages/UserSearchPage/UserSearchPage';
 
 // utils

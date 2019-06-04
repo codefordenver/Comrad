@@ -1,0 +1,44 @@
+.user-profile {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-column-gap: 1rem;
+
+  &__left,
+  &__right {
+    display: grid;
+    grid-row-gap: 1rem;
+    height: max-content;
+  }
+
+  &__image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__image-circle {
+    background-color: #eee;
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+    height: 30rem;
+    width: 30rem;
+  }
+
+  &__image-pic,
+  &__image-stock {
+    position: absolute;
+  }
+
+  &__image-stock {
+    color: red;
+    height: 100%;
+    width: 100%;
+  }
+
+  &__buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-column-gap: 1rem;
+  }
+}

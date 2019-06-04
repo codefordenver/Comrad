@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
+
+import { alertTypes } from '../../redux/alert';
 
 export const ALERT_TYPES = ['success', 'info', 'danger', 'warning'];
 
@@ -35,7 +38,7 @@ class Alert extends Component {
     /**
      * Background color based on type
      */
-    type: PropTypes.oneOf(ALERT_TYPES).isRequired,
+    type: PropTypes.oneOf(ALERT_TYPES),
   };
 
   static defaultProps = {
@@ -44,37 +47,55 @@ class Alert extends Component {
     message: null,
   };
 
-  componentWillUnmount() {
-    const { alertClose } = this.props;
+  componentDidUpdate(prevProps) {
+    const { props } = this;
+    const { alertInactive } = props;
 
-    alertClose();
+    if (props.location.pathname !== prevProps.location.pathname) {
+      alertInactive();
+    }
   }
 
+  handleAlertClose = () => {
+    const { alertInactive } = this.props;
+
+    alertInactive();
+  };
+
   render() {
-    const { props } = this;
-    const { alertClose, className, display, header, type, message } = props;
+    const { handleAlertClose, props } = this;
+    const { alertState, className } = props;
 
     return (
       <div
-        className={classnames(
-          'alert',
-          ALERT_CLASS[type],
-          display ? 'open' : 'close',
-          className,
-        )}
+        className={classnames('alert', ALERT_CLASS[alertState.type], className)}
       >
         {/* TODO: Need to figure out how to handle clicks */}
-        <div className="alert__times" onClick={alertClose}>
+        <div className="alert__times" onClick={handleAlertClose}>
           <i className="fas fa-times" />
         </div>
-        <div className="alert__icon">{ALERT_ICON[type]}</div>
-        <div className="alert__body">
-          <div className="alert__header">{header}</div>
-          <div className="alert__message">{message}</div>
+        <div className="alert__icon">{ALERT_ICON[alertState.type]}</div>
+        <div className="alert__container">
+          <div className="alert__header">{alertState.header}</div>
+          <div className="alert__body">{alertState.body}</div>
         </div>
       </div>
     );
   }
 }
 
-export default Alert;
+function mapStateToProps({ alert }) {
+  return {
+    alertState: alert,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    alertInactive: () => dispatch({ type: alertTypes.INACTIVE }),
+  };
+}
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Alert);

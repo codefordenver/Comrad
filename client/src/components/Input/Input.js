@@ -43,11 +43,16 @@ class Input extends Component {
     const {
       autoFocus,
       className,
+      disabled,
       icon,
       inline,
       input,
       label,
-      meta,
+      meta = {
+        error: false,
+        touched: false,
+        submitting: false,
+      } /* default values for when component is not used within React Form */,
       type,
       dirtyOverride = false,
       ...other
@@ -65,9 +70,15 @@ class Input extends Component {
           {...other}
           autoFocus={autoFocus}
           className={classnames('input', touched && error && 'error')}
-          disabled={submitting}
+          disabled={disabled || submitting}
           type={type}
-          onBlur={() => input.onBlur()}
+          onBlur={event => {
+            if (input != null) {
+              input.onBlur();
+            } else if (typeof props.onBlur == 'function') {
+              props.onBlur(event);
+            }
+          }}
         />
 
         {label && (

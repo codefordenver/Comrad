@@ -39,8 +39,18 @@ function createRRule(show, queryStartDate, queryEndDate) {
   }
 
   //Format RRULE end date by UTC Time
-  const qed = combineDayAndTime(queryEndDate, show_end_time_utc);
-  const red = combineDayAndTime(repeat_end_date, show_end_time_utc);
+  const qed = combineDayAndTime(
+    queryEndDate,
+    show_end_time_utc,
+    'MOMENT',
+    'END',
+  );
+  const red = combineDayAndTime(
+    repeat_end_date,
+    show_end_time_utc,
+    'MOMENT',
+    'END',
+  );
 
   if (red.isBefore(qed)) {
     newRRule.until = new Date(red.format());
@@ -141,16 +151,23 @@ function returnDatesArrayByRepeatRule(show, startDate = null, endDate = null) {
   }
 }
 
-function combineDayAndTime(desiredDate, desiredTime, format = 'MOMENT') {
+function combineDayAndTime(
+  desiredDate,
+  desiredTime,
+  format = 'MOMENT',
+  type = 'START',
+) {
   //https://stackoverflow.com/questions/21918095/moment-js-how-to-detect-daylight-savings-time-and-add-one-day
   //Need to detect and handle DST, days are offset by 1 day in november/march.
   let hours = moment(desiredTime).hours();
   let minutes = moment(desiredTime).minutes();
 
-  if (hours === 0 && minutes === 0) {
-    //If a show happens at midnight,
-    //and the hours are applied to the current day,
-    //the day moves back by 1, so just set hours manually
+  if (type === 'END' && hours === 0 && minutes === 0) {
+    /**
+     * If a show happens at midnight,
+     * and the hours are applied to the current day,
+     * the day moves back by 1, so just set hours manually
+     *  */
     hours = 23;
     minutes = 59;
   }
@@ -182,7 +199,12 @@ function returnSeriesShowsArrayWithNewDates(dateArray, show) {
       'STRING',
     );
 
-    show_end_time_utc = combineDayAndTime(date, show_end_time_utc, 'STRING');
+    show_end_time_utc = combineDayAndTime(
+      date,
+      show_end_time_utc,
+      'STRING',
+      'END',
+    );
 
     newShow.master_show_uid = newShow._id;
     newShow._id = master_time_id(newShow.master_show_uid, show_start_time_utc);
@@ -207,6 +229,7 @@ const returnInstanceShowsArray = shows => {
       date,
       instanceShow.show_end_time_utc,
       'STRING',
+      'END',
     );
 
     instanceShow.show_details.title =

@@ -142,7 +142,7 @@ class Calendar extends Component {
       moment(show_start_time_utc).format('HH') === '00' &&
       moment(show_start_time_utc).format('mm') === '00'
     ) {
-      return new Date(moment(show_start_time_utc).add(1, 'minute'));
+      return new Date(moment(show_start_time_utc).add(1, 'second'));
     }
     return new Date(moment(show_start_time_utc));
   }

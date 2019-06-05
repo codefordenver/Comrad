@@ -27,13 +27,13 @@ async function findAllByAlbums(req, res) {
     totalPages: totalPages,
   };
 
-  if (page < totalPages) {
+  if (page < totalPages - 1) {
     //generate a URL that will be used to display the next page of results
     page++;
     resultsJson.nextPage = {
       page: page,
       url:
-        '/v1/library/artists?page=' +
+        '/v1/library/album?page=' +
         page +
         '&sortBy=' +
         sortBy +

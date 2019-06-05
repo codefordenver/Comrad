@@ -307,6 +307,7 @@ class LibrarySearchPage extends Component {
                 noDataText="No Data Found"
                 showPageSizeOptions={false}
                 onFetchData={this.fetchData}
+                showPageJump={false}
                 sortable={this.state.searchString === false}
                 getTdProps={this.navigateToRecord}
               />

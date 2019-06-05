@@ -8,7 +8,7 @@ const {
   master_time_id__byShowType,
 } = require('./utils__mongoose');
 
-function showList(shows, startDate = null, endDate = null) {
+async function showList(shows, startDate = null, endDate = null) {
   //Filter all shows that are series
   const allSeriesShows = reduceShowsByRepeatProperty(shows, true);
 
@@ -21,7 +21,6 @@ function showList(shows, startDate = null, endDate = null) {
 
     return allSeriesShowsExpandedByDates;
   });
-  console.log(shows.filter(show => show._id == '5cf07a4b0b04f739701eba7e'));
 
   //Filter all shows that are instances
   const allInstanceShows = reduceShowsByRepeatProperty(shows, false);
@@ -31,7 +30,7 @@ function showList(shows, startDate = null, endDate = null) {
   const seriesFlattened = _.flatten(allSeriesShowsExpanded);
   const seriesKeyBy = _.keyBy(seriesFlattened, '_id');
 
-  const instanceKeyBy = _.keyBy(allInstanceShowsExpanded, o => {
+  const instanceKeyBy = _.keyBy(await allInstanceShowsExpanded, o => {
     return o.master_time_id;
   });
 
@@ -122,9 +121,6 @@ function createRRule(show, queryStartDate, queryEndDate) {
 
 function reduceShowsByRepeatProperty(shows, recurringCheckValue) {
   const reducer = (accShows, currentShow) => {
-    if (currentShow._id == '5cf07a4b0b04f739701eba7e') {
-      console.log(currentShow);
-    }
     if (
       currentShow.is_recurring === recurringCheckValue ||
       (currentShow.is_recurring === undefined && recurringCheckValue === false)
@@ -219,10 +215,48 @@ function returnSeriesShowsArrayWithNewDates(dateArray, show) {
   return returnedShows;
 }
 
-const returnInstanceShowsArray = shows => {
-  return shows.map(show => {
+function getShowTitles(shows) {
+  const promises = shows.map(async show => {
+    show = { ...show.toObject() };
+    if (!show.show_details.title) {
+      let masterShow = db.Show.findById(show.master_show_uid);
+      let promise = await masterShow;
+      //let title = await masterShow.show_details.title;
+      return promise;
+    }
+  });
+  return Promise.all(promises);
+}
+
+function keyTitleById(acc, title) {
+  if (title) {
+    return { ...acc, [title.id]: title.title };
+  }
+  return acc;
+}
+
+const returnInstanceShowsArray = async shows => {
+  let titles = await getShowTitles(shows);
+  titles = titles.map(show => {
+    if (show) {
+      const id = show._id;
+      const title = show.show_details.title;
+      return { id, title };
+    }
+  });
+
+  titles = titles.reduce(keyTitleById, {});
+
+  const allInstances = shows.map(show => {
     let instanceShow = { ...show.toObject() };
+    let { title } = instanceShow.show_details;
+    if (!title) {
+      const { master_show_uid } = instanceShow;
+      title = titles[master_show_uid];
+    }
     const date = instanceShow.show_start_time_utc;
+
+    //Update properties of the instance show
     instanceShow.show_start_time_utc = combineDayAndTime(
       date,
       instanceShow.show_start_time_utc,
@@ -235,25 +269,12 @@ const returnInstanceShowsArray = shows => {
       'END',
     );
 
-    const { title } = instanceShow.show_details;
-    if (!title) {
-      //When an instance needs to get the title from the master show
-      const masterShow = { show_details: { title: 'Add async title lookup' } };
-      //const masterShow = await db.Show.findById(instanceShow.master_show_uid);
-      instanceShow.show_details.title =
-        masterShow.show_details.title + ' (No Instance Title)';
-      instanceShow.master_time_id = master_time_id__byShowType(instanceShow);
+    instanceShow.show_details.title = title + ' (Show List - Instance Version)';
+    instanceShow.master_time_id = master_time_id__byShowType(instanceShow);
 
-      return instanceShow;
-    } else {
-      //When an instance has a title
-      instanceShow.show_details.title =
-        instanceShow.show_details.title + ' (Show List - Instance Version)';
-      instanceShow.master_time_id = master_time_id__byShowType(instanceShow);
-
-      return instanceShow;
-    }
+    return instanceShow;
   });
+  return allInstances;
 };
 
 module.exports = {

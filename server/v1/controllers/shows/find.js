@@ -17,7 +17,7 @@ function find(req, res) {
   db.Show.find(showDateFilter[0])
     .populate(populateShowQuery())
     .then(dbShow => {
-      res.json(showList(dbShow, startDate, endDate));
+      showList(dbShow, startDate, endDate).then(shows => res.json(shows));
     })
     .catch(err => res.status(422).json(err));
 }

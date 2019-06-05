@@ -151,7 +151,6 @@ function populateShowQuery() {
 }
 
 function master_time_id(_id, start_time) {
-  console.log(_id + '-' + moment(start_time));
   return _id + '-' + moment(start_time);
 }
 

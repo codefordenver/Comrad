@@ -27,6 +27,21 @@ async function findAllByArtists(req, res) {
     totalPages: totalPages,
   };
 
+  if (page < totalPages) {
+    //generate a URL that will be used to display the next page of results
+    page++;
+    resultsJson.nextPage = {
+      page: page,
+      url:
+        '/v1/library/artists?page=' +
+        page +
+        '&sortBy=' +
+        sortBy +
+        '&sortDescending=' +
+        (sortDescending ? '1' : '0'),
+    };
+  }
+
   return res.json(resultsJson);
 }
 

@@ -34,8 +34,8 @@ class LibrarySearchPage extends Component {
       (state.sorted[0].id !== this.state.sort.id ||
         state.sorted[0].desc !== this.state.sort.desc)
     ) {
-      url =
-        '/v1/library?sortBy=' +
+      url +=
+        '?sortBy=' +
         state.sorted[0].id +
         '&sortDescending=' +
         (state.sorted[0].desc ? '1' : '0');
@@ -75,28 +75,20 @@ class LibrarySearchPage extends Component {
       });
   };
 
-  fetchTableDataByType = type => {
-    axios
-      .get(`/v1/library/${type}`)
-      .then(response => {
-        let pageUrls = this.state.pageUrls;
-        if (typeof response.data.nextPage !== 'undefined') {
-          pageUrls.push(response.data.nextPage.url);
-        }
-        this.setState({
-          docs: response.data.results,
-          totalPages: response.data.totalPages,
-          pageUrls: pageUrls,
-          loading: false,
-          loadingError: false,
-        });
-      })
-      .catch(response => {
-        console.error(response);
-        this.setState({
-          loadingError: true,
-        });
-      });
+  getAllMusicLibraryRecords = () => {
+    let url = '/v1/library/';
+    if (this.state.activeFilter !== 'all') {
+      url = `/v1/library/${this.state.activeFilter}`;
+    }
+    this.setState(
+      {
+        pageUrls: [url],
+        searchString: false,
+      },
+      function() {
+        this.fetchTableDataFromApi(this.state.pageUrls[0]);
+      },
+    );
   };
 
   navigateToRecord = (state, rowInfo, column, instance) => {
@@ -111,17 +103,21 @@ class LibrarySearchPage extends Component {
   };
 
   searchLibrary = form => {
-    let url =
-      '/v1/library/search?s=' + form.q + '&type=' + this.state.activeFilter;
-    this.setState(
-      {
-        pageUrls: [url],
-        searchString: form.q,
-      },
-      function() {
-        this.fetchTableDataFromApi(url);
-      },
-    );
+    if (form.q != null && form.q.length > 0) {
+      let url =
+        '/v1/library/search?s=' + form.q + '&type=' + this.state.activeFilter;
+      this.setState(
+        {
+          pageUrls: [url],
+          searchString: form.q,
+        },
+        function() {
+          this.fetchTableDataFromApi(url);
+        },
+      );
+    } else {
+      this.getAllMusicLibraryRecords();
+    }
   };
 
   setActiveFilter = event => {
@@ -130,10 +126,13 @@ class LibrarySearchPage extends Component {
         activeFilter: event.target.getAttribute('value'),
       },
       function() {
-        if (this.state.activeFilter === 'all') {
+        if (
+          this.state.searchString != null &&
+          this.state.searchString.length > 0
+        ) {
           this.searchLibrary({ q: this.state.searchString });
         } else {
-          this.fetchTableDataByType(this.state.activeFilter);
+          this.getAllMusicLibraryRecords();
         }
       },
     );
@@ -166,7 +165,10 @@ class LibrarySearchPage extends Component {
               elements.push(data.value);
               if (artistNames.length > 0) {
                 elements.push(
-                  <span className="library-search__grid__secondary-text">
+                  <span
+                    key="artist-name"
+                    className="library-search__grid__secondary-text"
+                  >
                     {' '}
                     by {artistNames.join(', ')}
                   </span>,
@@ -178,7 +180,10 @@ class LibrarySearchPage extends Component {
                 data.original.album.name.length > 0
               ) {
                 elements.push(
-                  <span className="library-search__grid__secondary-text">
+                  <span
+                    key="album-name"
+                    className="library-search__grid__secondary-text"
+                  >
                     {' '}
                     (from the album: {data.original.album.name})
                   </span>,
@@ -194,7 +199,10 @@ class LibrarySearchPage extends Component {
                 let elements = [];
                 elements.push(data.value);
                 elements.push(
-                  <span className="library-search__grid__secondary-text">
+                  <span
+                    key="album-artist-name"
+                    className="library-search__grid__secondary-text"
+                  >
                     {' '}
                     by {data.original.artist.name}
                   </span>,

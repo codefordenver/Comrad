@@ -215,45 +215,42 @@ function returnSeriesShowsArrayWithNewDates(dateArray, show) {
   return returnedShows;
 }
 
-function getShowTitles(shows) {
+function getMasterShows(shows) {
   const promises = shows.map(async show => {
     show = { ...show.toObject() };
-    if (!show.show_details.title) {
-      let masterShow = db.Show.findById(show.master_show_uid);
-      let promise = await masterShow;
-      //let title = await masterShow.show_details.title;
-      return promise;
+    if (show.master_show_uid) {
+      const masterShow = await db.Show.findById(show.master_show_uid);
+      return masterShow;
     }
   });
   return Promise.all(promises);
 }
 
-function keyTitleById(acc, title) {
-  if (title) {
-    return { ...acc, [title.id]: title.title };
+function keyMasterShowByID(acc, show) {
+  if (show) {
+    const { _id } = show;
+    const { show_details } = show;
+    return { ...acc, [_id]: show_details };
   }
   return acc;
 }
 
-const returnInstanceShowsArray = async shows => {
-  let titles = await getShowTitles(shows);
-  titles = titles.map(show => {
-    if (show) {
-      const id = show._id;
-      const title = show.show_details.title;
-      return { id, title };
-    }
-  });
-
-  titles = titles.reduce(keyTitleById, {});
+async function returnInstanceShowsArray(shows) {
+  let masterShows = await getMasterShows(shows);
+  masterShows = masterShows.reduce(keyMasterShowByID, {});
 
   const allInstances = shows.map(show => {
     let instanceShow = { ...show.toObject() };
-    let { title } = instanceShow.show_details;
-    if (!title) {
-      const { master_show_uid } = instanceShow;
-      title = titles[master_show_uid];
+    const { master_show_uid } = instanceShow;
+
+    //This will merge any show details from the master show that are not on the instance.
+    if (master_show_uid) {
+      instanceShow.show_details = {
+        ...masterShows[master_show_uid],
+        ...instanceShow.show_details,
+      };
     }
+
     const date = instanceShow.show_start_time_utc;
 
     //Update properties of the instance show
@@ -269,13 +266,12 @@ const returnInstanceShowsArray = async shows => {
       'END',
     );
 
-    instanceShow.show_details.title = title + ' (Show List - Instance Version)';
     instanceShow.master_time_id = master_time_id__byShowType(instanceShow);
 
     return instanceShow;
   });
   return allInstances;
-};
+}
 
 module.exports = {
   showList,

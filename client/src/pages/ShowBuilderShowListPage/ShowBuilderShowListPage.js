@@ -71,24 +71,36 @@ class ShowBuilderShowListPage extends Component {
         let showDate = startTime.format('LL');
         showDate = showDate.substring(0, showDate.lastIndexOf(',')); // format as "March 3"
         if (displayDate != showDate) {
-          showElements.push(<h2 key={showDate}>{showDate}</h2>);
+          showElements.push(
+            <h2 key={showDate}>
+              {startTime.format('dddd')}, {showDate}
+            </h2>,
+          );
           displayDate = showDate;
         }
         if (showObject.show_details.host != null) {
           let formattedHostName = formatHostName(showObject.show_details.host);
           hostElement.push(
             <span key={showObject.show_details.host._id}>
-              hosted by {formattedHostName}
+              {formattedHostName}
+            </span>,
+          );
+        } else {
+          hostElement.push(
+            <span key="no-host" className="show-list__no-host">
+              No host
             </span>,
           );
         }
         showElements.push(
-          <div key={s}>
-            <Link to={showUrl}>{showObject.show_details.title}</Link>
-            {hostElement}
+          <div className="show-list__show" key={s}>
             <span>
               {startTimeFormatted} - {endTimeFormatted}
             </span>
+            &nbsp;-&nbsp;
+            <Link to={showUrl}>{showObject.show_details.title}</Link>
+            &nbsp;-&nbsp;
+            {hostElement}
           </div>,
         );
       });
@@ -101,7 +113,7 @@ class ShowBuilderShowListPage extends Component {
     };
 
     return (
-      <>
+      <div className="show-list">
         <Card>
           <CardBody>
             <h1>Show List</h1>
@@ -109,13 +121,15 @@ class ShowBuilderShowListPage extends Component {
         </Card>
         <Card>
           <CardBody>
-            <div>
+            <div class="show-list__date-selector">
               <DatePicker label="Date" input={dateInput} />
             </div>
-            {!showsFetching && <div>{showElements}</div>}
+            {!showsFetching && (
+              <div className="show-list__shows">{showElements}</div>
+            )}
           </CardBody>
         </Card>
-      </>
+      </div>
     );
   }
 }

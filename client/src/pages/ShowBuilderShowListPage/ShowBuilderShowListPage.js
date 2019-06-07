@@ -9,6 +9,7 @@ import {
   getShowsData,
   searchShow,
 } from '../../redux/show';
+import Card, { CardBody } from '../../components/Card';
 import DatePicker from '../../components/DatePicker';
 import { formatHostName } from '../../utils/formatters';
 
@@ -59,11 +60,13 @@ class ShowBuilderShowListPage extends Component {
         let endTime = moment(showObject.show_end_time_utc);
         let startTimeFormatted = startTime.format('LT');
         let endTimeFormatted = endTime.format('LT');
+        let startTimeUtc = moment(showObject.show_start_time_utc).utc();
+        let endTimeUtc = moment(showObject.show_end_time_utc).utc();
         let showUrl =
           '/show-builder/show?startTime=' +
-          startTime.utc().format() +
+          startTimeUtc.format() +
           '&endTime=' +
-          endTime.utc().format();
+          endTimeUtc.format();
         let hostElement = [];
         let showDate = startTime.format('LL');
         showDate = showDate.substring(0, showDate.lastIndexOf(',')); // format as "March 3"
@@ -98,13 +101,21 @@ class ShowBuilderShowListPage extends Component {
     };
 
     return (
-      <div>
-        <h1>Show List</h1>
-        <div>
-          <DatePicker label="Date" input={dateInput} />
-        </div>
-        {!showsFetching && <div>{showElements}</div>}
-      </div>
+      <>
+        <Card>
+          <CardBody>
+            <h1>Show List</h1>
+          </CardBody>
+        </Card>
+        <Card>
+          <CardBody>
+            <div>
+              <DatePicker label="Date" input={dateInput} />
+            </div>
+            {!showsFetching && <div>{showElements}</div>}
+          </CardBody>
+        </Card>
+      </>
     );
   }
 }

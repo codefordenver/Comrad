@@ -34,7 +34,7 @@ export function showReducer(state = initialState, { type, payload }) {
     case SHOW_GET:
       return {
         ...state,
-        data: { ...state.data, ..._.mapKeys([payload], 'master_time_id') },
+        data: { ...state.data, ...payload },
         fetching: false,
         error: false,
       };
@@ -42,7 +42,7 @@ export function showReducer(state = initialState, { type, payload }) {
     case SHOW_POST:
       return {
         ...state,
-        data: { ...state.data, ..._.mapKeys(payload, 'master_time_id') },
+        data: { ...state.data, ...payload },
         posting: false,
         fetching: false,
         error: false,
@@ -62,7 +62,7 @@ export function showReducer(state = initialState, { type, payload }) {
       const searchParams = payload.params;
       return {
         ...state,
-        data: { ...state.data, ..._.mapKeys(searchData, 'master_time_id') },
+        data: { ...state.data, ...searchData },
         fetching: false,
         error: false,
         search: {
@@ -73,8 +73,8 @@ export function showReducer(state = initialState, { type, payload }) {
 
     case SHOW_DELETE:
       let deleteShow = { ...state.data };
-
-      delete deleteShow[payload._id];
+      console.log(payload);
+      delete deleteShow[payload.master_time_id];
 
       return {
         ...state,

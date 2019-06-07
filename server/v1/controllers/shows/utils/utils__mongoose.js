@@ -109,14 +109,36 @@ function formatShow(data, res = null) {
 function findShowQueryByDateRange(start, end) {
   return [
     {
-      'repeat_rule.repeat_start_date': {
-        $lte: end,
-      },
-    },
-    {
-      'repeat_rule.repeat_end_date': {
-        $gte: start,
-      },
+      $or: [
+        {
+          $and: [
+            {
+              'repeat_rule.repeat_start_date': {
+                $lte: end,
+              },
+            },
+            {
+              'repeat_rule.repeat_end_date': {
+                $gte: start,
+              },
+            },
+          ],
+        },
+        {
+          $and: [
+            {
+              show_start_time_utc: {
+                $lte: end,
+              },
+            },
+            {
+              show_end_time_utc: {
+                $gte: start,
+              },
+            },
+          ],
+        },
+      ],
     },
   ];
 }
@@ -135,7 +157,7 @@ function master_time_id(_id, start_time) {
 function master_time_id__byShowType(show) {
   if (show.master_show_uid) {
     //Instance Show
-    return master_time_id(show.master_show_uid, show.replace_show_date);
+    return master_time_id(show.master_show_uid, show.show_start_time_utc);
   } else {
     //Regular Show
     return master_time_id(show._id, show.show_start_time_utc);

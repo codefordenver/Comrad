@@ -140,7 +140,7 @@ class Calendar extends Component {
     //Basic check for shows that start and end at midnight.
     if (
       moment(show_start_time_utc).format('HH') === '00' &&
-      moment(show_start_time_utc).format('MM') === '00'
+      moment(show_start_time_utc).format('mm') === '00'
     ) {
       return new Date(moment(show_start_time_utc).add(1, 'second'));
     }
@@ -151,9 +151,9 @@ class Calendar extends Component {
     const { show_end_time_utc } = show;
     if (
       moment(show_end_time_utc).format('HH') === '00' &&
-      moment(show_end_time_utc).format('MM') === '00'
+      moment(show_end_time_utc).format('mm') === '00'
     ) {
-      return new Date(moment(show_end_time_utc).add(-1, 'second'));
+      return new Date(moment(show_end_time_utc).add(-1, 'minute'));
     }
     return new Date(moment(show_end_time_utc));
   }

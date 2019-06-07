@@ -8,8 +8,8 @@ const {
 
 function createInstance(req, res) {
   const {
-    show_start_time_utc,
-    show_end_time_utc,
+    start_time_utc,
+    end_time_utc,
     show_details: { host },
   } = req.body;
   const { id } = req.params;
@@ -17,14 +17,14 @@ function createInstance(req, res) {
   db.Show.findById(id).exec(function(err, doc) {
     let d1 = doc;
     d1._id = mongoose.Types.ObjectId();
-    d1.master_show_uid = id;
+    d1.master_event_id = id;
     d1.show_details.host = host;
-    d1.show_start_time_utc = show_start_time_utc;
-    d1.show_end_time_utc = show_end_time_utc;
-    d1.repeat_rule.repeat_start_date = show_start_time_utc;
-    d1.repeat_rule.repeat_end_date = show_end_time_utc;
-    d1.show_end_time_utc = show_end_time_utc;
-    d1.replace_show_date = show_start_time_utc;
+    d1.start_time_utc = start_time_utc;
+    d1.end_time_utc = end_time_utc;
+    d1.repeat_rule.repeat_start_date = start_time_utc;
+    d1.repeat_rule.repeat_end_date = end_time_utc;
+    d1.end_time_utc = end_time_utc;
+    d1.replace_event_date = start_time_utc;
     d1.is_recurring = false;
     d1.created_at = Date.now();
     d1.updated_at = Date.now();
@@ -37,8 +37,8 @@ function createInstance(req, res) {
             newDbShow.show_details.title =
               dbShow.show_details.title + ' (Updated Host - Instance Version)';
             newDbShow.master_time_id = master_time_id(
-              dbShow.master_show_uid,
-              dbShow.replace_show_date,
+              dbShow.master_event_id,
+              dbShow.replace_event_date,
             );
             res.json(newDbShow);
           })

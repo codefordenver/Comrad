@@ -42,7 +42,7 @@ class NewShowForm extends Component {
                 dirtyOverride
                 format={value => moment(value).format('HH:mm')}
                 label="From"
-                name="show_start_time_utc"
+                name="start_time_utc"
                 onBlur={handleDefault}
                 parse={value => moment(value, 'HH:mm')}
                 type="time"
@@ -54,7 +54,7 @@ class NewShowForm extends Component {
                 dirtyOverride
                 format={value => moment(value).format('HH:mm')}
                 label="To"
-                name="show_end_time_utc"
+                name="end_time_utc"
                 onBlur={handleDefault}
                 parse={value => moment(value, 'HH:mm')}
                 type="time"
@@ -150,8 +150,8 @@ function mapStateToProps(state) {
     const searchDates = getSearchDate(state.show);
 
     return {
-      show_start_time_utc: moment(selectedShow.start),
-      show_end_time_utc: moment(selectedShow.end),
+      start_time_utc: moment(selectedShow.start),
+      end_time_utc: moment(selectedShow.end),
       repeat_start_date: moment(selectedShow.start),
       repeat_end_date: moment(selectedShow.end),
       startDate: searchDates.start,

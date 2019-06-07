@@ -5,10 +5,7 @@ const db = require('../models');
 
 async function seedDB() {
   try {
-    mongoose.connect(
-      keys.mongoURI,
-      { useNewUrlParser: true },
-    );
+    mongoose.connect(keys.mongoURI, { useNewUrlParser: true });
 
     console.log('dropping database...');
     await mongoose.connection.dropDatabase();
@@ -52,26 +49,6 @@ async function seedDB() {
       });
     });
     await db.Track.bulkWrite(bulkOperations);
-
-    // Announcements
-    console.log('seeding announcements...');
-    await Promise.all(
-      seed.announcements.map(async announcement =>
-        db.Announcement.create(announcement),
-      ),
-    );
-
-    // Features
-    console.log('seeding features...');
-    await Promise.all(
-      seed.features.map(async feature => db.Feature.create(feature)),
-    );
-
-    // Giveaways
-    console.log('seeding giveaways...');
-    await Promise.all(
-      seed.giveaway.map(async giveaway => db.Giveaway.create(giveaway)),
-    );
 
     // Shows
     console.log('seeding hosts for shows...');
@@ -125,7 +102,7 @@ async function seedDB() {
         if (showInstances.length > 0) {
           await Promise.all(
             showInstances.map(async instance => {
-              instance.master_show_uid = newShow;
+              instance.master_event_id = newShow;
               if (
                 instance.show_details != null &&
                 instance.show_details.host != null
@@ -163,10 +140,6 @@ async function seedDB() {
     await Promise.all(
       seed.traffic.map(async traffic => db.Traffic.create(traffic)),
     );
-
-    // Venue
-    console.log('seeding venues...');
-    await Promise.all(seed.venue.map(async venue => db.Venue.create(venue)));
   } catch (err) {
     console.log(err);
     throw err;

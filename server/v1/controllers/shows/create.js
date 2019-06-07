@@ -12,7 +12,7 @@ function create(req, res) {
     .then(dbShow => {
       db.Show.populate(dbShow, populateShowQuery())
         .then(dbShow => {
-          res.json(showList([dbShow], startDate, endDate));
+          res.json(showList(dbShow, startDate, endDate));
         })
         .catch(err => {
           console.log('Error Populating Show Data from linked records');

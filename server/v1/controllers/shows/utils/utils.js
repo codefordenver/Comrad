@@ -8,7 +8,10 @@ const {
   master_time_id__byShowType,
 } = require('./utils__mongoose');
 
-async function showList(shows, startDate = null, endDate = null) {
+function showList(shows, startDate = null, endDate = null) {
+  if (!Array.isArray(shows)) {
+    shows = [shows];
+  }
   //Filter all shows that are series
   const allSeriesShows = reduceShowsByRepeatProperty(shows, true);
 
@@ -30,7 +33,7 @@ async function showList(shows, startDate = null, endDate = null) {
   const seriesFlattened = _.flatten(allSeriesShowsExpanded);
   const seriesKeyBy = _.keyBy(seriesFlattened, '_id');
 
-  const instanceKeyBy = _.keyBy(await allInstanceShowsExpanded, o => {
+  const instanceKeyBy = _.keyBy(allInstanceShowsExpanded, o => {
     return o.master_time_id;
   });
 
@@ -215,30 +218,7 @@ function returnSeriesShowsArrayWithNewDates(dateArray, show) {
   return returnedShows;
 }
 
-function getMasterShows(shows) {
-  const promises = shows.map(async show => {
-    show = { ...show.toObject() };
-    if (show.master_show_uid) {
-      const masterShow = await db.Show.findById(show.master_show_uid);
-      return masterShow;
-    }
-  });
-  return Promise.all(promises);
-}
-
-function keyMasterShowByID(acc, show) {
-  if (show) {
-    const { _id } = show;
-    const { show_details } = show;
-    return { ...acc, [_id]: show_details };
-  }
-  return acc;
-}
-
-async function returnInstanceShowsArray(shows) {
-  let masterShows = await getMasterShows(shows);
-  masterShows = masterShows.reduce(keyMasterShowByID, {});
-
+function returnInstanceShowsArray(shows) {
   const allInstances = shows.map(show => {
     let instanceShow = { ...show.toObject() };
     const { master_show_uid } = instanceShow;
@@ -246,7 +226,7 @@ async function returnInstanceShowsArray(shows) {
     //This will merge any show details from the master show that are not on the instance.
     if (master_show_uid) {
       instanceShow.show_details = {
-        ...masterShows[master_show_uid],
+        ...instanceShow.master_show_uid.show_details,
         ...instanceShow.show_details,
       };
     }

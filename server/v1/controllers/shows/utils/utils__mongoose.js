@@ -150,6 +150,13 @@ function populateShowQuery() {
   };
 }
 
+function populateMasterShow() {
+  return {
+    path: 'master_show_uid',
+    select: 'show_details',
+  };
+}
+
 function master_time_id(_id, start_time) {
   return _id + '-' + moment(start_time);
 }
@@ -157,7 +164,7 @@ function master_time_id(_id, start_time) {
 function master_time_id__byShowType(show) {
   if (show.master_show_uid) {
     //Instance Show
-    return master_time_id(show.master_show_uid, show.show_start_time_utc);
+    return master_time_id(show.master_show_uid._id, show.show_start_time_utc);
   } else {
     //Regular Show
     return master_time_id(show._id, show.show_start_time_utc);
@@ -168,6 +175,7 @@ module.exports = {
   formatShow,
   findShowQueryByDateRange,
   populateShowQuery,
+  populateMasterShow,
   master_time_id,
   master_time_id__byShowType,
 };

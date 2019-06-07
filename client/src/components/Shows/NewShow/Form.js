@@ -6,6 +6,7 @@ import moment from 'moment';
 import Button from '../../Button';
 import Card, { CardBody } from '../../Card';
 import DatePicker from '../../DatePicker';
+import { DatePicker__React } from '../../DatePicker';
 import DropdownHost from '../../DropdownHost';
 import Input from '../../Input';
 import ModalClose from '../../Modal/Modal__Button_Close';
@@ -38,32 +39,27 @@ class NewShowForm extends Component {
               />
 
               <Field
-                component={Input}
-                dirtyOverride
-                format={value => moment(value).format('HH:mm')}
+                className="z-index--250"
+                component={DatePicker__React}
                 label="From"
                 name="show_start_time_utc"
-                onBlur={handleDefault}
-                parse={value => moment(value, 'HH:mm')}
                 type="time"
                 validate={[requiredValidate]}
+                dateFormat="MM/dd/yyyy h:mm aa"
               />
 
               <Field
-                component={Input}
-                dirtyOverride
-                format={value => moment(value).format('HH:mm')}
+                className="z-index--250"
+                component={DatePicker__React}
                 label="To"
                 name="show_end_time_utc"
-                onBlur={handleDefault}
-                parse={value => moment(value, 'HH:mm')}
-                type="time"
                 validate={[requiredValidate]}
+                dateFormat="MM/dd/yyyy h:mm aa"
               />
 
               <Field
                 className="z-index--200"
-                component={DatePicker}
+                component={DatePicker__React}
                 label="Start"
                 name="repeat_start_date"
                 validate={[requiredValidate]}
@@ -80,13 +76,12 @@ class NewShowForm extends Component {
               {isRepeat && (
                 <>
                   <Field
-                    allowNullDate
                     className="z-index--150"
-                    component={DatePicker}
+                    component={DatePicker__React}
                     label="End"
                     name="repeat_end_date"
-                    placeholder="Never"
-                    showClearDate
+                    isClearable={true}
+                    allowNullDate
                   />
 
                   <RepeatDropdown />

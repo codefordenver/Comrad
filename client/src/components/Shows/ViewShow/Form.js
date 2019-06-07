@@ -17,6 +17,7 @@ const FORM_OPTIONS = {
   series: (data, deleteFunction) => {
     return (
       <div className="series">
+        <h3>Series</h3>
         <div className="series__show-instance">Edit Show Instance</div>
         <div className="series__show-series">Edit Show Series</div>
         <div className="series__delete">Delete This Show</div>
@@ -33,6 +34,7 @@ const FORM_OPTIONS = {
   instance: (data, deleteFunction) => {
     return (
       <div className="instance">
+        <h3>Instance</h3>
         <div className="series__show-instance">Edit Show Instance</div>
         <div className="series__show-series">Edit Show Series</div>
         <div className="series__delete">Delete This Show</div>
@@ -124,12 +126,13 @@ class NewShowForm extends Component {
     const { props } = this;
     const { updateShow, show } = props;
     const { _id, master_show_uid } = show;
+    console.log(show);
     const showType = this.getShowType(show);
     console.log(host);
     if (showType === 'series') {
       const { createInstanceShow } = this.props;
       show.show_details.host = host._id;
-      createInstanceShow(master_show_uid._id, show);
+      createInstanceShow(master_show_uid, show);
     } else {
       //Only update host if the show is regular or instance
       updateShow(_id, { 'show_details.host': host._id });

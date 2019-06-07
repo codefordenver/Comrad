@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const moment = require('moment');
 
 const {
-  utils__mongoose: { populateShowQuery, master_time_id },
+  utils__mongoose: { populateShowQuery, populateMasterShow, master_time_id },
 } = require('./utils');
 
 function createInstance(req, res) {
@@ -31,21 +31,25 @@ function createInstance(req, res) {
     d1.isNew = true;
     d1.save()
       .then(dbShow => {
-        db.Show.populate(dbShow, populateShowQuery())
-          .then(dbShow => {
-            let newDbShow = { ...dbShow.toObject() };
-            newDbShow.show_details.title =
-              dbShow.show_details.title + ' (Updated Host - Instance Version)';
-            newDbShow.master_time_id = master_time_id(
-              dbShow.master_show_uid._id,
-              dbShow.replace_show_date,
-            );
-            res.json(newDbShow);
-          })
-          .catch(err => {
-            console.error(err);
-            res.status(422).json(err);
-          });
+        db.Show.populate(dbShow, populateShowQuery()).then(dbShow => {
+          db.Show.populate(dbShow, populateMasterShow())
+            .then(dbShow => {
+              let newDbShow = { ...dbShow.toObject() };
+              newDbShow.show_details.title =
+                dbShow.show_details.title +
+                ' (Updated Host - Instance Version)';
+              newDbShow.master_time_id = master_time_id(
+                dbShow.master_show_uid._id,
+                dbShow.replace_show_date,
+              );
+              console.log(newDbShow);
+              res.json(newDbShow);
+            })
+            .catch(err => {
+              console.error(err);
+              res.status(422).json(err);
+            });
+        });
       })
       .catch(err => res.status(422).json(err));
   });

@@ -22,6 +22,11 @@ class ShowBuilderShowListPage extends Component {
     this.updateShowData();
   };
 
+  componentWillUnmount() {
+    const { clearShows } = this.props;
+    clearShows();
+  }
+
   handleDateChange = newDate => {
     const { clearShows } = this.props;
 

@@ -114,7 +114,7 @@ function reduceShowsByRepeatProperty(shows, recurringCheckValue) {
 function returnDatesArrayByRepeatRule(show, startDate, endDate) {
   const rule = new RRule(createRRule(show));
   try {
-    return rule.between(new Date(startDate), new Date(endDate));
+    return rule.between(new Date(startDate), new Date(endDate), true);
   } catch (e) {
     console.log('Error in returnDatesArrayByRepeatRule');
     console.log(e);

@@ -56,4 +56,17 @@
       }
     }
   }
+
+  &__delete-modal, &__delete-success-modal {
+    width: 48rem;
+    font-size: 2rem;
+
+    div {
+      margin-top: 2rem;
+    }
+
+    i {
+      font-style: italic;
+    }
+  }
 }

@@ -71,6 +71,7 @@ function createRRule(show, queryStartDate, queryEndDate) {
   }
 
   //Format RRULE end date by UTC Time
+
   const qed = combineDayAndTime(
     queryEndDate,
     show_end_time_utc,
@@ -149,6 +150,7 @@ function returnDatesArrayByRepeatRule(show, startDate = null, endDate = null) {
     }
   }
 }
+
 
 function combineDayAndTime(
   desiredDate,

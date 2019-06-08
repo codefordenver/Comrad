@@ -8,7 +8,7 @@ const {
   master_time_id__byShowType,
 } = require('./utils__mongoose');
 
-function showList(shows, startDate = null, endDate = null) {
+function showList(shows, startDate, endDate) {
   //Perform this check as the create route is an object, and the find route is an array.
   //This makes sure everything is an iterable array before going into the reducers.
   if (!Array.isArray(shows)) {
@@ -43,7 +43,7 @@ function showList(shows, startDate = null, endDate = null) {
   return { ...seriesKeyBy, ...instanceKeyBy };
 }
 
-function createRRule(show, queryStartDate, queryEndDate) {
+function createRRule(show) {
   const {
     frequency,
     repeat_start_date,
@@ -56,38 +56,15 @@ function createRRule(show, queryStartDate, queryEndDate) {
     bymonthday,
   } = show.repeat_rule;
 
-  const { show_start_time_utc, show_end_time_utc } = show;
-
   let newRRule = {};
 
   if (frequency) {
     newRRule.freq = frequency;
   }
 
-  //Format RRULE start date by UTC Time
-  const qsd = combineDayAndTime(queryStartDate, show_start_time_utc);
-  const rsd = combineDayAndTime(repeat_start_date, show_start_time_utc);
+  newRRule.dtstart = new Date(repeat_start_date);
 
-  if (rsd.isAfter(qsd)) {
-    newRRule.dtstart = new Date(rsd.format());
-  } else {
-    newRRule.dtstart = new Date(qsd.format());
-  }
-
-  //Format RRULE end date by UTC Time
-  const qed = combineDayAndTime(queryEndDate, queryEndDate, 'MOMENT', 'END');
-  const red = combineDayAndTime(
-    repeat_end_date,
-    show_end_time_utc,
-    'MOMENT',
-    'END',
-  );
-
-  if (red.isBefore(qed)) {
-    newRRule.until = new Date(red.format());
-  } else {
-    newRRule.until = new Date(qed.format());
-  }
+  newRRule.until = new Date(repeat_end_date);
 
   if (count) {
     newRRule.count = count;
@@ -134,18 +111,14 @@ function reduceShowsByRepeatProperty(shows, recurringCheckValue) {
   return reducedShowList;
 }
 
-function returnDatesArrayByRepeatRule(show, startDate = null, endDate = null) {
-  const { is_recurring } = show;
-
-  if (is_recurring) {
-    const rule = new RRule(createRRule(show, startDate, endDate));
-    try {
-      return rule.all();
-    } catch (e) {
-      console.log('Error in returnDatesArrayByRepeatRule');
-      console.log(e);
-      return null;
-    }
+function returnDatesArrayByRepeatRule(show, startDate, endDate) {
+  const rule = new RRule(createRRule(show));
+  try {
+    return rule.between(new Date(startDate), new Date(endDate));
+  } catch (e) {
+    console.log('Error in returnDatesArrayByRepeatRule');
+    console.log(e);
+    return null;
   }
 }
 
@@ -155,8 +128,6 @@ function combineDayAndTime(
   format = 'MOMENT',
   type = 'START',
 ) {
-  //https://stackoverflow.com/questions/21918095/moment-js-how-to-detect-daylight-savings-time-and-add-one-day
-  //Need to detect and handle DST, days are offset by 1 day in november/march.
   const desiredTime__hours = moment(desiredTime).hours();
   const desiredTime__minutes = moment(desiredTime).minutes();
   const desiredDate__hours = moment(desiredDate).hours();

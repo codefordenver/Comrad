@@ -77,8 +77,6 @@ function createRRule(show) {
     bymonthday,
   } = show.repeat_rule;
 
-  const { show_start_time_utc, show_end_time_utc } = show;
-
   let newRRule = {};
 
   if (frequency) {

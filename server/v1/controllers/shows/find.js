@@ -22,7 +22,7 @@ function find(req, res) {
     .populate(populateShowHost())
     .populate(populateMasterShow())
     .then(dbShow => {
-      showList(dbShow, startDate, endDate).then(shows => res.json(shows));
+      res.json(showList(dbShow, startDate, endDate));
     })
     .catch(err => res.status(422).json(err));
 }

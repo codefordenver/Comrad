@@ -21,6 +21,7 @@ function create(req, res) {
     })
     .catch(err => {
       console.log('Error Creating Show');
+      console.error(err);
       res.status(422).json(err);
     });
 }

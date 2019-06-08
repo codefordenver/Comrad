@@ -5,7 +5,6 @@ import moment from 'moment';
 
 import Button from '../../Button';
 import Card, { CardBody } from '../../Card';
-import DatePicker from '../../DatePicker';
 import { DatePicker__React } from '../../DatePicker';
 import DropdownHost from '../../DropdownHost';
 import Input from '../../Input';
@@ -16,12 +15,8 @@ import { getShowSelected, getSearchDate } from '../../../redux/show';
 import { requiredValidate } from '../../../utils/validation';
 
 class NewShowForm extends Component {
-  handleDefault = e => {
-    e.preventDefault();
-  };
-
   render() {
-    const { handleDefault, props } = this;
+    const { props } = this;
     const { isRepeat, handleSubmit } = props;
 
     return (

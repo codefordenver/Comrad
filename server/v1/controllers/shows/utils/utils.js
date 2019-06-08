@@ -20,26 +20,32 @@ function createRRule(show, queryStartDate, queryEndDate) {
     bymonthday,
   } = show.repeat_rule;
 
+  const { show_start_time_utc, show_end_time_utc } = show;
+
   let newRRule = {};
 
   if (frequency) {
     newRRule.freq = frequency;
   }
 
-  queryStartDate = new Date(
-    moment(queryStartDate).format('YYYY-MM-DDTHH:mm:ssZ'),
-  );
-  if (moment(repeat_start_date).isAfter(moment(queryStartDate))) {
-    newRRule.dtstart = repeat_start_date;
+  //Format RRULE start date by UTC Time
+  const qsd = combineDayAndTime(queryStartDate, show_start_time_utc);
+  const rsd = combineDayAndTime(repeat_start_date, show_start_time_utc);
+
+  if (rsd.isAfter(qsd)) {
+    newRRule.dtstart = new Date(rsd.format());
   } else {
-    newRRule.dtstart = queryStartDate;
+    newRRule.dtstart = new Date(qsd.format());
   }
 
-  queryEndDate = new Date(moment(queryEndDate).format('YYYY-MM-DDTHH:mm:ssZ'));
-  if (moment(repeat_end_date).isBefore(moment(queryEndDate))) {
-    newRRule.until = repeat_end_date;
+  //Format RRULE end date by UTC Time
+  const qed = combineDayAndTime(queryEndDate, show_end_time_utc);
+  const red = combineDayAndTime(repeat_end_date, show_end_time_utc);
+
+  if (red.isBefore(qed)) {
+    newRRule.until = new Date(red.format());
   } else {
-    newRRule.until = queryEndDate;
+    newRRule.until = new Date(qed.format());
   }
 
   if (count) {
@@ -52,21 +58,6 @@ function createRRule(show, queryStartDate, queryEndDate) {
 
   if (byweekday) {
     newRRule.byweekday = byweekday.map(day => {
-      // dayList is used for imported shows
-      const dayList = {
-        0: 'MO',
-        1: 'TU',
-        2: 'WE',
-        3: 'TH',
-        4: 'FR',
-        5: 'SA',
-        6: 'SU',
-      };
-
-      if (dayList[day]) {
-        day = dayList[day];
-      }
-
       return RRule[day];
     });
   }
@@ -82,12 +73,6 @@ function createRRule(show, queryStartDate, queryEndDate) {
   if (bymonthday) {
     newRRule.bymonthday = [bymonthday];
   }
-
-  /**
-   * Partial fix for DST.
-   * By setting the time to 12 UTC instead of 0 UTC, it does not shift by a date in moment as the time is not midnight before DST correction.
-   *  */
-  newRRule.byhour = [12];
 
   return newRRule;
 }
@@ -152,7 +137,7 @@ function returnDatesArrayByRepeatRule(show, startDate = null, endDate = null) {
   }
 }
 
-function momentCombineDayAndTime(desiredDate, desiredTime) {
+function combineDayAndTime(desiredDate, desiredTime, format = 'MOMENT') {
   //https://stackoverflow.com/questions/21918095/moment-js-how-to-detect-daylight-savings-time-and-add-one-day
   //Need to detect and handle DST, days are offset by 1 day in november/march.
   const hours = moment(desiredTime).hours();
@@ -161,9 +146,17 @@ function momentCombineDayAndTime(desiredDate, desiredTime) {
   const returnedValue = moment(desiredDate)
     .hours(hours)
     .minutes(minutes)
-    .seconds(0);
+    .seconds(0)
+    .utc();
 
-  return returnedValue;
+  if (format === 'MOMENT') {
+    return returnedValue;
+  } else if (format === 'STRING') {
+    return returnedValue.format();
+  } else {
+    console.error('Date string format does not exist in case check');
+    return null;
+  }
 }
 
 function returnSeriesShowsArrayWithNewDates(dateArray, show) {
@@ -171,8 +164,12 @@ function returnSeriesShowsArrayWithNewDates(dateArray, show) {
     let newShow = { ...show.toObject() };
     let { show_start_time_utc, show_end_time_utc } = show;
 
-    show_start_time_utc = momentCombineDayAndTime(date, show_start_time_utc);
-    show_end_time_utc = momentCombineDayAndTime(date, show_end_time_utc);
+    show_start_time_utc = combineDayAndTime(
+      date,
+      show_start_time_utc,
+      'STRING',
+    );
+    show_end_time_utc = combineDayAndTime(date, show_end_time_utc, 'STRING');
 
     newShow.master_show_uid = newShow._id;
     newShow._id = master_time_id(newShow.master_show_uid, show_start_time_utc);
@@ -188,13 +185,15 @@ const returnInstanceShowsArray = shows => {
   return shows.map(show => {
     let instanceShow = { ...show.toObject() };
     const date = instanceShow.repeat_rule.repeat_start_date;
-    instanceShow.show_start_time_utc = momentCombineDayAndTime(
+    instanceShow.show_start_time_utc = combineDayAndTime(
       date,
       instanceShow.show_start_time_utc,
+      'STRING',
     );
-    instanceShow.show_end_time_utc = momentCombineDayAndTime(
+    instanceShow.show_end_time_utc = combineDayAndTime(
       date,
       instanceShow.show_end_time_utc,
+      'STRING',
     );
 
     instanceShow.show_details.title =

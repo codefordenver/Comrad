@@ -149,7 +149,7 @@ class NewShowForm extends Component {
       <main className="show show__padding">
         <section className="show__body">
           {show.show_details.title}
-          {/* <div />
+          <div />
           {show._id}
           <div />
           {'Start Time: ' + show.show_start_time_utc}
@@ -158,7 +158,7 @@ class NewShowForm extends Component {
           <div />
           {'Start Date: ' + show.repeat_rule.repeat_start_date}
           <div />
-          {'End Date: ' + show.repeat_rule.repeat_end_date} */}
+          {'End Date: ' + show.repeat_rule.repeat_end_date}
 
           <DropdownHost
             key={_id}

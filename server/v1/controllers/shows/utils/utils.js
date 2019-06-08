@@ -9,6 +9,8 @@ const {
 } = require('./utils__mongoose');
 
 function showList(shows, startDate = null, endDate = null) {
+  //Perform this check as the create route is an object, and the find route is an array.
+  //This makes sure everything is an iterable array before going into the reducers.
   if (!Array.isArray(shows)) {
     shows = [shows];
   }

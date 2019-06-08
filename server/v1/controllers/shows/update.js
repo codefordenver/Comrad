@@ -2,7 +2,7 @@ const db = require('../../models');
 
 const {
   utils__mongoose: {
-    populateShowQuery,
+    populateShowHost,
     populateMasterShow,
     master_time_id__byShowType,
   },
@@ -13,7 +13,7 @@ function update(req, res) {
   const { id } = req.params;
   //Need to refresh updated at
   db.Show.findOneAndUpdate({ _id: id }, body, { new: true })
-    .populate(populateShowQuery())
+    .populate(populateShowHost())
     .populate(populateMasterShow())
     .then(dbShow => {
       dbShow._doc.master_time_id = master_time_id__byShowType(dbShow);

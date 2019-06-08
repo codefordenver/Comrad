@@ -25,5 +25,17 @@
     <Dropdown.Item>Item 2</Dropdown.Item>
     <Dropdown.Item>Item 3</Dropdown.Item>
   </Dropdown>
+
+  <Dropdown position="right-centered" text="Right Centered" type="button">
+    <Dropdown.Item>Item 1</Dropdown.Item>
+    <Dropdown.Item>Item 2</Dropdown.Item>
+    <Dropdown.Item>Item 3</Dropdown.Item>
+  </Dropdown>
+
+  <Dropdown position="right-top" text="Right Top" type="button">
+    <Dropdown.Item>Item 1</Dropdown.Item>
+    <Dropdown.Item>Item 2</Dropdown.Item>
+    <Dropdown.Item>Item 3</Dropdown.Item>
+  </Dropdown>
 </div>
 ```

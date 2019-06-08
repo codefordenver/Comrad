@@ -143,7 +143,7 @@ function findShowQueryByDateRange(start, end) {
   ];
 }
 
-function populateShowQuery() {
+function populateShowHost() {
   return {
     path: 'show_details.host',
     select: 'first_name last_name on_air_name',
@@ -174,7 +174,7 @@ function master_time_id__byShowType(show) {
 module.exports = {
   formatShow,
   findShowQueryByDateRange,
-  populateShowQuery,
+  populateShowHost,
   populateMasterShow,
   master_time_id,
   master_time_id__byShowType,

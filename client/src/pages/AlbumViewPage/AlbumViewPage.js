@@ -33,7 +33,7 @@ class AlbumViewPage extends Component {
   render() {
     const { navigateToTrack, props, renderLastUpdated } = this;
     const { albumState } = props;
-    const { artist, name, tracks } = albumState.doc;
+    const { artist, name, tracks, label, compilation } = albumState.doc;
 
     return (
       <div className="album-view-page">
@@ -60,6 +60,8 @@ class AlbumViewPage extends Component {
                         'No Artist'
                       )}
                     </h5>
+                    {!!label && <span>&nbsp;| {label}</span>}
+                    {!!compilation && <span>&nbsp;| Compilation</span>}
                   </div>
                   <div className="album-view-page__last-updated">
                     {renderLastUpdated()}

@@ -2,7 +2,7 @@ const db = require('../../models');
 
 const {
   utils: { showList },
-  utils__mongoose: { formatShow, populateShowQuery },
+  utils__mongoose: { formatShow, populateShowHost },
 } = require('./utils');
 
 function create(req, res) {
@@ -10,7 +10,7 @@ function create(req, res) {
   const { startDate, endDate } = body;
   db.Show.create(formatShow(body, res))
     .then(dbShow => {
-      db.Show.populate(dbShow, populateShowQuery())
+      db.Show.populate(dbShow, populateShowHost())
         .then(dbShow => {
           res.json(showList(dbShow, startDate, endDate));
         })

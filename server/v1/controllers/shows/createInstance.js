@@ -2,7 +2,7 @@ const db = require('../../models');
 const mongoose = require('mongoose');
 
 const {
-  utils__mongoose: { populateShowQuery, populateMasterShow, master_time_id },
+  utils__mongoose: { populateShowHost, populateMasterShow, master_time_id },
 } = require('./utils');
 
 function createInstance(req, res) {
@@ -30,7 +30,7 @@ function createInstance(req, res) {
     d1.isNew = true;
     d1.save()
       .then(dbShow => {
-        db.Show.populate(dbShow, populateShowQuery()).then(dbShow => {
+        db.Show.populate(dbShow, populateShowHost()).then(dbShow => {
           db.Show.populate(dbShow, populateMasterShow())
             .then(dbShow => {
               let newDbShow = { ...dbShow.toObject() };

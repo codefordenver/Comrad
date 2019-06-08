@@ -5,7 +5,7 @@ import moment from 'moment';
 
 import Button from '../../Button';
 import Card, { CardBody } from '../../Card';
-import DatePicker from '../../DatePicker';
+import { DatePicker__React } from '../../DatePicker';
 import DropdownHost from '../../DropdownHost';
 import Input from '../../Input';
 import ModalClose from '../../Modal/Modal__Button_Close';
@@ -15,12 +15,8 @@ import { getShowSelected, getSearchDate } from '../../../redux/show';
 import { requiredValidate } from '../../../utils/validation';
 
 class NewShowForm extends Component {
-  handleDefault = e => {
-    e.preventDefault();
-  };
-
   render() {
-    const { handleDefault, props } = this;
+    const { props } = this;
     const { isRepeat, handleSubmit } = props;
 
     return (
@@ -38,32 +34,29 @@ class NewShowForm extends Component {
               />
 
               <Field
-                component={Input}
-                dirtyOverride
-                format={value => moment(value).format('HH:mm')}
+                className="z-index--250"
+                component={DatePicker__React}
                 label="From"
                 name="start_time_utc"
-                onBlur={handleDefault}
-                parse={value => moment(value, 'HH:mm')}
                 type="time"
                 validate={[requiredValidate]}
+                dateFormat="MM/dd/yyyy h:mm aa"
+                showTimeInput
               />
 
               <Field
-                component={Input}
-                dirtyOverride
-                format={value => moment(value).format('HH:mm')}
+                className="z-index--250"
+                component={DatePicker__React}
                 label="To"
                 name="end_time_utc"
-                onBlur={handleDefault}
-                parse={value => moment(value, 'HH:mm')}
-                type="time"
                 validate={[requiredValidate]}
+                dateFormat="MM/dd/yyyy h:mm aa"
+                showTimeInput
               />
 
               <Field
                 className="z-index--200"
-                component={DatePicker}
+                component={DatePicker__React}
                 label="Start"
                 name="repeat_start_date"
                 validate={[requiredValidate]}
@@ -80,13 +73,13 @@ class NewShowForm extends Component {
               {isRepeat && (
                 <>
                   <Field
-                    allowNullDate
                     className="z-index--150"
-                    component={DatePicker}
+                    component={DatePicker__React}
                     label="End"
                     name="repeat_end_date"
-                    placeholder="Never"
-                    showClearDate
+                    placeholderText="Never"
+                    isClearable={true}
+                    allowNullDate
                   />
 
                   <RepeatDropdown />

@@ -46,6 +46,7 @@ class NewShowForm extends Component {
                 type="time"
                 validate={[requiredValidate]}
                 dateFormat="MM/dd/yyyy h:mm aa"
+                showTimeInput
               />
 
               <Field
@@ -55,6 +56,7 @@ class NewShowForm extends Component {
                 name="show_end_time_utc"
                 validate={[requiredValidate]}
                 dateFormat="MM/dd/yyyy h:mm aa"
+                showTimeInput
               />
 
               <Field
@@ -80,6 +82,7 @@ class NewShowForm extends Component {
                     component={DatePicker__React}
                     label="End"
                     name="repeat_end_date"
+                    placeholderText="Never"
                     isClearable={true}
                     allowNullDate
                   />

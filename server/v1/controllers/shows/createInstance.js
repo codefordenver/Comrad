@@ -42,11 +42,9 @@ function createInstance(req, res) {
                 dbShow.master_show_uid._id,
                 dbShow.replace_show_date,
               );
-              console.log(newDbShow);
               res.json(newDbShow);
             })
             .catch(err => {
-              console.error(err);
               res.status(422).json(err);
             });
         });

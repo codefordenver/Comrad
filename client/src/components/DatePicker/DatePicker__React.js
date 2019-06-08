@@ -65,8 +65,6 @@ class DatePicker__React extends Component {
           selected={date}
           onChange={handleDateChange}
           timeInputLabel={`${label}:`}
-          showTimeInput
-          placeholderText="Never"
           {...rest}
         />
 

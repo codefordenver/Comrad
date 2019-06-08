@@ -37,7 +37,6 @@ function showList(shows, startDate = null, endDate = null) {
     return o.master_time_id;
   });
 
-  //console.log(instanceKeyBy);
   //Combined series and instance shows by object ID and then return the final array
   return { ...seriesKeyBy, ...instanceKeyBy };
 }

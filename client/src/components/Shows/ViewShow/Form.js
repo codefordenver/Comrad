@@ -100,7 +100,7 @@ class NewShowForm extends Component {
   getShowType(show) {
     if (show._id.includes('-')) {
       return 'series';
-    } else if (show.master_show_uid._id) {
+    } else if (show.master_show_uid) {
       return 'instance';
     } else {
       return 'regular';
@@ -126,9 +126,7 @@ class NewShowForm extends Component {
     const { props } = this;
     const { updateShow, show } = props;
     const { _id, master_show_uid } = show;
-    console.log(show);
     const showType = this.getShowType(show);
-    console.log(host);
     if (showType === 'series') {
       const { createInstanceShow } = this.props;
       show.show_details.host = host._id;

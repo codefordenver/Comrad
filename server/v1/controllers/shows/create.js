@@ -16,13 +16,11 @@ function create(req, res) {
         })
         .catch(err => {
           console.log('Error Populating Show Data from linked records');
-          console.error(err);
           res.status(422).json(err);
         });
     })
     .catch(err => {
       console.log('Error Creating Show');
-      console.log(err);
       res.status(422).json(err);
     });
 }

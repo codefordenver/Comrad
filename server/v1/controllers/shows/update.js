@@ -16,7 +16,6 @@ function update(req, res) {
     .populate(populateShowQuery())
     .populate(populateMasterShow())
     .then(dbShow => {
-      console.log(dbShow);
       dbShow._doc.master_time_id = master_time_id__byShowType(dbShow);
       res.json(dbShow);
     })

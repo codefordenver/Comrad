@@ -289,7 +289,7 @@ class LibrarySearchPage extends Component {
                 </div>
               </div>
               <div>
-                <Dropdown position="bottom-right" type="button" text="Add">
+                <Dropdown position="right-centered" type="button" text="Add">
                   <Dropdown.Item to="library/artist/add">Artist</Dropdown.Item>
                   <Dropdown.Item to="library/album/add">Album</Dropdown.Item>
                 </Dropdown>

@@ -14,6 +14,7 @@ import { userReducer } from './user';
 
 export * from './album';
 export * from './alert';
+export * from './artist';
 export * from './auth';
 export * from './track';
 export * from './user';

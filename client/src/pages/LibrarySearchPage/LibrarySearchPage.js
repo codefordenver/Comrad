@@ -13,8 +13,7 @@ import Dropdown from '../../components/Dropdown';
 import Input from '../../components/Input';
 import Modal from '../../components/Modal';
 
-import { albumActions, trackActions } from '../../redux';
-import { artistAlertClose } from '../../redux/artist/artistActions';
+import { albumActions, artistActions, trackActions } from '../../redux';
 
 class LibrarySearchPage extends Component {
   state = {
@@ -35,7 +34,7 @@ class LibrarySearchPage extends Component {
 
   closeAlerts = () => {
     const { artistAlertClose, albumActions, trackActions } = this.props;
-    artistAlertClose();
+    artistActions.alertClose();
     albumActions.alertClose();
     trackActions.alertClose();
   };
@@ -51,11 +50,14 @@ class LibrarySearchPage extends Component {
   };
 
   deleteEntity = (type, id) => {
-    const { albumActions } = this.props;
+    const { albumActions, artistActions, trackActions } = this.props;
     if (type === 'album') {
       albumActions.remove(id, this.deleteSuccess);
-    } //else if (type === 'track') {
-    //}
+    } else if (type === 'track') {
+      trackActions.remove(id, this.deleteSuccess);
+    } else if (type === 'artist') {
+      artistActions.remove(id, this.deleteSuccess);
+    }
   };
 
   deleteSuccess = entity => {
@@ -493,7 +495,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    artistAlertClose,
+    artistActions: bindActionCreators({ ...artistActions }, dispatch),
     albumActions: bindActionCreators({ ...albumActions }, dispatch),
     trackActions: bindActionCreators({ ...trackActions }, dispatch),
   };

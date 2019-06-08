@@ -157,24 +157,53 @@ function combineDayAndTime(
 ) {
   //https://stackoverflow.com/questions/21918095/moment-js-how-to-detect-daylight-savings-time-and-add-one-day
   //Need to detect and handle DST, days are offset by 1 day in november/march.
-  let hours = moment(desiredTime).hours();
-  let minutes = moment(desiredTime).minutes();
+  const desiredTime__hours = moment(desiredTime).hours();
+  const desiredTime__minutes = moment(desiredTime).minutes();
+  const desiredDate__hours = moment(desiredDate).hours();
+  const desiredDate__minutes = moment(desiredDate).minutes();
+
   let returnedValue = null;
 
-  if (type === 'END' && hours === 0 && minutes === 0) {
-    /**
-     * If a show happens at midnight,
-     * and the hours are applied to the current day,
-     * the day moves forward by 1, so subtract time instead of updating time
-     *  */
+  if (
+    //Both date and time happen at midnight, so need to subtract 1 minute
+    type === 'END' &&
+    desiredTime__hours === 0 &&
+    desiredTime__minutes === 0 &&
+    desiredDate__hours === 0 &&
+    desiredDate__minutes === 0
+  ) {
     returnedValue = moment(desiredDate)
       .subtract(1, 'minute')
       .seconds(0)
       .utc();
-  } else {
+  } else if (
+    //Only Time is at midnight, so take date and set 1 minute before midnight
+    type === 'END' &&
+    desiredTime__hours === 0 &&
+    desiredTime__minutes === 0
+  ) {
     returnedValue = moment(desiredDate)
-      .hours(hours)
-      .minutes(minutes)
+      .hours(23)
+      .minutes(59)
+      .seconds(0)
+      .utc();
+  } else if (
+    //Only Date is at midnight, so subtract 1 minute, and then set hours so date does not go forward
+    type === 'END' &&
+    desiredDate__hours === 0 &&
+    desiredDate__minutes === 0
+  ) {
+    returnedValue = moment(desiredDate)
+      .hours(desiredTime__hours)
+      .minutes(desiredTime__minutes)
+      .seconds(0)
+      .subtract(1, 'day')
+      .utc();
+  } else {
+    //Neither date or time is at midnight, so set hours
+    returnedValue = moment(desiredDate)
+      .hours(desiredTime__hours)
+      .minutes(desiredTime__minutes)
       .seconds(0)
       .utc();
   }
@@ -192,7 +221,7 @@ function combineDayAndTime(
 function returnSeriesShowsArrayWithNewDates(dateArray, show) {
   const returnedShows = dateArray.map((date, i) => {
     let newShow = { ...show.toObject() };
-    let { show_start_time_utc, show_end_time_utc } = show;
+    let { show_start_time_utc, show_end_time_utc } = newShow;
 
     show_start_time_utc = combineDayAndTime(
       date,

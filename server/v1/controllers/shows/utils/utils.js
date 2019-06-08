@@ -187,18 +187,6 @@ function combineDayAndTime(
       .minutes(59)
       .seconds(0)
       .utc();
-  } else if (
-    //Only Date is at midnight, so subtract 1 minute, and then set hours so date does not go forward
-    type === 'END' &&
-    desiredDate__hours === 0 &&
-    desiredDate__minutes === 0
-  ) {
-    returnedValue = moment(desiredDate)
-      .hours(desiredTime__hours)
-      .minutes(desiredTime__minutes)
-      .seconds(0)
-      .subtract(1, 'day')
-      .utc();
   } else {
     //Neither date or time is at midnight, so set hours
     returnedValue = moment(desiredDate)

@@ -91,6 +91,16 @@ class LibrarySearchPage extends Component {
     );
   };
 
+  handleRowDeleteClick = row => {
+    console.log('delete was clicked');
+    console.log(row);
+  };
+
+  handleRowEditClick = row => {
+    console.log('edit was clicked');
+    console.log(row);
+  };
+
   navigateToRecord = (state, rowInfo, column, instance) => {
     return {
       onClick: (e, handleOriginal) => {
@@ -136,6 +146,10 @@ class LibrarySearchPage extends Component {
         }
       },
     );
+  };
+
+  stopPropagation = event => {
+    event.stopPropagation();
   };
 
   render() {
@@ -225,6 +239,41 @@ class LibrarySearchPage extends Component {
             dateObj.toLocaleDateString() + ' ' + dateObj.toLocaleTimeString()
           );
         },
+        headerStyle: {
+          borderRight: '0',
+        },
+        style: {
+          borderRight: '0',
+        },
+      },
+      {
+        Header: '',
+        Cell: row => {
+          return (
+            <div onClick={this.stopPropagation}>
+              <Dropdown
+                position="bottom-left"
+                type="icon"
+                faClass="fas fa-ellipsis-h"
+              >
+                {row.row.type !== 'artist' && (
+                  <Dropdown.Item
+                    handleOnClick={() => this.handleRowEditClick(row)}
+                  >
+                    Edit
+                  </Dropdown.Item>
+                )}
+                <Dropdown.Item
+                  handleOnClick={() => this.handleRowDeleteClick(row)}
+                >
+                  Delete
+                </Dropdown.Item>
+              </Dropdown>
+            </div>
+          );
+        },
+        minWidth: undefined,
+        className: 'library-search__grid__edit-options',
       },
     ];
 

@@ -8,7 +8,12 @@ const {
   master_time_id__byShowType,
 } = require('./utils__mongoose');
 
-async function showList(shows, startDate = null, endDate = null) {
+function showList(shows, startDate, endDate) {
+  //Perform this check as the create route is an object, and the find route is an array.
+  //This makes sure everything is an iterable array before going into the reducers.
+  if (!Array.isArray(shows)) {
+    shows = [shows];
+  }
   //Filter all shows that are series
   const allSeriesShows = reduceShowsByRepeatProperty(shows, true);
 
@@ -30,11 +35,10 @@ async function showList(shows, startDate = null, endDate = null) {
   const seriesFlattened = _.flatten(allSeriesShowsExpanded);
   const seriesKeyBy = _.keyBy(seriesFlattened, '_id');
 
-  const instanceKeyBy = _.keyBy(await allInstanceShowsExpanded, o => {
+  const instanceKeyBy = _.keyBy(allInstanceShowsExpanded, o => {
     return o.master_time_id;
   });
 
-  //console.log(instanceKeyBy);
   //Combined series and instance shows by object ID and then return the final array
   let showsToReturn = { ...seriesKeyBy, ...instanceKeyBy };
 
@@ -60,7 +64,7 @@ async function showList(shows, startDate = null, endDate = null) {
   return showsToReturnArray;
 }
 
-function createRRule(show, queryStartDate, queryEndDate) {
+function createRRule(show) {
   const {
     frequency,
     repeat_start_date,
@@ -81,35 +85,9 @@ function createRRule(show, queryStartDate, queryEndDate) {
     newRRule.freq = frequency;
   }
 
-  //Format RRULE start date by UTC Time
-  const qsd = combineDayAndTime(queryStartDate, show_start_time_utc);
-  const rsd = combineDayAndTime(repeat_start_date, show_start_time_utc);
+  newRRule.dtstart = new Date(repeat_start_date);
 
-  if (rsd.isAfter(qsd)) {
-    newRRule.dtstart = new Date(rsd.format());
-  } else {
-    newRRule.dtstart = new Date(qsd.format());
-  }
-
-  //Format RRULE end date by UTC Time
-  const qed = combineDayAndTime(
-    queryEndDate,
-    show_end_time_utc,
-    'MOMENT',
-    'END',
-  );
-  const red = combineDayAndTime(
-    repeat_end_date,
-    show_end_time_utc,
-    'MOMENT',
-    'END',
-  );
-
-  if (red.isBefore(qed)) {
-    newRRule.until = new Date(red.format());
-  } else {
-    newRRule.until = new Date(qed.format());
-  }
+  newRRule.until = new Date(repeat_end_date);
 
   if (count) {
     newRRule.count = count;
@@ -156,18 +134,14 @@ function reduceShowsByRepeatProperty(shows, recurringCheckValue) {
   return reducedShowList;
 }
 
-function returnDatesArrayByRepeatRule(show, startDate = null, endDate = null) {
-  const { is_recurring } = show;
-
-  if (is_recurring) {
-    const rule = new RRule(createRRule(show, startDate, endDate));
-    try {
-      return rule.all();
-    } catch (e) {
-      console.log('Error in returnDatesArrayByRepeatRule');
-      console.log(e);
-      return null;
-    }
+function returnDatesArrayByRepeatRule(show, startDate, endDate) {
+  const rule = new RRule(createRRule(show));
+  try {
+    return rule.between(new Date(startDate), new Date(endDate), true);
+  } catch (e) {
+    console.log('Error in returnDatesArrayByRepeatRule');
+    console.log(e);
+    return null;
   }
 }
 
@@ -177,26 +151,44 @@ function combineDayAndTime(
   format = 'MOMENT',
   type = 'START',
 ) {
-  //https://stackoverflow.com/questions/21918095/moment-js-how-to-detect-daylight-savings-time-and-add-one-day
-  //Need to detect and handle DST, days are offset by 1 day in november/march.
-  let hours = moment(desiredTime).hours();
-  let minutes = moment(desiredTime).minutes();
+  const desiredTime__hours = moment(desiredTime).hours();
+  const desiredTime__minutes = moment(desiredTime).minutes();
+  const desiredDate__hours = moment(desiredDate).hours();
+  const desiredDate__minutes = moment(desiredDate).minutes();
 
-  if (type === 'END' && hours === 0 && minutes === 0) {
-    /**
-     * If a show happens at midnight,
-     * and the hours are applied to the current day,
-     * the day moves back by 1, so just set hours manually
-     *  */
-    hours = 23;
-    minutes = 59;
+  let returnedValue = null;
+
+  if (
+    //Both date and time happen at midnight, so need to subtract 1 minute
+    type === 'END' &&
+    desiredTime__hours === 0 &&
+    desiredTime__minutes === 0 &&
+    desiredDate__hours === 0 &&
+    desiredDate__minutes === 0
+  ) {
+    returnedValue = moment(desiredDate)
+      .subtract(1, 'minute')
+      .seconds(0)
+      .utc();
+  } else if (
+    //Only Time is at midnight, so take date and set 1 minute before midnight
+    type === 'END' &&
+    desiredTime__hours === 0 &&
+    desiredTime__minutes === 0
+  ) {
+    returnedValue = moment(desiredDate)
+      .hours(23)
+      .minutes(59)
+      .seconds(0)
+      .utc();
+  } else {
+    //Neither date or time is at midnight, so set hours
+    returnedValue = moment(desiredDate)
+      .hours(desiredTime__hours)
+      .minutes(desiredTime__minutes)
+      .seconds(0)
+      .utc();
   }
-
-  const returnedValue = moment(desiredDate)
-    .hours(hours)
-    .minutes(minutes)
-    .seconds(0)
-    .utc();
 
   if (format === 'MOMENT') {
     return returnedValue;
@@ -211,7 +203,7 @@ function combineDayAndTime(
 function returnSeriesShowsArrayWithNewDates(dateArray, show) {
   const returnedShows = dateArray.map((date, i) => {
     let newShow = { ...show.toObject() };
-    let { show_start_time_utc, show_end_time_utc } = show;
+    let { show_start_time_utc, show_end_time_utc } = newShow;
 
     show_start_time_utc = combineDayAndTime(
       date,
@@ -236,30 +228,7 @@ function returnSeriesShowsArrayWithNewDates(dateArray, show) {
   return returnedShows;
 }
 
-function getMasterShows(shows) {
-  const promises = shows.map(async show => {
-    show = { ...show.toObject() };
-    if (show.master_show_uid) {
-      const masterShow = await db.Show.findById(show.master_show_uid);
-      return masterShow;
-    }
-  });
-  return Promise.all(promises);
-}
-
-function keyMasterShowByID(acc, show) {
-  if (show) {
-    const { _id } = show;
-    const { show_details } = show;
-    return { ...acc, [_id]: show_details };
-  }
-  return acc;
-}
-
-async function returnInstanceShowsArray(shows) {
-  let masterShows = await getMasterShows(shows);
-  masterShows = masterShows.reduce(keyMasterShowByID, {});
-
+function returnInstanceShowsArray(shows) {
   const allInstances = shows.map(show => {
     let instanceShow = { ...show.toObject() };
     const { master_show_uid } = instanceShow;
@@ -267,7 +236,7 @@ async function returnInstanceShowsArray(shows) {
     //This will merge any show details from the master show that are not on the instance.
     if (master_show_uid) {
       instanceShow.show_details = {
-        ...masterShows[master_show_uid],
+        ...instanceShow.master_show_uid.show_details,
         ...instanceShow.show_details,
       };
     }

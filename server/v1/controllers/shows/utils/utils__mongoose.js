@@ -143,10 +143,17 @@ function findShowQueryByDateRange(start, end) {
   ];
 }
 
-function populateShowQuery() {
+function populateShowHost() {
   return {
     path: 'show_details.host',
     select: 'first_name last_name on_air_name',
+  };
+}
+
+function populateMasterShow() {
+  return {
+    path: 'master_show_uid',
+    select: 'show_details',
   };
 }
 
@@ -157,7 +164,7 @@ function master_time_id(_id, start_time) {
 function master_time_id__byShowType(show) {
   if (show.master_show_uid) {
     //Instance Show
-    return master_time_id(show.master_show_uid, show.show_start_time_utc);
+    return master_time_id(show.master_show_uid._id, show.show_start_time_utc);
   } else {
     //Regular Show
     return master_time_id(show._id, show.show_start_time_utc);
@@ -167,7 +174,8 @@ function master_time_id__byShowType(show) {
 module.exports = {
   formatShow,
   findShowQueryByDateRange,
-  populateShowQuery,
+  populateShowHost,
+  populateMasterShow,
   master_time_id,
   master_time_id__byShowType,
 };

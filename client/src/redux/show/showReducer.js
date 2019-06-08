@@ -73,7 +73,6 @@ export function showReducer(state = initialState, { type, payload }) {
 
     case SHOW_DELETE:
       let deleteShow = { ...state.data };
-      console.log(payload);
       delete deleteShow[payload.master_time_id];
 
       return {
@@ -89,7 +88,7 @@ export function showReducer(state = initialState, { type, payload }) {
       const deleteShowSeries = _.reduce(
         state.data,
         function(result, show, key) {
-          if (show.master_show_uid !== masterShowID) {
+          if (show.master_show_uid._id !== masterShowID) {
             result[key] = show;
           }
           return result;

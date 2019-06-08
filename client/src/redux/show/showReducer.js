@@ -62,7 +62,7 @@ export function showReducer(state = initialState, { type, payload }) {
       const searchParams = payload.params;
       return {
         ...state,
-        data: searchData,
+        data: { ...state.data, ...searchData },
         fetching: false,
         error: false,
         search: {

@@ -95,7 +95,7 @@ class CalendarHomePage extends Component {
               <DropdownHost
                 onHostSelect={this.handleHostSelect}
                 showsWithNoHostOption="Shows with No Host"
-                showAddNewHostOption={false}
+                displayAddNewHostOption={false}
               />
             </div>
             <div className="calendar__view">

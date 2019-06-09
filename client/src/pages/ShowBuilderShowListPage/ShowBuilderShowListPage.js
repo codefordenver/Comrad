@@ -61,12 +61,12 @@ class ShowBuilderShowListPage extends Component {
       let displayDate = '';
       Object.keys(shows).forEach(function(s) {
         let showObject = shows[s];
-        let startTime = moment(showObject.show_start_time_utc);
-        let endTime = moment(showObject.show_end_time_utc);
+        let startTime = moment(showObject.start_time_utc);
+        let endTime = moment(showObject.end_time_utc);
         let startTimeFormatted = startTime.format('LT');
         let endTimeFormatted = endTime.format('LT');
-        let startTimeUtc = moment(showObject.show_start_time_utc).utc();
-        let endTimeUtc = moment(showObject.show_end_time_utc).utc();
+        let startTimeUtc = moment(showObject.start_time_utc).utc();
+        let endTimeUtc = moment(showObject.end_time_utc).utc();
         let showUrl =
           '/show-builder/show?startTime=' +
           startTimeUtc.format() +

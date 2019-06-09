@@ -1,12 +1,19 @@
 .dashboard {
   display: grid;
   grid-template-columns: 3fr 1fr;
+  grid-gap: 4em 1em;
 
-  &__shows {
+  &__upcoming-shows {
 
   }
 
-  &__currenty-on-air {
+  &__past-shows {
+    grid-column: 1;
+    grid-row: 2;
+  }
 
+  &__currenty-on-air {
+    grid-column: 2;
+    grid-row: 1 / span 2;
   }
 }

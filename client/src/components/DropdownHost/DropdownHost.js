@@ -24,7 +24,6 @@ class DropdownHost extends Component {
       host,
       userActions,
     } = this.props;
-    console.log(this.props);
     const hostDisplayName = host ? formatHostName(host) : '';
 
     //run a host search on the existing value so that the host list is populated with information

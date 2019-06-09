@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import moment from 'moment';
 
@@ -14,9 +15,18 @@ class ShowListForUser extends Component {
   };
 
   componentWillMount() {
-    const { currentUserId, endDate, maxItems, startDate } = this.props;
+    const {
+      currentUserId,
+      endDate,
+      maxItems,
+      sortNewestToOldest = false,
+      startDate,
+    } = this.props;
     showAPI.find(startDate, endDate, currentUserId).then(response => {
-      const results = response.data;
+      let results = response.data;
+      if (sortNewestToOldest) {
+        results = results.reverse();
+      }
       if (maxItems != null && results.length > maxItems) {
         results = results.slice(0, maxItems);
       }
@@ -46,13 +56,29 @@ class ShowListForUser extends Component {
     return (
       <tbody>
         {data.map(item => {
-          let showDate = item.start_time_utc.format('LL');
+          let startTime = moment(item.start_time_utc);
+          let showDate =
+            startTime.format('ddd') + ', ' + startTime.format('LL');
+          let endTime = moment(item.end_time_utc);
+          let startTimeFormatted = startTime.format('LT');
+          let endTimeFormatted = endTime.format('LT');
+          let startTimeUtc = moment(item.start_time_utc).utc();
+          let endTimeUtc = moment(item.end_time_utc).utc();
+          let showUrl =
+            '/show-builder/show?startTime=' +
+            startTimeUtc.format() +
+            '&endTime=' +
+            endTimeUtc.format();
           return (
             <tr key={item.master_time_id}>
-              <td>date time</td>
+              <td>
+                {showDate} {startTimeFormatted} - {endTimeFormatted}
+              </td>
               <td>{item.show_details.title}</td>
-              <td>show builder link</td>
-              <td>edit details link</td>
+              <td>
+                <Link to={showUrl}>Show Builder</Link>
+              </td>
+              <td>TODO edit show instance link</td>
             </tr>
           );
         })}

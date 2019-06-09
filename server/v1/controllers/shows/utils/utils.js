@@ -50,11 +50,9 @@ function showList(shows, startDate, endDate) {
 
   //sort the array by event start time
   showsToReturnArray = showsToReturnArray.sort(function(a, b) {
-    if (new Date(a.show_start_time_utc) > new Date(b.show_start_time_utc)) {
+    if (new Date(a.start_time_utc) > new Date(b.start_time_utc)) {
       return 1;
-    } else if (
-      new Date(a.show_start_time_utc) === new Date(b.show_start_time_utc)
-    ) {
+    } else if (new Date(a.start_time_utc) === new Date(b.start_time_utc)) {
       return 0;
     } else {
       return -1;

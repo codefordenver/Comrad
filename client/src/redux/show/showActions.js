@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {
+  SHOW_CLEAR,
   SHOW_GET,
   SHOW_POST,
   SHOW_UPDATE_HOST,
@@ -10,6 +11,10 @@ import {
   SHOW_SELECTED,
   SHOW_CREATE_INSTANCE,
 } from './showTypes';
+
+export const clearShows = () => async dispatch => {
+  dispatch({ type: SHOW_CLEAR });
+};
 
 export const getShow = show => async dispatch => {
   try {
@@ -71,8 +76,19 @@ export const deleteShowSeries = show => async dispatch => {
   }
 };
 
-export const searchShow = (startDate, endDate) => async dispatch => {
+export const searchShow = (
+  startDate,
+  endDate,
+  host,
+  onlyDisplayShowsWithNoHost,
+) => async dispatch => {
   const params = { startDate, endDate };
+  if (host != null) {
+    params.host = host;
+  }
+  if (onlyDisplayShowsWithNoHost) {
+    params.showsWithNoHost = true;
+  }
   try {
     const response = await axios.get(`/v1/shows/`, {
       params: params,

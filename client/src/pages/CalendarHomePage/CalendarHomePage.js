@@ -5,10 +5,15 @@ import { DayPickerSingleDateController } from 'react-dates';
 import 'react-dates/lib/css/_datepicker.css';
 
 import Alert from '../../components/Alert';
+import Card, { CardBody } from '../../components/Card';
+import DropdownHost, {
+  SHOWS_WITH_NO_HOST,
+} from '../../components/DropdownHost';
 
 import ShowCalendar from '../../components/Shows/ShowCalendar';
 
 import {
+  clearShows,
   getShowsData,
   fetchingShowsStatus,
   postingShowsStatus,
@@ -20,6 +25,8 @@ class CalendarHomePage extends Component {
     super(props);
 
     this.state = {
+      filterByHost: null,
+      onlyDisplayShowsWithNoHost: false,
       newShow: null,
       selectedDate: moment(),
       shows: {},
@@ -34,9 +41,29 @@ class CalendarHomePage extends Component {
     }
   };
 
+  handleHostSelect = host => {
+    const { clearShows } = this.props;
+    clearShows();
+    if (host._id === SHOWS_WITH_NO_HOST) {
+      this.setState({
+        filterByHost: null,
+        onlyDisplayShowsWithNoHost: true,
+      });
+    } else {
+      this.setState({
+        filterByHost: host != null ? host._id : null,
+        onlyDisplayShowsWithNoHost: false,
+      });
+    }
+  };
+
   render() {
     const { showsError } = this.props;
-    const { selectedDate } = this.state;
+    const {
+      filterByHost,
+      onlyDisplayShowsWithNoHost,
+      selectedDate,
+    } = this.state;
 
     // we will set a key for the month/year that is currently selected
     // so that the displayed month in DayPickerSingleDateController will auto-update
@@ -47,35 +74,48 @@ class CalendarHomePage extends Component {
       String(selectedDate.month()) + String(selectedDate.year());
 
     return (
-      <div className="calendar">
-        <div className="calendar__sidebar">
-          <DayPickerSingleDateController
-            key={dayPickerKey}
-            date={selectedDate}
-            horizontalMonthPadding={0}
-            noBorder={true}
-            daySize={28}
-            numberOfMonths={1}
-            onDateChange={this.dateChangeHandler}
-            focused={true}
-            onFocusChange={({ focused }) => this.setState({ focused: true })} // Force the focused states to always be truthy so that date is always selectable
-            hideKeyboardShortcutsPanel={true}
-          />
-        </div>
-        <div className="calendar__view">
-          {showsError && (
-            <Alert
-              type="danger"
-              header="Error Loading Shows"
-              text={showsError.response.data.message}
-            />
-          )}
-          <ShowCalendar
-            date={selectedDate.toDate()}
-            onDateChange={this.dateChangeHandler}
-          />
-        </div>
-      </div>
+      <Card>
+        <CardBody>
+          <div className="calendar">
+            <div className="calendar__sidebar">
+              <DayPickerSingleDateController
+                key={dayPickerKey}
+                date={selectedDate}
+                horizontalMonthPadding={0}
+                noBorder={true}
+                daySize={28}
+                numberOfMonths={1}
+                onDateChange={this.dateChangeHandler}
+                focused={true}
+                onFocusChange={({ focused }) =>
+                  this.setState({ focused: true })
+                } // Force the focused states to always be truthy so that date is always selectable
+                hideKeyboardShortcutsPanel={true}
+              />
+              <DropdownHost
+                onHostSelect={this.handleHostSelect}
+                showsWithNoHostOption="Shows with No Host"
+                showAddNewHostOption={false}
+              />
+            </div>
+            <div className="calendar__view">
+              {showsError && (
+                <Alert
+                  type="danger"
+                  header="Error Loading Shows"
+                  text={showsError.response.data.message}
+                />
+              )}
+              <ShowCalendar
+                date={selectedDate.toDate()}
+                filterByHost={filterByHost}
+                onlyDisplayShowsWithNoHost={onlyDisplayShowsWithNoHost}
+                onDateChange={this.dateChangeHandler}
+              />
+            </div>
+          </div>
+        </CardBody>
+      </Card>
     );
   }
 }
@@ -92,6 +132,7 @@ function mapStateToProps({ shows }) {
 export default connect(
   mapStateToProps,
   {
+    clearShows,
     getShowsData,
     fetchingShowsStatus,
     postingShowsStatus,

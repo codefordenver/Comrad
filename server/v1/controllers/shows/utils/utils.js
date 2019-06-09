@@ -40,7 +40,28 @@ function showList(shows, startDate, endDate) {
   });
 
   //Combined series and instance shows by object ID and then return the final array
-  return { ...seriesKeyBy, ...instanceKeyBy };
+  let showsToReturn = { ...seriesKeyBy, ...instanceKeyBy };
+
+  //transform the object back to an array
+  let showsToReturnArray = [];
+  _.mapKeys(showsToReturn, function(value) {
+    showsToReturnArray.push(value);
+  });
+
+  //sort the array by event start time
+  showsToReturnArray = showsToReturnArray.sort(function(a, b) {
+    if (new Date(a.show_start_time_utc) > new Date(b.show_start_time_utc)) {
+      return 1;
+    } else if (
+      new Date(a.show_start_time_utc) === new Date(b.show_start_time_utc)
+    ) {
+      return 0;
+    } else {
+      return -1;
+    }
+  });
+
+  return showsToReturnArray;
 }
 
 function createRRule(show) {

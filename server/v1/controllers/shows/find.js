@@ -10,7 +10,7 @@ const {
 } = require('./utils');
 
 function find(req, res) {
-  let { startDate, endDate } = req.query;
+  let { endDate, host, showsWithNoHost, startDate } = req.query;
   startDate = startDate ? JSON.parse(startDate) : null;
   endDate = endDate ? JSON.parse(endDate) : null;
 
@@ -22,7 +22,27 @@ function find(req, res) {
     .populate(populateShowHost())
     .populate(populateMasterShow())
     .then(dbShow => {
-      res.json(showList(dbShow, startDate, endDate));
+      let showResults = showList(dbShow, startDate, endDate);
+      //apply filters, if they were provided
+      //these filters can't be applied on the initial query because of series + instances possibly having
+      //different values. For example, if we search for a show with a host of "Sean" and a series has
+      //a host of "Sean" but the June 1 instance has a host of "Josh", the instance would be excluded from the initial
+      //query, and this function would incorrectly return the June 1 instance thinking it has a hos a host of "Sean"
+      if (host != null) {
+        showResults = showResults.filter(function(val) {
+          return (
+            val.show_details.host != null && val.show_details.host._id == host
+          );
+        });
+      }
+
+      if (showsWithNoHost == 'true') {
+        showResults = showResults.filter(function(val) {
+          return val.show_details.host == null;
+        });
+      }
+
+      res.json(showResults);
     })
     .catch(err => res.status(422).json(err));
 }

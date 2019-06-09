@@ -37,7 +37,7 @@ class NewShowForm extends Component {
                 className="z-index--250"
                 component={DatePicker__React}
                 label="From"
-                name="show_start_time_utc"
+                name="start_time_utc"
                 type="time"
                 validate={[requiredValidate]}
                 dateFormat="MM/dd/yyyy h:mm aa"
@@ -48,7 +48,7 @@ class NewShowForm extends Component {
                 className="z-index--250"
                 component={DatePicker__React}
                 label="To"
-                name="show_end_time_utc"
+                name="end_time_utc"
                 validate={[requiredValidate]}
                 dateFormat="MM/dd/yyyy h:mm aa"
                 showTimeInput
@@ -143,8 +143,8 @@ function mapStateToProps(state) {
     const searchDates = getSearchDate(state.show);
 
     return {
-      show_start_time_utc: moment(selectedShow.start),
-      show_end_time_utc: moment(selectedShow.end),
+      start_time_utc: moment(selectedShow.start),
+      end_time_utc: moment(selectedShow.end),
       repeat_start_date: moment(selectedShow.start),
       repeat_end_date: moment(selectedShow.end),
       startDate: searchDates.start,

@@ -1,7 +1,7 @@
 .dashboard {
   display: grid;
   grid-template-columns: 3fr 1fr;
-  grid-gap: 4em 1em;
+  grid-gap: 4rem 2rem;
 
   &__upcoming-shows {
 
@@ -12,8 +12,17 @@
     grid-row: 2;
   }
 
-  &__currenty-on-air {
+  &__currently-on-air {
     grid-column: 2;
     grid-row: 1 / span 2;
+    font-size: 1.5rem;
+
+    &__show-title {
+      font-size: 2rem;
+    }
+
+    &__up-next {
+      margin-top: 3rem;
+    }
   }
 }

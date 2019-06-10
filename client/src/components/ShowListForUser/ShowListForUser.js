@@ -17,6 +17,7 @@ class ShowListForUser extends Component {
   componentWillMount() {
     const {
       currentUserId,
+      doNotIncludeNowPlaying = false,
       endDate,
       maxItems,
       sortNewestToOldest = false,
@@ -24,6 +25,17 @@ class ShowListForUser extends Component {
     } = this.props;
     showAPI.find(startDate, endDate, currentUserId).then(response => {
       let results = response.data;
+      if (doNotIncludeNowPlaying) {
+        //remove any shows that are currently playing
+        for (let i = results.length - 1; i > 0; i--) {
+          if (
+            moment(results[i].start_time_utc) < moment() &&
+            moment(results[i].end_time_utc) > moment()
+          ) {
+            results.splice(i, 1);
+          }
+        }
+      }
       if (sortNewestToOldest) {
         results = results.reverse();
       }

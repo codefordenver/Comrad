@@ -52,11 +52,11 @@ function formatShow(data, res = null) {
       case 'custom':
         formatedShow.show_details.custom = value;
         break;
-      case 'show_start_time_utc':
-        formatedShow.show_start_time_utc = value;
+      case 'start_time_utc':
+        formatedShow.start_time_utc = value;
         break;
-      case 'show_end_time_utc':
-        formatedShow.show_end_time_utc = value;
+      case 'end_time_utc':
+        formatedShow.end_time_utc = value;
         break;
       case 'repeat':
         formatedShow.is_recurring = value;
@@ -127,12 +127,12 @@ function findShowQueryByDateRange(start, end) {
         {
           $and: [
             {
-              show_start_time_utc: {
+              start_time_utc: {
                 $lte: end,
               },
             },
             {
-              show_end_time_utc: {
+              end_time_utc: {
                 $gte: start,
               },
             },
@@ -162,12 +162,12 @@ function master_time_id(_id, start_time) {
 }
 
 function master_time_id__byShowType(show) {
-  if (show.master_show_uid) {
+  if (show.master_event_id) {
     //Instance Show
-    return master_time_id(show.master_show_uid._id, show.show_start_time_utc);
+    return master_time_id(show.master_event_id._id, show.start_time_utc);
   } else {
     //Regular Show
-    return master_time_id(show._id, show.show_start_time_utc);
+    return master_time_id(show._id, show.start_time_utc);
   }
 }
 

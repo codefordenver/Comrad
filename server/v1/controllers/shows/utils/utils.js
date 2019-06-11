@@ -180,26 +180,19 @@ function combineDayAndTime(
 function returnSeriesShowsArrayWithNewDates(dateArray, show) {
   const returnedShows = dateArray.map((date, i) => {
     let newShow = { ...show.toObject() };
-    let { show_start_time_utc, show_end_time_utc } = newShow;
+    let { start_time_utc, end_time_utc } = newShow;
 
-    show_start_time_utc = combineDayAndTime(
-      date,
-      show_start_time_utc,
-      'STRING',
-    );
+    start_time_utc = combineDayAndTime(date, start_time_utc, 'STRING');
 
-    show_end_time_utc = combineDayAndTime(
-      date,
-      show_end_time_utc,
-      'STRING',
-      'END',
-    );
+    end_time_utc = combineDayAndTime(date, end_time_utc, 'STRING', 'END');
 
-    newShow.master_show_uid = newShow._id;
-    newShow._id = master_time_id(newShow.master_show_uid, show_start_time_utc);
+    end_time_utc = combineDayAndTime(date, end_time_utc, 'STRING', 'END');
+
+    newShow.master_event_id = newShow._id;
+    newShow._id = master_time_id(newShow.master_event_id, start_time_utc);
     newShow.master_time_id = newShow._id;
-    newShow.show_start_time_utc = show_start_time_utc;
-    newShow.show_end_time_utc = show_end_time_utc;
+    newShow.start_time_utc = start_time_utc;
+    newShow.end_time_utc = end_time_utc;
     return newShow;
   });
   return returnedShows;
@@ -208,27 +201,27 @@ function returnSeriesShowsArrayWithNewDates(dateArray, show) {
 function returnInstanceShowsArray(shows) {
   const allInstances = shows.map(show => {
     let instanceShow = { ...show.toObject() };
-    const { master_show_uid } = instanceShow;
+    const { master_event_id } = instanceShow;
 
     //This will merge any show details from the master show that are not on the instance.
-    if (master_show_uid) {
+    if (master_event_id) {
       instanceShow.show_details = {
-        ...instanceShow.master_show_uid.show_details,
+        ...instanceShow.master_event_id.show_details,
         ...instanceShow.show_details,
       };
     }
 
-    const date = instanceShow.show_start_time_utc;
+    const date = instanceShow.start_time_utc;
 
     //Update properties of the instance show
-    instanceShow.show_start_time_utc = combineDayAndTime(
+    instanceShow.start_time_utc = combineDayAndTime(
       date,
-      instanceShow.show_start_time_utc,
+      instanceShow.start_time_utc,
       'STRING',
     );
-    instanceShow.show_end_time_utc = combineDayAndTime(
+    instanceShow.end_time_utc = combineDayAndTime(
       date,
-      instanceShow.show_end_time_utc,
+      instanceShow.end_time_utc,
       'STRING',
       'END',
     );

@@ -88,7 +88,7 @@ export function showReducer(state = initialState, { type, payload }) {
       const deleteShowSeries = _.reduce(
         state.data,
         function(result, show, key) {
-          if (show.master_show_uid._id !== masterShowID) {
+          if (show.master_event_id._id !== masterShowID) {
             result[key] = show;
           }
           return result;

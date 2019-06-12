@@ -1,6 +1,15 @@
 .traffic-calendar {
   .rbc-event {
     background: $color-primary;
+    display: block;
+    height: auto !important;
+  }
+  .rbc-event-label {
+    padding-right: 0;
+  }
+  .rbc-event-content {
+    word-wrap: normal;
+    max-height: 3em;
   }
 
   .event--show {
@@ -15,7 +24,7 @@
   }
   
   .rbc-events-container {
-    margin-left: 3.5em;
+    margin-left: 2.5em;
   }
   
   .sleepless {
@@ -24,14 +33,15 @@
     
     &::before {
       background: $color-grey-4;
-      width: 3.5em;
+      width: 2.5em;
       padding-left: 0.4em;
       position: relative;
       top: -1px;
       content: " ";
+      writing-mode: vertical-lr;
     }
     &::after {
-        width:3.5em;
+        width:2.5em;
         position: absolute;
         bottom: -1px;
         height: 2px;
@@ -41,7 +51,8 @@
     
     &--start {
       &::before {
-        content: "SN";
+        content: "Sleepless Nights";
+        padding-top: 1em;
         color: #fff;
       }
     }

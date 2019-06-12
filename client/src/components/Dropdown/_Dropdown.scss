@@ -20,7 +20,7 @@
     &-text {
       font-size: 1.8rem;
 
-      border-right: 1px solid rgba(0,0,0,0.3);
+      border-right: 1px solid rgba(0, 0, 0, 0.3);
       padding: 0 1rem;
     }
 
@@ -33,13 +33,13 @@
       background-color: $color-primary-dark;
     }
   }
-  
+
   &__icon {
     color: white;
     cursor: pointer;
     font-size: 2.5rem;
     width: 100%;
-    
+
     i {
       display: block;
       padding: 0px 3px;
@@ -55,7 +55,7 @@
     min-width: 20rem;
     transform: translateY(-3px);
     z-index: -1;
-    
+
     transition: all 0.2s;
 
     &.active {
@@ -74,7 +74,8 @@
     cursor: pointer;
     padding: 0.5rem 1rem;
 
-    &:hover,&.selected {
+    &:hover,
+    &.selected {
       background-color: $color-grey-1;
     }
   }
@@ -97,5 +98,27 @@
   & .top-right {
     bottom: 0px;
     margin-bottom: 4.2rem;
+  }
+
+  & .right-centered {
+    position: absolute;
+    margin-left: calc(100% + 0.5rem);
+    top: 50%;
+    transform: translate(-3px, -50%);
+
+    &.active {
+      transform: translate(0px, -50%);
+    }
+  }
+
+  & .right-top {
+    margin-left: calc(100% + 0.5rem);
+    top: 0rem;
+    left: 0rem;
+    transform: translateX(-3px);
+
+    &.active {
+      transform: translateY(0);
+    }
   }
 }

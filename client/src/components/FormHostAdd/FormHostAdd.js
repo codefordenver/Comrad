@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import {
@@ -6,28 +7,23 @@ import {
   passwordConfirmValidate,
   requiredValidate,
 } from '../../utils/validation';
-import { userAlertClose, userCreate } from '../../redux/user';
+import { userActions } from '../../redux/user';
 
-import Alert from '../Alert';
 import Button from '../Button';
 import Input from '../Input';
 
 class FormHostAdd extends Component {
   submit = (values, dispatch, props) => {
-    const { userAlertClose, userCreate, submitCallback } = this.props;
-    userCreate(values, submitCallback);
+    const { userActions, submitCallback } = this.props;
+    userActions.create(values, submitCallback);
   };
 
   render() {
     const { props, submit } = this;
-    const { cancelCallback, handleSubmit, user } = props;
-    const { alert } = user;
+    const { cancelCallback, handleSubmit } = props;
 
     return (
       <div>
-        {alert.display && alert.type != 'success' && (
-          <Alert className="mb-1" alertClose={userAlertClose} {...alert} />
-        )}
         <form className="form-host-add" onSubmit={handleSubmit(submit)}>
           <Field
             className="mb-3"
@@ -37,6 +33,7 @@ class FormHostAdd extends Component {
             autoFocus
             validate={requiredValidate}
           />
+
           <Field
             className="mb-3"
             component={Input}
@@ -58,6 +55,7 @@ class FormHostAdd extends Component {
             type="text"
             validate={[requiredValidate, emailValidate]}
           />
+
           <Field
             className="mb-3"
             component={Input}
@@ -66,6 +64,7 @@ class FormHostAdd extends Component {
             type="password"
             validate={requiredValidate}
           />
+
           <Field
             className="mb-3"
             component={Input}
@@ -74,6 +73,7 @@ class FormHostAdd extends Component {
             type="password"
             validate={[requiredValidate, passwordConfirmValidate]}
           />
+
           <div className="form-host-add__buttons">
             <Button color="neutral" onClick={cancelCallback}>
               Cancel
@@ -90,13 +90,13 @@ const ReduxFormHostAdd = reduxForm({
   form: 'hostAdd',
 })(FormHostAdd);
 
-function mapStateToProps({ user }) {
+function mapDispatchToProps(dispatch) {
   return {
-    user,
+    userActions: bindActionCreators({ ...userActions }, dispatch),
   };
 }
 
 export default connect(
-  mapStateToProps,
-  { userAlertClose, userCreate },
+  null,
+  mapDispatchToProps,
 )(ReduxFormHostAdd);

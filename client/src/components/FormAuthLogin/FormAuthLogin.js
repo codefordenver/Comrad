@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 
-import { authAlertClose, authLogin } from '../../redux/auth';
+import { authActions } from '../../redux/auth';
 import { emailValidate, requiredValidate } from '../../utils/validation.js';
 
 import Button from '../Button';
@@ -10,9 +11,9 @@ import Input from '../Input';
 
 class FormAuthLogin extends Component {
   submit = values => {
-    const { authLogin, history } = this.props;
+    const { authActions, history } = this.props;
 
-    return authLogin(values, () => {
+    return authActions.login(values, () => {
       history.push('/dashboard');
     });
   };
@@ -51,13 +52,13 @@ const ReduxFormAuthLogin = reduxForm({
   form: 'authLogin',
 })(FormAuthLogin);
 
-function mapStateToProps({ auth }) {
+function mapDispatchToProps(dispatch) {
   return {
-    auth,
+    authActions: bindActionCreators({ ...authActions }, dispatch),
   };
 }
 
 export default connect(
-  mapStateToProps,
-  { authAlertClose, authLogin },
+  null,
+  mapDispatchToProps,
 )(ReduxFormAuthLogin);

@@ -27,7 +27,7 @@ export function showReducer(state = initialState, { type, payload }) {
     case SHOW_GET:
       return {
         ...state,
-        data: { ...state.data, ..._.mapKeys([payload], '_id') },
+        data: { ...state.data, ...payload },
         fetching: false,
         error: false,
       };
@@ -35,18 +35,16 @@ export function showReducer(state = initialState, { type, payload }) {
     case SHOW_POST:
       return {
         ...state,
-        data: { ...state.data, ..._.mapKeys(payload, '_id') },
+        data: { ...state.data, ...payload },
         posting: false,
         fetching: false,
         error: false,
       };
+
     case SHOW_CREATE_INSTANCE:
-      let deleteMasterInstance = { ...state.data };
-      delete deleteMasterInstance[payload.master_id];
-      console.log(payload);
       return {
         ...state,
-        data: { ...deleteMasterInstance, [payload._id]: payload },
+        data: { ...state.data, [payload.master_time_id]: payload },
         posting: false,
         fetching: false,
         error: false,
@@ -57,7 +55,7 @@ export function showReducer(state = initialState, { type, payload }) {
       const searchParams = payload.params;
       return {
         ...state,
-        data: { ...state.data, ..._.mapKeys(searchData, '_id') },
+        data: { ...state.data, ...searchData },
         fetching: false,
         error: false,
         search: {
@@ -68,8 +66,7 @@ export function showReducer(state = initialState, { type, payload }) {
 
     case SHOW_DELETE:
       let deleteShow = { ...state.data };
-
-      delete deleteShow[payload._id];
+      delete deleteShow[payload.master_time_id];
 
       return {
         ...state,
@@ -84,7 +81,7 @@ export function showReducer(state = initialState, { type, payload }) {
       const deleteShowSeries = _.reduce(
         state.data,
         function(result, show, key) {
-          if (show.master_show_uid !== masterShowID) {
+          if (show.master_event_id._id !== masterShowID) {
             result[key] = show;
           }
           return result;
@@ -130,7 +127,7 @@ export function showReducer(state = initialState, { type, payload }) {
     case SHOW_UPDATE_HOST:
       return {
         ...state,
-        data: { ...state.data, [payload._id]: payload },
+        data: { ...state.data, [payload.master_time_id]: payload },
         fetching: false,
         error: false,
       };

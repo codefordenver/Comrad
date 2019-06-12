@@ -1,47 +1,45 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { authLogin, authLogout } from '../../redux/auth';
+import { authActions } from '../../redux/auth';
+import { bindActionCreators } from 'redux';
+
+const navTestLinks = [
+  {
+    text: 'Dashboard',
+    route: '/dashboard',
+  },
+  {
+    text: 'Login Page',
+    route: '/',
+  },
+];
 
 class NavTest extends Component {
-  constructor(props) {
-    super(props);
-    this.handleQuickSignIn = this.handleQuickSignIn.bind(this);
-  }
-
   handleQuickSignIn = () => {
+    const { authActions, history } = this.props;
     const email = process.env.REACT_APP_TEST_EMAIL;
     const password = process.env.REACT_APP_TEST_PASSWORD;
 
-    this.props.authLogin({ email, password }, () => {
-      this.props.history.push('/dashboard');
+    authActions.login({ email, password }, () => {
+      history.push('/dashboard');
     });
   };
 
   handleQuickSignOut = () => {
-    this.props.authLogout(() => {
-      console.log('Logged Out!');
-      this.props.history.push('/');
+    const { authActions, history } = this.props;
+
+    authActions.logout(() => {
+      history.push('/');
     });
   };
 
   render() {
-    const links = [
-      {
-        text: 'Dashboard',
-        route: '/dashboard',
-      },
-      {
-        text: 'Login Page',
-        route: '/',
-      },
-    ];
-
-    const { permission } = this.props.auth;
+    const { authState } = this.props;
 
     return (
       <ul className="nav-test">
-        {links.map(link => (
+        {navTestLinks.map(link => (
           <Link key={link.text} className="nav-test__link" to={link.route}>
             {link.text}
           </Link>
@@ -49,23 +47,31 @@ class NavTest extends Component {
         <button
           className="button"
           onClick={
-            permission ? this.handleQuickSignOut : this.handleQuickSignIn
+            authState.loggedIn
+              ? this.handleQuickSignOut
+              : this.handleQuickSignIn
           }
         >
-          {permission ? 'Quick Sign Out' : 'Quick Sign In'}
+          {authState.loggedIn ? 'Quick Sign Out' : 'Quick Sign In'}
         </button>
       </ul>
     );
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps({ auth }) {
   return {
-    auth: state.auth,
+    authState: auth,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    authActions: bindActionCreators({ ...authActions }, dispatch),
   };
 }
 
 export default connect(
   mapStateToProps,
-  { authLogin, authLogout },
+  mapDispatchToProps,
 )(NavTest);

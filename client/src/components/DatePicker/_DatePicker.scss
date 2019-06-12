@@ -6,3 +6,7 @@
     border: 2px solid $color-primary;
   }
 }
+
+.react-datepicker__close-icon {
+  z-index: 300;
+}

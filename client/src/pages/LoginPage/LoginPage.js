@@ -1,30 +1,14 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 
-import Alert from '../../components/Alert';
 import Button from '../../components/Button';
 import FormAuthLogin from '../../components/FormAuthLogin';
-
-import { authAlertClose } from '../../redux/auth';
-import { userAlertClose } from '../../redux/user';
 
 class LoginPage extends Component {
   render() {
     const { props } = this;
-    const { auth, authAlertClose, user, userAlertClose } = props;
-    const { alert: authAlert } = auth;
-    const { alert: userAlert } = user;
 
     return (
       <div className="login-page">
-        {authAlert.display && (
-          <Alert className="mb-3" alertClose={authAlertClose} {...authAlert} />
-        )}
-
-        {userAlert.display && (
-          <Alert className="mb-3" alertClose={userAlertClose} {...userAlert} />
-        )}
-
         <p>Login to your account</p>
 
         <div className="login-page__form">
@@ -47,14 +31,4 @@ class LoginPage extends Component {
   }
 }
 
-function mapStateToProps({ auth, user }) {
-  return {
-    auth,
-    user,
-  };
-}
-
-export default connect(
-  mapStateToProps,
-  { authAlertClose, userAlertClose },
-)(LoginPage);
+export default LoginPage;

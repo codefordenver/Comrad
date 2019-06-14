@@ -1,7 +1,6 @@
 const db = require('../../../models');
 
 async function validateTrackData(data) {
-  console.log(data.disk_number, data.track_number, data.album);
   return db.Track.findOne({
     disk_number: data.disk_number,
     track_number: data.track_number,

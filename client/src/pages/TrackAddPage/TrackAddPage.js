@@ -61,6 +61,7 @@ class TrackAddPage extends Component {
               albumId={_id}
               artistId={artist._id}
               tracks={tracks}
+              history={this.props.history}
             />
           </CardBody>
         </Card>

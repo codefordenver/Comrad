@@ -17,12 +17,10 @@ const trafficSchema = new Schema({
         'Underwriting',
       ],
       index: true,
-      required: true,
     },
 
     title: {
       type: String,
-      required: true,
     },
     description: String,
     custom: Schema.Types.Mixed, // this will be an object that can contain any number of custom properties
@@ -43,6 +41,7 @@ const trafficSchema = new Schema({
         name: String,
         phone: String,
         email: String,
+        address: String,
       },
       no_winner: Boolean,
     },

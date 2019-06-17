@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import { requiredValidate } from '../../utils/validation';
 import { trackAdd } from '../../redux/track';
+import { albumActions } from '../../redux/album';
 import Button from '../Button';
 import Input from '../Input';
 
@@ -15,9 +16,13 @@ class FormTrackAdd extends Component {
   submit = values => {
     const { trackAdd, history } = this.props;
 
-    return trackAdd(values, trackData => {
-      history.push(`/library/album/${trackData.album}`);
-    });
+    return trackAdd(
+      values,
+      trackData => {
+        history.push(`/library/album/${trackData.album}`);
+      },
+      () => albumActions.clear(),
+    );
   };
 
   render() {

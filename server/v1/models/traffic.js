@@ -43,6 +43,7 @@ const trafficSchema = new Schema({
         name: String,
         phone: String,
         email: String,
+        address: String,
       },
       no_winner: Boolean,
     },

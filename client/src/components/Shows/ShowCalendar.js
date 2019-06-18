@@ -7,6 +7,7 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 import { setModalVisibility } from '../../redux/modal';
 import {
+  clearShows,
   getShowsData,
   fetchingShowsStatus,
   postingShowsStatus,
@@ -45,6 +46,11 @@ class Calendar extends Component {
       ([key, val]) =>
         prevState[key] !== val && console.log(`State '${key}' changed`),
     );
+  }
+
+  componentWillUnmount() {
+    const { clearShows } = this.props;
+    clearShows();
   }
 
   handleDateChange = dates => {
@@ -219,6 +225,7 @@ function mapStateToProps({ show }) {
 export default connect(
   mapStateToProps,
   {
+    clearShows,
     getShowsData,
     fetchingShowsStatus,
     postingShowsStatus,

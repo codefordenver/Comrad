@@ -9,6 +9,7 @@ import { userActions } from '../../redux/user';
 import FormHostAdd from '../forms/FormHostAdd';
 import Input from '../Input';
 import Modal from '../Modal';
+import { formatHostName } from '../../utils/formatters';
 
 const ADD_NEW_HOST = 'add_new_host';
 
@@ -16,9 +17,14 @@ class DropdownHost extends Component {
   constructor(props) {
     super(props);
 
-    const { filterByStatus = 'All', host, userActions } = this.props;
+    const {
+      filterByStatus = 'All',
+      formatHostName,
+      host,
+      userActions,
+    } = this.props;
     console.log(this.props);
-    const hostDisplayName = host ? this.formatHostName(host) : '';
+    const hostDisplayName = host ? formatHostName(host) : '';
 
     //run a host search on the existing value so that the host list is populated with information
     if (hostDisplayName.length > 0) {
@@ -50,13 +56,6 @@ class DropdownHost extends Component {
       this.setState({ cachedSearches: cachedSearches });
     }
   }
-
-  // format the name to display for the host
-  formatHostName = user => {
-    const { first_name, last_name, on_air_name } = user;
-
-    return on_air_name || `${first_name} ${last_name}`;
-  };
 
   //handles input box change
   handleChange = e => {
@@ -119,7 +118,7 @@ class DropdownHost extends Component {
     this.setState({ showAddHostModal: false });
     this.onSelect({
       _id: user._id,
-      value: this.formatHostName(user),
+      value: this.props.formatHostName(user),
     });
   };
 
@@ -187,14 +186,13 @@ class DropdownHost extends Component {
       handleFormHostAddSubmit,
       handleInputClick,
       handleBlur,
-      formatHostName,
       initialValue,
       onSelect,
       props,
       renderHostListItem,
       state,
     } = this;
-    const { authState, userState } = props;
+    const { authState, formatHostName, userState } = props;
     const {
       cachedSearches,
       currentInputValue,
@@ -310,6 +308,7 @@ function mapStateToProps({ auth, user }) {
 function mapDispatchToProps(dispatch) {
   return {
     authActions: bindActionCreators({ ...authActions }, dispatch),
+    formatHostName: formatHostName,
     userActions: bindActionCreators({ ...userActions }, dispatch),
   };
 }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import Button from '../../components/Button';
-import FormAuthLogin from '../../components/FormAuthLogin';
+import FormAuthLogin from '../../components/forms/FormAuthLogin';
 
 class LoginPage extends Component {
   render() {

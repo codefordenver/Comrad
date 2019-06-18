@@ -5,7 +5,7 @@ import { isEmpty } from 'lodash';
 
 import Card, { CardBody } from '../../components/Card';
 import LargeText from '../../components/LargeText';
-import TableAlbumTracks from '../../components/TableAlbumTracks';
+import TableAlbumTracks from '../../components/tables/TableAlbumTracks';
 
 import { albumActions } from '../../redux';
 

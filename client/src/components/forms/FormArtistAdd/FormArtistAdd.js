@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
-import { requiredValidate } from '../../utils/validation';
-import { artistAdd } from '../../redux/artist';
+import { requiredValidate } from '../../../utils/validation';
+import { artistAdd } from '../../../redux/artist';
 
-import Button from '../Button';
-import Input from '../Input';
+import Button from '../../Button';
+import Input from '../../Input';
 
 class FormArtistAdd extends Component {
   submit = (values, dispatch, props) => {

@@ -25,10 +25,10 @@
 @import '../components/DropdownHost/DropdownHost';
 @import '../components/Filter/Filter';
 @import '../components/Footer/Footer';
-@import '../components/FormArtistAdd/FormArtistAdd';
-@import '../components/FormArtistUpdateName/FormArtistUpdateName';
-@import '../components/FormHostAdd/FormHostAdd';
-@import '../components/FormUserSearch/FormUserSearch';
+@import '../components/forms/FormArtistAdd/FormArtistAdd';
+@import '../components/forms/FormArtistUpdateName/FormArtistUpdateName';
+@import '../components/forms/FormHostAdd/FormHostAdd';
+@import '../components/forms/FormUserSearch/FormUserSearch';
 @import '../components/Input/Input';
 @import '../components/Logo/Logo';
 @import '../components/LargeText/LargeText';
@@ -41,8 +41,7 @@
 @import '../components/SearchTerm/SearchTerm';
 @import '../components/Select/Select';
 @import '../components/Sidebar/Sidebar';
-@import '../components/Table/Table';
-@import '../components/TableUsers/TableUsers';
+@import '../components/tables/TableUsers/TableUsers';
 @import '../components/TextArea/TextArea';
 @import '../components/Tooltip/Tooltip';
 @import '../components/Unauthorized/Unauthorized';

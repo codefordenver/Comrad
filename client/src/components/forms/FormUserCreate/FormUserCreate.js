@@ -3,15 +3,15 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Field, reduxForm } from 'redux-form';
 
-import { userActions } from '../../redux/user';
+import { userActions } from '../../../redux/user';
 import {
   emailValidate,
   passwordConfirmValidate,
   requiredValidate,
-} from '../../utils/validation';
+} from '../../../utils/validation';
 
-import Button from '../Button';
-import Input from '../Input';
+import Button from '../../Button';
+import Input from '../../Input';
 
 class FormUserCreate extends Component {
   submit = values => {

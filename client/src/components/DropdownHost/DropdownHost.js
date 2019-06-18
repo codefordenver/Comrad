@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 
 import { authActions } from '../../redux/auth';
 import { userActions } from '../../redux/user';
-import FormHostAdd from '../FormHostAdd';
+import FormHostAdd from '../forms/FormHostAdd';
 import Input from '../Input';
 import Modal from '../Modal';
 import { formatHostName } from '../../utils/formatters';

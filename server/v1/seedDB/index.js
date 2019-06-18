@@ -140,9 +140,52 @@ async function seedDB() {
 
     // Traffic
     console.log('seeding traffic...');
+    bulkOperations = [];
     await Promise.all(
-      seed.traffic.map(async traffic => db.Traffic.create(traffic)),
+      seed.traffic.map(async traffic => {
+        let trafficInstances = [];
+        if (traffic.instances) {
+          trafficInstances = traffic.instances;
+          delete traffic.instances;
+        }
+
+        //If the end date does not exist, just put an infinite end date
+        if (traffic.repeat_rule) {
+          if (!traffic.repeat_rule.repeat_end_date) {
+            traffic.repeat_rule.repeat_end_date = new Date(
+              '9999-01-01T00:00:00',
+            );
+          }
+        }
+
+        const newTraffic = await db.Traffic.create(traffic);
+        if (trafficInstances.length > 0) {
+          await Promise.all(
+            trafficInstances.map(async instance => {
+              instance.master_event_id = newTraffic;
+
+              //This assume that all instances are a single day so the start and end date are the same
+              if (instance.repeat_rule) {
+                if (!instance.repeat_rule.repeat_end_date) {
+                  instance.repeat_rule.repeat_end_date =
+                    instance.repeat_rule.repeat_start_date;
+                }
+              }
+
+              bulkOperations.push({
+                insertOne: {
+                  document: instance,
+                },
+              });
+            }),
+          );
+        }
+      }),
     );
+    console.log('seeding ' + bulkOperations.length + ' traffic instances...');
+    if (bulkOperations.length > 0) {
+      await db.Traffic.bulkWrite(bulkOperations);
+    }
   } catch (err) {
     console.log(err);
     throw err;

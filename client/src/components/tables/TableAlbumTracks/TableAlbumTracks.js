@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import ReactTable from 'react-table';
 import isEmpty from 'lodash/isEmpty';
 
-import { formatTotalSecondsAsMMSS } from '../../utils/formatters';
+import { formatTotalSecondsAsMMSS } from '../../../utils/formatters';
 
 const CellDuration = ({ value }) =>
   value ? (

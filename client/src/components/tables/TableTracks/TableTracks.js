@@ -1,8 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 
-import Loading from '../Loading';
-import Table from '../Table';
+import Loading from '../../Loading';
+import Table from '../../Table';
 
 class TableTracks extends Component {
   renderHeader = () => {

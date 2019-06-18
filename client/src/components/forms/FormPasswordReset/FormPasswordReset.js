@@ -3,12 +3,12 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import classnames from 'classnames';
-import { emailValidate, requiredValidate } from '../../utils/validation.js';
+import { emailValidate, requiredValidate } from '../../../utils/validation.js';
 
-import Button from '../Button';
-import Input from '../Input';
+import Button from '../../Button';
+import Input from '../../Input';
 
-import { authActions } from '../../redux/auth';
+import { authActions } from '../../../redux/auth';
 
 class FormPasswordReset extends Component {
   submit = values => {

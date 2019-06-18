@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 
-import { artistFindOne, artistUpdate } from '../../redux/artist';
-import { requiredValidate } from '../../utils/validation.js';
+import { artistFindOne, artistUpdate } from '../../../redux/artist';
+import { requiredValidate } from '../../../utils/validation.js';
 
-import ButtonIcon from '../ButtonIcon';
-import Input from '../Input';
+import ButtonIcon from '../../ButtonIcon';
+import Input from '../../Input';
 
 class FormArtistUpdateName extends Component {
   state = {

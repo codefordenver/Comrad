@@ -1,0 +1,13 @@
+.fus {
+  &__field {
+    display: grid;
+    grid-template-columns: 40rem 12rem;
+    grid-column-gap: 1rem;
+  }
+
+  &__filter {
+    display: inline-grid;
+    grid-template-columns: auto auto auto;
+    grid-column-gap: 1rem;
+  }
+}

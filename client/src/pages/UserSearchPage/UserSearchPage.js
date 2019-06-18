@@ -3,8 +3,8 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import Card, { CardBody } from '../../components/Card';
-import FormUserSearch from '../../components/FormUserSearch';
-import TableUsers from '../../components/TableUsers';
+import FormUserSearch from '../../components/forms/FormUserSearch';
+import TableUsers from '../../components/tables/TableUsers';
 
 import { userActions } from '../../redux';
 

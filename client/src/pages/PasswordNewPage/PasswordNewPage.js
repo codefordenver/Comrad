@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import Button from '../../components/Button';
-import FormPasswordNew from '../../components/FormPasswordNew';
+import FormPasswordNew from '../../components/forms/FormPasswordNew';
 
 class PasswordNewPage extends Component {
   render() {

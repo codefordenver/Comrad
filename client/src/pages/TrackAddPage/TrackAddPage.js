@@ -54,15 +54,17 @@ class TrackAddPage extends Component {
           <CardBody>
             <h1>Add Track to Album</h1>
             <h2 className="album-name">Album: {name}</h2>
-            <FormTrackAdd
-              maxDiskNumber={this.state.maxDiskNumber}
-              maxTrackNumber={this.state.maxTrackNumber}
-              submitCallback={this.addTrackCallback}
-              albumId={_id}
-              artistId={artist._id}
-              tracks={tracks}
-              history={this.props.history}
-            />
+            {artist && (
+              <FormTrackAdd
+                maxDiskNumber={this.state.maxDiskNumber}
+                maxTrackNumber={this.state.maxTrackNumber}
+                submitCallback={this.addTrackCallback}
+                albumId={_id}
+                artistId={artist._id}
+                tracks={tracks}
+                history={this.props.history}
+              />
+            )}
           </CardBody>
         </Card>
       </div>

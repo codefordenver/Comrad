@@ -6,11 +6,11 @@ import {
   emailValidate,
   passwordConfirmValidate,
   requiredValidate,
-} from '../../utils/validation';
-import { userActions } from '../../redux/user';
+} from '../../../utils/validation';
+import { userActions } from '../../../redux/user';
 
-import Button from '../Button';
-import Input from '../Input';
+import Button from '../../Button';
+import Input from '../../Input';
 
 class FormHostAdd extends Component {
   submit = (values, dispatch, props) => {

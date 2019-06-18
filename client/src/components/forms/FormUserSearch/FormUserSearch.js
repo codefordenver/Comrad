@@ -3,11 +3,11 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Field, reduxForm, formValueSelector } from 'redux-form';
 
-import Button from '../Button';
-import Filter from '../Filter';
-import Input from '../Input';
+import Button from '../../Button';
+import Filter from '../../Filter';
+import Input from '../../Input';
 
-import { userActions } from '../../redux/user';
+import { userActions } from '../../../redux/user';
 
 class FormUserSearch extends Component {
   handleOnChange = (e, newValue) => {

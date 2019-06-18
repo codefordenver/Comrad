@@ -7,12 +7,12 @@ import classnames from 'classnames';
 import {
   passwordsMatchValidate,
   requiredValidate,
-} from '../../utils/validation';
-import { authActions } from '../../redux';
+} from '../../../utils/validation';
+import { authActions } from '../../../redux';
 import queryString from 'query-string';
 
-import Button from '../Button';
-import Input from '../Input';
+import Button from '../../Button';
+import Input from '../../Input';
 
 class FormPasswordNew extends Component {
   componentDidMount() {

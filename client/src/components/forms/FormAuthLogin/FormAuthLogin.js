@@ -3,11 +3,11 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 
-import { authActions } from '../../redux/auth';
-import { emailValidate, requiredValidate } from '../../utils/validation.js';
+import { authActions } from '../../../redux/auth';
+import { emailValidate, requiredValidate } from '../../../utils/validation.js';
 
-import Button from '../Button';
-import Input from '../Input';
+import Button from '../../Button';
+import Input from '../../Input';
 
 class FormAuthLogin extends Component {
   submit = values => {

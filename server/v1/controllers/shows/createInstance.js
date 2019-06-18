@@ -39,7 +39,7 @@ function createInstance(req, res) {
                 ' (Updated Host - Instance Version)';
               newDbShow.master_time_id = master_time_id(
                 dbShow.master_event_id._id,
-                dbShow.replace_show_date,
+                dbShow.replace_event_date,
               );
               res.json(newDbShow);
             })

@@ -168,13 +168,18 @@ class Calendar extends Component {
     //do nothing
   };
 
-  eventStyleGetter = () => {
-    var style = {
-      backgroundColor: '#007283',
-    };
+  eventStyleGetter = show => {
+    let className = '';
+    if (show._id.includes('-')) {
+      className = 'event-series';
+    } else if (show.master_event_id) {
+      className = 'event-instance';
+    } else {
+      className = 'event-regular';
+    }
 
     return {
-      style,
+      className,
     };
   };
 

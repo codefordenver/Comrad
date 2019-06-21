@@ -10,59 +10,7 @@ import {
 } from '../../../redux/show';
 import { MODAL_EDIT_SHOW } from '../ShowModalController';
 
-import Button from '../../Button';
 import DropdownHost from '../../DropdownHost';
-
-const FORM_OPTIONS = {
-  series: (data, deleteFunction) => {
-    return (
-      <div className="series">
-        <h3>Series</h3>
-        <div className="series__show-instance">Edit Show Instance</div>
-        <div className="series__show-series">Edit Show Series</div>
-        <div className="series__delete">Delete This Show</div>
-        <Button
-          className="series__btn-delete"
-          color="danger"
-          onClick={() => deleteFunction(data)}
-        >
-          Delete Entire Series
-        </Button>
-      </div>
-    );
-  },
-  instance: (data, deleteFunction) => {
-    return (
-      <div className="instance">
-        <h3>Instance</h3>
-        <div className="series__show-instance">Edit Show Instance</div>
-        <div className="series__show-series">Edit Show Series</div>
-        <div className="series__delete">Delete This Show</div>
-        <Button
-          className="regular__btn-delete"
-          color="danger"
-          onClick={() => deleteFunction(data)}
-        >
-          Delete Series
-        </Button>
-      </div>
-    );
-  },
-  regular: (data, deleteFunction) => {
-    return (
-      <div className="regular">
-        <h3>Regular</h3>
-        <Button
-          className="regular__btn-delete"
-          color="danger"
-          onClick={() => deleteFunction(data)}
-        >
-          Delete Show
-        </Button>
-      </div>
-    );
-  },
-};
 
 class NewShowForm extends Component {
   componentDidMount() {
@@ -79,21 +27,19 @@ class NewShowForm extends Component {
 
   deleteRegularShow = show => {
     const { deleteShow, setModalVisibility } = this.props;
-
     deleteShow(show._id);
     setModalVisibility(null, false, null);
   };
 
   deleteSeriesShow = show => {
     const { deleteShowSeries, setModalVisibility } = this.props;
-
-    deleteShowSeries(show.master_event_id._id);
+    deleteShowSeries(show.master_event_id);
     setModalVisibility(null, false, null);
   };
 
-  deleteSeriesInstanceShow = show => {
-    const { deleteShowSeries, setModalVisibility } = this.props;
-    deleteShowSeries(show._id);
+  deleteInstanceShow = show => {
+    const { deleteShow, setModalVisibility } = this.props;
+    deleteShow(show._id);
     setModalVisibility(null, false, null);
   };
 
@@ -107,19 +53,59 @@ class NewShowForm extends Component {
     }
   }
 
-  getShowFunction = showType => {
-    const {
-      deleteRegularShow,
-      deleteSeriesShow,
-      deleteSeriesInstanceShow,
-    } = this;
-    const showFunction = {
-      series: deleteSeriesShow,
-      instance: deleteSeriesInstanceShow,
-      regular: deleteRegularShow,
-    };
-
-    return showFunction[showType];
+  FORM_OPTIONS = {
+    series: data => {
+      return (
+        <div className="series">
+          <div className="not_done event__tooltip__delete">
+            Edit Show Instance
+          </div>
+          <div className="not_done event__tooltip__delete">
+            Edit Show Series
+          </div>
+          <div className="not_done event__tooltip__delete">Delete Instance</div>
+          <div
+            className="event__tooltip__delete"
+            onClick={() => this.deleteSeriesShow(data)}
+          >
+            Delete Series
+          </div>
+        </div>
+      );
+    },
+    instance: data => {
+      return (
+        <div className="instance">
+          <div className="not_done event__tooltip__delete">
+            Edit Show Instance
+          </div>
+          <div className="not_done event__tooltip__delete">
+            Edit Show Series
+          </div>
+          <div
+            className="event__tooltip__delete"
+            size="small"
+            onClick={() => this.deleteInstanceShow(data)}
+          >
+            Delete Instance
+          </div>
+          <div className="not_done event__tooltip__delete">Delete Series</div>
+        </div>
+      );
+    },
+    regular: data => {
+      return (
+        <div className="regular">
+          <div className="not_done event__tooltip__delete">Edit Show</div>
+          <div
+            className="event__tooltip__delete"
+            onClick={() => this.deleteRegularShow(data)}
+          >
+            Delete
+          </div>
+        </div>
+      );
+    },
   };
 
   handleHostSelect = host => {
@@ -137,30 +123,40 @@ class NewShowForm extends Component {
     }
   };
 
+  showDebugData = show => (
+    <div>
+      {console.log('Show Tooltip Opened.  Show Data: ')}
+      {console.log(show)}
+      <div />
+      {'Show: ID: ' + show._id}
+      <div />
+      {'Show Master ID: ' + show.master_event_id}
+      <div />
+      {'Show Master Time ID: ' + show.master_time_id}
+      <div />
+      {'Start Time: ' + show.start_time_utc}
+      <div />
+      {'End Time: ' + show.end_time_utc}
+      <div />
+      {'Start Date: ' + show.repeat_rule.repeat_start_date}
+      <div />
+      {'End Date: ' + show.repeat_rule.repeat_end_date}
+    </div>
+  );
+
   render() {
-    const { getShowType, getShowFunction, props } = this;
+    const { getShowType, props } = this;
     const { show } = props;
     const { _id } = show;
     const { host } = show.show_details;
 
     const showType = getShowType(show);
-    const showFunction = getShowFunction(showType);
 
     return (
       <main className="show show__padding">
         <section className="show__body">
-          {show.show_details.title}
-          <div />
-          {show._id}
-          <div />
-          {'Start Time: ' + show.start_time_utc}
-          <div />
-          {'End Time: ' + show.end_time_utc}
-          <div />
-          {'Start Date: ' + show.repeat_rule.repeat_start_date}
-          <div />
-          {'End Date: ' + show.repeat_rule.repeat_end_date}
-
+          <div className="event__tooltip__title">{show.show_details.title}</div>
+          {true && this.showDebugData(show)}
           <DropdownHost
             key={_id}
             _id={_id}
@@ -168,7 +164,7 @@ class NewShowForm extends Component {
             onHostSelect={this.handleHostSelect}
             filterByStatus="Active"
           />
-          {FORM_OPTIONS[showType](show, showFunction)}
+          {this.FORM_OPTIONS[showType](show)}
         </section>
       </main>
     );

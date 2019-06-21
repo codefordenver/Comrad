@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {
+  SHOW_CLEAR,
   SHOW_GET,
   SHOW_POST,
   SHOW_UPDATE_HOST,
@@ -8,7 +9,12 @@ import {
   SHOW_SEARCH,
   SHOW_ERROR,
   SHOW_SELECTED,
+  SHOW_CREATE_INSTANCE,
 } from './showTypes';
+
+export const clearShows = () => async dispatch => {
+  dispatch({ type: SHOW_CLEAR });
+};
 
 export const getShow = show => async dispatch => {
   try {
@@ -21,8 +27,6 @@ export const getShow = show => async dispatch => {
 };
 
 export const postShow = (input, callback) => async dispatch => {
-  console.log('Posting Show');
-  console.log(input);
   const show = input;
   try {
     const response = await axios.post(`/v1/shows/`, show);
@@ -36,9 +40,18 @@ export const postShow = (input, callback) => async dispatch => {
   }
 };
 
-export const updateShowHost = (show_id, data) => async dispatch => {
+export const createInstanceShow = (show_id, data) => async dispatch => {
   try {
-    const response = await axios.patch(`/v1/shows/${show_id}`, { data });
+    const response = await axios.put(`/v1/shows/${show_id}`, data);
+    dispatch({ type: SHOW_CREATE_INSTANCE, payload: response.data });
+  } catch (e) {
+    dispatch({ type: SHOW_ERROR, payload: 'Updating Show Error' });
+  }
+};
+
+export const updateShow = (show_id, data) => async dispatch => {
+  try {
+    const response = await axios.patch(`/v1/shows/${show_id}`, data);
     dispatch({ type: SHOW_UPDATE_HOST, payload: response.data });
   } catch (e) {
     dispatch({ type: SHOW_ERROR, payload: 'Updating Show Error' });
@@ -64,12 +77,16 @@ export const deleteShowSeries = show => async dispatch => {
 };
 
 export const searchShow = (startDate, endDate) => async dispatch => {
+  const params = { startDate, endDate };
   try {
     const response = await axios.get(`/v1/shows/`, {
-      params: { startDate, endDate },
+      params: params,
     });
 
-    dispatch({ type: SHOW_SEARCH, payload: response.data });
+    dispatch({
+      type: SHOW_SEARCH,
+      payload: { data: response.data, params: params },
+    });
   } catch (e) {
     dispatch({ type: SHOW_ERROR, payload: e });
   }

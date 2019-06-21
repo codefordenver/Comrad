@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
 import classnames from 'classnames';
 import Downshift from 'downshift';
 import { connect } from 'react-redux';
 
-import { userAlertClose, userClear, userSearchHosts } from '../../redux/user';
-import FormHostAdd from '../FormHostAdd';
+import { authActions } from '../../redux/auth';
+import { userActions } from '../../redux/user';
+import FormHostAdd from '../forms/FormHostAdd';
 import Input from '../Input';
 import Modal from '../Modal';
+import { formatHostName } from '../../utils/formatters';
 
 const ADD_NEW_HOST = 'add_new_host';
 
@@ -14,12 +17,18 @@ class DropdownHost extends Component {
   constructor(props) {
     super(props);
 
-    const { filterByStatus = 'All', host, userSearchHosts } = this.props;
-    const hostDisplayName = host != null ? this.formatHostName(host) : '';
+    const {
+      filterByStatus = 'All',
+      formatHostName,
+      host,
+      userActions,
+    } = this.props;
+    console.log(this.props);
+    const hostDisplayName = host ? formatHostName(host) : '';
 
     //run a host search on the existing value so that the host list is populated with information
     if (hostDisplayName.length > 0) {
-      userSearchHosts({ filter: filterByStatus, q: hostDisplayName });
+      userActions.searchHosts({ filter: filterByStatus, q: hostDisplayName });
     }
 
     this.state = {
@@ -34,60 +43,44 @@ class DropdownHost extends Component {
   }
 
   componentDidUpdate() {
-    const { user } = this.props;
+    const { userState } = this.props;
     const { cachedSearches } = this.state;
-    const { docs, search } = user;
 
-    // cache the search query in state
+    // cache the search query in state so that we can quickly update the search results
     if (
-      search != null &&
-      search.q != null &&
-      !(search.q.toLowerCase() in cachedSearches)
+      userState.search != null &&
+      userState.search.q != null &&
+      !(userState.search.q.toLowerCase() in cachedSearches)
     ) {
-      cachedSearches[search.q.toLowerCase()] = docs;
+      cachedSearches[userState.search.q.toLowerCase()] = userState.docs;
       this.setState({ cachedSearches: cachedSearches });
     }
   }
 
-  componentWillUnmount() {
-    const { userClear } = this.props;
-    userClear();
-  }
-
-  formatHostName = user => {
-    const { profile, station = { on_air_name: null } } = user;
-    const { first_name, last_name } = profile;
-    const { on_air_name } = station;
-    return on_air_name != null && on_air_name.length > 0
-      ? on_air_name
-      : `${first_name} ${last_name}`;
-  };
-
+  //handles input box change
   handleChange = e => {
-    const { userSearchHosts, filterByStatus = 'All' } = this.props;
+    const { userActions, filterByStatus = 'All' } = this.props;
     const { cachedSearches, hostSearchTimeout } = this.state;
     const { value } = e.target;
 
-    if (!value) {
-      return;
-    }
-
-    if (!(value.toLowerCase() in cachedSearches)) {
+    if (value.length && !(value.toLowerCase() in cachedSearches)) {
       //throttle the hostSearch function so we are not calling it rapidly if users are quickly deleting or typing text
       if (hostSearchTimeout != null) {
         clearTimeout(hostSearchTimeout);
       }
       this.setState({
         hostSearchTimeout: setTimeout(
-          () => userSearchHosts({ filter: filterByStatus, q: value }),
+          () => userActions.searchHosts({ filter: filterByStatus, q: value }),
           150,
         ),
       });
     }
 
+    //update the textbox value
     this.setState({ currentInputValue: value });
   };
 
+  //on blur from the input box, reset the dropdown to its original value
   handleBlur = e => {
     const { selectedHost, showAddHostModal } = this.state;
 
@@ -114,19 +107,22 @@ class DropdownHost extends Component {
     }
   };
 
+  // close the Add Host modal
   handleFormHostAddCancel = () => {
     this.setState({ showAddHostModal: false });
     this.props.userAlertClose();
   };
 
+  // callback for submitting the Add Host modal
   handleFormHostAddSubmit = user => {
     this.setState({ showAddHostModal: false });
     this.onSelect({
       _id: user._id,
-      value: this.formatHostName(user),
+      value: this.props.formatHostName(user),
     });
   };
 
+  // process a host being selected
   onSelect = (selection, stateAndHelpers) => {
     const { input, onHostSelect } = this.props;
 
@@ -167,14 +163,14 @@ class DropdownHost extends Component {
     );
   };
 
+  //function for rendering the options in the host dropdown results
   renderHostListItem = (item, loading) => {
-    const { value } = item;
-
     if (item !== ADD_NEW_HOST) {
-      return <div key={value._id}>{`${value}`}</div>;
+      return <div key={item._id}>{`${item.value}`}</div>;
     }
     //Add new user component
-    return <div key={value}>Add New Host</div>;
+    //NOT COMPLETE
+    return <div key={item}>Add New Host</div>;
   };
 
   dirtyOverride = currentInputValue => {
@@ -183,7 +179,6 @@ class DropdownHost extends Component {
 
   render() {
     const {
-      addHostFormDisplayed,
       dirtyOverride,
       handleChange,
       handleFocus,
@@ -191,21 +186,19 @@ class DropdownHost extends Component {
       handleFormHostAddSubmit,
       handleInputClick,
       handleBlur,
-      formatHostName,
       initialValue,
       onSelect,
       props,
       renderHostListItem,
       state,
     } = this;
-    const { auth, user } = props;
+    const { authState, formatHostName, userState } = props;
     const {
       cachedSearches,
       currentInputValue,
       hasFocus,
       showAddHostModal,
     } = state;
-    const { loading } = user;
 
     // get the documents from the cachedResults property rather than Redux,
     // because Redux might not have the search results of the current input value if there
@@ -223,8 +216,8 @@ class DropdownHost extends Component {
 
     if (items.length === 0) {
       items.push({
-        _id: auth.doc._id,
-        value: formatHostName(auth.doc) + ' (Me)',
+        _id: authState.doc._id,
+        value: formatHostName(authState.doc) + ' (Me)',
       });
     }
 
@@ -263,6 +256,7 @@ class DropdownHost extends Component {
               value={currentInputValue}
             />
 
+            {/* Host dropdown */}
             {hasFocus && !showAddHostModal ? (
               <div className="dropdown__list dropdown__list--host-list active">
                 {items.map((item, index) => (
@@ -279,12 +273,13 @@ class DropdownHost extends Component {
                       item,
                     })}
                   >
-                    {renderHostListItem(item, loading)}
+                    {renderHostListItem(item, userState.loading)}
                   </div>
                 ))}
               </div>
             ) : null}
 
+            {/* Add Host modal */}
             {showAddHostModal ? (
               <Modal isOpen={true}>
                 <div className="host-field__add-modal">
@@ -305,16 +300,20 @@ class DropdownHost extends Component {
 
 function mapStateToProps({ auth, user }) {
   return {
-    auth,
-    user,
+    authState: auth,
+    userState: user,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    authActions: bindActionCreators({ ...authActions }, dispatch),
+    formatHostName: formatHostName,
+    userActions: bindActionCreators({ ...userActions }, dispatch),
   };
 }
 
 export default connect(
   mapStateToProps,
-  {
-    userAlertClose,
-    userClear,
-    userSearchHosts,
-  },
+  mapDispatchToProps,
 )(DropdownHost);

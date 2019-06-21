@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { authFetch } from '../../redux/auth';
+import { authActions } from '../../redux/auth';
 
 import NavTest from '../NavTest';
 
@@ -13,12 +13,15 @@ import ErrorRoutes from '../../routes/ErrorRoutes';
 import HomeRoutes from '../../routes/HomeRoutes';
 import LibraryRoutes from '../../routes/LibraryRoutes';
 import ReportRoutes from '../../routes/ReportRoutes';
+import ShowBuilderRoutes from '../../routes/ShowBuilderRoutes';
 import UserRoutes from '../../routes/UserRoutes';
+import { bindActionCreators } from 'redux';
 
 class App extends Component {
   componentDidMount() {
-    const { authFetch } = this.props;
-    authFetch();
+    const { authActions } = this.props;
+
+    authActions.fetch();
   }
 
   render() {
@@ -34,6 +37,7 @@ class App extends Component {
             <Route path="/error" component={ErrorRoutes} />
             <Route path="/library" component={LibraryRoutes} />
             <Route path="/report" component={ReportRoutes} />
+            <Route path="/show-builder" component={ShowBuilderRoutes} />
             <Route path="/user" component={UserRoutes} />
             <Route component={HomeRoutes} />
           </Switch>
@@ -43,7 +47,13 @@ class App extends Component {
   }
 }
 
+function mapDispatchToProps(dispatch) {
+  return {
+    authActions: bindActionCreators({ ...authActions }, dispatch),
+  };
+}
+
 export default connect(
   null,
-  { authFetch },
+  mapDispatchToProps,
 )(App);

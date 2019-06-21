@@ -10,10 +10,12 @@ const DROPDOWN_TYPE = {
       <i className="fas fa-plus" />
     </div>
   ),
-  icon: ({ src }) => (
+  icon: ({ src, faClass }) => (
     <div className="dropdown__icon">
       {src ? (
         <img alt="profile=" className="dropdown__img" src={src} />
+      ) : faClass ? (
+        <i className={faClass} />
       ) : (
         <i className="fas fa-user" />
       )}
@@ -39,6 +41,8 @@ class Dropdown extends Component {
       'bottom-right',
       'top-left',
       'top-right',
+      'right-top',
+      'right-centered',
     ]),
     /**
      * What the shape of the dropdown will look like
@@ -51,13 +55,21 @@ class Dropdown extends Component {
   };
 
   static Item = props => {
-    const { children, to } = props;
+    const { children, handleOnClick, to } = props;
 
     if (to) {
       return (
         <Link className="dropdown__item" to={to}>
           {children}
         </Link>
+      );
+    }
+
+    if (handleOnClick) {
+      return (
+        <div className="dropdown__item" onClick={handleOnClick}>
+          {children}
+        </div>
       );
     }
 

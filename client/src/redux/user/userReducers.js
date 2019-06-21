@@ -1,27 +1,8 @@
-import {
-  USER_ADD,
-  USER_ALERT,
-  USER_ALERT_CLOSE,
-  USER_CLEAR,
-  USER_CLEAR_SEARCH,
-  USER_CREATE,
-  USER_FIND_ALL,
-  USER_FIND_ONE,
-  USER_LOADING,
-  USER_SEARCH,
-  USER_SEARCH_HOSTS,
-} from './userTypes';
+import { userTypes } from './userTypes';
 
 const initialState = {
-  alert: {
-    display: false,
-    header: '',
-    message: '',
-    type: '',
-  },
   doc: {},
   docs: [],
-  error: null,
   loading: false,
   search: {
     filter: 'all',
@@ -31,7 +12,7 @@ const initialState = {
 
 export const userReducer = (state = initialState, { type, payload }) => {
   switch (type) {
-    case USER_FIND_ONE:
+    case userTypes.FIND_ONE:
       return {
         ...state,
         doc: {
@@ -40,44 +21,38 @@ export const userReducer = (state = initialState, { type, payload }) => {
         loading: false,
       };
 
-    case USER_FIND_ALL:
+    case userTypes.FIND_ALL:
       return {
         ...state,
         ...payload,
         loading: false,
       };
 
-    case USER_SEARCH:
+    case userTypes.SEARCH:
       return {
         ...state,
         ...payload,
-        alert: {
-          ...initialState.alert,
-        },
         loading: false,
       };
 
-    case USER_SEARCH_HOSTS:
+    case userTypes.SEARCH_HOSTS:
       return {
         ...state,
         ...payload,
-        alert: {
-          ...initialState.alert,
-        },
         loading: false,
       };
 
-    case USER_ADD:
+    case userTypes.ADD:
       return {
         ...payload,
       };
 
-    case USER_CLEAR:
+    case userTypes.CLEAR:
       return {
         ...initialState,
       };
 
-    case USER_CLEAR_SEARCH:
+    case userTypes.CLEAR_SEARCH:
       return {
         ...state,
         search: {
@@ -85,34 +60,18 @@ export const userReducer = (state = initialState, { type, payload }) => {
         },
       };
 
-    case USER_CREATE:
+    case userTypes.CREATE:
       return {
         ...state,
         ...payload,
       };
 
-    case USER_LOADING:
+    case userTypes.LOADING:
       return {
         ...state,
         loading: true,
       };
 
-    case USER_ALERT:
-      return {
-        ...state,
-        alert: {
-          ...payload,
-        },
-        loading: false,
-      };
-
-    case USER_ALERT_CLOSE:
-      const { alert } = initialState;
-
-      return {
-        ...state,
-        alert,
-      };
     default:
       return state;
   }

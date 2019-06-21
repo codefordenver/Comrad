@@ -1,17 +1,25 @@
 import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import axios from 'axios';
 
 import ReactTable from 'react-table';
 
+import Alert from '../../components/Alert';
+import Button from '../../components/Button';
 import Card, { CardBody } from '../../components/Card';
 import Dropdown from '../../components/Dropdown';
 import Input from '../../components/Input';
+import Modal from '../../components/Modal';
+
+import { albumActions, artistActions, trackActions } from '../../redux';
 
 class LibrarySearchPage extends Component {
   state = {
     activeFilter: 'all',
+    deleteModal: false, //false to hide, or an object of data if the modal should be displayed
+    deleteSuccessModal: false, //false to hide, or an object of data if the modal should be displayed
     docs: [],
     totalPages: null,
     pageUrls: ['/v1/library'],
@@ -24,6 +32,47 @@ class LibrarySearchPage extends Component {
     },
   };
 
+  closeAlerts = () => {
+    const { artistAlertClose, albumActions, trackActions } = this.props;
+    artistActions.alertClose();
+    albumActions.alertClose();
+    trackActions.alertClose();
+  };
+
+  closeDeleteModal = () => {
+    this.setState({ deleteModal: false }, function() {
+      this.closeAlerts();
+    });
+  };
+
+  closeDeleteSuccessModal = () => {
+    this.setState({ deleteSuccessModal: false });
+  };
+
+  deleteEntity = (type, id) => {
+    const { albumActions, artistActions, trackActions } = this.props;
+    if (type === 'album') {
+      albumActions.remove(id, this.deleteSuccess);
+    } else if (type === 'track') {
+      trackActions.remove(id, this.deleteSuccess);
+    } else if (type === 'artist') {
+      artistActions.remove(id, this.deleteSuccess);
+    }
+  };
+
+  deleteSuccess = entity => {
+    this.closeDeleteModal();
+    this.setState(
+      {
+        deleteSuccessModal: entity.data,
+      },
+      function() {
+        //refresh data from the database - https://github.com/tannerlinsley/react-table/issues/808#issuecomment-373673915
+        this.table.fireFetchData();
+      },
+    );
+  };
+
   fetchData = (state, instance) => {
     this.setState({ loading: true }); //show loading overlay
     let url = this.state.pageUrls[state.page];
@@ -34,8 +83,8 @@ class LibrarySearchPage extends Component {
       (state.sorted[0].id !== this.state.sort.id ||
         state.sorted[0].desc !== this.state.sort.desc)
     ) {
-      url =
-        '/v1/library?sortBy=' +
+      url +=
+        '?sortBy=' +
         state.sorted[0].id +
         '&sortDescending=' +
         (state.sorted[0].desc ? '1' : '0');
@@ -75,6 +124,33 @@ class LibrarySearchPage extends Component {
       });
   };
 
+  getAllMusicLibraryRecords = () => {
+    let url = '/v1/library/';
+    if (this.state.activeFilter !== 'all') {
+      url = `/v1/library/${this.state.activeFilter}`;
+    }
+    this.setState(
+      {
+        pageUrls: [url],
+        searchString: false,
+      },
+      function() {
+        this.fetchTableDataFromApi(this.state.pageUrls[0]);
+      },
+    );
+  };
+
+  handleRowDeleteClick = data => {
+    this.setState({
+      deleteModal: data,
+    });
+  };
+
+  handleRowEditClick = data => {
+    console.log('edit was clicked');
+    console.log(data);
+  };
+
   navigateToRecord = (state, rowInfo, column, instance) => {
     return {
       onClick: (e, handleOriginal) => {
@@ -87,17 +163,21 @@ class LibrarySearchPage extends Component {
   };
 
   searchLibrary = form => {
-    let url =
-      '/v1/library/search?s=' + form.q + '&type=' + this.state.activeFilter;
-    this.setState(
-      {
-        pageUrls: [url],
-        searchString: form.q,
-      },
-      function() {
-        this.fetchTableDataFromApi(url);
-      },
-    );
+    if (form.q != null && form.q.length > 0) {
+      let url =
+        '/v1/library/search?s=' + form.q + '&type=' + this.state.activeFilter;
+      this.setState(
+        {
+          pageUrls: [url],
+          searchString: form.q,
+        },
+        function() {
+          this.fetchTableDataFromApi(url);
+        },
+      );
+    } else {
+      this.getAllMusicLibraryRecords();
+    }
   };
 
   setActiveFilter = event => {
@@ -106,13 +186,33 @@ class LibrarySearchPage extends Component {
         activeFilter: event.target.getAttribute('value'),
       },
       function() {
-        this.searchLibrary({ q: this.state.searchString });
+        if (
+          this.state.searchString != null &&
+          this.state.searchString.length > 0
+        ) {
+          this.searchLibrary({ q: this.state.searchString });
+        } else {
+          this.getAllMusicLibraryRecords();
+        }
       },
     );
   };
 
+  stopPropagation = event => {
+    event.stopPropagation();
+  };
+
   render() {
-    const { handleSubmit } = this.props;
+    const { closeDeleteModal, closeDeleteSuccessModal, deleteEntity } = this;
+    const {
+      artistAlert,
+      albumAlert,
+      albumActions,
+      handleSubmit,
+      trackActions,
+      trackAlert,
+    } = this.props;
+    const { deleteModal, deleteSuccessModal } = this.state;
 
     const columns = [
       {
@@ -138,7 +238,10 @@ class LibrarySearchPage extends Component {
               elements.push(data.value);
               if (artistNames.length > 0) {
                 elements.push(
-                  <span className="library-search__grid__secondary-text">
+                  <span
+                    key="artist-name"
+                    className="library-search__grid__secondary-text"
+                  >
                     {' '}
                     by {artistNames.join(', ')}
                   </span>,
@@ -150,7 +253,10 @@ class LibrarySearchPage extends Component {
                 data.original.album.name.length > 0
               ) {
                 elements.push(
-                  <span className="library-search__grid__secondary-text">
+                  <span
+                    key="album-name"
+                    className="library-search__grid__secondary-text"
+                  >
                     {' '}
                     (from the album: {data.original.album.name})
                   </span>,
@@ -166,7 +272,10 @@ class LibrarySearchPage extends Component {
                 let elements = [];
                 elements.push(data.value);
                 elements.push(
-                  <span className="library-search__grid__secondary-text">
+                  <span
+                    key="album-artist-name"
+                    className="library-search__grid__secondary-text"
+                  >
                     {' '}
                     by {data.original.artist.name}
                   </span>,
@@ -189,6 +298,41 @@ class LibrarySearchPage extends Component {
             dateObj.toLocaleDateString() + ' ' + dateObj.toLocaleTimeString()
           );
         },
+        headerStyle: {
+          borderRight: '0',
+        },
+        style: {
+          borderRight: '0',
+        },
+      },
+      {
+        Header: '',
+        Cell: row => {
+          return (
+            <div onClick={this.stopPropagation}>
+              <Dropdown
+                position="bottom-left"
+                type="icon"
+                faClass="fas fa-ellipsis-h"
+              >
+                {row.row.type !== 'artist' && (
+                  <Dropdown.Item
+                    handleOnClick={() => this.handleRowEditClick(row.row)}
+                  >
+                    Edit
+                  </Dropdown.Item>
+                )}
+                <Dropdown.Item
+                  handleOnClick={() => this.handleRowDeleteClick(row.row)}
+                >
+                  Delete
+                </Dropdown.Item>
+              </Dropdown>
+            </div>
+          );
+        },
+        minWidth: undefined,
+        className: 'library-search__grid__edit-options',
       },
     ];
 
@@ -253,7 +397,7 @@ class LibrarySearchPage extends Component {
                 </div>
               </div>
               <div>
-                <Dropdown position="bottom-right" type="button" text="Add">
+                <Dropdown position="right-centered" type="button" text="Add">
                   <Dropdown.Item to="library/artist/add">Artist</Dropdown.Item>
                   <Dropdown.Item to="library/album/add">Album</Dropdown.Item>
                 </Dropdown>
@@ -271,6 +415,10 @@ class LibrarySearchPage extends Component {
                 noDataText="No Data Found"
                 showPageSizeOptions={false}
                 onFetchData={this.fetchData}
+                ref={instance => {
+                  this.table = instance;
+                }}
+                showPageJump={false}
                 sortable={this.state.searchString === false}
                 getTdProps={this.navigateToRecord}
               />
@@ -280,6 +428,52 @@ class LibrarySearchPage extends Component {
             )}
           </CardBody>
         </Card>
+
+        {/* Delete modal */}
+        {deleteModal ? (
+          <Modal isOpen={true}>
+            <div className="library-search__delete-modal">
+              {/*artistAlert.display && (
+                <Alert alertClose={artistAlertClose} {...artistAlert} />
+              )*/}
+              {/*albumAlert.display && (
+                <Alert alertClose={albumActions.alertClose} {...albumAlert} />
+              )*/}
+              {/*trackAlert.display && (
+                <Alert alertClose={trackActions.alertClose} {...trackAlert} />
+              )*/}
+              Are you sure you want to delete the {deleteModal.type}{' '}
+              <i>{deleteModal.name}</i>?
+              <div>
+                <Button color="neutral" onClick={closeDeleteModal}>
+                  No
+                </Button>
+                <Button
+                  type="submit"
+                  onClick={() =>
+                    deleteEntity(deleteModal.type, deleteModal._original._id)
+                  }
+                >
+                  Yes
+                </Button>
+              </div>
+            </div>
+          </Modal>
+        ) : null}
+
+        {/* Delete confirmation modal */}
+        {deleteSuccessModal ? (
+          <Modal isOpen={true}>
+            <div className="library-search__delete-success-modal">
+              <i>{deleteSuccessModal.name}</i> was successfully deleted.
+              <div>
+                <Button color="neutral" onClick={closeDeleteSuccessModal}>
+                  Close
+                </Button>
+              </div>
+            </div>
+          </Modal>
+        ) : null}
       </div>
     );
   }
@@ -287,9 +481,23 @@ class LibrarySearchPage extends Component {
 
 function mapStateToProps(state) {
   const { error } = state.library;
+  const artistAlert = state.artist.alert;
+  const albumAlert = state.album.alert;
+  const trackAlert = state.track.alert;
 
   return {
+    artistAlert,
+    albumAlert,
     error,
+    trackAlert,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    artistActions: bindActionCreators({ ...artistActions }, dispatch),
+    albumActions: bindActionCreators({ ...albumActions }, dispatch),
+    trackActions: bindActionCreators({ ...trackActions }, dispatch),
   };
 }
 
@@ -299,5 +507,5 @@ const ReduxLibrarySearchPage = reduxForm({
 
 export default connect(
   mapStateToProps,
-  {},
+  mapDispatchToProps,
 )(ReduxLibrarySearchPage);

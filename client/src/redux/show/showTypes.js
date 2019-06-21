@@ -1,3 +1,4 @@
+export const SHOW_CLEAR = 'show_clear';
 export const SHOW_DELETE = 'show_delete';
 export const SHOW_DELETE_SERIES = 'show_delete_series';
 export const SHOW_DELETE_INSTANCE = 'show_delete_instance';
@@ -11,3 +12,4 @@ export const SHOW_UPDATE = 'show_update';
 export const SHOW_UPDATE_HOST = 'show_update_host';
 export const SHOW_SELECTED = 'show_selected';
 export const SHOW_UNSELECTED = 'show_unselected';
+export const SHOW_CREATE_INSTANCE = 'show_create_instance';

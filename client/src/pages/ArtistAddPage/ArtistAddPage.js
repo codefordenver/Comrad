@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import Card, { CardBody } from '../../components/Card';
-import FormArtistAdd from '../../components/FormArtistAdd';
+import FormArtistAdd from '../../components/forms/FormArtistAdd';
 
 class ArtistAddPage extends Component {
   addArtistCallback = id => {

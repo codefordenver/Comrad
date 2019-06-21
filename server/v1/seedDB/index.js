@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const keys = require('../config/keys');
 const seed = require('./data');
-const db = require('../versions/1/models');
+const db = require('../models');
 
 async function seedDB() {
   try {
@@ -52,26 +52,6 @@ async function seedDB() {
       });
     });
     await db.Track.bulkWrite(bulkOperations);
-
-    // Announcements
-    console.log('seeding announcements...');
-    await Promise.all(
-      seed.announcements.map(async announcement =>
-        db.Announcement.create(announcement),
-      ),
-    );
-
-    // Features
-    console.log('seeding features...');
-    await Promise.all(
-      seed.features.map(async feature => db.Feature.create(feature)),
-    );
-
-    // Giveaways
-    console.log('seeding giveaways...');
-    await Promise.all(
-      seed.giveaway.map(async giveaway => db.Giveaway.create(giveaway)),
-    );
 
     // Shows
     console.log('seeding hosts for shows...');
@@ -125,7 +105,7 @@ async function seedDB() {
         if (showInstances.length > 0) {
           await Promise.all(
             showInstances.map(async instance => {
-              instance.master_show_uid = newShow;
+              instance.master_event_id = newShow;
               if (
                 instance.show_details != null &&
                 instance.show_details.host != null
@@ -160,13 +140,52 @@ async function seedDB() {
 
     // Traffic
     console.log('seeding traffic...');
+    bulkOperations = [];
     await Promise.all(
-      seed.traffic.map(async traffic => db.Traffic.create(traffic)),
-    );
+      seed.traffic.map(async traffic => {
+        let trafficInstances = [];
+        if (traffic.instances) {
+          trafficInstances = traffic.instances;
+          delete traffic.instances;
+        }
 
-    // Venue
-    console.log('seeding venues...');
-    await Promise.all(seed.venue.map(async venue => db.Venue.create(venue)));
+        //If the end date does not exist, just put an infinite end date
+        if (traffic.repeat_rule) {
+          if (!traffic.repeat_rule.repeat_end_date) {
+            traffic.repeat_rule.repeat_end_date = new Date(
+              '9999-01-01T00:00:00',
+            );
+          }
+        }
+
+        const newTraffic = await db.Traffic.create(traffic);
+        if (trafficInstances.length > 0) {
+          await Promise.all(
+            trafficInstances.map(async instance => {
+              instance.master_event_id = newTraffic;
+
+              //This assume that all instances are a single day so the start and end date are the same
+              if (instance.repeat_rule) {
+                if (!instance.repeat_rule.repeat_end_date) {
+                  instance.repeat_rule.repeat_end_date =
+                    instance.repeat_rule.repeat_start_date;
+                }
+              }
+
+              bulkOperations.push({
+                insertOne: {
+                  document: instance,
+                },
+              });
+            }),
+          );
+        }
+      }),
+    );
+    console.log('seeding ' + bulkOperations.length + ' traffic instances...');
+    if (bulkOperations.length > 0) {
+      await db.Traffic.bulkWrite(bulkOperations);
+    }
   } catch (err) {
     console.log(err);
     throw err;
@@ -198,11 +217,11 @@ async function userByOnAirName(onAirName) {
     const emailAddress =
       onAirName.replace(/[^a-zA-Z0-9]/gi, '') + '@fake-dj-email.kgnu.org';
     user = await db.User.create({
-      'profile.first_name': firstName,
-      'profile.last_name': lastName,
-      'contact.email': emailAddress,
-      'station.on_air_name': onAirName,
-      'auth.password': 'temppassword',
+      first_name: firstName,
+      last_name: lastName,
+      email: emailAddress,
+      on_air_name: onAirName,
+      password: 'temppassword',
     });
   }
   usersByOnAirName[onAirName] = user;

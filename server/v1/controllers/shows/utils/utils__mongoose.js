@@ -52,11 +52,11 @@ function formatShow(data, res = null) {
       case 'custom':
         formatedShow.show_details.custom = value;
         break;
-      case 'show_start_time_utc':
-        formatedShow.show_start_time_utc = value;
+      case 'start_time_utc':
+        formatedShow.start_time_utc = value;
         break;
-      case 'show_end_time_utc':
-        formatedShow.show_end_time_utc = value;
+      case 'end_time_utc':
+        formatedShow.end_time_utc = value;
         break;
       case 'repeat':
         formatedShow.is_recurring = value;
@@ -109,22 +109,51 @@ function formatShow(data, res = null) {
 function findShowQueryByDateRange(start, end) {
   return [
     {
-      'repeat_rule.repeat_start_date': {
-        $lte: end,
-      },
-    },
-    {
-      'repeat_rule.repeat_end_date': {
-        $gte: start,
-      },
+      $or: [
+        {
+          $and: [
+            {
+              'repeat_rule.repeat_start_date': {
+                $lte: end,
+              },
+            },
+            {
+              'repeat_rule.repeat_end_date': {
+                $gte: start,
+              },
+            },
+          ],
+        },
+        {
+          $and: [
+            {
+              start_time_utc: {
+                $lte: end,
+              },
+            },
+            {
+              end_time_utc: {
+                $gte: start,
+              },
+            },
+          ],
+        },
+      ],
     },
   ];
 }
 
-function populateShowQuery() {
+function populateShowHost() {
   return {
     path: 'show_details.host',
     select: 'first_name last_name on_air_name',
+  };
+}
+
+function populateMasterShow() {
+  return {
+    path: 'master_show_uid',
+    select: 'show_details',
   };
 }
 
@@ -133,19 +162,20 @@ function master_time_id(_id, start_time) {
 }
 
 function master_time_id__byShowType(show) {
-  if (show.master_show_uid) {
+  if (show.master_event_id) {
     //Instance Show
-    return master_time_id(show.master_show_uid, show.replace_show_date);
+    return master_time_id(show.master_event_id._id, show.start_time_utc);
   } else {
     //Regular Show
-    return master_time_id(show._id, show.show_start_time_utc);
+    return master_time_id(show._id, show.start_time_utc);
   }
 }
 
 module.exports = {
   formatShow,
   findShowQueryByDateRange,
-  populateShowQuery,
+  populateShowHost,
+  populateMasterShow,
   master_time_id,
   master_time_id__byShowType,
 };

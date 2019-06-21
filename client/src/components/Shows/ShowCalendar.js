@@ -7,6 +7,7 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 import { setModalVisibility } from '../../redux/modal';
 import {
+  clearShows,
   getShowsData,
   fetchingShowsStatus,
   postingShowsStatus,
@@ -47,6 +48,11 @@ class Calendar extends Component {
     );
   }
 
+  componentWillUnmount() {
+    const { clearShows } = this.props;
+    clearShows();
+  }
+
   handleDateChange = dates => {
     const { searchShow } = this.props;
 
@@ -84,12 +90,12 @@ class Calendar extends Component {
     const showsArray = shows ? _.values(shows) : [];
     let newShowsArray = [];
     showsArray.forEach(show => {
-      let { show_start_time_utc, show_end_time_utc } = show;
+      let { start_time_utc, end_time_utc } = show;
       //Should be setup to check if shows span across midnight
       //IMPORTANT:  Only offset the start/end times in the accessor
       if (
-        parseInt(moment(show_start_time_utc).format('HH')) >
-        parseInt(moment(show_end_time_utc).format('HH'))
+        parseInt(moment(start_time_utc).format('HH')) >
+        parseInt(moment(end_time_utc).format('HH'))
       ) {
         //Use this to push multiple shows if they span across midnight
         //newShowsArray.push(show2) //add show (1) and show (2)
@@ -136,26 +142,26 @@ class Calendar extends Component {
   };
 
   startAccessorCalc(show) {
-    const { show_start_time_utc } = show;
+    const { start_time_utc } = show;
     //Basic check for shows that start and end at midnight.
     if (
-      moment(show_start_time_utc).format('HH') === '00' &&
-      moment(show_start_time_utc).format('MM') === '00'
+      moment(start_time_utc).format('HH') === '00' &&
+      moment(start_time_utc).format('mm') === '00'
     ) {
-      return new Date(moment(show_start_time_utc).add(1, 'second'));
+      return new Date(moment(start_time_utc).add(1, 'second'));
     }
-    return new Date(moment(show_start_time_utc));
+    return new Date(moment(start_time_utc));
   }
 
   endAccessorCalc(show) {
-    const { show_end_time_utc } = show;
+    const { end_time_utc } = show;
     if (
-      moment(show_end_time_utc).format('HH') === '00' &&
-      moment(show_end_time_utc).format('MM') === '00'
+      moment(end_time_utc).format('HH') === '00' &&
+      moment(end_time_utc).format('mm') === '00'
     ) {
-      return new Date(moment(show_end_time_utc).add(-1, 'second'));
+      return new Date(moment(end_time_utc).add(-1, 'minute'));
     }
-    return new Date(moment(show_end_time_utc));
+    return new Date(moment(end_time_utc));
   }
 
   onSelectShow = show => {
@@ -219,6 +225,7 @@ function mapStateToProps({ show }) {
 export default connect(
   mapStateToProps,
   {
+    clearShows,
     getShowsData,
     fetchingShowsStatus,
     postingShowsStatus,

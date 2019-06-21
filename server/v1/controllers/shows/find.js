@@ -2,7 +2,11 @@ const db = require('../../models');
 
 const {
   utils: { showList },
-  utils__mongoose: { findShowQueryByDateRange, populateShowQuery },
+  utils__mongoose: {
+    findShowQueryByDateRange,
+    populateShowHost,
+    populateMasterShow,
+  },
 } = require('./utils');
 
 function find(req, res) {
@@ -14,9 +18,9 @@ function find(req, res) {
   const showDateFilter =
     startDate && endDate ? findShowQueryByDateRange(startDate, endDate) : {};
 
-  db.Show.find({})
-    .and(showDateFilter)
-    .populate(populateShowQuery())
+  db.Show.find(showDateFilter[0])
+    .populate(populateShowHost())
+    .populate(populateMasterShow())
     .then(dbShow => {
       res.json(showList(dbShow, startDate, endDate));
     })

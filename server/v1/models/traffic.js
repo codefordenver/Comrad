@@ -1,44 +1,50 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const EventSchema = require('./base/event');
 
 const trafficSchema = new Schema({
+  ...EventSchema,
+
   traffic_details: {
-    title: String,
-    summary: String,
+    type: {
+      type: String,
+      enum: [
+        'Announcement',
+        'Feature',
+        'Giveaway',
+        'Legal ID',
+        'PSA',
+        'Underwriting',
+      ],
+      index: true,
+    },
+
+    title: {
+      type: String,
+    },
     description: String,
+    custom: Schema.Types.Mixed, // this will be an object that can contain any number of custom properties
+
+    // for feature
+    summary: String,
     producer: String,
-    host: String,
-    guests: [String],
-    custom: String,
-  },
 
-  traffic_start_time_utc: Date,
-  traffic_end_time_utc: Date,
+    // for underwriting
+    underwriter_name: String,
 
-  master_traffic_uid: Number,
-  replace_traffic_date: Date,
-
-  is_recurring: Boolean,
-  repeat_rule: {
-    frequency: String,
-    repeat_start_date: Date,
-    repeat_end_date: Date,
-    count: Number,
-    byweekly: String,
-    bymonth: String,
-  },
-
-  exclude_rule: String,
-  exclude_dates: [Date],
-
-  created_at: {
-    type: Date,
-    default: Date.now,
-  },
-
-  updated_at: {
-    type: Date,
-    default: Date.now,
+    //for giveaway
+    giveaway_details: {
+      event_name: String,
+      event_date: Date,
+      venue: String,
+      winner: {
+        name: String,
+        phone: String,
+        email: String,
+        address: String,
+      },
+      no_winner: Boolean,
+    },
   },
 });
 

@@ -34,8 +34,8 @@ class LibrarySearchPage extends Component {
       (state.sorted[0].id !== this.state.sort.id ||
         state.sorted[0].desc !== this.state.sort.desc)
     ) {
-      url =
-        '/v1/library?sortBy=' +
+      url +=
+        '?sortBy=' +
         state.sorted[0].id +
         '&sortDescending=' +
         (state.sorted[0].desc ? '1' : '0');
@@ -75,6 +75,22 @@ class LibrarySearchPage extends Component {
       });
   };
 
+  getAllMusicLibraryRecords = () => {
+    let url = '/v1/library/';
+    if (this.state.activeFilter !== 'all') {
+      url = `/v1/library/${this.state.activeFilter}`;
+    }
+    this.setState(
+      {
+        pageUrls: [url],
+        searchString: false,
+      },
+      function() {
+        this.fetchTableDataFromApi(this.state.pageUrls[0]);
+      },
+    );
+  };
+
   navigateToRecord = (state, rowInfo, column, instance) => {
     return {
       onClick: (e, handleOriginal) => {
@@ -87,17 +103,21 @@ class LibrarySearchPage extends Component {
   };
 
   searchLibrary = form => {
-    let url =
-      '/v1/library/search?s=' + form.q + '&type=' + this.state.activeFilter;
-    this.setState(
-      {
-        pageUrls: [url],
-        searchString: form.q,
-      },
-      function() {
-        this.fetchTableDataFromApi(url);
-      },
-    );
+    if (form.q != null && form.q.length > 0) {
+      let url =
+        '/v1/library/search?s=' + form.q + '&type=' + this.state.activeFilter;
+      this.setState(
+        {
+          pageUrls: [url],
+          searchString: form.q,
+        },
+        function() {
+          this.fetchTableDataFromApi(url);
+        },
+      );
+    } else {
+      this.getAllMusicLibraryRecords();
+    }
   };
 
   setActiveFilter = event => {
@@ -106,7 +126,14 @@ class LibrarySearchPage extends Component {
         activeFilter: event.target.getAttribute('value'),
       },
       function() {
-        this.searchLibrary({ q: this.state.searchString });
+        if (
+          this.state.searchString != null &&
+          this.state.searchString.length > 0
+        ) {
+          this.searchLibrary({ q: this.state.searchString });
+        } else {
+          this.getAllMusicLibraryRecords();
+        }
       },
     );
   };
@@ -138,7 +165,10 @@ class LibrarySearchPage extends Component {
               elements.push(data.value);
               if (artistNames.length > 0) {
                 elements.push(
-                  <span className="library-search__grid__secondary-text">
+                  <span
+                    key="artist-name"
+                    className="library-search__grid__secondary-text"
+                  >
                     {' '}
                     by {artistNames.join(', ')}
                   </span>,
@@ -150,7 +180,10 @@ class LibrarySearchPage extends Component {
                 data.original.album.name.length > 0
               ) {
                 elements.push(
-                  <span className="library-search__grid__secondary-text">
+                  <span
+                    key="album-name"
+                    className="library-search__grid__secondary-text"
+                  >
                     {' '}
                     (from the album: {data.original.album.name})
                   </span>,
@@ -166,7 +199,10 @@ class LibrarySearchPage extends Component {
                 let elements = [];
                 elements.push(data.value);
                 elements.push(
-                  <span className="library-search__grid__secondary-text">
+                  <span
+                    key="album-artist-name"
+                    className="library-search__grid__secondary-text"
+                  >
                     {' '}
                     by {data.original.artist.name}
                   </span>,
@@ -253,7 +289,7 @@ class LibrarySearchPage extends Component {
                 </div>
               </div>
               <div>
-                <Dropdown position="bottom-right" type="button" text="Add">
+                <Dropdown position="right-centered" type="button" text="Add">
                   <Dropdown.Item to="library/artist/add">Artist</Dropdown.Item>
                   <Dropdown.Item to="library/album/add">Album</Dropdown.Item>
                 </Dropdown>
@@ -271,6 +307,7 @@ class LibrarySearchPage extends Component {
                 noDataText="No Data Found"
                 showPageSizeOptions={false}
                 onFetchData={this.fetchData}
+                showPageJump={false}
                 sortable={this.state.searchString === false}
                 getTdProps={this.navigateToRecord}
               />

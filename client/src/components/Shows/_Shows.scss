@@ -1,8 +1,6 @@
 $show_start_z: 200;
 
 .new-show-form {
-  margin: 0 10rem;
-
   &__grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -25,18 +23,22 @@ $show_start_z: 200;
   }
 }
 
+.z-index--250 {
+  z-index: 250 !important;
+}
+
 .z-index--200 {
-  z-index: 200;
+  z-index: 200 !important;
 }
 
 .z-index--150 {
-  z-index: 150;
+  z-index: 150 !important;
 }
 
 .z-index--100 {
-  z-index: 100;
+  z-index: 100 !important;
 }
 
 .rbc-calendar {
-  min-height: 80vh;
+  min-height: 80vh !important;
 }

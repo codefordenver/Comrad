@@ -17,6 +17,7 @@ const FORM_OPTIONS = {
   series: (data, deleteFunction) => {
     return (
       <div className="series">
+        <h3>Series</h3>
         <div className="series__show-instance">Edit Show Instance</div>
         <div className="series__show-series">Edit Show Series</div>
         <div className="series__delete">Delete This Show</div>
@@ -33,6 +34,7 @@ const FORM_OPTIONS = {
   instance: (data, deleteFunction) => {
     return (
       <div className="instance">
+        <h3>Instance</h3>
         <div className="series__show-instance">Edit Show Instance</div>
         <div className="series__show-series">Edit Show Series</div>
         <div className="series__delete">Delete This Show</div>
@@ -85,7 +87,7 @@ class NewShowForm extends Component {
   deleteSeriesShow = show => {
     const { deleteShowSeries, setModalVisibility } = this.props;
 
-    deleteShowSeries(show.master_show_uid);
+    deleteShowSeries(show.master_event_id._id);
     setModalVisibility(null, false, null);
   };
 
@@ -98,7 +100,7 @@ class NewShowForm extends Component {
   getShowType(show) {
     if (show._id.includes('-')) {
       return 'series';
-    } else if (show.master_show_uid) {
+    } else if (show.master_event_id) {
       return 'instance';
     } else {
       return 'regular';
@@ -123,13 +125,12 @@ class NewShowForm extends Component {
   handleHostSelect = host => {
     const { props } = this;
     const { updateShow, show } = props;
-    const { _id, master_show_uid } = show;
+    const { _id, master_event_id } = show;
     const showType = this.getShowType(show);
-    console.log(host);
     if (showType === 'series') {
       const { createInstanceShow } = this.props;
       show.show_details.host = host._id;
-      createInstanceShow(master_show_uid, show);
+      createInstanceShow(master_event_id, show);
     } else {
       //Only update host if the show is regular or instance
       updateShow(_id, { 'show_details.host': host._id });
@@ -149,16 +150,16 @@ class NewShowForm extends Component {
       <main className="show show__padding">
         <section className="show__body">
           {show.show_details.title}
-          {/* <div />
+          <div />
           {show._id}
           <div />
-          {'Start Time: ' + show.show_start_time_utc}
+          {'Start Time: ' + show.start_time_utc}
           <div />
-          {'End Time: ' + show.show_end_time_utc}
+          {'End Time: ' + show.end_time_utc}
           <div />
           {'Start Date: ' + show.repeat_rule.repeat_start_date}
           <div />
-          {'End Date: ' + show.repeat_rule.repeat_end_date} */}
+          {'End Date: ' + show.repeat_rule.repeat_end_date}
 
           <DropdownHost
             key={_id}

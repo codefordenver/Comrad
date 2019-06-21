@@ -1,98 +1,19 @@
 const moment = require('moment');
 const { RRule } = require('rrule');
 const _ = require('lodash');
+const db = require('../../../models');
 
 const {
   master_time_id,
   master_time_id__byShowType,
 } = require('./utils__mongoose');
 
-function createRRule(show, queryStartDate, queryEndDate) {
-  const {
-    frequency,
-    repeat_start_date,
-    repeat_end_date,
-    interval,
-    count,
-    byweekday,
-    bymonth,
-    bysetpos,
-    bymonthday,
-  } = show.repeat_rule;
-
-  let newRRule = {};
-
-  if (frequency) {
-    newRRule.freq = frequency;
+function showList(shows, startDate, endDate) {
+  //Perform this check as the create route is an object, and the find route is an array.
+  //This makes sure everything is an iterable array before going into the reducers.
+  if (!Array.isArray(shows)) {
+    shows = [shows];
   }
-
-  queryStartDate = new Date(
-    moment(queryStartDate).format('YYYY-MM-DDTHH:mm:ssZ'),
-  );
-  if (moment(repeat_start_date).isAfter(moment(queryStartDate))) {
-    newRRule.dtstart = repeat_start_date;
-  } else {
-    newRRule.dtstart = queryStartDate;
-  }
-
-  queryEndDate = new Date(moment(queryEndDate).format('YYYY-MM-DDTHH:mm:ssZ'));
-  if (moment(repeat_end_date).isBefore(moment(queryEndDate))) {
-    newRRule.until = repeat_end_date;
-  } else {
-    newRRule.until = queryEndDate;
-  }
-
-  if (count) {
-    newRRule.count = count;
-  }
-
-  if (interval) {
-    newRRule.interval = interval;
-  }
-
-  if (byweekday) {
-    newRRule.byweekday = byweekday.map(day => {
-      // dayList is used for imported shows
-      const dayList = {
-        0: 'MO',
-        1: 'TU',
-        2: 'WE',
-        3: 'TH',
-        4: 'FR',
-        5: 'SA',
-        6: 'SU',
-      };
-
-      if (dayList[day]) {
-        day = dayList[day];
-      }
-
-      return RRule[day];
-    });
-  }
-
-  if (bymonth) {
-    newRRule.bymonth = [bymonth];
-  }
-
-  if (bysetpos) {
-    newRRule.bysetpos = [bysetpos];
-  }
-
-  if (bymonthday) {
-    newRRule.bymonthday = [bymonthday];
-  }
-
-  /**
-   * Partial fix for DST.
-   * By setting the time to 12 UTC instead of 0 UTC, it does not shift by a date in moment as the time is not midnight before DST correction.
-   *  */
-  newRRule.byhour = [12];
-
-  return newRRule;
-}
-
-function showList(shows, startDate = null, endDate = null) {
   //Filter all shows that are series
   const allSeriesShows = reduceShowsByRepeatProperty(shows, true);
 
@@ -119,14 +40,86 @@ function showList(shows, startDate = null, endDate = null) {
   });
 
   //Combined series and instance shows by object ID and then return the final array
-  const combinedObject = { ...seriesKeyBy, ...instanceKeyBy };
-  const convertedShowsObjectToArray = _.values(combinedObject);
-  return convertedShowsObjectToArray;
+  let showsToReturn = { ...seriesKeyBy, ...instanceKeyBy };
+
+  //transform the object back to an array
+  let showsToReturnArray = [];
+  _.mapKeys(showsToReturn, function(value) {
+    showsToReturnArray.push(value);
+  });
+
+  //sort the array by event start time
+  showsToReturnArray = showsToReturnArray.sort(function(a, b) {
+    if (new Date(a.start_time_utc) > new Date(b.start_time_utc)) {
+      return 1;
+    } else if (new Date(a.start_time_utc) === new Date(b.start_time_utc)) {
+      return 0;
+    } else {
+      return -1;
+    }
+  });
+
+  return showsToReturnArray;
+}
+
+function createRRule(show) {
+  const {
+    frequency,
+    repeat_start_date,
+    repeat_end_date,
+    interval,
+    count,
+    byweekday,
+    bymonth,
+    bysetpos,
+    bymonthday,
+  } = show.repeat_rule;
+
+  let newRRule = {};
+
+  if (frequency) {
+    newRRule.freq = frequency;
+  }
+
+  newRRule.dtstart = new Date(repeat_start_date);
+
+  newRRule.until = new Date(repeat_end_date);
+
+  if (count) {
+    newRRule.count = count;
+  }
+
+  if (interval) {
+    newRRule.interval = interval;
+  }
+
+  if (byweekday) {
+    newRRule.byweekday = byweekday.map(day => {
+      return RRule[day];
+    });
+  }
+
+  if (bymonth) {
+    newRRule.bymonth = [bymonth];
+  }
+
+  if (bysetpos) {
+    newRRule.bysetpos = [bysetpos];
+  }
+
+  if (bymonthday) {
+    newRRule.bymonthday = [bymonthday];
+  }
+
+  return newRRule;
 }
 
 function reduceShowsByRepeatProperty(shows, recurringCheckValue) {
   const reducer = (accShows, currentShow) => {
-    if (currentShow.is_recurring === recurringCheckValue) {
+    if (
+      currentShow.is_recurring === recurringCheckValue ||
+      (currentShow.is_recurring === undefined && recurringCheckValue === false)
+    ) {
       return [...accShows, currentShow];
     }
     return accShows;
@@ -137,74 +130,127 @@ function reduceShowsByRepeatProperty(shows, recurringCheckValue) {
   return reducedShowList;
 }
 
-function returnDatesArrayByRepeatRule(show, startDate = null, endDate = null) {
-  const { is_recurring } = show;
-
-  if (is_recurring) {
-    const rule = new RRule(createRRule(show, startDate, endDate));
-    try {
-      return rule.all();
-    } catch (e) {
-      console.log('Error in returnDatesArrayByRepeatRule');
-      console.log(e);
-      return null;
-    }
+function returnDatesArrayByRepeatRule(show, startDate, endDate) {
+  const rule = new RRule(createRRule(show));
+  try {
+    return rule.between(new Date(startDate), new Date(endDate), true);
+  } catch (e) {
+    console.log('Error in returnDatesArrayByRepeatRule');
+    console.log(e);
+    return null;
   }
 }
 
-function momentCombineDayAndTime(desiredDate, desiredTime) {
-  //https://stackoverflow.com/questions/21918095/moment-js-how-to-detect-daylight-savings-time-and-add-one-day
-  //Need to detect and handle DST, days are offset by 1 day in november/march.
-  const hours = moment(desiredTime).hours();
-  const minutes = moment(desiredTime).minutes();
+function combineDayAndTime(
+  desiredDate,
+  desiredTime,
+  format = 'MOMENT',
+  type = 'START',
+) {
+  const desiredTime__hours = moment(desiredTime).hours();
+  const desiredTime__minutes = moment(desiredTime).minutes();
+  const desiredDate__hours = moment(desiredDate).hours();
+  const desiredDate__minutes = moment(desiredDate).minutes();
 
-  const returnedValue = moment(desiredDate)
-    .hours(hours)
-    .minutes(minutes)
-    .seconds(0);
+  let returnedValue = null;
 
-  return returnedValue;
+  if (
+    //Both date and time happen at midnight, so need to subtract 1 minute
+    type === 'END' &&
+    desiredTime__hours === 0 &&
+    desiredTime__minutes === 0 &&
+    desiredDate__hours === 0 &&
+    desiredDate__minutes === 0
+  ) {
+    returnedValue = moment(desiredDate)
+      .subtract(1, 'minute')
+      .seconds(0)
+      .utc();
+  } else if (
+    //Only Time is at midnight, so take date and set 1 minute before midnight
+    type === 'END' &&
+    desiredTime__hours === 0 &&
+    desiredTime__minutes === 0
+  ) {
+    returnedValue = moment(desiredDate)
+      .hours(23)
+      .minutes(59)
+      .seconds(0)
+      .utc();
+  } else {
+    //Neither date or time is at midnight, so set hours
+    returnedValue = moment(desiredDate)
+      .hours(desiredTime__hours)
+      .minutes(desiredTime__minutes)
+      .seconds(0)
+      .utc();
+  }
+
+  if (format === 'MOMENT') {
+    return returnedValue;
+  } else if (format === 'STRING') {
+    return returnedValue.format();
+  } else {
+    console.error('Date string format does not exist in case check');
+    return null;
+  }
 }
 
 function returnSeriesShowsArrayWithNewDates(dateArray, show) {
   const returnedShows = dateArray.map((date, i) => {
     let newShow = { ...show.toObject() };
-    let { show_start_time_utc, show_end_time_utc } = show;
+    let { start_time_utc, end_time_utc } = newShow;
 
-    show_start_time_utc = momentCombineDayAndTime(date, show_start_time_utc);
-    show_end_time_utc = momentCombineDayAndTime(date, show_end_time_utc);
+    start_time_utc = combineDayAndTime(date, start_time_utc, 'STRING');
 
-    newShow.master_show_uid = newShow._id;
-    newShow._id = master_time_id(newShow.master_show_uid, show_start_time_utc);
+    end_time_utc = combineDayAndTime(date, end_time_utc, 'STRING', 'END');
+
+    end_time_utc = combineDayAndTime(date, end_time_utc, 'STRING', 'END');
+
+    newShow.master_event_id = newShow._id;
+    newShow._id = master_time_id(newShow.master_event_id, start_time_utc);
     newShow.master_time_id = newShow._id;
-    newShow.show_start_time_utc = show_start_time_utc;
-    newShow.show_end_time_utc = show_end_time_utc;
+    newShow.start_time_utc = start_time_utc;
+    newShow.end_time_utc = end_time_utc;
     return newShow;
   });
   return returnedShows;
 }
 
-const returnInstanceShowsArray = shows => {
-  return shows.map(show => {
+function returnInstanceShowsArray(shows) {
+  const allInstances = shows.map(show => {
     let instanceShow = { ...show.toObject() };
-    const date = instanceShow.repeat_rule.repeat_start_date;
-    instanceShow.show_start_time_utc = momentCombineDayAndTime(
-      date,
-      instanceShow.show_start_time_utc,
-    );
-    instanceShow.show_end_time_utc = momentCombineDayAndTime(
-      date,
-      instanceShow.show_end_time_utc,
-    );
+    const { master_event_id } = instanceShow;
 
-    instanceShow.show_details.title =
-      instanceShow.show_details.title + ' (Show List - Instance Version)';
+    //This will merge any show details from the master show that are not on the instance.
+    if (master_event_id) {
+      instanceShow.show_details = {
+        ...instanceShow.master_event_id.show_details,
+        ...instanceShow.show_details,
+      };
+    }
+
+    const date = instanceShow.start_time_utc;
+
+    //Update properties of the instance show
+    instanceShow.start_time_utc = combineDayAndTime(
+      date,
+      instanceShow.start_time_utc,
+      'STRING',
+    );
+    instanceShow.end_time_utc = combineDayAndTime(
+      date,
+      instanceShow.end_time_utc,
+      'STRING',
+      'END',
+    );
 
     instanceShow.master_time_id = master_time_id__byShowType(instanceShow);
 
     return instanceShow;
   });
-};
+  return allInstances;
+}
 
 module.exports = {
   showList,

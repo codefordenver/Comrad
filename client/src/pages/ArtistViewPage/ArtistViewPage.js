@@ -5,9 +5,9 @@ import { isEmpty } from 'lodash';
 
 import Alert from '../../components/Alert';
 import Card, { CardBody } from '../../components/Card';
-import FormArtistUpdateName from '../../components/FormArtistUpdateName';
+import FormArtistUpdateName from '../../components/forms/FormArtistUpdateName';
 import LargeText from '../../components/LargeText';
-import TableArtistAlbums from '../../components/TableArtistAlbums';
+import TableArtistAlbums from '../../components/tables/TableArtistAlbums';
 
 import { artistActions } from '../../redux';
 

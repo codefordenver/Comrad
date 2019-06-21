@@ -5,8 +5,9 @@ import { isEmpty } from 'lodash';
 
 import Card, { CardBody } from '../../components/Card';
 import LargeText from '../../components/LargeText';
-import TableAlbumTracks from '../../components/TableAlbumTracks';
+import TableAlbumTracks from '../../components/tables/TableAlbumTracks';
 
+import { Link } from 'react-router-dom';
 import { albumActions } from '../../redux';
 
 class AlbumViewPage extends Component {
@@ -34,6 +35,7 @@ class AlbumViewPage extends Component {
     const { navigateToTrack, props, renderLastUpdated } = this;
     const { albumState } = props;
     const { artist, name, tracks, label, compilation } = albumState.doc;
+    const { url } = this.props.match;
 
     return (
       <div className="album-view-page">
@@ -72,6 +74,9 @@ class AlbumViewPage extends Component {
             <Card>
               <CardBody>
                 <h2 className="mb-1">Tracks</h2>
+                <Link className="add-track-button" to={`${url}/add`}>
+                  Add Track
+                </Link>
                 {isEmpty(tracks) ? (
                   <LargeText align="left">No Tracks</LargeText>
                 ) : (

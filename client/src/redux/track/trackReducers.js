@@ -7,12 +7,19 @@ const initialState = {
     message: '',
     type: '',
   },
+  doc: {},
   error: null,
   loading: false,
 };
 
 export const trackReducer = (state = initialState, { type, payload }) => {
   switch (type) {
+    case trackTypes.ADD:
+      return {
+        doc: {
+          ...payload,
+        },
+      };
     case trackTypes.ALERT:
       return {
         ...state,

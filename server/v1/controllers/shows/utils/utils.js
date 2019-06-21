@@ -133,7 +133,18 @@ function reduceShowsByRepeatProperty(shows, recurringCheckValue) {
 function returnDatesArrayByRepeatRule(show, startDate, endDate) {
   const rule = new RRule(createRRule(show));
   try {
-    return rule.between(new Date(startDate), new Date(endDate), true);
+    let shows = rule.between(new Date(startDate), new Date(endDate), true);
+
+    //the .between() function will not get a currently playing event, so we'll have to check for it
+    const showBefore = rule.before(new Date(startDate));
+    const showDurationInMs = moment(show.end_time_utc).diff(
+      moment(show.start_time_utc),
+    );
+    if (moment(showBefore).add(showDurationInMs, 'ms') > moment(startDate)) {
+      shows.unshift(showBefore);
+    }
+
+    return shows;
   } catch (e) {
     console.log('Error in returnDatesArrayByRepeatRule');
     console.log(e);

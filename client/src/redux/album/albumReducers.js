@@ -22,6 +22,11 @@ export const albumReducer = (state = initialState, { type, payload }) => {
         ...state,
         loading: true,
       };
+    case albumTypes.CLEAR:
+      return {
+        ...state,
+        doc: [],
+      };
     default:
       return state;
   }

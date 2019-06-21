@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { Field, reduxForm } from 'redux-form';
 
-import { artistFindOne, artistUpdate } from '../../../redux/artist';
+import { artistActions } from '../../../redux';
 import { requiredValidate } from '../../../utils/validation.js';
 
 import ButtonIcon from '../../ButtonIcon';
@@ -29,9 +30,9 @@ class FormArtistUpdateName extends Component {
   };
 
   submit = values => {
-    const { artistUpdate } = this.props;
+    const { artistActions } = this.props;
 
-    return artistUpdate(values, () => {
+    return artistActions.update(values, () => {
       this.setState({
         editMode: false,
       });
@@ -93,6 +94,12 @@ const ReduxFormArtistUpdateName = reduxForm({
   enableReinitialize: true,
 })(FormArtistUpdateName);
 
+function mapDispatchToProps(dispatch) {
+  return {
+    artistActions: bindActionCreators({ ...artistActions }, dispatch),
+  };
+}
+
 function mapStateToProps({ artist }) {
   return {
     artist,
@@ -104,5 +111,5 @@ function mapStateToProps({ artist }) {
 
 export default connect(
   mapStateToProps,
-  { artistFindOne, artistUpdate },
+  mapDispatchToProps,
 )(ReduxFormArtistUpdateName);

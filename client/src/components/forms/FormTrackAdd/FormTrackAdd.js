@@ -1,17 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
-import { requiredValidate } from '../../utils/validation';
-import { trackAdd } from '../../redux/track';
-import { albumActions } from '../../redux';
-import Button from '../Button';
-import Input from '../Input';
+import { requiredValidate } from '../../../utils/validation';
+import { albumActions, trackActions } from '../../../redux';
+import Button from '../../Button';
+import Input from '../../Input';
 import { bindActionCreators } from 'redux';
 
 class FormTrackAdd extends Component {
   submit = values => {
-    const { trackAdd, history, albumActions } = this.props;
-    return trackAdd(values, trackData => {
+    const { trackActions, history, albumActions } = this.props;
+    return trackActions.add(values, trackData => {
       albumActions.clear();
       history.push(`/library/album/${trackData.album}`);
     });
@@ -102,7 +101,7 @@ function mapStateToProps(state, ownProps) {
 function mapDispatchToProps(dispatch) {
   return {
     albumActions: bindActionCreators({ ...albumActions }, dispatch),
-    trackAdd: bindActionCreators(trackAdd, dispatch),
+    trackActions: bindActionCreators({ ...trackActions }, dispatch),
   };
 }
 
@@ -113,5 +112,4 @@ const ReduxFormTrackAdd = reduxForm({
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-  //{ trackAdd },
 )(ReduxFormTrackAdd);

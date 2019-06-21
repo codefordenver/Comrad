@@ -1,7 +1,12 @@
-import { TRACK_ADD } from './trackTypes';
+import { trackTypes } from './trackTypes';
 
 const initialState = {
-  tracks: [],
+  alert: {
+    display: false,
+    header: '',
+    message: '',
+    type: '',
+  },
   doc: {},
   error: null,
   loading: false,
@@ -9,13 +14,27 @@ const initialState = {
 
 export const trackReducer = (state = initialState, { type, payload }) => {
   switch (type) {
-    case TRACK_ADD:
+    case trackTypes.ADD:
       return {
         doc: {
           ...payload,
         },
       };
+    case trackTypes.ALERT:
+      return {
+        ...state,
+        alert: {
+          display: true,
+          ...payload,
+        },
+      };
+    case trackTypes.ALERT_CLOSE:
+      const { alert } = initialState;
 
+      return {
+        ...state,
+        alert,
+      };
     default:
       return state;
   }

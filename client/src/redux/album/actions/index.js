@@ -1,7 +1,11 @@
-import { findOne } from './findOne';
+import { alertClose } from './alertClose';
 import { clear } from './clear';
+import { findOne } from './findOne';
+import { remove } from './remove';
 
 export const albumActions = {
-  findOne,
+  alertClose,
   clear,
+  findOne,
+  remove,
 };

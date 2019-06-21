@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import Card, { CardBody } from '../../components/Card';
 import { connect } from 'react-redux';
-import FormTrackAdd from '../../components/FormTrackAdd';
+import FormTrackAdd from '../../components/forms/FormTrackAdd';
 
 class TrackAddPage extends Component {
   constructor(props) {

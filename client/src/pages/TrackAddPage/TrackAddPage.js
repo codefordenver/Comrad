@@ -19,26 +19,23 @@ class TrackAddPage extends Component {
 
   findMaxDiskTrackNumbers() {
     const { tracks } = this.props.album.doc;
-    console.log(tracks.length);
+
     let array = [];
     if (tracks.length) {
       //if there are no existing tracks, default disk and track number is 1
+      let maxDiskNumber = 1;
+      let maxTrackNumber = 1;
       for (var key in tracks) {
-        array.push(tracks[key].disk_number);
-      }
-      var maxDiskNumber = array.reduce(function(a, b) {
-        return Math.max(a, b);
-      });
-
-      array = [];
-      for (var key in tracks) {
-        if (tracks[key].disk_number === maxDiskNumber) {
-          array.push(tracks[key].track_number);
+        if (tracks[key].disk_number >= maxDiskNumber) {
+          if (tracks[key].disk_number > maxDiskNumber) {
+            maxDiskNumber = tracks[key].disk_number;
+            maxTrackNumber = tracks[key].track_number;
+          } else {
+            maxTrackNumber = Math.max(maxTrackNumber, tracks[key].track_number);
+          }
         }
       }
-      var maxTrackNumber = array.reduce(function(a, b) {
-        return Math.max(a, b);
-      });
+
       this.setState({
         maxDiskNumber: maxDiskNumber,
         maxTrackNumber: maxTrackNumber,
@@ -49,11 +46,11 @@ class TrackAddPage extends Component {
   render() {
     const { name, tracks, _id, artist } = this.props.album.doc;
     return (
-      <div>
+      <div className="track-add-page">
         <Card>
           <CardBody>
             <h1>Add Track to Album</h1>
-            <h2 className="album-name">Album: {name}</h2>
+            <h2 className="track-add-page__album-name">Album: {name}</h2>
             {artist && (
               <FormTrackAdd
                 maxDiskNumber={this.state.maxDiskNumber}

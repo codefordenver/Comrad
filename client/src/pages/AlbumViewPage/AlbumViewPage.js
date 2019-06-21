@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { isEmpty } from 'lodash';
@@ -8,7 +7,6 @@ import Card, { CardBody } from '../../components/Card';
 import LargeText from '../../components/LargeText';
 import TableAlbumTracks from '../../components/TableAlbumTracks';
 
-import { albumFindOne } from '../../redux/album';
 import { Link } from 'react-router-dom';
 import { albumActions } from '../../redux';
 

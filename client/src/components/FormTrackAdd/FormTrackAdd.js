@@ -9,15 +9,6 @@ import Input from '../Input';
 import { bindActionCreators } from 'redux';
 
 class FormTrackAdd extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
-  clear() {
-    return albumActions.clear();
-  }
-
   submit = values => {
     const { trackAdd, history, albumActions } = this.props;
     return trackAdd(values, trackData => {

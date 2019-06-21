@@ -156,7 +156,9 @@ class NewShowForm extends Component {
       <main className="show show__padding">
         <section className="show__body">
           <div className="event__tooltip__title">{show.show_details.title}</div>
-          {true && this.showDebugData(show)}
+
+          {false && this.showDebugData(show)}
+
           <DropdownHost
             key={_id}
             _id={_id}

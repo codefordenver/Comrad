@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import Button from '../../components/Button';
-import FormUserCreate from '../../components/FormUserCreate';
+import FormUserCreate from '../../components/forms/FormUserCreate';
 
 class SignupPage extends Component {
   render() {

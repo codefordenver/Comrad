@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 
 import { authActions } from '../../redux/auth';
 import { userActions } from '../../redux/user';
-import FormHostAdd from '../FormHostAdd';
+import FormHostAdd from '../forms/FormHostAdd';
 import Input from '../Input';
 import Modal from '../Modal';
 import { formatHostName } from '../../utils/formatters';
@@ -24,7 +24,7 @@ class DropdownHost extends Component {
       host,
       userActions,
     } = this.props;
-    console.log(this.props);
+    //console.log(this.props);
     const hostDisplayName = host ? formatHostName(host) : '';
 
     //run a host search on the existing value so that the host list is populated with information

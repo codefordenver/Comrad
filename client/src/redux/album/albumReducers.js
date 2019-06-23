@@ -1,6 +1,12 @@
 import { albumTypes } from './albumTypes';
 
 const initialState = {
+  alert: {
+    display: false,
+    header: '',
+    message: '',
+    type: '',
+  },
   doc: {},
   docs: [],
   error: null,
@@ -9,6 +15,21 @@ const initialState = {
 
 export const albumReducer = (state = initialState, { type, payload }) => {
   switch (type) {
+    case albumTypes.ALERT:
+      return {
+        ...state,
+        alert: {
+          display: true,
+          ...payload,
+        },
+      };
+    case albumTypes.ALERT_CLOSE:
+      const { alert } = initialState;
+
+      return {
+        ...state,
+        alert,
+      };
     case albumTypes.FIND_ONE:
       return {
         ...state,
@@ -21,6 +42,11 @@ export const albumReducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         loading: true,
+      };
+    case albumTypes.CLEAR:
+      return {
+        ...state,
+        doc: [],
       };
     default:
       return state;

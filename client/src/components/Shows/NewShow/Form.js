@@ -10,6 +10,7 @@ import DropdownHost from '../../DropdownHost';
 import Input from '../../Input';
 import ModalClose from '../../Modal/Modal__Button_Close';
 import RepeatDropdown from './RepeatDropdown';
+import TextArea from '../../TextArea';
 
 import { getShowSelected, getSearchDate } from '../../../redux/show';
 import { requiredValidate } from '../../../utils/validation';
@@ -28,7 +29,7 @@ class NewShowForm extends Component {
                 className="grid-span--2"
                 component={Input}
                 label="Title"
-                name="title"
+                name="show_details.title"
                 type="text"
                 validate={[requiredValidate]}
               />
@@ -37,7 +38,7 @@ class NewShowForm extends Component {
                 className="z-index--250"
                 component={DatePicker__React}
                 label="From"
-                name="show_start_time_utc"
+                name="start_time_utc"
                 type="time"
                 validate={[requiredValidate]}
                 dateFormat="MM/dd/yyyy h:mm aa"
@@ -48,7 +49,7 @@ class NewShowForm extends Component {
                 className="z-index--250"
                 component={DatePicker__React}
                 label="To"
-                name="show_end_time_utc"
+                name="end_time_utc"
                 validate={[requiredValidate]}
                 dateFormat="MM/dd/yyyy h:mm aa"
                 showTimeInput
@@ -66,7 +67,7 @@ class NewShowForm extends Component {
                 component={Input}
                 dirtyOverride
                 label="Repeat"
-                name="repeat"
+                name="is_recurring"
                 type="checkbox"
               />
 
@@ -88,36 +89,32 @@ class NewShowForm extends Component {
 
               <Field
                 className="grid-span--2"
-                component={Input}
+                component={TextArea}
                 label="Summary"
-                name="summary"
+                name="show_details.summary"
                 type="text"
               />
-              {/**
-                  *Example of text area.  Needs to be turned into a full component to use with redux-forms.
-                  <textarea
-                    name=""
-                    id=""
-                    style={{ resize: 'none', width: '100%' }}
-                    rows="7"
-                  />*/}
 
               <Field
                 className="grid-span--2"
-                component={Input}
+                component={TextArea}
                 label="Description"
-                name="description"
+                name="show_details.description"
                 type="text"
               />
 
               <Field
                 label="Producer"
-                name="producer"
+                name="show_details.producer"
                 component={Input}
                 type="text"
               />
 
-              <Field label="Host" name="host" component={DropdownHost} />
+              <Field
+                label="Host"
+                name="show_details.host"
+                component={DropdownHost}
+              />
             </div>
 
             <div className="new-show-form__buttons">
@@ -143,17 +140,17 @@ function mapStateToProps(state) {
     const searchDates = getSearchDate(state.show);
 
     return {
-      show_start_time_utc: moment(selectedShow.start),
-      show_end_time_utc: moment(selectedShow.end),
+      start_time_utc: moment(selectedShow.start),
+      end_time_utc: moment(selectedShow.end),
       repeat_start_date: moment(selectedShow.start),
       repeat_end_date: moment(selectedShow.end),
       startDate: searchDates.start,
       endDate: searchDates.end,
-      repeat: false,
+      is_recurring: false,
     };
   };
 
-  const isRepeat = selector(state, 'repeat');
+  const isRepeat = selector(state, 'is_recurring');
 
   return {
     initialValues: initialValues(state),

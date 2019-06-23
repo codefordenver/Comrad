@@ -1,23 +1,24 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { isEmpty } from 'lodash';
 
 import Alert from '../../components/Alert';
 import Card, { CardBody } from '../../components/Card';
-import FormArtistUpdateName from '../../components/FormArtistUpdateName';
+import FormArtistUpdateName from '../../components/forms/FormArtistUpdateName';
 import LargeText from '../../components/LargeText';
-import TableArtistAlbums from '../../components/TableArtistAlbums';
+import TableArtistAlbums from '../../components/tables/TableArtistAlbums';
 
-import { artistAlertClose, artistFindOne } from '../../redux/artist';
+import { artistActions } from '../../redux';
 
 class ArtistViewPage extends Component {
   componentDidMount() {
-    const { artist, artistFindOne, match } = this.props;
+    const { artist, artistActions, match } = this.props;
     const { _id } = artist.doc;
     const { id } = match.params;
 
     if (id !== _id) {
-      artistFindOne(id);
+      artistActions.findOne(id);
     }
   }
 
@@ -32,7 +33,7 @@ class ArtistViewPage extends Component {
 
   render() {
     const { navigateToAlbum, props } = this;
-    const { match, artist, artistAlertClose } = props;
+    const { match, artist, artistActions } = props;
     const { alert, doc, loading } = artist;
     const { albums, updated_at } = doc;
     const dateObj = new Date(updated_at);
@@ -40,7 +41,7 @@ class ArtistViewPage extends Component {
 
     return (
       <div className="artist-view">
-        <Alert alertClose={artistAlertClose} {...alert} />
+        <Alert alertClose={artistActions.alertClose} {...alert} />
         {!loading ? (
           <>
             <Card>
@@ -67,6 +68,12 @@ class ArtistViewPage extends Component {
   }
 }
 
+function mapDispatchToProps(dispatch) {
+  return {
+    artistActions: bindActionCreators({ ...artistActions }, dispatch),
+  };
+}
+
 function mapStateToProps({ artist }) {
   return {
     artist,
@@ -75,5 +82,5 @@ function mapStateToProps({ artist }) {
 
 export default connect(
   mapStateToProps,
-  { artistAlertClose, artistFindOne },
+  mapDispatchToProps,
 )(ArtistViewPage);

@@ -5,6 +5,7 @@ import _ from 'lodash';
 import moment from 'moment';
 import RRule from 'rrule';
 import { InputLabel } from '../../Input';
+import { requiredValidate } from '../../../utils/validation';
 
 class RepeatDropdown extends Component {
   definedRepeatRules = date => {
@@ -24,38 +25,38 @@ class RepeatDropdown extends Component {
     const rules = {
       daily: {
         name: 'Every Day',
-        freq: RRule.DAILY,
+        frequency: RRule.DAILY,
       },
       weekdays: {
         name: 'Every Weekday (Mon-Fri)',
-        freq: RRule.WEEKLY,
+        frequency: RRule.WEEKLY,
         byweekday: ['MO', 'TU', 'WE', 'TH', 'FR'],
       },
       weekends: {
         name: 'Weekends (Sat/Sun)',
-        freq: RRule.WEEKLY,
+        frequency: RRule.WEEKLY,
         byweekday: ['SA', 'SU'],
       },
       weekly: {
         name: `Weekly on ${dateSpelled}`,
-        freq: RRule.WEEKLY,
+        frequency: RRule.WEEKLY,
         byweekday: [dayToRRule[dateSpelled]],
       },
       byposition_FirstOfMonth: {
         name: `First ${dateSpelled} of the Month`,
-        freq: RRule.MONTHLY,
+        frequency: RRule.MONTHLY,
         byweekday: [dayToRRule[dateSpelled]],
         bysetpos: 1,
       },
       byposition_LastOfMonth: {
         name: `Last ${dateSpelled} of the Month`,
-        freq: RRule.MONTHLY,
+        frequency: RRule.MONTHLY,
         byweekday: [dayToRRule[dateSpelled]],
         bysetpos: -1,
       },
       byday: {
         name: `On day ${dateNumber} of the month`,
-        freq: RRule.MONTHLY,
+        frequency: RRule.MONTHLY,
         bymonthday: dateNumber,
       },
     };
@@ -65,8 +66,8 @@ class RepeatDropdown extends Component {
 
   render() {
     const { definedRepeatRules, props } = this;
-    const { date, meta } = props;
-
+    const { input, date, meta } = props;
+    console.log(input);
     const repeatDropdownList = _.map(definedRepeatRules(date), option => {
       return (
         <option key={option.name} value={JSON.stringify(option)}>
@@ -79,7 +80,12 @@ class RepeatDropdown extends Component {
     //https://stackoverflow.com/questions/40075281/how-to-create-custom-dropdown-field-component-with-redux-form-v6
     return (
       <div className="form-group">
-        <Field name="repeatType" component="select" className="input">
+        <Field
+          name="repeat_rule"
+          component="select"
+          className="input"
+          validate={[requiredValidate]}
+        >
           <option />
           {repeatDropdownList}
         </Field>

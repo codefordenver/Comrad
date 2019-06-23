@@ -245,6 +245,7 @@ function returnInstanceShowsArray(shows) {
       'END',
     );
 
+    instanceShow.master_event_id = master_event_id ? master_event_id._id : null;
     instanceShow.master_time_id = master_time_id__byShowType(instanceShow);
 
     return instanceShow;

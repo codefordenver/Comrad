@@ -46,6 +46,7 @@ class TrackViewPage extends Component {
                 <div className="float-right">
                   Last updated: {this.state.last_updated}
                 </div>
+                <button>Edit</button>
                 <h1 className="mb-0">{this.state.track.name}</h1>
                 <div>
                   {' '}

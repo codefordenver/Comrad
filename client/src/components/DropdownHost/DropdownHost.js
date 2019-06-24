@@ -12,6 +12,7 @@ import Modal from '../Modal';
 import { formatHostName } from '../../utils/formatters';
 
 const ADD_NEW_HOST = 'add_new_host';
+const SHOWS_WITH_NO_HOST = 'shows_with_no_host';
 
 class DropdownHost extends Component {
   constructor(props) {
@@ -192,7 +193,13 @@ class DropdownHost extends Component {
       renderHostListItem,
       state,
     } = this;
-    const { authState, formatHostName, userState } = props;
+    const {
+      authState,
+      formatHostName,
+      showAddNewHostOption = true,
+      showsWithNoHostOption = false,
+      userState,
+    } = props;
     const {
       cachedSearches,
       currentInputValue,
@@ -221,9 +228,15 @@ class DropdownHost extends Component {
       });
     }
 
-    items.push({ _id: null, value: 'No Host' });
+    if (showsWithNoHostOption) {
+      items.push({ _id: SHOWS_WITH_NO_HOST, value: showsWithNoHostOption });
+    }
 
-    items.push(ADD_NEW_HOST);
+    items.push({ _id: null, value: 'Clear' });
+
+    if (showAddNewHostOption) {
+      items.push(ADD_NEW_HOST);
+    }
 
     return (
       <Downshift
@@ -240,7 +253,7 @@ class DropdownHost extends Component {
           highlightedIndex,
           selectedItem,
         }) => (
-          <div key="host-field" className="mb-1">
+          <div key="host-field" className="mb-1 host-field">
             <Input
               className=""
               label="Host"
@@ -317,3 +330,5 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps,
 )(DropdownHost);
+
+export { SHOWS_WITH_NO_HOST };

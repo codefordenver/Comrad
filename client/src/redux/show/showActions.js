@@ -76,8 +76,19 @@ export const deleteShowSeries = show => async dispatch => {
   }
 };
 
-export const searchShow = (startDate, endDate) => async dispatch => {
+export const searchShow = (
+  startDate,
+  endDate,
+  host,
+  onlyDisplayShowsWithNoHost,
+) => async dispatch => {
   const params = { startDate, endDate };
+  if (host != null) {
+    params.host = host;
+  }
+  if (onlyDisplayShowsWithNoHost) {
+    params.showsWithNoHost = true;
+  }
   try {
     const response = await axios.get(`/v1/shows/`, {
       params: params,

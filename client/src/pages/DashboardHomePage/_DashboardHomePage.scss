@@ -1,28 +1,45 @@
-.dashboard {
+.dhp {
   display: grid;
-  grid-template-columns: 3fr 1fr;
-  grid-gap: 4rem 2rem;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: auto auto auto;
+  grid-gap: 1rem;
 
-  &__upcoming-shows {
-
-  }
-
-  &__past-shows {
-    grid-column: 1;
-    grid-row: 2;
-  }
-
-  &__currently-on-air {
-    grid-column: 2;
-    grid-row: 1 / span 2;
-    font-size: 1.5rem;
-
-    &__show-title {
-      font-size: 2rem;
+  &__section {
+    &-1 {
+      grid-column: 1 / span 2;
+      grid-row: 2;
     }
 
-    &__up-next {
-      margin-top: 3rem;
+    &-2 {
+      grid-column: 1 / span 2;
+      grid-row: 3;
     }
+
+    &-3 {
+      grid-column: 1;
+      grid-row: 1;
+    }
+
+    &-4 {
+      grid-column: 2;
+      grid-row: 1;
+    }
+
+    &-5 {
+      grid-column: 3;
+      grid-row: 1 / span 3;
+    }
+  }
+}
+
+.up-next {
+  &__host-name {
+    font-size: 1.4rem;
+    text-align: center;
+  }
+
+  &__show-time {
+    font-size: 1.2rem;
+    text-align: center;
   }
 }

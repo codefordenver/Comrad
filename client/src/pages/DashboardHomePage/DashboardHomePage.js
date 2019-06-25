@@ -3,7 +3,9 @@ import moment from 'moment';
 
 import { showAPI } from '../../api';
 
+import CalendarAgenda from '../../components/CalendarAgenda';
 import Card, { CardBody } from '../../components/Card';
+import LargeText from '../../components/LargeText';
 import Loading from '../../components/Loading';
 import ShowListForUser from '../../components/ShowListForUser';
 
@@ -47,12 +49,16 @@ export default class DashboardHomePage extends Component {
     const today = moment();
     const todayPlus3Months = moment().add('3', 'month');
     const oneYearAgo = moment().subtract('1', 'year');
+
     return (
-      <Card>
-        <CardBody>
-          <div className="dashboard">
-            <div className="dashboard__upcoming-shows">
+      <div className="dhp">
+        {loadingOnAirData && <Loading />}
+
+        <Card className="dhp__section-1">
+          <CardBody>
+            <div className="upcoming-shows">
               <h2>My Upcoming Shows</h2>
+
               <ShowListForUser
                 maxItems="3"
                 startDate={today}
@@ -60,8 +66,14 @@ export default class DashboardHomePage extends Component {
                 noItemsText="You have no upcoming shows in the next three months."
               />
             </div>
-            <div className="dashboard__past-shows">
+          </CardBody>
+        </Card>
+
+        <Card className="dhp__section-2">
+          <CardBody>
+            <div className="past-shows">
               <h2>My Past Shows</h2>
+
               <ShowListForUser
                 maxItems="10"
                 doNotIncludeNowPlaying={true}
@@ -71,53 +83,73 @@ export default class DashboardHomePage extends Component {
                 noItemsText="You haven't hosted any shows in the past year."
               />
             </div>
-            <div className="dashboard__currently-on-air">
-              <h2>Currently On Air</h2>
-              {loadingOnAirData && <Loading />}
-              {!loadingOnAirData && (
-                <div>
-                  {currentlyOnAir && (
-                    <div>
-                      <div className="dashboard__currently-on-air__show-title">
+          </CardBody>
+        </Card>
+
+        {!loadingOnAirData && (
+          <>
+            <Card className="dhp__section-3">
+              <CardBody>
+                <div className="currently-on-air">
+                  <h2 className="text-center">Currently On Air</h2>
+                  {currentlyOnAir ? (
+                    <>
+                      <div className="dhp__currently-on-air__show-title">
                         {currentlyOnAir.show_details.title}
                       </div>
+
                       <div>
                         {currentlyOnAir.show_details.host != null &&
                           'hosted by ' +
                             formatHostName(currentlyOnAir.show_details.host)}
                       </div>
+
                       <div>
                         {moment(currentlyOnAir.start_time_utc).format('LT')} -{' '}
                         {moment(currentlyOnAir.end_time_utc).format('LT')}
                       </div>
-                    </div>
+                    </>
+                  ) : (
+                    <LargeText align="center">No Show On Air</LargeText>
                   )}
-                  {!currentlyOnAir && (
-                    <div>There is no show currently playing.</div>
-                  )}
+                </div>
+              </CardBody>
+            </Card>
+
+            <Card className="dhp__section-4">
+              <CardBody>
+                <div className="up-next">
+                  <h2 className="mb-1 text-center">Up Next</h2>
+
                   {upNext && (
-                    <div className="dashboard__currently-on-air__up-next">
-                      <h4>Up Next</h4>
-                      <div className="dashboard__currently-on-air__show-title">
+                    <>
+                      <h4 className="text-center">
                         {upNext.show_details.title}
-                      </div>
-                      <div>
+                      </h4>
+                      <div className="up-next__host-name">
                         {upNext.show_details.host != null &&
                           'hosted by ' +
                             formatHostName(upNext.show_details.host)}
+                        Devin Zimmerman
                       </div>
-                      <div>
+                      <div className="up-next__show-time">
                         {moment(upNext.start_time_utc).format('LT')} -{' '}
                         {moment(upNext.end_time_utc).format('LT')}
                       </div>
-                    </div>
+                    </>
                   )}
                 </div>
-              )}
-            </div>
-          </div>
-        </CardBody>
-      </Card>
+              </CardBody>
+            </Card>
+
+            <Card className="dhp__section-5">
+              <CardBody>
+                <CalendarAgenda />
+              </CardBody>
+            </Card>
+          </>
+        )}
+      </div>
     );
   }
 }

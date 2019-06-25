@@ -26,6 +26,7 @@ class TrackViewPage extends Component {
 
   render() {
     let artistsHtml = [];
+    const { url } = this.props.match;
     if (this.state.track != null) {
       for (var i = 0; i < this.state.track.artists.length; i++) {
         let artist = this.state.track.artists[i];
@@ -47,7 +48,7 @@ class TrackViewPage extends Component {
                 <div className="float-right">
                   Last updated: {this.state.last_updated}
                 </div>
-                <Link className="track-edit-button-wrapper" to="/">
+                <Link className="track-edit-button-wrapper" to={`${url}/edit`}>
                   <div className="track-edit-button">
                     Edit <i className="fas fa-edit" />
                   </div>

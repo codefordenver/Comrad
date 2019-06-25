@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { Component } from 'react';
+import classnames from 'classnames';
 
-const Card = props => {
-  const { children } = props;
+class Card extends Component {
+  render() {
+    const { children, className } = this.props;
 
-  return <div className="card">{children}</div>;
-};
+    return <div className={classnames('card', className)}>{children}</div>;
+  }
+}
 
 export default Card;

@@ -11,6 +11,7 @@ import {
   SHOW_SELECTED,
   SHOW_CREATE_INSTANCE,
 } from './showTypes';
+import { showAPI } from '../../api';
 
 export const clearShows = () => async dispatch => {
   dispatch({ type: SHOW_CLEAR });
@@ -79,24 +80,20 @@ export const deleteShowSeries = show => async dispatch => {
 export const searchShow = (
   startDate,
   endDate,
-  host,
-  onlyDisplayShowsWithNoHost,
+  host = null,
+  onlyDisplayShowsWithNoHost = false,
 ) => async dispatch => {
-  const params = { startDate, endDate };
-  if (host != null) {
-    params.host = host;
-  }
-  if (onlyDisplayShowsWithNoHost) {
-    params.showsWithNoHost = true;
-  }
   try {
-    const response = await axios.get(`/v1/shows/`, {
-      params: params,
-    });
+    const response = await showAPI.find(
+      startDate,
+      endDate,
+      host,
+      onlyDisplayShowsWithNoHost,
+    );
 
     dispatch({
       type: SHOW_SEARCH,
-      payload: { data: response.data, params: params },
+      payload: { data: response.data, params: { startDate, endDate } },
     });
   } catch (e) {
     dispatch({ type: SHOW_ERROR, payload: e });

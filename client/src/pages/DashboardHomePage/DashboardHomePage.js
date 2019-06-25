@@ -91,20 +91,20 @@ export default class DashboardHomePage extends Component {
             <Card className="dhp__section-3">
               <CardBody>
                 <div className="currently-on-air">
-                  <h2 className="text-center">Currently On Air</h2>
+                  <h2 className="text-center  mb-1">Currently On Air</h2>
                   {currentlyOnAir ? (
                     <>
-                      <div className="dhp__currently-on-air__show-title">
+                      <h4 className="text-center">
                         {currentlyOnAir.show_details.title}
-                      </div>
+                      </h4>
 
-                      <div>
+                      <div className="currently-on-air__host-name">
                         {currentlyOnAir.show_details.host != null &&
                           'hosted by ' +
                             formatHostName(currentlyOnAir.show_details.host)}
                       </div>
 
-                      <div>
+                      <div className="currently-on-air__show-time">
                         {moment(currentlyOnAir.start_time_utc).format('LT')} -{' '}
                         {moment(currentlyOnAir.end_time_utc).format('LT')}
                       </div>
@@ -130,7 +130,6 @@ export default class DashboardHomePage extends Component {
                         {upNext.show_details.host != null &&
                           'hosted by ' +
                             formatHostName(upNext.show_details.host)}
-                        Devin Zimmerman
                       </div>
                       <div className="up-next__show-time">
                         {moment(upNext.start_time_utc).format('LT')} -{' '}

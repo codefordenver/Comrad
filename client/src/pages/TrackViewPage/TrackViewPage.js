@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import { formatTotalSecondsAsMMSS } from '../../utils/formatters';
@@ -46,11 +47,11 @@ class TrackViewPage extends Component {
                 <div className="float-right">
                   Last updated: {this.state.last_updated}
                 </div>
-                <div className="track-edit-button-wrapper">
+                <Link className="track-edit-button-wrapper" to="/">
                   <div className="track-edit-button">
                     Edit <i className="fas fa-edit" />
                   </div>
-                </div>
+                </Link>
                 <h1 className="mb-0">{this.state.track.name}</h1>
                 <div>
                   {' '}

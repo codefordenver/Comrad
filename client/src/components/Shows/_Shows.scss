@@ -42,3 +42,39 @@ $show_start_z: 200;
 .rbc-calendar {
   min-height: 80vh !important;
 }
+
+.event-series {
+  background-color: #007283;
+  border-width: 1 !important;
+  border-color: black !important;
+}
+
+.event-instance {
+  background-color: #ed553b;
+  border-width: 1 !important;
+  border-color: black !important;
+}
+
+.event-regular {
+  background-color: green;
+  border-width: 1 !important;
+  border-color: black !important;
+}
+
+.event__tooltip__title {
+  color: $color-primary;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.event__tooltip__delete {
+  color: $color-primary;
+  &:hover {
+    color: $color-primary-darker;
+    cursor: pointer;
+  }
+}
+
+.not_done {
+  color: pink;
+}

@@ -33,15 +33,25 @@ function createInstance(req, res) {
         db.Show.populate(dbShow, populateShowHost()).then(dbShow => {
           db.Show.populate(dbShow, populateMasterShow())
             .then(dbShow => {
-              let newDbShow = { ...dbShow.toObject() };
-              newDbShow.show_details.title =
-                dbShow.show_details.title +
-                ' (Updated Host - Instance Version)';
-              newDbShow.master_time_id = master_time_id(
-                dbShow.master_event_id._id,
-                dbShow.replace_show_date,
+              let returnedShow = { ...dbShow.toObject() };
+              const {
+                master_event_id,
+                replace_event_date,
+                show_details,
+              } = dbShow;
+
+              returnedShow.show_details.title =
+                show_details.title + ' (Updated Host - Instance Version)';
+
+              returnedShow.master_event_id = master_event_id
+                ? master_event_id._id
+                : null;
+
+              returnedShow.master_time_id = master_time_id(
+                returnedShow.master_event_id,
+                replace_event_date,
               );
-              res.json(newDbShow);
+              res.json(returnedShow);
             })
             .catch(err => {
               res.status(422).json(err);

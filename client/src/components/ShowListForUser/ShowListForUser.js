@@ -6,7 +6,6 @@ import moment from 'moment';
 import { showAPI } from '../../api';
 
 import Loading from '../Loading';
-import Table from '../Table';
 
 class ShowListForUser extends Component {
   state = {
@@ -107,10 +106,10 @@ class ShowListForUser extends Component {
       <div className="show-list-for-user">
         {loading && <Loading />}
         {data.length > 0 ? (
-          <Table>
+          <table>
             {renderHeader()}
             {renderBody()}
-          </Table>
+          </table>
         ) : null}
         {!loading && data.length === 0 && <span>{noItemsText}</span>}
       </div>

@@ -26,7 +26,8 @@ class TrackViewPage extends Component {
 
   render() {
     let artistsHtml = [];
-    const { url } = this.props.match;
+    const { match } = this.props;
+    const { url } = match;
     if (this.state.track != null) {
       for (var i = 0; i < this.state.track.artists.length; i++) {
         let artist = this.state.track.artists[i];

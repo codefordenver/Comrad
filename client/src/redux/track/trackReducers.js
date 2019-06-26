@@ -48,6 +48,12 @@ export const trackReducer = (state = initialState, { type, payload }) => {
         ...state,
         loading: true,
       };
+    case trackTypes.EDIT:
+      return {
+        doc: {
+          ...payload,
+        },
+      };
     default:
       return state;
   }

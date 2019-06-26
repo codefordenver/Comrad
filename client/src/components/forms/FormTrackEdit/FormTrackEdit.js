@@ -8,6 +8,15 @@ import Input from '../../Input';
 import { bindActionCreators } from 'redux';
 
 class FormTrackEdit extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      duration_in_seconds: props.duration_in_seconds,
+      minutes: 0,
+      seconds: 0,
+    };
+  }
+
   submit = values => {
     return;
   };
@@ -15,7 +24,6 @@ class FormTrackEdit extends Component {
   render() {
     const { props, submit } = this;
     const { handleSubmit } = props;
-    console.log(this.props);
 
     return (
       <form className="form-track-edit">
@@ -51,7 +59,6 @@ class FormTrackEdit extends Component {
             name="minutes"
             className="minutes"
             type="number"
-            placeholder="00"
             autoFocus
             validate={requiredValidate}
           />
@@ -61,7 +68,6 @@ class FormTrackEdit extends Component {
             name="seconds"
             className="seconds"
             type="number"
-            placeholder="00"
             autoFocus
             validate={requiredValidate}
           />
@@ -75,13 +81,16 @@ class FormTrackEdit extends Component {
 }
 
 function mapStateToProps(state, ownProps) {
-  //console.log(ownProps)
+  const minutes = Math.floor(parseInt(ownProps.duration_in_seconds) / 60);
+  const seconds = ownProps.duration_in_seconds - minutes * 60;
   return {
     initialValues: {
       disk_number: ownProps.disk_number,
       duration_in_seconds: ownProps.duration_in_seconds,
       name: ownProps.name,
       track_number: ownProps.track_number,
+      minutes: minutes,
+      seconds: seconds,
     },
   };
 }

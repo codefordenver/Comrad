@@ -10,15 +10,15 @@ import { bindActionCreators } from 'redux';
 class FormTrackEdit extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      duration_in_seconds: props.duration_in_seconds,
-      minutes: 0,
-      seconds: 0,
-    };
+    this.state = {};
   }
 
   submit = values => {
-    return;
+    const { trackActions, history, albumActions } = this.props;
+    return trackActions.edit(values, trackData => {
+      albumActions.clear();
+      history.push(`/library/album/${trackData.album}`);
+    });
   };
 
   render() {
@@ -26,7 +26,14 @@ class FormTrackEdit extends Component {
     const { handleSubmit } = props;
 
     return (
-      <form className="form-track-edit">
+      <form
+        className="form-track-edit"
+        onSubmit={handleSubmit(data => {
+          submit({
+            ...data,
+          });
+        })}
+      >
         <Field
           component={Input}
           label="Disk Number"
@@ -95,15 +102,18 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
-/*function mapDispatchToProps(dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     albumActions: bindActionCreators({ ...albumActions }, dispatch),
     trackActions: bindActionCreators({ ...trackActions }, dispatch),
   };
-}*/
+}
 
 const ReduxFormTrackEdit = reduxForm({
   form: 'trackEdit',
 })(FormTrackEdit);
 
-export default connect(mapStateToProps)(ReduxFormTrackEdit);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(ReduxFormTrackEdit);

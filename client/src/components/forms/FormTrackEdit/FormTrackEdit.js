@@ -15,7 +15,7 @@ class FormTrackEdit extends Component {
   render() {
     const { props, submit } = this;
     const { handleSubmit } = props;
-    //console.log(this.props)
+    console.log(this.props);
 
     return (
       <form className="form-track-edit">
@@ -76,7 +76,14 @@ class FormTrackEdit extends Component {
 
 function mapStateToProps(state, ownProps) {
   //console.log(ownProps)
-  return state;
+  return {
+    initialValues: {
+      disk_number: ownProps.disk_number,
+      duration_in_seconds: ownProps.duration_in_seconds,
+      name: ownProps.name,
+      track_number: ownProps.track_number,
+    },
+  };
 }
 
 /*function mapDispatchToProps(dispatch) {

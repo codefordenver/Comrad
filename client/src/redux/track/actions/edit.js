@@ -1,9 +1,9 @@
 import { trackAPI } from '../../../api';
 import { trackTypes } from '../trackTypes';
 
-export const edit = (input, callback, id) => async dispatch => {
+export const edit = (data, callback, id) => async dispatch => {
   try {
-    const track = await trackAPI.findOne(id);
+    const track = await trackAPI.update(id);
     dispatch({ type: track.EDIT, payload: track.data });
     callback(track.data);
   } catch (e) {

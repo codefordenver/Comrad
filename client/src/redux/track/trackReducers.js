@@ -50,6 +50,7 @@ export const trackReducer = (state = initialState, { type, payload }) => {
       };
     case trackTypes.EDIT:
       return {
+        ...state,
         doc: {
           ...payload,
         },

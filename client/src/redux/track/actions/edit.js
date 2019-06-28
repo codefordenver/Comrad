@@ -5,8 +5,8 @@ export const edit = (data, callback) => async dispatch => {
   try {
     const _id = data.id;
     const track = await trackAPI.update(data, _id);
-    dispatch({ type: track.EDIT, payload: track.data });
-    callback(track.data);
+    dispatch({ type: trackTypes.EDIT, payload: track.data });
+    callback(data);
   } catch (e) {
     console.error(e);
     dispatch({

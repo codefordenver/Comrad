@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import axios from 'axios';
 import { formatTotalSecondsAsMMSS } from '../../utils/formatters';
 
 import Card, { CardBody } from '../../components/Card';

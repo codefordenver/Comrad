@@ -98,6 +98,7 @@ function mapStateToProps(state, ownProps) {
       track_number: ownProps.track_number,
       minutes: minutes,
       seconds: seconds,
+      id: ownProps.id,
     },
   };
 }

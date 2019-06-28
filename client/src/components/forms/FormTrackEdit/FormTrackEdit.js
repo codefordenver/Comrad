@@ -17,7 +17,7 @@ class FormTrackEdit extends Component {
     const { trackActions, history, albumActions } = this.props;
     return trackActions.edit(values, trackData => {
       albumActions.clear();
-      history.push(`/library/album/${trackData.album}`);
+      history.push(`/library/album/${trackData.album._id}`);
     });
   };
 
@@ -99,6 +99,7 @@ function mapStateToProps(state, ownProps) {
       minutes: minutes,
       seconds: seconds,
       id: ownProps.id,
+      album: ownProps.album,
     },
   };
 }

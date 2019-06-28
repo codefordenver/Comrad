@@ -2,10 +2,12 @@ import axios from 'axios';
 import { ROOT_USERS_URL } from '../root';
 
 export async function search(values) {
+  const { q, status } = values;
+
   return axios.get(`${ROOT_USERS_URL}/search?`, {
     params: {
-      q: values.q,
-      status: values.status,
+      q,
+      status,
     },
   });
 }

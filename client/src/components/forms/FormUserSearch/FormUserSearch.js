@@ -37,7 +37,6 @@ class FormUserSearch extends Component {
             name="q"
             type="text"
           />
-          <Button type="submit">Search</Button>
         </div>
 
         <div className="fus__filter">

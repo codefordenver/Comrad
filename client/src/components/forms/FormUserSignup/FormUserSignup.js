@@ -1,67 +1,74 @@
 import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { Field, reduxForm } from 'redux-form';
+
+import { userActions } from '../../../redux/user';
+import {
+  emailValidate,
+  passwordConfirmValidate,
+  requiredValidate,
+} from '../../../utils/validation';
 
 import Button from '../../Button';
 import Input from '../../Input';
 
-import { userActions } from '../../../redux/user';
-
-class FormUserCreate extends Component {
+class FormUserSignup extends Component {
   submit = values => {
-    const { userActions } = this.props;
-    userActions.create(values);
+    const { history, userActions } = this.props;
+
+    return userActions.create(values, () => {
+      history.push('/');
+    });
   };
 
   render() {
     const { props, submit } = this;
-    const { handleSubmit } = props;
+    const { handleSubmit, submitting } = props;
 
     return (
-      <form className="fua" onSubmit={handleSubmit(submit)}>
-        <h3 className="fua__headers mb-1">Contact Info</h3>
+      <form onSubmit={handleSubmit(submit)}>
         <Field
-          className="mb-1"
+          className="mb-3"
           component={Input}
           label="First Name"
           name="first_name"
           type="text"
+          validate={requiredValidate}
         />
         <Field
-          className="mb-1"
+          className="mb-3"
           component={Input}
           label="Last Name"
           name="last_name"
           type="text"
+          validate={requiredValidate}
         />
         <Field
-          className="mb-1"
+          className="mb-3"
           component={Input}
           label="Email Address"
           name="email"
           type="text"
+          validate={[requiredValidate, emailValidate]}
         />
-
-        <h3 className="fua__headers mb-1">Password</h3>
-
         <Field
-          className="mb-1"
+          className="mb-3"
           component={Input}
           label="Password"
           name="password"
           type="password"
+          validate={requiredValidate}
         />
-
         <Field
-          className="mb-1"
+          className="mb-3"
           component={Input}
           label="Confirm Password"
           name="confirm_password"
           type="password"
+          validate={[requiredValidate, passwordConfirmValidate]}
         />
-
-        <Button className="btn btn-primary" type="submit">
+        <Button submitting={submitting} type="submit">
           Submit
         </Button>
       </form>
@@ -69,9 +76,15 @@ class FormUserCreate extends Component {
   }
 }
 
-const ReduxFormUserCreate = reduxForm({
-  form: 'userCreate',
-})(FormUserCreate);
+const ReduxFormUserSignup = reduxForm({
+  form: 'userSignup',
+})(FormUserSignup);
+
+function mapStateToProps({ user }) {
+  return {
+    user,
+  };
+}
 
 function mapDispatchToProps(dispatch) {
   return {
@@ -80,6 +93,6 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps,
-)(ReduxFormUserCreate);
+)(ReduxFormUserSignup);

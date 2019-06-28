@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import Button from '../../components/Button';
-import FormUserCreate from '../../components/forms/FormUserCreate';
+import FormUserSignup from '../../components/forms/FormUserSignup';
 
 class SignupPage extends Component {
   render() {
@@ -12,7 +12,7 @@ class SignupPage extends Component {
         <p>Enter your information</p>
 
         <div className="signup-page__form mb-5">
-          <FormUserCreate {...props} />
+          <FormUserSignup {...props} />
         </div>
 
         <div className="signup-page__go-back">

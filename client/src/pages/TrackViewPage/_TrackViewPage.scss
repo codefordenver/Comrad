@@ -1,13 +1,13 @@
-.track-view-page {
-
-}
-
 .track-edit-button-wrapper {
-    border: 1px solid black;
     display: inline-block;
-    width: auto;
-}
-
-.track-edit-button {
-    font-size: 16px;
+    width: max-content;
+    border-radius: $border-radius;
+    background-color: $color-primary;
+    padding: 5px;
+    transition: background-color 0.1s;
+    font-size: 1.8rem;
+    color: white;
+    cursor: pointer;
+    height: 3.8rem;
+    text-align: center;
 }

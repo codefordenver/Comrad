@@ -6,8 +6,11 @@ function update(req, res) {
     .then(() =>
       db.Track.findOneAndUpdate({ _id: req.params.id }, req.body, {
         new: true,
-      }),
+      })
+        .populate('artists')
+        .populate('album'),
     )
+
     .then(dbTrack => res.json(dbTrack))
     .catch(err => res.status(422).json(err));
 }

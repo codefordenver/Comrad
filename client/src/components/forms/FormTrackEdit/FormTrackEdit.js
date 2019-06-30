@@ -90,19 +90,27 @@ class FormTrackEdit extends Component {
   }
 }
 
-function mapStateToProps(state, ownProps) {
-  const minutes = Math.floor(parseInt(ownProps.duration_in_seconds) / 60);
-  const seconds = ownProps.duration_in_seconds - minutes * 60;
+function mapStateToProps(state) {
+  const {
+    disk_number,
+    duration_in_seconds,
+    name,
+    track_number,
+    _id,
+    album,
+  } = state.track.doc;
+  const minutes = Math.floor(parseInt(duration_in_seconds) / 60);
+  const seconds = duration_in_seconds - minutes * 60;
   return {
     initialValues: {
-      disk_number: ownProps.disk_number,
-      duration_in_seconds: ownProps.duration_in_seconds,
-      name: ownProps.name,
-      track_number: ownProps.track_number,
+      disk_number: disk_number,
+      duration_in_seconds: duration_in_seconds,
+      name: name,
+      track_number: track_number,
       minutes: minutes,
       seconds: seconds,
-      id: ownProps.id,
-      album: ownProps.album,
+      id: _id,
+      album: album,
     },
   };
 }

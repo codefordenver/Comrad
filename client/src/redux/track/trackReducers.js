@@ -7,7 +7,7 @@ const initialState = {
     message: '',
     type: '',
   },
-  doc: {},
+  doc: null,
   error: null,
   loading: false,
 };
@@ -34,6 +34,26 @@ export const trackReducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         alert,
+      };
+    case trackTypes.FIND_ONE:
+      return {
+        ...state,
+        doc: {
+          ...payload,
+        },
+        loading: false,
+      };
+    case trackTypes.LOAD:
+      return {
+        ...state,
+        loading: true,
+      };
+    case trackTypes.EDIT:
+      return {
+        ...state,
+        doc: {
+          ...payload,
+        },
       };
     default:
       return state;

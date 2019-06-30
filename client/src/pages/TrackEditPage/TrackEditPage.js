@@ -11,15 +11,6 @@ class TrackEditPage extends Component {
   }
 
   render() {
-    const { match, track } = this.props;
-    const trackId = match.params.id;
-    const {
-      name,
-      track_number,
-      duration_in_seconds,
-      disk_number,
-      album,
-    } = track.doc;
     return (
       <div className="track-edit-page">
         <Card>
@@ -28,12 +19,6 @@ class TrackEditPage extends Component {
             <FormTrackEdit
               submitCallback={this.editTrackCallback}
               history={this.props.history}
-              id={trackId}
-              name={name}
-              track_number={track_number}
-              duration_in_seconds={duration_in_seconds}
-              disk_number={disk_number}
-              album={album}
             />
           </CardBody>
         </Card>

@@ -29,8 +29,11 @@ class FormTrackEdit extends Component {
       <form
         className="form-track-edit"
         onSubmit={handleSubmit(data => {
+          const duration_in_seconds =
+            parseInt(data.seconds) + parseInt(data.minutes) * 60;
           submit({
             ...data,
+            duration_in_seconds: duration_in_seconds,
           });
         })}
       >

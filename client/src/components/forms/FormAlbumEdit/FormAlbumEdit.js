@@ -25,6 +25,7 @@ class FormAlbumEdit extends Component {
   render() {
     const { props, submit } = this;
     const { handleSubmit } = props;
+    console.log('formalbumedit ' + props);
 
     return (
       <form
@@ -39,7 +40,6 @@ class FormAlbumEdit extends Component {
           component={Input}
           label="Name"
           name="album_name"
-          type="number"
           autoFocus
           validate={requiredValidate}
         />

@@ -40,6 +40,7 @@ async function seedDB() {
         showHosts: 0,
         shows: 0,
         traffic: 0,
+        playlists: 0,
       };
     }
 
@@ -363,6 +364,152 @@ async function seedDB() {
       }
       scriptProgress.traffic = 1;
       updateProgressFile(scriptProgress);
+    }
+
+    if (!scriptProgress.playlists) {
+      if (scriptProgress.playlists > 0) {
+        //pick up where we left off going through the albums array
+        seed.playlists.splice(0, scriptProgress.playlists);
+      }
+      // process the playlists in groups so we're giving regular feedback from the script
+      let tracksForPlaylists = {};
+      //we are going to get four objects for instances to search the original comrad data: it could be represented in multiple ways in the new comrad so we will
+      //need data on the most specific way it could be represented and the most general
+      let trafficForPlaylistsByEventId = {};
+      let trafficForPlaylistsByScheduledEventId = {};
+      let trafficInstanceForPlaylistsByScheduledEventId = {};
+      let trafficInstanceForPlaylistsByScheduledEventInstanceId = {};
+      while (seed.playlists.length > 0) {
+        let bulkOperations = [];
+        let playlistsToCreate = seed.playlists.splice(0, 1000);
+        //first, find all associated track & traffic records in a bulk query
+        for (let index = 0; index < seed.playlists.length; index++) {
+          let playlist = seed.playlists[index];
+          let trackIdsToFind = [];
+          let eventIdsToFind = [];
+          let scheduledEventIdsToFind = [];
+          let scheduledEventInstanceIdsToFind = [];
+          let arraysToIterate = [playlist.scratchpad, playlist.saved_items];
+          arraysToIterate.forEach(function(arrayToIterate) {
+            arrayToIterate.forEach(function(element) {
+              if (
+                element.type === 'track' &&
+                !(element.original_track_id in tracksForPlaylists)
+              ) {
+                trackIdsToFind.push(element.original_track_id);
+              } else if (element.type === 'traffic') {
+                if (!(element.traffic_event in trafficForPlaylistsByEventId)) {
+                  eventIdsToFind.push(element.traffic_event);
+                }
+                if (
+                  !(
+                    element.traffic_scheduled_event in
+                    trafficForPlaylistsByScheduledEventId
+                  )
+                ) {
+                  scheduledEventIdsToFind.push(element.traffic_scheduled_event);
+                }
+                if (
+                  !(
+                    element.traffic_instance in
+                    trafficInstanceForPlaylistsByScheduledEventInstanceId
+                  )
+                ) {
+                  scheduledEventInstanceIdsToFind.push(
+                    element.traffic_instance,
+                  );
+                }
+              }
+            });
+          });
+          let foundTracks = await db.Track.find(
+            { 'custom.old_comrad_id': { $in: trackIdsToFind } },
+            'custom.old_comrad_id _id',
+          );
+          foundTracks.forEach(function(t) {
+            tracksForPlaylists[t.custom.old_comrad_id] = t._id;
+          });
+          let foundTrafficByEventId = await db.Traffic.find({
+            'traffic_details.custom.old_comrad_event_id': {
+              $in: eventIdsToFind,
+            },
+          });
+          foundTrafficByEventId.forEach(function(t) {
+            trafficForPlaylistsByEventId[
+              t.traffic_details.custom.old_comrad_event_id
+            ] = t._id;
+          });
+          let foundTrafficByScheduledEventId = await db.Traffic.find({
+            'traffic_details.custom.old_comrad_scheduled_event_ids': {
+              $in: scheduledEventIdsToFind,
+            },
+          });
+          foundTrafficByScheduledEventId.forEach(function(t) {
+            t.traffic_details.custom.old_comrad_scheduled_event_ids.forEach(
+              function(seId) {
+                trafficForPlaylistsByScheduledEventId[seId] = t._id;
+              },
+            );
+            trafficForPlaylistsByEventId.push(t._id);
+          });
+          let foundTrafficInstanceByScheduledEventId = await db.Traffic.find({
+            'traffic_details.custom.old_comrad_scheduled_event_id': {
+              $in: scheduledEventIdsToFind,
+            },
+          });
+          foundTrafficInstanceByScheduledEventId.forEach(function(t) {
+            trafficInstanceForPlaylistsByScheduledEventId[
+              t.traffic_details.custom.old_comrad_scheduled_event_id
+            ] = t._id;
+          });
+          let foundTrafficInstanceByScheduledEventInstanceId = await db.Traffic.find(
+            {
+              'traffic_details.custom.old_comrad_scheduled_event_instance_id': {
+                $in: scheduledEventInstanceIdsToFind,
+              },
+            },
+          );
+          foundTrafficInstanceByScheduledEventInstanceId.forEach(function(t) {
+            trafficInstanceForPlaylistsByScheduledEventInstanceId[
+              t.traffic_details.custom.old_comrad_scheduled_event_instance_id
+            ] = t._id;
+          });
+        }
+
+        //next, create the documents for inserting to the database
+        for (let index = 0; index < seed.playlists.length; index++) {
+          let playlist = seed.playlists[index];
+          //TODO
+          //let arraysToBuild = //playlist import: pick up at //next, create the documents for inserting to the database
+
+          //will need to rewrite the for looks to iterate a group of scratchpad + saved items
+          //and search the objects created in the preceding code for object references//
+          //modify scratchpad & saved items
+          let arraysToProcess = ['scratchpad', 'saved_items'];
+          for (let j = 0; j < arraysToProcess.length; j++) {
+            let a = arraysToProcess[j];
+            for (let i = 0; i < playlist[a].length; i++) {
+              playlist[a][i] = 'temp';
+              // await processPlaylistElement(
+              // playlist.scratchpad[i],
+              // );
+              //TODO: check type
+              //TODO: look up original traffic event
+              //TODO: look up original track
+            }
+          }
+
+          bulkOperations.push({
+            insertOne: {
+              document: playlist,
+            },
+          });
+        }
+        console.log('writing ' + bulkOperations.length + ' playlists...');
+        await db.Playlist.bulkWrite(bulkOperations);
+        scriptProgress.playlists += playlistsToCreate.length;
+        updateProgressFile(scriptProgress);
+      }
     }
   } catch (err) {
     console.log(err);

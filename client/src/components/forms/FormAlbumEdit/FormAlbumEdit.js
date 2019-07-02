@@ -25,7 +25,7 @@ class FormAlbumEdit extends Component {
   render() {
     const { props, submit } = this;
     const { handleSubmit } = props;
-    console.log('formalbumedit ' + props);
+    console.log('formalbumedit ' + JSON.stringify(props));
 
     return (
       <form
@@ -50,7 +50,7 @@ class FormAlbumEdit extends Component {
           autoFocus
           validate={requiredValidate}
         />
-        <Field component={Checkbox} label="Compliation" name="compilation" />
+        <Field component={Checkbox} label="Compilation" name="compilation" />
         <div>
           <Button type="submit">Submit</Button>
         </div>

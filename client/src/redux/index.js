@@ -8,12 +8,15 @@ import { authReducer } from './auth';
 import { libraryReducer } from './library';
 import { modalReducer } from './modal';
 import { showReducer } from './show';
+import { trackReducer } from './track';
 import { trafficReducer } from './traffic';
 import { userReducer } from './user';
 
 export * from './album';
 export * from './alert';
+export * from './artist';
 export * from './auth';
+export * from './track';
 export * from './user';
 
 export default combineReducers({
@@ -25,6 +28,7 @@ export default combineReducers({
   library: libraryReducer,
   modal: modalReducer,
   show: showReducer,
+  track: trackReducer,
   traffic: trafficReducer,
   user: userReducer,
 });

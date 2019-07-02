@@ -13,6 +13,7 @@ import ErrorRoutes from '../../routes/ErrorRoutes';
 import HomeRoutes from '../../routes/HomeRoutes';
 import LibraryRoutes from '../../routes/LibraryRoutes';
 import ReportRoutes from '../../routes/ReportRoutes';
+import ShowBuilderRoutes from '../../routes/ShowBuilderRoutes';
 import UserRoutes from '../../routes/UserRoutes';
 import { bindActionCreators } from 'redux';
 
@@ -36,6 +37,7 @@ class App extends Component {
             <Route path="/error" component={ErrorRoutes} />
             <Route path="/library" component={LibraryRoutes} />
             <Route path="/report" component={ReportRoutes} />
+            <Route path="/show-builder" component={ShowBuilderRoutes} />
             <Route path="/user" component={UserRoutes} />
             <Route component={HomeRoutes} />
           </Switch>

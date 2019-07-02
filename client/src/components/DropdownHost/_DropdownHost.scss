@@ -6,13 +6,10 @@
   }
 }
 .host-field {
+
   &__add-modal {
-    border: 2px solid $color-primary-light;
-    border-radius: $border-radius;
-    background-color: white;
     width: 48rem;
     display: block;
     color: $color-primary;
-    padding: 1rem;
   }
 }

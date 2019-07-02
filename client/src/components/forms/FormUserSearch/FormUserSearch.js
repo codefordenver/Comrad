@@ -13,7 +13,7 @@ class FormUserSearch extends Component {
   handleOnChange = (e, newValue) => {
     const { q, userActions } = this.props;
 
-    userActions.search({ filter: newValue, q });
+    userActions.search({ status: newValue, q });
   };
 
   submit = values => {

@@ -40,7 +40,26 @@ function showList(shows, startDate, endDate) {
   });
 
   //Combined series and instance shows by object ID and then return the final array
-  return { ...seriesKeyBy, ...instanceKeyBy };
+  let showsToReturn = { ...seriesKeyBy, ...instanceKeyBy };
+
+  //transform the object back to an array
+  let showsToReturnArray = [];
+  _.mapKeys(showsToReturn, function(value) {
+    showsToReturnArray.push(value);
+  });
+
+  //sort the array by event start time
+  showsToReturnArray = showsToReturnArray.sort(function(a, b) {
+    if (new Date(a.start_time_utc) > new Date(b.start_time_utc)) {
+      return 1;
+    } else if (new Date(a.start_time_utc) === new Date(b.start_time_utc)) {
+      return 0;
+    } else {
+      return -1;
+    }
+  });
+
+  return showsToReturnArray;
 }
 
 function createRRule(show) {
@@ -114,7 +133,18 @@ function reduceShowsByRepeatProperty(shows, recurringCheckValue) {
 function returnDatesArrayByRepeatRule(show, startDate, endDate) {
   const rule = new RRule(createRRule(show));
   try {
-    return rule.between(new Date(startDate), new Date(endDate), true);
+    let shows = rule.between(new Date(startDate), new Date(endDate), true);
+
+    //the .between() function will not get a currently playing event, so we'll have to check for it
+    const showBefore = rule.before(new Date(startDate));
+    const showDurationInMs = moment(show.end_time_utc).diff(
+      moment(show.start_time_utc),
+    );
+    if (moment(showBefore).add(showDurationInMs, 'ms') > moment(startDate)) {
+      shows.unshift(showBefore);
+    }
+
+    return shows;
   } catch (e) {
     console.log('Error in returnDatesArrayByRepeatRule');
     console.log(e);
@@ -226,6 +256,7 @@ function returnInstanceShowsArray(shows) {
       'END',
     );
 
+    instanceShow.master_event_id = master_event_id ? master_event_id._id : null;
     instanceShow.master_time_id = master_time_id__byShowType(instanceShow);
 
     return instanceShow;

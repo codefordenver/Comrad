@@ -1,14 +1,4 @@
-import {
-  ARTIST_ADD,
-  ARTIST_ALERT,
-  ARTIST_ALERT_CLOSE,
-  ARTIST_FIND_ALBUMS,
-  ARTIST_FIND_ONE,
-  ARTIST_EDITING_NAME,
-  ARTIST_LOAD_ALBUMS,
-  ARTIST_LOAD,
-  ARTIST_UPDATE,
-} from './artistTypes';
+import { artistTypes } from './artistTypes';
 
 const initialState = {
   alert: {
@@ -25,13 +15,13 @@ const initialState = {
 
 export const artistReducer = (state = initialState, { type, payload }) => {
   switch (type) {
-    case ARTIST_ADD:
+    case artistTypes.ADD:
       return {
         doc: {
           ...payload,
         },
       };
-    case ARTIST_ALERT:
+    case artistTypes.ALERT:
       return {
         ...state,
         alert: {
@@ -39,34 +29,34 @@ export const artistReducer = (state = initialState, { type, payload }) => {
           ...payload,
         },
       };
-    case ARTIST_FIND_ALBUMS:
+    case artistTypes.FIND_ALBUMS:
       return {
         ...state,
         loadingAlbums: false,
         albums: payload,
       };
-    case ARTIST_FIND_ONE:
+    case artistTypes.FIND_ONE:
       return {
         ...state,
         ...payload,
         loading: false,
       };
-    case ARTIST_EDITING_NAME:
+    case artistTypes.EDITING_NAME:
       return {
         ...state,
         editingName: payload.editingName,
       };
-    case ARTIST_LOAD:
+    case artistTypes.LOAD:
       return {
         ...state,
         loading: true,
       };
-    case ARTIST_LOAD_ALBUMS:
+    case artistTypes.LOAD_ALBUMS:
       return {
         ...state,
         loadingAlbums: true,
       };
-    case ARTIST_UPDATE:
+    case artistTypes.UPDATE:
       return {
         ...state,
         doc: {
@@ -74,7 +64,7 @@ export const artistReducer = (state = initialState, { type, payload }) => {
           ...payload,
         },
       };
-    case ARTIST_ALERT_CLOSE:
+    case artistTypes.ALERT_CLOSE:
       const { alert } = initialState;
 
       return {

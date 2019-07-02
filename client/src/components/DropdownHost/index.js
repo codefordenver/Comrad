@@ -1,1 +1,1 @@
-export { default } from './DropdownHost';
+export { default, SHOWS_WITH_NO_HOST } from './DropdownHost';

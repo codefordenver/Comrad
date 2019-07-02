@@ -7,6 +7,7 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 import { setModalVisibility } from '../../redux/modal';
 import {
+  clearShows,
   getShowsData,
   fetchingShowsStatus,
   postingShowsStatus,
@@ -24,52 +25,71 @@ import ViewShowForm from './ViewShow/Form';
 class Calendar extends Component {
   state = {
     newShow: null,
+    searchStartDate: moment().subtract(2, 'week'),
+    searchEndDate: moment().add(2, 'week'),
     shows: [],
   };
 
   componentDidMount() {
-    const { searchShow } = this.props;
-
-    const initialSearchStartDate = moment().subtract(2, 'week');
-    const initialSearchEndDate = moment().add(2, 'week');
-
-    searchShow(initialSearchStartDate, initialSearchEndDate);
+    this.searchShows();
   }
 
   componentDidUpdate(prevProps, prevState) {
-    Object.entries(this.props).forEach(
-      ([key, val]) =>
-        prevProps[key] !== val && console.log(`Prop '${key}' changed`),
-    );
+    Object.entries(this.props).forEach(([key, val]) => {
+      if (prevProps[key] !== val) {
+        console.log(`Prop '${key}' changed`);
+        if (key === 'filterByHost' || key === 'onlyDisplayShowsWithNoHost') {
+          this.searchShows();
+        }
+      }
+    });
     Object.entries(this.state).forEach(
       ([key, val]) =>
         prevState[key] !== val && console.log(`State '${key}' changed`),
     );
   }
 
-  handleDateChange = dates => {
-    const { searchShow } = this.props;
+  componentWillUnmount() {
+    const { clearShows } = this.props;
+    clearShows();
+  }
 
+  handleDateChange = dates => {
     if (Array.isArray(dates)) {
       if (dates.length === 1) {
         //For when changing days
-        const dayStart = moment(dates[0]).subtract(2, 'days');
-        const dayEnd = moment(dates[0]).add(2, 'days');
-
-        searchShow(dayStart, dayEnd);
+        this.setState(
+          {
+            searchStartDate: moment(dates[0]).subtract(2, 'days'),
+            searchEndDate: moment(dates[0]).add(2, 'days'),
+          },
+          function() {
+            this.searchShows();
+          },
+        );
       } else {
         //For when changing weeks
-        const rangeStart = moment(dates[0]).subtract(8, 'days');
-        const rangeEnd = moment(dates[dates.length - 1]).add(8, 'days');
-
-        searchShow(rangeStart, rangeEnd);
+        this.setState(
+          {
+            searchStartDate: moment(dates[0]).subtract(8, 'days'),
+            searchEndDate: moment(dates[dates.length - 1]).add(8, 'days'),
+          },
+          function() {
+            this.searchShows();
+          },
+        );
       }
     } else {
       //For when changing months/agenda
-      const objectStart = moment(dates.start).subtract(1, 'month');
-      const objectEnd = moment(dates.end).add(1, 'month');
-
-      searchShow(objectStart, objectEnd);
+      this.setState(
+        {
+          searchStartDate: moment(dates.start).subtract(1, 'month'),
+          searchEndDate: moment(dates.end).add(1, 'month'),
+        },
+        function() {
+          this.searchShows();
+        },
+      );
     }
   };
 
@@ -100,6 +120,21 @@ class Calendar extends Component {
     });
 
     return newShowsArray;
+  };
+
+  searchShows = () => {
+    const { searchStartDate, searchEndDate } = this.state;
+    const {
+      filterByHost,
+      onlyDisplayShowsWithNoHost = false,
+      searchShow,
+    } = this.props;
+    searchShow(
+      searchStartDate,
+      searchEndDate,
+      filterByHost,
+      onlyDisplayShowsWithNoHost,
+    );
   };
 
   showNewShowModal = show => {
@@ -162,13 +197,18 @@ class Calendar extends Component {
     //do nothing
   };
 
-  eventStyleGetter = () => {
-    var style = {
-      backgroundColor: '#007283',
-    };
+  eventStyleGetter = show => {
+    let className = '';
+    if (show._id.includes('-')) {
+      className = 'event-series';
+    } else if (show.master_event_id) {
+      className = 'event-instance';
+    } else {
+      className = 'event-regular';
+    }
 
     return {
-      style,
+      className,
     };
   };
 
@@ -219,6 +259,7 @@ function mapStateToProps({ show }) {
 export default connect(
   mapStateToProps,
   {
+    clearShows,
     getShowsData,
     fetchingShowsStatus,
     postingShowsStatus,

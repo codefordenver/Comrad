@@ -11,7 +11,23 @@ import Checkbox from '../../Checkbox';
 class FormAlbumEdit extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      compilation: '',
+    };
+    this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
+  }
+
+  componentDidMount() {
+    this.setState({
+      compilation: this.props.compilation,
+    });
+  }
+
+  handleCheckboxChange(e) {
+    console.log('onchange ' + e.target);
+    this.setState({
+      compilation: !e.target.value,
+    });
   }
 
   submit = values => {
@@ -25,7 +41,6 @@ class FormAlbumEdit extends Component {
   render() {
     const { props, submit } = this;
     const { handleSubmit } = props;
-    console.log('formalbumedit ' + JSON.stringify(props));
 
     return (
       <form
@@ -39,18 +54,24 @@ class FormAlbumEdit extends Component {
         <Field
           component={Input}
           label="Name"
-          name="album_name"
+          name="name"
           autoFocus
           validate={requiredValidate}
         />
         <Field
           component={Input}
           label="Label"
-          name="album_label"
+          name="label"
           autoFocus
           validate={requiredValidate}
         />
-        <Field component={Checkbox} label="Compilation" name="compilation" />
+        <Field
+          component={Checkbox}
+          label="Compilation"
+          name="compilation"
+          checked={this.state.compilation}
+          onChange={this.handleCheckboxChange}
+        />
         <div>
           <Button type="submit">Submit</Button>
         </div>

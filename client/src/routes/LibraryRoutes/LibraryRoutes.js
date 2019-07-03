@@ -10,6 +10,7 @@ import LibrarySearchPage from '../../pages/LibrarySearchPage';
 import TrackViewPage from '../../pages/TrackViewPage';
 import TrackAddPage from '../../pages/TrackAddPage';
 import TrackEditPage from '../../pages/TrackEditPage';
+import AlbumEditPage from '../../pages/AlbumEditPage';
 
 class Library extends Component {
   render() {
@@ -20,6 +21,7 @@ class Library extends Component {
         <Route exact path={`${url}`} component={LibrarySearchPage} />
         <Switch>
           <Route path={`${url}/album/:id/add`} component={TrackAddPage} />
+          <Route path={`${url}/album/:id/edit`} component={AlbumEditPage} />
           <Route path={`${url}/album/:id`} component={AlbumViewPage} />
         </Switch>
         <Switch>

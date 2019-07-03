@@ -19,7 +19,7 @@ class FormAlbumEdit extends Component {
 
   componentDidMount() {
     this.setState({
-      compilation: this.props.compilation,
+      compilation: this.props.initialValues.compilation,
     });
   }
 

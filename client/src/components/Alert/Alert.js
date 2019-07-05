@@ -22,6 +22,10 @@ export const ALERT_ICON = {
 };
 
 class Alert extends Component {
+  state = {
+    active: false,
+  };
+
   static propTypes = {
     /**
      * Additional classes added to root element
@@ -68,7 +72,12 @@ class Alert extends Component {
 
     return (
       <div
-        className={classnames('alert', ALERT_CLASS[alertState.type], className)}
+        className={classnames(
+          'alert',
+          alertState.active ? 'alert--active' : 'alert--inactive',
+          ALERT_CLASS[alertState.type],
+          className,
+        )}
       >
         {/* TODO: Need to figure out how to handle clicks */}
         <div className="alert__times" onClick={handleAlertClose}>

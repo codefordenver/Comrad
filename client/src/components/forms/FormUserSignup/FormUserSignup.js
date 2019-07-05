@@ -13,7 +13,7 @@ import {
 import Button from '../../Button';
 import Input from '../../Input';
 
-class FormUserCreate extends Component {
+class FormUserSignup extends Component {
   submit = values => {
     const { history, userActions } = this.props;
 
@@ -76,9 +76,9 @@ class FormUserCreate extends Component {
   }
 }
 
-const ReduxFormUserCreate = reduxForm({
-  form: 'userCreate',
-})(FormUserCreate);
+const ReduxFormUserSignup = reduxForm({
+  form: 'userSignup',
+})(FormUserSignup);
 
 function mapStateToProps({ user }) {
   return {
@@ -95,4 +95,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(ReduxFormUserCreate);
+)(ReduxFormUserSignup);

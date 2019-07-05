@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
+import Alert from '../../components/Alert';
 import Card, { CardBody } from '../../components/Card';
+import Dropdown from '../../components/Dropdown';
 import FormUserSearch from '../../components/forms/FormUserSearch';
 import TableUsers from '../../components/tables/TableUsers';
 
@@ -16,8 +18,10 @@ class UserSearchPage extends Component {
   }
 
   render() {
+    const { props } = this;
+
     return (
-      <div className="user-search">
+      <div className="usp">
         <Card>
           <CardBody>
             <h1 className="mb-0">Users</h1>
@@ -26,7 +30,16 @@ class UserSearchPage extends Component {
 
         <Card>
           <CardBody>
-            <FormUserSearch />
+            <div className="usp__section-1">
+              <div className="usp__section-1--1">
+                <FormUserSearch />
+              </div>
+              <div className="usp__section-1--2">
+                <Dropdown position="right-centered" type="button" text="Add">
+                  <Dropdown.Item to="add">User</Dropdown.Item>
+                </Dropdown>
+              </div>
+            </div>
 
             <TableUsers {...this.props} />
           </CardBody>

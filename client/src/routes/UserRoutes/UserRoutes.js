@@ -12,7 +12,7 @@ class UserRoutes extends Component {
     const { url } = this.props.match;
 
     return (
-      <MainLayout>
+      <MainLayout {...this.props}>
         <Route exact path={`${url}/add`} component={UserAddPage} />
         <Route exact path={`${url}/edit`} component={UserEditPage} />
         <Route exact path={`${url}/search`} component={UserSearchPage} />

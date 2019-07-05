@@ -39,11 +39,19 @@ class Checkbox extends Component {
   };
 
   render() {
-    const { checked, className, disabled, hover, id, label } = this.props;
-
+    const {
+      checked,
+      className,
+      disabled,
+      hover,
+      id,
+      label,
+      input,
+    } = this.props;
     return (
       <div className={classnames('checkbox', className)}>
         <input
+          {...input}
           checked={checked}
           className="checkbox__input"
           id={id}
@@ -51,6 +59,7 @@ class Checkbox extends Component {
           disabled={disabled}
         />
         <label
+          onClick={this.props.onClick}
           className={classnames(
             'checkbox__label',
             disabled && 'disabled',

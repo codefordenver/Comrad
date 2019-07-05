@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
+import Alert from '../../components/Alert';
 import Card, { CardBody } from '../../components/Card';
 import Dropdown from '../../components/Dropdown';
 import FormUserSearch from '../../components/forms/FormUserSearch';
@@ -17,6 +18,8 @@ class UserSearchPage extends Component {
   }
 
   render() {
+    const { props } = this;
+
     return (
       <div className="usp">
         <Card>

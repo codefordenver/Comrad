@@ -9,11 +9,11 @@
   padding: 0.5rem;
   margin-bottom: 1rem;
 
-  &.open {
+  &--active {
     display: grid;
   }
 
-  &.close {
+  &--inactive {
     display: none;
   }
 

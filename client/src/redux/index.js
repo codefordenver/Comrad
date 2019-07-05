@@ -7,6 +7,7 @@ import { artistReducer } from './artist';
 import { authReducer } from './auth';
 import { libraryReducer } from './library';
 import { modalReducer } from './modal';
+import { permissionReducer } from './permission';
 import { showReducer } from './show';
 import { trackReducer } from './track';
 import { trafficReducer } from './traffic';
@@ -16,6 +17,7 @@ export * from './album';
 export * from './alert';
 export * from './artist';
 export * from './auth';
+export * from './permission';
 export * from './track';
 export * from './user';
 
@@ -27,6 +29,7 @@ export default combineReducers({
   form: formReducer,
   library: libraryReducer,
   modal: modalReducer,
+  permission: permissionReducer,
   show: showReducer,
   track: trackReducer,
   traffic: trafficReducer,

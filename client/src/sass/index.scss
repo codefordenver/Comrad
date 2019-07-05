@@ -28,7 +28,9 @@
 @import '../components/forms/FormArtistAdd/FormArtistAdd';
 @import '../components/forms/FormArtistUpdateName/FormArtistUpdateName';
 @import '../components/forms/FormTrackAdd/FormTrackAdd';
+@import '../components/forms/FormTrackEdit/FormTrackEdit';
 @import '../components/forms/FormHostAdd/FormHostAdd';
+@import '../components/forms/FormUserAdd/FormUserAdd.scss';
 @import '../components/forms/FormUserSearch/FormUserSearch';
 @import '../components/Input/Input';
 @import '../components/Logo/Logo';
@@ -42,6 +44,7 @@
 @import '../components/Root/Root';
 @import '../components/SearchTerm/SearchTerm';
 @import '../components/Select/Select';
+@import '../components/ShowListForUser/ShowListForUser';
 @import '../components/Sidebar/Sidebar';
 @import '../components/tables/TableUsers/TableUsers';
 @import '../components/TextArea/TextArea';
@@ -67,7 +70,9 @@
 @import '../pages/ShowBuilderPage/ShowBuilderPage';
 @import '../pages/ShowBuilderShowListPage/ShowBuilderShowListPage';
 @import '../pages/TrackAddPage/TrackAddPage';
-@import '../pages/UserCreatePage/UserCreatePage';
+@import '../pages/TrackEditPage/TrackEditPage';
+@import '../pages/TrackViewPage/TrackViewPage';
+@import '../pages/UserAddPage/UserAddPage';
 @import '../pages/UserEditPage/UserEditPage';
 @import '../pages/UserProfilePage/UserProfilePage';
 @import '../pages/UserSearchPage/UserSearchPage';

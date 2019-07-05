@@ -2,7 +2,13 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const permissionSchema = new Schema({
-  name: {
+  description: {
+    type: String,
+  },
+  text: {
+    type: String,
+  },
+  value: {
     type: String,
   },
 });

@@ -36,6 +36,8 @@ const trackSchema = new Schema({
     default: 0,
   },
 
+  custom: Schema.Types.Mixed, // this will be an object that can contain any number of custom properties
+
   type: {
     type: String,
     default: 'track',

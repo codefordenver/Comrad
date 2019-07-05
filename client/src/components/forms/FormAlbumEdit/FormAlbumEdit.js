@@ -14,7 +14,7 @@ class FormAlbumEdit extends Component {
     this.state = {
       compilation: '',
     };
-    this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
+    this.handleCheckbox = this.handleCheckbox.bind(this);
   }
 
   componentDidMount() {
@@ -23,15 +23,15 @@ class FormAlbumEdit extends Component {
     });
   }
 
-  handleCheckboxChange(e) {
-    console.log('onchange ' + e.target);
+  handleCheckbox() {
     this.setState({
-      compilation: !e.target.value,
+      compilation: !this.state.compilation,
     });
   }
 
   submit = values => {
     const { history, albumActions } = this.props;
+    console.log(this.state, values);
     return albumActions.edit(values, albumData => {
       albumActions.clear();
       history.push(`/library/album/${albumData._id}`);
@@ -69,8 +69,9 @@ class FormAlbumEdit extends Component {
           component={Checkbox}
           label="Compilation"
           name="compilation"
+          onClick={this.handleCheckbox}
           checked={this.state.compilation}
-          onChange={this.handleCheckboxChange}
+          value={this.state.compilation}
         />
         <div>
           <Button type="submit">Submit</Button>

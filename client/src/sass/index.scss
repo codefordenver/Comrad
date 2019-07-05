@@ -54,6 +54,7 @@
 // layout
 @import '../layouts/HomeLayout/HomeLayout';
 @import '../layouts/MainLayout/MainLayout';
+@import '../layouts/ResourceLayout/ResourceLayout';
 
 // pages
 @import '../pages/AdminHomePage/AdminHomePage';
@@ -84,3 +85,4 @@
 @import './utils/padding';
 @import './utils/position';
 @import './utils/text';
+@import './utils/size';

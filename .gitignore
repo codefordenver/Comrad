@@ -2,3 +2,4 @@
 .vscode
 .env
 node_modules
+seedScriptProgress.json

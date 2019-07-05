@@ -230,7 +230,11 @@ class LibrarySearchPage extends Component {
             case 'track':
               let artistNames = [];
               data.original.artists.forEach(function(a) {
-                if (typeof a.name != 'undefined' && a.name.length > 0) {
+                if (
+                  a != null &&
+                  typeof a.name != 'undefined' &&
+                  a.name.length > 0
+                ) {
                   artistNames.push(a.name);
                 }
               });

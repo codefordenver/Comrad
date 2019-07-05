@@ -21,6 +21,11 @@ const playlistSchema = new Schema({
         enum: ['track', 'comment', 'voice_break'],
       },
 
+      executed_time_utc: {
+        // the time the value was moved to Saved Items
+        type: Date,
+      },
+
       //items on the scratchpad do not have an associated time,
       //but on the front-end they can be positioned relative to
       //traffic events, which do have an associated time.

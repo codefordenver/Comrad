@@ -15,6 +15,11 @@ const albumSchema = new Schema({
     type: String,
   },
 
+  genre: {
+    type: Schema.Types.ObjectId,
+    ref: 'Genre',
+  },
+
   local: {
     type: Boolean,
   },
@@ -28,6 +33,8 @@ const albumSchema = new Schema({
     type: Number,
     default: 0,
   },
+
+  custom: Schema.Types.Mixed, // this will be an object that can contain any number of custom properties
 
   type: {
     type: String,

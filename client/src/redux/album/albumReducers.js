@@ -48,6 +48,13 @@ export const albumReducer = (state = initialState, { type, payload }) => {
         ...state,
         doc: [],
       };
+    case albumTypes.ADD:
+      return {
+        ...state,
+        doc: {
+          ...payload,
+        },
+      };
     default:
       return state;
   }

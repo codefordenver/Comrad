@@ -19,17 +19,20 @@ const columns = [
 class TablePolicies extends Component {
   componentDidMount() {
     const { resourceActions } = this.props;
-    resourceActions.findAll();
+    const values = { category: 'policies' };
+    resourceActions.search(values);
   }
 
   render() {
-    const { resourceState } = this.props;
+    const { props } = this;
+    const { resourceState } = props;
 
     return (
       <ReactTable
         className="-highlight"
         columns={columns}
         data={resourceState.docs}
+        loading={resourceState.loading}
         minRows={3}
         showPagination={false}
       />

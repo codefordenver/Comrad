@@ -21,6 +21,13 @@ export const resourceReducer = (state = initialState, { type, payload }) => {
         loading: true,
       };
 
+    case resourceTypes.SEARCH:
+      return {
+        ...state,
+        ...payload,
+        loading: false,
+      };
+
     default:
       return state;
   }

@@ -6,6 +6,8 @@ router
   .get(resourcesController.findAll)
   .post(resourcesController.create);
 
+router.route('/search').get(resourcesController.search);
+
 router
   .route('/:id')
   .put(resourcesController.update)

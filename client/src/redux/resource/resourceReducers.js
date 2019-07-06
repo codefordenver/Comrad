@@ -8,6 +8,13 @@ const initialState = {
 
 export const resourceReducer = (state = initialState, { type, payload }) => {
   switch (type) {
+    case resourceTypes.ADD:
+      return {
+        ...state,
+        ...payload,
+        loading: false,
+      };
+
     case resourceTypes.FIND_ALL:
       return {
         ...state,

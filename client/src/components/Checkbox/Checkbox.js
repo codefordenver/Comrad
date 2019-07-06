@@ -49,10 +49,11 @@ class Checkbox extends Component {
     };
   }
 
-  handleOnClick = () => {
-    let newValue = !this.state.checked;
-    this.props.input.onChange(newValue);
-    this.setState({ checked: newValue });
+  handleOnChange = e => {
+    if (this.props.input != null) {
+      this.props.input.onChange(e.target.checked);
+    }
+    this.setState({ checked: e.target.checked });
   };
 
   render() {
@@ -71,11 +72,11 @@ class Checkbox extends Component {
           checked={checked}
           className="checkbox__input"
           id={id}
+          onChange={this.handleOnChange}
           type="checkbox"
           disabled={disabled}
         />
         <label
-          onClick={this.handleOnClick}
           className={classnames(
             'checkbox__label',
             disabled && 'disabled',

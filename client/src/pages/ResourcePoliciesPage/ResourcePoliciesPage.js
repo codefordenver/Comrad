@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import Button from '../../components/Button';
+import FormResourceAdd from '../../components/forms/FormResourceAdd';
 import TablePolicies from '../../components/tables/TablePolicies';
 
 class ResourcePoliciesPage extends Component {
@@ -8,9 +9,9 @@ class ResourcePoliciesPage extends Component {
     content: 'table',
   };
 
-  handleSwitch = () => {
+  handleSwitch = content => {
     this.setState({
-      content: 'form',
+      content,
     });
   };
 
@@ -22,24 +23,34 @@ class ResourcePoliciesPage extends Component {
         return (
           <>
             <h3>Policies</h3>
-            <Button onClick={handleSwitch}>Add</Button>
+            <Button onClick={() => handleSwitch('form')}>Add</Button>
           </>
         );
+
       case 'form':
         return <h3>Add Policy</h3>;
+
       default:
         break;
     }
   };
 
   renderContent = () => {
-    const { state } = this;
+    const { handleSwitch, state } = this;
 
     switch (state.content) {
       case 'table':
         return <TablePolicies />;
+
       case 'form':
-        return <div>Form</div>;
+        return (
+          <FormResourceAdd
+            category="policies"
+            handleSwitch={handleSwitch}
+            {...this.props}
+          />
+        );
+
       default:
         break;
     }

@@ -20,6 +20,7 @@ class TablePolicies extends Component {
   componentDidMount() {
     const { resourceActions } = this.props;
     const values = { category: 'policies' };
+
     resourceActions.search(values);
   }
 

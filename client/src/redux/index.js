@@ -8,6 +8,7 @@ import { authReducer } from './auth';
 import { libraryReducer } from './library';
 import { modalReducer } from './modal';
 import { permissionReducer } from './permission';
+import { resourceReducer } from './resource';
 import { showReducer } from './show';
 import { trackReducer } from './track';
 import { trafficReducer } from './traffic';
@@ -30,6 +31,7 @@ export default combineReducers({
   library: libraryReducer,
   modal: modalReducer,
   permission: permissionReducer,
+  resource: resourceReducer,
   show: showReducer,
   track: trackReducer,
   traffic: trafficReducer,

@@ -9,26 +9,6 @@ import { bindActionCreators } from 'redux';
 import Checkbox from '../../Checkbox';
 
 class FormAlbumEdit extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      compilation: '',
-    };
-    this.handleCheckbox = this.handleCheckbox.bind(this);
-  }
-
-  componentDidMount() {
-    this.setState({
-      compilation: this.props.initialValues.compilation,
-    });
-  }
-
-  handleCheckbox() {
-    this.setState({
-      compilation: !this.state.compilation,
-    });
-  }
-
   submit = values => {
     const { history, albumActions } = this.props;
     console.log(this.state, values);
@@ -65,14 +45,7 @@ class FormAlbumEdit extends Component {
           autoFocus
           validate={requiredValidate}
         />
-        <Field
-          component={Checkbox}
-          label="Compilation"
-          name="compilation"
-          onClick={this.handleCheckbox}
-          checked={this.state.compilation}
-          value={this.state.compilation}
-        />
+        <Field component={Checkbox} label="Compilation" name="compilation" />
         <div>
           <Button type="submit">Submit</Button>
         </div>

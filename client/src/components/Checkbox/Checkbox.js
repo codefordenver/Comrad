@@ -5,10 +5,6 @@ import classnames from 'classnames';
 class Checkbox extends Component {
   static propTypes = {
     /**
-     * Add checked attribute to element
-     */
-    checked: PropTypes.bool,
-    /**
      * Additional classes added to component
      */
     className: PropTypes.string,
@@ -25,6 +21,10 @@ class Checkbox extends Component {
      */
     id: PropTypes.string.isRequired,
     /**
+     * whether or not the checkbox is checked initially, defaults to false. If the component is used in Redux Form, this is overridden with a value provided in the input.value property by Redux Form.
+     */
+    initialChecked: PropTypes.bool,
+    /**
      * Text used to label checkbox
      */
     label: PropTypes.string,
@@ -38,16 +38,26 @@ class Checkbox extends Component {
     label: null,
   };
 
+  constructor(props) {
+    let { initialChecked = false, input } = props;
+    if (input != null) {
+      initialChecked = input.value;
+    }
+    super(props);
+    this.state = {
+      checked: initialChecked,
+    };
+  }
+
+  handleOnClick = () => {
+    let newValue = !this.state.checked;
+    this.props.input.onChange(newValue);
+    this.setState({ checked: newValue });
+  };
+
   render() {
-    const {
-      checked,
-      className,
-      disabled,
-      hover,
-      id,
-      label,
-      input,
-    } = this.props;
+    const { className, disabled, hover, id, label, input } = this.props;
+    const { checked } = this.state;
     return (
       <div className={classnames('checkbox', className)}>
         <input
@@ -59,13 +69,13 @@ class Checkbox extends Component {
           disabled={disabled}
         />
         <label
-          onClick={this.props.onClick}
+          onClick={this.handleOnClick}
           className={classnames(
             'checkbox__label',
             disabled && 'disabled',
             hover && 'hover',
           )}
-          for={id}
+          htmlFor={id}
         >
           {label}
         </label>

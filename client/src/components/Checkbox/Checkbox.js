@@ -17,9 +17,9 @@ class Checkbox extends Component {
      */
     hover: PropTypes.bool,
     /**
-     * Needed to link checkbox with label
+     * Needed to link checkbox with label. If the component is used in Redux Form, this is overridden with the value provided by input.id.
      */
-    id: PropTypes.string.isRequired,
+    id: PropTypes.string,
     /**
      * whether or not the checkbox is checked initially, defaults to false. If the component is used in Redux Form, this is overridden with a value provided in the input.value property by Redux Form.
      */
@@ -56,8 +56,14 @@ class Checkbox extends Component {
   };
 
   render() {
-    const { className, disabled, hover, id, label, input } = this.props;
+    let { id } = this.props;
+    const { className, disabled, hover, label, input } = this.props;
     const { checked } = this.state;
+
+    if (input != null) {
+      id = input.name;
+    }
+
     return (
       <div className={classnames('checkbox', className)}>
         <input

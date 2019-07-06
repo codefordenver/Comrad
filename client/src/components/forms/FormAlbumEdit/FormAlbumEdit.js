@@ -11,10 +11,9 @@ import Checkbox from '../../Checkbox';
 class FormAlbumEdit extends Component {
   submit = values => {
     const { history, albumActions } = this.props;
-    console.log(this.state, values);
     return albumActions.edit(values, albumData => {
       albumActions.clear();
-      history.push(`/library/album/${albumData._id}`);
+      history.push(`/library/album/${albumData.id}`);
     });
   };
 

@@ -7,7 +7,6 @@ import { albumActions } from '../../../redux';
 
 import Button from '../../Button';
 import Input from '../../Input';
-import Checkbox from '../../Checkbox';
 
 class FormAlbumAdd extends Component {
   submit = values => {
@@ -45,7 +44,6 @@ class FormAlbumAdd extends Component {
           autoFocus
           validate={requiredValidate}
         />
-        <Field component={Checkbox} name="compilation" label="Compilation" />
         <div>
           <Button type="submit">Submit</Button>
         </div>

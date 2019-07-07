@@ -1,4 +1,4 @@
-import { artistTypes } from '../albumTypes';
+import { artistTypes } from '../artistTypes';
 
 export const clear = () => async dispatch => {
   try {

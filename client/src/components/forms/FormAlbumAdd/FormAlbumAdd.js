@@ -4,15 +4,16 @@ import { Field, reduxForm } from 'redux-form';
 import { bindActionCreators } from 'redux';
 import { requiredValidate } from '../../../utils/validation';
 import { albumActions } from '../../../redux';
+import { artistActions } from '../../../redux';
 
 import Button from '../../Button';
 import Input from '../../Input';
 
 class FormAlbumAdd extends Component {
   submit = values => {
-    const { albumActions, history } = this.props;
+    const { albumActions, artistActions, history } = this.props;
     return albumActions.add(values, albumData => {
-      albumActions.clear();
+      artistActions.clear();
       history.push(`/library/artist/${albumData.artist}`);
     });
   };
@@ -67,6 +68,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     albumActions: bindActionCreators({ ...albumActions }, dispatch),
+    artistActions: bindActionCreators({ ...artistActions }, dispatch),
   };
 }
 

@@ -11,7 +11,7 @@ class AlbumAddPage extends Component {
   }
 
   render() {
-    //need to pass in artist id
+    const { _id } = this.props.artist.doc;
     return (
       <div className="album-add-page">
         <Card>
@@ -20,6 +20,7 @@ class AlbumAddPage extends Component {
             <FormAlbumAdd
               submitCallback={this.addAlbumCallback}
               history={this.props.history}
+              artistId={_id}
             />
           </CardBody>
         </Card>

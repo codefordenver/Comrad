@@ -10,9 +10,12 @@ import Input from '../../Input';
 import Checkbox from '../../Checkbox';
 
 class FormAlbumAdd extends Component {
-  submit = (values, dispatch, props) => {
-    const { albumActions, submitCallback } = this.props;
-    albumActions.add(values, submitCallback);
+  submit = values => {
+    const { albumActions, history } = this.props;
+    return albumActions.add(values, albumData => {
+      albumActions.clear();
+      history.push(`/library/artist/${albumData.artist}`);
+    });
   };
 
   render() {
@@ -20,7 +23,14 @@ class FormAlbumAdd extends Component {
     const { handleSubmit } = props;
 
     return (
-      <form className="form-album-add" onSubmit={handleSubmit(submit)}>
+      <form
+        className="form-album-add"
+        onSubmit={handleSubmit(data => {
+          submit({
+            ...data,
+          });
+        })}
+      >
         <Field
           component={Input}
           label="Name"
@@ -48,6 +58,14 @@ const ReduxFormAlbumAdd = reduxForm({
   form: 'albumAdd',
 })(FormAlbumAdd);
 
+function mapStateToProps(state) {
+  return {
+    initialValues: {
+      artist: state.artist.doc._id,
+    },
+  };
+}
+
 function mapDispatchToProps(dispatch) {
   return {
     albumActions: bindActionCreators({ ...albumActions }, dispatch),
@@ -55,6 +73,6 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps,
 )(ReduxFormAlbumAdd);

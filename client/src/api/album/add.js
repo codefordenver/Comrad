@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { ROOT_ARTISTS_URL } from '../root';
+import { ROOT_ALBUMS_URL } from '../root';
 
 export function add(input) {
-  return axios.post(`${ROOT_ARTISTS_URL}`, input);
+  return axios.post(`${ROOT_ALBUMS_URL}`, input);
 }

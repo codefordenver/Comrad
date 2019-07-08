@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 
 import Card, { CardBody } from '../../components/Card';
-import FormChangePassword from '../../components/forms/FormChangePassword';
+import FormPasswordChange from '../../components/forms/FormPasswordChange';
 
 class ChangePasswordPage extends Component {
-  changePasswordCallback = id => {
+  passwordChangeCallback = id => {
     this.props.history.push('/dashboard'); //route to dashboard after submit
   };
 
@@ -14,7 +14,7 @@ class ChangePasswordPage extends Component {
         <Card>
           <CardBody>
             <h1>Change Password</h1>
-            <FormChangePassword submitCallback={this.changePasswordCallback} />
+            <FormPasswordChange submitCallback={this.passwordChangeCallback} />
           </CardBody>
         </Card>
       </div>

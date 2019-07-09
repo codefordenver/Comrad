@@ -31,7 +31,7 @@ export const SidebarData = [
   },
   {
     name: 'copy',
-    url: '/resources',
+    url: '/resource',
     iconClass: 'fas fa-copy',
     tooltipText: 'Resources',
   },

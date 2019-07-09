@@ -54,8 +54,8 @@ export const albumReducer = (state = initialState, { type, payload }) => {
         ...state,
         doc: {
           ...payload,
-        }
-      },
+        },
+      };
 
     case albumTypes.EDIT:
       return {

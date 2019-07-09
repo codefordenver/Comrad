@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 
 import MainLayout from '../../layouts/MainLayout';
 import UserAddPage from '../../pages/UserAddPage';
@@ -16,12 +16,18 @@ class UserRoutes extends Component {
         <Route exact path={`${url}/add`} component={UserAddPage} />
         <Route exact path={`${url}/edit`} component={UserEditPage} />
         <Route exact path={`${url}/search`} component={UserSearchPage} />
-        <Route exact path={`${url}/profile/:id`} component={UserProfilePage} />
-        <Route
-          exact
-          path={`${url}/profile/change-password`}
-          component={ChangePasswordPage}
-        />
+        <Switch>
+          <Route
+            exact
+            path={`${url}/profile/change-password`}
+            component={ChangePasswordPage}
+          />
+          <Route
+            exact
+            path={`${url}/profile/:id`}
+            component={UserProfilePage}
+          />
+        </Switch>
       </MainLayout>
     );
   }

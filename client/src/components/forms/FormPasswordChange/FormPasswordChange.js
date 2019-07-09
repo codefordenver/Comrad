@@ -1,16 +1,20 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
-import { requiredValidate } from '../../../utils/validation';
-import { userActions } from '../../../redux/user';
+import {
+  passwordsMatchValidate,
+  requiredValidate,
+} from '../../../utils/validation';
 import Button from '../../Button';
 import Input from '../../Input';
 import { bindActionCreators } from 'redux';
+import { authActions } from '../../../redux';
 
 class FormPasswordChange extends Component {
   submit = values => {
-    //const { userActions, history } = this.props;
-    //return //userActions.passwordChange(values => {});
+    return authActions.passwordNew({ ...values }, () => {
+      //history.push('/');
+    });
   };
 
   render() {
@@ -33,7 +37,7 @@ class FormPasswordChange extends Component {
           name="confirm_password"
           type="password"
           autoFocus
-          validate={requiredValidate}
+          validate={[passwordsMatchValidate, requiredValidate]}
         />
         <div>
           <Button type="submit">Submit</Button>
@@ -43,15 +47,15 @@ class FormPasswordChange extends Component {
   }
 }
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps({ auth }) {
   return {
-    initialValues: {},
+    authState: auth,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    userActions: bindActionCreators({ ...userActions }, dispatch),
+    userActions: bindActionCreators({ ...authActions }, dispatch),
   };
 }
 

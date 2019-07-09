@@ -30,7 +30,7 @@ class Navbar extends Component {
           <div className="navbar__user">
             <Dropdown position="bottom-left" type="icon">
               <Dropdown.Item to="/profile/edit">Edit Profile</Dropdown.Item>
-              <Dropdown.Item to="/profile/change-password">
+              <Dropdown.Item to="/user/profile/change-password">
                 Change Password
               </Dropdown.Item>
               <Dropdown.Item handleOnClick={this.handleSignOut}>

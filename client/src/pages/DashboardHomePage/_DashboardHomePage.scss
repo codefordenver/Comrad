@@ -30,52 +30,52 @@
       grid-row: 1 / span 3;
     }
   }
-}
 
-.up-next,
-.currently-on-air {
-  &__host-name {
-    font-size: 1.4rem;
-    text-align: center;
-  }
-
-  &__show-time {
-    font-size: 1.2rem;
-    text-align: center;
-  }
-}
-
-.currently-on-air {
-}
-
-table {
-  width: 100%;
-
-  & thead {
-    & th {
-      font-size: 1.8rem;
-      text-align: left;
-
-      padding: 1rem;
-    }
-  }
-
-  & tbody {
-    border-radius: 1px;
-    border: 1px solid $color-grey-2;
-
-    & tr {
-      &:hover {
-        background-color: $color-grey-1;
-      }
-      &:not(:last-child) {
-        border-bottom: 1px solid $color-grey-2;
-      }
-    }
-
-    & td {
+  .up-next,
+  .currently-on-air {
+    &__host-name {
       font-size: 1.4rem;
-      padding: 1rem;
+      text-align: center;
+    }
+
+    &__show-time {
+      font-size: 1.2rem;
+      text-align: center;
+    }
+  }
+
+  .currently-on-air {
+  }
+
+  table {
+    width: 100%;
+
+    & thead {
+      & th {
+        font-size: 1.8rem;
+        text-align: left;
+
+        padding: 1rem;
+      }
+    }
+
+    & tbody {
+      border-radius: 1px;
+      border: 1px solid $color-grey-2;
+
+      & tr {
+        &:hover {
+          background-color: $color-grey-1;
+        }
+        &:not(:last-child) {
+          border-bottom: 1px solid $color-grey-2;
+        }
+      }
+
+      & td {
+        font-size: 1.4rem;
+        padding: 1rem;
+      }
     }
   }
 }

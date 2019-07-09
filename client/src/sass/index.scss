@@ -26,6 +26,7 @@
 @import '../components/Filter/Filter';
 @import '../components/Footer/Footer';
 @import '../components/forms/FormAlbumAdd/FormAlbumAdd';
+@import '../components/forms/FormAlbumEdit/FormAlbumEdit';
 @import '../components/forms/FormArtistAdd/FormArtistAdd';
 @import '../components/forms/FormArtistUpdateName/FormArtistUpdateName';
 @import '../components/forms/FormTrackAdd/FormTrackAdd';
@@ -59,6 +60,7 @@
 // pages
 @import '../pages/AdminHomePage/AdminHomePage';
 @import '../pages/AlbumAddPage/AlbumAddPage';
+@import '../pages/AlbumEditPage/AlbumEditPage';
 @import '../pages/AlbumViewPage/AlbumViewPage';
 @import '../pages/ArtistAddPage/ArtistAddPage';
 @import '../pages/ArtistViewPage/ArtistViewPage';

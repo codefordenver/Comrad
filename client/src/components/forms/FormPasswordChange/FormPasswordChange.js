@@ -12,9 +12,7 @@ import { authActions } from '../../../redux';
 
 class FormPasswordChange extends Component {
   submit = values => {
-    return authActions.passwordNew({ ...values }, () => {
-      //history.push('/');
-    });
+    return authActions.passwordNew({ ...values });
   };
 
   render() {

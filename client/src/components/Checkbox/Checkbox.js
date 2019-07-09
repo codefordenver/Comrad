@@ -5,10 +5,6 @@ import classnames from 'classnames';
 class Checkbox extends Component {
   static propTypes = {
     /**
-     * Add checked attribute to element
-     */
-    checked: PropTypes.bool,
-    /**
      * Additional classes added to component
      */
     className: PropTypes.string,
@@ -21,9 +17,13 @@ class Checkbox extends Component {
      */
     hover: PropTypes.bool,
     /**
-     * Needed to link checkbox with label
+     * Needed to link checkbox with label. If the component is used in Redux Form, this is overridden with the value provided by input.id.
      */
-    id: PropTypes.string.isRequired,
+    id: PropTypes.string,
+    /**
+     * whether or not the checkbox is checked initially, defaults to false. If the component is used in Redux Form, this is overridden with a value provided in the input.value property by Redux Form.
+     */
+    initialChecked: PropTypes.bool,
     /**
      * Text used to label checkbox
      */
@@ -38,15 +38,41 @@ class Checkbox extends Component {
     label: null,
   };
 
+  constructor(props) {
+    let { initialChecked = false, input } = props;
+    if (input != null) {
+      initialChecked = input.value;
+    }
+    super(props);
+    this.state = {
+      checked: initialChecked,
+    };
+  }
+
+  handleOnChange = e => {
+    if (this.props.input != null) {
+      this.props.input.onChange(e.target.checked);
+    }
+    this.setState({ checked: e.target.checked });
+  };
+
   render() {
-    const { checked, className, disabled, hover, id, label } = this.props;
+    let { id } = this.props;
+    const { className, disabled, hover, label, input } = this.props;
+    const { checked } = this.state;
+
+    if (input != null) {
+      id = input.name;
+    }
 
     return (
       <div className={classnames('checkbox', className)}>
         <input
+          {...input}
           checked={checked}
           className="checkbox__input"
           id={id}
+          onChange={this.handleOnChange}
           type="checkbox"
           disabled={disabled}
         />
@@ -56,7 +82,7 @@ class Checkbox extends Component {
             disabled && 'disabled',
             hover && 'hover',
           )}
-          for={id}
+          htmlFor={id}
         >
           {label}
         </label>

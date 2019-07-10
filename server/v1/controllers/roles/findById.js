@@ -3,11 +3,11 @@ const db = require('../../models');
 function findById(req, res) {
   const { id } = req.params;
 
-  db.Permission.findById(id)
-    .then(dbPermission => {
-      delete dbPermission._doc.password;
+  db.Role.findById(id)
+    .then(dbRole => {
+      delete dbRole._doc.password;
 
-      res.json(dbPermission);
+      res.json(dbRole);
     })
     .catch(err => res.status(422).json({ message: err }));
 }

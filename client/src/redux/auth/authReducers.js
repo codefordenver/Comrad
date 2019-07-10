@@ -25,6 +25,13 @@ export const authReducer = (state = initialState, { type, payload }) => {
         ...state,
         loading: true,
       };
+    case authTypes.PASSWORD_CHANGE:
+      return {
+        ...state,
+        doc: {
+          ...payload,
+        },
+      };
 
     default:
       return state;

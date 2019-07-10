@@ -10,6 +10,8 @@ import { bindActionCreators } from 'redux';
 class FormTrackEdit extends Component {
   submit = values => {
     const { trackActions, submitCallback } = this.props;
+    values.duration_in_seconds =
+      parseInt(values.seconds) + parseInt(values.minutes) * 60;
     return trackActions.edit(values, trackData => {
       if (typeof submitCallback === 'function') {
         submitCallback(trackData);
@@ -22,17 +24,7 @@ class FormTrackEdit extends Component {
     const { handleSubmit } = props;
 
     return (
-      <form
-        className="form-track-edit"
-        onSubmit={handleSubmit(data => {
-          const duration_in_seconds =
-            parseInt(data.seconds) + parseInt(data.minutes) * 60;
-          submit({
-            ...data,
-            duration_in_seconds: duration_in_seconds,
-          });
-        })}
-      >
+      <form className="form-track-edit" onSubmit={handleSubmit(submit)}>
         <Field
           component={Input}
           label="Name"

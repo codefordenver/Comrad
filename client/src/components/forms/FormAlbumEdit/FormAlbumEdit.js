@@ -2,13 +2,22 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import { requiredValidate } from '../../../utils/validation';
-import { albumActions } from '../../../redux';
+import { albumActions, configActions } from '../../../redux';
 import Button from '../../Button';
 import Input from '../../Input';
 import { bindActionCreators } from 'redux';
 import Checkbox from '../../Checkbox';
+import CustomFieldsEdit from '../../CustomFieldsEdit';
 
 class FormAlbumEdit extends Component {
+  componentDidMount() {
+    const { configActions, configState } = this.props;
+
+    if (!('album' in configState.customFields)) {
+      configActions.customFieldsForModel('album');
+    }
+  }
+
   submit = values => {
     const { history, albumActions } = this.props;
     return albumActions.edit(values, albumData => {
@@ -19,7 +28,12 @@ class FormAlbumEdit extends Component {
 
   render() {
     const { props, submit } = this;
-    const { handleSubmit } = props;
+    const { handleSubmit, configState } = props;
+
+    let albumCustomFields = [];
+    if ('album' in configState.customFields) {
+      albumCustomFields = configState.customFields.album;
+    }
 
     return (
       <form
@@ -45,6 +59,7 @@ class FormAlbumEdit extends Component {
           validate={requiredValidate}
         />
         <Field component={Checkbox} label="Compilation" name="compilation" />
+        <CustomFieldsEdit fieldsMeta={albumCustomFields} />
         <div>
           <Button type="submit">Submit</Button>
         </div>
@@ -54,13 +69,15 @@ class FormAlbumEdit extends Component {
 }
 
 function mapStateToProps(state) {
-  const { name, label, compilation, _id } = state.album.doc;
+  const { name, label, compilation, _id, custom } = state.album.doc;
   return {
+    configState: state.config,
     initialValues: {
       name: name,
       label: label,
       compilation: compilation,
       id: _id,
+      custom: custom,
     },
   };
 }
@@ -68,6 +85,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     albumActions: bindActionCreators({ ...albumActions }, dispatch),
+    configActions: bindActionCreators({ ...configActions }, dispatch),
   };
 }
 

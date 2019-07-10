@@ -4,20 +4,31 @@ import { connect } from 'react-redux';
 import { isEmpty } from 'lodash';
 
 import Card, { CardBody } from '../../components/Card';
+import CustomFieldsView from '../../components/CustomFieldsView';
 import LargeText from '../../components/LargeText';
 import TableAlbumTracks from '../../components/tables/TableAlbumTracks';
 
 import { Link } from 'react-router-dom';
-import { albumActions } from '../../redux';
+import { albumActions, configActions } from '../../redux';
 
 class AlbumViewPage extends Component {
   componentDidMount() {
-    const { albumState, albumActions, match } = this.props;
+    const {
+      albumState,
+      albumActions,
+      configActions,
+      configState,
+      match,
+    } = this.props;
     const { _id } = albumState.doc;
     const { id } = match.params;
 
     if (id !== _id) {
       albumActions.findOne(id);
+    }
+
+    if (!('album' in configState.customFields)) {
+      configActions.customFieldsForModel('album');
     }
   }
 
@@ -33,9 +44,14 @@ class AlbumViewPage extends Component {
 
   render() {
     const { navigateToTrack, props, renderLastUpdated } = this;
-    const { albumState } = props;
-    const { artist, name, tracks, label, compilation } = albumState.doc;
+    const { albumState, configState } = props;
+    const { artist, name, tracks, label, compilation, custom } = albumState.doc;
     const { url } = this.props.match;
+
+    let albumCustomFields = [];
+    if ('album' in configState.customFields) {
+      albumCustomFields = configState.customFields.album;
+    }
 
     return (
       <div className="album-view-page">
@@ -64,6 +80,12 @@ class AlbumViewPage extends Component {
                     </h5>
                     {!!label && <span>&nbsp;| {label}</span>}
                     {!!compilation && <span>&nbsp;| Compilation</span>}
+                    {custom && (
+                      <CustomFieldsView
+                        fieldsMeta={albumCustomFields}
+                        fieldsValues={custom}
+                      />
+                    )}
                   </div>
                   <div className="album-view-page__last-updated">
                     {renderLastUpdated()}
@@ -94,15 +116,17 @@ class AlbumViewPage extends Component {
   }
 }
 
-function mapStateToProps({ album }) {
+function mapStateToProps({ album, config }) {
   return {
     albumState: album,
+    configState: config,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     albumActions: bindActionCreators({ ...albumActions }, dispatch),
+    configActions: bindActionCreators({ ...configActions }, dispatch),
   };
 }
 

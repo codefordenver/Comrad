@@ -4,7 +4,7 @@ import { authTypes } from '../authTypes';
 
 export const passwordChange = (values, callback) => async dispatch => {
   try {
-    dispatch({ type: authTypes.LOADING });
+    dispatch({ type: authTypes.PASSWORD_CHANGE });
 
     await authAPI.passwordChange(values);
 

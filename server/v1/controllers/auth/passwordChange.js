@@ -34,8 +34,6 @@ async function passwordChange(req, res) {
         { email: user.email },
         {
           password: hash,
-          reset_token: null,
-          reset_token_expiry: null,
         },
         { new: true },
       );

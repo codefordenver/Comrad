@@ -12,7 +12,7 @@ import { authActions } from '../../../redux';
 
 class FormPasswordChange extends Component {
   submit = values => {
-    console.log(values);
+    const { authActions } = this.props;
     return authActions.passwordChange({ ...values });
   };
 
@@ -64,7 +64,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    userActions: bindActionCreators({ ...authActions }, dispatch),
+    authActions: bindActionCreators({ ...authActions }, dispatch),
   };
 }
 

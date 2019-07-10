@@ -21,14 +21,7 @@ class FormPasswordChange extends Component {
     const { handleSubmit } = props;
 
     return (
-      <form
-        className="form-password-change"
-        onSubmit={handleSubmit(data => {
-          submit({
-            ...data,
-          });
-        })}
-      >
+      <form className="form-password-change" onSubmit={handleSubmit(submit)}>
         <Field
           component={Input}
           label="New Password"

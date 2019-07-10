@@ -87,7 +87,8 @@ class Alert extends Component {
         <div className="alert__icon">{ALERT_ICON[alertState.type]}</div>
         <div className="alert__container">
           <div className="alert__header">{alertState.header}</div>
-          <div className="alert__body">{String(alertState.body)}</div>
+          <div className="alert__body">{String(alertState.body)}</div>{' '}
+          {/* Use String() since the body is sometimes passed response messages from APIs: in case an object is accidentally passed, this will prevent a breaking error */}
         </div>
       </div>
     );

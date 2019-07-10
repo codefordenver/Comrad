@@ -7,7 +7,7 @@ function create(req, res) {
     .then(dbTrack => res.json(dbTrack))
     .catch(err => {
       console.log(err);
-      res.status(422).json(err);
+      res.status(422).json({ errorMessage: err });
     });
 }
 

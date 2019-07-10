@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 
@@ -86,7 +87,7 @@ class Alert extends Component {
         <div className="alert__icon">{ALERT_ICON[alertState.type]}</div>
         <div className="alert__container">
           <div className="alert__header">{alertState.header}</div>
-          <div className="alert__body">{alertState.body}</div>
+          <div className="alert__body">{String(alertState.body)}</div>
         </div>
       </div>
     );
@@ -104,7 +105,9 @@ function mapDispatchToProps(dispatch) {
     alertInactive: () => dispatch({ type: alertTypes.INACTIVE }),
   };
 }
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(Alert);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  )(Alert),
+);

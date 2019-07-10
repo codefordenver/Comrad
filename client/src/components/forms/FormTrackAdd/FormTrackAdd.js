@@ -2,18 +2,19 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import { requiredValidate } from '../../../utils/validation';
-import { albumActions, trackActions } from '../../../redux';
+import { trackActions } from '../../../redux';
 import Button from '../../Button';
 import Input from '../../Input';
 import { bindActionCreators } from 'redux';
 
 class FormTrackAdd extends Component {
   submit = values => {
-    const { albumId, trackActions, history, albumActions } = this.props;
+    const { albumId, trackActions, submitCallback } = this.props;
     values.album = albumId;
     return trackActions.add(values, trackData => {
-      albumActions.clear();
-      history.push(`/library/album/${trackData.album}`);
+      if (typeof submitCallback === 'function') {
+        submitCallback(trackData);
+      }
     });
   };
 
@@ -35,22 +36,6 @@ class FormTrackAdd extends Component {
       >
         <Field
           component={Input}
-          label="Disk Number"
-          name="disk_number"
-          type="number"
-          autoFocus
-          validate={requiredValidate}
-        />
-        <Field
-          component={Input}
-          label="Track Number"
-          name="track_number"
-          type="number"
-          autoFocus
-          validate={requiredValidate}
-        />
-        <Field
-          component={Input}
           label="Name"
           name="name"
           autoFocus
@@ -66,7 +51,6 @@ class FormTrackAdd extends Component {
             className="minutes"
             type="number"
             placeholder="00"
-            autoFocus
             validate={requiredValidate}
           />
           <div className="duration-colon">:</div>
@@ -76,10 +60,22 @@ class FormTrackAdd extends Component {
             className="seconds"
             type="number"
             placeholder="00"
-            autoFocus
             validate={requiredValidate}
           />
         </div>
+        <Field
+          component={Input}
+          label="Disk Number"
+          name="disk_number"
+          type="number"
+        />
+        <Field
+          component={Input}
+          label="Track Number"
+          name="track_number"
+          type="number"
+        />
+
         <div>
           <Button type="submit">Submit</Button>
         </div>
@@ -100,7 +96,6 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    albumActions: bindActionCreators({ ...albumActions }, dispatch),
     trackActions: bindActionCreators({ ...trackActions }, dispatch),
   };
 }

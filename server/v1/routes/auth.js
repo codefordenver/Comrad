@@ -13,5 +13,6 @@ router.route('/current').get(requireLogin, authController.current);
 
 router.route('/password/reset').put(authController.passwordReset);
 router.route('/password/new').put(authController.passwordNew);
+//router.route('/password/change').put(authController.passwordChange)
 
 module.exports = router;

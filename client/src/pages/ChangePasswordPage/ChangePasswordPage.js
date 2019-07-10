@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import { connect } from 'react-redux';
 import Card, { CardBody } from '../../components/Card';
 import FormPasswordChange from '../../components/forms/FormPasswordChange';
 
@@ -22,4 +22,8 @@ class ChangePasswordPage extends Component {
   }
 }
 
-export default ChangePasswordPage;
+function mapStateToProps({ auth }) {
+  return { auth };
+}
+
+export default connect(mapStateToProps)(ChangePasswordPage);

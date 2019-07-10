@@ -12,7 +12,8 @@ import { authActions } from '../../../redux';
 
 class FormPasswordChange extends Component {
   submit = values => {
-    return authActions.passwordNew({ ...values });
+    console.log(values);
+    return authActions.passwordChange({ ...values });
   };
 
   render() {
@@ -42,7 +43,7 @@ class FormPasswordChange extends Component {
           name="confirm_password"
           type="password"
           autoFocus
-          validate={[passwordsMatchValidate, requiredValidate]}
+          validate={requiredValidate}
         />
         <div>
           <Button type="submit">Submit</Button>
@@ -52,9 +53,12 @@ class FormPasswordChange extends Component {
   }
 }
 
-function mapStateToProps({ auth }) {
+function mapStateToProps(state) {
+  const id = state.auth.doc._id;
   return {
-    authState: auth,
+    initialValues: {
+      _id: id,
+    },
   };
 }
 

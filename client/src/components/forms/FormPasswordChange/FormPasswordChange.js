@@ -13,7 +13,7 @@ import { authActions } from '../../../redux';
 class FormPasswordChange extends Component {
   submit = values => {
     const { authActions } = this.props;
-    return authActions.passwordChange({ ...values });
+    authActions.passwordChange(values);
   };
 
   render() {

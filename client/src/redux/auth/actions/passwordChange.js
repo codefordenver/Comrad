@@ -2,13 +2,11 @@ import { authAPI } from '../../../api';
 import { alertTypes } from '../../alert';
 import { authTypes } from '../authTypes';
 
-export const passwordChange = (values, callback) => async dispatch => {
+export const passwordChange = values => async dispatch => {
   try {
     dispatch({ type: authTypes.PASSWORD_CHANGE });
 
     await authAPI.passwordChange(values);
-
-    callback();
 
     dispatch({
       type: alertTypes.ACTIVE,
@@ -19,6 +17,7 @@ export const passwordChange = (values, callback) => async dispatch => {
       },
     });
   } catch (err) {
+    console.log(err);
     dispatch({
       type: alertTypes.ACTIVE,
       payload: {

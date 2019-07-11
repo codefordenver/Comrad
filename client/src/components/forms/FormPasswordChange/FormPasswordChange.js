@@ -25,7 +25,7 @@ class FormPasswordChange extends Component {
         <Field
           component={Input}
           label="New Password"
-          name="new_password"
+          name="passNew"
           type="password"
           autoFocus
           validate={requiredValidate}
@@ -33,7 +33,7 @@ class FormPasswordChange extends Component {
         <Field
           component={Input}
           label="Confirm Password"
-          name="confirm_password"
+          name="passConfirm"
           type="password"
           autoFocus
           validate={requiredValidate}

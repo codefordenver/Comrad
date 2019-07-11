@@ -17,7 +17,6 @@ export const passwordChange = values => async dispatch => {
       },
     });
   } catch (err) {
-    console.log(err);
     dispatch({
       type: alertTypes.ACTIVE,
       payload: {

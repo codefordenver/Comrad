@@ -13,7 +13,7 @@ async function passwordChange(req, res) {
   }
 
   const user = await db.User.findOne({
-    id: _id,
+    _id: _id,
   });
 
   if (!user) {
@@ -31,13 +31,12 @@ async function passwordChange(req, res) {
       }
 
       const updatedUser = await db.User.findOneAndUpdate(
-        { email: user.email },
+        { _id: user._id },
         {
           password: hash,
         },
         { new: true },
       );
-
       return res.json(updatedUser);
     });
   });

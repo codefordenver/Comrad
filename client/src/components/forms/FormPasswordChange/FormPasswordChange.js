@@ -36,7 +36,7 @@ class FormPasswordChange extends Component {
           name="passConfirm"
           type="password"
           autoFocus
-          validate={requiredValidate}
+          validate={[passwordsMatchValidate, requiredValidate]}
         />
         <div>
           <Button type="submit">Submit</Button>

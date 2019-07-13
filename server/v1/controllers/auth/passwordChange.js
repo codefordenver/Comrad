@@ -2,23 +2,11 @@ const bcrypt = require('bcrypt-nodejs');
 const db = require('../../models');
 
 async function passwordChange(req, res) {
-  const { passConfirm, passNew, _id } = req.body;
-
-  if (!passConfirm || !passNew) {
-    return res.status(401).json('Password Confirm and/or Password New Missing');
-  }
-
-  if (passConfirm !== passNew) {
-    return res.status(401).json('Your passwords do not match!');
-  }
+  const { passNew, _id } = req.body;
 
   const user = await db.User.findOne({
     _id: _id,
   });
-
-  if (!user) {
-    return res.status(404).json('Your token has expired or is invalid');
-  }
 
   await bcrypt.genSalt(10, (err, salt) => {
     if (err) {
@@ -32,9 +20,6 @@ async function passwordChange(req, res) {
 
       const updatedUser = await db.User.findOneAndUpdate(
         { _id: user._id },
-        {
-          password: hash,
-        },
         { new: true },
       );
       return res.json(updatedUser);

@@ -8,7 +8,7 @@ export const passwordChange = values => async dispatch => {
       type: alertTypes.ACTIVE,
       payload: {
         header: 'Success',
-        body: 'Your Password Has Been Successfully Resetted',
+        body: 'Your password has been successfully changed',
         type: 'success',
       },
     });
@@ -17,7 +17,7 @@ export const passwordChange = values => async dispatch => {
       type: alertTypes.ACTIVE,
       payload: {
         header: 'Error',
-        body: 'Error resetting password',
+        body: 'Error changing password',
         type: 'danger',
       },
     });

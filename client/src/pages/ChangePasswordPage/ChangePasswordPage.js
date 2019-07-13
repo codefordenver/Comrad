@@ -14,7 +14,7 @@ class ChangePasswordPage extends Component {
         <Card>
           <CardBody>
             <h1>Change Password</h1>
-            <FormPasswordChange submitCallback={this.passwordChangeCallback} />
+            <FormPasswordChange />
           </CardBody>
         </Card>
       </div>

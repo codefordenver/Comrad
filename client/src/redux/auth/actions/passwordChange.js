@@ -1,6 +1,5 @@
 import { authAPI } from '../../../api';
 import { alertTypes } from '../../alert';
-import { authTypes } from '../authTypes';
 
 export const passwordChange = values => async dispatch => {
   try {

@@ -4,10 +4,6 @@ import Card, { CardBody } from '../../components/Card';
 import FormPasswordChange from '../../components/forms/FormPasswordChange';
 
 class ChangePasswordPage extends Component {
-  passwordChangeCallback = id => {
-    this.props.history.push('/dashboard'); //route to dashboard after submit
-  };
-
   render() {
     return (
       <div>

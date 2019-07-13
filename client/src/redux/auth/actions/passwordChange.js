@@ -4,10 +4,7 @@ import { authTypes } from '../authTypes';
 
 export const passwordChange = values => async dispatch => {
   try {
-    dispatch({ type: authTypes.PASSWORD_CHANGE });
-
     await authAPI.passwordChange(values);
-
     dispatch({
       type: alertTypes.ACTIVE,
       payload: {

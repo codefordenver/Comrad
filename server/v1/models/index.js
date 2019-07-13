@@ -1,3 +1,4 @@
+const AccessControl = require('./accessControl');
 const Album = require('./album');
 const Artist = require('./artist');
 const Genre = require('./genre');
@@ -11,6 +12,7 @@ const Traffic = require('./traffic');
 const User = require('./user');
 
 module.exports = {
+  AccessControl,
   Album,
   Artist,
   Genre,

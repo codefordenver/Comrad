@@ -1,9 +1,10 @@
 const router = require('express').Router();
 const { resourcesController } = require('../controllers');
+const { requireAC } = require('../middlewares');
 
 router
   .route('/')
-  .get(resourcesController.findAll)
+  .get(requireAC('resources', 'readOwn'), resourcesController.findAll)
   .post(resourcesController.create);
 
 router.route('/search').get(resourcesController.search);

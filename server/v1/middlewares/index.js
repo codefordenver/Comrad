@@ -1,9 +1,9 @@
+const requireAC = require('./requireAC');
 const requireAdmin = require('./requireAdmin');
 const requireLogin = require('./requireLogin');
-const requirePermission = require('./requirePermission');
 
 module.exports = {
+  requireAC,
   requireAdmin,
   requireLogin,
-  requirePermission,
 };

@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const permissions = require('../config/permissions');
 
 const roleSchema = new Schema({
   description: {
@@ -17,7 +16,7 @@ const roleSchema = new Schema({
 
   permissions: {
     type: Array,
-    default: permissions,
+    // default: permissions,
   },
 });
 

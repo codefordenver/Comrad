@@ -1,5 +1,6 @@
 const router = require('express').Router();
 
+const accessControl = require('./accessControl');
 const albums = require('./albums');
 const announcements = require('./announcements');
 const artists = require('./artists');
@@ -15,6 +16,7 @@ const traffic = require('./traffic');
 const users = require('./users');
 const venues = require('./venues');
 
+router.use('/access-control', accessControl);
 router.use('/albums', albums);
 router.use('/announcements', announcements);
 router.use('/artists', artists);

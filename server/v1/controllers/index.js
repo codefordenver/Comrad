@@ -1,3 +1,4 @@
+const accessControlController = require('./accessControl');
 const albumsController = require('./albums');
 const announcementsController = require('./announcements');
 const artistsController = require('./artists');
@@ -14,6 +15,7 @@ const usersController = require('./users');
 const venuesController = require('./venues');
 
 module.exports = {
+  accessControlController,
   albumsController,
   announcementsController,
   artistsController,

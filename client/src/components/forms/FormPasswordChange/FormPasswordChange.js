@@ -35,7 +35,6 @@ class FormPasswordChange extends Component {
           label="Confirm Password"
           name="passConfirm"
           type="password"
-          autoFocus
           validate={[passwordsMatchValidate, requiredValidate]}
         />
         <div>

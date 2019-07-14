@@ -14,7 +14,7 @@ const accessControlSchema = new Schema({
     type: String,
   },
 
-  filter: {
+  attributes: {
     type: String,
   },
 });

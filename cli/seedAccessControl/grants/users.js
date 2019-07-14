@@ -1,26 +1,26 @@
-const resourcesAC = [
+const users = [
   // Admin
   {
     role: 'admin',
-    resource: 'resources',
+    resource: 'users',
     action: 'create:any',
     attributes: '*',
   },
   {
     role: 'admin',
-    resource: 'resources',
+    resource: 'users',
     action: 'read:any',
     attributes: '*',
   },
   {
     role: 'admin',
-    resource: 'resources',
+    resource: 'users',
     action: 'update:any',
     attributes: '*',
   },
   {
     role: 'admin',
-    resource: 'resources',
+    resource: 'users',
     action: 'delete:any',
     attributes: '*',
   },
@@ -28,25 +28,25 @@ const resourcesAC = [
   // Full Access
   {
     role: 'full access',
-    resource: 'resources',
+    resource: 'users',
     action: 'create:any',
     attributes: '*',
   },
   {
     role: 'full access',
-    resource: 'resources',
+    resource: 'users',
     action: 'read:any',
     attributes: '*',
   },
   {
     role: 'full access',
-    resource: 'resources',
+    resource: 'users',
     action: 'update:any',
     attributes: '*',
   },
   {
     role: 'full access',
-    resource: 'resources',
+    resource: 'users',
     action: 'delete:any',
     attributes: '*',
   },
@@ -54,50 +54,51 @@ const resourcesAC = [
   // Show Producer
   {
     role: 'show producer',
-    resource: 'resources',
+    resource: 'users',
     action: 'create:any',
     attributes: '*',
   },
   {
     role: 'show producer',
-    resource: 'resources',
+    resource: 'users',
     action: 'read:any',
     attributes: '*',
   },
   {
     role: 'show producer',
-    resource: 'resources',
+    resource: 'users',
     action: 'update:any',
     attributes: '*',
   },
   {
     role: 'show producer',
-    resource: 'resources',
+    resource: 'users',
     action: 'delete:any',
     attributes: '*',
   },
+
   // Underwriting
   {
     role: 'underwriting',
-    resource: 'resources',
+    resource: 'users',
     action: 'create:any',
     attributes: '*',
   },
   {
     role: 'underwriting',
-    resource: 'resources',
+    resource: 'users',
     action: 'read:any',
     attributes: '*',
   },
   {
     role: 'underwriting',
-    resource: 'resources',
+    resource: 'users',
     action: 'update:any',
     attributes: '*',
   },
   {
     role: 'underwriting',
-    resource: 'resources',
+    resource: 'users',
     action: 'delete:any',
     attributes: '*',
   },
@@ -105,25 +106,25 @@ const resourcesAC = [
   // DJ
   {
     role: 'dj',
-    resource: 'resources',
+    resource: 'users',
     action: 'create:any',
     attributes: '*',
   },
   {
     role: 'dj',
-    resource: 'resources',
+    resource: 'users',
     action: 'read:any',
     attributes: '*',
   },
   {
     role: 'dj',
-    resource: 'resources',
+    resource: 'users',
     action: 'update:any',
     attributes: '*',
   },
   {
     role: 'dj',
-    resource: 'resources',
+    resource: 'users',
     action: 'delete:any',
     attributes: '*',
   },
@@ -131,26 +132,28 @@ const resourcesAC = [
   // Guest
   {
     role: 'guest',
-    resource: 'resources',
+    resource: 'users',
     action: 'create:any',
     attributes: '*',
   },
   {
     role: 'guest',
-    resource: 'resources',
+    resource: 'users',
     action: 'read:any',
     attributes: '*',
   },
   {
     role: 'guest',
-    resource: 'resources',
+    resource: 'users',
     action: 'update:any',
     attributes: '*',
   },
   {
     role: 'guest',
-    resource: 'resources',
+    resource: 'users',
     action: 'delete:any',
     attributes: '*',
   },
 ];
+
+module.exports = users;

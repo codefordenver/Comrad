@@ -1,0 +1,25 @@
+const mongoose = require('mongoose');
+
+const keys = require('../../server/v1/config/keys');
+const prompts = require('./prompts');
+
+const initialSession = {
+  grant: '',
+  nextStep: 'home',
+};
+
+mongoose.connect(keys.mongoURI, { useNewUrlParser: true });
+
+async function index(session) {
+  const updatedSession = await prompts[session.nextStep](session);
+
+  switch (updatedSession.nextStep) {
+    case 'exit':
+      console.log('Goodbye!');
+      break;
+    default:
+      index(updatedSession);
+  }
+}
+
+index(initialSession);

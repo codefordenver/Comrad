@@ -19,6 +19,9 @@ async function passwordChange(req, res) {
         { password: hash },
         { new: true },
       );
+
+      delete updatedUser._doc.password;
+
       return res.json(updatedUser);
     });
   });

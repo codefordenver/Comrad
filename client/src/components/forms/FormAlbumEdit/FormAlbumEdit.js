@@ -19,10 +19,11 @@ class FormAlbumEdit extends Component {
   }
 
   submit = values => {
-    const { history, albumActions } = this.props;
+    const { albumActions, submitCallback } = this.props;
     return albumActions.edit(values, albumData => {
-      albumActions.clear();
-      history.push(`/library/album/${albumData.id}`);
+      if (typeof submitCallback === 'function') {
+        submitCallback(albumData);
+      }
     });
   };
 
@@ -51,13 +52,7 @@ class FormAlbumEdit extends Component {
           autoFocus
           validate={requiredValidate}
         />
-        <Field
-          component={Input}
-          label="Label"
-          name="label"
-          autoFocus
-          validate={requiredValidate}
-        />
+        <Field component={Input} label="Label" name="label" />
         <Field component={Checkbox} label="Compilation" name="compilation" />
         <CustomFieldsEdit fieldsMeta={albumCustomFields} />
         <div>

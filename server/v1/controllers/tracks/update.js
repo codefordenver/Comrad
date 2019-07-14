@@ -12,7 +12,7 @@ function update(req, res) {
     )
 
     .then(dbTrack => res.json(dbTrack))
-    .catch(err => res.status(422).json(err));
+    .catch(err => res.status(422).json({ errorMessage: err }));
 }
 
 module.exports = update;

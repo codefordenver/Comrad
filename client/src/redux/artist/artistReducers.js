@@ -1,12 +1,6 @@
 import { artistTypes } from './artistTypes';
 
 const initialState = {
-  alert: {
-    display: false,
-    header: '',
-    message: '',
-    type: '',
-  },
   doc: {},
   error: null,
   loading: false,
@@ -18,14 +12,6 @@ export const artistReducer = (state = initialState, { type, payload }) => {
     case artistTypes.ADD:
       return {
         doc: {
-          ...payload,
-        },
-      };
-    case artistTypes.ALERT:
-      return {
-        ...state,
-        alert: {
-          display: true,
           ...payload,
         },
       };
@@ -68,13 +54,6 @@ export const artistReducer = (state = initialState, { type, payload }) => {
           ...state.doc,
           ...payload,
         },
-      };
-    case artistTypes.ALERT_CLOSE:
-      const { alert } = initialState;
-
-      return {
-        ...state,
-        alert,
       };
     default:
       return state;

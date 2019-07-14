@@ -2,6 +2,7 @@ export const artistTypes = {
   ADD: 'artist_add',
   ALERT: 'artist_alert',
   ALERT_CLOSE: 'artist_alert_close',
+  CLEAR: 'artist_clear',
   EDITING_NAME: 'artist_editing_name',
   ERROR: 'aritist_error',
   FIND_ALBUMS: 'artist_find_albums',

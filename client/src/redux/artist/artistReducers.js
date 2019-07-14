@@ -29,6 +29,11 @@ export const artistReducer = (state = initialState, { type, payload }) => {
           ...payload,
         },
       };
+    case artistTypes.CLEAR:
+      return {
+        ...state,
+        doc: [],
+      };
     case artistTypes.FIND_ALBUMS:
       return {
         ...state,

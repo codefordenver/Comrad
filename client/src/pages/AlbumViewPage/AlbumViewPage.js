@@ -68,6 +68,9 @@ class AlbumViewPage extends Component {
                   <div className="album-view-page__last-updated">
                     {renderLastUpdated()}
                   </div>
+                  <Link className="edit-album-button" to={`${url}/edit`}>
+                    Edit Album
+                  </Link>
                 </div>
               </CardBody>
             </Card>

@@ -6,6 +6,7 @@ const featuresController = require('./features');
 const giveawaysController = require('./giveaways');
 const libraryController = require('./library');
 const permissionsController = require('./permissions');
+const resourcesController = require('./resources');
 const showsController = require('./shows');
 const tracksController = require('./tracks');
 const trafficController = require('./traffic');
@@ -21,6 +22,7 @@ module.exports = {
   giveawaysController,
   libraryController,
   permissionsController,
+  resourcesController,
   showsController,
   tracksController,
   trafficController,

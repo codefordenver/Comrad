@@ -1,5 +1,6 @@
 import { albumAPI } from '../../../api';
 import { albumTypes } from '../albumTypes';
+import { alertTypes } from '../../alert';
 
 export const edit = (data, callback) => async dispatch => {
   try {
@@ -10,8 +11,12 @@ export const edit = (data, callback) => async dispatch => {
   } catch (e) {
     console.error(e);
     dispatch({
-      type: albumTypes.ALERT,
-      payload: { type: 'danger', body: e.response.data.errorMessage },
+      type: alertTypes.ACTIVE,
+      payload: {
+        type: 'danger',
+        header: 'Error',
+        body: e.response.data.errorMessage,
+      },
     });
   }
 };

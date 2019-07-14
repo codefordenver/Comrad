@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { formatTotalSecondsAsMMSS } from '../../utils/formatters';
 
 import Card, { CardBody } from '../../components/Card';
+import Loading from '../../components/Loading';
 
 import { trackActions } from '../../redux';
 
@@ -26,12 +27,16 @@ class TrackViewPage extends Component {
     if (trackState.doc != null) {
       for (var i = 0; i < trackState.doc.artists.length; i++) {
         let artist = trackState.doc.artists[i];
-        if (i > 0) {
-          artistsHtml.push(<span>, </span>);
+        if (artist != null) {
+          if (i > 0) {
+            artistsHtml.push(<span>, </span>);
+          }
+          artistsHtml.push(
+            <a key={artist._id} href={'/library/artist/' + artist._id}>
+              {artist.name}
+            </a>,
+          );
         }
-        artistsHtml.push(
-          <a href={'/library/artist/' + artist._id}>{artist.name}</a>,
-        );
       }
       let lastUpdatedDateObj = new Date(trackState.doc.updated_at);
       lastUpdated =
@@ -42,6 +47,7 @@ class TrackViewPage extends Component {
 
     return (
       <div className="track-view-page">
+        {trackState.loading && <Loading />}
         {!trackState.loading && trackState.doc != null && (
           <div>
             <Card>

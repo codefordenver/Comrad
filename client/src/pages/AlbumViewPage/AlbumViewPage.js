@@ -5,6 +5,7 @@ import { isEmpty } from 'lodash';
 
 import Card, { CardBody } from '../../components/Card';
 import LargeText from '../../components/LargeText';
+import Loading from '../../components/Loading';
 import TableAlbumTracks from '../../components/tables/TableAlbumTracks';
 
 import { Link } from 'react-router-dom';
@@ -39,6 +40,7 @@ class AlbumViewPage extends Component {
 
     return (
       <div className="album-view-page">
+        {albumState.loading && <Loading />}
         {!albumState.loading && (
           <>
             <Card>

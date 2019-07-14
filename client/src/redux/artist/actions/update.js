@@ -1,7 +1,6 @@
 import { artistAPI } from '../../../api';
 import { artistTypes } from '../artistTypes';
-
-import { SubmissionError } from 'redux-form';
+import { alertTypes } from '../../alert';
 
 export const update = ({ _id, ...rest }, callback) => async dispatch => {
   try {
@@ -10,15 +9,15 @@ export const update = ({ _id, ...rest }, callback) => async dispatch => {
     dispatch({ type: artistTypes.UPDATE, payload: response.data });
 
     callback();
-  } catch (err) {
+  } catch (e) {
+    console.error(e);
     dispatch({
-      type: artistTypes.ALERT,
+      type: alertTypes.ACTIVE,
       payload: {
-        header: 'Error',
-        message: 'Artist Update Did Not Succeed',
         type: 'danger',
+        header: 'Error',
+        body: e.response.data.errorMessage,
       },
     });
-    throw new SubmissionError({});
   }
 };

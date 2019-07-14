@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Field, reduxForm } from 'redux-form';
 
-import { artistActions } from '../../../redux';
+import { alertActions, artistActions } from '../../../redux';
 import { requiredValidate } from '../../../utils/validation.js';
 
 import ButtonIcon from '../../ButtonIcon';
@@ -30,9 +30,10 @@ class FormArtistUpdateName extends Component {
   };
 
   submit = values => {
-    const { artistActions } = this.props;
+    const { alertActions, artistActions } = this.props;
 
     return artistActions.update(values, () => {
+      alertActions.show('success', 'Success', 'Artist name has been updated');
       this.setState({
         editMode: false,
       });
@@ -97,6 +98,7 @@ const ReduxFormArtistUpdateName = reduxForm({
 function mapDispatchToProps(dispatch) {
   return {
     artistActions: bindActionCreators({ ...artistActions }, dispatch),
+    alertActions: bindActionCreators({ ...alertActions }, dispatch),
   };
 }
 

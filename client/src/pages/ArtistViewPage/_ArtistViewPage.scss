@@ -2,3 +2,17 @@
   display: grid;
   grid-row-gap: 1rem;
 }
+
+.add-album-button {
+  display: inline-block;
+  position: relative;
+  width: max-content;
+  padding: 5px;
+  background-color: $color-primary;
+  color: white;
+  cursor: pointer;
+  height: 3.8rem;
+  transition: background-color 0.1s;
+  font-size: 1.8rem;
+  border-radius: $border-radius;  
+}

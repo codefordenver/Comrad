@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { isEmpty } from 'lodash';
 
+import { Link } from 'react-router-dom';
+
 import Alert from '../../components/Alert';
 import Card, { CardBody } from '../../components/Card';
 import FormArtistUpdateName from '../../components/forms/FormArtistUpdateName';
@@ -38,6 +40,7 @@ class ArtistViewPage extends Component {
     const { albums, updated_at } = doc;
     const dateObj = new Date(updated_at);
     const lastUpdated = `${dateObj.toLocaleDateString()} ${dateObj.toLocaleTimeString()}`;
+    const { url } = this.props.match;
 
     return (
       <div className="artist-view">
@@ -54,6 +57,9 @@ class ArtistViewPage extends Component {
             <Card>
               <CardBody>
                 <h2 className="mb-1">Albums</h2>
+                <Link className="add-album-button" to={`${url}/add`}>
+                  Add Album
+                </Link>
                 {isEmpty(albums) ? (
                   <LargeText align="left">No Albums</LargeText>
                 ) : (

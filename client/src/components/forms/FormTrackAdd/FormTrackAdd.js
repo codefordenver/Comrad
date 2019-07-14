@@ -9,7 +9,8 @@ import { bindActionCreators } from 'redux';
 
 class FormTrackAdd extends Component {
   submit = values => {
-    const { trackActions, history, albumActions } = this.props;
+    const { albumId, trackActions, history, albumActions } = this.props;
+    values.album = albumId;
     return trackActions.add(values, trackData => {
       albumActions.clear();
       history.push(`/library/album/${trackData.album}`);
@@ -90,7 +91,6 @@ class FormTrackAdd extends Component {
 function mapStateToProps(state, ownProps) {
   return {
     initialValues: {
-      album: ownProps.albumId,
       artists: [ownProps.artistId],
       disk_number: ownProps.maxDiskNumber,
       track_number: ownProps.maxTrackNumber + 1,

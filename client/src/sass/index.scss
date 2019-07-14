@@ -25,9 +25,12 @@
 @import '../components/DropdownHost/DropdownHost';
 @import '../components/Filter/Filter';
 @import '../components/Footer/Footer';
+@import '../components/forms/FormAlbumAdd/FormAlbumAdd';
+@import '../components/forms/FormAlbumEdit/FormAlbumEdit';
 @import '../components/forms/FormArtistAdd/FormArtistAdd';
 @import '../components/forms/FormArtistUpdateName/FormArtistUpdateName';
 @import '../components/forms/FormPasswordChange/FormPasswordChange';
+@import '../components/forms/FormResourceAdd/FormResourceAdd';
 @import '../components/forms/FormTrackAdd/FormTrackAdd';
 @import '../components/forms/FormTrackEdit/FormTrackEdit';
 @import '../components/forms/FormHostAdd/FormHostAdd';
@@ -55,9 +58,12 @@
 // layout
 @import '../layouts/HomeLayout/HomeLayout';
 @import '../layouts/MainLayout/MainLayout';
+@import '../layouts/ResourceLayout/ResourceLayout';
 
 // pages
 @import '../pages/AdminHomePage/AdminHomePage';
+@import '../pages/AlbumAddPage/AlbumAddPage';
+@import '../pages/AlbumEditPage/AlbumEditPage';
 @import '../pages/AlbumViewPage/AlbumViewPage';
 @import '../pages/ArtistAddPage/ArtistAddPage';
 @import '../pages/ArtistViewPage/ArtistViewPage';
@@ -69,6 +75,7 @@
 @import '../pages/LibrarySearchPage/LibrarySearchPage';
 @import '../pages/LoginPage/LoginPage';
 @import '../pages/ReportHomePage/ReportHomePage';
+@import '../pages/ResourcePoliciesPage/ResourcePoliciesPage';
 @import '../pages/ShowBuilderPage/ShowBuilderPage';
 @import '../pages/ShowBuilderShowListPage/ShowBuilderShowListPage';
 @import '../pages/TrackAddPage/TrackAddPage';
@@ -86,3 +93,4 @@
 @import './utils/padding';
 @import './utils/position';
 @import './utils/text';
+@import './utils/size';

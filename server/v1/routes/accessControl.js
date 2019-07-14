@@ -1,9 +1,10 @@
 const router = require('express').Router();
 const { accessControlController } = require('../controllers');
+const { requireAC } = require('../middlewares');
 
 router
   .route('/')
-  .get(accessControlController.findAll)
+  .get(requireAC(), accessControlController.findAll)
   .post(accessControlController.create);
 
 module.exports = router;

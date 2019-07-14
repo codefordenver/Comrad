@@ -32,7 +32,8 @@
     "test": "npm run test:server && npm run test:client",
     "debug:server": "nodemon --inspect server/index.js --ignore tests --delay 1",
     "debug": "concurrently \"npm run debug:server\" \"npm run client\"",
-    "cli:seed": "node cli/seedAccessControl/index.js"
+    "cli:ac": "node cli/seedAccessControl/index.js",
+    "cli:seedDB": "node cli/seedDB/index.js"
   },
   "repository": {
     "type": "git",

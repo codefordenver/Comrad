@@ -16,6 +16,7 @@ async function index(session) {
   switch (updatedSession.nextStep) {
     case 'exit':
       console.log('Goodbye!');
+      process.exit();
       break;
     default:
       index(updatedSession);

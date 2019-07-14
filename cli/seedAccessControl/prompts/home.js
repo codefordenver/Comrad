@@ -5,10 +5,10 @@ async function home(session) {
     {
       type: 'list',
       name: 'nextStep',
-      message: 'What you looking to do?',
+      message: 'What Would You Like To Do?',
       choices: [
         {
-          name: 'Create new access control.',
+          name: 'Create New Access Control.',
           value: 'chooseAC',
         },
         {

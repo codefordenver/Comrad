@@ -5,11 +5,11 @@ async function home(session) {
     {
       type: 'list',
       name: 'nextStep',
-      message: 'What database would you like to seed?',
+      message: 'What Would You Like To Do?',
       choices: [
         {
-          name: 'Users',
-          value: 'seedUser',
+          name: 'Seed Database',
+          value: 'chooseDB',
         },
         {
           name: 'Exit',

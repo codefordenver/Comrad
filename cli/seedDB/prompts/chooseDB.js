@@ -5,7 +5,7 @@ const util = require('util');
 const readdir = util.promisify(fs.readdir);
 
 async function getChoices() {
-  const files = await readdir('./cli/seedAccessControl/grants');
+  const files = await readdir('./cli/seedDB/data');
 
   const filesSplit = files
     .filter(item => item !== 'index.js')
@@ -23,14 +23,14 @@ async function getChoices() {
   return choices;
 }
 
-async function chooseAC(session) {
+async function chooseDB(session) {
   const choices = await getChoices();
 
   const prompts = [
     {
       type: 'list',
-      name: 'resource',
-      message: 'Which AC Are You Looking To Create/Seed?',
+      name: 'database',
+      message: 'Which DB Do You Want To Seed?',
       choices: [
         ...choices,
         new inquirer.Separator(),
@@ -44,15 +44,15 @@ async function chooseAC(session) {
 
   const results = await inquirer.prompt(prompts);
 
-  const nextStep = results.resource !== 'exit' ? 'createAC' : 'exit';
+  const nextStep = results.database !== 'exit' ? 'seedDB' : 'exit';
 
   const updatedSession = {
     ...session,
-    resource: results.resource,
+    database: results.database,
     nextStep,
   };
 
   return updatedSession;
 }
 
-module.exports = chooseAC;
+module.exports = chooseDB;

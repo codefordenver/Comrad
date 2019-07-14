@@ -43,13 +43,9 @@ const userSchema = new Schema({
     required: true,
   },
 
-  permissions: [
-    {
-      type: String,
-      enum: ['DJ', 'Underwriting', 'Show Producer', 'Full Access', 'Admin'],
-      default: 'DJ',
-    },
-  ],
+  role: {
+    type: String,
+  },
 
   primary_phone: {
     type: String,

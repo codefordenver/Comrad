@@ -1,9 +1,11 @@
+const chooseDB = require('./chooseDB');
 const home = require('./home');
-const seedUser = require('./seedUser');
+const seedDB = require('./seedDB');
 
 const prompts = {
   home,
-  seedUser,
+  chooseDB,
+  seedDB,
 };
 
 module.exports = prompts;

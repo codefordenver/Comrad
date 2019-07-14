@@ -1,29 +1,29 @@
-const accessControl = [
+const AccessControl = [
   // Admin
   {
-    role: 'admin',
-    resource: 'accessControl',
+    role: 'Admin',
+    resource: 'AccessControl',
     action: 'create:any',
     attributes: '*',
   },
   {
-    role: 'admin',
-    resource: 'accessControl',
+    role: 'Admin',
+    resource: 'AccessControl',
     action: 'read:any',
     attributes: '*',
   },
   {
-    role: 'admin',
-    resource: 'accessControl',
+    role: 'Admin',
+    resource: 'AccessControl',
     action: 'update:any',
     attributes: '*',
   },
   {
-    role: 'admin',
-    resource: 'accessControl',
+    role: 'Admin',
+    resource: 'AccessControl',
     action: 'delete:any',
     attributes: '*',
   },
 ];
 
-module.exports = accessControl;
+module.exports = AccessControl;

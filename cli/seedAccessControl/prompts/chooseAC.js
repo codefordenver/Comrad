@@ -16,7 +16,7 @@ async function getChoices() {
 
   const choices = filesSplit.map(item => {
     return {
-      name: capitalize.words(item),
+      name: item.replace(/([A-Z])/g, ' $1').trim(),
       value: item,
     };
   });
@@ -30,7 +30,7 @@ async function chooseAC(session) {
   const prompts = [
     {
       type: 'list',
-      name: 'grant',
+      name: 'resource',
       message: 'Which AC are you looking to create/seed?',
       choices,
     },
@@ -38,11 +38,11 @@ async function chooseAC(session) {
 
   const results = await inquirer.prompt(prompts);
 
-  const nextStep = results.grant !== 'exit' ? 'createAC' : 'exit';
+  const nextStep = results.resource !== 'exit' ? 'createAC' : 'exit';
 
   const updatedSession = {
     ...session,
-    grant: results.grant,
+    resource: results.resource,
     nextStep,
   };
 

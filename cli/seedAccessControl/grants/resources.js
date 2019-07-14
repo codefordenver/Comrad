@@ -1,159 +1,159 @@
-const resources = [
+const Resources = [
   // Admin
   {
-    role: 'admin',
-    resource: 'resources',
+    role: 'Admin',
+    resource: 'Resources',
     action: 'create:any',
     attributes: '*',
   },
   {
-    role: 'admin',
-    resource: 'resources',
+    role: 'Admin',
+    resource: 'Resources',
     action: 'read:any',
     attributes: '*',
   },
   {
-    role: 'admin',
-    resource: 'resources',
+    role: 'Admin',
+    resource: 'Resources',
     action: 'update:any',
     attributes: '*',
   },
   {
-    role: 'admin',
-    resource: 'resources',
+    role: 'Admin',
+    resource: 'Resources',
     action: 'delete:any',
     attributes: '*',
   },
 
   // Full Access
   {
-    role: 'full access',
-    resource: 'resources',
+    role: 'Full Access',
+    resource: 'Resources',
     action: 'create:any',
     attributes: '*',
   },
   {
-    role: 'full access',
-    resource: 'resources',
+    role: 'Full Access',
+    resource: 'Resources',
     action: 'read:any',
     attributes: '*',
   },
   {
-    role: 'full access',
-    resource: 'resources',
+    role: 'Full Access',
+    resource: 'Resources',
     action: 'update:any',
     attributes: '*',
   },
   {
-    role: 'full access',
-    resource: 'resources',
+    role: 'Full Access',
+    resource: 'Resources',
     action: 'delete:any',
     attributes: '*',
   },
 
   // Show Producer
   {
-    role: 'show producer',
-    resource: 'resources',
+    role: 'Show Producer',
+    resource: 'Resources',
     action: 'create:any',
     attributes: '*',
   },
   {
-    role: 'show producer',
-    resource: 'resources',
+    role: 'Show Producer',
+    resource: 'Resources',
     action: 'read:any',
     attributes: '*',
   },
   {
-    role: 'show producer',
-    resource: 'resources',
+    role: 'Show Producer',
+    resource: 'Resources',
     action: 'update:any',
     attributes: '*',
   },
   {
-    role: 'show producer',
-    resource: 'resources',
+    role: 'Show Producer',
+    resource: 'Resources',
     action: 'delete:any',
     attributes: '*',
   },
 
   // Underwriting
   {
-    role: 'underwriting',
-    resource: 'resources',
+    role: 'Underwriting',
+    resource: 'Resources',
     action: 'create:any',
     attributes: '*',
   },
   {
-    role: 'underwriting',
-    resource: 'resources',
+    role: 'Underwriting',
+    resource: 'Resources',
     action: 'read:any',
     attributes: '*',
   },
   {
-    role: 'underwriting',
-    resource: 'resources',
+    role: 'Underwriting',
+    resource: 'Resources',
     action: 'update:any',
     attributes: '*',
   },
   {
-    role: 'underwriting',
-    resource: 'resources',
+    role: 'Underwriting',
+    resource: 'Resources',
     action: 'delete:any',
     attributes: '*',
   },
 
   // DJ
   {
-    role: 'dj',
-    resource: 'resources',
+    role: 'DJ',
+    resource: 'Resources',
     action: 'create:any',
     attributes: '*',
   },
   {
-    role: 'dj',
-    resource: 'resources',
+    role: 'DJ',
+    resource: 'Resources',
     action: 'read:any',
     attributes: '*',
   },
   {
-    role: 'dj',
-    resource: 'resources',
+    role: 'DJ',
+    resource: 'Resources',
     action: 'update:any',
     attributes: '*',
   },
   {
-    role: 'dj',
-    resource: 'resources',
+    role: 'DJ',
+    resource: 'Resources',
     action: 'delete:any',
     attributes: '*',
   },
 
   // Guest
   {
-    role: 'guest',
-    resource: 'resources',
+    role: 'Guest',
+    resource: 'Resources',
     action: 'create:any',
     attributes: '*',
   },
   {
-    role: 'guest',
-    resource: 'resources',
+    role: 'Guest',
+    resource: 'Resources',
     action: 'read:any',
     attributes: '*',
   },
   {
-    role: 'guest',
-    resource: 'resources',
+    role: 'Guest',
+    resource: 'Resources',
     action: 'update:any',
     attributes: '*',
   },
   {
-    role: 'guest',
-    resource: 'resources',
+    role: 'Guest',
+    resource: 'Resources',
     action: 'delete:any',
     attributes: '*',
   },
 ];
 
-module.exports = resources;
+module.exports = Resources;

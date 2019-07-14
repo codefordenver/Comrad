@@ -1,9 +1,9 @@
-const accessControl = require('./accessControl');
-const resources = require('./resources');
-const users = require('./users');
+const AccessControl = require('./AccessControl');
+const Resources = require('./Resources');
+const Users = require('./Users');
 
 module.exports = {
-  accessControl,
-  resources,
-  users,
+  AccessControl,
+  Resources,
+  Users,
 };

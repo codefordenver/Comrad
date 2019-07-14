@@ -4,7 +4,7 @@ const keys = require('../../server/v1/config/keys');
 const prompts = require('./prompts');
 
 const initialSession = {
-  grant: '',
+  resource: '',
   nextStep: 'home',
 };
 

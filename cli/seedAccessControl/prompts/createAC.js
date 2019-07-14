@@ -6,10 +6,10 @@ const db = require('../../../server/v1/models');
 const grants = require('../grants');
 
 async function createAC(session) {
-  const grant = grants[session.grant];
+  const grant = grants[session.resource];
 
   console.log('Deleting Resource AC');
-  await db.AccessControl.deleteMany({ resource: session.grant });
+  await db.AccessControl.deleteMany({ resource: session.resource });
 
   console.log('Creating Resource AC');
   const dbAccessControl = await db.AccessControl.insertMany(grant);

@@ -68,6 +68,12 @@ class TableAlbumTracks extends Component {
         Header: 'Duration',
         accessor: 'duration_in_seconds',
         Cell: row => <CellDuration {...row} />,
+        headerStyle: {
+          borderRight: '0',
+        },
+        style: {
+          borderRight: '0',
+        },
       },
       {
         Header: '',
@@ -100,7 +106,7 @@ class TableAlbumTracks extends Component {
 
     return (
       <ReactTable
-        className="-highlight table-album-tracks__grid clickable-rows"
+        className="-highlight table-album-tracks clickable-rows"
         columns={columns}
         data={tracks}
         showPageSizeOptions={false}

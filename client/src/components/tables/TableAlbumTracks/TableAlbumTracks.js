@@ -4,6 +4,7 @@ import ReactTable from 'react-table';
 import isEmpty from 'lodash/isEmpty';
 
 import { formatTotalSecondsAsMMSS } from '../../../utils/formatters';
+import Dropdown from '../../Dropdown';
 
 const CellDuration = ({ value }) =>
   value ? (
@@ -11,26 +12,6 @@ const CellDuration = ({ value }) =>
       {formatTotalSecondsAsMMSS(value)}
     </span>
   ) : null;
-
-const columns = [
-  {
-    Header: 'Disk #',
-    accessor: 'disk_number',
-  },
-  {
-    Header: 'Track #',
-    accessor: 'track_number',
-  },
-  {
-    Header: 'Name',
-    accessor: 'name',
-  },
-  {
-    Header: 'Duration',
-    accessor: 'duration_in_seconds',
-    Cell: row => <CellDuration {...row} />,
-  },
-];
 
 class TableAlbumTracks extends Component {
   handleRowClick = (state, rowInfo) => {
@@ -48,14 +29,78 @@ class TableAlbumTracks extends Component {
     return false;
   };
 
+  handleRowEditClick = data => {
+    console.log('edit was clicked');
+    console.log(data);
+  };
+
+  handleRowDeleteClick = data => {
+    console.log('delete was clicked');
+    console.log(data);
+    // this.setState({
+    //   deleteModal: data,
+    // });
+  };
+
+  stopPropagation = event => {
+    event.stopPropagation();
+  };
+
   render() {
     const { handleRowClick, props } = this;
     const { albumState } = props;
     const { tracks } = albumState.doc;
 
+    const columns = [
+      {
+        Header: 'Disk #',
+        accessor: 'disk_number',
+      },
+      {
+        Header: 'Track #',
+        accessor: 'track_number',
+      },
+      {
+        Header: 'Name',
+        accessor: 'name',
+      },
+      {
+        Header: 'Duration',
+        accessor: 'duration_in_seconds',
+        Cell: row => <CellDuration {...row} />,
+      },
+      {
+        Header: '',
+        Cell: row => {
+          return (
+            <div onClick={this.stopPropagation}>
+              <Dropdown
+                position="bottom-left"
+                type="icon"
+                faClass="fas fa-ellipsis-h"
+              >
+                <Dropdown.Item
+                  handleOnClick={() => this.handleRowEditClick(row.row)}
+                >
+                  Edit
+                </Dropdown.Item>
+                <Dropdown.Item
+                  handleOnClick={() => this.handleRowDeleteClick(row.row)}
+                >
+                  Delete
+                </Dropdown.Item>
+              </Dropdown>
+            </div>
+          );
+        },
+        minWidth: undefined,
+        className: 'table-album-tracks__grid__edit-options',
+      },
+    ];
+
     return (
       <ReactTable
-        className="-highlight clickable-rows"
+        className="-highlight table-album-tracks__grid clickable-rows"
         columns={columns}
         data={tracks}
         showPageSizeOptions={false}

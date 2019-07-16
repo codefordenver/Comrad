@@ -4,8 +4,8 @@ const { requireAC } = require('../middlewares');
 
 router
   .route('/')
-  .get(requireAC('resources', 'readOwn'), resourcesController.findAll)
-  .post(resourcesController.create);
+  .get(requireAC('Resources', 'readOwn'), resourcesController.findAll)
+  .post(requireAC('Resources', 'createAny'), resourcesController.create);
 
 router.route('/search').get(resourcesController.search);
 

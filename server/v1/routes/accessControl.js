@@ -5,6 +5,6 @@ const { requireAC } = require('../middlewares');
 router
   .route('/')
   .get(requireAC('AccessControl', 'readAny'), accessControlController.findAll)
-  .post(accessControlController.create);
+  .post(requireAC('AccessControl', 'readAny'), accessControlController.create);
 
 module.exports = router;

@@ -107,25 +107,25 @@ const Resources = [
   {
     role: 'DJ',
     resource: 'Resources',
-    action: 'create:any',
+    action: 'create:own',
     attributes: '*',
   },
   {
     role: 'DJ',
     resource: 'Resources',
-    action: 'read:any',
+    action: 'read:own',
     attributes: '*',
   },
   {
     role: 'DJ',
     resource: 'Resources',
-    action: 'update:any',
+    action: 'update:own',
     attributes: '*',
   },
   {
     role: 'DJ',
     resource: 'Resources',
-    action: 'delete:any',
+    action: 'delete:own',
     attributes: '*',
   },
 
@@ -133,7 +133,7 @@ const Resources = [
   {
     role: 'Guest',
     resource: 'Resources',
-    action: 'create:any',
+    action: 'create:own',
     attributes: '*',
   },
   {
@@ -145,13 +145,13 @@ const Resources = [
   {
     role: 'Guest',
     resource: 'Resources',
-    action: 'update:any',
+    action: 'update:own',
     attributes: '*',
   },
   {
     role: 'Guest',
     resource: 'Resources',
-    action: 'delete:any',
+    action: 'delete:own',
     attributes: '*',
   },
 ];

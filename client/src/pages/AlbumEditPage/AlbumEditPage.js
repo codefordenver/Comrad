@@ -5,10 +5,9 @@ import Card, { CardBody } from '../../components/Card';
 import Loading from '../../components/Loading';
 import { connect } from 'react-redux';
 import FormAlbumEdit from '../../components/forms/FormAlbumEdit';
-
 import { albumActions, alertActions } from '../../redux';
 
-class TrackEditPage extends Component {
+class AlbumEditPage extends Component {
   componentDidMount() {
     const { album, albumActions, match } = this.props;
     const { id } = match.params;
@@ -61,4 +60,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(TrackEditPage);
+)(AlbumEditPage);

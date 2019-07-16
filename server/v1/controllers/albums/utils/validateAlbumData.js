@@ -7,7 +7,7 @@ async function validateAlbumData(data, id) {
   };
 
   if (typeof id !== 'undefined') {
-    params._id = { $ne: data._id };
+    params._id = { $ne: id };
   }
 
   return db.Album.findOne(params)

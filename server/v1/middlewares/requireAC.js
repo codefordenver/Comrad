@@ -3,17 +3,31 @@ const db = require('../models');
 
 function requireAC(resource, action) {
   return async function(req, res, next) {
-    console.log(req.user);
+    // TODO: Need to clean up logic a little bit
 
-    // const dbAccessControl = await db.AccessControl.find({}).lean();
+    if (req.query.api_key) {
+      console.log('User Has A Key!');
 
-    // const ac = new AccessControl(dbAccessControl);
+      const { api_key } = req.query;
+      const dbUser = await db.User.findOne({ api_key });
 
-    // if (!ac.can(user.role)[action](resource).granted) {
-    //   return res
-    //     .status(404)
-    //     .json({ message: "User's Role Does Not Have Access" });
-    // }
+      req.user = dbUser;
+    }
+
+    if (!req.user || req.user.status !== 'Active') {
+      console.log('Incorrect Credentials or Not Active');
+      return res.json('Incorrect Credentials or Not Active');
+    }
+
+    const dbAccessControl = await db.AccessControl.find({}).lean();
+    const ac = new AccessControl(dbAccessControl);
+
+    const permission = ac.can(req.user.role)[action](resource);
+
+    if (!permission.granted) {
+      console.log('User Is Not Granted!');
+      return res.json('User Is Not Granted!');
+    }
 
     return next();
   };

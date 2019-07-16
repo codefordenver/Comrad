@@ -1,8 +1,14 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const bcrypt = require('bcrypt-nodejs');
+const uuidv1 = require('uuid/v1');
 
 const userSchema = new Schema({
+  api_key: {
+    type: String,
+    default: uuidv1(),
+  },
+
   can_delete: {
     type: Boolean,
     default: true,
@@ -43,10 +49,6 @@ const userSchema = new Schema({
     required: true,
   },
 
-  role: {
-    type: String,
-  },
-
   primary_phone: {
     type: String,
     default: null,
@@ -60,6 +62,10 @@ const userSchema = new Schema({
   reset_token_expiry: {
     type: Number,
     default: null,
+  },
+
+  role: {
+    type: String,
   },
 
   status: {

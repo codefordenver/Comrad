@@ -11,6 +11,8 @@ import DropdownHost, {
 } from '../../components/DropdownHost';
 
 import ShowCalendar from '../../components/Shows/ShowCalendar';
+import { setModalVisibility } from '../../redux/modal';
+import { MODAL_NEW_SHOW } from '../../components/Shows/ShowModalController';
 
 import {
   clearShows,
@@ -18,6 +20,7 @@ import {
   fetchingShowsStatus,
   postingShowsStatus,
   errorShowsMessage,
+  selectShow,
 } from '../../redux/show';
 
 class CalendarHomePage extends Component {
@@ -32,6 +35,13 @@ class CalendarHomePage extends Component {
       shows: {},
     };
   }
+
+  showNewShowModal = show => {
+    const { setModalVisibility, selectShow } = this.props;
+
+    selectShow(show);
+    setModalVisibility(MODAL_NEW_SHOW, true, show);
+  };
 
   dateChangeHandler = date => {
     if (date instanceof Date) {
@@ -64,6 +74,7 @@ class CalendarHomePage extends Component {
       onlyDisplayShowsWithNoHost,
       selectedDate,
     } = this.state;
+    console.log(this.props);
 
     // we will set a key for the month/year that is currently selected
     // so that the displayed month in DayPickerSingleDateController will auto-update
@@ -76,6 +87,7 @@ class CalendarHomePage extends Component {
     return (
       <Card>
         <CardBody>
+          <button onClick={this.showNewShowModal}>Add</button>
           <div className="calendar">
             <div className="calendar__sidebar">
               <DayPickerSingleDateController
@@ -137,5 +149,7 @@ export default connect(
     fetchingShowsStatus,
     postingShowsStatus,
     errorShowsMessage,
+    selectShow,
+    setModalVisibility,
   },
 )(CalendarHomePage);

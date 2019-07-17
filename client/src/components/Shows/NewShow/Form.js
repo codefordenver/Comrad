@@ -88,7 +88,7 @@ class NewShowForm extends Component {
               )}
 
               <Field
-                className="grid-span--2"
+                className="grid-span--2, form-summary"
                 component={TextArea}
                 label="Summary"
                 name="show_details.summary"
@@ -96,7 +96,7 @@ class NewShowForm extends Component {
               />
 
               <Field
-                className="grid-span--2"
+                className="grid-span--2, form-desc"
                 component={TextArea}
                 label="Description"
                 name="show_details.description"
@@ -138,12 +138,20 @@ function mapStateToProps(state) {
   const initialValues = state => {
     const selectedShow = getShowSelected(state.show);
     const searchDates = getSearchDate(state.show);
+    let startTime = '';
+    let endTime = '';
+    if (selectedShow.start !== undefined) {
+      startTime = moment(selectedShow.start);
+    }
+    if (selectedShow.end !== undefined) {
+      endTime = moment(selectedShow.end);
+    }
 
     return {
-      start_time_utc: moment(selectedShow.start),
-      end_time_utc: moment(selectedShow.end),
-      repeat_start_date: moment(selectedShow.start),
-      repeat_end_date: moment(selectedShow.end),
+      start_time_utc: startTime,
+      end_time_utc: endTime,
+      repeat_start_date: startTime,
+      repeat_end_date: endTime,
       startDate: searchDates.start,
       endDate: searchDates.end,
       is_recurring: false,

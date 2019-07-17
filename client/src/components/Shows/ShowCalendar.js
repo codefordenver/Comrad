@@ -215,13 +215,13 @@ class Calendar extends Component {
   render() {
     const { date, shows } = this.props;
     const localizer = BigCalendar.momentLocalizer(moment);
+    console.log('show calendar ' + this.props);
 
     //if date provided in properties, always have the calendar display that date
     let calendarDateProperty = typeof date == 'undefined' ? {} : { date: date };
 
     return (
       <div>
-        <button onClick={this.showNewShowModal}>Add</button>
         <BigCalendar
           selectable
           localizer={localizer}

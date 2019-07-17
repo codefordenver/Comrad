@@ -87,7 +87,9 @@ class CalendarHomePage extends Component {
     return (
       <Card>
         <CardBody>
-          <button onClick={this.showNewShowModal}>Add</button>
+          <div className="calendar-add-button" onClick={this.showNewShowModal}>
+            Add
+          </div>
           <div className="calendar">
             <div className="calendar__sidebar">
               <DayPickerSingleDateController

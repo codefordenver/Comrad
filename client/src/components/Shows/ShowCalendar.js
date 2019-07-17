@@ -221,6 +221,7 @@ class Calendar extends Component {
 
     return (
       <div>
+        <button onClick={this.showNewShowModal}>Add</button>
         <BigCalendar
           selectable
           localizer={localizer}

@@ -88,7 +88,8 @@ class CalendarHomePage extends Component {
       <Card>
         <CardBody>
           <div className="calendar-add-button" onClick={this.showNewShowModal}>
-            Add
+            <div className="calendar-add-button-text">Add</div>
+            <i className="fas fa-plus" />
           </div>
           <div className="calendar">
             <div className="calendar__sidebar">

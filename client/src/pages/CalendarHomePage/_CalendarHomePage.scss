@@ -54,17 +54,33 @@
     */
   }
 }
-
-.calendar-add-button {
+.add-button-wrapper {
   display: inline-block;
   position: relative;
   width: max-content;
-  padding: 5px;
+}
+
+.calendar-add-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background-color: $color-primary;
   color: white;
   cursor: pointer;
   height: 3.8rem;
   transition: background-color 0.1s;
-  font-size: 1.8rem;
-  border-radius: $border-radius;  
+  border-radius: $border-radius;
+  width: max-content;
+  margin-bottom: 10px;
+
+  & .calendar-add-button-text {
+    font-size: 1.8rem;
+    border-right: 1px solid rgba(0, 0, 0, 0.3);
+    padding: 0 1rem;
+  }
+  & .fas {
+    padding: 0 1rem;
+    display: inline-block;
+  }
+  
 }

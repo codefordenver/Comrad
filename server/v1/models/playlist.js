@@ -109,6 +109,8 @@ const playlistSchema = new Schema({
   },
 });
 
+playlistSchema.index({ start_time_utc: 1 }, { background: true });
+
 const Playlist = mongoose.model('Playlist', playlistSchema);
 
 module.exports = Playlist;

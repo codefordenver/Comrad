@@ -7,6 +7,7 @@ import queryString from 'query-string';
 import Card, { CardBody } from '../../components/Card';
 import DropdownHost from '../../components/DropdownHost';
 import Loading from '../../components/Loading';
+import ShowBuilderItemList from '../../components/ShowBuilderItemList';
 
 import { playlistActions } from '../../redux';
 import { clearShows, getShowsData, searchShow } from '../../redux/show';
@@ -55,6 +56,7 @@ class ShowBuilderPage extends Component {
       formattedEndTime,
       formattedStartTime,
     } = this.state;
+    const { scratchpad, saved_items } = playlist.doc;
 
     let showName = '';
     if (shows && Object.keys(shows).length > 0) {
@@ -90,9 +92,15 @@ class ShowBuilderPage extends Component {
               {(playlist.loading || showFetching) && <Loading />}
               <div>
                 <h5>Scratchpad</h5>
+                {typeof scratchpad !== 'undefined' && (
+                  <ShowBuilderItemList items={scratchpad} />
+                )}
               </div>
               <div>
                 <h5>Saved Items</h5>
+                {typeof saved_items !== 'undefined' && (
+                  <ShowBuilderItemList items={saved_items} />
+                )}
               </div>
 
               <div className="library-tab-container">

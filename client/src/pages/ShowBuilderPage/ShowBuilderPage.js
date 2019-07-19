@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import moment from 'moment';
 import queryString from 'query-string';
 
@@ -58,7 +57,7 @@ class ShowBuilderPage extends Component {
           'More than one show returned for show builder, using the first one',
         );
       }
-      showName = shows['0'].show_details.title;
+      showName = shows[Object.keys(shows)[0]].show_details.title;
     }
 
     return (
@@ -75,7 +74,9 @@ class ShowBuilderPage extends Component {
                 <br />
                 {formattedStartTime} - {formattedEndTime}
                 <br />
-                <a href="#">Edit Show Description</a>
+                <div className="edit-show-description">
+                  Edit Show Description
+                </div>
               </div>
             </div>
 
@@ -85,36 +86,36 @@ class ShowBuilderPage extends Component {
 
               <div className="library-tab-container">
                 <div className="library-tab-container__tabs">
-                  <a
-                    className={activeTab == 'search' ? 'active' : ''}
+                  <div
+                    className={activeTab === 'search' ? 'active' : ''}
                     onClick={() => this.setState({ activeTab: 'search' })}
                   >
                     Search
-                  </a>
-                  <a
-                    className={activeTab == 'voice' ? 'active' : ''}
+                  </div>
+                  <div
+                    className={activeTab === 'voice' ? 'active' : ''}
                     onClick={() => this.setState({ activeTab: 'voice' })}
                   >
                     Voice
-                  </a>
-                  <a
-                    className={activeTab == 'comment' ? 'active' : ''}
+                  </div>
+                  <div
+                    className={activeTab === 'comment' ? 'active' : ''}
                     onClick={() => this.setState({ activeTab: 'comment' })}
                   >
                     Comment
-                  </a>
+                  </div>
                 </div>
-                {activeTab == 'search' && (
+                {activeTab === 'search' && (
                   <div className="library-tab-container__tab-content">
                     Search content
                   </div>
                 )}
-                {activeTab == 'voice' && (
+                {activeTab === 'voice' && (
                   <div className="library-tab-container__tab-content">
                     Voice content
                   </div>
                 )}
-                {activeTab == 'comment' && (
+                {activeTab === 'comment' && (
                   <div className="library-tab-container__tab-content">
                     Comment content
                   </div>

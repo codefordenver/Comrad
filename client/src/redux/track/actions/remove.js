@@ -1,4 +1,3 @@
-import { trackTypes } from '../trackTypes';
 import { trackAPI } from '../../../api';
 import { alertTypes } from '../../alert';
 

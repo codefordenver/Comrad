@@ -1,9 +1,9 @@
-const db = require('../../models');
+const db = require('../../../models');
 const mongoose = require('mongoose');
 
 const {
   utils__mongoose: { populateShowHost, populateMasterShow, master_time_id },
-} = require('./utils');
+} = require('../utils');
 
 function createInstance(req, res) {
   const {

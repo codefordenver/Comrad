@@ -1,4 +1,4 @@
-const db = require('../../models');
+const db = require('../../../models');
 
 function findById(req, res) {
   db.Show.findById(req.params.id)

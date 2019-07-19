@@ -8,7 +8,9 @@ const giveawaysController = require('./giveaways');
 const libraryController = require('./library');
 const permissionsController = require('./permissions');
 const resourcesController = require('./resources');
-const showsController = require('./shows');
+const showRootController = require('./shows/root');
+const showInstanceController = require('./shows/instance');
+const showSeriesController = require('./shows/series');
 const tracksController = require('./tracks');
 const trafficController = require('./traffic');
 const usersController = require('./users');
@@ -25,7 +27,9 @@ module.exports = {
   libraryController,
   permissionsController,
   resourcesController,
-  showsController,
+  showRootController,
+  showInstanceController,
+  showSeriesController,
   tracksController,
   trafficController,
   usersController,

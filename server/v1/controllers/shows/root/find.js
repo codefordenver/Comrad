@@ -1,4 +1,4 @@
-const db = require('../../models');
+const db = require('../../../models');
 
 const {
   utils: { showList },
@@ -7,7 +7,7 @@ const {
     populateShowHost,
     populateMasterShow,
   },
-} = require('./utils');
+} = require('../utils');
 
 function find(req, res) {
   let { endDate, host, showsWithNoHost, startDate } = req.query;

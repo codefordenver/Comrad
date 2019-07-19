@@ -1,5 +1,5 @@
-const db = require('../../models');
-const { master_time_id__byShowType } = require('./utils/utils__mongoose');
+const db = require('../../../models');
+const { master_time_id__byShowType } = require('../utils/utils__mongoose');
 
 function remove(req, res) {
   db.Show.findById({ _id: req.params.id })

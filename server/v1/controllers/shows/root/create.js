@@ -1,9 +1,9 @@
-const db = require('../../models');
+const db = require('../../../models');
 
 const {
   utils: { showList },
   utils__mongoose: { formatShow, populateShowHost },
-} = require('./utils');
+} = require('../utils');
 
 function create(req, res) {
   const { body } = req;

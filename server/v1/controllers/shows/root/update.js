@@ -1,4 +1,4 @@
-const db = require('../../models');
+const db = require('../../../models');
 
 const {
   utils__mongoose: {
@@ -6,7 +6,7 @@ const {
     populateMasterShow,
     master_time_id__byShowType,
   },
-} = require('./utils');
+} = require('../utils');
 
 function update(req, res) {
   const { body } = req;

@@ -44,8 +44,10 @@ function showList(shows, startDate, endDate) {
 
   //transform the object back to an array
   let showsToReturnArray = [];
-  _.mapKeys(showsToReturn, function(value) {
-    showsToReturnArray.push(value);
+  _.mapKeys(showsToReturn, function(show) {
+    if (show.status === 'active') {
+      showsToReturnArray.push(show);
+    }
   });
 
   //sort the array by event start time

@@ -19,6 +19,6 @@ router
 
 router.route('/instance/:id').delete(showInstanceController.remove);
 
-router.route('/series/:id').get(showSeriesController.remove);
+router.route('/series/:id').delete(showSeriesController.remove);
 
 module.exports = router;

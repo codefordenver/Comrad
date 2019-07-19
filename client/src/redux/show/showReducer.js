@@ -14,6 +14,7 @@ import {
   SHOW_FETCHING,
   SHOW_ERROR,
   SHOW_SELECTED,
+  SHOW_DELETE_INSTANCE,
 } from './showTypes';
 
 const initialState = {
@@ -87,9 +88,7 @@ export function showReducer(state = initialState, { type, payload }) {
 
     case SHOW_DELETE_SERIES:
       //* Deleting of Series Shows
-      // TODO: Cleanup master ID on instances in Mongo when deleting series
       const masterEventToDelete = payload._id;
-
       const deleteShowSeries = _.reduce(
         state.data,
         function(result, show, key) {
@@ -104,6 +103,18 @@ export function showReducer(state = initialState, { type, payload }) {
       return {
         ...state,
         data: { ...deleteShowSeries },
+        fetching: false,
+        error: false,
+      };
+
+    case SHOW_DELETE_INSTANCE:
+      let deleteInstance = { ...state.data };
+      console.log(payload.master_time_id);
+      delete deleteInstance[payload.master_time_id];
+
+      return {
+        ...state,
+        data: { ...deleteInstance },
         fetching: false,
         error: false,
       };

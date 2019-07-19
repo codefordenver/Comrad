@@ -5,12 +5,15 @@ import {
   SHOW_POST,
   SHOW_UPDATE_HOST,
   SHOW_DELETE,
-  SHOW_DELETE_SERIES,
   SHOW_SEARCH,
   SHOW_ERROR,
   SHOW_SELECTED,
-  SHOW_CREATE_INSTANCE,
 } from './showTypes';
+
+import { SHOW_DELETE_SERIES } from './showTypes';
+
+import { SHOW_CREATE_INSTANCE, SHOW_DELETE_INSTANCE } from './showTypes';
+
 import { showAPI } from '../../api';
 
 export const clearShows = () => async dispatch => {
@@ -70,8 +73,17 @@ export const deleteShow = show => async dispatch => {
 
 export const deleteShowSeries = show => async dispatch => {
   try {
-    const response = await axios.delete(`/v1/shows/${show}`);
+    const response = await axios.delete(`/v1/shows/series/${show}`);
     dispatch({ type: SHOW_DELETE_SERIES, payload: response.data });
+  } catch (e) {
+    dispatch({ type: SHOW_ERROR, payload: e });
+  }
+};
+
+export const deleteShowInstance = show => async dispatch => {
+  try {
+    const response = await axios.delete(`/v1/shows/instance/${show}`);
+    dispatch({ type: SHOW_DELETE_INSTANCE, payload: response.data });
   } catch (e) {
     dispatch({ type: SHOW_ERROR, payload: e });
   }

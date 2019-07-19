@@ -6,6 +6,7 @@ import queryString from 'query-string';
 
 import Card, { CardBody } from '../../components/Card';
 import DropdownHost from '../../components/DropdownHost';
+import Loading from '../../components/Loading';
 
 import { playlistActions } from '../../redux';
 import { clearShows, getShowsData, searchShow } from '../../redux/show';
@@ -18,6 +19,9 @@ class ShowBuilderPage extends Component {
   componentDidMount() {
     const { location, searchShow, playlistActions } = this.props;
     const { startTime, endTime } = queryString.parse(location.search);
+
+    //find the playlist
+    playlistActions.findOne(startTime, endTime);
 
     // format the show day/time
 
@@ -34,7 +38,6 @@ class ShowBuilderPage extends Component {
     });
 
     // find the show that the query string represents
-    playlistActions.findOne(startTime, endTime);
     endTimeMoment.subtract(1, 'minute'); //take a minute off, so we don't get the next show from the API
     searchShow(startTimeMoment, endTimeMoment);
   }
@@ -45,7 +48,7 @@ class ShowBuilderPage extends Component {
   }
 
   render() {
-    const { shows } = this.props;
+    const { playlist, shows, showFetching } = this.props;
     const {
       activeTab,
       formattedDay,
@@ -84,8 +87,13 @@ class ShowBuilderPage extends Component {
             </div>
 
             <div className="show-builder__grid">
-              <div>Scratchpad</div>
-              <div>Saved Items</div>
+              {(playlist.loading || showFetching) && <Loading />}
+              <div>
+                <h5>Scratchpad</h5>
+              </div>
+              <div>
+                <h5>Saved Items</h5>
+              </div>
 
               <div className="library-tab-container">
                 <div className="library-tab-container__tabs">
@@ -132,8 +140,10 @@ class ShowBuilderPage extends Component {
   }
 }
 
-function mapStateToProps({ show }) {
+function mapStateToProps({ show, playlist }) {
   return {
+    playlist,
+    showFetching: show.fetching,
     shows: getShowsData(show),
   };
 }
@@ -141,8 +151,8 @@ function mapStateToProps({ show }) {
 function mapDispatchToProps(dispatch) {
   return {
     playlistActions: bindActionCreators({ ...playlistActions }, dispatch),
-    clearShows,
-    searchShow,
+    clearShows: bindActionCreators(clearShows, dispatch),
+    searchShow: bindActionCreators(searchShow, dispatch),
   };
 }
 

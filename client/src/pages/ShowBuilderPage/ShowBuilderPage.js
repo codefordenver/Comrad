@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import moment from 'moment';
 import queryString from 'query-string';
 
 import Card, { CardBody } from '../../components/Card';
 import DropdownHost from '../../components/DropdownHost';
 
+import { playlistActions } from '../../redux';
 import { clearShows, getShowsData, searchShow } from '../../redux/show';
 
 class ShowBuilderPage extends Component {
@@ -14,7 +16,7 @@ class ShowBuilderPage extends Component {
   };
 
   componentDidMount() {
-    const { location, searchShow } = this.props;
+    const { location, searchShow, playlistActions } = this.props;
     const { startTime, endTime } = queryString.parse(location.search);
 
     // format the show day/time
@@ -32,6 +34,7 @@ class ShowBuilderPage extends Component {
     });
 
     // find the show that the query string represents
+    playlistActions.findOne(startTime, endTime);
     endTimeMoment.subtract(1, 'minute'); //take a minute off, so we don't get the next show from the API
     searchShow(startTimeMoment, endTimeMoment);
   }
@@ -135,10 +138,15 @@ function mapStateToProps({ show }) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
+function mapDispatchToProps(dispatch) {
+  return {
+    playlistActions: bindActionCreators({ ...playlistActions }, dispatch),
     clearShows,
     searchShow,
-  },
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
 )(ShowBuilderPage);

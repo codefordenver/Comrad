@@ -1,7 +1,7 @@
-const db = require('../../../models');
 const mongoose = require('mongoose');
 
 const {
+  utils: { getModelForEventType },
   utils__mongoose: { populateShowHost, populateMasterShow, master_time_id },
 } = require('../utils');
 
@@ -11,9 +11,15 @@ function createInstance(req, res) {
     end_time_utc,
     show_details: { host },
   } = req.body;
-  const { id } = req.params;
+  const { id, eventType } = req.params;
 
-  db.Show.findById(id).exec(function(err, doc) {
+  const dbModel = getModelForEventType(eventType);
+  if (!dbModel) {
+    res.send(404);
+    return;
+  }
+
+  dbModel.findById(id).exec(function(err, doc) {
     let d1 = doc;
     d1._id = mongoose.Types.ObjectId();
     d1.master_event_id = id;
@@ -30,8 +36,9 @@ function createInstance(req, res) {
     d1.isNew = true;
     d1.save()
       .then(dbShow => {
-        db.Show.populate(dbShow, populateShowHost()).then(dbShow => {
-          db.Show.populate(dbShow, populateMasterShow())
+        dbModel.populate(dbShow, populateShowHost()).then(dbShow => {
+          dbModel
+            .populate(dbShow, populateMasterShow())
             .then(dbShow => {
               let returnedShow = { ...dbShow.toObject() };
               const {

@@ -8,6 +8,17 @@ const {
   master_time_id__byShowType,
 } = require('./utils__mongoose');
 
+function getModelForEventType(eventType) {
+  switch (eventType) {
+    case 'shows':
+      return db.Show;
+    case 'traffic':
+      return db.Traffic;
+    default:
+      return null;
+  }
+}
+
 function showList(shows, startDate, endDate) {
   //Perform this check as the create route is an object, and the find route is an array.
   //This makes sure everything is an iterable array before going into the reducers.
@@ -265,5 +276,6 @@ function returnInstanceShowsArray(shows) {
 }
 
 module.exports = {
+  getModelForEventType,
   showList,
 };

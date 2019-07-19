@@ -1,6 +1,5 @@
-const db = require('../../../models');
-
 const {
+  utils: { getModelForEventType },
   utils__mongoose: {
     populateShowHost,
     populateMasterShow,
@@ -10,9 +9,17 @@ const {
 
 function update(req, res) {
   const { body } = req;
-  const { id } = req.params;
+  const { eventType, id } = req.params;
+
+  const dbModel = getModelForEventType(eventType);
+  if (!dbModel) {
+    res.send(404);
+    return;
+  }
+
   //Need to refresh updated at
-  db.Show.findOneAndUpdate({ _id: id }, body, { new: true })
+  dbModel
+    .findOneAndUpdate({ _id: id }, body, { new: true })
     .populate(populateShowHost())
     .populate(populateMasterShow())
     .then(dbShow => {

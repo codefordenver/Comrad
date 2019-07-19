@@ -13,7 +13,6 @@ const showRootController = require('./shows/root');
 const showInstanceController = require('./shows/instance');
 const showSeriesController = require('./shows/series');
 const tracksController = require('./tracks');
-const trafficController = require('./traffic');
 const usersController = require('./users');
 const venuesController = require('./venues');
 
@@ -33,7 +32,6 @@ module.exports = {
   showInstanceController,
   showSeriesController,
   tracksController,
-  trafficController,
   usersController,
   venuesController,
 };

@@ -88,7 +88,7 @@ class NewShowForm extends Component {
               )}
 
               <Field
-                className="grid-span--2, form-summary"
+                className="grid-span--2"
                 component={TextArea}
                 label="Summary"
                 name="show_details.summary"
@@ -96,7 +96,7 @@ class NewShowForm extends Component {
               />
 
               <Field
-                className="grid-span--2, form-desc"
+                className="grid-span--2"
                 component={TextArea}
                 label="Description"
                 name="show_details.description"

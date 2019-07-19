@@ -1,10 +1,10 @@
 const router = require('express').Router();
 const { usersController } = require('../controllers');
-const { requireAdmin, requireLogin } = require('../middlewares');
+const { requireAC, requireAdmin, requireLogin } = require('../middlewares');
 
 router
   .route('/')
-  .get(requireLogin, usersController.findAll)
+  .get(requireAC('Users', 'readOwn'), usersController.findAll)
   .post(usersController.create);
 
 router.route('/random').post(usersController.randomUser);

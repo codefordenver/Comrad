@@ -4,12 +4,11 @@ const db = require('../models');
 function requireAC(resource, action) {
   return async function(req, res, next) {
     // TODO: Need to clean up logic a little bit
+    const { authorization } = req.headers;
 
-    if (req.query.api_key) {
+    if (authorization) {
       console.log('User Has A Key!');
-
-      const { api_key } = req.query;
-      const dbUser = await db.User.findOne({ api_key });
+      const dbUser = await db.User.findOne({ api_key: authorization });
 
       req.user = dbUser;
     }
@@ -28,6 +27,10 @@ function requireAC(resource, action) {
       console.log('User Is Not Granted!');
       return res.json('User Is Not Granted!');
     }
+
+    req.ac = permission;
+    req.ac.fields =
+      permission.attributes.indexOf('*') !== -1 ? [] : permission.attributes;
 
     return next();
   };

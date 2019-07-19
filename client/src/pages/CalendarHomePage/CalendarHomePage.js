@@ -74,7 +74,6 @@ class CalendarHomePage extends Component {
       onlyDisplayShowsWithNoHost,
       selectedDate,
     } = this.state;
-    console.log(this.props);
 
     // we will set a key for the month/year that is currently selected
     // so that the displayed month in DayPickerSingleDateController will auto-update

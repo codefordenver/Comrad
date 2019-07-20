@@ -1,4 +1,4 @@
-import { genreTypes } from './userTypes';
+import { genreTypes } from './genreTypes';
 
 const initialState = {
   doc: {},
@@ -15,8 +15,6 @@ export const genreReducer = (state = initialState, { type, payload }) => {
     case genreTypes.FIND_ALL:
       return {
         ...state,
-        ...payload,
-        loading: false,
       };
 
     default:

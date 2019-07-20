@@ -57,14 +57,12 @@ class FormTrackEdit extends Component {
           label="Disk Number"
           name="disk_number"
           type="number"
-          validate={requiredValidate}
         />
         <Field
           component={Input}
           label="Track Number"
           name="track_number"
           type="number"
-          validate={requiredValidate}
         />
         <div>
           <Button type="submit">Submit</Button>

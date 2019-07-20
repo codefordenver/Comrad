@@ -52,8 +52,32 @@ export default class DashboardHomePage extends Component {
 
     return (
       <div className="dhp">
-        {loadingOnAirData && <Loading />}
+        {loadingOnAirData && (
+          <>
+            <Card className="dhp__section-3">
+              <CardBody>
+                <div className="currently-on-air">
+                  <Loading />
+                </div>
+              </CardBody>
+            </Card>
 
+            <Card className="dhp__section-4">
+              <CardBody>
+                <div className="up-next">
+                  <Loading />
+                </div>
+              </CardBody>
+            </Card>
+
+            <Card className="dhp__section-5">
+              <CardBody>
+                <Loading />
+              </CardBody>
+            </Card>
+          </>
+        )}
+        ) }
         <Card className="dhp__section-1">
           <CardBody>
             <div className="upcoming-shows">
@@ -68,7 +92,6 @@ export default class DashboardHomePage extends Component {
             </div>
           </CardBody>
         </Card>
-
         <Card className="dhp__section-2">
           <CardBody>
             <div className="past-shows">
@@ -85,7 +108,6 @@ export default class DashboardHomePage extends Component {
             </div>
           </CardBody>
         </Card>
-
         {!loadingOnAirData && (
           <>
             <Card className="dhp__section-3">

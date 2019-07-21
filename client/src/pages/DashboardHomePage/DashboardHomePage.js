@@ -52,62 +52,46 @@ export default class DashboardHomePage extends Component {
 
     return (
       <div className="dhp">
-        {loadingOnAirData && (
-          <>
-            <Card className="dhp__section-3">
-              <CardBody>
-                <div className="currently-on-air">
-                  <Loading />
-                </div>
-              </CardBody>
-            </Card>
+        {/*loadingOnAirData && <Loading />*/}
 
-            <Card className="dhp__section-4">
-              <CardBody>
-                <div className="up-next">
-                  <Loading />
-                </div>
-              </CardBody>
-            </Card>
-
-            <Card className="dhp__section-5">
-              <CardBody>
-                <Loading />
-              </CardBody>
-            </Card>
-          </>
-        )}
-        ) }
         <Card className="dhp__section-1">
           <CardBody>
-            <div className="upcoming-shows">
+            <div style={{ position: 'relative' }} className="upcoming-shows">
               <h2>My Upcoming Shows</h2>
-
-              <ShowListForUser
-                maxItems="3"
-                startDate={today}
-                endDate={todayPlus3Months}
-                noItemsText="You have no upcoming shows in the next three months."
-              />
+              {!loadingOnAirData ? (
+                <ShowListForUser
+                  maxItems="3"
+                  startDate={today}
+                  endDate={todayPlus3Months}
+                  noItemsText="You have no upcoming shows in the next three months."
+                />
+              ) : (
+                <Loading style={{ position: 'absolute' }} />
+              )}
             </div>
           </CardBody>
         </Card>
+
         <Card className="dhp__section-2">
           <CardBody>
-            <div className="past-shows">
+            <div style={{ position: 'relative' }} className="past-shows">
               <h2>My Past Shows</h2>
-
-              <ShowListForUser
-                maxItems="10"
-                doNotIncludeNowPlaying={true}
-                sortNewestToOldest={true}
-                startDate={oneYearAgo}
-                endDate={today}
-                noItemsText="You haven't hosted any shows in the past year."
-              />
+              {!loadingOnAirData ? (
+                <ShowListForUser
+                  maxItems="10"
+                  doNotIncludeNowPlaying={true}
+                  sortNewestToOldest={true}
+                  startDate={oneYearAgo}
+                  endDate={today}
+                  noItemsText="You haven't hosted any shows in the past year."
+                />
+              ) : (
+                <Loading style={{ position: 'absolute' }} />
+              )}
             </div>
           </CardBody>
         </Card>
+
         {!loadingOnAirData && (
           <>
             <Card className="dhp__section-3">

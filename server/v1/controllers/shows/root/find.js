@@ -98,9 +98,15 @@ function find(req, res) {
 
           res.json(showResults);
         })
-        .catch(err => res.status(422).json(err));
+        .catch(err => {
+          console.error(err);
+          return res.status(422).json(err);
+        });
     })
-    .catch(err => res.status(422).json(err));
+    .catch(err => {
+      console.error(err);
+      return res.status(422).json(err);
+    });
 }
 
 module.exports = find;

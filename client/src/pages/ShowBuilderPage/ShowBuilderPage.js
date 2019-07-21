@@ -11,6 +11,7 @@ import ShowBuilderItemList from '../../components/ShowBuilderItemList';
 
 import { playlistActions } from '../../redux';
 import { clearShows, getShowsData, searchShow } from '../../redux/show';
+import { trafficActions } from '../../redux';
 
 class ShowBuilderPage extends Component {
   state = {
@@ -18,11 +19,19 @@ class ShowBuilderPage extends Component {
   };
 
   componentDidMount() {
-    const { location, searchShow, playlistActions } = this.props;
+    const {
+      location,
+      searchShow,
+      playlistActions,
+      trafficActions,
+    } = this.props;
     const { startTime, endTime } = queryString.parse(location.search);
 
     //find the playlist
     playlistActions.findOne(startTime, endTime);
+
+    //find traffic events during the show
+    trafficActions.find(startTime, endTime);
 
     // format the show day/time
 
@@ -49,14 +58,14 @@ class ShowBuilderPage extends Component {
   }
 
   render() {
-    const { playlist, shows, showFetching } = this.props;
+    const { playlist, shows, showFetching, traffic } = this.props;
     const {
       activeTab,
       formattedDay,
       formattedEndTime,
       formattedStartTime,
     } = this.state;
-    const { scratchpad, saved_items } = playlist.doc;
+    let { scratchpad, saved_items } = playlist.doc;
 
     let showName = '';
     if (shows && Object.keys(shows).length > 0) {
@@ -66,6 +75,36 @@ class ShowBuilderPage extends Component {
         );
       }
       showName = shows[Object.keys(shows)[0]].show_details.title;
+    }
+
+    if (
+      !traffic.loading &&
+      !playlist.loading &&
+      typeof scratchpad !== 'undefined' &&
+      typeof saved_items !== 'undefined'
+    ) {
+      //modify the scratchpad list based on what traffic occurs at the time period
+      //we will add any traffic itemsnot accounted for to scratchpad
+      let trafficItemsForScratchpad = [...traffic.docs];
+      saved_items.forEach(si => {
+        if (si.type === 'traffic') {
+          let matchingIndex = trafficItemsForScratchpad.findIndex(
+            a => a.master_time_id === si.traffic.master_time_id,
+          );
+          trafficItemsForScratchpad.splice(matchingIndex, 1);
+        }
+      });
+      trafficItemsForScratchpad.reverse();
+      trafficItemsForScratchpad.forEach(t => {
+        scratchpad.unshift({
+          type: 'traffic',
+          traffic: t,
+        });
+      });
+    }
+
+    if (typeof saved_items !== 'undefined') {
+      saved_items.reverse(); //display saved items in reverse chronological order
     }
 
     return (
@@ -89,18 +128,24 @@ class ShowBuilderPage extends Component {
             </div>
 
             <div className="show-builder__grid">
-              {(playlist.loading || showFetching) && <Loading />}
+              {(playlist.loading || showFetching || traffic.loading) && (
+                <Loading />
+              )}
               <div>
                 <h5>Scratchpad</h5>
-                {typeof scratchpad !== 'undefined' && (
-                  <ShowBuilderItemList items={scratchpad} />
-                )}
+                {!playlist.loading &&
+                  !traffic.loading &&
+                  typeof scratchpad !== 'undefined' && (
+                    <ShowBuilderItemList items={scratchpad} />
+                  )}
               </div>
               <div>
                 <h5>Saved Items</h5>
-                {typeof saved_items !== 'undefined' && (
-                  <ShowBuilderItemList items={saved_items} />
-                )}
+                {!playlist.loading &&
+                  !traffic.loading &&
+                  typeof saved_items !== 'undefined' && (
+                    <ShowBuilderItemList items={saved_items} />
+                  )}
               </div>
 
               <div className="library-tab-container">
@@ -148,11 +193,12 @@ class ShowBuilderPage extends Component {
   }
 }
 
-function mapStateToProps({ show, playlist }) {
+function mapStateToProps({ show, playlist, traffic }) {
   return {
     playlist,
     showFetching: show.fetching,
     shows: getShowsData(show),
+    traffic,
   };
 }
 
@@ -161,6 +207,7 @@ function mapDispatchToProps(dispatch) {
     playlistActions: bindActionCreators({ ...playlistActions }, dispatch),
     clearShows: bindActionCreators(clearShows, dispatch),
     searchShow: bindActionCreators(searchShow, dispatch),
+    trafficActions: bindActionCreators({ ...trafficActions }, dispatch),
   };
 }
 

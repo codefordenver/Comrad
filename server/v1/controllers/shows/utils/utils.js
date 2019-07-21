@@ -29,13 +29,7 @@ function showList(shows, startDate, endDate) {
   const allSeriesShows = reduceShowsByRepeatProperty(shows, true);
 
   const allSeriesShowsExpanded = allSeriesShows.map(show => {
-    const allShowDates = returnDatesArrayByRepeatRule(show, startDate, endDate);
-    const allSeriesShowsExpandedByDates = returnSeriesShowsArrayWithNewDates(
-      allShowDates,
-      show,
-    );
-
-    return allSeriesShowsExpandedByDates;
+    return allShowInstancesInDateRange(show, startDate, endDate); //TODO: ask Josh if there's better naming for this
   });
 
   //Filter all shows that are instances
@@ -71,6 +65,16 @@ function showList(shows, startDate, endDate) {
   });
 
   return showsToReturnArray;
+}
+
+function allShowInstancesInDateRange(show, startDate, endDate) {
+  const allShowDates = returnDatesArrayByRepeatRule(show, startDate, endDate);
+  const allSeriesShowsExpandedByDates = returnSeriesShowsArrayWithNewDates(
+    allShowDates,
+    show,
+  );
+
+  return allSeriesShowsExpandedByDates;
 }
 
 function createRRule(show) {
@@ -276,6 +280,7 @@ function returnInstanceShowsArray(shows) {
 }
 
 module.exports = {
+  allShowInstancesInDateRange,
   getModelForEventType,
   showList,
 };

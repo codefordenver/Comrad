@@ -24,6 +24,7 @@ export * from './config';
 export * from './permission';
 export * from './playlist';
 export * from './track';
+export * from './traffic';
 export * from './user';
 
 export default combineReducers({

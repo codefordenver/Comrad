@@ -1,4 +1,8 @@
 const db = require('../../models');
+const {
+  utils: { allShowInstancesInDateRange },
+  utils__mongoose: { master_time_id__byShowType },
+} = require('../shows/utils');
 
 async function findOne(req, res) {
   if (
@@ -28,7 +32,27 @@ async function findOne(req, res) {
     res.status(422).json('Playlist does not exist');
   }
 
-  res.status(200).json(dbPlaylist[0]);
+  let docPlaylist = dbPlaylist[0];
+  let objPlaylist = docPlaylist.toObject();
+  for (var i = 0; i < docPlaylist.saved_items.length; i++) {
+    let docSavedItems = docPlaylist.saved_items[i];
+    if (typeof docSavedItems.traffic !== 'undefined') {
+      let instances = allShowInstancesInDateRange(
+        docSavedItems.traffic,
+        docPlaylist.start_time_utc,
+        docPlaylist.end_time_utc,
+      );
+      if (instances.length > 1) {
+        console.error(
+          'More than one instance of a traffic series within a playlist: ' +
+            docPlaylist._id,
+        );
+      }
+      objPlaylist.saved_items[i].traffic = instances[0];
+    }
+  }
+
+  res.status(200).json(objPlaylist);
 }
 
 module.exports = findOne;

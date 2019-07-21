@@ -3,7 +3,7 @@ const {
   utils__mongoose: { master_time_id__byShowType },
 } = require('../utils');
 
-function remove(req, res) {
+async function remove(req, res) {
   const { eventType } = req.params;
 
   const dbModel = getModelForEventType(eventType);
@@ -12,15 +12,17 @@ function remove(req, res) {
     return;
   }
 
-  dbModel
-    .findById({ _id: req.params.id })
-    .then(dbShow => dbShow.remove())
-    .then(dbShow => {
-      let returnedShow = { ...dbShow.toObject() };
-      returnedShow.master_time_id = master_time_id__byShowType(returnedShow);
-      res.json(returnedShow);
-    })
-    .catch(err => res.status(422).json(err));
+  //Set masterShow and any instance shows by the master_event_id to status: 'deleted'
+  const shows = await dbModel.updateMany(
+    { $or: [{ _id: req.params.id }, { master_event_id: req.params.id }] },
+    {
+      status: 'deleted',
+    },
+  );
+
+  const returnedShow = await dbModel.findById({ _id: req.params.id });
+  returnedShow.master_time_id = master_time_id__byShowType(returnedShow);
+  res.json(returnedShow);
 }
 
 module.exports = remove;

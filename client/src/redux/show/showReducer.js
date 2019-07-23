@@ -14,7 +14,6 @@ import {
   SHOW_FETCHING,
   SHOW_ERROR,
   SHOW_SELECTED,
-  SHOW_DELETE_INSTANCE,
 } from './showTypes';
 
 const initialState = {
@@ -74,9 +73,7 @@ export function showReducer(state = initialState, { type, payload }) {
 
     case SHOW_DELETE:
       //* Deleting Of Regular Shows Only.
-      //* Instance shows appear as regular shows if the series is deleted without the instance.
       let deleteShow = { ...state.data };
-      console.log(payload.master_time_id);
       delete deleteShow[payload.master_time_id];
 
       return {
@@ -103,18 +100,6 @@ export function showReducer(state = initialState, { type, payload }) {
       return {
         ...state,
         data: { ...deleteShowSeries },
-        fetching: false,
-        error: false,
-      };
-
-    case SHOW_DELETE_INSTANCE:
-      let deleteInstance = { ...state.data };
-      console.log(payload.master_time_id);
-      delete deleteInstance[payload.master_time_id];
-
-      return {
-        ...state,
-        data: { ...deleteInstance },
         fetching: false,
         error: false,
       };

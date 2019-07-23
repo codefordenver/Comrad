@@ -13,5 +13,3 @@ export const SHOW_UNSELECTED = 'show_unselected';
 export const SHOW_CREATE_INSTANCE = 'show_create_instance';
 
 export const SHOW_DELETE_SERIES = 'show_delete_series';
-
-export const SHOW_DELETE_INSTANCE = 'show_delete_instance';

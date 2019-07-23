@@ -38,11 +38,11 @@ class NewShowForm extends Component {
     setModalVisibility(null, false, null);
   };
 
-  // deleteInstanceShow = show => {
-  //   const { deleteShowInstance, setModalVisibility } = this.props;
-  //   deleteShowInstance(show._id);
-  //   setModalVisibility(null, false, null);
-  // };
+  deleteInstanceShow = show => {
+    const { deleteShowInstance, setModalVisibility } = this.props;
+    deleteShowInstance(show.master_event_id, show);
+    setModalVisibility(null, false, null);
+  };
 
   getShowType(show) {
     if (show._id.includes('-')) {
@@ -64,7 +64,12 @@ class NewShowForm extends Component {
           <div className="not_done event__tooltip__delete">
             Edit Show Series
           </div>
-          <div className="not_done event__tooltip__delete">Delete Instance</div>
+          <div
+            className="event__tooltip__delete"
+            onClick={() => this.deleteInstanceShow(data)}
+          >
+            Delete Instance
+          </div>
           <div
             className="event__tooltip__delete"
             onClick={() => this.deleteSeriesShow(data)}

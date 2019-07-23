@@ -10,7 +10,7 @@ import Loading from '../../components/Loading';
 import TableAlbumTracks from '../../components/tables/TableAlbumTracks';
 
 import { Link } from 'react-router-dom';
-import { albumActions, configActions } from '../../redux';
+import { albumActions, configActions, genreActions } from '../../redux';
 
 class AlbumViewPage extends Component {
   componentDidMount() {
@@ -19,6 +19,7 @@ class AlbumViewPage extends Component {
       albumActions,
       configActions,
       configState,
+      genreActions,
       match,
     } = this.props;
     const { _id } = albumState.doc;
@@ -45,7 +46,7 @@ class AlbumViewPage extends Component {
 
   render() {
     const { navigateToTrack, props, renderLastUpdated } = this;
-    const { albumState, configState } = props;
+    const { albumState, configState, genreState } = props;
     const { artist, name, tracks, label, compilation, custom } = albumState.doc;
     const { url } = this.props.match;
 
@@ -118,10 +119,11 @@ class AlbumViewPage extends Component {
   }
 }
 
-function mapStateToProps({ album, config }) {
+function mapStateToProps({ album, config, genre }) {
   return {
     albumState: album,
     configState: config,
+    genreState: genre,
   };
 }
 
@@ -129,6 +131,7 @@ function mapDispatchToProps(dispatch) {
   return {
     albumActions: bindActionCreators({ ...albumActions }, dispatch),
     configActions: bindActionCreators({ ...configActions }, dispatch),
+    genreActions: bindActionCreators({ ...genreActions }, dispatch),
   };
 }
 

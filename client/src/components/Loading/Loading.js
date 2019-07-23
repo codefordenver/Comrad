@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import loading from '../../images/comrad-loading-secondary.gif';
-import classnames from 'classnames';
 
 export class Loading extends Component {
   constructor(props) {

@@ -3,9 +3,8 @@ import { genreAPI } from '../../../api';
 
 export const findAll = () => async dispatch => {
   try {
-    const { data: docs } = await genreAPI.findAll();
-
-    dispatch({ type: genreTypes.FIND_ALL, payload: docs });
+    const response = await genreAPI.findAll();
+    dispatch({ type: genreTypes.FIND_ALL, payload: response.data });
   } catch (err) {
     console.log(err);
   }

@@ -32,6 +32,12 @@ class AlbumViewPage extends Component {
       : '';
   };
 
+  handleTrackRefresh = () => {
+    const { match } = this.props;
+    const { id } = match.params;
+    albumActions.findOne(id);
+  };
+
   render() {
     const { navigateToTrack, props, renderLastUpdated } = this;
     const { albumState } = props;
@@ -85,7 +91,11 @@ class AlbumViewPage extends Component {
                 {isEmpty(tracks) ? (
                   <LargeText align="left">No Tracks</LargeText>
                 ) : (
-                  <TableAlbumTracks onRowClick={navigateToTrack} {...props} />
+                  <TableAlbumTracks
+                    onRowClick={navigateToTrack}
+                    {...props}
+                    handleTrackRefresh={this.handleTrackRefresh}
+                  />
                 )}
               </CardBody>
             </Card>

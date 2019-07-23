@@ -49,8 +49,7 @@ class TableAlbumTracks extends Component {
         deleteSuccessModal: entity.data,
       },
       function() {
-        // console.log('table :', this.table);
-        // this.table.fireFetchData();
+        this.props.handleTrackRefresh();
       },
     );
   };
@@ -71,13 +70,11 @@ class TableAlbumTracks extends Component {
   };
 
   handleRowEditClick = data => {
-    console.log('edit was clicked');
-    console.log(data);
+    const { history } = this.props;
+    history.push('/library/track/' + data._original._id + '/edit');
   };
 
   handleRowDeleteClick = data => {
-    console.log('delete was clicked');
-    console.log(data);
     this.setState({
       deleteModal: data,
     });

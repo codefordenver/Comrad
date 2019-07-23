@@ -25,7 +25,6 @@ class AlbumViewPage extends Component {
     } = this.props;
     const { _id } = albumState.doc;
     const { id } = match.params;
-    console.log(this.props);
 
     if (id !== _id) {
       albumActions.findOne(id);
@@ -35,7 +34,7 @@ class AlbumViewPage extends Component {
       configActions.customFieldsForModel('album');
     }
 
-    if (!genreState.length) {
+    if (!genreState.docs.length) {
       genreActions.findAll();
     }
   }
@@ -55,6 +54,7 @@ class AlbumViewPage extends Component {
     const { albumState, configState, genreState } = props;
     const { artist, name, tracks, label, compilation, custom } = albumState.doc;
     const { url } = this.props.match;
+    console.log(genreState);
 
     let albumCustomFields = [];
     if ('album' in configState.customFields) {

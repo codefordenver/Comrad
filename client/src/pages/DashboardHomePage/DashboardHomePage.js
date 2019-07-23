@@ -52,11 +52,9 @@ export default class DashboardHomePage extends Component {
 
     return (
       <div className="dhp">
-        {/*loadingOnAirData && <Loading />*/}
-
         <Card className="dhp__section-1">
           <CardBody>
-            <div style={{ position: 'relative' }} className="upcoming-shows">
+            <div className="upcoming-shows">
               <h2>My Upcoming Shows</h2>
               {!loadingOnAirData ? (
                 <ShowListForUser
@@ -66,7 +64,7 @@ export default class DashboardHomePage extends Component {
                   noItemsText="You have no upcoming shows in the next three months."
                 />
               ) : (
-                <Loading style={{ position: 'absolute' }} />
+                <Loading displayMode="static" />
               )}
             </div>
           </CardBody>
@@ -74,7 +72,7 @@ export default class DashboardHomePage extends Component {
 
         <Card className="dhp__section-2">
           <CardBody>
-            <div style={{ position: 'relative' }} className="past-shows">
+            <div className="past-shows">
               <h2>My Past Shows</h2>
               {!loadingOnAirData ? (
                 <ShowListForUser
@@ -86,7 +84,7 @@ export default class DashboardHomePage extends Component {
                   noItemsText="You haven't hosted any shows in the past year."
                 />
               ) : (
-                <Loading style={{ position: 'absolute' }} />
+                <Loading displayMode="static" />
               )}
             </div>
           </CardBody>
@@ -95,10 +93,7 @@ export default class DashboardHomePage extends Component {
         <>
           <Card className="dhp__section-3">
             <CardBody>
-              <div
-                style={{ position: 'relative' }}
-                className="currently-on-air"
-              >
+              <div className="currently-on-air">
                 <h2 className="text-center  mb-1">Currently On Air</h2>
                 {!loadingOnAirData ? (
                   <>
@@ -124,7 +119,9 @@ export default class DashboardHomePage extends Component {
                     )}
                   </>
                 ) : (
-                  <Loading style={{ position: 'absolute' }} />
+                  <div>
+                    <Loading displayMode="static" />
+                  </div>
                 )}
               </div>
             </CardBody>
@@ -132,7 +129,7 @@ export default class DashboardHomePage extends Component {
 
           <Card className="dhp__section-4">
             <CardBody>
-              <div style={{ position: 'relative' }} className="up-next">
+              <div className="up-next">
                 <h2 className="mb-1 text-center">Up Next</h2>
                 {!loadingOnAirData ? (
                   <>
@@ -154,7 +151,7 @@ export default class DashboardHomePage extends Component {
                     )}
                   </>
                 ) : (
-                  <Loading style={{ position: 'absolute' }} />
+                  <Loading displayMode="static" />
                 )}
               </div>
             </CardBody>
@@ -162,11 +159,11 @@ export default class DashboardHomePage extends Component {
 
           <Card className="dhp__section-5">
             <CardBody>
-              <div position={{ position: 'relative' }}>
+              <div>
                 {!loadingOnAirData ? (
                   <CalendarAgenda />
                 ) : (
-                  <Loading style={{ position: 'absolute' }} />
+                  <Loading displayMode="static" />
                 )}
               </div>
             </CardBody>

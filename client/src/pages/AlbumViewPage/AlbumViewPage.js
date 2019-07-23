@@ -20,10 +20,12 @@ class AlbumViewPage extends Component {
       configActions,
       configState,
       genreActions,
+      genreState,
       match,
     } = this.props;
     const { _id } = albumState.doc;
     const { id } = match.params;
+    console.log(this.props);
 
     if (id !== _id) {
       albumActions.findOne(id);
@@ -31,6 +33,10 @@ class AlbumViewPage extends Component {
 
     if (!('album' in configState.customFields)) {
       configActions.customFieldsForModel('album');
+    }
+
+    if (!genreState.length) {
+      genreActions.findAll();
     }
   }
 

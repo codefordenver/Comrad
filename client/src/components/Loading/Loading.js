@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import loading from '../../images/comrad-loading-secondary.gif';
+import classnames from 'classnames';
 
 export class Loading extends Component {
   constructor(props) {
@@ -16,7 +17,7 @@ export class Loading extends Component {
     }
 
     return (
-      <div className={loadingClass}>
+      <div className={classnames(`loading--${loadingClass}`)}>
         <img className="__gif" src={loading} alt="loading gif" />
       </div>
     );

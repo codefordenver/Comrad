@@ -29,11 +29,16 @@ class FormAlbumEdit extends Component {
 
   render() {
     const { props, submit } = this;
-    const { handleSubmit, configState } = props;
+    const { handleSubmit, configState, initialValues } = props;
+    const { genres } = initialValues;
 
     let albumCustomFields = [];
     if ('album' in configState.customFields) {
       albumCustomFields = configState.customFields.album;
+    }
+    let genreList = [];
+    for (let i = 0; i < Object.values(genres).length; i++) {
+      genreList.push(Object.values(genres)[i]);
     }
 
     return (
@@ -65,6 +70,7 @@ class FormAlbumEdit extends Component {
 
 function mapStateToProps(state) {
   const { name, label, compilation, _id, custom } = state.album.doc;
+  const genres = state.genre.docs;
   return {
     configState: state.config,
     initialValues: {
@@ -73,6 +79,7 @@ function mapStateToProps(state) {
       compilation: compilation,
       id: _id,
       custom: custom,
+      genres: genres,
     },
   };
 }

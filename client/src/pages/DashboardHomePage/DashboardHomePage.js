@@ -56,16 +56,12 @@ export default class DashboardHomePage extends Component {
           <CardBody>
             <div className="upcoming-shows">
               <h2>My Upcoming Shows</h2>
-              {!loadingOnAirData ? (
-                <ShowListForUser
-                  maxItems="3"
-                  startDate={today}
-                  endDate={todayPlus3Months}
-                  noItemsText="You have no upcoming shows in the next three months."
-                />
-              ) : (
-                <Loading displayMode="static" />
-              )}
+              <ShowListForUser
+                maxItems="3"
+                startDate={today}
+                endDate={todayPlus3Months}
+                noItemsText="You have no upcoming shows in the next three months."
+              />
             </div>
           </CardBody>
         </Card>
@@ -119,9 +115,7 @@ export default class DashboardHomePage extends Component {
                     )}
                   </>
                 ) : (
-                  <div>
-                    <Loading displayMode="static" />
-                  </div>
+                  <Loading displayMode="static" />
                 )}
               </div>
             </CardBody>

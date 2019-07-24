@@ -13,16 +13,18 @@ function requireAC(resource, action) {
     }
 
     if (!req.user || req.user.status !== 'Active') {
-      return res.json('Incorrect Credentials or Not Active');
+      return res
+        .status(422)
+        .json({ message: 'Incorrect Credentials or Not Active' });
     }
 
-    const dbAccessControl = await db.AccessControl.find({}).lean();
+    const dbAccessControl = await db.AccessControl.find({}, '-_id').lean();
     const ac = new AccessControl(dbAccessControl);
 
     const permission = ac.can(req.user.role)[action](resource);
 
     if (!permission.granted) {
-      return res.json('User Is Not Granted!');
+      return res.status(422).json({ message: 'User Is Not Granted!' });
     }
 
     req.ac = permission;

@@ -1,26 +1,26 @@
-const Albums = [
+const Genres = [
   // Admin
   {
     role: 'Admin',
-    resource: 'Albums',
+    resource: 'Genres',
     action: 'create:any',
     attributes: '*',
   },
   {
     role: 'Admin',
-    resource: 'Albums',
+    resource: 'Genres',
     action: 'read:any',
     attributes: '*',
   },
   {
     role: 'Admin',
-    resource: 'Albums',
+    resource: 'Genres',
     action: 'update:any',
     attributes: '*',
   },
   {
     role: 'Admin',
-    resource: 'Albums',
+    resource: 'Genres',
     action: 'delete:any',
     attributes: '*',
   },
@@ -28,25 +28,25 @@ const Albums = [
   // Full Access
   {
     role: 'Full Access',
-    resource: 'Albums',
+    resource: 'Genres',
     action: 'create:any',
     attributes: '*',
   },
   {
     role: 'Full Access',
-    resource: 'Albums',
+    resource: 'Genres',
     action: 'read:any',
     attributes: '*',
   },
   {
     role: 'Full Access',
-    resource: 'Albums',
+    resource: 'Genres',
     action: 'update:any',
     attributes: '*',
   },
   {
     role: 'Full Access',
-    resource: 'Albums',
+    resource: 'Genres',
     action: 'delete:any',
     attributes: '*',
   },
@@ -54,25 +54,25 @@ const Albums = [
   // Show Producer
   {
     role: 'Show Producer',
-    resource: 'Albums',
+    resource: 'Genres',
     action: 'create:any',
     attributes: '*',
   },
   {
     role: 'Show Producer',
-    resource: 'Albums',
+    resource: 'Genres',
     action: 'read:any',
     attributes: '*',
   },
   {
     role: 'Show Producer',
-    resource: 'Albums',
+    resource: 'Genres',
     action: 'update:any',
     attributes: '*',
   },
   {
     role: 'Show Producer',
-    resource: 'Albums',
+    resource: 'Genres',
     action: 'delete:any',
     attributes: '*',
   },
@@ -80,25 +80,25 @@ const Albums = [
   // Underwriting
   {
     role: 'Underwriting',
-    resource: 'Albums',
+    resource: 'Genres',
     action: 'create:any',
     attributes: '*',
   },
   {
     role: 'Underwriting',
-    resource: 'Albums',
+    resource: 'Genres',
     action: 'read:any',
     attributes: '*',
   },
   {
     role: 'Underwriting',
-    resource: 'Albums',
+    resource: 'Genres',
     action: 'update:any',
     attributes: '*',
   },
   {
     role: 'Underwriting',
-    resource: 'Albums',
+    resource: 'Genres',
     action: 'delete:any',
     attributes: '*',
   },
@@ -106,25 +106,25 @@ const Albums = [
   // DJ
   {
     role: 'DJ',
-    resource: 'Albums',
+    resource: 'Genres',
     action: 'create:any',
     attributes: '*',
   },
   {
     role: 'DJ',
-    resource: 'Albums',
+    resource: 'Genres',
     action: 'read:any',
     attributes: '*',
   },
   {
     role: 'DJ',
-    resource: 'Albums',
+    resource: 'Genres',
     action: 'update:any',
     attributes: '*',
   },
   {
     role: 'DJ',
-    resource: 'Albums',
+    resource: 'Genres',
     action: 'delete:any',
     attributes: '*',
   },
@@ -132,28 +132,28 @@ const Albums = [
   // Guest
   {
     role: 'Guest',
-    resource: 'Albums',
+    resource: 'Genres',
     action: 'create:any',
     attributes: '*',
   },
   {
     role: 'Guest',
-    resource: 'Albums',
+    resource: 'Genres',
     action: 'read:any',
     attributes: '*',
   },
   {
     role: 'Guest',
-    resource: 'Albums',
+    resource: 'Genres',
     action: 'update:any',
     attributes: '*',
   },
   {
     role: 'Guest',
-    resource: 'Albums',
+    resource: 'Genres',
     action: 'delete:any',
     attributes: '*',
   },
 ];
 
-module.exports = Albums;
+module.exports = Genres;

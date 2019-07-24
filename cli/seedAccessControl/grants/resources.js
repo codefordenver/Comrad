@@ -35,8 +35,8 @@ const Resources = [
   {
     role: 'Full Access',
     resource: 'Resources',
-    action: 'read:own',
-    attributes: '-_id, link',
+    action: 'read:any',
+    attributes: '*',
   },
   {
     role: 'Full Access',
@@ -107,25 +107,25 @@ const Resources = [
   {
     role: 'DJ',
     resource: 'Resources',
-    action: 'create:own',
+    action: 'create:any',
     attributes: '*',
   },
   {
     role: 'DJ',
     resource: 'Resources',
-    action: 'read:own',
+    action: 'read:any',
     attributes: '*',
   },
   {
     role: 'DJ',
     resource: 'Resources',
-    action: 'update:own',
+    action: 'update:any',
     attributes: '*',
   },
   {
     role: 'DJ',
     resource: 'Resources',
-    action: 'delete:own',
+    action: 'delete:any',
     attributes: '*',
   },
 
@@ -133,7 +133,7 @@ const Resources = [
   {
     role: 'Guest',
     resource: 'Resources',
-    action: 'create:own',
+    action: 'create:any',
     attributes: '*',
   },
   {
@@ -145,13 +145,13 @@ const Resources = [
   {
     role: 'Guest',
     resource: 'Resources',
-    action: 'update:own',
+    action: 'update:any',
     attributes: '*',
   },
   {
     role: 'Guest',
     resource: 'Resources',
-    action: 'delete:own',
+    action: 'delete:any',
     attributes: '*',
   },
 ];

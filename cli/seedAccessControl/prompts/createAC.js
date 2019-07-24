@@ -7,7 +7,7 @@ async function createAC(session) {
   console.log('Deleting Resource AC');
   await db.AccessControl.deleteMany({ resource: session.resource });
 
-  console.log('Creating Resource AC');
+  console.log(`Creating Resource ${session.resource}`);
   const dbAccessControl = await db.AccessControl.insertMany(grant);
 
   return {

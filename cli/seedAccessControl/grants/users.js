@@ -55,25 +55,25 @@ const Users = [
   {
     role: 'Show Producer',
     resource: 'Users',
-    action: 'create:own',
+    action: 'create:any',
     attributes: '*',
   },
   {
     role: 'Show Producer',
     resource: 'Users',
-    action: 'read:own',
+    action: 'read:any',
     attributes: '*',
   },
   {
     role: 'Show Producer',
     resource: 'Users',
-    action: 'update:own',
+    action: 'update:any',
     attributes: '*',
   },
   {
     role: 'Show Producer',
     resource: 'Users',
-    action: 'delete:own',
+    action: 'delete:any',
     attributes: '*',
   },
 
@@ -81,25 +81,25 @@ const Users = [
   {
     role: 'Underwriting',
     resource: 'Users',
-    action: 'create:own',
+    action: 'create:any',
     attributes: '*',
   },
   {
     role: 'Underwriting',
     resource: 'Users',
-    action: 'read:own',
+    action: 'read:any',
     attributes: '*',
   },
   {
     role: 'Underwriting',
     resource: 'Users',
-    action: 'update:own',
+    action: 'update:any',
     attributes: '*',
   },
   {
     role: 'Underwriting',
     resource: 'Users',
-    action: 'delete:own',
+    action: 'delete:any',
     attributes: '*',
   },
 
@@ -107,25 +107,25 @@ const Users = [
   {
     role: 'DJ',
     resource: 'AccessControl',
-    action: 'create:own',
+    action: 'create:any',
     attributes: '*',
   },
   {
     role: 'DJ',
     resource: 'AccessControl',
-    action: 'read:own',
+    action: 'read:any',
     attributes: '-_id first_name last_name',
   },
   {
     role: 'DJ',
     resource: 'AccessControl',
-    action: 'update:own',
+    action: 'update:any',
     attributes: '*',
   },
   {
     role: 'DJ',
     resource: 'AccessControl',
-    action: 'delete:own',
+    action: 'delete:any',
     attributes: '*',
   },
 
@@ -133,25 +133,25 @@ const Users = [
   {
     role: 'Guest',
     resource: 'Users',
-    action: 'create:own',
+    action: 'create:any',
     attributes: '*',
   },
   {
     role: 'Guest',
     resource: 'Users',
-    action: 'read:own',
+    action: 'read:any',
     attributes: '*',
   },
   {
     role: 'Guest',
     resource: 'Users',
-    action: 'update:own',
+    action: 'update:any',
     attributes: '*',
   },
   {
     role: 'Guest',
     resource: 'Users',
-    action: 'delete:own',
+    action: 'delete:any',
     attributes: '*',
   },
 ];

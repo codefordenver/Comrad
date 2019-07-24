@@ -51,10 +51,9 @@ class AlbumViewPage extends Component {
 
   render() {
     const { navigateToTrack, props, renderLastUpdated } = this;
-    const { albumState, configState, genreState } = props;
+    const { albumState, configState } = props;
     const { artist, name, tracks, label, compilation, custom } = albumState.doc;
     const { url } = this.props.match;
-    console.log(genreState);
 
     let albumCustomFields = [];
     if ('album' in configState.customFields) {

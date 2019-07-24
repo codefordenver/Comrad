@@ -33,7 +33,7 @@ class AlbumViewPage extends Component {
   };
 
   handleTrackRefresh = () => {
-    const { match } = this.props;
+    const { match, albumActions } = this.props;
     const { id } = match.params;
     albumActions.findOne(id);
   };

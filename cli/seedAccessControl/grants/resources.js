@@ -35,8 +35,8 @@ const Resources = [
   {
     role: 'Full Access',
     resource: 'Resources',
-    action: 'read:any',
-    attributes: '*',
+    action: 'read:own',
+    attributes: '-_id, link',
   },
   {
     role: 'Full Access',

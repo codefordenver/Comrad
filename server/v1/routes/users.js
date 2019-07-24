@@ -5,10 +5,14 @@ const { requireAC, requireAdmin, requireLogin } = require('../middlewares');
 router
   .route('/')
   .get(requireAC('Users', 'readOwn'), usersController.findAll)
-  .post(usersController.create);
+  .post(requireAC('Users', 'createOwn'), usersController.create);
 
-router.route('/random').post(usersController.randomUser);
-router.route('/search').get(usersController.search);
+router
+  .route('/random')
+  .post(requireAC('Users', 'createOwn'), usersController.randomUser);
+router
+  .route('/search')
+  .get(requireAC('Users', 'readOwn'), usersController.search);
 router.route('/search-hosts').get(usersController.searchHosts);
 
 router

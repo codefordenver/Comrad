@@ -5,13 +5,15 @@ const { requireAC } = require('../middlewares');
 router
   .route('/')
   .get(requireAC('Resources', 'readOwn'), resourcesController.findAll)
-  .post(requireAC('Resources', 'createAny'), resourcesController.create);
+  .post(requireAC('Resources', 'createOwn'), resourcesController.create);
 
-router.route('/search').get(resourcesController.search);
+router
+  .route('/search')
+  .get(requireAC('Resources', 'readOwn'), resourcesController.search);
 
 router
   .route('/:id')
-  .put(resourcesController.update)
-  .delete(resourcesController.remove);
+  .put(requireAC('Resources', 'updateOwn'), resourcesController.update)
+  .delete(requireAC('Resources', 'deleteOwn'), resourcesController.remove);
 
 module.exports = router;

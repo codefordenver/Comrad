@@ -140,7 +140,7 @@ const Users = [
     role: 'Guest',
     resource: 'Users',
     action: 'read:own',
-    attributes: '-_id first_name last_name',
+    attributes: '*',
   },
   {
     role: 'Guest',

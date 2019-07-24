@@ -1,11 +1,11 @@
-.absolute {
+.loading--absolute {
   position: absolute;
   top: 50%;  
   left: 50%; 
   transform: translate(-50%, -50%);
 }
 
-.static {
+.loading--static {
   position: static;
   text-align: center;
 }

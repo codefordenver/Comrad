@@ -83,7 +83,7 @@ class ShowBuilderShowListPage extends Component {
           );
           displayDate = showDate;
         }
-        if (showObject.show_details.host !== null) {
+        if (showObject.show_details.host) {
           let formattedHostName = formatHostName(showObject.show_details.host);
           hostElement.push(
             <span key={showObject.show_details.host._id}>

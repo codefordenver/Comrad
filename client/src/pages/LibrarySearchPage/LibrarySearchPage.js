@@ -6,14 +6,18 @@ import axios from 'axios';
 
 import ReactTable from 'react-table';
 
-import Alert from '../../components/Alert';
 import Button from '../../components/Button';
 import Card, { CardBody } from '../../components/Card';
 import Dropdown from '../../components/Dropdown';
 import Input from '../../components/Input';
 import Modal from '../../components/Modal';
 
-import { albumActions, artistActions, trackActions } from '../../redux';
+import {
+  alertActions,
+  albumActions,
+  artistActions,
+  trackActions,
+} from '../../redux';
 
 class LibrarySearchPage extends Component {
   state = {
@@ -32,17 +36,8 @@ class LibrarySearchPage extends Component {
     },
   };
 
-  closeAlerts = () => {
-    const { artistAlertClose, albumActions, trackActions } = this.props;
-    artistActions.alertClose();
-    albumActions.alertClose();
-    trackActions.alertClose();
-  };
-
   closeDeleteModal = () => {
-    this.setState({ deleteModal: false }, function() {
-      this.closeAlerts();
-    });
+    this.setState({ deleteModal: false });
   };
 
   closeDeleteSuccessModal = () => {
@@ -52,16 +47,21 @@ class LibrarySearchPage extends Component {
   deleteEntity = (type, id) => {
     const { albumActions, artistActions, trackActions } = this.props;
     if (type === 'album') {
-      albumActions.remove(id, this.deleteSuccess);
+      albumActions.remove(id, this.deleteSuccess, this.deleteFailure);
     } else if (type === 'track') {
-      trackActions.remove(id, this.deleteSuccess);
+      trackActions.remove(id, this.deleteSuccess, this.deleteFailure);
     } else if (type === 'artist') {
-      artistActions.remove(id, this.deleteSuccess);
+      artistActions.remove(id, this.deleteSuccess, this.deleteFailure);
     }
+  };
+
+  deleteFailure = () => {
+    this.closeDeleteModal();
   };
 
   deleteSuccess = entity => {
     this.closeDeleteModal();
+    this.props.alertActions.hide();
     this.setState(
       {
         deleteSuccessModal: entity.data,
@@ -147,8 +147,12 @@ class LibrarySearchPage extends Component {
   };
 
   handleRowEditClick = data => {
-    console.log('edit was clicked');
-    console.log(data);
+    const { history } = this.props;
+    if (data.type === 'track') {
+      history.push('/library/track/' + data._original._id + '/edit');
+    } else if (data.type === 'album') {
+      history.push('/library/album/' + data._original._id + '/edit');
+    }
   };
 
   navigateToRecord = (state, rowInfo, column, instance) => {
@@ -204,14 +208,7 @@ class LibrarySearchPage extends Component {
 
   render() {
     const { closeDeleteModal, closeDeleteSuccessModal, deleteEntity } = this;
-    const {
-      artistAlert,
-      albumAlert,
-      albumActions,
-      handleSubmit,
-      trackActions,
-      trackAlert,
-    } = this.props;
+    const { handleSubmit } = this.props;
     const { deleteModal, deleteSuccessModal } = this.state;
 
     const columns = [
@@ -437,15 +434,6 @@ class LibrarySearchPage extends Component {
         {deleteModal ? (
           <Modal isOpen={true}>
             <div className="library-search__delete-modal">
-              {/*artistAlert.display && (
-                <Alert alertClose={artistAlertClose} {...artistAlert} />
-              )*/}
-              {/*albumAlert.display && (
-                <Alert alertClose={albumActions.alertClose} {...albumAlert} />
-              )*/}
-              {/*trackAlert.display && (
-                <Alert alertClose={trackActions.alertClose} {...trackAlert} />
-              )*/}
               Are you sure you want to delete the {deleteModal.type}{' '}
               <i>{deleteModal.name}</i>?
               <div>
@@ -485,20 +473,15 @@ class LibrarySearchPage extends Component {
 
 function mapStateToProps(state) {
   const { error } = state.library;
-  const artistAlert = state.artist.alert;
-  const albumAlert = state.album.alert;
-  const trackAlert = state.track.alert;
 
   return {
-    artistAlert,
-    albumAlert,
     error,
-    trackAlert,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
+    alertActions: bindActionCreators({ ...alertActions }, dispatch),
     artistActions: bindActionCreators({ ...artistActions }, dispatch),
     albumActions: bindActionCreators({ ...albumActions }, dispatch),
     trackActions: bindActionCreators({ ...trackActions }, dispatch),

@@ -5,8 +5,8 @@ import { isEmpty } from 'lodash';
 
 import { Link } from 'react-router-dom';
 
-import Alert from '../../components/Alert';
 import Card, { CardBody } from '../../components/Card';
+import Loading from '../../components/Loading';
 import FormArtistUpdateName from '../../components/forms/FormArtistUpdateName';
 import LargeText from '../../components/LargeText';
 import TableArtistAlbums from '../../components/tables/TableArtistAlbums';
@@ -35,8 +35,8 @@ class ArtistViewPage extends Component {
 
   render() {
     const { navigateToAlbum, props } = this;
-    const { match, artist, artistActions } = props;
-    const { alert, doc, loading } = artist;
+    const { match, artist } = props;
+    const { doc, loading } = artist;
     const { albums, updated_at } = doc;
     const dateObj = new Date(updated_at);
     const lastUpdated = `${dateObj.toLocaleDateString()} ${dateObj.toLocaleTimeString()}`;
@@ -44,7 +44,7 @@ class ArtistViewPage extends Component {
 
     return (
       <div className="artist-view">
-        <Alert alertClose={artistActions.alertClose} {...alert} />
+        {loading && <Loading />}
         {!loading ? (
           <>
             <Card>

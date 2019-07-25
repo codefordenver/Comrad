@@ -4,17 +4,18 @@ import { Field, reduxForm } from 'redux-form';
 import { bindActionCreators } from 'redux';
 import { requiredValidate } from '../../../utils/validation';
 import { albumActions } from '../../../redux';
-import { artistActions } from '../../../redux';
 
 import Button from '../../Button';
+import Checkbox from '../../Checkbox';
 import Input from '../../Input';
 
 class FormAlbumAdd extends Component {
   submit = values => {
-    const { albumActions, artistActions, history } = this.props;
-    return albumActions.add(values, albumData => {
-      artistActions.clear();
-      history.push(`/library/artist/${albumData.artist}`);
+    const { albumActions, submitCallback } = this.props;
+    albumActions.add(values, albumData => {
+      if (typeof submitCallback === 'function') {
+        submitCallback(albumData);
+      }
     });
   };
 
@@ -23,14 +24,7 @@ class FormAlbumAdd extends Component {
     const { handleSubmit } = props;
 
     return (
-      <form
-        className="form-album-add"
-        onSubmit={handleSubmit(data => {
-          submit({
-            ...data,
-          });
-        })}
-      >
+      <form className="form-album-add" onSubmit={handleSubmit(submit)}>
         <Field
           component={Input}
           label="Name"
@@ -38,13 +32,8 @@ class FormAlbumAdd extends Component {
           autoFocus
           validate={requiredValidate}
         />
-        <Field
-          component={Input}
-          label="Label"
-          name="label"
-          autoFocus
-          validate={requiredValidate}
-        />
+        <Field component={Input} label="Label" name="label" />
+        <Field component={Checkbox} label="Compilation" name="compilation" />
         <div>
           <Button type="submit">Submit</Button>
         </div>
@@ -68,7 +57,6 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     albumActions: bindActionCreators({ ...albumActions }, dispatch),
-    artistActions: bindActionCreators({ ...artistActions }, dispatch),
   };
 }
 

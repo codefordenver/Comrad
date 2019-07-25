@@ -2,22 +2,20 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import { requiredValidate } from '../../../utils/validation';
-import { albumActions, trackActions } from '../../../redux';
+import { trackActions } from '../../../redux';
 import Button from '../../Button';
 import Input from '../../Input';
 import { bindActionCreators } from 'redux';
 
 class FormTrackEdit extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
   submit = values => {
-    const { trackActions, history, albumActions } = this.props;
+    const { trackActions, submitCallback } = this.props;
+    values.duration_in_seconds =
+      parseInt(values.seconds) + parseInt(values.minutes) * 60;
     return trackActions.edit(values, trackData => {
-      albumActions.clear();
-      history.push(`/library/album/${trackData.album._id}`);
+      if (typeof submitCallback === 'function') {
+        submitCallback(trackData);
+      }
     });
   };
 
@@ -26,33 +24,7 @@ class FormTrackEdit extends Component {
     const { handleSubmit } = props;
 
     return (
-      <form
-        className="form-track-edit"
-        onSubmit={handleSubmit(data => {
-          const duration_in_seconds =
-            parseInt(data.seconds) + parseInt(data.minutes) * 60;
-          submit({
-            ...data,
-            duration_in_seconds: duration_in_seconds,
-          });
-        })}
-      >
-        <Field
-          component={Input}
-          label="Disk Number"
-          name="disk_number"
-          type="number"
-          autoFocus
-          validate={requiredValidate}
-        />
-        <Field
-          component={Input}
-          label="Track Number"
-          name="track_number"
-          type="number"
-          autoFocus
-          validate={requiredValidate}
-        />
+      <form className="form-track-edit" onSubmit={handleSubmit(submit)}>
         <Field
           component={Input}
           label="Name"
@@ -69,7 +41,6 @@ class FormTrackEdit extends Component {
             name="minutes"
             className="minutes"
             type="number"
-            autoFocus
             validate={requiredValidate}
           />
           <div className="duration-colon">:</div>
@@ -78,10 +49,21 @@ class FormTrackEdit extends Component {
             name="seconds"
             className="seconds"
             type="number"
-            autoFocus
             validate={requiredValidate}
           />
         </div>
+        <Field
+          component={Input}
+          label="Disk Number"
+          name="disk_number"
+          type="number"
+        />
+        <Field
+          component={Input}
+          label="Track Number"
+          name="track_number"
+          type="number"
+        />
         <div>
           <Button type="submit">Submit</Button>
         </div>
@@ -117,7 +99,6 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    albumActions: bindActionCreators({ ...albumActions }, dispatch),
     trackActions: bindActionCreators({ ...trackActions }, dispatch),
   };
 }

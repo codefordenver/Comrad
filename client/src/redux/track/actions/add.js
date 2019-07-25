@@ -1,3 +1,4 @@
+import { alertTypes } from '../../alert';
 import { trackAPI } from '../../../api';
 import { trackTypes } from '../trackTypes';
 
@@ -9,8 +10,12 @@ export const add = (input, callback) => async dispatch => {
   } catch (e) {
     console.error(e);
     dispatch({
-      type: trackTypes.ALERT,
-      payload: { type: 'danger', body: e.response.data.errorMessage },
+      type: alertTypes.ACTIVE,
+      payload: {
+        type: 'danger',
+        header: 'ERROR',
+        body: e.response.data.errorMessage,
+      },
     });
   }
 };

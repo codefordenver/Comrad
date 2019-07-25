@@ -1,5 +1,4 @@
 import { add } from './add';
-import { alertClose } from './alertClose';
 import { changeEditingArtistName } from './changeEditingArtistName';
 import { clear } from './clear';
 import { findAlbums } from './findAlbums';
@@ -9,7 +8,6 @@ import { update } from './update';
 
 export const artistActions = {
   add,
-  alertClose,
   changeEditingArtistName,
   clear,
   findAlbums,

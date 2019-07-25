@@ -1,6 +1,7 @@
 export { albumAPI } from './album';
 export { artistAPI } from './artist';
 export { authAPI } from './auth';
+export { configAPI } from './config';
 export { permissionAPI } from './permission';
 export { resourceAPI } from './resource';
 export { showAPI } from './show';

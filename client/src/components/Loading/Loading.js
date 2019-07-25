@@ -17,8 +17,8 @@ export class Loading extends Component {
     }
 
     return (
-      <div className={classnames(`loading--${loadingClass}`)}>
-        <img className="__gif" src={loading} alt="loading gif" />
+      <div className={classnames('loading', `loading--${loadingClass}`)}>
+        <img className="loading__gif" src={loading} alt="loading gif" />
       </div>
     );
   }

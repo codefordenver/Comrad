@@ -8,6 +8,7 @@ import Input from '../../Input';
 import { bindActionCreators } from 'redux';
 import Checkbox from '../../Checkbox';
 import CustomFieldsEdit from '../../CustomFieldsEdit';
+import Select from '../../Select';
 
 class FormAlbumEdit extends Component {
   componentDidMount() {
@@ -60,6 +61,12 @@ class FormAlbumEdit extends Component {
         <Field component={Input} label="Label" name="label" />
         <Field component={Checkbox} label="Compilation" name="compilation" />
         <CustomFieldsEdit fieldsMeta={albumCustomFields} />
+        <Field
+          component={Select}
+          label="Genre"
+          name="genre"
+          selectOptions={genreList}
+        />
         <div>
           <Button type="submit">Submit</Button>
         </div>

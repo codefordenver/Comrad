@@ -12,18 +12,16 @@ async function remove(req, res) {
     return;
   }
 
-  //Set masterShow and any instance shows by the master_event_id to status: 'deleted'
-  const updateShow = await dbModel.updateOne(
+  const show = await dbModel.updateOne(
     { _id: req.params.id },
     {
       status: 'deleted',
     },
   );
 
-  const show = await dbModel.findById({ _id: req.params.id });
-  let returnedShow = { ...show.toObject() };
-  returnedShow.master_time_id = master_time_id__byShowType(returnedShow);
-  res.json(returnedShow);
+  const removedShow = await dbModel.findById({ _id: req.params.id }).lean();
+  removedShow.master_time_id = master_time_id__byShowType(removedShow);
+  res.json(removedShow);
 }
 
 module.exports = remove;

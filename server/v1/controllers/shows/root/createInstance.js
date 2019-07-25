@@ -28,7 +28,6 @@ function createInstance(req, res) {
     d1.end_time_utc = end_time_utc;
     d1.repeat_rule.repeat_start_date = start_time_utc;
     d1.repeat_rule.repeat_end_date = end_time_utc;
-    d1.end_time_utc = end_time_utc;
     d1.replace_event_date = start_time_utc;
     d1.is_recurring = false;
     d1.created_at = Date.now();
@@ -46,9 +45,6 @@ function createInstance(req, res) {
                 replace_event_date,
                 show_details,
               } = dbShow;
-
-              returnedShow.show_details.title =
-                show_details.title + ' (Updated Host - Instance Version)';
 
               returnedShow.master_event_id = master_event_id
                 ? master_event_id._id

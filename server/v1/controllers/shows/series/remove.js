@@ -20,9 +20,9 @@ async function remove(req, res) {
     },
   );
 
-  const returnedShow = await dbModel.findById({ _id: req.params.id });
-  returnedShow.master_time_id = master_time_id__byShowType(returnedShow);
-  res.json(returnedShow);
+  const seriesShow = await dbModel.findById({ _id: req.params.id }).lean();
+  seriesShow.master_time_id = master_time_id__byShowType(seriesShow);
+  res.json(seriesShow);
 }
 
 module.exports = remove;

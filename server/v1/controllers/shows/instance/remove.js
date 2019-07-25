@@ -12,20 +12,35 @@ async function remove(req, res) {
     return;
   }
 
-  //Can turn this into the create + delete endpoint from series show
-  //Set masterShow and any instance shows by the master_event_id to status: 'deleted'
-  const show = await dbModel.updateOne(
-    { _id: req.params.id },
-    {
-      status: 'deleted',
-    },
-  );
+  //Create show with status 'deleted' and then return it to the front end.
+  const { start_time_utc, end_time_utc } = req.body;
+  const { id } = req.params;
 
-  const instance = await dbModel.findById({ _id: req.params.id });
-  let returnedShow = { ...instance.toObject() };
-  returnedShow.master_time_id = master_time_id__byShowType(returnedShow);
-  console.log(returnedShow);
-  res.json(returnedShow);
+  const seriesData = await dbModel.findOne({ _id: id }).lean();
+
+  if (seriesData._id) {
+    const newInstance = {
+      master_event_id: seriesData._id,
+      status: 'deleted',
+      start_time_utc: start_time_utc,
+      end_time_utc: end_time_utc,
+      repeat_rule: {
+        repeat_start_date: start_time_utc,
+        repeat_end_date: end_time_utc,
+      },
+      replace_event_date: start_time_utc,
+      is_recurring: false,
+      created_at: Date.now(),
+      updated_at: Date.now(),
+    };
+
+    const show = await dbModel.create(newInstance);
+    let returnedShow = show.toObject();
+    returnedShow.master_time_id = master_time_id__byShowType(returnedShow);
+    res.json(returnedShow);
+  } else {
+    res.json('The series show does not exist');
+  }
 }
 
 module.exports = remove;

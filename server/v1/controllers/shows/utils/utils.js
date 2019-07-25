@@ -29,7 +29,7 @@ function showList(shows, startDate, endDate) {
   const allSeriesShows = reduceShowsByRepeatProperty(shows, true);
 
   const allSeriesShowsExpanded = allSeriesShows.map(show => {
-    return allShowInstancesInDateRange(show, startDate, endDate); //TODO: ask Josh if there's better naming for this
+    return allShowInstancesInDateRange(show, startDate, endDate);
   });
 
   //Filter all shows that are instances

@@ -70,18 +70,14 @@ export default class DashboardHomePage extends Component {
           <CardBody>
             <div className="past-shows">
               <h2>My Past Shows</h2>
-              {!loadingOnAirData ? (
-                <ShowListForUser
-                  maxItems="10"
-                  doNotIncludeNowPlaying={true}
-                  sortNewestToOldest={true}
-                  startDate={oneYearAgo}
-                  endDate={today}
-                  noItemsText="You haven't hosted any shows in the past year."
-                />
-              ) : (
-                <Loading displayMode="static" />
-              )}
+              <ShowListForUser
+                maxItems="10"
+                doNotIncludeNowPlaying={true}
+                sortNewestToOldest={true}
+                startDate={oneYearAgo}
+                endDate={today}
+                noItemsText="You haven't hosted any shows in the past year."
+              />
             </div>
           </CardBody>
         </Card>

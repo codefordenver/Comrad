@@ -29,7 +29,7 @@ async function remove(req, res) {
     returnedShow.master_time_id = master_time_id__byShowType(returnedShow);
     res.json(returnedShow);
   } else {
-    res.json('The series show does not exist');
+    res.status(404).send('The series show does not exist');
   }
 }
 

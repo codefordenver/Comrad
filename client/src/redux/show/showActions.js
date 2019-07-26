@@ -87,7 +87,7 @@ export const deleteShowInstance = (show_id, data) => async dispatch => {
 
 export const deleteShowSeries = show => async dispatch => {
   try {
-    const response = await axios.delete(`/v1/shows/series/${show}`);
+    const response = await axios.delete(`/v1/events/shows/series/${show}`);
     dispatch({ type: SHOW_DELETE_SERIES, payload: response.data });
   } catch (e) {
     dispatch({ type: SHOW_ERROR, payload: e });

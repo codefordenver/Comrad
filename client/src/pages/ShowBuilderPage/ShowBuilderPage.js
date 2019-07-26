@@ -6,6 +6,7 @@ import queryString from 'query-string';
 
 import Card, { CardBody } from '../../components/Card';
 import DropdownHost from '../../components/DropdownHost';
+import FormShowBuilderComment from '../../components/forms/FormShowBuilderComment';
 import Loading from '../../components/Loading';
 import ShowBuilderItemList from '../../components/ShowBuilderItemList';
 
@@ -181,7 +182,7 @@ class ShowBuilderPage extends Component {
                 )}
                 {activeTab === 'comment' && (
                   <div className="library-tab-container__tab-content">
-                    Comment content
+                    <FormShowBuilderComment />
                   </div>
                 )}
               </div>

@@ -1,6 +1,7 @@
 $show_start_z: 200;
 
-.new-show-form {
+.new-show-form,
+.edit-show-form {
   &__grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -67,6 +68,7 @@ $show_start_z: 200;
   margin-bottom: 1rem;
 }
 
+.event__tooltip__edit,
 .event__tooltip__delete {
   color: $color-primary;
   &:hover {

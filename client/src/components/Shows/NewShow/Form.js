@@ -9,7 +9,7 @@ import { DatePicker__React } from '../../DatePicker';
 import DropdownHost from '../../DropdownHost';
 import Input from '../../Input';
 import ModalClose from '../../Modal/Modal__Button_Close';
-import RepeatDropdown from './RepeatDropdown';
+import RepeatDropdown from '../CommonShowForms/RepeatDropdown';
 import TextArea from '../../TextArea';
 
 import { getShowSelected, getSearchDate } from '../../../redux/show';
@@ -134,7 +134,6 @@ class NewShowForm extends Component {
 const selector = formValueSelector('newShow');
 
 function mapStateToProps(state) {
-  //console.log(state);
   const initialValues = state => {
     const selectedShow = getShowSelected(state.show);
     const searchDates = getSearchDate(state.show);

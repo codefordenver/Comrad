@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { bindActionCreators } from 'redux';
 import moment from 'moment';
 import queryString from 'query-string';
 
 import Card, { CardBody } from '../../components/Card';
 import DropdownHost from '../../components/DropdownHost';
+import Loading from '../../components/Loading';
+import ShowBuilderItemList from '../../components/ShowBuilderItemList';
 
+import { playlistActions } from '../../redux';
 import { clearShows, getShowsData, searchShow } from '../../redux/show';
+import { trafficActions } from '../../redux';
 
 class ShowBuilderPage extends Component {
   state = {
@@ -15,8 +19,19 @@ class ShowBuilderPage extends Component {
   };
 
   componentDidMount() {
-    const { location, searchShow } = this.props;
+    const {
+      location,
+      searchShow,
+      playlistActions,
+      trafficActions,
+    } = this.props;
     const { startTime, endTime } = queryString.parse(location.search);
+
+    //find the playlist
+    playlistActions.findOne(startTime, endTime);
+
+    //find traffic events during the show
+    trafficActions.find(startTime, endTime);
 
     // format the show day/time
 
@@ -43,13 +58,14 @@ class ShowBuilderPage extends Component {
   }
 
   render() {
-    const { shows } = this.props;
+    const { playlist, shows, showFetching, traffic } = this.props;
     const {
       activeTab,
       formattedDay,
       formattedEndTime,
       formattedStartTime,
     } = this.state;
+    let { scratchpad, saved_items } = playlist.doc;
 
     let showName = '';
     if (shows && Object.keys(shows).length > 0) {
@@ -58,7 +74,37 @@ class ShowBuilderPage extends Component {
           'More than one show returned for show builder, using the first one',
         );
       }
-      showName = shows['0'].show_details.title;
+      showName = shows[Object.keys(shows)[0]].show_details.title;
+    }
+
+    if (
+      !traffic.loading &&
+      !playlist.loading &&
+      typeof scratchpad !== 'undefined' &&
+      typeof saved_items !== 'undefined'
+    ) {
+      //modify the scratchpad list based on what traffic occurs at the time period
+      //we will add any traffic itemsnot accounted for to scratchpad
+      let trafficItemsForScratchpad = [...traffic.docs];
+      saved_items.forEach(si => {
+        if (si.type === 'traffic') {
+          let matchingIndex = trafficItemsForScratchpad.findIndex(
+            a => a.master_time_id === si.traffic.master_time_id,
+          );
+          trafficItemsForScratchpad.splice(matchingIndex, 1);
+        }
+      });
+      trafficItemsForScratchpad.reverse();
+      trafficItemsForScratchpad.forEach(t => {
+        scratchpad.unshift({
+          type: 'traffic',
+          traffic: t,
+        });
+      });
+    }
+
+    if (typeof saved_items !== 'undefined') {
+      saved_items.reverse(); //display saved items in reverse chronological order
     }
 
     return (
@@ -75,46 +121,65 @@ class ShowBuilderPage extends Component {
                 <br />
                 {formattedStartTime} - {formattedEndTime}
                 <br />
-                <a href="#">Edit Show Description</a>
+                <div className="edit-show-description">
+                  Edit Show Description
+                </div>
               </div>
             </div>
 
             <div className="show-builder__grid">
-              <div>Scratchpad</div>
-              <div>Saved Items</div>
+              {(playlist.loading || showFetching || traffic.loading) && (
+                <Loading />
+              )}
+              <div>
+                <h5>Scratchpad</h5>
+                {!playlist.loading &&
+                  !traffic.loading &&
+                  typeof scratchpad !== 'undefined' && (
+                    <ShowBuilderItemList items={scratchpad} />
+                  )}
+              </div>
+              <div>
+                <h5>Saved Items</h5>
+                {!playlist.loading &&
+                  !traffic.loading &&
+                  typeof saved_items !== 'undefined' && (
+                    <ShowBuilderItemList items={saved_items} />
+                  )}
+              </div>
 
               <div className="library-tab-container">
                 <div className="library-tab-container__tabs">
-                  <a
-                    className={activeTab == 'search' ? 'active' : ''}
+                  <div
+                    className={activeTab === 'search' ? 'active' : ''}
                     onClick={() => this.setState({ activeTab: 'search' })}
                   >
                     Search
-                  </a>
-                  <a
-                    className={activeTab == 'voice' ? 'active' : ''}
+                  </div>
+                  <div
+                    className={activeTab === 'voice' ? 'active' : ''}
                     onClick={() => this.setState({ activeTab: 'voice' })}
                   >
                     Voice
-                  </a>
-                  <a
-                    className={activeTab == 'comment' ? 'active' : ''}
+                  </div>
+                  <div
+                    className={activeTab === 'comment' ? 'active' : ''}
                     onClick={() => this.setState({ activeTab: 'comment' })}
                   >
                     Comment
-                  </a>
+                  </div>
                 </div>
-                {activeTab == 'search' && (
+                {activeTab === 'search' && (
                   <div className="library-tab-container__tab-content">
                     Search content
                   </div>
                 )}
-                {activeTab == 'voice' && (
+                {activeTab === 'voice' && (
                   <div className="library-tab-container__tab-content">
                     Voice content
                   </div>
                 )}
-                {activeTab == 'comment' && (
+                {activeTab === 'comment' && (
                   <div className="library-tab-container__tab-content">
                     Comment content
                   </div>
@@ -128,16 +193,25 @@ class ShowBuilderPage extends Component {
   }
 }
 
-function mapStateToProps({ show }) {
+function mapStateToProps({ show, playlist, traffic }) {
   return {
+    playlist,
+    showFetching: show.fetching,
     shows: getShowsData(show),
+    traffic,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    playlistActions: bindActionCreators({ ...playlistActions }, dispatch),
+    clearShows: bindActionCreators(clearShows, dispatch),
+    searchShow: bindActionCreators(searchShow, dispatch),
+    trafficActions: bindActionCreators({ ...trafficActions }, dispatch),
   };
 }
 
 export default connect(
   mapStateToProps,
-  {
-    clearShows,
-    searchShow,
-  },
+  mapDispatchToProps,
 )(ShowBuilderPage);

@@ -18,7 +18,7 @@
       &:nth-child(3) {
         text-align: right;
         
-        a {
+        .edit-show-description {
           font-size: 1rem;
         }
       }
@@ -40,7 +40,7 @@
       display: flex;
       border-bottom: 1px solid $color-grey-3;
       
-      > a {
+      > div {
         padding: 0;
         background: $color-grey-1;
         border: 1px solid $color-grey-3;

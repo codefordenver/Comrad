@@ -73,9 +73,7 @@ export function showReducer(state = initialState, { type, payload }) {
 
     case SHOW_DELETE:
       //* Deleting Of Regular Shows Only.
-      //* Instance shows appear as regular shows if the series is deleted without the instance.
       let deleteShow = { ...state.data };
-      console.log(payload.master_time_id);
       delete deleteShow[payload.master_time_id];
 
       return {
@@ -87,9 +85,7 @@ export function showReducer(state = initialState, { type, payload }) {
 
     case SHOW_DELETE_SERIES:
       //* Deleting of Series Shows
-      // TODO: Cleanup master ID on instances in Mongo when deleting series
       const masterEventToDelete = payload._id;
-
       const deleteShowSeries = _.reduce(
         state.data,
         function(result, show, key) {

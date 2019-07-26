@@ -1,16 +1,22 @@
-const db = require('../../models');
-
 const {
-  utils: { showList },
+  utils: { getModelForEventType, showList },
   utils__mongoose: { formatShow, populateShowHost },
-} = require('./utils');
+} = require('../utils');
 
 function create(req, res) {
   const { body } = req;
   const { startDate, endDate } = body;
-  db.Show.create(formatShow(body, res))
+  const { eventType } = req.params;
+  const dbModel = getModelForEventType(eventType);
+  if (!dbModel) {
+    res.send(404);
+    return;
+  }
+  dbModel
+    .create(formatShow(body, res))
     .then(dbShow => {
-      db.Show.populate(dbShow, populateShowHost())
+      dbModel
+        .populate(dbShow, populateShowHost())
         .then(dbShow => {
           res.json(showList(dbShow, startDate, endDate));
         })

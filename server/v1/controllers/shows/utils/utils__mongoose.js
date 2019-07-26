@@ -48,7 +48,7 @@ function findShowQueryByDateRange(start, end) {
             },
             {
               end_time_utc: {
-                $gte: start,
+                $gt: start, //use $gt so we do not get events that start at the exact endDate time
               },
             },
           ],

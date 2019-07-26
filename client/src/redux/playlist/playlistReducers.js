@@ -1,19 +1,19 @@
-import { trafficTypes } from './trafficTypes';
+import { playlistTypes } from './playlistTypes';
 
 const initialState = {
-  docs: [],
+  doc: {},
   loading: false,
 };
 
-export const trafficReducer = (state = initialState, { type, payload }) => {
+export const playlistReducer = (state = initialState, { type, payload }) => {
   switch (type) {
-    case trafficTypes.FIND:
+    case playlistTypes.FIND_ONE:
       return {
         ...state,
-        docs: payload,
+        doc: payload,
         loading: false,
       };
-    case trafficTypes.LOAD:
+    case playlistTypes.LOADING:
       return {
         ...state,
         loading: true,

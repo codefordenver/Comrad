@@ -43,7 +43,7 @@
   &__grid {
     display: grid;
     grid-template-columns: calc(50% - 2rem) calc(50% - 2rem);
-    grid-template-gap: 2rem;
+    grid-gap: 2rem;
     
     > div {
       min-height: 20rem;

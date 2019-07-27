@@ -35,7 +35,7 @@ export default class ShowBuilderItemList extends Component {
           elements.push(<div key={idx}>Comment</div>);
           break;
         case 'voice_break':
-          elements.push(<div key={idx}>Comment</div>);
+          elements.push(<div key={idx}>Voice Break</div>);
           break;
         default:
           console.warn(

@@ -1,7 +1,7 @@
 const db = require('../../models');
 const { populatePlaylist } = require('./utils');
 
-async function findOne(req, res) {
+async function findOrCreateOne(req, res) {
   if (
     typeof req.query.startTime === 'undefined' ||
     typeof req.query.endTime === 'undefined'
@@ -11,13 +11,15 @@ async function findOne(req, res) {
       .json('You must provide the startTime and endTime parameters');
   }
 
-  const dbPlaylist = await db.Playlist.findOne({
+  let documentProps = {
     start_time_utc: req.query.startTime,
     end_time_utc: req.query.endTime,
-  });
+  };
+
+  let dbPlaylist = await db.Playlist.findOne(documentProps);
 
   if (!dbPlaylist) {
-    res.status(422).json('Playlist does not exist');
+    dbPlaylist = await db.Playlist.create(documentProps);
   }
 
   let objPlaylist = await populatePlaylist(dbPlaylist);
@@ -25,4 +27,4 @@ async function findOne(req, res) {
   res.status(200).json(objPlaylist);
 }
 
-module.exports = findOne;
+module.exports = findOrCreateOne;

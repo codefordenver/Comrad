@@ -31,6 +31,12 @@ export default class ShowBuilderItemList extends Component {
             </div>,
           );
           break;
+        case 'comment':
+          elements.push(<div key={idx}>Comment</div>);
+          break;
+        case 'voice_break':
+          elements.push(<div key={idx}>Comment</div>);
+          break;
         default:
           console.warn(
             'ShowBuilderItemList does not know how to display type ' +

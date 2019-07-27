@@ -29,7 +29,7 @@ class ShowBuilderPage extends Component {
     const { startTime, endTime } = queryString.parse(location.search);
 
     //find the playlist
-    playlistActions.findOne(startTime, endTime);
+    playlistActions.findOrCreateOne(startTime, endTime);
 
     //find traffic events during the show
     trafficActions.find(startTime, endTime);
@@ -78,12 +78,16 @@ class ShowBuilderPage extends Component {
       showName = shows[Object.keys(shows)[0]].show_details.title;
     }
 
+    let scratchpadForDisplay = [];
+    let savedItemsForDisplay = [];
+
     if (
       !traffic.loading &&
       !playlist.loading &&
       typeof scratchpad !== 'undefined' &&
       typeof saved_items !== 'undefined'
     ) {
+      scratchpadForDisplay = [...scratchpad];
       //modify the scratchpad list based on what traffic occurs at the time period
       //we will add any traffic itemsnot accounted for to scratchpad
       let trafficItemsForScratchpad = [...traffic.docs];
@@ -97,7 +101,7 @@ class ShowBuilderPage extends Component {
       });
       trafficItemsForScratchpad.reverse();
       trafficItemsForScratchpad.forEach(t => {
-        scratchpad.unshift({
+        scratchpadForDisplay.unshift({
           type: 'traffic',
           traffic: t,
         });
@@ -105,11 +109,15 @@ class ShowBuilderPage extends Component {
     }
 
     if (typeof saved_items !== 'undefined') {
-      saved_items.reverse(); //display saved items in reverse chronological order
+      savedItemsForDisplay = [...saved_items];
+      savedItemsForDisplay.reverse(); //display saved items in reverse chronological order
     }
 
     return (
-      <Card>
+      <Card className="card--show-builder">
+        {playlist.saving && (
+          <div className="card--show-builder__saving-overlay" />
+        )}
         <CardBody>
           <div className="show-builder">
             <div className="show-builder__top-row">
@@ -137,7 +145,7 @@ class ShowBuilderPage extends Component {
                 {!playlist.loading &&
                   !traffic.loading &&
                   typeof scratchpad !== 'undefined' && (
-                    <ShowBuilderItemList items={scratchpad} />
+                    <ShowBuilderItemList items={scratchpadForDisplay} />
                   )}
               </div>
               <div>
@@ -145,7 +153,7 @@ class ShowBuilderPage extends Component {
                 {!playlist.loading &&
                   !traffic.loading &&
                   typeof saved_items !== 'undefined' && (
-                    <ShowBuilderItemList items={saved_items} />
+                    <ShowBuilderItemList items={savedItemsForDisplay} />
                   )}
               </div>
 

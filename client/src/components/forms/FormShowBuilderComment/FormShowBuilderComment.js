@@ -1,31 +1,31 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Field, reduxForm, submit } from 'redux-form';
 import { bindActionCreators } from 'redux';
+import { Field, reduxForm } from 'redux-form';
 import { requiredValidate } from '../../../utils/validation';
-import { albumActions } from '../../../redux';
+import { playlistActions } from '../../../redux';
 
 import Button from '../../Button';
 import RichTextArea from '../../RichTextArea';
 
 class FormShowBuilderComment extends Component {
   handleReduxFormSubmit = values => {
-    console.log('submit');
-    console.log(values);
+    const { playlist, playlistActions, reset } = this.props;
+    if (values.submitAction === 'saved_items') {
+      playlistActions.addCommentToSavedItems(playlist.doc._id, values.comment);
+      reset();
+    } else if (values.submitAction === 'scratchpad') {
+      playlistActions.addCommentToScratchpad(playlist.doc._id, values.comment);
+      reset();
+    }
   };
 
   handleAddToSavedItems = () => {
-    const { dispatch, submit } = this.props;
     this.props.change('submitAction', 'saved_items');
-    //dispatch(submitAction('showBuilderComment'))};
-    submit();
   };
 
   handleAddToScratchpad = () => {
-    const { dispatch, submit } = this.props;
     this.props.change('submitAction', 'scratchpad');
-    //dispatch(submitAction('showBuilderComment'))};
-    submit();
   };
 
   render() {
@@ -45,10 +45,10 @@ class FormShowBuilderComment extends Component {
           validate={requiredValidate}
         />
         <div>
-          <Button type="button" onClick={this.handleAddToScratchpad}>
+          <Button type="submit" onClick={this.handleAddToScratchpad}>
             Add to Scratchpad
           </Button>
-          <Button type="button" onClick={this.handleAddToSavedItems}>
+          <Button type="submit" onClick={this.handleAddToSavedItems}>
             Add to Saved Items
           </Button>
         </div>
@@ -57,8 +57,21 @@ class FormShowBuilderComment extends Component {
   }
 }
 
+function mapStateToProps({ playlist }) {
+  return { playlist };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    playlistActions: bindActionCreators({ ...playlistActions }, dispatch),
+  };
+}
+
 const ReduxFormShowBuilderComment = reduxForm({
   form: 'showBuilderComment',
 })(FormShowBuilderComment);
 
-export default connect()(ReduxFormShowBuilderComment);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(ReduxFormShowBuilderComment);

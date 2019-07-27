@@ -22,7 +22,7 @@ class TrackAddPage extends Component {
   addTrackCallback = trackData => {
     const { albumActions, alertActions, history } = this.props;
     albumActions.clear();
-    history.push(`/library/album/${trackData.album}`);
+    history.push(`/library/album/${trackData.album._id}`);
     alertActions.show(
       'success',
       'Success',

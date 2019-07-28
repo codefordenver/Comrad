@@ -3,7 +3,7 @@ import {
   SHOW_CLEAR,
   SHOW_GET,
   SHOW_POST,
-  SHOW_UPDATE_HOST,
+  SHOW_UPDATE,
   SHOW_DELETE,
   SHOW_SEARCH,
   SHOW_ERROR,
@@ -53,10 +53,15 @@ export const createInstanceShow = (show_id, data) => async dispatch => {
   }
 };
 
-export const updateShow = (show_id, data) => async dispatch => {
+export const updateShow = (
+  show_id,
+  data,
+  callback = null,
+) => async dispatch => {
   try {
     const response = await axios.patch(`/v1/shows/${show_id}`, data);
-    dispatch({ type: SHOW_UPDATE_HOST, payload: response.data });
+    dispatch({ type: SHOW_UPDATE, payload: response.data });
+    callback();
   } catch (e) {
     dispatch({ type: SHOW_ERROR, payload: 'Updating Show Error' });
   }

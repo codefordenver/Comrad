@@ -1,3 +1,18 @@
+.card--show-builder {
+  position: relative;
+  
+  &__saving-overlay {
+    z-index: 1;
+    position: absolute;
+    background: rgba(200,200,200,0.6);
+    cursor: wait;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+}
+
 .show-builder {
   font-size: 1.5rem;
   
@@ -18,7 +33,7 @@
       &:nth-child(3) {
         text-align: right;
         
-        a {
+        .edit-show-description {
           font-size: 1rem;
         }
       }
@@ -40,7 +55,7 @@
       display: flex;
       border-bottom: 1px solid $color-grey-3;
       
-      > a {
+      > div {
         padding: 0;
         background: $color-grey-1;
         border: 1px solid $color-grey-3;

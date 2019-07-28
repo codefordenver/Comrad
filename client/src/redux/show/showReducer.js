@@ -133,7 +133,7 @@ export function showReducer(state = initialState, { type, payload }) {
     //Need some type of error response from server.
     case SHOW_ERROR:
       console.error('Error with shows');
-      console.error(payload);
+      console.log(payload);
       return {
         ...state,
         fetching: false,

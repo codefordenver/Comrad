@@ -1,7 +1,5 @@
-const db = require('../../../models');
-
 const {
-  utils: { showList },
+  utils: { getModelForEventType, showList },
   utils__mongoose: {
     findShowQueryByDateRange,
     populateShowHost,
@@ -11,6 +9,14 @@ const {
 
 function find(req, res) {
   let { endDate, host, showsWithNoHost, startDate } = req.query;
+  const { eventType } = req.params;
+
+  const dbModel = getModelForEventType(eventType);
+  if (!dbModel) {
+    res.send(404);
+    return;
+  }
+
   startDate = startDate ? JSON.parse(startDate) : null;
   endDate = endDate ? JSON.parse(endDate) : null;
 
@@ -27,7 +33,7 @@ function find(req, res) {
     //we will filter this list down farther after the show list has been generated
     //from the series and instances
     promiseChain.push(
-      db.Show.find(
+      dbModel.find(
         { 'show_details.host': host },
         { _id: 1, master_event_id: 1 },
       ),
@@ -64,7 +70,8 @@ function find(req, res) {
         };
       }
 
-      return db.Show.find(filter)
+      return dbModel
+        .find(filter)
         .populate(populateShowHost())
         .populate(populateMasterShow())
         .then(dbShow => {
@@ -91,9 +98,15 @@ function find(req, res) {
 
           res.json(showResults);
         })
-        .catch(err => res.status(422).json(err));
+        .catch(err => {
+          console.error(err);
+          return res.status(422).json(err);
+        });
     })
-    .catch(err => res.status(422).json(err));
+    .catch(err => {
+      console.error(err);
+      return res.status(422).json(err);
+    });
 }
 
 module.exports = find;

@@ -8,6 +8,17 @@ const {
   master_time_id__byShowType,
 } = require('./utils__mongoose');
 
+function getModelForEventType(eventType) {
+  switch (eventType) {
+    case 'shows':
+      return db.Show;
+    case 'traffic':
+      return db.Traffic;
+    default:
+      return null;
+  }
+}
+
 function showList(shows, startDate, endDate) {
   //Perform this check as the create route is an object, and the find route is an array.
   //This makes sure everything is an iterable array before going into the reducers.
@@ -18,13 +29,7 @@ function showList(shows, startDate, endDate) {
   const allSeriesShows = reduceShowsByRepeatProperty(shows, true);
 
   const allSeriesShowsExpanded = allSeriesShows.map(show => {
-    const allShowDates = returnDatesArrayByRepeatRule(show, startDate, endDate);
-    const allSeriesShowsExpandedByDates = returnSeriesShowsArrayWithNewDates(
-      allShowDates,
-      show,
-    );
-
-    return allSeriesShowsExpandedByDates;
+    return allShowInstancesInDateRange(show, startDate, endDate);
   });
 
   //Filter all shows that are instances
@@ -62,6 +67,16 @@ function showList(shows, startDate, endDate) {
   });
 
   return showsToReturnArray;
+}
+
+function allShowInstancesInDateRange(show, startDate, endDate) {
+  const allShowDates = returnDatesArrayByRepeatRule(show, startDate, endDate);
+  const allSeriesShowsExpandedByDates = returnSeriesShowsArrayWithNewDates(
+    allShowDates,
+    show,
+  );
+
+  return allSeriesShowsExpandedByDates;
 }
 
 function createRRule(show) {
@@ -267,5 +282,7 @@ function returnInstanceShowsArray(shows) {
 }
 
 module.exports = {
+  allShowInstancesInDateRange,
+  getModelForEventType,
   showList,
 };

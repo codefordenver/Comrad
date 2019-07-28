@@ -42,16 +42,6 @@ class ShowDetailsTop extends Component {
           showTimeInput
         />
 
-        <Field
-          className="z-index--200"
-          component={DatePicker__React}
-          label="Start"
-          name="repeat_start_date"
-          validate={[requiredValidate]}
-          disabled
-          controlledDate={date}
-        />
-
         {allowRepeatSelect && (
           <Field
             component={Input}

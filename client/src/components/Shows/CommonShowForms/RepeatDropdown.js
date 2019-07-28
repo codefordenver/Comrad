@@ -82,13 +82,13 @@ class RepeatDropdown extends Component {
     return (
       <>
         <Field
-          className="z-index--150"
+          className="z-index--200"
           component={DatePicker__React}
-          label="End"
-          name="repeat_end_date"
-          placeholderText="Never"
-          isClearable={true}
-          allowNullDate
+          label="Start"
+          name="repeat_start_date"
+          validate={[requiredValidate]}
+          disabled
+          controlledDate={date}
         />
 
         <div className="form-group">
@@ -106,6 +106,16 @@ class RepeatDropdown extends Component {
             {`Repeat Type`}
           </InputLabel>
         </div>
+
+        <Field
+          className="z-index--150"
+          component={DatePicker__React}
+          label="End"
+          name="repeat_end_date"
+          placeholderText="Never"
+          isClearable={true}
+          allowNullDate
+        />
       </>
     );
   }

@@ -16,18 +16,6 @@ class ShowModal extends Component {
     setModalVisibility(null, false, null);
   };
 
-  //https://stackoverflow.com/questions/5484673/javascript-how-to-dynamically-create-nested-objects-using-object-names-given-by
-  // assign = (obj, keyPath, value) => {
-  //   let lastKeyIndex = keyPath.length - 1;
-  //   for (var i = 0; i < lastKeyIndex; ++i) {
-  //     let key = keyPath[i];
-  //     if (!(key in obj)) {
-  //       obj[key] = {};
-  //     }
-  //     obj = obj[key];
-  //   }
-  //   obj[keyPath[lastKeyIndex]] = value;
-  // };
   assign = (obj, keyPath, value) => {
     const mongoosePath = keyPath.join('.');
     obj[mongoosePath] = value;
@@ -40,7 +28,7 @@ class ShowModal extends Component {
       initial,
       initial: { _id },
     } = values;
-    console.log(initial._id);
+
     let finalObject = {};
     let updated = values;
     delete updated.initial;

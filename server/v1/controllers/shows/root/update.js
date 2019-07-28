@@ -15,7 +15,7 @@ function update(req, res) {
     body: { startDate, endDate },
   } = req;
   const { id } = req.params;
-  console.log(body);
+
   startDate = startDate ? startDate : null;
   endDate = endDate ? endDate : null;
 

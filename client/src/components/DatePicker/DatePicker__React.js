@@ -34,12 +34,17 @@ class DatePicker__React extends Component {
     const { handleDateChange, props, state } = this;
     const {
       className,
-      input: { name },
+      input: { name, value },
       label,
       meta,
+      controlledDate,
       ...rest
     } = props;
-    const { date } = state;
+    let { date } = state;
+
+    if (controlledDate && moment(controlledDate).isValid()) {
+      date = new Date(controlledDate);
+    }
 
     return (
       <div className={classnames('form-group', className)}>

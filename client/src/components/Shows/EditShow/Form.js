@@ -1,121 +1,40 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Field, reduxForm, formValueSelector, isDirty } from 'redux-form';
-import moment from 'moment';
+import { reduxForm, formValueSelector } from 'redux-form';
 
 import Button from '../../Button';
 import Card, { CardBody } from '../../Card';
-import { DatePicker__React } from '../../DatePicker';
-import DropdownHost from '../../DropdownHost';
-import Input from '../../Input';
 import ModalClose from '../../Modal/Modal__Button_Close';
 import RepeatDropdown from '../CommonShowForms/RepeatDropdown';
-import TextArea from '../../TextArea';
+import ShowDetailsTop from '../CommonShowForms/ShowDetailsTop';
+import ShowDetailsBottom from '../CommonShowForms/ShowDetailsBottom';
 
 import { getShowSelected, getSearchDate } from '../../../redux/show';
-import { requiredValidate } from '../../../utils/validation';
 
+const FORM_NAME = 'EDIT_SHOW';
+const ALLOW_REPEAT_SELECT = false;
 class EditShowForm extends Component {
   render() {
     const { props } = this;
-    const { isRepeat, handleSubmit } = props;
+    const { isRepeat, handleSubmit, date } = props;
+    const host = props.initialValues.initial.show_details.host;
 
     return (
       <Card>
         <CardBody>
           <form className="edit-show-form" onSubmit={handleSubmit}>
             <div className="edit-show-form__grid">
-              <Field
-                className="grid-span--2"
-                component={Input}
-                label="Title"
-                name="show_details.title"
-                type="text"
-                validate={[requiredValidate]}
+              <ShowDetailsTop
+                formSelectorName={FORM_NAME}
+                date={date}
+                allowRepeatSelect={ALLOW_REPEAT_SELECT}
               />
 
-              <Field
-                className="z-index--250"
-                component={DatePicker__React}
-                label="From"
-                name="start_time_utc"
-                type="time"
-                validate={[requiredValidate]}
-                dateFormat="MM/dd/yyyy h:mm aa"
-                showTimeInput
-              />
-
-              <Field
-                className="z-index--250"
-                component={DatePicker__React}
-                label="To"
-                name="end_time_utc"
-                validate={[requiredValidate]}
-                dateFormat="MM/dd/yyyy h:mm aa"
-                showTimeInput
-              />
-
-              <Field
-                className="z-index--200"
-                component={DatePicker__React}
-                label="Start"
-                name="repeat_start_date"
-                validate={[requiredValidate]}
-              />
-
-              <Field
-                component={Input}
-                dirtyOverride
-                label="Repeat"
-                name="is_recurring"
-                type="checkbox"
-              />
-
-              {isRepeat && (
-                <>
-                  <Field
-                    className="z-index--150"
-                    component={DatePicker__React}
-                    label="End"
-                    name="repeat_end_date"
-                    placeholderText="Never"
-                    isClearable={true}
-                    allowNullDate
-                  />
-
-                  <RepeatDropdown />
-                </>
+              {isRepeat && ALLOW_REPEAT_SELECT && (
+                <RepeatDropdown formSelectorName={FORM_NAME} date={date} />
               )}
 
-              <Field
-                className="grid-span--2"
-                component={TextArea}
-                label="Summary"
-                name="show_details.summary"
-                type="text"
-              />
-
-              <Field
-                className="grid-span--2"
-                component={TextArea}
-                label="Description"
-                name="show_details.description"
-                type="text"
-              />
-
-              <Field
-                label="Producer"
-                name="show_details.producer"
-                component={Input}
-                type="text"
-              />
-
-              <Field
-                label="Host"
-                name="show_details.host"
-                component={DropdownHost}
-                host={props.initialValues.initial.show_details.host}
-              />
+              <ShowDetailsBottom host={host} />
             </div>
 
             <div className="edit-show-form__buttons">
@@ -132,7 +51,7 @@ class EditShowForm extends Component {
   }
 }
 
-const selector = formValueSelector('editShow');
+const selector = formValueSelector(FORM_NAME);
 
 function mapStateToProps(state) {
   const initialValues = state => {
@@ -150,15 +69,17 @@ function mapStateToProps(state) {
   };
 
   const isRepeat = selector(state, 'is_recurring');
+  const date = selector(state, 'start_time_utc');
 
   return {
     initialValues: initialValues(state),
     isRepeat,
+    date,
   };
 }
 
 EditShowForm = reduxForm({
-  form: 'editShow',
+  form: FORM_NAME,
 })(EditShowForm);
 
 export default connect(

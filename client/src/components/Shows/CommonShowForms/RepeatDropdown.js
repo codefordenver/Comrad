@@ -4,6 +4,7 @@ import { Field, formValueSelector } from 'redux-form';
 import _ from 'lodash';
 import moment from 'moment';
 import RRule from 'rrule';
+import { DatePicker__React } from '../../DatePicker';
 import { InputLabel } from '../../Input';
 import { requiredValidate } from '../../../utils/validation';
 
@@ -76,37 +77,41 @@ class RepeatDropdown extends Component {
       );
     });
 
-    //Componentize the select component
+    // TODO Componentize the select component
     //https://stackoverflow.com/questions/40075281/how-to-create-custom-dropdown-field-component-with-redux-form-v6
     return (
-      <div className="form-group">
+      <>
         <Field
-          name="repeat_rule"
-          component="select"
-          className="input"
-          validate={[requiredValidate]}
-        >
-          <option />
-          {repeatDropdownList}
-        </Field>
+          className="z-index--150"
+          component={DatePicker__React}
+          label="End"
+          name="repeat_end_date"
+          placeholderText="Never"
+          isClearable={true}
+          allowNullDate
+        />
 
-        <InputLabel {...meta} dirtyOverride={true}>
-          {`Repeat Type`}
-        </InputLabel>
-      </div>
+        <div className="form-group">
+          <Field
+            name="repeat_rule"
+            component="select"
+            className="input"
+            validate={[requiredValidate]}
+          >
+            <option />
+            {repeatDropdownList}
+          </Field>
+
+          <InputLabel {...meta} dirtyOverride={true}>
+            {`Repeat Type`}
+          </InputLabel>
+        </div>
+      </>
     );
   }
 }
 
-const selector = formValueSelector('newShow');
-function mapStateToProps(state) {
-  const date = selector(state, 'repeat_start_date');
-  return {
-    date: date,
-  };
-}
-
 export default connect(
-  mapStateToProps,
-  {},
+  null,
+  null,
 )(RepeatDropdown);

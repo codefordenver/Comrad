@@ -61,8 +61,8 @@ class NewShowForm extends Component {
       return (
         <div className="series">
           <div
-            className="event__tooltip__edit"
-            onClick={() => this.showEditShowModal(data)}
+            className="not_done event__tooltip__edit"
+            //onClick={() => this.showEditShowModal(data)}
           >
             Edit Show Instance
           </div>
@@ -114,7 +114,12 @@ class NewShowForm extends Component {
     regular: data => {
       return (
         <div className="regular">
-          <div className="not_done event__tooltip__delete">Edit Show</div>
+          <div
+            className="event__tooltip__edit"
+            onClick={() => this.showEditShowModal(data)}
+          >
+            Edit Show
+          </div>
           <div
             className="event__tooltip__delete"
             onClick={() => this.deleteRegularShow(data)}

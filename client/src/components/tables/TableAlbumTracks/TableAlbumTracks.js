@@ -21,15 +21,10 @@ const CellDuration = ({ value }) =>
 class TableAlbumTracks extends Component {
   state = {
     deleteModal: false,
-    deleteSuccessModal: false,
   };
 
   closeDeleteModal = () => {
     this.setState({ deleteModal: false });
-  };
-
-  closeDeleteSuccessModal = () => {
-    this.setState({ deleteSuccessModal: false });
   };
 
   deleteTrack = id => {
@@ -44,13 +39,11 @@ class TableAlbumTracks extends Component {
   deleteSuccess = entity => {
     this.closeDeleteModal();
     this.props.alertActions.hide();
-    this.setState(
-      {
-        deleteSuccessModal: entity.data,
-      },
-      function() {
-        this.props.handleTrackRefresh();
-      },
+    this.props.handleTrackRefresh();
+    this.props.alertActions.show(
+      'success',
+      'Success',
+      `${entity.data.name} was successfully deleted`,
     );
   };
 
@@ -86,7 +79,7 @@ class TableAlbumTracks extends Component {
 
   render() {
     const { handleRowClick, props, state } = this;
-    const { deleteModal, deleteSuccessModal } = state;
+    const { deleteModal } = state;
     const { albumState } = props;
     const { tracks } = albumState.doc;
 
@@ -171,20 +164,6 @@ class TableAlbumTracks extends Component {
                   onClick={() => this.deleteTrack(deleteModal._original._id)}
                 >
                   Yes
-                </Button>
-              </div>
-            </div>
-          </Modal>
-        ) : null}
-
-        {/* Delete confirmation modal */}
-        {deleteSuccessModal ? (
-          <Modal isOpen={true}>
-            <div className="library-search__delete-success-modal">
-              <i>{deleteSuccessModal.name}</i> was successfully deleted.
-              <div>
-                <Button color="neutral" onClick={this.closeDeleteSuccessModal}>
-                  Close
                 </Button>
               </div>
             </div>

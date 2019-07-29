@@ -17,6 +17,7 @@ async function addCommentToSavedItems(req, res) {
         saved_items: {
           type: 'comment',
           description: req.body.description,
+          executed_time_utc: Date.now(),
         },
       },
     },

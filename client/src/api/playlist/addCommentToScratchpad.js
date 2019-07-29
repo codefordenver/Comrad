@@ -2,7 +2,7 @@ import axios from 'axios';
 import { ROOT_PLAYLISTS_URL } from '../root';
 
 export function addCommentToScratchpad(playlistId, description) {
-  return axios.post(`${ROOT_PLAYLISTS_URL}/${playlistId}/scratchpad/comment`, {
+  return axios.put(`${ROOT_PLAYLISTS_URL}/${playlistId}/scratchpad/comment`, {
     description,
   });
 }

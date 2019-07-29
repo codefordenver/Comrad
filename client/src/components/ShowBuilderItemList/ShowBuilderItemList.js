@@ -1,9 +1,17 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 
+import ShowBuilderItem from './ShowBuilderItem';
+
 export default class ShowBuilderItemList extends Component {
   render() {
     const { items } = this.props;
+
+    const buttonProps = {
+      deleteButton: this.props.deleteButton,
+      toSavedItemsButton: this.props.toSavedItemsButton,
+      toScratchpadButton: this.props.toScratchpadButton,
+    };
 
     let elements = [];
     items.forEach(function(item, idx) {
@@ -15,9 +23,9 @@ export default class ShowBuilderItemList extends Component {
           });
           artists = artists.join(',');
           elements.push(
-            <div key={idx}>
+            <ShowBuilderItem key={idx} itemId={item._id} {...buttonProps}>
               <b>Track:</b> <i>{trackName}</i> by <i>{artists}</i>
-            </div>,
+            </ShowBuilderItem>,
           );
           break;
         case 'traffic':
@@ -25,17 +33,31 @@ export default class ShowBuilderItemList extends Component {
           let trafficTime = moment(traffic.start_time_utc);
           let formattedTime = trafficTime.format('LT');
           elements.push(
-            <div key={idx}>
+            <ShowBuilderItem
+              key={idx}
+              itemId={item._id}
+              masterTimeId={item.traffic.master_time_id}
+              {...buttonProps}
+              deleteButton={false}
+            >
               {formattedTime} - <b>{traffic.traffic_details.type}:</b>{' '}
               {traffic.traffic_details.title}
-            </div>,
+            </ShowBuilderItem>,
           );
           break;
         case 'comment':
-          elements.push(<div key={idx}>Comment</div>);
+          elements.push(
+            <ShowBuilderItem key={idx} itemId={item._id} {...buttonProps}>
+              Comment
+            </ShowBuilderItem>,
+          );
           break;
         case 'voice_break':
-          elements.push(<div key={idx}>Voice Break</div>);
+          elements.push(
+            <ShowBuilderItem key={idx} itemId={item._id} {...buttonProps}>
+              Voice Break
+            </ShowBuilderItem>,
+          );
           break;
         default:
           console.warn(

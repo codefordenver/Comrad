@@ -21,11 +21,6 @@ const playlistSchema = new Schema({
         enum: ['track', 'comment', 'voice_break'],
       },
 
-      executed_time_utc: {
-        // the time the value was moved to Saved Items
-        type: Date,
-      },
-
       //items on the scratchpad do not have an associated time,
       //but on the front-end they can be positioned relative to
       //traffic events, which do have an associated time.
@@ -63,18 +58,8 @@ const playlistSchema = new Schema({
         enum: ['track', 'comment', 'voice_break', 'traffic'],
       },
 
-      //items on the scratchpad do not have an associated time,
-      //but on the front-end they can be positioned relative to
-      //traffic events, which do have an associated time.
-      //so, here we capture the range where a traffic event should
-      //appear. These fields are optional, and if they are not set,
-      //the traffic events will appear relative to the other events in the array,
-      //and will appear after all traffic events if nothing in the scratchpad
-      //has associated times
-      occurs_after_time_utc: {
-        type: Date,
-      },
-      occurs_before_time_utc: {
+      executed_time_utc: {
+        // the time the value was moved to Saved Items
         type: Date,
       },
 
@@ -95,6 +80,9 @@ const playlistSchema = new Schema({
       traffic: {
         type: Schema.Types.ObjectId,
         ref: 'Traffic',
+      },
+      master_time_id: {
+        type: String,
       },
     },
   ],

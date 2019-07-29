@@ -94,7 +94,7 @@ class ShowBuilderPage extends Component {
       saved_items.forEach(si => {
         if (si.type === 'traffic') {
           let matchingIndex = trafficItemsForScratchpad.findIndex(
-            a => a.master_time_id === si.traffic.master_time_id,
+            a => a.master_time_id === si.master_time_id,
           );
           trafficItemsForScratchpad.splice(matchingIndex, 1);
         }
@@ -145,7 +145,11 @@ class ShowBuilderPage extends Component {
                 {!playlist.loading &&
                   !traffic.loading &&
                   typeof scratchpad !== 'undefined' && (
-                    <ShowBuilderItemList items={scratchpadForDisplay} />
+                    <ShowBuilderItemList
+                      items={scratchpadForDisplay}
+                      deleteButton={true}
+                      toSavedItemsButton={true}
+                    />
                   )}
               </div>
               <div>
@@ -153,7 +157,10 @@ class ShowBuilderPage extends Component {
                 {!playlist.loading &&
                   !traffic.loading &&
                   typeof saved_items !== 'undefined' && (
-                    <ShowBuilderItemList items={savedItemsForDisplay} />
+                    <ShowBuilderItemList
+                      items={savedItemsForDisplay}
+                      toScratchpadButton={true}
+                    />
                   )}
               </div>
 

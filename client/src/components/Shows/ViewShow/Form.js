@@ -5,6 +5,7 @@ import { setModalVisibility } from '../../../redux/modal';
 import {
   deleteShow,
   deleteShowSeries,
+  deleteShowInstance,
   createInstanceShow,
   updateShow,
 } from '../../../redux/show';
@@ -38,8 +39,8 @@ class NewShowForm extends Component {
   };
 
   deleteInstanceShow = show => {
-    const { deleteShow, setModalVisibility } = this.props;
-    deleteShow(show._id);
+    const { deleteShowInstance, setModalVisibility } = this.props;
+    deleteShowInstance(show.master_event_id, show);
     setModalVisibility(null, false, null);
   };
 
@@ -63,7 +64,12 @@ class NewShowForm extends Component {
           <div className="not_done event__tooltip__delete">
             Edit Show Series
           </div>
-          <div className="not_done event__tooltip__delete">Delete Instance</div>
+          <div
+            className="event__tooltip__delete"
+            onClick={() => this.deleteInstanceShow(data)}
+          >
+            Delete Instance
+          </div>
           <div
             className="event__tooltip__delete"
             onClick={() => this.deleteSeriesShow(data)}
@@ -84,12 +90,16 @@ class NewShowForm extends Component {
           </div>
           <div
             className="event__tooltip__delete"
-            size="small"
-            onClick={() => this.deleteInstanceShow(data)}
+            onClick={() => this.deleteRegularShow(data)}
           >
             Delete Instance
           </div>
-          <div className="not_done event__tooltip__delete">Delete Series</div>
+          <div
+            className="event__tooltip__delete"
+            onClick={() => this.deleteSeriesShow(data)}
+          >
+            Delete Series
+          </div>
         </div>
       );
     },
@@ -183,9 +193,10 @@ export default connect(
   mapStateToProps,
   {
     deleteShow,
-    deleteShowSeries,
-    createInstanceShow,
     updateShow,
     setModalVisibility,
+    deleteShowSeries,
+    deleteShowInstance,
+    createInstanceShow,
   },
 )(NewShowForm);

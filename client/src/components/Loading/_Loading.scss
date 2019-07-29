@@ -1,13 +1,16 @@
-.loading {
-
+.loading--absolute {
   position: absolute;
   top: 50%;  
   left: 50%; 
-
   transform: translate(-50%, -50%);
+}
 
-  &__gif {
-    height: 10rem;
-    width: 10rem;
-  }
+.loading--static {
+  position: static;
+  text-align: center;
+}
+
+.loading__gif {
+  height: 10rem;
+  width: 10rem;
 }

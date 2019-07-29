@@ -4,10 +4,12 @@ const announcementsController = require('./announcements');
 const artistsController = require('./artists');
 const authController = require('./auth');
 const libraryController = require('./library');
+const playlistsController = require('./playlists');
 const resourcesController = require('./resources');
-const showsController = require('./shows');
+const showRootController = require('./shows/root');
+const showInstanceController = require('./shows/instance');
+const showSeriesController = require('./shows/series');
 const tracksController = require('./tracks');
-const trafficController = require('./traffic');
 const usersController = require('./users');
 
 module.exports = {
@@ -17,9 +19,11 @@ module.exports = {
   artistsController,
   authController,
   libraryController,
+  playlistsController,
   resourcesController,
-  showsController,
+  showRootController,
+  showInstanceController,
+  showSeriesController,
   tracksController,
-  trafficController,
   usersController,
 };

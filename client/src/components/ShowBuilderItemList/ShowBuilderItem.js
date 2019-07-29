@@ -12,7 +12,15 @@ class ShowBuilderItem extends Component {
   };
 
   handleToSavedItems = () => {
-    console.log('called handleToSavedItems');
+    const { itemId, playlist, playlistActions, masterTimeId } = this.props;
+    if (typeof masterTimeId !== 'undefined') {
+      playlistActions.addTrafficToSavedItems(playlist.doc._id, masterTimeId);
+    } else {
+      playlistActions.moveItemFromScratchpadToSavedItems(
+        playlist.doc._id,
+        itemId,
+      );
+    }
   };
 
   handleToScratchpad = () => {

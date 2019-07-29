@@ -36,6 +36,7 @@ export default class ShowBuilderItemList extends Component {
             <ShowBuilderItem
               key={idx}
               itemId={item._id}
+              masterTimeId={item.traffic.master_time_id}
               {...buttonProps}
               deleteButton={false}
             >

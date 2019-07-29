@@ -6,14 +6,20 @@ router.route('/').put(playlistsController.findOrCreateOne);
 
 router
   .route('/:playlistId/saved-items/comment')
-  .post(playlistsController.addCommentToSavedItems);
+  .put(playlistsController.addCommentToSavedItems);
+router
+  .route('/:playlistId/saved-items/traffic')
+  .put(playlistsController.addTrafficToSavedItems);
 router
   .route('/:playlistId/saved-items/:itemId')
   .delete(playlistsController.moveItemFromSavedItemsToScratchpad);
 
 router
+  .route('/:playlistId/scratchpad')
+  .put(playlistsController.moveItemFromScratchpadToSavedItems);
+router
   .route('/:playlistId/scratchpad/comment')
-  .post(playlistsController.addCommentToScratchpad);
+  .put(playlistsController.addCommentToScratchpad);
 router
   .route('/:playlistId/scratchpad/:itemId')
   .delete(playlistsController.deleteItemFromScratchpad);

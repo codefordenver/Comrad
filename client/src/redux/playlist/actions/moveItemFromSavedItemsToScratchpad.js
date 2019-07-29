@@ -16,10 +16,18 @@ export const moveItemFromSavedItemsToScratchpad = (
 
     const { data } = doc;
 
-    dispatch({
-      type: playlistTypes.MOVE_ITEM_FROM_SAVED_ITEMS_TO_SCRATCHPAD,
-      payload: { playlistId, movedItem: data },
-    });
+    if (typeof data.length !== 'undefined' && data.length === 0) {
+      // a new document was not returned from the API, which indicates this was a traffic event that has been removed from saved items
+      dispatch({
+        type: playlistTypes.DELETE_ITEM_FROM_SAVED_ITEMS,
+        payload: { playlistId, deletedItem: itemId },
+      });
+    } else {
+      dispatch({
+        type: playlistTypes.MOVE_ITEM_FROM_SAVED_ITEMS_TO_SCRATCHPAD,
+        payload: { playlistId, movedItem: data },
+      });
+    }
   } catch (err) {
     console.log(
       'Playlist Move Item From Saved Items To Scratchpad Error: ',

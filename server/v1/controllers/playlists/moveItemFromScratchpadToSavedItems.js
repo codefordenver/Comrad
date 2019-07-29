@@ -1,9 +1,9 @@
 const db = require('../../models');
 
-async function moveItemFromSavedItemsToScratchpad(req, res) {
+async function moveItemFromScratchpadToSavedItems(req, res) {
   if (
     typeof req.params.playlistId === 'undefined' ||
-    typeof req.params.itemId === 'undefined'
+    typeof req.body.itemId === 'undefined'
   ) {
     return res.status(422).json('The required parameters were not provided');
   }
@@ -17,8 +17,8 @@ async function moveItemFromSavedItemsToScratchpad(req, res) {
       }
 
       // find the item
-      movedItem = dbPlaylist.saved_items.filter(
-        i => String(i._id) === String(req.params.itemId),
+      movedItem = dbPlaylist.scratchpad.filter(
+        i => String(i._id) === String(req.body.itemId),
       );
 
       if (movedItem.length === 0) {
@@ -27,10 +27,14 @@ async function moveItemFromSavedItemsToScratchpad(req, res) {
 
       movedItem = movedItem[0];
 
-      //clear out data before inserting this record into scratchpad
-      if (typeof movedItem.executed_time_utc !== 'undefined') {
-        delete movedItem.executed_time_utc;
+      //clear out data before inserting this record into saved_items
+      if (typeof movedItem.occurs_after_time_utc !== 'undefined') {
+        delete movedItem.occurs_after_time_utc;
       }
+      if (typeof movedItem.occurs_before_time_utc !== 'undefined') {
+        delete movedItem.occurs_before_time_utc;
+      }
+      movedItem.executed_time_utc = Date.now();
 
       return db.Playlist.update(
         {
@@ -38,35 +42,32 @@ async function moveItemFromSavedItemsToScratchpad(req, res) {
         },
         {
           $pull: {
-            saved_items: {
-              _id: req.params.itemId,
+            scratchpad: {
+              _id: req.body.itemId,
             },
           },
         },
       );
     })
     .then(dbResult => {
-      //we won't add traffic onto the scratchpad
-      if (movedItem.type === 'traffic') {
-        return res.json([]);
-      }
-
       return db.Playlist.findOneAndUpdate(
         {
           _id: req.params.playlistId,
         },
         {
           $push: {
-            scratchpad: movedItem,
+            saved_items: movedItem,
           },
         },
         { new: true },
       );
     })
     .then(dbPlaylist => {
-      return res.json(dbPlaylist.scratchpad[dbPlaylist.scratchpad.length - 1]); //return the scratchpad item that was moved
+      return res.json(
+        dbPlaylist.saved_items[dbPlaylist.saved_items.length - 1],
+      ); //return the item that was moved
     })
     .catch(err => res.status(422).json({ errorMessage: err }));
 }
 
-module.exports = moveItemFromSavedItemsToScratchpad;
+module.exports = moveItemFromScratchpadToSavedItems;

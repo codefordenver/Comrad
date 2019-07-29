@@ -11,7 +11,6 @@ const shows = require('./shows');
 const tracks = require('./tracks');
 const traffic = require('./traffic');
 const users = require('./users');
-const venues = require('./venues');
 
 router.use('/access-control', accessControl);
 router.use('/albums', albums);
@@ -24,6 +23,5 @@ router.use('/shows', shows);
 router.use('/tracks', tracks);
 router.use('/traffic', traffic);
 router.use('/users', users);
-router.use('/venues', venues);
 
 module.exports = router;

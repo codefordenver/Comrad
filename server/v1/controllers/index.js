@@ -9,7 +9,6 @@ const showsController = require('./shows');
 const tracksController = require('./tracks');
 const trafficController = require('./traffic');
 const usersController = require('./users');
-const venuesController = require('./venues');
 
 module.exports = {
   accessControlController,
@@ -23,5 +22,4 @@ module.exports = {
   tracksController,
   trafficController,
   usersController,
-  venuesController,
 };

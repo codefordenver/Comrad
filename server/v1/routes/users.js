@@ -1,26 +1,32 @@
 const router = require('express').Router();
 const { usersController } = require('../controllers');
-const { requireAC, requireAdmin, requireLogin } = require('../middlewares');
+const { requireAC } = require('../middlewares');
 
 router
   .route('/')
-  .get(requireAC('Users', 'readOwn'), usersController.findAll)
-  .post(requireAC('Users', 'createOwn'), usersController.create);
+  .get(requireAC('Users', 'readAny'), usersController.findAll)
+  .post(requireAC('Users', 'createAny'), usersController.create);
 
 router
   .route('/random')
-  .post(requireAC('Users', 'createOwn'), usersController.randomUser);
+  .post(requireAC('Users', 'createAny'), usersController.randomUser);
+
 router
   .route('/search')
-  .get(requireAC('Users', 'readOwn'), usersController.search);
-router.route('/search-hosts').get(usersController.searchHosts);
+  .get(requireAC('Users', 'readAny'), usersController.search);
+
+router
+  .route('/search-hosts')
+  .get(requireAC('Users', 'readAny'), usersController.searchHosts);
 
 router
   .route('/:id')
-  .get(usersController.findById)
-  .put(usersController.update)
-  .delete(requireLogin, requireAdmin, usersController.remove);
+  .get(requireAC('Users', 'readAny'), usersController.findById)
+  .put(requireAC('Users', 'updateAny'), usersController.update)
+  .delete(requireAC('Users', 'deleteAny'), usersController.remove);
 
-router.route('/:id/permission').put(usersController.updatePermission);
+router
+  .route('/:id/permission')
+  .put(requireAC('Users', 'updateAny'), usersController.updatePermission);
 
 module.exports = router;

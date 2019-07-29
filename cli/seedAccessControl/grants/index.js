@@ -4,6 +4,7 @@ const Announcements = require('./Announcements');
 const Artists = require('./Artists');
 const Auth = require('./Auth');
 const Genres = require('./Genres');
+const Library = require('./Library');
 const Playlists = require('./Playlists');
 const Resources = require('./Resources');
 const Shows = require('./Shows');
@@ -18,6 +19,7 @@ module.exports = {
   Artists,
   Auth,
   Genres,
+  Library,
   Playlists,
   Resources,
   Shows,

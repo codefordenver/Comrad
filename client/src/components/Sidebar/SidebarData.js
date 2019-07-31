@@ -14,7 +14,7 @@ export const SidebarData = [
   {
     name: 'calendar-check',
     url: '/calendar',
-    iconClass: 'fas fa-calendar-check',
+    iconClass: 'fas fa-car',
     tooltipText: 'Traffic Calendar',
   },
   {

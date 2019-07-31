@@ -1,5 +1,5 @@
+const db = require('../../models');
 const keys = require('../../config/keys');
-const { findInLibrary } = require('./utils');
 
 async function search(req, res) {
   let { s, type = 'all' } = req.query;
@@ -8,30 +8,31 @@ async function search(req, res) {
     return res.json([]);
   }
 
-  const allResults = await findInLibrary(s, type);
-  const allAlbums = allResults.filter(function(ar) {
-    return ar.type === 'album';
-  });
-  const allArtists = allResults.filter(function(ar) {
-    return ar.type === 'artist';
-  });
-  const allTracks = allResults.filter(function(ar) {
-    return ar.type === 'track';
-  });
-  let resultsToReturn = allResults;
-  switch (type) {
-    case 'artist':
-      resultsToReturn = allArtists;
-      break;
-    case 'album':
-      resultsToReturn = allAlbums;
-      break;
-    case 'track':
-      resultsToReturn = allTracks;
-      break;
-    default:
+  let filterObj = { $text: { $search: s } };
+
+  if (type !== 'all') {
+    filterObj.type = type;
   }
-  const results = resultsToReturn.map(result => {
+
+  const libraryResults = await db.Library.find(
+    filterObj,
+    {
+      name: 1,
+      artists: 1,
+      artist: 1,
+      album: 1,
+      popularity: 1,
+      type: 1,
+      updated_at: 1,
+      score: { $meta: 'textScore' },
+    },
+    {
+      sort: { score: { $meta: 'textScore' } },
+      limit: keys.queryPageSize,
+    },
+  ).populate(['artist', 'artists', 'album']);
+
+  const results = libraryResults.map(result => {
     // in these relevance calculations, popularity of the entity has a slight effect,
     // but, how much the name matches the search query has a much larger effect
     // for artists, the artist's name only is considered
@@ -53,8 +54,8 @@ async function search(req, res) {
       case 'album':
         //find artist's text match score
         let artistTextMatchScore = 0;
-        let artist = allArtists.filter(function(r) {
-          return String(r._id) === String(result.artist);
+        let artist = libraryResults.filter(function(r) {
+          return String(r._id) === String(result.artist) && r.type === 'artist';
         });
         if (artist.length > 0) {
           artistTextMatchScore += artist[0]._doc.score;
@@ -69,15 +70,18 @@ async function search(req, res) {
         };
       case 'track':
         let albumTextMatchScore = 0;
-        let album = allAlbums.filter(function(r) {
-          return String(r._id) === String(result.album);
+        let album = libraryResults.filter(function(r) {
+          return String(r._id) === String(result.album) && r.type === 'album';
         });
         if (album.length > 0) {
           albumTextMatchScore += album[0]._doc.score;
         }
         let artistsTextMatchScore = 0;
-        let artists = allResults.filter(function(r) {
-          return result.artists.indexOf(r._id) !== -1;
+        let artists = libraryResults.filter(function(r) {
+          if (typeof result.artists === 'undefined') {
+            return false;
+          }
+          return result.artists.indexOf(r._id) !== -1 && r.type === 'artist';
         });
         artists.forEach(function(a) {
           artistsTextMatchScore += a._doc.score;
@@ -98,7 +102,7 @@ async function search(req, res) {
     }
   });
 
-  const data = [...results].sort((a, b) => {
+  const data = [...libraryResults].sort((a, b) => {
     if (a.relevance > b.relevance) {
       return -1;
     }
@@ -121,7 +125,7 @@ async function search(req, res) {
   });
 
   return res.json({
-    results: data.slice(0, keys.queryPageSize),
+    results: data,
     totalPages: 1,
   });
 }

@@ -78,6 +78,7 @@ async function seedDB() {
             insertOne: {
               document: {
                 name: artist,
+                type: 'artist',
               },
             },
           });
@@ -89,7 +90,7 @@ async function seedDB() {
           );
         }
       });
-      await db.Artist.bulkWrite(bulkOperations);
+      await db.Library.bulkWrite(bulkOperations);
       scriptProgress.artists = 1;
       updateProgressFile(scriptProgress);
     }
@@ -100,9 +101,13 @@ async function seedDB() {
       scriptProgress.tracks < seed.tracks.length
     ) {
       console.log('getting created artist ids...');
-      let allArtistsQuery = await db.Artist.find({}, '_id name', {
-        sort: 'name',
-      });
+      let allArtistsQuery = await db.Library.find(
+        { type: 'artist' },
+        '_id name',
+        {
+          sort: 'name',
+        },
+      );
       allArtistsQuery.forEach(function(a) {
         allArtists[a.name.toLowerCase()] = a._id;
       });
@@ -128,6 +133,7 @@ async function seedDB() {
         let albumsToCreate = seed.albums.splice(0, batchSize);
         for (let index = 0; index < albumsToCreate.length; index++) {
           let album = albumsToCreate[index];
+          album.type = 'album';
           if (album.artist != null) {
             album.artist = allArtists[album.artist.toLowerCase()];
           }
@@ -150,7 +156,7 @@ async function seedDB() {
           });
         }
         console.log('bulk writing ' + bulkOperations.length + ' albums...');
-        await db.Album.bulkWrite(bulkOperations);
+        await db.Library.bulkWrite(bulkOperations);
         scriptProgress.albums += albumsToCreate.length;
         updateProgressFile(scriptProgress);
       }
@@ -161,8 +167,8 @@ async function seedDB() {
     let allAlbumArtists = {};
     if (scriptProgress.tracks < seed.tracks.length) {
       console.log('getting created album ids...');
-      let allAlbumsQuery = await db.Album.find(
-        {},
+      let allAlbumsQuery = await db.Library.find(
+        { type: 'album' },
         '_id artist custom.old_comrad_id',
       );
       allAlbumsQuery.forEach(function(a) {
@@ -184,13 +190,17 @@ async function seedDB() {
         let tracksToCreate = seed.tracks.splice(0, 5000);
         for (let index = 0; index < tracksToCreate.length; index++) {
           let track = tracksToCreate[index];
+          track.type = 'track';
           if (track.artist === null || track.artist.length === 0) {
             // use the artist from the album
             track.artists = [allAlbumArtists[track.album]];
           } else {
             if (!(track.artist.toLowerCase() in allArtists)) {
               console.log('Creating missing artist: ' + track.artist);
-              let newArtist = await db.Artist.create({ name: track.artist });
+              let newArtist = await db.Artist.create({
+                name: track.artist,
+                type: 'artist',
+              });
               allArtists[track.artist.toLowerCase()] = newArtist._id;
             }
             track.artists = [allArtists[track.artist.toLowerCase()]];
@@ -210,7 +220,7 @@ async function seedDB() {
           });
         }
         console.log('writing ' + bulkOperations.length + ' tracks...');
-        await db.Track.bulkWrite(bulkOperations);
+        await db.Library.bulkWrite(bulkOperations);
         scriptProgress.tracks += tracksToCreate.length;
         updateProgressFile(scriptProgress);
       }
@@ -474,7 +484,7 @@ async function seedDB() {
           },
         });
       });
-      await db.Album.bulkWrite(bulkOperations);
+      await db.Library.bulkWrite(bulkOperations);
 
       console.log('calculating plays for each artist based on their tracks...');
       let artistPopularity = {};
@@ -508,7 +518,7 @@ async function seedDB() {
           },
         });
       });
-      await db.Artist.bulkWrite(bulkOperations);
+      await db.Library.bulkWrite(bulkOperations);
 
       //get the number of playlist plays for each track
       console.log('calculating plays for each track...');
@@ -551,7 +561,7 @@ async function seedDB() {
           },
         });
       });
-      await db.Track.bulkWrite(bulkOperations);
+      await db.Library.bulkWrite(bulkOperations);
 
       scriptProgress.popularityCalculation = 1;
       updateProgressFile(scriptProgress);
@@ -673,8 +683,8 @@ async function findRelatedTracksAndTraffic(playlist, listToSearch) {
   //that we can reference later
 
   // find tracks
-  let foundTracks = await db.Track.find(
-    { 'custom.old_comrad_id': { $in: trackIdsToFind } },
+  let foundTracks = await db.Library.find(
+    { 'custom.old_comrad_id': { $in: trackIdsToFind }, type: 'track' },
     'custom.old_comrad_id _id',
   );
   foundTracks.forEach(function(t) {

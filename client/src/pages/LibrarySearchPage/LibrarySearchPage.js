@@ -226,15 +226,17 @@ class LibrarySearchPage extends Component {
           switch (data.row.type) {
             case 'track':
               let artistNames = [];
-              data.original.artists.forEach(function(a) {
-                if (
-                  a != null &&
-                  typeof a.name != 'undefined' &&
-                  a.name.length > 0
-                ) {
-                  artistNames.push(a.name);
-                }
-              });
+              if (typeof data.original.artists !== 'undefined') {
+                data.original.artists.forEach(function(a) {
+                  if (
+                    a != null &&
+                    typeof a.name != 'undefined' &&
+                    a.name.length > 0
+                  ) {
+                    artistNames.push(a.name);
+                  }
+                });
+              }
               let elements = [];
               elements.push(data.value);
               if (artistNames.length > 0) {

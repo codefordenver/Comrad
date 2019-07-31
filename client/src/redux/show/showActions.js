@@ -3,7 +3,7 @@ import {
   SHOW_CLEAR,
   SHOW_GET,
   SHOW_POST,
-  SHOW_UPDATE_HOST,
+  SHOW_UPDATE,
   SHOW_DELETE,
   SHOW_SEARCH,
   SHOW_ERROR,
@@ -26,7 +26,7 @@ export const getShow = show => async dispatch => {
 
     dispatch({ type: SHOW_GET, payload: response.data });
   } catch (e) {
-    dispatch({ type: SHOW_ERROR, payload: 'Get Show Error' });
+    dispatch({ type: SHOW_ERROR, payload: e });
   }
 };
 
@@ -49,16 +49,23 @@ export const createInstanceShow = (show_id, data) => async dispatch => {
     const response = await axios.put(`/v1/events/shows/${show_id}`, data);
     dispatch({ type: SHOW_CREATE_INSTANCE, payload: response.data });
   } catch (e) {
-    dispatch({ type: SHOW_ERROR, payload: 'Updating Show Error' });
+    dispatch({ type: SHOW_ERROR, payload: e });
   }
 };
 
-export const updateShow = (show_id, data) => async dispatch => {
+export const updateShow = (
+  show_id,
+  data,
+  callback = null,
+) => async dispatch => {
   try {
     const response = await axios.patch(`/v1/events/shows/${show_id}`, data);
-    dispatch({ type: SHOW_UPDATE_HOST, payload: response.data });
+    dispatch({ type: SHOW_UPDATE, payload: response.data });
+    if (callback) {
+      callback();
+    }
   } catch (e) {
-    dispatch({ type: SHOW_ERROR, payload: 'Updating Show Error' });
+    dispatch({ type: SHOW_ERROR, payload: e });
   }
 };
 

@@ -1,15 +1,17 @@
 const {
-  utils: { getModelForEventType },
-  utils__mongoose: {
-    populateShowHost,
-    populateMasterShow,
-    master_time_id__byShowType,
-  },
+  utils: { showList, getModelForEventType },
+  utils__mongoose: { populateShowHost, populateMasterShow },
 } = require('../utils');
 
 function update(req, res) {
   const { body } = req;
+  let {
+    body: { startDate, endDate },
+  } = req;
   const { eventType, id } = req.params;
+
+  startDate = startDate ? startDate : null;
+  endDate = endDate ? endDate : null;
 
   const dbModel = getModelForEventType(eventType);
   if (!dbModel) {
@@ -23,8 +25,7 @@ function update(req, res) {
     .populate(populateShowHost())
     .populate(populateMasterShow())
     .then(dbShow => {
-      dbShow._doc.master_time_id = master_time_id__byShowType(dbShow);
-      res.json(dbShow);
+      res.json(showList(dbShow, startDate, endDate));
     })
     .catch(err => {
       res.status(422).json(err);

@@ -104,7 +104,7 @@ class ShowListForUser extends Component {
 
     return (
       <div className="show-list-for-user">
-        {loading && <Loading />}
+        {loading && <Loading displayMode="static" />}
         {data.length > 0 ? (
           <table>
             {renderHeader()}

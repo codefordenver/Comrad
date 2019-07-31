@@ -73,9 +73,7 @@ export function showReducer(state = initialState, { type, payload }) {
 
     case SHOW_DELETE:
       //* Deleting Of Regular Shows Only.
-      //* Instance shows appear as regular shows if the series is deleted without the instance.
       let deleteShow = { ...state.data };
-      console.log(payload.master_time_id);
       delete deleteShow[payload.master_time_id];
 
       return {
@@ -87,9 +85,7 @@ export function showReducer(state = initialState, { type, payload }) {
 
     case SHOW_DELETE_SERIES:
       //* Deleting of Series Shows
-      // TODO: Cleanup master ID on instances in Mongo when deleting series
       const masterEventToDelete = payload._id;
-
       const deleteShowSeries = _.reduce(
         state.data,
         function(result, show, key) {
@@ -109,25 +105,9 @@ export function showReducer(state = initialState, { type, payload }) {
       };
 
     case SHOW_UPDATE:
-      // const { existingShow, updatedShow } = payload;
-      // const { start, end } = updatedShow;
-
-      // const updatedShows = state.map(stateShow => {
-      //   return stateShow.id === existingShow.id
-      //     ? { ...stateShow, start, end }
-      //     : stateShow;
-      // });
-
       return {
         ...state,
-        fetching: false,
-        error: false,
-      };
-
-    case SHOW_UPDATE_HOST:
-      return {
-        ...state,
-        data: { ...state.data, [payload.master_time_id]: payload },
+        data: { ...state.data, ..._.keyBy(payload, 'master_time_id') },
         fetching: false,
         error: false,
       };
@@ -152,6 +132,8 @@ export function showReducer(state = initialState, { type, payload }) {
 
     //Need some type of error response from server.
     case SHOW_ERROR:
+      console.error('Error with shows');
+      console.log(payload);
       return {
         ...state,
         fetching: false,

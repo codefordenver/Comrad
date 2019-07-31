@@ -1,0 +1,37 @@
+.table-album-tracks {
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-row-gap: 1rem;
+
+  &__grid {
+    &__secondary-text {
+      color: $color-grey-3;
+    }
+
+    &__edit-options {
+      overflow: visible !important;
+      padding-right: 1.5rem !important;
+
+      .dropdown__list {
+        min-width: 6rem;
+      }
+      .dropdown__icon {
+        color: $color-grey-3;
+      }
+    }
+  }
+
+  &__delete-modal,
+  &__delete-success-modal {
+    width: 48rem;
+    font-size: 2rem;
+
+    div {
+      margin-top: 2rem;
+    }
+
+    i {
+      font-style: italic;
+    }
+  }
+}

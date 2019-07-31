@@ -41,6 +41,11 @@ class CustomFieldsEdit extends Component {
             );
           }
           break;
+        default:
+          console.error(
+            'no handler for custom field type of ' + field.editFieldType,
+          );
+          break;
       }
     });
 

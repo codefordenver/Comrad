@@ -52,13 +52,10 @@ export default class DashboardHomePage extends Component {
 
     return (
       <div className="dhp">
-        {loadingOnAirData && <Loading />}
-
         <Card className="dhp__section-1">
           <CardBody>
             <div className="upcoming-shows">
               <h2>My Upcoming Shows</h2>
-
               <ShowListForUser
                 maxItems="3"
                 startDate={today}
@@ -73,7 +70,6 @@ export default class DashboardHomePage extends Component {
           <CardBody>
             <div className="past-shows">
               <h2>My Past Shows</h2>
-
               <ShowListForUser
                 maxItems="10"
                 doNotIncludeNowPlaying={true}
@@ -86,68 +82,83 @@ export default class DashboardHomePage extends Component {
           </CardBody>
         </Card>
 
-        {!loadingOnAirData && (
-          <>
-            <Card className="dhp__section-3">
-              <CardBody>
-                <div className="currently-on-air">
-                  <h2 className="text-center  mb-1">Currently On Air</h2>
-                  {currentlyOnAir ? (
-                    <>
-                      <h4 className="text-center">
-                        {currentlyOnAir.show_details.title}
-                      </h4>
+        <>
+          <Card className="dhp__section-3">
+            <CardBody>
+              <div className="currently-on-air">
+                <h2 className="text-center  mb-1">Currently On Air</h2>
+                {!loadingOnAirData ? (
+                  <>
+                    {currentlyOnAir ? (
+                      <>
+                        <h4 className="text-center">
+                          {currentlyOnAir.show_details.title}
+                        </h4>
 
-                      <div className="currently-on-air__host-name">
-                        {currentlyOnAir.show_details.host != null &&
-                          'hosted by ' +
-                            formatHostName(currentlyOnAir.show_details.host)}
-                      </div>
+                        <div className="currently-on-air__host-name">
+                          {currentlyOnAir.show_details.host != null &&
+                            'hosted by ' +
+                              formatHostName(currentlyOnAir.show_details.host)}
+                        </div>
 
-                      <div className="currently-on-air__show-time">
-                        {moment(currentlyOnAir.start_time_utc).format('LT')} -{' '}
-                        {moment(currentlyOnAir.end_time_utc).format('LT')}
-                      </div>
-                    </>
-                  ) : (
-                    <LargeText align="center">No Show On Air</LargeText>
-                  )}
-                </div>
-              </CardBody>
-            </Card>
+                        <div className="currently-on-air__show-time">
+                          {moment(currentlyOnAir.start_time_utc).format('LT')} -{' '}
+                          {moment(currentlyOnAir.end_time_utc).format('LT')}
+                        </div>
+                      </>
+                    ) : (
+                      <LargeText align="center">No Show On Air</LargeText>
+                    )}
+                  </>
+                ) : (
+                  <Loading displayMode="static" />
+                )}
+              </div>
+            </CardBody>
+          </Card>
 
-            <Card className="dhp__section-4">
-              <CardBody>
-                <div className="up-next">
-                  <h2 className="mb-1 text-center">Up Next</h2>
+          <Card className="dhp__section-4">
+            <CardBody>
+              <div className="up-next">
+                <h2 className="mb-1 text-center">Up Next</h2>
+                {!loadingOnAirData ? (
+                  <>
+                    {upNext && (
+                      <>
+                        <h4 className="text-center">
+                          {upNext.show_details.title}
+                        </h4>
+                        <div className="up-next__host-name">
+                          {upNext.show_details.host != null &&
+                            'hosted by ' +
+                              formatHostName(upNext.show_details.host)}
+                        </div>
+                        <div className="up-next__show-time">
+                          {moment(upNext.start_time_utc).format('LT')} -{' '}
+                          {moment(upNext.end_time_utc).format('LT')}
+                        </div>
+                      </>
+                    )}
+                  </>
+                ) : (
+                  <Loading displayMode="static" />
+                )}
+              </div>
+            </CardBody>
+          </Card>
 
-                  {upNext && (
-                    <>
-                      <h4 className="text-center">
-                        {upNext.show_details.title}
-                      </h4>
-                      <div className="up-next__host-name">
-                        {upNext.show_details.host != null &&
-                          'hosted by ' +
-                            formatHostName(upNext.show_details.host)}
-                      </div>
-                      <div className="up-next__show-time">
-                        {moment(upNext.start_time_utc).format('LT')} -{' '}
-                        {moment(upNext.end_time_utc).format('LT')}
-                      </div>
-                    </>
-                  )}
-                </div>
-              </CardBody>
-            </Card>
-
-            <Card className="dhp__section-5">
-              <CardBody>
-                <CalendarAgenda />
-              </CardBody>
-            </Card>
-          </>
-        )}
+          <Card className="dhp__section-5">
+            <CardBody>
+              <div>
+                {!loadingOnAirData ? (
+                  <CalendarAgenda />
+                ) : (
+                  <Loading displayMode="static" />
+                )}
+              </div>
+            </CardBody>
+          </Card>
+        </>
       </div>
     );
   }

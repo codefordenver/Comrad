@@ -1,4 +1,5 @@
 const create = require('./create');
+const createApiKey = require('./createApiKey');
 const findAll = require('./findAll');
 const findById = require('./findById');
 const randomUser = require('./randomUser');
@@ -10,6 +11,7 @@ const updatePermission = require('./updatePermission');
 
 module.exports = {
   create,
+  createApiKey,
   findAll,
   findById,
   randomUser,

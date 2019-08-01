@@ -26,6 +26,10 @@ router
   .delete(requireAC('Users', 'deleteAny'), usersController.remove);
 
 router
+  .route('/:id/api-key')
+  .post(requireAC('Users', 'createAny'), usersController.createApiKey);
+
+router
   .route('/:id/permission')
   .put(requireAC('Users', 'updateAny'), usersController.updatePermission);
 

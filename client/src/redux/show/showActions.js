@@ -77,6 +77,17 @@ export const deleteShowSeries = show => async dispatch => {
   }
 };
 
+export const clearShow = () => async dispatch => {
+  try {
+    dispatch({
+      type: SHOW_CLEAR,
+      payload: {},
+    });
+  } catch (e) {
+    dispatch({ type: SHOW_ERROR, payload: e });
+  }
+};
+
 export const searchShow = (
   startDate,
   endDate,

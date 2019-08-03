@@ -20,7 +20,7 @@ import {
   fetchingShowsStatus,
   postingShowsStatus,
   errorShowsMessage,
-  selectShow,
+  clearShow,
 } from '../../redux/show';
 
 class CalendarHomePage extends Component {
@@ -37,10 +37,9 @@ class CalendarHomePage extends Component {
   }
 
   showNewShowModal = show => {
-    const { setModalVisibility, selectShow } = this.props;
-
-    selectShow(show);
-    setModalVisibility(MODAL_NEW_SHOW, true, show);
+    const { setModalVisibility, clearShow } = this.props;
+    clearShow(show);
+    setModalVisibility(MODAL_NEW_SHOW, true);
   };
 
   dateChangeHandler = date => {
@@ -156,7 +155,7 @@ export default connect(
     fetchingShowsStatus,
     postingShowsStatus,
     errorShowsMessage,
-    selectShow,
+    clearShow,
     setModalVisibility,
   },
 )(CalendarHomePage);

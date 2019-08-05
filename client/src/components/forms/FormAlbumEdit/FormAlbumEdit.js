@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import { requiredValidate } from '../../../utils/validation';
-import { albumActions, configActions } from '../../../redux';
+import { albumActions, configActions, genreActions } from '../../../redux';
 import Button from '../../Button';
 import Input from '../../Input';
 import { bindActionCreators } from 'redux';
@@ -12,10 +12,14 @@ import Select from '../../Select';
 
 class FormAlbumEdit extends Component {
   componentDidMount() {
-    const { configActions, configState } = this.props;
+    const { configActions, configState, genreActions, genreState } = this.props;
 
     if (!('album' in configState.customFields)) {
       configActions.customFieldsForModel('album');
+    }
+
+    if (!genreState.docs.length) {
+      genreActions.findAll();
     }
   }
 
@@ -30,16 +34,15 @@ class FormAlbumEdit extends Component {
 
   render() {
     const { props, submit } = this;
-    const { handleSubmit, configState, initialValues } = props;
-    const { genres } = initialValues;
+    const { handleSubmit, configState, genreState } = props;
 
     let albumCustomFields = [];
     if ('album' in configState.customFields) {
       albumCustomFields = configState.customFields.album;
     }
     let genreList = [];
-    for (let i = 0; i < Object.values(genres).length; i++) {
-      genreList.push(Object.values(genres)[i]);
+    for (let i = 0; i < Object.values(genreState.docs).length; i++) {
+      genreList.push(Object.values(genreState.docs)[i]);
     }
 
     return (
@@ -77,16 +80,15 @@ class FormAlbumEdit extends Component {
 
 function mapStateToProps(state) {
   const { name, label, compilation, _id, custom } = state.album.doc;
-  const genres = state.genre.docs;
   return {
     configState: state.config,
+    genreState: state.genre,
     initialValues: {
       name: name,
       label: label,
       compilation: compilation,
       id: _id,
       custom: custom,
-      genres: genres,
     },
   };
 }
@@ -95,6 +97,7 @@ function mapDispatchToProps(dispatch) {
   return {
     albumActions: bindActionCreators({ ...albumActions }, dispatch),
     configActions: bindActionCreators({ ...configActions }, dispatch),
+    genreActions: bindActionCreators({ ...genreActions }, dispatch),
   };
 }
 

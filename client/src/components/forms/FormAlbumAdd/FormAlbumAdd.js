@@ -3,13 +3,22 @@ import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import { bindActionCreators } from 'redux';
 import { requiredValidate } from '../../../utils/validation';
-import { albumActions } from '../../../redux';
+import { albumActions, genreActions } from '../../../redux';
 
 import Button from '../../Button';
 import Checkbox from '../../Checkbox';
 import Input from '../../Input';
+import Select from '../../Select';
 
 class FormAlbumAdd extends Component {
+  componentDidMount() {
+    const { genreActions, genreState } = this.props;
+
+    if (!genreState.docs.length) {
+      genreActions.findAll();
+    }
+  }
+
   submit = values => {
     const { albumActions, submitCallback } = this.props;
     albumActions.add(values, albumData => {
@@ -21,7 +30,11 @@ class FormAlbumAdd extends Component {
 
   render() {
     const { props, submit } = this;
-    const { handleSubmit } = props;
+    const { handleSubmit, genreState } = props;
+    let genreList = [];
+    for (let i = 0; i < Object.values(genreState.docs).length; i++) {
+      genreList.push(Object.values(genreState.docs)[i]);
+    }
 
     return (
       <form className="form-album-add" onSubmit={handleSubmit(submit)}>
@@ -33,6 +46,12 @@ class FormAlbumAdd extends Component {
           validate={requiredValidate}
         />
         <Field component={Input} label="Label" name="label" />
+        <Field
+          component={Select}
+          label="Genre"
+          name="genre"
+          selectOptions={genreList}
+        />
         <Field component={Checkbox} label="Compilation" name="compilation" />
         <div>
           <Button type="submit">Submit</Button>
@@ -48,6 +67,7 @@ const ReduxFormAlbumAdd = reduxForm({
 
 function mapStateToProps(state) {
   return {
+    genreState: state.genre,
     initialValues: {
       artist: state.artist.doc._id,
     },
@@ -57,6 +77,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     albumActions: bindActionCreators({ ...albumActions }, dispatch),
+    genreActions: bindActionCreators({ ...genreActions }, dispatch),
   };
 }
 

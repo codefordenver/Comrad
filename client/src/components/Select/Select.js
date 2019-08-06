@@ -19,11 +19,11 @@ class Select extends Component {
       selectOptions,
       ...other
     } = props;
-    //const selectOptions = [1,2,3]
     const { error, touched, submitting } = meta;
+
+    // Check if selectOptions variable is object, used for genre list
     const isObj =
       Object.prototype.toString.call(selectOptions) === '[object Object]';
-    console.log(Object.keys(selectOptions));
 
     return (
       <div className={classnames('form-group', className)}>
@@ -36,8 +36,6 @@ class Select extends Component {
           <option value="" />
           {isObj
             ? Object.keys(selectOptions).map((option, index) => {
-                console.log('true');
-                console.log(selectOptions[option].name);
                 return (
                   <option key={index} value={selectOptions[option]._id}>
                     {selectOptions[option].name}
@@ -45,8 +43,6 @@ class Select extends Component {
                 );
               })
             : selectOptions.map((option, index) => {
-                console.log('false');
-                console.log(option);
                 return (
                   <option key={index} value={option}>
                     {option}

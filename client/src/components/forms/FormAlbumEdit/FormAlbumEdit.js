@@ -74,7 +74,7 @@ class FormAlbumEdit extends Component {
 }
 
 function mapStateToProps(state) {
-  const { name, label, compilation, _id, custom } = state.album.doc;
+  const { name, label, compilation, _id, custom, genre } = state.album.doc;
   return {
     configState: state.config,
     genreState: state.genre,
@@ -84,6 +84,7 @@ function mapStateToProps(state) {
       compilation: compilation,
       id: _id,
       custom: custom,
+      genre: genre._id,
     },
   };
 }

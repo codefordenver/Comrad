@@ -56,7 +56,6 @@ class AlbumViewPage extends Component {
       genre,
     } = albumState.doc;
     const { url } = this.props.match;
-    console.log(albumState.doc);
 
     let albumCustomFields = [];
     if ('album' in configState.customFields) {

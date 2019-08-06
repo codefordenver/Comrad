@@ -141,13 +141,7 @@ class Calendar extends Component {
     const { setModalVisibility, selectShow } = this.props;
 
     selectShow(show);
-    setModalVisibility(MODAL_NEW_SHOW, true, show);
-  };
-
-  showViewShowModal = show => {
-    const { setModalVisibility } = this.props;
-
-    setModalVisibility(MODAL_VIEW_SHOW, true, show);
+    setModalVisibility(MODAL_NEW_SHOW, true, null);
   };
 
   customEventWrapper = props => {
@@ -199,7 +193,7 @@ class Calendar extends Component {
 
   eventStyleGetter = show => {
     let className = '';
-    if (show._id.includes('-')) {
+    if (show.is_recurring) {
       className = 'event-series';
     } else if (show.master_event_id) {
       className = 'event-instance';

@@ -38,7 +38,7 @@ function showList(shows, startDate, endDate) {
 
   //Replace repeat shows with instance shows here
   const seriesFlattened = _.flatten(allSeriesShowsExpanded);
-  const seriesKeyBy = _.keyBy(seriesFlattened, '_id');
+  const seriesKeyBy = _.keyBy(seriesFlattened, 'master_time_id');
 
   const instanceKeyBy = _.keyBy(allInstanceShowsExpanded, o => {
     return o.master_time_id;
@@ -236,8 +236,10 @@ function returnSeriesShowsArrayWithNewDates(dateArray, show) {
     end_time_utc = combineDayAndTime(date, end_time_utc, 'STRING', 'END');
 
     newShow.master_event_id = newShow._id;
-    newShow._id = master_time_id(newShow.master_event_id, start_time_utc);
-    newShow.master_time_id = newShow._id;
+    newShow.master_time_id = master_time_id(
+      newShow.master_event_id,
+      start_time_utc,
+    );
     newShow.start_time_utc = start_time_utc;
     newShow.end_time_utc = end_time_utc;
     return newShow;
@@ -273,7 +275,7 @@ function returnInstanceShowsArray(shows) {
       'END',
     );
 
-    instanceShow.master_event_id = master_event_id ? master_event_id._id : null;
+    instanceShow.master_event_id = master_event_id ? master_event_id : null;
     instanceShow.master_time_id = master_time_id__byShowType(instanceShow);
 
     return instanceShow;

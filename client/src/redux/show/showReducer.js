@@ -51,7 +51,7 @@ export function showReducer(state = initialState, { type, payload }) {
     case SHOW_CREATE_INSTANCE:
       return {
         ...state,
-        data: { ...state.data, [payload.master_time_id]: payload },
+        data: { ...state.data, ..._.keyBy(payload, 'master_time_id') },
         posting: false,
         fetching: false,
         error: false,

@@ -17,15 +17,20 @@ import DropdownHost from '../../DropdownHost';
 class NewShowForm extends Component {
   componentDidMount() {
     const { setModalVisibility, show } = this.props;
-
-    setModalVisibility(false, false, show);
+    setModalVisibility(false, false, null);
   }
 
   showEditShowModal = show => {
     const { setModalVisibility, selectShow } = this.props;
-
     selectShow(show);
-    setModalVisibility(MODAL_EDIT_SHOW, true, show);
+    setModalVisibility(MODAL_EDIT_SHOW, true, null);
+  };
+
+  showEditSeriesModal = show => {
+    // TODO Edit backend to return all instance shows based on the master event ID
+    const { setModalVisibility, selectShow } = this.props;
+    selectShow(show);
+    setModalVisibility(MODAL_EDIT_SHOW, true, null);
   };
 
   deleteRegularShow = show => {
@@ -47,7 +52,7 @@ class NewShowForm extends Component {
   };
 
   getShowType(show) {
-    if (show._id.includes('-')) {
+    if (show.is_recurring) {
       return 'series';
     } else if (show.master_event_id) {
       return 'instance';
@@ -66,7 +71,10 @@ class NewShowForm extends Component {
           >
             Edit Show Instance
           </div>
-          <div className="not_done event__tooltip__delete">
+          <div
+            className="event__tooltip__edit"
+            onClick={() => this.showEditSeriesModal(data)}
+          >
             Edit Show Series
           </div>
           <div
@@ -93,7 +101,10 @@ class NewShowForm extends Component {
           >
             Edit Show Instance
           </div>
-          <div className="not_done event__tooltip__delete">
+          <div
+            className="event__tooltip__edit"
+            onClick={() => this.showEditSeriesModal(data)}
+          >
             Edit Show Series
           </div>
           <div
@@ -145,7 +156,6 @@ class NewShowForm extends Component {
       updateShow(_id, { 'show_details.host': host._id });
     }
   };
-
   showDebugData = show => (
     <div>
       {console.log('Show Tooltip Opened.  Show Data: ')}
@@ -181,7 +191,7 @@ class NewShowForm extends Component {
           <div className="event__tooltip__title">{show.show_details.title}</div>
 
           {false && this.showDebugData(show)}
-
+          {console.log(show)}
           <DropdownHost
             key={_id}
             _id={_id}

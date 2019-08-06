@@ -35,14 +35,9 @@ class FormAlbumEdit extends Component {
   render() {
     const { props, submit } = this;
     const { handleSubmit, configState, genreState } = props;
-
     let albumCustomFields = [];
     if ('album' in configState.customFields) {
       albumCustomFields = configState.customFields.album;
-    }
-    let genreList = [];
-    for (let i = 0; i < Object.values(genreState.docs).length; i++) {
-      genreList.push(Object.values(genreState.docs)[i]);
     }
 
     return (
@@ -68,7 +63,7 @@ class FormAlbumEdit extends Component {
           component={Select}
           label="Genre"
           name="genre"
-          selectOptions={genreList}
+          selectOptions={genreState.docs}
         />
         <div>
           <Button type="submit">Submit</Button>

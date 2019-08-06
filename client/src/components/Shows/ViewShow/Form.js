@@ -103,7 +103,7 @@ class NewShowForm extends Component {
           </div>
           <div
             className="event__tooltip__edit"
-            onClick={() => this.showEditSeriesModal(data)}
+            onClick={() => this.showEditSeriesModal(data.master_event_id)}
           >
             Edit Show Series
           </div>

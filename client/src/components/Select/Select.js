@@ -19,7 +19,11 @@ class Select extends Component {
       selectOptions,
       ...other
     } = props;
+    //const selectOptions = [1,2,3]
     const { error, touched, submitting } = meta;
+    const isObj =
+      Object.prototype.toString.call(selectOptions) === '[object Object]';
+    console.log(Object.keys(selectOptions));
 
     return (
       <div className={classnames('form-group', className)}>
@@ -30,11 +34,25 @@ class Select extends Component {
           disabled={disabled || submitting}
         >
           <option value="" />
-          {selectOptions.map((option, index) => (
-            <option key={index} value={option}>
-              {option}
-            </option>
-          )) || null}
+          {isObj
+            ? Object.keys(selectOptions).map((option, index) => {
+                console.log('true');
+                console.log(selectOptions[option].name);
+                return (
+                  <option key={index} value={selectOptions[option]._id}>
+                    {selectOptions[option].name}
+                  </option>
+                );
+              })
+            : selectOptions.map((option, index) => {
+                console.log('false');
+                console.log(option);
+                return (
+                  <option key={index} value={option}>
+                    {option}
+                  </option>
+                );
+              }) || null}
         </select>
 
         {label && (

@@ -39,6 +39,21 @@ export const createInstanceShow = (show_id, data) => async dispatch => {
   }
 };
 
+export const createInstanceAndEditShow = (
+  show_id,
+  data,
+  callback,
+) => async dispatch => {
+  try {
+    const response = await axios.put(`/v1/events/shows/${show_id}`, data);
+    dispatch({ type: SHOW_UPDATE, payload: response.data });
+    const returnedShow = response.data[0];
+    dispatch(selectShow(returnedShow));
+  } catch (e) {
+    dispatch({ type: SHOW_ERROR, payload: e });
+  }
+};
+
 export const updateShow = (
   show_id,
   data,

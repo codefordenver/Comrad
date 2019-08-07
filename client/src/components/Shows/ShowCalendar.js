@@ -21,6 +21,7 @@ import ShowModalController from './ShowModalController';
 import { MODAL_NEW_SHOW, MODAL_VIEW_SHOW } from './ShowModalController';
 import Tooltip from '../Tooltip';
 import ViewShowForm from './ViewShow/Form';
+import { getShowType } from './ViewShow/Form';
 
 class Calendar extends Component {
   state = {
@@ -193,9 +194,10 @@ class Calendar extends Component {
 
   eventStyleGetter = show => {
     let className = '';
-    if (show.is_recurring) {
+    let showType = getShowType(show);
+    if (showType === 'series') {
       className = 'event-series';
-    } else if (show.master_event_id) {
+    } else if (showType === 'instance') {
       className = 'event-instance';
     } else {
       className = 'event-regular';

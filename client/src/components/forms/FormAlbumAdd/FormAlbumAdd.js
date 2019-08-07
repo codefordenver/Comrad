@@ -31,10 +31,6 @@ class FormAlbumAdd extends Component {
   render() {
     const { props, submit } = this;
     const { handleSubmit, genreState } = props;
-    let genreList = [];
-    for (let i = 0; i < Object.values(genreState.docs).length; i++) {
-      genreList.push(Object.values(genreState.docs)[i]);
-    }
 
     return (
       <form className="form-album-add" onSubmit={handleSubmit(submit)}>
@@ -50,7 +46,7 @@ class FormAlbumAdd extends Component {
           component={Select}
           label="Genre"
           name="genre"
-          selectOptions={genreList}
+          selectOptions={genreState.docs}
         />
         <Field component={Checkbox} label="Compilation" name="compilation" />
         <div>

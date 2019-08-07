@@ -41,13 +41,13 @@ class NewShowForm extends Component {
 
   deleteSeriesShow = show => {
     const { deleteShowSeries, setModalVisibility } = this.props;
-    deleteShowSeries(show.master_event_id);
+    deleteShowSeries(show.master_event_id._id);
     setModalVisibility(null, false, null);
   };
 
   deleteInstanceShow = show => {
     const { deleteShowInstance, setModalVisibility } = this.props;
-    deleteShowInstance(show.master_event_id, show);
+    deleteShowInstance(show.master_event_id._id, show);
     setModalVisibility(null, false, null);
   };
 
@@ -150,7 +150,7 @@ class NewShowForm extends Component {
     if (showType === 'series') {
       const { createInstanceShow } = this.props;
       show.show_details.host = host._id;
-      createInstanceShow(master_event_id, show);
+      createInstanceShow(master_event_id._id, show);
     } else {
       //Only update host if the show is regular or instance
       updateShow(_id, { 'show_details.host': host._id });

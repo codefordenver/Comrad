@@ -1,8 +1,6 @@
 import axios from 'axios';
 import {
   SHOW_CLEAR,
-  SHOW_GET,
-  SHOW_POST,
   SHOW_UPDATE,
   SHOW_DELETE,
   SHOW_SEARCH,
@@ -20,22 +18,12 @@ export const clearShows = () => async dispatch => {
   dispatch({ type: SHOW_CLEAR });
 };
 
-export const getShow = show => async dispatch => {
-  try {
-    const response = await axios.get(`/v1/events/shows/${show}`);
-
-    dispatch({ type: SHOW_GET, payload: response.data });
-  } catch (e) {
-    dispatch({ type: SHOW_ERROR, payload: e });
-  }
-};
-
 export const postShow = (input, callback) => async dispatch => {
   const show = input;
   try {
     const response = await axios.post(`/v1/events/shows/`, show);
 
-    dispatch({ type: SHOW_POST, payload: response.data });
+    dispatch({ type: SHOW_UPDATE, payload: response.data });
 
     callback();
   } catch (e) {
@@ -47,7 +35,7 @@ export const postShow = (input, callback) => async dispatch => {
 export const createInstanceShow = (show_id, data) => async dispatch => {
   try {
     const response = await axios.put(`/v1/events/shows/${show_id}`, data);
-    dispatch({ type: SHOW_CREATE_INSTANCE, payload: response.data });
+    dispatch({ type: SHOW_UPDATE, payload: response.data });
   } catch (e) {
     dispatch({ type: SHOW_ERROR, payload: e });
   }

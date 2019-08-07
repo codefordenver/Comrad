@@ -235,11 +235,10 @@ function returnSeriesShowsArrayWithNewDates(dateArray, show) {
 
     end_time_utc = combineDayAndTime(date, end_time_utc, 'STRING', 'END');
 
-    newShow.master_event_id = newShow._id;
-    newShow.master_time_id = master_time_id(
-      newShow.master_event_id,
-      start_time_utc,
-    );
+    const series_event_id = newShow._id;
+    newShow = { ...newShow, master_event_id: { _id: series_event_id } };
+    newShow.master_time_id = master_time_id(series_event_id, start_time_utc);
+
     newShow.start_time_utc = start_time_utc;
     newShow.end_time_utc = end_time_utc;
     return newShow;

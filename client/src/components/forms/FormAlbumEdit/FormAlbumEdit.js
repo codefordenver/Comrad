@@ -84,7 +84,7 @@ function mapStateToProps(state) {
       compilation: compilation,
       id: _id,
       custom: custom,
-      genre: typeof genre !== 'undefined' ? genre._id : null,
+      genre: typeof genre !== 'undefined' && genre !== null ? genre._id : '',
     },
   };
 }

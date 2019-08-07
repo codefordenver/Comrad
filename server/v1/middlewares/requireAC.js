@@ -7,9 +7,17 @@ function requireAC(resource, action) {
     const { authorization } = req.headers;
 
     if (authorization) {
-      const dbUser = await db.User.findOne({ api_key: authorization });
+      const dbUser = await db.User.findOne({
+        'api_key.short': authorization.substr(0, 8),
+      });
 
-      req.user = dbUser;
+      if (dbUser) {
+        const isMatch = await dbUser.compareApiKey(authorization);
+
+        if (isMatch) {
+          req.user = dbUser;
+        }
+      }
     }
 
     if (!req.user || req.user.status !== 'Active') {

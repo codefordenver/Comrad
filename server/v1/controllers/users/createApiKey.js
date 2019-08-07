@@ -19,7 +19,13 @@ async function createApiKey(req, res) {
 
       const updatedUser = await db.User.findOneAndUpdate(
         { _id: id },
-        { api_key: hash },
+        {
+          api_key: {
+            last_used: new Date(),
+            short: apiKey.substr(0, 8),
+            token: hash,
+          },
+        },
         { new: true },
       ).lean();
 

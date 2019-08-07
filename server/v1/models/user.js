@@ -4,7 +4,20 @@ const bcrypt = require('bcrypt-nodejs');
 
 const userSchema = new Schema({
   api_key: {
-    type: String,
+    last_used: {
+      type: Date,
+      default: null,
+    },
+
+    short: {
+      type: String,
+      default: null,
+    },
+
+    token: {
+      type: String,
+      default: null,
+    },
   },
 
   can_delete: {
@@ -87,6 +100,7 @@ userSchema.pre('save', function(next) {
       }
 
       user.password = hash;
+
       next();
     });
   });
@@ -99,6 +113,24 @@ userSchema.methods.comparePassword = function(candidatePassword, callback) {
     }
 
     callback(null, isMatch);
+  });
+};
+
+userSchema.methods.compareApiKey = function(candidateKey, callback) {
+  const user = this;
+  const { token } = user.api_key;
+
+  return new Promise(function(resolve, reject) {
+    bcrypt.compare(candidateKey, token, function(err, isMatch) {
+      if (err) {
+        return reject(err);
+      }
+
+      user.api_key.last_used = new Date();
+      user.save();
+
+      return resolve(isMatch);
+    });
   });
 };
 

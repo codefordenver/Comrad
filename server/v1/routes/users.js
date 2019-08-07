@@ -27,7 +27,8 @@ router
 
 router
   .route('/:id/api-key')
-  .post(requireAC('Users', 'createAny'), usersController.createApiKey);
+  .post(requireAC('Users', 'createAny'), usersController.createApiKey)
+  .put(usersController.removeApiKey);
 
 router
   .route('/:id/permission')

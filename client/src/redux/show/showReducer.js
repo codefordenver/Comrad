@@ -2,12 +2,8 @@ import _ from 'lodash';
 import 'moment';
 import {
   SHOW_CLEAR,
-  SHOW_GET,
-  SHOW_POST,
-  SHOW_CREATE_INSTANCE,
   SHOW_POSTING,
   SHOW_UPDATE,
-  SHOW_UPDATE_HOST,
   SHOW_SEARCH,
   SHOW_DELETE,
   SHOW_DELETE_SERIES,

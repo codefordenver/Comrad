@@ -10,8 +10,6 @@ import {
 
 import { SHOW_DELETE_SERIES } from './showTypes';
 
-import { SHOW_CREATE_INSTANCE } from './showTypes';
-
 import { showAPI } from '../../api';
 
 export const clearShows = () => async dispatch => {
@@ -48,6 +46,25 @@ export const updateShow = (
 ) => async dispatch => {
   try {
     const response = await axios.patch(`/v1/events/shows/${show_id}`, data);
+    dispatch({ type: SHOW_UPDATE, payload: response.data });
+    if (callback) {
+      callback();
+    }
+  } catch (e) {
+    dispatch({ type: SHOW_ERROR, payload: e });
+  }
+};
+
+export const updateSeries = (
+  show_id,
+  data,
+  callback = null,
+) => async dispatch => {
+  try {
+    const response = await axios.patch(
+      `/v1/events/shows/series/${show_id}`,
+      data,
+    );
     dispatch({ type: SHOW_UPDATE, payload: response.data });
     if (callback) {
       callback();

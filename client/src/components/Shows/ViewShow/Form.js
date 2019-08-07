@@ -10,7 +10,7 @@ import {
   createInstanceShow,
   updateShow,
 } from '../../../redux/show';
-import { MODAL_EDIT_SHOW } from '../ShowModalController';
+import { MODAL_EDIT_SHOW, MODAL_EDIT_SERIES } from '../ShowModalController';
 
 import DropdownHost from '../../DropdownHost';
 
@@ -27,10 +27,9 @@ class NewShowForm extends Component {
   };
 
   showEditSeriesModal = show => {
-    // TODO Edit backend to return all instance shows based on the master event ID
     const { setModalVisibility, selectShow } = this.props;
     selectShow(show);
-    setModalVisibility(MODAL_EDIT_SHOW, true, null);
+    setModalVisibility(MODAL_EDIT_SERIES, true, null);
   };
 
   deleteRegularShow = show => {
@@ -208,7 +207,7 @@ class NewShowForm extends Component {
 
 function mapStateToProps(state) {
   return {
-    //shows: state.show.data,
+    //search: state.show.search,
   };
 }
 

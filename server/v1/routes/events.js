@@ -21,6 +21,9 @@ router
 
 router.route('/:eventType/instance/:id').delete(showInstanceController.remove);
 
-router.route('/:eventType/series/:id').delete(showSeriesController.remove);
+router
+  .route('/:eventType/series/:id')
+  .delete(showSeriesController.remove)
+  .patch(showSeriesController.update);
 
 module.exports = router;

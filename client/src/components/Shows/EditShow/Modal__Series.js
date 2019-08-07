@@ -5,7 +5,7 @@ import _ from 'lodash';
 import Form from './Form';
 import Modal from '../../Modal';
 
-import { getShowSelected, updateShow } from '../../../redux/show';
+import { getShowSelected, updateSeries } from '../../../redux/show';
 import { setModalVisibility } from '../../../redux/modal';
 
 import { diff } from 'deep-diff';
@@ -23,7 +23,7 @@ class EditModal extends Component {
 
   submit = values => {
     const { handleFormSubmit, props } = this;
-    const { updateShow } = props;
+    const { updateSeries } = props;
     const {
       initial,
       initial: { _id },
@@ -40,7 +40,7 @@ class EditModal extends Component {
       });
     }
 
-    updateShow(_id, finalObject, handleFormSubmit);
+    updateSeries(_id, finalObject, handleFormSubmit);
   };
 
   render() {
@@ -57,5 +57,5 @@ class EditModal extends Component {
 
 export default connect(
   null,
-  { setModalVisibility, updateShow },
+  { setModalVisibility, updateSeries },
 )(EditModal);

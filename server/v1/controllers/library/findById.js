@@ -5,6 +5,7 @@ async function findById(req, res) {
     'artist',
     'artists',
     'album',
+    'genre',
   ]);
 
   if (!dbLibrary) {

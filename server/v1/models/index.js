@@ -1,6 +1,6 @@
+const AccessControl = require('./accessControl');
 const Genre = require('./genre');
 const Library = require('./library');
-const Permission = require('./permission');
 const Playlist = require('./playlist');
 const Resource = require('./resource');
 const Show = require('./show');
@@ -8,9 +8,9 @@ const Traffic = require('./traffic');
 const User = require('./user');
 
 module.exports = {
+  AccessControl,
   Genre,
   Library,
-  Permission,
   Playlist,
   Resource,
   Show,

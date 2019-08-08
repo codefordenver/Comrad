@@ -4,6 +4,7 @@ import { reducer as formReducer } from 'redux-form';
 import { alertReducer } from './alert';
 import { authReducer } from './auth';
 import { configReducer } from './config';
+import { genreReducer } from './genre';
 import { libraryReducer } from './library';
 import { modalReducer } from './modal';
 import { permissionReducer } from './permission';
@@ -16,6 +17,7 @@ import { userReducer } from './user';
 export * from './alert';
 export * from './auth';
 export * from './config';
+export * from './genre';
 export * from './library';
 export * from './permission';
 export * from './playlist';
@@ -27,6 +29,7 @@ export default combineReducers({
   auth: authReducer,
   config: configReducer,
   form: formReducer,
+  genre: genreReducer,
   library: libraryReducer,
   modal: modalReducer,
   permission: permissionReducer,

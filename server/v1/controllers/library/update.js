@@ -13,13 +13,12 @@ function update(req, res) {
       switch (libraryData.type) {
         case 'album':
           return validateAlbumData({ artist, name, ...req.body }, req.params.id)
-            .then(albumData => {
+            .then(albumData =>
               db.Library.findOneAndUpdate({ _id: req.params.id }, req.body, {
                 new: true,
-              })
-                .then(dbAlbum => res.json(dbAlbum))
-                .catch(err => res.status(422).json(err));
-            })
+              }).populate('genre'),
+            )
+            .then(dbAlbum => res.json(dbAlbum))
             .catch(err => {
               console.error(err);
               res.status(422).json({

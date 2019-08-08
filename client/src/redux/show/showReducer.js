@@ -105,25 +105,9 @@ export function showReducer(state = initialState, { type, payload }) {
       };
 
     case SHOW_UPDATE:
-      // const { existingShow, updatedShow } = payload;
-      // const { start, end } = updatedShow;
-
-      // const updatedShows = state.map(stateShow => {
-      //   return stateShow.id === existingShow.id
-      //     ? { ...stateShow, start, end }
-      //     : stateShow;
-      // });
-
       return {
         ...state,
-        fetching: false,
-        error: false,
-      };
-
-    case SHOW_UPDATE_HOST:
-      return {
-        ...state,
-        data: { ...state.data, [payload.master_time_id]: payload },
+        data: { ...state.data, ..._.keyBy(payload, 'master_time_id') },
         fetching: false,
         error: false,
       };
@@ -148,6 +132,8 @@ export function showReducer(state = initialState, { type, payload }) {
 
     //Need some type of error response from server.
     case SHOW_ERROR:
+      console.error('Error with shows');
+      console.log(payload);
       return {
         ...state,
         fetching: false,

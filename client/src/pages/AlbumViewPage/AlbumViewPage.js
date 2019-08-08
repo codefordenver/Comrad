@@ -52,7 +52,15 @@ class AlbumViewPage extends Component {
   render() {
     const { navigateToTrack, props, renderLastUpdated } = this;
     const { albumState, configState } = props;
-    const { artist, name, tracks, label, compilation, custom } = albumState.doc;
+    const {
+      artist,
+      name,
+      tracks,
+      label,
+      compilation,
+      custom,
+      genre,
+    } = albumState.doc;
     const { url } = this.props.match;
 
     let albumCustomFields = [];
@@ -87,6 +95,7 @@ class AlbumViewPage extends Component {
                       )}
                     </h5>
                     {!!label && <span>&nbsp;| {label}</span>}
+                    {!!genre && <span>&nbsp;| {genre.name}</span>}
                     {!!compilation && <span>&nbsp;| Compilation</span>}
                     {custom && (
                       <CustomFieldsView

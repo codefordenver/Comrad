@@ -1,19 +1,24 @@
 const router = require('express').Router();
 const { libraryController } = require('../controllers');
+const { requireAC } = require('../middlewares');
 
 router
   .route('/')
-  .get(libraryController.findAll)
-  .post(libraryController.create);
+  .get(requireAC('Library', 'readAny'), libraryController.findAll)
+  .post(requireAC('Library', 'createAny'), libraryController.create);
 
-router.route('/many').post(libraryController.createMany);
+router
+  .route('/many')
+  .post(requireAC('Library', 'createAny'), libraryController.createMany);
 
-router.route('/search').get(libraryController.search);
+router
+  .route('/search')
+  .get(requireAC('Library', 'readAny'), libraryController.search);
 
 router
   .route('/:id')
-  .get(libraryController.findById)
-  .put(libraryController.update)
-  .delete(libraryController.remove);
+  .get(requireAC('Library', 'readAny'), libraryController.findById)
+  .put(requireAC('Library', 'updateAny'), libraryController.update)
+  .delete(requireAC('Library', 'deleteAny'), libraryController.remove);
 
 module.exports = router;

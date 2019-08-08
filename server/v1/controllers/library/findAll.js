@@ -52,8 +52,6 @@ async function findAll(req, res) {
   albumSkip = albumSkip != null ? Number(albumSkip) : 0;
   trackSkip = trackSkip != null ? Number(trackSkip) : 0;
 
-  console.log(keys);
-
   let sortObj = {};
   sortObj[sortBy] = sortDescending ? -1 : 1;
 

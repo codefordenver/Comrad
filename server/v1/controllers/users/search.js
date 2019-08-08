@@ -1,17 +1,6 @@
 const db = require('../../models');
-const Fuse = require('fuse.js');
 
 function search(req, res) {
-  if (!req.user) {
-    return res.status(422).json({ message: 'User must be logged in' });
-  }
-
-  const { permissions } = req.user;
-
-  if (!permissions.find(item => item.toLowerCase() === 'admin')) {
-    return res.status(422).json({ message: 'User must have admin access' });
-  }
-
   let { status = 'all', q = '' } = req.query;
 
   const emailRE = new RegExp(q, 'i');

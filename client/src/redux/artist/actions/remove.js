@@ -1,5 +1,4 @@
 import { artistAPI } from '../../../api';
-import { artistTypes } from '../artistTypes';
 import { alertTypes } from '../../alert';
 
 export const remove = (id, callback, errorCallback) => async dispatch => {

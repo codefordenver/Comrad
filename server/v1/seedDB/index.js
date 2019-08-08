@@ -1,3 +1,5 @@
+const moment = require('moment');
+
 const fs = require('fs');
 const mongoose = require('mongoose');
 const keys = require('../config/keys');
@@ -404,6 +406,10 @@ async function seedDB() {
                     playlistItem.traffic_scheduled_event,
                     playlistItem.traffic_event,
                   );
+                  playlistItem.master_time_id =
+                    playlistItem.traffic +
+                    '-' +
+                    moment(playlistItem.traffic_start_date_time);
                   //remove properties not in schema
                   delete playlistItem.traffic_instance;
                   delete playlistItem.traffic_scheduled_event;
@@ -614,7 +620,7 @@ function updateProgressFile(scriptProgress) {
 
 // process the playlists in groups so we're giving regular feedback from the script
 let tracksForPlaylists = {};
-//we are going to get four objects for instances to search the original comrad data: it could be represented in multiple ways in the new comrad so we will
+//we are going to get objects for instances to search the original comrad data: it could be represented in multiple ways in the new comrad so we will
 //need data on the most specific way it could be represented and the most general
 let trafficForPlaylistsByEventId = {};
 let trafficForPlaylistsByScheduledEventId = {};

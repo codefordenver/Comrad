@@ -1,19 +1,24 @@
 const router = require('express').Router();
 const { tracksController } = require('../controllers');
+const { requireAC } = require('../middlewares');
 
 router
   .route('/')
-  .get(tracksController.findAll)
-  .post(tracksController.create);
+  .get(requireAC('Tracks', 'readAny'), tracksController.findAll)
+  .post(requireAC('Tracks', 'createAny'), tracksController.create);
 
-router.route('/search').get(tracksController.search);
+router
+  .route('/search')
+  .get(requireAC('Tracks', 'readAny'), tracksController.search);
 
-router.route('/many').post(tracksController.createMany);
+router
+  .route('/many')
+  .post(requireAC('Tracks', 'createAny'), tracksController.createMany);
 
 router
   .route('/:id')
-  .get(tracksController.findById)
-  .put(tracksController.update)
-  .delete(tracksController.remove);
+  .get(requireAC('Tracks', 'readAny'), tracksController.findById)
+  .put(requireAC('Tracks', 'updateAny'), tracksController.update)
+  .delete(requireAC('Tracks', 'deleteAny'), tracksController.remove);
 
 module.exports = router;

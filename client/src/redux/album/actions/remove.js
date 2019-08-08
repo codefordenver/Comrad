@@ -1,4 +1,3 @@
-import { albumTypes } from '../albumTypes';
 import { albumAPI } from '../../../api';
 import { alertTypes } from '../../alert';
 

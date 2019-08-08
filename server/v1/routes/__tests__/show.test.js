@@ -3,7 +3,7 @@ const { connect, disconnect } = require('../../../tests/mongoose');
 beforeEach(connect);
 afterEach(disconnect);
 
-const route = '/v1/shows';
+const route = '/v1/events/shows';
 
 describe(route, () => {
   it('Is a placeholder', () => {

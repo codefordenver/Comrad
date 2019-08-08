@@ -1,21 +1,28 @@
 const router = require('express').Router();
 const { artistsController } = require('../controllers');
+const { requireAC } = require('../middlewares');
 
 router
   .route('/')
-  .get(artistsController.findAll)
-  .post(artistsController.create);
+  .get(requireAC('Artists', 'readAny'), artistsController.findAll)
+  .post(requireAC('Artists', 'createAny'), artistsController.create);
 
-router.route('/search').get(artistsController.search);
+router
+  .route('/search')
+  .get(requireAC('Artists', 'readAny'), artistsController.search);
 
 router
   .route('/:id')
-  .get(artistsController.findById)
-  .put(artistsController.update)
-  .delete(artistsController.remove);
+  .get(requireAC('Artists', 'readAny'), artistsController.findById)
+  .put(requireAC('Artists', 'updateAny'), artistsController.update)
+  .delete(requireAC('Artists', 'removeAny'), artistsController.remove);
 
-router.route('/:id/albums').get(artistsController.findArtistAlbums);
+router
+  .route('/:id/albums')
+  .get(requireAC('Artists', 'readAny'), artistsController.findArtistAlbums);
 
-router.route('/many').post(artistsController.createMany);
+router
+  .route('/many')
+  .post(requireAC('Artists', 'createAny'), artistsController.createMany);
 
 module.exports = router;

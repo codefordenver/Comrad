@@ -26,7 +26,7 @@ export function getShowType(show) {
 }
 class NewShowForm extends Component {
   componentDidMount() {
-    const { setModalVisibility, show } = this.props;
+    const { setModalVisibility } = this.props;
     setModalVisibility(false, false, null);
   }
 
@@ -214,7 +214,7 @@ class NewShowForm extends Component {
 
 function mapStateToProps(state) {
   return {
-    shows: state.show.data,
+    //shows: state.show.data,
   };
 }
 

@@ -4,6 +4,7 @@ const announcementsController = require('./announcements');
 const artistsController = require('./artists');
 const authController = require('./auth');
 const configController = require('./config');
+const genresController = require('./genres');
 const libraryController = require('./library');
 const playlistsController = require('./playlists');
 const resourcesController = require('./resources');
@@ -20,6 +21,7 @@ module.exports = {
   artistsController,
   authController,
   configController,
+  genresController,
   libraryController,
   playlistsController,
   resourcesController,

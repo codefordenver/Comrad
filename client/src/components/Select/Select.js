@@ -21,6 +21,10 @@ class Select extends Component {
     } = props;
     const { error, touched, submitting } = meta;
 
+    // Check if selectOptions variable is object, used for genre list
+    const isObj =
+      Object.prototype.toString.call(selectOptions) === '[object Object]';
+
     return (
       <div className={classnames('form-group', className)}>
         <select
@@ -30,11 +34,21 @@ class Select extends Component {
           disabled={disabled || submitting}
         >
           <option value="" />
-          {selectOptions.map((option, index) => (
-            <option key={index} value={option}>
-              {option}
-            </option>
-          )) || null}
+          {isObj
+            ? Object.keys(selectOptions).map((option, index) => {
+                return (
+                  <option key={index} value={selectOptions[option]._id}>
+                    {selectOptions[option].name}
+                  </option>
+                );
+              })
+            : selectOptions.map((option, index) => {
+                return (
+                  <option key={index} value={option}>
+                    {option}
+                  </option>
+                );
+              }) || null}
         </select>
 
         {label && (

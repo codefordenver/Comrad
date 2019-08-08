@@ -1,7 +1,9 @@
 const db = require('../../models');
 
 async function findById(req, res) {
-  const dbAlbum = await db.Album.findById(req.params.id).populate('artist');
+  const dbAlbum = await db.Album.findById(req.params.id)
+    .populate('artist')
+    .populate('genre');
 
   if (!dbAlbum) {
     res.status(422).json('Album does not exist');

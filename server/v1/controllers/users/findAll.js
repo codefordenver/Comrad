@@ -1,7 +1,7 @@
 const db = require('../../models');
 
 function findAll(req, res) {
-  db.User.find({}, req.ac.fields)
+  db.User.find({})
     .then(dbUsers => {
       dbUsers.forEach(user => delete user._doc.password);
 

@@ -106,25 +106,25 @@ const Users = [
   // DJ
   {
     role: 'DJ',
-    resource: 'AccessControl',
+    resource: 'Users',
     action: 'create:any',
     attributes: '*',
   },
   {
     role: 'DJ',
-    resource: 'AccessControl',
+    resource: 'Users',
     action: 'read:any',
-    attributes: '-_id first_name last_name',
+    attributes: '*',
   },
   {
     role: 'DJ',
-    resource: 'AccessControl',
+    resource: 'Users',
     action: 'update:any',
     attributes: '*',
   },
   {
     role: 'DJ',
-    resource: 'AccessControl',
+    resource: 'Users',
     action: 'delete:any',
     attributes: '*',
   },

@@ -1,38 +1,50 @@
-import {
-  LIBRARY_CLEAR,
-  LIBRARY_ERROR,
-  LIBRARY_LOADING,
-  LIBRARY_SEARCH,
-} from './libraryTypes';
+import { libraryTypes } from './libraryTypes';
 
 const initialState = {
   docs: null,
+  doc: null,
+  editingName: false,
   error: false,
   loading: false,
-  q: false,
 };
 
 export const libraryReducer = (state = initialState, { type, payload }) => {
   switch (type) {
-    case LIBRARY_CLEAR:
+    case libraryTypes.ADD:
+      return {
+        ...state,
+        doc: {
+          ...payload,
+        },
+      };
+    case libraryTypes.CLEAR:
       return {
         ...initialState,
       };
-    case LIBRARY_ERROR:
+    case libraryTypes.EDITING_NAME:
       return {
         ...state,
-        ...payload,
+        editingName: payload.editingName,
       };
-    case LIBRARY_LOADING:
+    case libraryTypes.FIND_ONE:
+      return {
+        ...state,
+        loading: false,
+        doc: {
+          ...payload,
+        },
+      };
+    case libraryTypes.LOAD:
       return {
         ...state,
         loading: true,
       };
-    case LIBRARY_SEARCH:
+    case libraryTypes.UPDATE:
       return {
         ...state,
-        ...payload,
-        loading: false,
+        doc: {
+          ...payload,
+        },
       };
     default:
       return {

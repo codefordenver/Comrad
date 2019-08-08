@@ -6,22 +6,22 @@ import Loading from '../../components/Loading';
 import { connect } from 'react-redux';
 import FormTrackAdd from '../../components/forms/FormTrackAdd';
 
-import { albumActions, alertActions } from '../../redux';
+import { libraryActions, alertActions } from '../../redux';
 
 class TrackAddPage extends Component {
   componentWillMount() {
-    const { album, albumActions, match } = this.props;
-    const { _id } = album.doc;
+    const { library, libraryActions, match } = this.props;
+    const { _id } = library.doc;
     const { id } = match.params;
 
     if (id !== _id) {
-      albumActions.findOne(id);
+      libraryActions.findOne(id);
     }
   }
 
   addTrackCallback = trackData => {
-    const { albumActions, alertActions, history } = this.props;
-    albumActions.clear();
+    const { libraryActions, alertActions, history } = this.props;
+    libraryActions.clear();
     history.push(`/library/album/${trackData.album._id}`);
     alertActions.show(
       'success',
@@ -31,7 +31,7 @@ class TrackAddPage extends Component {
   };
 
   render() {
-    const { name, tracks, _id, artist } = this.props.album.doc;
+    const { name, tracks, _id, artist } = this.props.library.doc;
     const artistId = artist == null ? null : artist._id;
     let maxDiskNumber, maxTrackNumber;
     //if there are no existing tracks, default disk number is one and track number is 0 (the form will use track number + 1 as its default)
@@ -76,14 +76,14 @@ class TrackAddPage extends Component {
   }
 }
 
-function mapStateToProps({ album }) {
-  return { album };
+function mapStateToProps({ library }) {
+  return { library };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     alertActions: bindActionCreators({ ...alertActions }, dispatch),
-    albumActions: bindActionCreators({ ...albumActions }, dispatch),
+    libraryActions: bindActionCreators({ ...libraryActions }, dispatch),
   };
 }
 

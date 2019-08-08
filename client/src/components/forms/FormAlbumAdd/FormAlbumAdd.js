@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import { bindActionCreators } from 'redux';
 import { requiredValidate } from '../../../utils/validation';
-import { albumActions } from '../../../redux';
+import { libraryActions } from '../../../redux';
 
 import Button from '../../Button';
 import Checkbox from '../../Checkbox';
@@ -11,8 +11,8 @@ import Input from '../../Input';
 
 class FormAlbumAdd extends Component {
   submit = values => {
-    const { albumActions, submitCallback } = this.props;
-    albumActions.add(values, albumData => {
+    const { libraryActions, submitCallback } = this.props;
+    libraryActions.add('album', values, albumData => {
       if (typeof submitCallback === 'function') {
         submitCallback(albumData);
       }
@@ -49,14 +49,14 @@ const ReduxFormAlbumAdd = reduxForm({
 function mapStateToProps(state) {
   return {
     initialValues: {
-      artist: state.artist.doc._id,
+      artist: state.library.doc._id,
     },
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    albumActions: bindActionCreators({ ...albumActions }, dispatch),
+    libraryActions: bindActionCreators({ ...libraryActions }, dispatch),
   };
 }
 

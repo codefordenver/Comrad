@@ -6,21 +6,21 @@ import Loading from '../../components/Loading';
 import { connect } from 'react-redux';
 import FormTrackEdit from '../../components/forms/FormTrackEdit';
 
-import { trackActions, albumActions, alertActions } from '../../redux';
+import { libraryActions, alertActions } from '../../redux';
 
 class TrackEditPage extends Component {
   componentWillMount() {
-    const { track, trackActions, match } = this.props;
+    const { library, libraryActions, match } = this.props;
     const { id } = match.params;
 
-    if (track.doc === null || id !== track.doc._id) {
-      trackActions.findOne(id);
+    if (library.doc === null || id !== library.doc._id) {
+      libraryActions.findOne(id);
     }
   }
 
   editTrackCallback = trackData => {
-    const { albumActions, alertActions, history } = this.props;
-    albumActions.clear();
+    const { libraryActions, alertActions, history } = this.props;
+    libraryActions.clear();
     history.push(`/library/album/${trackData.album._id}`);
     alertActions.show(
       'success',
@@ -30,14 +30,14 @@ class TrackEditPage extends Component {
   };
 
   render() {
-    const { track } = this.props;
+    const { library } = this.props;
     return (
       <div className="track-edit-page">
         <Card>
           <CardBody>
             <h1>Edit Track</h1>
-            {track.loading && <Loading />}
-            {track.doc !== null && !track.loading && (
+            {library.loading && <Loading />}
+            {library.doc !== null && !library.loading && (
               <FormTrackEdit
                 submitCallback={this.editTrackCallback}
                 history={this.props.history}
@@ -50,15 +50,14 @@ class TrackEditPage extends Component {
   }
 }
 
-function mapStateToProps({ track }) {
-  return { track };
+function mapStateToProps({ library }) {
+  return { library };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     alertActions: bindActionCreators({ ...alertActions }, dispatch),
-    albumActions: bindActionCreators({ ...albumActions }, dispatch),
-    trackActions: bindActionCreators({ ...trackActions }, dispatch),
+    libraryActions: bindActionCreators({ ...libraryActions }, dispatch),
   };
 }
 

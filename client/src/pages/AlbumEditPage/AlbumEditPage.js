@@ -5,21 +5,21 @@ import Card, { CardBody } from '../../components/Card';
 import Loading from '../../components/Loading';
 import { connect } from 'react-redux';
 import FormAlbumEdit from '../../components/forms/FormAlbumEdit';
-import { albumActions, alertActions } from '../../redux';
+import { libraryActions, alertActions } from '../../redux';
 
 class AlbumEditPage extends Component {
   componentDidMount() {
-    const { album, albumActions, match } = this.props;
+    const { library, libraryActions, match } = this.props;
     const { id } = match.params;
 
-    if (album.doc == null || id !== album.doc._id) {
-      albumActions.findOne(id);
+    if (library.doc == null || id !== library.doc._id) {
+      libraryActions.findOne(id);
     }
   }
 
   editAlbumCallback = albumData => {
-    const { albumActions, alertActions, history } = this.props;
-    albumActions.clear();
+    const { libraryActions, alertActions, history } = this.props;
+    libraryActions.clear();
     history.push(`/library/album/${albumData.id}`);
     alertActions.show(
       'success',
@@ -29,14 +29,14 @@ class AlbumEditPage extends Component {
   };
 
   render() {
-    const { album } = this.props;
+    const { library } = this.props;
     return (
       <div className="album-edit-page">
         <Card>
           <CardBody>
             <h1>Edit Album</h1>
-            {album.loading && <Loading />}
-            {!album.loading && (
+            {library.loading && <Loading />}
+            {!library.loading && (
               <FormAlbumEdit submitCallback={this.editAlbumCallback} />
             )}
           </CardBody>
@@ -46,14 +46,14 @@ class AlbumEditPage extends Component {
   }
 }
 
-function mapStateToProps({ album }) {
-  return { album };
+function mapStateToProps({ library }) {
+  return { library };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     alertActions: bindActionCreators({ ...alertActions }, dispatch),
-    albumActions: bindActionCreators({ ...albumActions }, dispatch),
+    libraryActions: bindActionCreators({ ...libraryActions }, dispatch),
   };
 }
 

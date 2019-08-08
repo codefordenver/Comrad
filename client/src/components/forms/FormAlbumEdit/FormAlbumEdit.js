@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import { requiredValidate } from '../../../utils/validation';
-import { albumActions, configActions } from '../../../redux';
+import { libraryActions, configActions } from '../../../redux';
 import Button from '../../Button';
 import Input from '../../Input';
 import { bindActionCreators } from 'redux';
@@ -19,8 +19,8 @@ class FormAlbumEdit extends Component {
   }
 
   submit = values => {
-    const { albumActions, submitCallback } = this.props;
-    return albumActions.edit(values, albumData => {
+    const { libraryActions, submitCallback } = this.props;
+    return libraryActions.update(values, albumData => {
       if (typeof submitCallback === 'function') {
         submitCallback(albumData);
       }
@@ -64,7 +64,7 @@ class FormAlbumEdit extends Component {
 }
 
 function mapStateToProps(state) {
-  const { name, label, compilation, _id, custom } = state.album.doc;
+  const { name, label, compilation, _id, custom } = state.library.doc;
   return {
     configState: state.config,
     initialValues: {
@@ -79,7 +79,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    albumActions: bindActionCreators({ ...albumActions }, dispatch),
+    libraryActions: bindActionCreators({ ...libraryActions }, dispatch),
     configActions: bindActionCreators({ ...configActions }, dispatch),
   };
 }

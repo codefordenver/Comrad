@@ -7,6 +7,8 @@ const keys = require('../../config/keys');
  * keep the Mongo query running quickly.
  *
  * GET Parameters:
+ * type (optional) -
+ *  String, either "artist", "album" or "track" to filter by entity type
  * sortBy (optional) -
  *  String, defaults to "updated_at". The field name to filter by.
  *
@@ -27,7 +29,7 @@ const keys = require('../../config/keys');
  */
 
 async function findAll(req, res) {
-  let { sortBy, sortDescending, page } = req.query;
+  let { sortBy, sortDescending, type, page } = req.query;
 
   //set defaults for variables & cast variables to correct data type
   sortBy = sortBy || 'updated_at';
@@ -37,14 +39,19 @@ async function findAll(req, res) {
   let sortObj = {};
   sortObj[sortBy] = sortDescending ? -1 : 1;
 
-  const libraryResults = await db.Library.find({}, null, {
+  let filterObj = {};
+  if (type != null) {
+    filterObj.type = type;
+  }
+
+  const libraryResults = await db.Library.find(filterObj, null, {
     sort: sortObj,
     skip: page * keys.queryPageSize,
     limit: keys.queryPageSize,
   }).populate(['artist', 'artists', 'album']);
 
   //estimate the total number of pages
-  const libraryDocs = await db.Library.estimatedDocumentCount();
+  const libraryDocs = await db.Library.countDocuments(filterObj);
   const totalPages = Math.ceil(libraryDocs / keys.queryPageSize);
 
   let resultsJson = {

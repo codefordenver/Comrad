@@ -7,15 +7,15 @@ import { formatTotalSecondsAsMMSS } from '../../utils/formatters';
 import Card, { CardBody } from '../../components/Card';
 import Loading from '../../components/Loading';
 
-import { trackActions } from '../../redux';
+import { libraryActions } from '../../redux';
 
 class TrackViewPage extends Component {
   componentDidMount() {
-    const { trackState, trackActions, match } = this.props;
+    const { trackState, libraryActions, match } = this.props;
     const { id } = match.params;
 
     if (trackState.doc == null || id !== trackState.doc._id) {
-      trackActions.findOne(id);
+      libraryActions.findOne(id);
     }
   }
 
@@ -86,13 +86,13 @@ class TrackViewPage extends Component {
 
 function mapStateToProps(state) {
   return {
-    trackState: state.track,
+    trackState: state.library,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    trackActions: bindActionCreators({ ...trackActions }, dispatch),
+    libraryActions: bindActionCreators({ ...libraryActions }, dispatch),
   };
 }
 

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Field, reduxForm } from 'redux-form';
 
-import { alertActions, artistActions } from '../../../redux';
+import { alertActions, libraryActions } from '../../../redux';
 import { requiredValidate } from '../../../utils/validation.js';
 
 import ButtonIcon from '../../ButtonIcon';
@@ -30,9 +30,9 @@ class FormArtistUpdateName extends Component {
   };
 
   submit = values => {
-    const { alertActions, artistActions } = this.props;
+    const { alertActions, libraryActions } = this.props;
 
-    return artistActions.update(values, () => {
+    return libraryActions.update(values, () => {
       alertActions.show('success', 'Success', 'Artist name has been updated');
       this.setState({
         editMode: false,
@@ -42,9 +42,9 @@ class FormArtistUpdateName extends Component {
 
   render() {
     const { handleDefault, handleEditClick, props, state, submit } = this;
-    const { artist, handleSubmit, submitting } = props;
+    const { library, handleSubmit, submitting } = props;
     const { editMode } = state;
-    const { doc } = artist;
+    const { doc } = library;
     const { name } = doc;
 
     return (
@@ -97,16 +97,16 @@ const ReduxFormArtistUpdateName = reduxForm({
 
 function mapDispatchToProps(dispatch) {
   return {
-    artistActions: bindActionCreators({ ...artistActions }, dispatch),
+    libraryActions: bindActionCreators({ ...libraryActions }, dispatch),
     alertActions: bindActionCreators({ ...alertActions }, dispatch),
   };
 }
 
-function mapStateToProps({ artist }) {
+function mapStateToProps({ library }) {
   return {
-    artist,
+    library,
     initialValues: {
-      ...artist.doc,
+      ...library.doc,
     },
   };
 }

@@ -11,16 +11,16 @@ import FormArtistUpdateName from '../../components/forms/FormArtistUpdateName';
 import LargeText from '../../components/LargeText';
 import TableArtistAlbums from '../../components/tables/TableArtistAlbums';
 
-import { artistActions } from '../../redux';
+import { libraryActions } from '../../redux';
 
 class ArtistViewPage extends Component {
   componentDidMount() {
-    const { artist, artistActions, match } = this.props;
-    const { _id } = artist.doc;
+    const { library, libraryActions, match } = this.props;
+    const { _id } = library.doc;
     const { id } = match.params;
 
     if (id !== _id) {
-      artistActions.findOne(id);
+      libraryActions.findOne(id);
     }
   }
 
@@ -35,8 +35,8 @@ class ArtistViewPage extends Component {
 
   render() {
     const { navigateToAlbum, props } = this;
-    const { match, artist } = props;
-    const { doc, loading } = artist;
+    const { match, library } = props;
+    const { doc, loading } = library;
     const { albums, updated_at } = doc;
     const dateObj = new Date(updated_at);
     const lastUpdated = `${dateObj.toLocaleDateString()} ${dateObj.toLocaleTimeString()}`;
@@ -76,13 +76,13 @@ class ArtistViewPage extends Component {
 
 function mapDispatchToProps(dispatch) {
   return {
-    artistActions: bindActionCreators({ ...artistActions }, dispatch),
+    libraryActions: bindActionCreators({ ...libraryActions }, dispatch),
   };
 }
 
-function mapStateToProps({ artist }) {
+function mapStateToProps({ library }) {
   return {
-    artist,
+    library,
   };
 }
 

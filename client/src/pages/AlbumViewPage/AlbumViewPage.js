@@ -10,13 +10,13 @@ import Loading from '../../components/Loading';
 import TableAlbumTracks from '../../components/tables/TableAlbumTracks';
 
 import { Link } from 'react-router-dom';
-import { albumActions, configActions } from '../../redux';
+import { libraryActions, configActions } from '../../redux';
 
 class AlbumViewPage extends Component {
   componentDidMount() {
     const {
       albumState,
-      albumActions,
+      libraryActions,
       configActions,
       configState,
       match,
@@ -25,7 +25,7 @@ class AlbumViewPage extends Component {
     const { id } = match.params;
 
     if (id !== _id) {
-      albumActions.findOne(id);
+      libraryActions.findOne(id);
     }
 
     if (!('album' in configState.customFields)) {
@@ -44,9 +44,9 @@ class AlbumViewPage extends Component {
   };
 
   handleTrackRefresh = () => {
-    const { match, albumActions } = this.props;
+    const { match, libraryActions } = this.props;
     const { id } = match.params;
-    albumActions.findOne(id);
+    libraryActions.findOne(id);
   };
 
   render() {
@@ -128,16 +128,16 @@ class AlbumViewPage extends Component {
   }
 }
 
-function mapStateToProps({ album, config }) {
+function mapStateToProps({ library, config }) {
   return {
-    albumState: album,
+    albumState: library,
     configState: config,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    albumActions: bindActionCreators({ ...albumActions }, dispatch),
+    libraryActions: bindActionCreators({ ...libraryActions }, dispatch),
     configActions: bindActionCreators({ ...configActions }, dispatch),
   };
 }

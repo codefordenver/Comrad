@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import _ from 'lodash';
 
 import Form from './Form';
 import Modal from '../../Modal';
 
-import { getShowSelected, updateSeries } from '../../../redux/show';
+import { updateSeries } from '../../../redux/show';
 import { setModalVisibility } from '../../../redux/modal';
 
 import { diff } from 'deep-diff';

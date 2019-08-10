@@ -34,7 +34,7 @@ class DatePicker__React extends Component {
     const { handleDateChange, props, state } = this;
     const {
       className,
-      input: { name, value },
+      input: { name },
       label,
       meta,
       controlledDate,

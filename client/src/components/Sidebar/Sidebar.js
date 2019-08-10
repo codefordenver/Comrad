@@ -4,12 +4,26 @@ import Tooltip from '../Tooltip';
 import { SidebarData } from './SidebarData';
 
 class Sidebar extends Component {
+  checkRole = sidebarRole => {
+    const { authRole } = this.props;
+
+    if (authRole !== sidebarRole) {
+      return false;
+    }
+
+    return true;
+  };
+
   render() {
     return (
       <nav className="sidebar">
         <ul className="sidebar__list">
           {SidebarData.map(item => {
-            const { iconClass, name, tooltipText, url } = item;
+            const { iconClass, name, role, tooltipText, url } = item;
+
+            if (item.role && !this.checkRole(role)) {
+              return false;
+            }
 
             return (
               <Tooltip

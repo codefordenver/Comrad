@@ -14,7 +14,7 @@
   "dependencies": {
     "classnames": "^2.2.6",
     "downshift": "^3.2.10",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.15",
     "query-string": "^6.5.0",
     "rc-tooltip": "^3.7.3",
     "react": "^16.8.6",

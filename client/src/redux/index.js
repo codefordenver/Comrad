@@ -6,6 +6,7 @@ import { alertReducer } from './alert';
 import { artistReducer } from './artist';
 import { authReducer } from './auth';
 import { configReducer } from './config';
+import { genreReducer } from './genre';
 import { libraryReducer } from './library';
 import { modalReducer } from './modal';
 import { permissionReducer } from './permission';
@@ -21,6 +22,7 @@ export * from './alert';
 export * from './artist';
 export * from './auth';
 export * from './config';
+export * from './genre';
 export * from './permission';
 export * from './playlist';
 export * from './track';
@@ -34,6 +36,7 @@ export default combineReducers({
   auth: authReducer,
   config: configReducer,
   form: formReducer,
+  genre: genreReducer,
   library: libraryReducer,
   modal: modalReducer,
   permission: permissionReducer,

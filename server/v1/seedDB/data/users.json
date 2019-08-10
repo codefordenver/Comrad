@@ -568,14 +568,13 @@
     "password": "password"
   },
   {
-    "api_key": "8461fded-9dc8-4900-9d69-2c4a2c25be16",
     "can_delete": false,
     "on_air_name": "DJ Guest",
     "primary_phone": null,
     "reset_token": null,
     "reset_token_expiry": null,
     "status": "Active",
-    "email": "guest@test.com",
+    "email": "guest@comrad.com",
     "first_name": "Guest",
     "last_name": "Test",
     "role": "Guest",

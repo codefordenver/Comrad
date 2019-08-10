@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const { requireAC } = require('../middlewares');
 const {
   showRootController,
   showInstanceController,
@@ -6,24 +7,35 @@ const {
 } = require('../controllers');
 
 // :type is either "shows" or "traffic"
-
+const getEventAccess = (req, access) => {
+  const { eventType } = req.params;
+  return requireAC(eventType, access);
+};
 router
   .route('/:eventType/')
-  .get(showRootController.find)
-  .post(showRootController.create);
+  .get(req => getEventAccess(req, 'readAny'), showRootController.find)
+  .post(req => getEventAccess(req, 'createAny'), showRootController.create);
 
 router
   .route('/:eventType/:id')
-  .get(showRootController.findById)
-  .delete(showRootController.remove)
-  .put(showRootController.createInstance)
-  .patch(showRootController.update);
+  .get(req => getEventAccess(req, 'readAny'), showRootController.findById)
+  .delete(req => getEventAccess(req, 'deleteAny'), showRootController.remove)
+  .put(
+    req => getEventAccess(req, 'updateAny'),
+    showRootController.createInstance,
+  )
+  .patch(req => getEventAccess(req, 'updateAny'), showRootController.update);
 
-router.route('/:eventType/instance/:id').delete(showInstanceController.remove);
+router
+  .route('/:eventType/instance/:id')
+  .delete(
+    req => getEventAccess(req, 'deleteAny'),
+    showInstanceController.remove,
+  );
 
 router
   .route('/:eventType/series/:id')
-  .delete(showSeriesController.remove)
-  .patch(showSeriesController.update);
+  .delete(req => getEventAccess(req, 'deleteAny'), showSeriesController.remove)
+  .patch(req => getEventAccess(req, 'updateAny'), showSeriesController.update);
 
 module.exports = router;

@@ -140,11 +140,13 @@ function mapStateToProps(state) {
     const searchDates = getSearchDate(state.show);
     let startTime = '';
     let endTime = '';
-    if (selectedShow.start !== undefined) {
-      startTime = moment(selectedShow.start);
-    }
-    if (selectedShow.end !== undefined) {
-      endTime = moment(selectedShow.end);
+    if (selectedShow !== undefined) {
+      if (selectedShow.start !== undefined) {
+        startTime = moment(selectedShow.start);
+      }
+      if (selectedShow.end !== undefined) {
+        endTime = moment(selectedShow.end);
+      }
     }
 
     return {

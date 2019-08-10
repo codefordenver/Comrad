@@ -9,6 +9,7 @@ const {
 // :type is either "shows" or "traffic"
 const getEventAccess = (req, access) => {
   const { eventType } = req.params;
+  console.log(eventType);
   return requireAC(eventType, access);
 };
 router

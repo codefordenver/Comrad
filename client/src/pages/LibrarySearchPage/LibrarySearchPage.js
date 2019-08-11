@@ -56,10 +56,12 @@ class LibrarySearchPage extends Component {
   };
 
   deleteFailure = () => {
+    window.scrollTo(0, 0);
     this.closeDeleteModal();
   };
 
   deleteSuccess = entity => {
+    window.scrollTo(0, 0);
     this.closeDeleteModal();
     this.props.alertActions.hide();
     this.setState(

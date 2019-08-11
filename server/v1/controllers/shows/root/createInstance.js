@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const {
-  utils: { getModelForEventType },
+  utils: { getModelForEventType, showList },
   utils__mongoose: { populateShowHost, populateMasterShow, master_time_id },
 } = require('../utils');
 
@@ -23,7 +23,11 @@ function createInstance(req, res) {
     let d1 = doc;
     d1._id = mongoose.Types.ObjectId();
     d1.master_event_id = id;
+    //Set show_details to an empty object first so it will inherit any updates on the master series
+    d1.show_details = {};
+    //Add only the new host if available
     d1.show_details.host = host;
+    //Fill in remaining time details of instance
     d1.start_time_utc = start_time_utc;
     d1.end_time_utc = end_time_utc;
     d1.repeat_rule.repeat_start_date = start_time_utc;
@@ -39,22 +43,7 @@ function createInstance(req, res) {
           dbModel
             .populate(dbShow, populateMasterShow())
             .then(dbShow => {
-              let returnedShow = { ...dbShow.toObject() };
-              const {
-                master_event_id,
-                replace_event_date,
-                show_details,
-              } = dbShow;
-
-              returnedShow.master_event_id = master_event_id
-                ? master_event_id._id
-                : null;
-
-              returnedShow.master_time_id = master_time_id(
-                returnedShow.master_event_id,
-                replace_event_date,
-              );
-              res.json(returnedShow);
+              res.json(showList(dbShow, start_time_utc, end_time_utc));
             })
             .catch(err => {
               res.status(422).json(err);

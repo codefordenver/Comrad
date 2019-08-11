@@ -33,14 +33,15 @@ async function findAll(req, res) {
 
   //set defaults for variables & cast variables to correct data type
   sortBy = sortBy || 'updated_at';
-  sortDescending = sortDescending || true;
+  sortDescending = sortDescending || 'true';
   page = page != null ? Number(page) : 0;
 
   let sortObj = {};
-  sortObj[sortBy] = sortDescending ? -1 : 1;
+  sortObj[sortBy] = sortDescending === 'true' ? -1 : 1;
 
   let filterObj = {};
-  if (type != null) {
+  let validTypes = ['album', 'artist', 'track'];
+  if (type != null && validTypes.indexOf(type) !== -1) {
     filterObj.type = type;
   }
 
@@ -55,7 +56,7 @@ async function findAll(req, res) {
   const totalPages = Math.ceil(libraryDocs / keys.queryPageSize);
 
   let resultsJson = {
-    results: libraryResults,
+    docs: libraryResults,
     totalPages: totalPages,
   };
   if (page + 1 >= totalPages) {

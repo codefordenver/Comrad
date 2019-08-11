@@ -2,7 +2,7 @@ const db = require('../../models');
 const keys = require('../../config/keys');
 
 async function search(req, res) {
-  let { s, type = 'all' } = req.query;
+  let { s, type } = req.query;
 
   if (!s) {
     return res.json([]);
@@ -10,7 +10,8 @@ async function search(req, res) {
 
   let filterObj = { $text: { $search: s } };
 
-  if (type !== 'all') {
+  let validTypes = ['album', 'artist', 'track'];
+  if (type != null && validTypes.indexOf(type) !== -1) {
     filterObj.type = type;
   }
 
@@ -125,7 +126,7 @@ async function search(req, res) {
   });
 
   return res.json({
-    results: data,
+    docs: data,
     totalPages: 1,
   });
 }

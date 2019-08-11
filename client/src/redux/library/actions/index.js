@@ -3,6 +3,7 @@ import { changeEditingName } from './changeEditingName';
 import { clear } from './clear';
 import { update } from './update';
 import { findOne } from './findOne';
+import { search } from './search';
 import { remove } from './remove';
 
 export const libraryActions = {
@@ -11,5 +12,6 @@ export const libraryActions = {
   clear,
   findOne,
   remove,
+  search,
   update,
 };

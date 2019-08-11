@@ -7,6 +7,7 @@ import { genreActions, libraryActions } from '../../../redux';
 
 import Button from '../../Button';
 import Checkbox from '../../Checkbox';
+import CustomFieldsEdit from '../../CustomFieldsEdit';
 import Input from '../../Input';
 import Select from '../../Select';
 
@@ -30,7 +31,12 @@ class FormAlbumAdd extends Component {
 
   render() {
     const { props, submit } = this;
-    const { handleSubmit, genreState } = props;
+    const { handleSubmit, configState, genreState } = props;
+
+    let albumCustomFields = [];
+    if ('album' in configState.customFields) {
+      albumCustomFields = configState.customFields.album;
+    }
 
     return (
       <form className="form-album-add" onSubmit={handleSubmit(submit)}>
@@ -41,14 +47,15 @@ class FormAlbumAdd extends Component {
           autoFocus
           validate={requiredValidate}
         />
-        <Field component={Input} label="Label" name="label" />
         <Field
           component={Select}
           label="Genre"
           name="genre"
           selectOptions={genreState.docs}
         />
+        <Field component={Input} label="Label" name="label" />
         <Field component={Checkbox} label="Compilation" name="compilation" />
+        <CustomFieldsEdit fieldsMeta={albumCustomFields} />
         <div>
           <Button type="submit">Submit</Button>
         </div>
@@ -63,6 +70,7 @@ const ReduxFormAlbumAdd = reduxForm({
 
 function mapStateToProps(state) {
   return {
+    configState: state.config,
     genreState: state.genre,
     initialValues: {
       artist: state.library.doc._id,

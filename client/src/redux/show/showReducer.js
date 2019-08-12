@@ -3,8 +3,6 @@ import 'moment';
 import {
   SHOW_CLEAR,
   SHOW_CLEAR_ONE,
-  SHOW_GET,
-  SHOW_POST,
   SHOW_CREATE_INSTANCE,
   SHOW_POSTING,
   SHOW_UPDATE,
@@ -29,6 +27,8 @@ export function showReducer(state = initialState, { type, payload }) {
       return {
         ...state,
         data: {},
+        fetching: false,
+        error: false,
       };
 
     case SHOW_CLEAR_ONE:
@@ -36,29 +36,10 @@ export function showReducer(state = initialState, { type, payload }) {
         ...state,
         selected: {},
       };
-
-    case SHOW_GET:
-      return {
-        ...state,
-        data: { ...state.data, ..._.keyBy([payload], 'master_time_id') },
-        fetching: false,
-        error: false,
-      };
-
-    case SHOW_POST:
-      
     case SHOW_UPDATE:
       return {
         ...state,
         data: { ...state.data, ..._.keyBy(payload, 'master_time_id') },
-        fetching: false,
-        error: false,
-      };
-
-    case SHOW_CLEAR:
-      return {
-        ...state,
-        data: {},
         fetching: false,
         error: false,
       };

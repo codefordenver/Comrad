@@ -8,11 +8,13 @@ import {
 } from '../../redux/modal';
 
 import NewShowModal from './NewShow/Modal';
-import EditShowModal from './EditShow/Modal';
 import ViewShowModal from './ViewShow/Modal';
+import EditShowModal from './EditShow/Modal';
+import EditSeriesModal from './EditShow/Modal__Series';
 
 export const MODAL_NEW_SHOW = 'modal_new_show';
 export const MODAL_EDIT_SHOW = 'modal_edit_show';
+export const MODAL_EDIT_SERIES = 'modal_edit_series';
 export const MODAL_VIEW_SHOW = 'modal_view_show';
 
 const ModalController = props => {
@@ -20,11 +22,14 @@ const ModalController = props => {
     case MODAL_NEW_SHOW:
       return <NewShowModal {...props} />;
 
+    case MODAL_VIEW_SHOW:
+      return <ViewShowModal {...props} />;
+
     case MODAL_EDIT_SHOW:
       return <EditShowModal {...props} />;
 
-    case MODAL_VIEW_SHOW:
-      return <ViewShowModal {...props} />;
+    case MODAL_EDIT_SERIES:
+      return <EditSeriesModal {...props} />;
 
     default:
       return null;

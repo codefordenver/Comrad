@@ -1,0 +1,20 @@
+.show-builder-item-list {
+  .show-builder-item {
+    border: 1px solid #333;
+    border-radius: 4px;
+    padding: 4px;
+    margin-bottom: 2px;
+    overflow: hidden;
+    
+    button {
+      float: right;
+      margin-left: 4px;
+      
+      &.button--to-scratchpad {
+        float: left;
+        margin-left: 0px;
+        margin-right: 4px;
+      }
+    }
+  }
+}

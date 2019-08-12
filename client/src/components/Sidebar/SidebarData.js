@@ -14,7 +14,7 @@ export const SidebarData = [
   {
     name: 'calendar-check',
     url: '/calendar',
-    iconClass: 'fas fa-calendar-check',
+    iconClass: 'fas fa-car',
     tooltipText: 'Traffic Calendar',
   },
   {
@@ -46,5 +46,6 @@ export const SidebarData = [
     url: '/user/search',
     iconClass: 'fas fa-user',
     tooltipText: 'Users',
+    role: 'Admin',
   },
 ];

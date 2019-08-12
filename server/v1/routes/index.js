@@ -1,33 +1,31 @@
 const router = require('express').Router();
 
+const accessControl = require('./accessControl');
 const albums = require('./albums');
 const announcements = require('./announcements');
 const artists = require('./artists');
 const auth = require('./auth');
-const features = require('./features');
-const giveaways = require('./giveaways');
+const config = require('./config');
+const genres = require('./genres');
+const events = require('./events');
 const library = require('./library');
-const permissions = require('./permissions');
+const playlists = require('./playlists');
 const resources = require('./resources');
-const shows = require('./shows');
 const tracks = require('./tracks');
-const traffic = require('./traffic');
 const users = require('./users');
-const venues = require('./venues');
 
+router.use('/access-control', accessControl);
 router.use('/albums', albums);
 router.use('/announcements', announcements);
 router.use('/artists', artists);
 router.use('/auth', auth);
-router.use('/features', features);
-router.use('/giveaways', giveaways);
+router.use('/config', config);
+router.use('/genres', genres);
+router.use('/events', events);
 router.use('/library', library);
-router.use('/permissions', permissions);
+router.use('/playlists', playlists);
 router.use('/resources', resources);
-router.use('/shows', shows);
 router.use('/tracks', tracks);
-router.use('/traffic', traffic);
 router.use('/users', users);
-router.use('/venues', venues);
 
 module.exports = router;

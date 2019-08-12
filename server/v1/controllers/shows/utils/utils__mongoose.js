@@ -48,7 +48,7 @@ function findShowQueryByDateRange(start, end) {
             },
             {
               end_time_utc: {
-                $gte: start,
+                $gt: start, //use $gt so we do not get events that start at the exact endDate time
               },
             },
           ],
@@ -68,7 +68,6 @@ function populateShowHost() {
 function populateMasterShow() {
   return {
     path: 'master_event_id',
-    select: 'show_details',
   };
 }
 
@@ -79,10 +78,10 @@ function master_time_id(_id, start_time) {
 function master_time_id__byShowType(show) {
   if (show.master_event_id) {
     //Instance Show
-    return master_time_id(show.master_event_id, show.start_time_utc);
+    return master_time_id(show.master_event_id._id, show.replace_event_date);
   } else {
     //Regular Show
-    return master_time_id(show._id, show.start_time_utc);
+    return show._id;
   }
 }
 

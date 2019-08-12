@@ -15,7 +15,7 @@ class MainLayout extends Component {
   }
 
   render() {
-    const { alertState, children } = this.props;
+    const { alertState, authState, children } = this.props;
 
     return (
       <main className="main-layout">
@@ -24,7 +24,7 @@ class MainLayout extends Component {
         </section>
 
         <section className="main-layout__sidebar">
-          <Sidebar />
+          <Sidebar authRole={authState.doc.role} />
         </section>
 
         <section className="main-layout__body">
@@ -40,9 +40,10 @@ class MainLayout extends Component {
   }
 }
 
-function mapStateToProps({ alert }) {
+function mapStateToProps({ alert, auth }) {
   return {
     alertState: alert,
+    authState: auth,
   };
 }
 

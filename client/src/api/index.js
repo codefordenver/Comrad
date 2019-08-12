@@ -1,8 +1,12 @@
 export { albumAPI } from './album';
 export { artistAPI } from './artist';
 export { authAPI } from './auth';
+export { configAPI } from './config';
+export { genreAPI } from './genre';
 export { permissionAPI } from './permission';
+export { playlistAPI } from './playlist';
 export { resourceAPI } from './resource';
 export { showAPI } from './show';
 export { trackAPI } from './track';
+export { trafficAPI } from './traffic';
 export { userAPI } from './user';

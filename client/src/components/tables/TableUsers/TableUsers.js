@@ -2,26 +2,16 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import ReactTable from 'react-table';
 
-const CellUserPermission = ({ value }) => {
-  return (
-    <>
-      {value.map(permission => (
-        <span key={permission} className="table-users__permission">
-          {permission}
-        </span>
-      ))}
-    </>
-  );
+const CellUserRole = ({ value }) => {
+  if (value) {
+    return <span className="table-users__role">{value}</span>;
+  }
+
+  return <span className="table-users__role">No Role</span>;
 };
 
 const CellUserStatus = ({ value }) => {
-  const status = value === 'Active';
-
-  return (
-    <span className={`table-users__status ${status ? 'active' : 'inactive'}`}>
-      {value}
-    </span>
-  );
+  return <span className={`table-users__status ${value}`}>{value}</span>;
 };
 
 const columns = [
@@ -42,9 +32,9 @@ const columns = [
     accessor: 'on_air_name',
   },
   {
-    Header: 'Permissions',
-    accessor: 'permissions',
-    Cell: row => <CellUserPermission {...row} />,
+    Header: 'Role',
+    accessor: 'role',
+    Cell: row => <CellUserRole {...row} />,
   },
   {
     Header: 'Status',

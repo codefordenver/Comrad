@@ -2,13 +2,27 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import { requiredValidate } from '../../../utils/validation';
-import { albumActions } from '../../../redux';
+import { albumActions, configActions, genreActions } from '../../../redux';
 import Button from '../../Button';
 import Input from '../../Input';
 import { bindActionCreators } from 'redux';
 import Checkbox from '../../Checkbox';
+import CustomFieldsEdit from '../../CustomFieldsEdit';
+import Select from '../../Select';
 
 class FormAlbumEdit extends Component {
+  componentDidMount() {
+    const { configActions, configState, genreActions, genreState } = this.props;
+
+    if (!('album' in configState.customFields)) {
+      configActions.customFieldsForModel('album');
+    }
+
+    if (!genreState.docs.length) {
+      genreActions.findAll();
+    }
+  }
+
   submit = values => {
     const { albumActions, submitCallback } = this.props;
     return albumActions.edit(values, albumData => {
@@ -20,7 +34,11 @@ class FormAlbumEdit extends Component {
 
   render() {
     const { props, submit } = this;
-    const { handleSubmit } = props;
+    const { handleSubmit, configState, genreState } = props;
+    let albumCustomFields = [];
+    if ('album' in configState.customFields) {
+      albumCustomFields = configState.customFields.album;
+    }
 
     return (
       <form
@@ -40,6 +58,13 @@ class FormAlbumEdit extends Component {
         />
         <Field component={Input} label="Label" name="label" />
         <Field component={Checkbox} label="Compilation" name="compilation" />
+        <CustomFieldsEdit fieldsMeta={albumCustomFields} />
+        <Field
+          component={Select}
+          label="Genre"
+          name="genre"
+          selectOptions={genreState.docs}
+        />
         <div>
           <Button type="submit">Submit</Button>
         </div>
@@ -49,13 +74,17 @@ class FormAlbumEdit extends Component {
 }
 
 function mapStateToProps(state) {
-  const { name, label, compilation, _id } = state.album.doc;
+  const { name, label, compilation, _id, custom, genre } = state.album.doc;
   return {
+    configState: state.config,
+    genreState: state.genre,
     initialValues: {
       name: name,
       label: label,
       compilation: compilation,
       id: _id,
+      custom: custom,
+      genre: genre != null ? genre._id : null,
     },
   };
 }
@@ -63,6 +92,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     albumActions: bindActionCreators({ ...albumActions }, dispatch),
+    configActions: bindActionCreators({ ...configActions }, dispatch),
+    genreActions: bindActionCreators({ ...genreActions }, dispatch),
   };
 }
 

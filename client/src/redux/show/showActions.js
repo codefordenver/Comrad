@@ -1,6 +1,7 @@
 import axios from 'axios';
 import {
   SHOW_CLEAR,
+  SHOW_CLEAR_ONE,
   SHOW_UPDATE,
   SHOW_DELETE,
   SHOW_SEARCH,
@@ -112,6 +113,14 @@ export const deleteShowSeries = show => async dispatch => {
   try {
     const response = await axios.delete(`/v1/events/shows/series/${show}`);
     dispatch({ type: SHOW_DELETE_SERIES, payload: response.data });
+  } catch (e) {
+    dispatch({ type: SHOW_ERROR, payload: e });
+  }
+};
+
+export const clearShow = () => async dispatch => {
+  try {
+    dispatch({ type: SHOW_CLEAR_ONE });
   } catch (e) {
     dispatch({ type: SHOW_ERROR, payload: e });
   }

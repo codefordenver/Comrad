@@ -2,6 +2,7 @@ import _ from 'lodash';
 import 'moment';
 import {
   SHOW_CLEAR,
+  SHOW_CLEAR_ONE,
   SHOW_POSTING,
   SHOW_UPDATE,
   SHOW_SEARCH,
@@ -21,18 +22,23 @@ const initialState = {
 
 export function showReducer(state = initialState, { type, payload }) {
   switch (type) {
-    case SHOW_UPDATE:
-      return {
-        ...state,
-        data: { ...state.data, ..._.keyBy(payload, 'master_time_id') },
-        fetching: false,
-        error: false,
-      };
-
     case SHOW_CLEAR:
       return {
         ...state,
         data: {},
+        fetching: false,
+        error: false,
+      };
+
+    case SHOW_CLEAR_ONE:
+      return {
+        ...state,
+        selected: {},
+      };
+    case SHOW_UPDATE:
+      return {
+        ...state,
+        data: { ...state.data, ..._.keyBy(payload, 'master_time_id') },
         fetching: false,
         error: false,
       };

@@ -1,4 +1,5 @@
 export const SHOW_CLEAR = 'show_clear';
+export const SHOW_CLEAR_ONE = 'show_clear_one';
 export const SHOW_DELETE = 'show_delete';
 export const SHOW_ERROR = 'show_error';
 export const SHOW_FETCHING = 'show_fetching';

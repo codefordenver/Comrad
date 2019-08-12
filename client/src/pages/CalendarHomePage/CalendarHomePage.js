@@ -36,9 +36,9 @@ class CalendarHomePage extends Component {
     };
   }
 
-  showNewShowModal = show => {
+  showNewShowModal = () => {
     const { setModalVisibility, clearShow } = this.props;
-    clearShow(show);
+    clearShow();
     setModalVisibility(MODAL_NEW_SHOW, true);
   };
 

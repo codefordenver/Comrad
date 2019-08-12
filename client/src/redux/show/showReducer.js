@@ -156,11 +156,6 @@ export function showReducer(state = initialState, { type, payload }) {
         ...state,
         selected: payload,
       };
-    case SHOW_CLEAR:
-      return {
-        ...state,
-        selected: payload,
-      };
 
     //Need some type of error response from server.
     case SHOW_ERROR:

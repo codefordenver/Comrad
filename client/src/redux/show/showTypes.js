@@ -1,4 +1,5 @@
 export const SHOW_CLEAR = 'show_clear';
+export const SHOW_CLEAR_ONE = 'show_clear_one';
 export const SHOW_DELETE = 'show_delete';
 export const SHOW_DELETE_SERIES = 'show_delete_series';
 export const SHOW_DELETE_INSTANCE = 'show_delete_instance';

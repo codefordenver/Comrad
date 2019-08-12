@@ -3,7 +3,6 @@ import 'moment';
 import {
   SHOW_CLEAR,
   SHOW_CLEAR_ONE,
-  SHOW_CREATE_INSTANCE,
   SHOW_POSTING,
   SHOW_UPDATE,
   SHOW_SEARCH,

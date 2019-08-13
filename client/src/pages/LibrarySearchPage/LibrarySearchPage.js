@@ -110,8 +110,8 @@ class LibrarySearchPage extends Component {
   loadLibraryData = () => {
     const { activeFilter, searchString, sort, page } = this.state;
     const { libraryActions, loading } = this.props;
+    //React Table can sometimes fire this function when it's already in the process of being called from a setstate callback
     if (!loading) {
-      //React Table can sometimes fire this function when it's already in the process of being called from a setstate callback
       libraryActions.search(activeFilter, searchString, sort, page);
     }
   };

@@ -134,7 +134,7 @@ export const searchShow = (
   onlyDisplayShowsWithNoHost = false,
 ) => async dispatch => {
   try {
-    dispatch({ type: SHOW_FETCHING }); //TODO: confirm this is okay with josh
+    dispatch({ type: SHOW_FETCHING });
 
     const response = await showAPI.find(
       startDate,

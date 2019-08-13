@@ -5,6 +5,7 @@ export const libraryTypes = {
   FIND_ONE: 'library_find_one',
   LOAD: 'library_loading',
   LOADING_ERROR: 'library_loading_error',
+  LOADING_SEARCH: 'library_loading_search',
   SEARCH: 'library_search',
   UPDATE: 'library_update',
 };

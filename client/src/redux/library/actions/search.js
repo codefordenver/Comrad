@@ -8,20 +8,30 @@ import { libraryAPI } from '../../../api';
   desc: true or false, whether to sort as descending or not 
 Cannot be used with search results (those are sorted by how well they match the search term)*/
 /* page is an optional Number, and is the page number of results to return (default 0). Cannot currently be used with search results */
-export const search = (type, searchString, sort, page) => async dispatch => {
+/* limit is optional, and if provided, is applied to the search results (it's not applied to find all results) */
+export const search = (
+  type,
+  searchString,
+  sort,
+  page,
+  limit,
+) => async dispatch => {
   try {
-    dispatch({ type: libraryTypes.LOAD });
+    dispatch({ type: libraryTypes.LOADING_SEARCH });
 
     let apiResponse;
     if (searchString != null && searchString.length > 0) {
-      apiResponse = await libraryAPI.search(type, searchString);
+      apiResponse = await libraryAPI.search(type, searchString, limit);
     } else {
       apiResponse = await libraryAPI.findAll(type, sort, page);
     }
 
     let { docs, totalPages } = apiResponse.data;
 
-    dispatch({ type: libraryTypes.SEARCH, payload: { docs, totalPages } });
+    dispatch({
+      type: libraryTypes.SEARCH,
+      payload: { docs, searchString, totalPages },
+    });
   } catch (err) {
     console.log(err);
     dispatch({ type: libraryTypes.LOADING_ERROR });

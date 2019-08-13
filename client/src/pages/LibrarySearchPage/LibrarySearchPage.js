@@ -111,9 +111,9 @@ class LibrarySearchPage extends Component {
 
   loadLibraryData = () => {
     const { activeFilter, searchString, sort, page } = this.state;
-    const { libraryActions, loading } = this.props;
+    const { libraryActions, loadingSearch } = this.props;
     //React Table can sometimes fire this function when it's already in the process of being called from a setstate callback
-    if (!loading) {
+    if (!loadingSearch) {
       libraryActions.search(activeFilter, searchString, sort, page);
     }
   };
@@ -165,7 +165,7 @@ class LibrarySearchPage extends Component {
     const {
       handleSubmit,
       docs,
-      loading,
+      loadingSearch,
       loadingError,
       totalPages,
     } = this.props;
@@ -241,7 +241,7 @@ class LibrarySearchPage extends Component {
                 columns={columns}
                 data={docs != null ? docs : []}
                 pages={totalPages}
-                loading={loading}
+                loading={loadingSearch}
                 manual
                 noDataText="No Data Found"
                 showPageSizeOptions={false}
@@ -430,11 +430,11 @@ class LibrarySearchPage extends Component {
 }
 
 function mapStateToProps(state) {
-  const { docs, loading, loadingError, totalPages } = state.library;
+  const { docs, loadingSearch, loadingError, totalPages } = state.library;
 
   return {
     docs,
-    loading,
+    loadingSearch,
     loadingError,
     totalPages,
   };

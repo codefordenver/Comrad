@@ -8,6 +8,7 @@ import { configActions, genreActions, libraryActions } from '../../../redux';
 import Button from '../../Button';
 import Checkbox from '../../Checkbox';
 import CustomFieldsEdit from '../../CustomFieldsEdit';
+import DropdownArtist from '../../DropdownArtist';
 import Input from '../../Input';
 import Select from '../../Select';
 
@@ -19,7 +20,7 @@ class FormAlbumAdd extends Component {
       configActions.customFieldsForModel('album');
     }
 
-    if (!genreState.docs.length) {
+    if (!Object.keys(genreState.docs).length) {
       genreActions.findAll();
     }
   }
@@ -44,6 +45,12 @@ class FormAlbumAdd extends Component {
 
     return (
       <form className="form-album-add" onSubmit={handleSubmit(submit)}>
+        <Field
+          component={DropdownArtist}
+          label="Artist"
+          name="artist"
+          validate={requiredValidate}
+        />
         <Field
           component={Input}
           label="Name"

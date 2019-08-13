@@ -6,7 +6,7 @@ const initialState = {
   editingName: false,
   loading: false,
   loadingError: false,
-  loadingSearch: true,
+  loadingSearch: false,
   searchString: null,
   totalPages: null,
 };

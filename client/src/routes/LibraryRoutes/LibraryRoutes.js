@@ -13,7 +13,6 @@ import TrackEditPage from '../../pages/TrackEditPage';
 import AlbumAddPage from '../../pages/AlbumAddPage';
 import AlbumEditPage from '../../pages/AlbumEditPage';
 
-
 class Library extends Component {
   render() {
     const { url } = this.props.match;
@@ -24,6 +23,7 @@ class Library extends Component {
         <Switch>
           <Route path={`${url}/album/:id/add`} component={TrackAddPage} />
           <Route path={`${url}/album/:id/edit`} component={AlbumEditPage} />
+          <Route path={`${url}/album/add`} component={AlbumAddPage} />
           <Route path={`${url}/album/:id`} component={AlbumViewPage} />
         </Switch>
         <Switch>

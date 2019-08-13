@@ -140,9 +140,11 @@ class DropdownArtist extends Component {
       initialValue,
       onSelect,
       renderArtistListItem,
+      props,
       state,
     } = this;
     const { cachedSearches, currentInputValue, hasFocus } = state;
+    const { autoFocus } = props;
 
     // get the documents from the cachedResults property rather than Redux,
     // because Redux might not have the search results of the current input value if there
@@ -176,6 +178,7 @@ class DropdownArtist extends Component {
                 onBlur: handleBlur,
                 onFocus: handleFocus,
               })}
+              autoFocus={autoFocus}
               dirtyOverride={dirtyOverride(currentInputValue)}
               value={currentInputValue}
             />

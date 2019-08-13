@@ -13,7 +13,7 @@ import Input from '../../Input';
 import Select from '../../Select';
 
 class FormAlbumAdd extends Component {
-  componentDidMount() {
+  componentWillMount() {
     const { configState, configActions, genreActions, genreState } = this.props;
 
     if (!('album' in configState.customFields)) {
@@ -36,7 +36,7 @@ class FormAlbumAdd extends Component {
 
   render() {
     const { props, submit } = this;
-    const { handleSubmit, configState, genreState } = props;
+    const { artist, handleSubmit, configState, genreState } = props;
 
     let albumCustomFields = [];
     if ('album' in configState.customFields) {
@@ -49,13 +49,15 @@ class FormAlbumAdd extends Component {
           component={DropdownArtist}
           label="Artist"
           name="artist"
+          artist={artist}
+          autoFocus={artist == null ? true : false}
           validate={requiredValidate}
         />
         <Field
           component={Input}
           label="Name"
           name="name"
-          autoFocus
+          autoFocus={artist != null ? true : false}
           validate={requiredValidate}
         />
         <Field component={Input} label="Label" name="label" />
@@ -84,7 +86,7 @@ function mapStateToProps(state) {
     configState: state.config,
     genreState: state.genre,
     initialValues: {
-      artist: state.library.doc._id,
+      artist: state.library.doc != null ? state.library.doc._id : null,
     },
   };
 }

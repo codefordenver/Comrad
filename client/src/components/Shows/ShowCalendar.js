@@ -21,7 +21,7 @@ import ShowModalController from './ShowModalController';
 import { MODAL_NEW_SHOW } from './ShowModalController';
 import Tooltip from '../Tooltip';
 import ViewShowForm from './ViewShow/Form';
-import { getShowType } from './ViewShow/Form';
+import { getShowType } from '../../utils/shows';
 
 class Calendar extends Component {
   state = {

@@ -17,7 +17,7 @@ router
 
 router
   .route('/search-hosts')
-  .get(requireAC('Users', 'readAny'), usersController.searchHosts);
+  .get(requireAC('Hosts', 'readAny'), usersController.searchHosts);
 
 router
   .route('/:id')

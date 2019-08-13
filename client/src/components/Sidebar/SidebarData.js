@@ -46,5 +46,6 @@ export const SidebarData = [
     url: '/user/search',
     iconClass: 'fas fa-user',
     tooltipText: 'Users',
+    role: 'Admin',
   },
 ];

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Field, formValueSelector } from 'redux-form';
+import { Field } from 'redux-form';
 import _ from 'lodash';
 import moment from 'moment';
 import RRule from 'rrule';

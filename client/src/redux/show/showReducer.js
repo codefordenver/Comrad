@@ -2,12 +2,9 @@ import _ from 'lodash';
 import 'moment';
 import {
   SHOW_CLEAR,
-  SHOW_GET,
-  SHOW_POST,
-  SHOW_CREATE_INSTANCE,
+  SHOW_CLEAR_ONE,
   SHOW_POSTING,
   SHOW_UPDATE,
-  SHOW_UPDATE_HOST,
   SHOW_SEARCH,
   SHOW_DELETE,
   SHOW_DELETE_SERIES,
@@ -29,30 +26,19 @@ export function showReducer(state = initialState, { type, payload }) {
       return {
         ...state,
         data: {},
-      };
-
-    case SHOW_GET:
-      return {
-        ...state,
-        data: { ...state.data, ..._.keyBy([payload], 'master_time_id') },
         fetching: false,
         error: false,
       };
 
-    case SHOW_POST:
+    case SHOW_CLEAR_ONE:
+      return {
+        ...state,
+        selected: {},
+      };
+    case SHOW_UPDATE:
       return {
         ...state,
         data: { ...state.data, ..._.keyBy(payload, 'master_time_id') },
-        posting: false,
-        fetching: false,
-        error: false,
-      };
-
-    case SHOW_CREATE_INSTANCE:
-      return {
-        ...state,
-        data: { ...state.data, [payload.master_time_id]: payload },
-        posting: false,
         fetching: false,
         error: false,
       };
@@ -89,10 +75,17 @@ export function showReducer(state = initialState, { type, payload }) {
       const deleteShowSeries = _.reduce(
         state.data,
         function(result, show, key) {
-          if (show.master_event_id !== masterEventToDelete) {
+          if (show.master_event_id) {
+            //Handles instance and series shows
+            if (show.master_event_id._id !== masterEventToDelete) {
+              result[key] = show;
+            }
+            return result;
+          } else {
+            //Returns all regular shows
             result[key] = show;
+            return result;
           }
-          return result;
         },
         {},
       );
@@ -100,14 +93,6 @@ export function showReducer(state = initialState, { type, payload }) {
       return {
         ...state,
         data: { ...deleteShowSeries },
-        fetching: false,
-        error: false,
-      };
-
-    case SHOW_UPDATE:
-      return {
-        ...state,
-        data: { ...state.data, ..._.keyBy(payload, 'master_time_id') },
         fetching: false,
         error: false,
       };
@@ -132,8 +117,6 @@ export function showReducer(state = initialState, { type, payload }) {
 
     //Need some type of error response from server.
     case SHOW_ERROR:
-      console.error('Error with shows');
-      console.log(payload);
       return {
         ...state,
         fetching: false,

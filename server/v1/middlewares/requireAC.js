@@ -6,6 +6,18 @@ function requireAC(resource, action) {
     // TODO: Need to clean up logic a little bit
     const { authorization } = req.headers;
 
+    // eventType determines if this is show or traffic type
+    const { eventType } = req.params;
+    if (!eventType && !resource) {
+      return res
+        .status(500)
+        .json({ message: 'Access Control Resource is not defined' });
+    }
+
+    if (eventType) {
+      resource = eventType;
+    }
+
     if (authorization) {
       const dbUser = await db.User.findOne({
         'api_key.short': authorization.substr(0, 8),
@@ -22,7 +34,7 @@ function requireAC(resource, action) {
 
     if (!req.user || req.user.status !== 'Active') {
       return res
-        .status(422)
+        .status(401)
         .json({ message: 'Incorrect Credentials or Not Active' });
     }
 
@@ -32,7 +44,7 @@ function requireAC(resource, action) {
     const permission = ac.can(req.user.role)[action](resource);
 
     if (!permission.granted) {
-      return res.status(422).json({ message: 'User Is Not Granted!' });
+      return res.status(403).json({ message: 'User Is Not Granted!' });
     }
 
     req.ac = permission;

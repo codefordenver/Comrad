@@ -10,7 +10,7 @@ import Loading from '../../components/Loading';
 import { libraryActions } from '../../redux';
 
 class TrackViewPage extends Component {
-  componentDidMount() {
+  componentWillMount() {
     const { trackState, libraryActions, match } = this.props;
     const { id } = match.params;
 
@@ -22,7 +22,8 @@ class TrackViewPage extends Component {
   render() {
     let artistsHtml = [];
     const { match, trackState } = this.props;
-    const { url } = match;
+    const { url, params } = match;
+    const { id } = params;
     let lastUpdated = '';
     if (trackState.doc != null) {
       for (var i = 0; i < trackState.doc.artists.length; i++) {
@@ -48,37 +49,44 @@ class TrackViewPage extends Component {
     return (
       <div className="track-view-page">
         {trackState.loading && <Loading />}
-        {!trackState.loading && trackState.doc != null && (
-          <div>
-            <Card>
-              <CardBody>
-                <div className="float-right">Last updated: {lastUpdated}</div>
-                <Link className="track-edit-button-wrapper" to={`${url}/edit`}>
-                  <div className="track-edit-button">
-                    Edit <i className="fas fa-edit" />
+        {!trackState.loading &&
+          trackState.doc != null &&
+          trackState.doc._id === id && (
+            <div>
+              <Card>
+                <CardBody>
+                  <div className="float-right">Last updated: {lastUpdated}</div>
+                  <Link
+                    className="track-edit-button-wrapper"
+                    to={`${url}/edit`}
+                  >
+                    <div className="track-edit-button">
+                      Edit <i className="fas fa-edit" />
+                    </div>
+                  </Link>
+                  <h1 className="mb-0">{trackState.doc.name}</h1>
+                  <div>
+                    {' '}
+                    by <span>{artistsHtml}</span>
                   </div>
-                </Link>
-                <h1 className="mb-0">{trackState.doc.name}</h1>
-                <div>
-                  {' '}
-                  by <span>{artistsHtml}</span>
-                </div>
-                <div>
-                  Track duration:{' '}
-                  {formatTotalSecondsAsMMSS(trackState.doc.duration_in_seconds)}
-                </div>
-                <div>
-                  from the album{' '}
-                  <a href={'/library/album/' + trackState.doc.album._id}>
-                    {trackState.doc.album.name}
-                  </a>
-                </div>
-                <div>Disk number: {trackState.doc.disk_number}</div>
-                <div>Track number: {trackState.doc.track_number}</div>
-              </CardBody>
-            </Card>
-          </div>
-        )}
+                  <div>
+                    Track duration:{' '}
+                    {formatTotalSecondsAsMMSS(
+                      trackState.doc.duration_in_seconds,
+                    )}
+                  </div>
+                  <div>
+                    from the album{' '}
+                    <a href={'/library/album/' + trackState.doc.album._id}>
+                      {trackState.doc.album.name}
+                    </a>
+                  </div>
+                  <div>Disk number: {trackState.doc.disk_number}</div>
+                  <div>Track number: {trackState.doc.track_number}</div>
+                </CardBody>
+              </Card>
+            </div>
+          )}
       </div>
     );
   }

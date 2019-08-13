@@ -30,7 +30,10 @@ class FormArtistUpdateName extends Component {
   };
 
   submit = values => {
-    const { alertActions, libraryActions } = this.props;
+    const { alertActions, library, libraryActions } = this.props;
+    const { _id } = library.doc;
+
+    values.id = _id;
 
     return libraryActions.update(values, () => {
       alertActions.show('success', 'Success', 'Artist name has been updated');

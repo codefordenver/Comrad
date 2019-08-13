@@ -19,8 +19,7 @@ class AlbumAddPage extends Component {
   }
 
   addAlbumCallback = albumData => {
-    const { alertActions, libraryActions, history } = this.props;
-    libraryActions.clear();
+    const { alertActions, history } = this.props;
     history.push(`/library/artist/${albumData.artist}`);
     alertActions.show(
       'success',
@@ -31,18 +30,17 @@ class AlbumAddPage extends Component {
 
   render() {
     const { library } = this.props;
-    const { _id } = library.doc;
     return (
       <div className="album-add-page">
         <Card>
           <CardBody>
             <h1>Add New Album</h1>
             {library.loading && <Loading />}
-            {!library.loading && (
+            {!library.loading && library.doc != null && (
               <FormAlbumAdd
                 submitCallback={this.addAlbumCallback}
                 history={this.props.history}
-                artistId={_id}
+                artistId={library.doc._id}
               />
             )}
           </CardBody>

@@ -16,10 +16,9 @@ import { libraryActions } from '../../redux';
 class ArtistViewPage extends Component {
   componentDidMount() {
     const { library, libraryActions, match } = this.props;
-    const { _id } = library.doc;
     const { id } = match.params;
 
-    if (id !== _id) {
+    if (library.doc == null || id !== library.doc._id) {
       libraryActions.findOne(id);
     }
   }
@@ -37,15 +36,18 @@ class ArtistViewPage extends Component {
     const { navigateToAlbum, props } = this;
     const { match, library } = props;
     const { doc, loading } = library;
-    const { albums, updated_at } = doc;
-    const dateObj = new Date(updated_at);
-    const lastUpdated = `${dateObj.toLocaleDateString()} ${dateObj.toLocaleTimeString()}`;
     const { url } = this.props.match;
+
+    let lastUpdated = '';
+    if (doc != null) {
+      const dateObj = new Date(doc.updated_at);
+      lastUpdated = `${dateObj.toLocaleDateString()} ${dateObj.toLocaleTimeString()}`;
+    }
 
     return (
       <div className="artist-view">
         {loading && <Loading />}
-        {!loading ? (
+        {!loading && doc != null ? (
           <>
             <Card>
               <CardBody>
@@ -60,7 +62,7 @@ class ArtistViewPage extends Component {
                 <Link className="add-album-button" to={`${url}/add`}>
                   Add Album
                 </Link>
-                {isEmpty(albums) ? (
+                {isEmpty(doc.albums) ? (
                   <LargeText align="left">No Albums</LargeText>
                 ) : (
                   <TableArtistAlbums onRowClick={navigateToAlbum} />

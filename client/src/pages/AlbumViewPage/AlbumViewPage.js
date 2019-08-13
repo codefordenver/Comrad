@@ -21,10 +21,9 @@ class AlbumViewPage extends Component {
       configState,
       match,
     } = this.props;
-    const { _id } = albumState.doc;
     const { id } = match.params;
 
-    if (id !== _id) {
+    if (albumState.doc == null || id !== albumState.doc._id) {
       libraryActions.findOne(id);
     }
 
@@ -34,13 +33,17 @@ class AlbumViewPage extends Component {
   }
 
   renderLastUpdated = () => {
-    const { updated_at } = this.props.albumState.doc;
-    const dateObj = new Date(updated_at);
+    const { doc } = this.props.albumState;
+    if (doc != null) {
+      const dateObj = new Date(doc.updated_at);
 
-    // Checks to see if date is valid or not
-    return dateObj instanceof Date && !isNaN(dateObj)
-      ? `Last Updated: ${dateObj.toLocaleString()}`
-      : '';
+      // Checks to see if date is valid or not
+      return dateObj instanceof Date && !isNaN(dateObj)
+        ? `Last Updated: ${dateObj.toLocaleString()}`
+        : '';
+    } else {
+      return '';
+    }
   };
 
   handleTrackRefresh = () => {
@@ -52,15 +55,11 @@ class AlbumViewPage extends Component {
   render() {
     const { navigateToTrack, props, renderLastUpdated } = this;
     const { albumState, configState } = props;
-    const {
-      artist,
-      name,
-      tracks,
-      label,
-      compilation,
-      custom,
-      genre,
-    } = albumState.doc;
+    let { doc } = albumState;
+    if (doc == null) {
+      doc = {};
+    }
+    const { artist, name, tracks, label, compilation, custom, genre } = doc;
     const { url } = this.props.match;
 
     let albumCustomFields = [];

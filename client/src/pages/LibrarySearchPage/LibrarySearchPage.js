@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
-import axios from 'axios';
 
 import ReactTable from 'react-table';
 
@@ -10,7 +9,6 @@ import Button from '../../components/Button';
 import Card, { CardBody } from '../../components/Card';
 import Dropdown from '../../components/Dropdown';
 import Input from '../../components/Input';
-import Loading from '../../components/Loading';
 import Modal from '../../components/Modal';
 
 import { alertActions, libraryActions } from '../../redux';

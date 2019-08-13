@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import { bindActionCreators } from 'redux';
 import { requiredValidate } from '../../../utils/validation';
-import { genreActions, libraryActions } from '../../../redux';
+import { configActions, genreActions, libraryActions } from '../../../redux';
 
 import Button from '../../Button';
 import Checkbox from '../../Checkbox';
@@ -13,7 +13,11 @@ import Select from '../../Select';
 
 class FormAlbumAdd extends Component {
   componentDidMount() {
-    const { genreActions, genreState } = this.props;
+    const { configState, configActions, genreActions, genreState } = this.props;
+
+    if (!('album' in configState.customFields)) {
+      configActions.customFieldsForModel('album');
+    }
 
     if (!genreState.docs.length) {
       genreActions.findAll();
@@ -80,6 +84,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
+    configActions: bindActionCreators({ ...configActions }, dispatch),
     libraryActions: bindActionCreators({ ...libraryActions }, dispatch),
     genreActions: bindActionCreators({ ...genreActions }, dispatch),
   };

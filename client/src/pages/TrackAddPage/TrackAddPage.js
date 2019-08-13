@@ -11,17 +11,15 @@ import { libraryActions, alertActions } from '../../redux';
 class TrackAddPage extends Component {
   componentWillMount() {
     const { library, libraryActions, match } = this.props;
-    const { _id } = library.doc;
     const { id } = match.params;
 
-    if (id !== _id) {
+    if (library.doc == null || id !== library.doc._id) {
       libraryActions.findOne(id);
     }
   }
 
   addTrackCallback = trackData => {
-    const { libraryActions, alertActions, history } = this.props;
-    libraryActions.clear();
+    const { alertActions, history } = this.props;
     history.push(`/library/album/${trackData.album._id}`);
     alertActions.show(
       'success',

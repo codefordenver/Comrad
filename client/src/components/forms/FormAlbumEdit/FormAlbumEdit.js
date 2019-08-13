@@ -74,19 +74,23 @@ class FormAlbumEdit extends Component {
 }
 
 function mapStateToProps(state) {
-  const { name, label, compilation, _id, custom, genre } = state.library.doc;
-  return {
-    configState: state.config,
-    genreState: state.genre,
-    initialValues: {
-      name: name,
-      label: label,
-      compilation: compilation,
-      id: _id,
-      custom: custom,
-      genre: genre != null ? genre._id : null,
-    },
-  };
+  if (state.library.doc != null) {
+    const { name, label, compilation, _id, custom, genre } = state.library.doc;
+    return {
+      configState: state.config,
+      genreState: state.genre,
+      initialValues: {
+        name: name,
+        label: label,
+        compilation: compilation,
+        id: _id,
+        custom: custom,
+        genre: genre != null ? genre._id : null,
+      },
+    };
+  } else {
+    return {};
+  }
 }
 
 function mapDispatchToProps(dispatch) {

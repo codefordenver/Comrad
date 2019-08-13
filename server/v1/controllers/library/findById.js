@@ -22,15 +22,16 @@ async function findById(req, res) {
     const dbTracks = await db.Library.find({ album: dbLibrary._id });
     data.tracks = dbTracks;
   } else if (dbLibrary.type === 'artist') {
-    const dbAlbums = await db.Album.find(
-      { artist: dbLibrary._id },
+    const dbAlbums = await db.Library.find(
+      { artist: dbLibrary._id, type: 'album' },
       {},
       { sort: 'name' },
     );
     data.albums = await Promise.all(
       dbAlbums.map(async album => {
-        const numberOfTracks = await db.Track.countDocuments({
+        const numberOfTracks = await db.Library.countDocuments({
           album: album._id,
+          type: 'track',
         });
         let modifiedAlbum = {
           ...album._doc,

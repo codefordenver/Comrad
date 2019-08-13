@@ -73,28 +73,32 @@ class FormTrackEdit extends Component {
 }
 
 function mapStateToProps(state) {
-  const {
-    disk_number,
-    duration_in_seconds,
-    name,
-    track_number,
-    _id,
-    album,
-  } = state.library.doc;
-  const minutes = Math.floor(parseInt(duration_in_seconds) / 60);
-  const seconds = duration_in_seconds - minutes * 60;
-  return {
-    initialValues: {
-      disk_number: disk_number,
-      duration_in_seconds: duration_in_seconds,
-      name: name,
-      track_number: track_number,
-      minutes: minutes,
-      seconds: seconds,
-      id: _id,
-      album: album,
-    },
-  };
+  if (state.library.doc != null) {
+    const {
+      disk_number,
+      duration_in_seconds,
+      name,
+      track_number,
+      _id,
+      album,
+    } = state.library.doc;
+    const minutes = Math.floor(parseInt(duration_in_seconds) / 60);
+    const seconds = duration_in_seconds - minutes * 60;
+    return {
+      initialValues: {
+        disk_number: disk_number,
+        duration_in_seconds: duration_in_seconds,
+        name: name,
+        track_number: track_number,
+        minutes: minutes,
+        seconds: seconds,
+        id: _id,
+        album: album,
+      },
+    };
+  } else {
+    return {};
+  }
 }
 
 function mapDispatchToProps(dispatch) {

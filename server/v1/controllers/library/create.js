@@ -49,8 +49,8 @@ function create(req, res) {
         });
     case 'track':
       return validateTrackData(req.body)
-        .then(() => db.Track.create(req.body))
-        .then(dbTrack => db.Track.populate(dbTrack, ['album', 'artists']))
+        .then(() => db.Library.create(req.body))
+        .then(dbTrack => db.Library.populate(dbTrack, ['album', 'artists']))
         .then(dbTrack => res.json(dbTrack))
         .catch(err => {
           console.log(err);

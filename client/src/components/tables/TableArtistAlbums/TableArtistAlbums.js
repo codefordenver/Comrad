@@ -27,8 +27,8 @@ const columns = [
 
 class TableArtistAlbums extends Component {
   render() {
-    const { artist, onRowClick } = this.props;
-    const { albums } = artist.doc;
+    const { library, onRowClick } = this.props;
+    const { albums } = library.doc;
 
     return (
       <ReactTable
@@ -45,9 +45,9 @@ class TableArtistAlbums extends Component {
   }
 }
 
-function mapStateToProps({ artist }) {
+function mapStateToProps({ library }) {
   return {
-    artist,
+    library,
   };
 }
 

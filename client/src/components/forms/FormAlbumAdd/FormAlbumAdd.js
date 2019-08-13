@@ -51,14 +51,14 @@ class FormAlbumAdd extends Component {
           autoFocus
           validate={requiredValidate}
         />
+        <Field component={Input} label="Label" name="label" />
+        <Field component={Checkbox} label="Compilation" name="compilation" />
         <Field
           component={Select}
           label="Genre"
           name="genre"
           selectOptions={genreState.docs}
         />
-        <Field component={Input} label="Label" name="label" />
-        <Field component={Checkbox} label="Compilation" name="compilation" />
         <CustomFieldsEdit fieldsMeta={albumCustomFields} />
         <div>
           <Button type="submit">Submit</Button>

@@ -1,4 +1,6 @@
 .modal-main {
+  max-height: 100vh;
+  overflow: scroll;
   position: fixed;
   background-color: white;
   width: auto;
@@ -14,7 +16,6 @@
 }
 
 .modal-overlay {
-  max-height: 100vh;
   position: fixed;
   top: 0;
   left: 0;

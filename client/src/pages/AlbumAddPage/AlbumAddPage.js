@@ -24,7 +24,11 @@ class AlbumAddPage extends Component {
 
   addAlbumCallback = albumData => {
     const { alertActions, history } = this.props;
-    history.push(`/library/artist/${albumData.artist}`);
+    if (albumData.artist == null) {
+      history.push(`/library`);
+    } else {
+      history.push(`/library/artist/${albumData.artist}`);
+    }
     alertActions.show(
       'success',
       'Success',

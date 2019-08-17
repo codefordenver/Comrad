@@ -51,7 +51,6 @@ class FormAlbumAdd extends Component {
           name="artist"
           artist={artist}
           autoFocus={artist == null ? true : false}
-          validate={requiredValidate}
         />
         <Field
           component={Input}

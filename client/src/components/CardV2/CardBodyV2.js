@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 
 import classnames from 'classnames';
 
-function CardBody({ children, className }) {
+export function CardBody({ children, className }) {
   return <div className={classnames('card__body', className)}>{children}</div>;
 }
-
-export default CardBody;

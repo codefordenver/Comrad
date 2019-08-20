@@ -1,0 +1,1 @@
+export { default as CardV2 } from './CardV2';

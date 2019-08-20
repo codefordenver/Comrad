@@ -1,9 +1,10 @@
 import React from 'react';
+import classnames from 'classnames';
 
 const CardBody = props => {
-  const { children } = props;
+  const { children, className } = props;
 
-  return <div className="card__body">{children}</div>;
+  return <div className={classnames('card__body', className)}>{children}</div>;
 };
 
 export { CardBody };

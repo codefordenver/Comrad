@@ -33,10 +33,14 @@ class AlbumAddPage extends Component {
     const { artist } = this.props;
     const { _id } = artist.doc;
     return (
-      <div className="album-add-page">
-        <Card>
+      <div className="aap">
+        <Card className="mb-1">
           <CardBody>
-            <h1>Add New Album</h1>
+            <h1 className="mb-0">Add New Album</h1>
+          </CardBody>
+        </Card>
+        <Card>
+          <CardBody className="aap__form">
             {artist.loading && <Loading />}
             {!artist.loading && (
               <FormAlbumAdd

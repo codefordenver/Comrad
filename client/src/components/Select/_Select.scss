@@ -1,4 +1,7 @@
 .select {
+  // Removes Border Radius
+  -webkit-appearance: none;
+
   font-size: 1.8rem;
   font-family: inherit;
   color: $color-primary;

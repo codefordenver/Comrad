@@ -35,20 +35,27 @@ class FormAlbumAdd extends Component {
     return (
       <form className="form-album-add" onSubmit={handleSubmit(submit)}>
         <Field
+          className="mb-3"
           component={Input}
           label="Name"
           name="name"
           autoFocus
           validate={requiredValidate}
         />
-        <Field component={Input} label="Label" name="label" />
+        <Field className="mb-3" component={Input} label="Label" name="label" />
         <Field
+          className="mb-3"
           component={Select}
           label="Genre"
           name="genre"
           selectOptions={genreState.docs}
         />
-        <Field component={Checkbox} label="Compilation" name="compilation" />
+        <Field
+          className="mb-3"
+          component={Checkbox}
+          label="Compilation"
+          name="compilation"
+        />
         <div>
           <Button type="submit">Submit</Button>
         </div>

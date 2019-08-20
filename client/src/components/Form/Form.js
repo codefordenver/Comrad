@@ -9,20 +9,15 @@ import classnames from 'classnames';
  * * WORK IN PROGRESS
  */
 
-class Form extends Component {
-  render() {
-    const { props } = this;
-    const { children, className, handleSubmit, submit } = props;
-
-    return (
-      <form
-        className={classnames('form', className)}
-        submit={handleSubmit(submit)}
-      >
-        {children}
-      </form>
-    );
-  }
+function Form({ children, className, handleSubmit, submit }) {
+  return (
+    <form
+      className={classnames('form', className)}
+      submit={handleSubmit(submit)}
+    >
+      {children}
+    </form>
+  );
 }
 
 Form.propTypes = {
@@ -55,7 +50,7 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
-export default connect(
+export const ConnectedReduxForm = connect(
   mapStateToProps,
   null,
 )(ReduxForm);

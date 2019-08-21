@@ -1,1 +1,1 @@
-export { CardV2 } from './CardV2';
+export { Card as CardV2 } from './CardV2';

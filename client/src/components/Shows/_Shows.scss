@@ -2,7 +2,6 @@ $show_start_z: 200;
 
 .new-show-form,
 .edit-show-form {
-  max-height: 100vh;
   &__grid {
     display: grid;
     grid-template-columns: 1fr 1fr;

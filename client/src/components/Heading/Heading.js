@@ -1,16 +1,34 @@
-import React from 'react';
+import React, { createElement } from 'react';
 import PropTypes from 'prop-types';
 
 import classnames from 'classnames';
 
-// import fs from 'fs';
-
-import { styles } from './config';
+import { config } from './config.js';
 
 export function Heading({ children, className, size }) {
-  console.log(styles);
-  // console.log(fs);
-  function getClassNames() {}
+  function getElement() {
+    return config.element[size];
+  }
 
-  return <div>{children}</div>;
+  function getClassNames() {
+    return classnames('Heading', config.style.size[size], className);
+  }
+
+  return createElement(getElement(), { className: getClassNames() }, children);
 }
+
+Heading.propTypes = {
+  children: PropTypes.string,
+  /**
+   * Any additional classes to add
+   */
+  className: PropTypes.string,
+  /**
+   * Determines the size of the component
+   */
+  size: PropTypes.number,
+};
+
+Heading.defaultProps = {
+  size: 1,
+};

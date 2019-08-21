@@ -1,4 +1,4 @@
-.heading {
+.Heading {
   &--1 {
     color: $color-primary;
     font-family: $font-family-secondary;
@@ -7,44 +7,39 @@
 
     margin-bottom: 2rem;
   }
-}
+  &--2 {
+    color: $color-primary-light;
+    font-family: $font-family-primary;
+    font-weight: $font-weight-light;
+    font-size: 3rem;
+    line-height: 1.15;
+  }
 
-h2,
-.h2 {
-  color: $color-primary-light;
-  font-family: $font-family-primary;
-  font-weight: $font-weight-light;
-  font-size: 3rem;
-  line-height: 1.15;
-}
+  &--3 {
+    color: $color-primary-light;
+    font-family: $font-family-primary;
+    font-weight: $font-weight-light;
+    font-size: 2.6rem;
+    line-height: 1.15;
 
-h3,
-.h3 {
-  color: $color-primary-light;
-  font-family: $font-family-primary;
-  font-weight: $font-weight-light;
-  font-size: 2.6rem;
-  line-height: 1.15;
+    margin-bottom: 1.4rem;
+  }
 
-  margin-bottom: 1.4rem;
-}
+  &--4 {
+    color: $color-primary-light;
+    font-family: $font-family-primary;
+    font-weight: $font-weight-light;
+    font-size: 2.2rem;
+    line-height: 1.15;
 
-h4,
-.h4 {
-  color: $color-primary-light;
-  font-family: $font-family-primary;
-  font-weight: $font-weight-light;
-  font-size: 2.2rem;
-  line-height: 1.15;
+    margin-bottom: 0.4rem;
+  }
 
-  margin-bottom: 0.4rem;
-}
-
-h5,
-.h5 {
-  color: $color-primary-light;
-  font-family: $font-family-primary;
-  font-weight: $font-weight-light;
-  font-size: 1.8rem;
-  line-height: 1.3;
+  &--5 {
+    color: $color-primary-light;
+    font-family: $font-family-primary;
+    font-weight: $font-weight-light;
+    font-size: 1.8rem;
+    line-height: 1.3;
+  }
 }

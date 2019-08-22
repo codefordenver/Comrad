@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { Row, Col } from 'react-grid-system';
 
-import { CardV2, Heading } from '../../../components';
-import { Card } from '../../../components/CardV2/Card';
+import { CardV2, Form, Heading, InputV2 } from '../../../components';
 
-export class Form extends Component {
+export class f extends Component {
   render() {
     return (
       <div className="user-form">
@@ -23,7 +22,16 @@ export class Form extends Component {
         <Row>
           <Col>
             <CardV2>
-              <CardV2.Body>This is the next part</CardV2.Body>
+              <CardV2.Body>
+                <Form>
+                  <Row>
+                    <Col>
+                      <InputV2 className="Test" name="first_name" />
+                    </Col>
+                    <Col>Column</Col>
+                  </Row>
+                </Form>
+              </CardV2.Body>
             </CardV2>
           </Col>
         </Row>

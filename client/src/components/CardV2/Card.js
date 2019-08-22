@@ -5,12 +5,20 @@ import classnames from 'classnames';
 
 import { CardBody } from './CardBody';
 
-export function Card({ backgroundColor, children, className }) {
-  return <div className={classnames('card', className)}>{children}</div>;
+export function Card({ children, className }) {
+  function getClassNames() {
+    return classnames('Card', className);
+  }
+
+  return <div className={getClassNames()}>{children}</div>;
 }
 
-Card.defaultProps = {
-  background: '#fff',
+Card.propTypes = {
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]),
+  className: PropTypes.string,
 };
 
 Card.Body = CardBody;

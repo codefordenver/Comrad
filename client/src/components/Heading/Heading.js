@@ -26,7 +26,7 @@ Heading.propTypes = {
   /**
    * Determines the size of the component
    */
-  size: PropTypes.number,
+  size: PropTypes.number.isRequired,
 };
 
 Heading.defaultProps = {

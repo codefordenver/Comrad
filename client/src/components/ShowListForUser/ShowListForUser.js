@@ -6,6 +6,7 @@ import moment from 'moment';
 import { showAPI } from '../../api';
 
 import Loading from '../Loading';
+import ViewShowForm from '../Shows/ViewShow/Form';
 
 class ShowListForUser extends Component {
   state = {
@@ -89,7 +90,9 @@ class ShowListForUser extends Component {
               <td>
                 <Link to={showUrl}>Show Builder</Link>
               </td>
-              <td>TODO edit show instance link</td>
+              <td>
+                <Link to={ViewShowForm}>Edit</Link>
+              </td>
             </tr>
           );
         })}

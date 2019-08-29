@@ -91,7 +91,7 @@ class ShowListForUser extends Component {
                 <Link to={showUrl}>Show Builder</Link>
               </td>
               <td>
-                <Link to={ViewShowForm}>Edit</Link>
+                <Link to={ViewShowForm}>Edit Show Instance</Link>
               </td>
             </tr>
           );

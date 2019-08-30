@@ -51,6 +51,11 @@ class ShowListForUser extends Component {
     });
   }
 
+  componentDidMount() {
+    const { setModalVisibility } = this.props;
+    setModalVisibility(false, false, null);
+  }
+
   showEditInstanceModal = show => {
     const { setModalVisibility, createInstanceAndEditShow } = this.props;
     createInstanceAndEditShow(show.master_event_id._id, show).then(() => {

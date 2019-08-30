@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Field, reduxForm } from 'redux-form';
 
+import classnames from 'classnames';
+
 import { alertActions, libraryActions } from '../../../redux';
 import { requiredValidate } from '../../../utils/validation.js';
 
@@ -45,13 +47,13 @@ class FormArtistUpdateName extends Component {
 
   render() {
     const { handleDefault, handleEditClick, props, state, submit } = this;
-    const { library, handleSubmit, submitting } = props;
+    const { library, className, handleSubmit, submitting } = props;
     const { editMode } = state;
     const { doc } = library;
     const { name } = doc;
 
     return (
-      <div className="faun">
+      <div className={classnames('faun', className)}>
         {editMode ? (
           <form className="faun__form" onSubmit={handleSubmit(submit)}>
             <Field
@@ -77,8 +79,8 @@ class FormArtistUpdateName extends Component {
             />
           </form>
         ) : (
-          <div className="faun__heading">
-            <div className="faun__name">{name}</div>
+          <div className={classnames('faun__heading', className)}>
+            <h1 className="mb-0">{name}</h1>
             <ButtonIcon
               className="faun__edit"
               icon="pencil"

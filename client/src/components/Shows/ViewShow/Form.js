@@ -11,19 +11,11 @@ import {
   createInstanceAndEditShow,
   updateShow,
 } from '../../../redux/show';
+import { getShowType } from '../../../utils/shows';
 import { MODAL_EDIT_SHOW, MODAL_EDIT_SERIES } from '../ShowModalController';
 
 import DropdownHost from '../../DropdownHost';
 
-export function getShowType(show) {
-  if (show.is_recurring) {
-    return 'series';
-  } else if (show.master_event_id) {
-    return 'instance';
-  } else {
-    return 'regular';
-  }
-}
 class NewShowForm extends Component {
   componentDidMount() {
     const { setModalVisibility } = this.props;

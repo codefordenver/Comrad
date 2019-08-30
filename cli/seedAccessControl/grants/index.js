@@ -1,6 +1,7 @@
 const AccessControl = require('./AccessControl');
 const Auth = require('./Auth');
 const Genres = require('./Genres');
+const Hosts = require('./Hosts');
 const Library = require('./Library');
 const Playlists = require('./Playlists');
 const Resources = require('./Resources');
@@ -12,6 +13,7 @@ module.exports = {
   AccessControl,
   Auth,
   Genres,
+  Hosts,
   Library,
   Playlists,
   Resources,

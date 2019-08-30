@@ -8,6 +8,7 @@ import { showAPI } from '../../api';
 import Loading from '../Loading';
 import { MODAL_EDIT_SHOW } from '../Shows/ShowModalController';
 import { createInstanceAndEditShow } from '../../redux/show';
+import { setModalVisibility } from '../../redux/modal';
 
 class ShowListForUser extends Component {
   state = {
@@ -138,5 +139,9 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
+  {
+    createInstanceAndEditShow,
+    setModalVisibility,
+  },
   null,
 )(ShowListForUser);

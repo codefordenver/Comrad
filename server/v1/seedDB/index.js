@@ -187,7 +187,7 @@ async function seedDB() {
           } else {
             if (!(track.artist.toLowerCase() in allArtists)) {
               console.log('Creating missing artist: ' + track.artist);
-              let newArtist = await db.Artist.create({
+              let newArtist = await db.Library.create({
                 name: track.artist,
                 type: 'artist',
               });
@@ -449,7 +449,7 @@ async function seedDB() {
         { $match: { 'saved_items.track': { $exists: true } } },
         {
           $lookup: {
-            from: 'tracks',
+            from: 'library',
             localField: 'saved_items.track',
             foreignField: '_id',
             as: 'track_doc',
@@ -483,7 +483,7 @@ async function seedDB() {
         { $match: { 'saved_items.track': { $exists: true } } },
         {
           $lookup: {
-            from: 'tracks',
+            from: 'library',
             localField: 'saved_items.track',
             foreignField: '_id',
             as: 'track_doc',
@@ -519,7 +519,7 @@ async function seedDB() {
         { $sort: { count: -1 } },
         {
           $lookup: {
-            from: 'tracks',
+            from: 'library',
             localField: '_id',
             foreignField: '_id',
             as: 'track_doc',

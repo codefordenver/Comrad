@@ -40,10 +40,14 @@ class AlbumAddPage extends Component {
     const { library, match } = this.props;
     const { id } = match.params;
     return (
-      <div className="album-add-page">
-        <Card>
+      <div className="aap">
+        <Card className="mb-1">
           <CardBody>
-            <h1>Add New Album</h1>
+            <h1 className="mb-0">Add New Album</h1>
+          </CardBody>
+        </Card>
+        <Card>
+          <CardBody className="aap__form">
             {library.loading && <Loading />}
             {!library.loading && (
               <FormAlbumAdd

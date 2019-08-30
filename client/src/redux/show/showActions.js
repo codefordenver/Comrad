@@ -2,6 +2,7 @@ import axios from 'axios';
 import {
   SHOW_CLEAR,
   SHOW_CLEAR_ONE,
+  SHOW_FETCHING,
   SHOW_UPDATE,
   SHOW_DELETE,
   SHOW_SEARCH,
@@ -133,6 +134,8 @@ export const searchShow = (
   onlyDisplayShowsWithNoHost = false,
 ) => async dispatch => {
   try {
+    dispatch({ type: SHOW_FETCHING });
+
     const response = await showAPI.find(
       startDate,
       endDate,

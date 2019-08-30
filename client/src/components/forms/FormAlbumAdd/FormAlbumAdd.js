@@ -62,6 +62,7 @@ class FormAlbumAdd extends Component {
         <Field component={Input} label="Label" name="label" />
         <Field component={Checkbox} label="Compilation" name="compilation" />
         <Field
+          className="mb-3"
           component={Select}
           label="Genre"
           name="genre"

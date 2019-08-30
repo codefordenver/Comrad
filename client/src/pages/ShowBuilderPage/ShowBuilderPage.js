@@ -10,9 +10,16 @@ import FormShowBuilderComment from '../../components/forms/FormShowBuilderCommen
 import Loading from '../../components/Loading';
 import ShowBuilderItemList from '../../components/ShowBuilderItemList';
 
-import { playlistActions } from '../../redux';
-import { clearShows, getShowsData, searchShow } from '../../redux/show';
-import { trafficActions } from '../../redux';
+import { playlistActions, trafficActions } from '../../redux';
+import {
+  clearShows,
+  createInstanceShow,
+  getShowsData,
+  searchShow,
+  updateShow,
+} from '../../redux/show';
+
+import { getShowType } from '../../utils/shows';
 
 class ShowBuilderPage extends Component {
   state = {
@@ -58,6 +65,22 @@ class ShowBuilderPage extends Component {
     clearShows();
   }
 
+  handleHostSelect = host => {
+    const { props } = this;
+    const { updateShow, shows } = props;
+    let show = shows[Object.keys(shows)[0]];
+    const { _id, master_event_id } = show;
+    const showType = getShowType(show);
+    if (showType === 'series') {
+      const { createInstanceShow } = this.props;
+      show.show_details.host = host._id;
+      createInstanceShow(master_event_id._id, show);
+    } else {
+      //Only update host if the show is regular or instance
+      updateShow(_id, { 'show_details.host': host._id });
+    }
+  };
+
   render() {
     const { playlist, shows, showFetching, traffic } = this.props;
     const {
@@ -69,13 +92,16 @@ class ShowBuilderPage extends Component {
     let { scratchpad, saved_items } = playlist.doc;
 
     let showName = '';
+    let host = null;
     if (shows && Object.keys(shows).length > 0) {
       if (Object.keys(shows).length > 1) {
         console.warn(
           'More than one show returned for show builder, using the first one',
         );
       }
-      showName = shows[Object.keys(shows)[0]].show_details.title;
+      let show = shows[Object.keys(shows)[0]];
+      showName = show.show_details.title;
+      host = show.show_details.host;
     }
 
     let scratchpadForDisplay = [];
@@ -122,7 +148,14 @@ class ShowBuilderPage extends Component {
           <div className="show-builder">
             <div className="show-builder__top-row">
               <div>
-                <DropdownHost />
+                {!showFetching && (
+                  <DropdownHost
+                    key={host != null ? host._id : 'no host'}
+                    host={host}
+                    onHostSelect={this.handleHostSelect}
+                    filterByStatus="Active"
+                  />
+                )}
               </div>
               <div>{showName}</div>
               <div>
@@ -222,7 +255,9 @@ function mapDispatchToProps(dispatch) {
   return {
     playlistActions: bindActionCreators({ ...playlistActions }, dispatch),
     clearShows: bindActionCreators(clearShows, dispatch),
+    createInstanceShow: bindActionCreators(createInstanceShow, dispatch),
     searchShow: bindActionCreators(searchShow, dispatch),
+    updateShow: bindActionCreators(updateShow, dispatch),
     trafficActions: bindActionCreators({ ...trafficActions }, dispatch),
   };
 }

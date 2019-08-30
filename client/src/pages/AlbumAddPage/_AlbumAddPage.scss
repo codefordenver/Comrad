@@ -1,5 +1,10 @@
-.album-add-page {
-    &__album-name {
-      margin-bottom: 20px;
-    }
+.aap {
+  &__album-name {
+    margin-bottom: 20px;
   }
+
+  &__form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+}

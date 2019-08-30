@@ -7,6 +7,7 @@ import kgnuLogo from '../../images/kgnu-logo-white-gray.png';
 import Logo from '../Logo';
 import { authActions } from '../../redux/auth';
 import { bindActionCreators } from 'redux';
+import { withRouter } from 'react-router-dom';
 
 class Navbar extends Component {
   handleSignOut = () => {
@@ -56,7 +57,9 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(Navbar);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  )(Navbar),
+);

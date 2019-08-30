@@ -5,6 +5,7 @@ import { isEmpty } from 'lodash';
 
 import { Link } from 'react-router-dom';
 
+import ButtonIcon from '../../components/ButtonIcon';
 import Card, { CardBody } from '../../components/Card';
 import Loading from '../../components/Loading';
 import FormArtistUpdateName from '../../components/forms/FormArtistUpdateName';
@@ -50,18 +51,26 @@ class ArtistViewPage extends Component {
         {!loading && doc != null ? (
           <>
             <Card>
-              <CardBody>
-                <div className="float-right">Last updated: {lastUpdated}</div>
-                <FormArtistUpdateName match={match} />
+              <CardBody className="artist-view__header">
+                <FormArtistUpdateName
+                  className="artist-view__name"
+                  match={match}
+                />
+                <div className="artist-view__type">Artist</div>
+                <div className="artist-view__last-updated">
+                  Last updated: {lastUpdated}
+                </div>
               </CardBody>
             </Card>
 
             <Card>
               <CardBody>
-                <h2 className="mb-1">Albums</h2>
-                <Link className="add-album-button" to={`${url}/add`}>
-                  Add Album
-                </Link>
+                <div className="artist-view__header2 mb-1">
+                  <h2 className="artist-view__name2">Albums</h2>
+                  <div className="artist-view__add-album2">
+                    <ButtonIcon icon="plus" to={`${url}/add`} />
+                  </div>
+                </div>
                 {isEmpty(doc.albums) ? (
                   <LargeText align="left">No Albums</LargeText>
                 ) : (

@@ -114,7 +114,7 @@ async function search(req, res) {
     }
   });
 
-  const data = [...libraryResults].sort((a, b) => {
+  const data = [...results].sort((a, b) => {
     if (a.relevance > b.relevance) {
       return -1;
     }

@@ -9,6 +9,7 @@ import Loading from '../Loading';
 import { MODAL_EDIT_SHOW } from '../Shows/ShowModalController';
 import { createInstanceAndEditShow } from '../../redux/show';
 import { setModalVisibility } from '../../redux/modal';
+import ShowModalController from '../Shows/ShowModalController';
 
 class ShowListForUser extends Component {
   state = {
@@ -109,6 +110,7 @@ class ShowListForUser extends Component {
                   Edit Show Instance
                 </div>
               </td>
+              <ShowModalController />
             </tr>
           );
         })}

@@ -2,17 +2,17 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import { requiredValidate } from '../../../utils/validation';
-import { trackActions } from '../../../redux';
+import { libraryActions } from '../../../redux';
 import Button from '../../Button';
 import Input from '../../Input';
 import { bindActionCreators } from 'redux';
 
 class FormTrackEdit extends Component {
   submit = values => {
-    const { trackActions, submitCallback } = this.props;
+    const { libraryActions, submitCallback } = this.props;
     values.duration_in_seconds =
       parseInt(values.seconds) + parseInt(values.minutes) * 60;
-    return trackActions.edit(values, trackData => {
+    return libraryActions.update(values, trackData => {
       if (typeof submitCallback === 'function') {
         submitCallback(trackData);
       }
@@ -73,16 +73,27 @@ class FormTrackEdit extends Component {
 }
 
 function mapStateToProps(state) {
-  const {
-    disk_number,
+  let disk_number,
     duration_in_seconds,
     name,
     track_number,
     _id,
     album,
-  } = state.track.doc;
-  const minutes = Math.floor(parseInt(duration_in_seconds) / 60);
-  const seconds = duration_in_seconds - minutes * 60;
+    minutes,
+    seconds;
+  if (state.library.doc != null) {
+    ({
+      disk_number,
+      duration_in_seconds,
+      name,
+      track_number,
+      _id,
+      album,
+    } = state.library.doc);
+    minutes = Math.floor(parseInt(duration_in_seconds) / 60);
+    seconds = duration_in_seconds - minutes * 60;
+  }
+
   return {
     initialValues: {
       disk_number: disk_number,
@@ -99,7 +110,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    trackActions: bindActionCreators({ ...trackActions }, dispatch),
+    libraryActions: bindActionCreators({ ...libraryActions }, dispatch),
   };
 }
 

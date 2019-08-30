@@ -3,15 +3,15 @@ import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import { bindActionCreators } from 'redux';
 import { requiredValidate } from '../../../utils/validation';
-import { artistActions } from '../../../redux';
+import { libraryActions } from '../../../redux';
 
 import Button from '../../Button';
 import Input from '../../Input';
 
 class FormArtistAdd extends Component {
   submit = (values, dispatch, props) => {
-    const { artistActions, submitCallback } = this.props;
-    artistActions.add(values, submitCallback);
+    const { libraryActions, submitCallback } = this.props;
+    libraryActions.add('artist', values, submitCallback);
   };
 
   render() {
@@ -41,7 +41,7 @@ const ReduxFormArtistAdd = reduxForm({
 
 function mapDispatchToProps(dispatch) {
   return {
-    artistActions: bindActionCreators({ ...artistActions }, dispatch),
+    libraryActions: bindActionCreators({ ...libraryActions }, dispatch),
   };
 }
 

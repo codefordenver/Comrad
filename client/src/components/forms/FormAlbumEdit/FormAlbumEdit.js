@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import { requiredValidate } from '../../../utils/validation';
-import { albumActions, configActions, genreActions } from '../../../redux';
+import { libraryActions, configActions, genreActions } from '../../../redux';
 import Button from '../../Button';
 import Input from '../../Input';
 import { bindActionCreators } from 'redux';
@@ -11,7 +11,7 @@ import CustomFieldsEdit from '../../CustomFieldsEdit';
 import Select from '../../Select';
 
 class FormAlbumEdit extends Component {
-  componentDidMount() {
+  componentWillMount() {
     const { configActions, configState, genreActions, genreState } = this.props;
 
     if (!('album' in configState.customFields)) {
@@ -24,8 +24,8 @@ class FormAlbumEdit extends Component {
   }
 
   submit = values => {
-    const { albumActions, submitCallback } = this.props;
-    return albumActions.edit(values, albumData => {
+    const { libraryActions, submitCallback } = this.props;
+    return libraryActions.update(values, albumData => {
       if (typeof submitCallback === 'function') {
         submitCallback(albumData);
       }
@@ -58,13 +58,13 @@ class FormAlbumEdit extends Component {
         />
         <Field component={Input} label="Label" name="label" />
         <Field component={Checkbox} label="Compilation" name="compilation" />
-        <CustomFieldsEdit fieldsMeta={albumCustomFields} />
         <Field
           component={Select}
           label="Genre"
           name="genre"
           selectOptions={genreState.docs}
         />
+        <CustomFieldsEdit fieldsMeta={albumCustomFields} />
         <div>
           <Button type="submit">Submit</Button>
         </div>
@@ -74,7 +74,10 @@ class FormAlbumEdit extends Component {
 }
 
 function mapStateToProps(state) {
-  const { name, label, compilation, _id, custom, genre } = state.album.doc;
+  let name, label, compilation, _id, custom, genre;
+  if (state.library.doc != null) {
+    ({ name, label, compilation, _id, custom, genre } = state.library.doc);
+  }
   return {
     configState: state.config,
     genreState: state.genre,
@@ -91,7 +94,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    albumActions: bindActionCreators({ ...albumActions }, dispatch),
+    libraryActions: bindActionCreators({ ...libraryActions }, dispatch),
     configActions: bindActionCreators({ ...configActions }, dispatch),
     genreActions: bindActionCreators({ ...genreActions }, dispatch),
   };

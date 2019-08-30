@@ -4,22 +4,21 @@ const { requireAC } = require('../middlewares');
 
 router
   .route('/')
-  .get(requireAC('Library', 'readAny'), libraryController.findAll);
+  .get(requireAC('Library', 'readAny'), libraryController.findAll)
+  .post(requireAC('Library', 'createAny'), libraryController.create);
 
 router
-  .route('/album')
-  .get(requireAC('Library', 'readAny'), libraryController.findAllAlbums);
-
-router
-  .route('/artist')
-  .get(requireAC('Library', 'readAny'), libraryController.findAllArtists);
-
-router
-  .route('/track')
-  .get(requireAC('Library', 'readAny'), libraryController.findAllTracks);
+  .route('/many')
+  .post(requireAC('Library', 'createAny'), libraryController.createMany);
 
 router
   .route('/search')
   .get(requireAC('Library', 'readAny'), libraryController.search);
+
+router
+  .route('/:id')
+  .get(requireAC('Library', 'readAny'), libraryController.findById)
+  .put(requireAC('Library', 'updateAny'), libraryController.update)
+  .delete(requireAC('Library', 'deleteAny'), libraryController.remove);
 
 module.exports = router;

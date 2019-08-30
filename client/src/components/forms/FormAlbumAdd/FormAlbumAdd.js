@@ -3,16 +3,21 @@ import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import { bindActionCreators } from 'redux';
 import { requiredValidate } from '../../../utils/validation';
-import { albumActions, genreActions } from '../../../redux';
+import { configActions, genreActions, libraryActions } from '../../../redux';
 
 import Button from '../../Button';
 import Checkbox from '../../Checkbox';
+import CustomFieldsEdit from '../../CustomFieldsEdit';
 import Input from '../../Input';
 import Select from '../../Select';
 
 class FormAlbumAdd extends Component {
   componentDidMount() {
-    const { genreActions, genreState } = this.props;
+    const { configState, configActions, genreActions, genreState } = this.props;
+
+    if (!('album' in configState.customFields)) {
+      configActions.customFieldsForModel('album');
+    }
 
     if (!genreState.docs.length) {
       genreActions.findAll();
@@ -20,8 +25,8 @@ class FormAlbumAdd extends Component {
   }
 
   submit = values => {
-    const { albumActions, submitCallback } = this.props;
-    albumActions.add(values, albumData => {
+    const { libraryActions, submitCallback } = this.props;
+    libraryActions.add('album', values, albumData => {
       if (typeof submitCallback === 'function') {
         submitCallback(albumData);
       }
@@ -30,7 +35,12 @@ class FormAlbumAdd extends Component {
 
   render() {
     const { props, submit } = this;
-    const { handleSubmit, genreState } = props;
+    const { handleSubmit, configState, genreState } = props;
+
+    let albumCustomFields = [];
+    if ('album' in configState.customFields) {
+      albumCustomFields = configState.customFields.album;
+    }
 
     return (
       <form className="form-album-add" onSubmit={handleSubmit(submit)}>
@@ -42,7 +52,8 @@ class FormAlbumAdd extends Component {
           autoFocus
           validate={requiredValidate}
         />
-        <Field className="mb-3" component={Input} label="Label" name="label" />
+        <Field component={Input} label="Label" name="label" />
+        <Field component={Checkbox} label="Compilation" name="compilation" />
         <Field
           className="mb-3"
           component={Select}
@@ -50,12 +61,7 @@ class FormAlbumAdd extends Component {
           name="genre"
           selectOptions={genreState.docs}
         />
-        <Field
-          className="mb-3"
-          component={Checkbox}
-          label="Compilation"
-          name="compilation"
-        />
+        <CustomFieldsEdit fieldsMeta={albumCustomFields} />
         <div>
           <Button type="submit">Submit</Button>
         </div>
@@ -70,16 +76,18 @@ const ReduxFormAlbumAdd = reduxForm({
 
 function mapStateToProps(state) {
   return {
+    configState: state.config,
     genreState: state.genre,
     initialValues: {
-      artist: state.artist.doc._id,
+      artist: state.library.doc._id,
     },
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    albumActions: bindActionCreators({ ...albumActions }, dispatch),
+    configActions: bindActionCreators({ ...configActions }, dispatch),
+    libraryActions: bindActionCreators({ ...libraryActions }, dispatch),
     genreActions: bindActionCreators({ ...genreActions }, dispatch),
   };
 }

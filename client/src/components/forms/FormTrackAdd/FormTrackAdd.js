@@ -2,18 +2,18 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import { requiredValidate } from '../../../utils/validation';
-import { trackActions } from '../../../redux';
+import { libraryActions } from '../../../redux';
 import Button from '../../Button';
 import Input from '../../Input';
 import { bindActionCreators } from 'redux';
 
 class FormTrackAdd extends Component {
   submit = values => {
-    const { albumId, trackActions, submitCallback } = this.props;
+    const { albumId, libraryActions, submitCallback } = this.props;
     values.album = albumId;
     values.duration_in_seconds =
       parseInt(values.seconds) + parseInt(values.minutes) * 60;
-    return trackActions.add(values, trackData => {
+    return libraryActions.add('track', values, trackData => {
       if (typeof submitCallback === 'function') {
         submitCallback(trackData);
       }
@@ -88,7 +88,7 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    trackActions: bindActionCreators({ ...trackActions }, dispatch),
+    libraryActions: bindActionCreators({ ...libraryActions }, dispatch),
   };
 }
 

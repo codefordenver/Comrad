@@ -6,7 +6,8 @@ import moment from 'moment';
 import { showAPI } from '../../api';
 
 import Loading from '../Loading';
-import ViewShowForm from '../Shows/ViewShow/Form';
+import { MODAL_EDIT_SHOW } from '../Shows/ShowModalController';
+import { createInstanceAndEditShow } from '../../redux/show';
 
 class ShowListForUser extends Component {
   state = {
@@ -48,6 +49,13 @@ class ShowListForUser extends Component {
       });
     });
   }
+
+  showEditInstanceModal = show => {
+    const { setModalVisibility, createInstanceAndEditShow } = this.props;
+    createInstanceAndEditShow(show.master_event_id._id, show).then(() => {
+      setModalVisibility(MODAL_EDIT_SHOW, true, null);
+    });
+  };
 
   renderHeader = () => {
     return (
@@ -91,7 +99,9 @@ class ShowListForUser extends Component {
                 <Link to={showUrl}>Show Builder</Link>
               </td>
               <td>
-                <Link to={ViewShowForm}>Edit Show Instance</Link>
+                <div onClick={() => this.showEditInstanceModal(item)}>
+                  Edit Show Instance
+                </div>
               </td>
             </tr>
           );

@@ -2,10 +2,21 @@ const db = require('../../models');
 const keys = require('../../config/keys');
 
 async function search(req, res) {
-  let { s, type } = req.query;
+  let { s, type, limit } = req.query;
 
   if (!s) {
     return res.json([]);
+  }
+
+  if (limit != null) {
+    limit = Number(limit);
+    if (limit > keys.queryPageSize) {
+      return res.status(422).json({
+        errorMessage: 'limit cannot exceed ' + keys.queryPageSize,
+      });
+    }
+  } else {
+    limit = keys.queryPageSize;
   }
 
   let filterObj = { $text: { $search: s } };
@@ -29,7 +40,7 @@ async function search(req, res) {
     },
     {
       sort: { score: { $meta: 'textScore' } },
-      limit: keys.queryPageSize,
+      limit: limit,
     },
   ).populate(['artist', 'artists', 'album']);
 

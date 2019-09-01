@@ -29,7 +29,10 @@ class TrackAddPage extends Component {
   };
 
   render() {
-    const { name, tracks, _id, artist } = this.props.library.doc;
+    let name, tracks, _id, artist;
+    if (this.props.library.doc != null) {
+      ({ name, tracks, _id, artist } = this.props.library.doc);
+    }
     const artistId = artist == null ? null : artist._id;
     let maxDiskNumber, maxTrackNumber;
     //if there are no existing tracks, default disk number is one and track number is 0 (the form will use track number + 1 as its default)
@@ -62,6 +65,7 @@ class TrackAddPage extends Component {
                   submitCallback={this.addTrackCallback}
                   albumId={_id}
                   artistId={artistId}
+                  artist={artist}
                   tracks={tracks}
                   history={this.props.history}
                 />

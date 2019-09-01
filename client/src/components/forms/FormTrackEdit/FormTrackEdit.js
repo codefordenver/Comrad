@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Field, reduxForm } from 'redux-form';
+import { Field, FieldArray, reduxForm } from 'redux-form';
 import { requiredValidate } from '../../../utils/validation';
 import { libraryActions } from '../../../redux';
 import Button from '../../Button';
+import ButtonIcon from '../../ButtonIcon';
+import DropdownArtist from '../../DropdownArtist';
 import Input from '../../Input';
 import { bindActionCreators } from 'redux';
 
@@ -19,6 +21,45 @@ class FormTrackEdit extends Component {
     });
   };
 
+  renderArtists = ({ fields, meta: { error, submitFailed } }) => {
+    const { artists } = this.props;
+    return (
+      <div>
+        <ul className="form-track-edit__artist-list">
+          <li>
+            <h3>Artists</h3>
+            <ButtonIcon
+              icon="plus"
+              onClick={e => {
+                e.preventDefault();
+                fields.push({});
+              }}
+            />
+          </li>
+          {fields.map((fieldName, index) => (
+            <li key={'field_' + index}>
+              <Field
+                name={`${fieldName}`}
+                type="text"
+                component={DropdownArtist}
+                label="Aritst"
+                artist={artists.filter(obj => obj._id === fields.get(index))[0]}
+              />
+              <ButtonIcon
+                icon="cancel"
+                onClick={e => {
+                  e.preventDefault();
+                  fields.remove(index);
+                }}
+              />
+            </li>
+          ))}
+        </ul>
+        {submitFailed && error && <span>{error}</span>}
+      </div>
+    );
+  };
+
   render() {
     const { props, submit } = this;
     const { handleSubmit } = props;
@@ -32,6 +73,7 @@ class FormTrackEdit extends Component {
           autoFocus
           validate={requiredValidate}
         />
+        <FieldArray name="artists" component={this.renderArtists} />
         <div className="duration-container">
           <div className="duration-label-container">
             <div className="duration-label">Duration:</div>
@@ -79,6 +121,8 @@ function mapStateToProps(state) {
     track_number,
     _id,
     album,
+    artistIds,
+    artists,
     minutes,
     seconds;
   if (state.library.doc != null) {
@@ -89,12 +133,15 @@ function mapStateToProps(state) {
       track_number,
       _id,
       album,
+      artists,
     } = state.library.doc);
+    artistIds = artists.map(a => a._id);
     minutes = Math.floor(parseInt(duration_in_seconds) / 60);
     seconds = duration_in_seconds - minutes * 60;
   }
 
   return {
+    artists: artists,
     initialValues: {
       disk_number: disk_number,
       duration_in_seconds: duration_in_seconds,
@@ -104,6 +151,7 @@ function mapStateToProps(state) {
       seconds: seconds,
       id: _id,
       album: album,
+      artists: artistIds,
     },
   };
 }

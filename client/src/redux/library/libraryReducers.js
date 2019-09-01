@@ -6,6 +6,8 @@ const initialState = {
   editingName: false,
   loading: false,
   loadingError: false,
+  loadingSearch: false,
+  searchString: null,
   totalPages: null,
 };
 
@@ -47,11 +49,17 @@ export const libraryReducer = (state = initialState, { type, payload }) => {
         loading: false,
         loadingError: true,
       };
+    case libraryTypes.LOADING_SEARCH:
+      return {
+        ...state,
+        loadingSearch: true,
+      };
     case libraryTypes.SEARCH:
       return {
         ...state,
         docs: payload.docs,
-        loading: false,
+        loadingSearch: false,
+        searchString: payload.searchString,
         totalPages: payload.totalPages,
       };
     case libraryTypes.UPDATE:

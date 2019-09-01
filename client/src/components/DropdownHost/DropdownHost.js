@@ -169,7 +169,6 @@ class DropdownHost extends Component {
       return <div key={item._id}>{`${item.value}`}</div>;
     }
     //Add new user component
-    //NOT COMPLETE
     return <div key={item}>Add New Host</div>;
   };
 

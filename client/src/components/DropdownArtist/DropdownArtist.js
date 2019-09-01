@@ -37,11 +37,17 @@ class DropdownArtist extends Component {
     const { cachedSearches } = this.state;
 
     //check to see if the artist property has changed: if so, reset the initial value
-    if (artist != null && this.state.initialValue != artist._id) {
+    if (artist != null && this.state.initialValue !== artist._id) {
       this.setState({
         currentInputValue: artist.name,
         initialValue: artist._id,
         selectedArtist: artist,
+      });
+    } else if (artist === null && this.state.initialValue != null) {
+      this.setState({
+        currentInputValue: '',
+        intialValue: null,
+        selectedArtist: null,
       });
     }
 

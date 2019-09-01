@@ -4,11 +4,16 @@ import { Field, FieldArray, reduxForm } from 'redux-form';
 import { requiredValidate } from '../../../utils/validation';
 import { libraryActions } from '../../../redux';
 import Button from '../../Button';
+import ButtonIcon from '../../ButtonIcon';
 import DropdownArtist from '../../DropdownArtist';
 import Input from '../../Input';
 import { bindActionCreators } from 'redux';
 
 class FormTrackAdd extends Component {
+  state = {
+    artistsSelectedInDropdown: [this.props.artist],
+  };
+
   submit = values => {
     const { albumId, libraryActions, submitCallback } = this.props;
     values.album = albumId;
@@ -21,35 +26,56 @@ class FormTrackAdd extends Component {
     });
   };
 
+  handleDropdownArtistSelect = artist => {
+    let { artistsSelectedInDropdown } = this.state;
+    artistsSelectedInDropdown.push(artist);
+    this.setState({
+      artistsSelectedInDropdown: artistsSelectedInDropdown,
+    });
+  };
+
   renderArtists = ({ fields, meta: { error, submitFailed } }) => {
     const { artist } = this.props;
+    const { artistsSelectedInDropdown } = this.state;
     return (
-      <ul>
-        <li>
-          <button type="button" onClick={() => fields.push({})}>
-            Add Artist
-          </button>
-          {submitFailed && error && <span>{error}</span>}
-        </li>
-        {fields.map((fieldName, index) => (
-          <li key={index}>
-            <button
-              type="button"
-              title="Remove Artist"
-              onClick={() => fields.remove(index)}
-            >
-              Remove
-            </button>
-            <Field
-              name={`${fieldName}`}
-              type="text"
-              component={DropdownArtist}
-              label="Aritst"
-              artist={artist}
+      <div>
+        <ul className="form-track-add__artist-list">
+          <li>
+            <h3>Artists</h3>
+            <ButtonIcon
+              icon="plus"
+              onClick={e => {
+                e.preventDefault();
+                fields.push({});
+              }}
             />
           </li>
-        ))}
-      </ul>
+          {fields.map((fieldName, index) => (
+            <li key={'field_' + index}>
+              <Field
+                name={`${fieldName}`}
+                type="text"
+                component={DropdownArtist}
+                onArtistSelect={this.handleDropdownArtistSelect}
+                label="Aritst"
+                artist={
+                  artistsSelectedInDropdown.filter(
+                    obj => obj._id === fields.get(index),
+                  )[0]
+                }
+              />
+              <ButtonIcon
+                icon="cancel"
+                onClick={e => {
+                  e.preventDefault();
+                  fields.remove(index);
+                }}
+              />
+            </li>
+          ))}
+        </ul>
+        {submitFailed && error && <span>{error}</span>}
+      </div>
     );
   };
 

@@ -3,8 +3,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { isEmpty } from 'lodash';
 
-import { Link } from 'react-router-dom';
-
 import ButtonIcon from '../../components/ButtonIcon';
 import Card, { CardBody } from '../../components/Card';
 import Loading from '../../components/Loading';

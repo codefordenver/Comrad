@@ -5,6 +5,13 @@ const initialState = [];
 export const modalReducer = (state = initialState, { type, payload }) => {
   switch (type) {
     case SET_MODAL_VISIBILITY:
+      if (
+        state.onModalCloseCallback != null &&
+        state.modalVisibility &&
+        payload.modalVisibility === false
+      ) {
+        state.onModalCloseCallback();
+      }
       return {
         ...payload,
       };

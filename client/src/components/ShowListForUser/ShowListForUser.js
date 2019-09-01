@@ -6,8 +6,9 @@ import moment from 'moment';
 import { showAPI } from '../../api';
 
 import Loading from '../Loading';
+import { getShowType } from '../../utils/shows';
 import { MODAL_EDIT_SHOW } from '../Shows/ShowModalController';
-import { createInstanceAndEditShow } from '../../redux/show';
+import { createInstanceAndEditShow, selectShow } from '../../redux/show';
 import { setModalVisibility } from '../../redux/modal';
 import ShowModalController from '../Shows/ShowModalController';
 
@@ -18,6 +19,16 @@ class ShowListForUser extends Component {
   };
 
   componentWillMount() {
+    this.findShows();
+  }
+
+  componentDidMount() {
+    const { setModalVisibility } = this.props;
+    setModalVisibility(false, false, null);
+  }
+
+  findShows = () => {
+    console.log('find shows');
     const {
       currentUserId,
       doNotIncludeNowPlaying = false,
@@ -50,18 +61,22 @@ class ShowListForUser extends Component {
         data: results,
       });
     });
-  }
-
-  componentDidMount() {
-    const { setModalVisibility } = this.props;
-    setModalVisibility(false, false, null);
-  }
+  };
 
   showEditInstanceModal = show => {
-    const { setModalVisibility, createInstanceAndEditShow } = this.props;
-    createInstanceAndEditShow(show.master_event_id._id, show).then(() => {
-      setModalVisibility(MODAL_EDIT_SHOW, true, null);
-    });
+    const {
+      setModalVisibility,
+      createInstanceAndEditShow,
+      selectShow,
+    } = this.props;
+    if (getShowType(show) === 'instance') {
+      selectShow(show);
+      setModalVisibility(MODAL_EDIT_SHOW, true, null, this.findShows);
+    } else {
+      createInstanceAndEditShow(show.master_event_id._id, show).then(() => {
+        setModalVisibility(MODAL_EDIT_SHOW, true, null, this.findShows);
+      });
+    }
   };
 
   renderHeader = () => {
@@ -106,9 +121,15 @@ class ShowListForUser extends Component {
                 <Link to={showUrl}>Show Builder</Link>
               </td>
               <td>
-                <div onClick={() => this.showEditInstanceModal(item)}>
+                <a
+                  href=""
+                  onClick={e => {
+                    e.preventDefault();
+                    this.showEditInstanceModal(item);
+                  }}
+                >
                   Edit Show Instance
-                </div>
+                </a>
               </td>
               <ShowModalController />
             </tr>
@@ -148,6 +169,7 @@ export default connect(
   mapStateToProps,
   {
     createInstanceAndEditShow,
+    selectShow,
     setModalVisibility,
   },
   null,

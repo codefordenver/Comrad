@@ -4,6 +4,7 @@ import { Field, FieldArray, reduxForm } from 'redux-form';
 import { requiredValidate } from '../../../utils/validation';
 import { libraryActions } from '../../../redux';
 import Button from '../../Button';
+import ButtonIcon from '../../ButtonIcon';
 import DropdownArtist from '../../DropdownArtist';
 import Input from '../../Input';
 import { bindActionCreators } from 'redux';
@@ -23,32 +24,39 @@ class FormTrackEdit extends Component {
   renderArtists = ({ fields, meta: { error, submitFailed } }) => {
     const { artists } = this.props;
     return (
-      <ul>
-        <li>
-          <button type="button" onClick={() => fields.push({})}>
-            Add Artist
-          </button>
-          {submitFailed && error && <span>{error}</span>}
-        </li>
-        {fields.map((fieldName, index) => (
-          <li key={index}>
-            <button
-              type="button"
-              title="Remove Artist"
-              onClick={() => fields.remove(index)}
-            >
-              Remove
-            </button>
-            <Field
-              name={`${fieldName}`}
-              type="text"
-              component={DropdownArtist}
-              label="Aritst"
-              artist={artists[index]}
+      <div>
+        <ul className="form-track-edit__artist-list">
+          <li>
+            <h3>Artists</h3>
+            <ButtonIcon
+              icon="plus"
+              onClick={e => {
+                e.preventDefault();
+                fields.push({});
+              }}
             />
           </li>
-        ))}
-      </ul>
+          {fields.map((fieldName, index) => (
+            <li key={'field_' + index}>
+              <Field
+                name={`${fieldName}`}
+                type="text"
+                component={DropdownArtist}
+                label="Aritst"
+                artist={artists.filter(obj => obj._id === fields.get(index))[0]}
+              />
+              <ButtonIcon
+                icon="cancel"
+                onClick={e => {
+                  e.preventDefault();
+                  fields.remove(index);
+                }}
+              />
+            </li>
+          ))}
+        </ul>
+        {submitFailed && error && <span>{error}</span>}
+      </div>
     );
   };
 

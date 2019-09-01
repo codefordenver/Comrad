@@ -18,6 +18,7 @@ class CustomFieldsEdit extends Component {
           elements.push(
             <Field
               key={index}
+              className="mb-2"
               component={Checkbox}
               label={field.label}
               name={fieldName}
@@ -33,6 +34,7 @@ class CustomFieldsEdit extends Component {
             elements.push(
               <Field
                 key={index}
+                className="mb-2"
                 component={Select}
                 label={field.label}
                 name={fieldName}

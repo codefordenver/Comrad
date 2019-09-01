@@ -23,17 +23,27 @@ class DropdownArtist extends Component {
       cachedSearches: {},
       currentInputValue: artistDisplayName,
       haveSelectedTextOnClick: false,
+      initialValue: artist ? artist._id : null,
       artistSearchTimeout: null,
       hasFocus: false,
       selectedArtist: artist
-        ? { _id: artist.id, name: artistDisplayName }
+        ? { _id: artist._id, name: artistDisplayName }
         : null,
     };
   }
 
   componentDidUpdate() {
-    const { libraryState } = this.props;
+    const { artist, libraryState } = this.props;
     const { cachedSearches } = this.state;
+
+    //check to see if the artist property has changed: if so, reset the initial value
+    if (artist != null && this.state.initialValue != artist._id) {
+      this.setState({
+        currentInputValue: artist.name,
+        initialValue: artist._id,
+        selectedArtist: artist,
+      });
+    }
 
     // cache the search query in state so that we can quickly update the search results
     if (
@@ -144,7 +154,7 @@ class DropdownArtist extends Component {
       state,
     } = this;
     const { cachedSearches, currentInputValue, hasFocus } = state;
-    const { autoFocus } = props;
+    const { autoFocus, className } = props;
 
     // get the documents from the cachedResults property rather than Redux,
     // because Redux might not have the search results of the current input value if there
@@ -166,7 +176,10 @@ class DropdownArtist extends Component {
           highlightedIndex,
           selectedItem,
         }) => (
-          <div key="artist-field" className="artist-field">
+          <div
+            key="artist-field"
+            className={classnames('artist-field', className)}
+          >
             <Input
               className=""
               label="Artist"

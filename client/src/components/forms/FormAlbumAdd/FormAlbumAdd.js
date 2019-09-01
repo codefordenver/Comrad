@@ -47,6 +47,7 @@ class FormAlbumAdd extends Component {
       <form className="form-album-add" onSubmit={handleSubmit(submit)}>
         <Field
           component={DropdownArtist}
+          className="mb-2"
           label="Artist"
           name="artist"
           artist={artist}
@@ -54,15 +55,21 @@ class FormAlbumAdd extends Component {
         />
         <Field
           component={Input}
+          className="mb-2"
           label="Name"
           name="name"
           autoFocus={artist != null ? true : false}
           validate={requiredValidate}
         />
-        <Field component={Input} label="Label" name="label" />
-        <Field component={Checkbox} label="Compilation" name="compilation" />
+        <Field component={Input} className="mb-2" label="Label" name="label" />
         <Field
-          className="mb-3"
+          component={Checkbox}
+          className="mb-2"
+          label="Compilation"
+          name="compilation"
+        />
+        <Field
+          className="mb-2"
           component={Select}
           label="Genre"
           name="genre"

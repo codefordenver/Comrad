@@ -1,26 +1,26 @@
-const shows = [
+const Shows = [
   // Admin
   {
     role: 'Admin',
-    resource: 'shows',
+    resource: 'Shows',
     action: 'create:any',
     attributes: '*',
   },
   {
     role: 'Admin',
-    resource: 'shows',
+    resource: 'Shows',
     action: 'read:any',
     attributes: '*',
   },
   {
     role: 'Admin',
-    resource: 'shows',
+    resource: 'Shows',
     action: 'update:any',
     attributes: '*',
   },
   {
     role: 'Admin',
-    resource: 'shows',
+    resource: 'Shows',
     action: 'delete:any',
     attributes: '*',
   },
@@ -28,25 +28,25 @@ const shows = [
   // Full Access
   {
     role: 'Full Access',
-    resource: 'shows',
+    resource: 'Shows',
     action: 'create:any',
     attributes: '*',
   },
   {
     role: 'Full Access',
-    resource: 'shows',
+    resource: 'Shows',
     action: 'read:any',
     attributes: '*',
   },
   {
     role: 'Full Access',
-    resource: 'shows',
+    resource: 'Shows',
     action: 'update:any',
     attributes: '*',
   },
   {
     role: 'Full Access',
-    resource: 'shows',
+    resource: 'Shows',
     action: 'delete:any',
     attributes: '*',
   },
@@ -54,25 +54,25 @@ const shows = [
   // Show Producer
   {
     role: 'Show Producer',
-    resource: 'shows',
+    resource: 'Shows',
     action: 'create:any',
     attributes: '*',
   },
   {
     role: 'Show Producer',
-    resource: 'shows',
+    resource: 'Shows',
     action: 'read:any',
     attributes: '*',
   },
   {
     role: 'Show Producer',
-    resource: 'shows',
+    resource: 'Shows',
     action: 'update:any',
     attributes: '*',
   },
   {
     role: 'Show Producer',
-    resource: 'shows',
+    resource: 'Shows',
     action: 'delete:any',
     attributes: '*',
   },
@@ -80,25 +80,25 @@ const shows = [
   // Underwriting
   {
     role: 'Underwriting',
-    resource: 'shows',
+    resource: 'Shows',
     action: 'create:any',
     attributes: '*',
   },
   {
     role: 'Underwriting',
-    resource: 'shows',
+    resource: 'Shows',
     action: 'read:any',
     attributes: '*',
   },
   {
     role: 'Underwriting',
-    resource: 'shows',
+    resource: 'Shows',
     action: 'update:any',
     attributes: '*',
   },
   {
     role: 'Underwriting',
-    resource: 'shows',
+    resource: 'Shows',
     action: 'delete:any',
     attributes: '*',
   },
@@ -106,25 +106,25 @@ const shows = [
   // DJ
   {
     role: 'DJ',
-    resource: 'shows',
+    resource: 'Shows',
     action: 'create:any',
     attributes: '*',
   },
   {
     role: 'DJ',
-    resource: 'shows',
+    resource: 'Shows',
     action: 'read:any',
     attributes: '*',
   },
   {
     role: 'DJ',
-    resource: 'shows',
+    resource: 'Shows',
     action: 'update:any',
     attributes: '*',
   },
   {
     role: 'DJ',
-    resource: 'shows',
+    resource: 'Shows',
     action: 'delete:any',
     attributes: '*',
   },
@@ -132,28 +132,28 @@ const shows = [
   // Guest
   {
     role: 'Guest',
-    resource: 'shows',
+    resource: 'Shows',
     action: 'create:any',
     attributes: '*',
   },
   {
     role: 'Guest',
-    resource: 'shows',
+    resource: 'Shows',
     action: 'read:any',
     attributes: '*',
   },
   {
     role: 'Guest',
-    resource: 'shows',
+    resource: 'Shows',
     action: 'update:any',
     attributes: '*',
   },
   {
     role: 'Guest',
-    resource: 'shows',
+    resource: 'Shows',
     action: 'delete:any',
     attributes: '*',
   },
 ];
 
-module.exports = shows;
+module.exports = Shows;

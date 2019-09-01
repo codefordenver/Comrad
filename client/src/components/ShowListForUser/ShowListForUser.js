@@ -120,15 +120,15 @@ class ShowListForUser extends Component {
                 <Link to={showUrl}>Show Builder</Link>
               </td>
               <td>
-                <a
-                  href=""
+                <span
+                  className="show-list-for-user__edit-show-instance"
                   onClick={e => {
                     e.preventDefault();
                     this.showEditInstanceModal(item);
                   }}
                 >
                   Edit Show Instance
-                </a>
+                </span>
               </td>
               <ShowModalController />
             </tr>
@@ -147,7 +147,7 @@ class ShowListForUser extends Component {
       <div className="show-list-for-user">
         {loading && <Loading displayMode="static" />}
         {data.length > 0 ? (
-          <table>
+          <table className="base-table-style">
             {renderHeader()}
             {renderBody()}
           </table>

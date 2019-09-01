@@ -35,7 +35,6 @@ class FormTrackAdd extends Component {
   };
 
   renderArtists = ({ fields, meta: { error, submitFailed } }) => {
-    const { artist } = this.props;
     const { artistsSelectedInDropdown } = this.state;
     return (
       <div>

@@ -8,6 +8,9 @@ router
   .route('/:playlistId/saved-items/comment')
   .put(playlistsController.addCommentToSavedItems);
 router
+  .route('/:playlistId/saved-items/track')
+  .put(playlistsController.addTrackToSavedItems);
+router
   .route('/:playlistId/saved-items/traffic')
   .put(playlistsController.addTrafficToSavedItems);
 router
@@ -20,6 +23,9 @@ router
 router
   .route('/:playlistId/scratchpad/comment')
   .put(playlistsController.addCommentToScratchpad);
+router
+  .route('/:playlistId/scratchpad/track')
+  .put(playlistsController.addTrackToScratchpad);
 router
   .route('/:playlistId/scratchpad/:itemId')
   .delete(playlistsController.deleteItemFromScratchpad);

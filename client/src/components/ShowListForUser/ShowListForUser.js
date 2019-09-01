@@ -28,7 +28,6 @@ class ShowListForUser extends Component {
   }
 
   findShows = () => {
-    console.log('find shows');
     const {
       currentUserId,
       doNotIncludeNowPlaying = false,

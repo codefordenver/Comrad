@@ -37,7 +37,22 @@ function remove(req, res) {
             })
             .catch(err => res.status(422).json({ errorMessage: err }));
         case 'track':
-          return db.Library.findById({ _id: req.params.id })
+          return db.Playlist.findOne({ scratchpad: { track: req.params.id } })
+            .then(trackReferencingPlaylist => {
+              if (trackReferencingPlaylist != null) {
+                throw 'This track cannot be deleted because it is being used in a playlist.';
+              }
+            })
+            .then(
+              db.Playlist.findOne({
+                saved_items: { track: req.params.id },
+              }).then(trackReferencingPlaylist => {
+                if (trackReferencingPlaylist != null) {
+                  throw 'This track cannot be deleted because it is being used in a playlist.';
+                }
+              }),
+            )
+            .then(db.Library.findById({ _id: req.params.id }))
             .then(dbTrack => dbTrack.remove())
             .then(dbTrack => res.json(dbTrack))
             .catch(err => res.status(422).json(err));

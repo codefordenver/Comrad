@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import { Field } from 'redux-form';
 
 import classnames from 'classnames';
+import { Label } from './Label';
 
-class Input extends Component {
+export class Input extends Component {
   getClassNames = () => {
     console.log(this.props);
     const { className } = this.props;
@@ -15,19 +15,23 @@ class Input extends Component {
   render() {
     const { getClassNames, props } = this;
 
-    const { name } = props;
+    const { className, label, name } = props;
 
     return (
       <Field
         className={getClassNames()}
         name={name}
-        component={props => {
-          console.log(props);
-          return <input />;
+        component={({ input, meta }) => {
+          console.log(input);
+          console.log(meta);
+          return (
+            <>
+              <input className={classnames(className)} {...input} />
+              {label && <Label {...meta}>{label}</Label>}
+            </>
+          );
         }}
       />
     );
   }
 }
-
-export const ConnectedInput = connect()(Input);

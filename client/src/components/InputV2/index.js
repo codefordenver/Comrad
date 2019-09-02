@@ -1,1 +1,1 @@
-export { ConnectedInput as InputV2 } from './Input';
+export { Input as InputV2 } from './Input';

@@ -26,7 +26,12 @@ export class f extends Component {
                 <Form>
                   <Row>
                     <Col>
-                      <InputV2 className="Test" name="first_name" />
+                      <InputV2
+                        className="input"
+                        label="Wrong!"
+                        name="first_name"
+                        type="text"
+                      />
                     </Col>
                     <Col>Column</Col>
                   </Row>

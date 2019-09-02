@@ -93,6 +93,11 @@ class Dropdown extends Component {
     }
   }
 
+  componentWillUnmount() {
+    const { removeClickListener } = this;
+    removeClickListener();
+  }
+
   handleOnClick = e => {
     const { node } = this;
     const { target } = e;

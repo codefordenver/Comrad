@@ -7,48 +7,63 @@ import { connect } from 'react-redux';
 import { libraryActions } from '../../redux/';
 import Input from '../Input';
 
-class DropdownArtist extends Component {
+// This is set up to be used with initial values for artists only
+// If you want to have an initial value displayed for an album or track, you'll have to modify the code
+
+class DropdownLibrary extends Component {
   constructor(props) {
     super(props);
 
-    const { artist, libraryActions } = this.props;
-    const artistDisplayName = artist ? artist.name : '';
+    const { artist, libraryActions, libraryType } = this.props;
 
-    //run a host search on the existing value so that the host list is populated with information
-    if (artistDisplayName.length > 0) {
-      libraryActions.search('artist', artistDisplayName, null, null, 10);
+    let selectedLibraryItemDisplayName = '';
+    if (libraryType === 'artist') {
+      selectedLibraryItemDisplayName = artist ? artist.name : '';
+
+      //run a host search on the existing value so that the host list is populated with information
+      if (selectedLibraryItemDisplayName.length > 0) {
+        libraryActions.search(
+          libraryType,
+          selectedLibraryItemDisplayName,
+          null,
+          null,
+          10,
+        );
+      }
     }
 
     this.state = {
       cachedSearches: {},
-      currentInputValue: artistDisplayName,
+      currentInputValue: selectedLibraryItemDisplayName,
       haveSelectedTextOnClick: false,
-      initialValue: artist ? artist._id : null,
-      artistSearchTimeout: null,
+      initialValue: libraryType === 'artist' && artist ? artist._id : null,
       hasFocus: false,
-      selectedArtist: artist
-        ? { _id: artist._id, name: artistDisplayName }
-        : null,
+      selectedLibraryItem:
+        libraryType === 'artist' && artist
+          ? { _id: artist._id, name: selectedLibraryItemDisplayName }
+          : null,
     };
   }
 
   componentDidUpdate() {
-    const { artist, libraryState } = this.props;
+    const { artist, libraryState, libraryType } = this.props;
     const { cachedSearches } = this.state;
 
     //check to see if the artist property has changed: if so, reset the initial value
-    if (artist != null && this.state.initialValue !== artist._id) {
-      this.setState({
-        currentInputValue: artist.name,
-        initialValue: artist._id,
-        selectedArtist: artist,
-      });
-    } else if (artist === null && this.state.initialValue != null) {
-      this.setState({
-        currentInputValue: '',
-        intialValue: null,
-        selectedArtist: null,
-      });
+    if (libraryType === 'artist') {
+      if (artist != null && this.state.initialValue !== artist._id) {
+        this.setState({
+          currentInputValue: artist.name,
+          initialValue: artist._id,
+          selectedLibraryItem: artist,
+        });
+      } else if (artist === null && this.state.initialValue != null) {
+        this.setState({
+          currentInputValue: '',
+          intialValue: null,
+          selectedLibraryItem: null,
+        });
+      }
     }
 
     // cache the search query in state so that we can quickly update the search results
@@ -65,18 +80,18 @@ class DropdownArtist extends Component {
 
   //handles input box change
   handleChange = e => {
-    const { libraryActions } = this.props;
+    const { libraryActions, libraryType } = this.props;
     const { cachedSearches, librarySearchTimeout } = this.state;
     const { value } = e.target;
 
     if (value.length && !(value.toLowerCase() in cachedSearches)) {
-      //throttle the hostSearch function so we are not calling it rapidly if users are quickly deleting or typing text
+      //throttle the libraryActions.search function so we are not calling it rapidly if users are quickly deleting or typing text
       if (librarySearchTimeout != null) {
         clearTimeout(librarySearchTimeout);
       }
       this.setState({
         librarySearchTimeout: setTimeout(
-          () => libraryActions.search('artist', value, null, null, 10),
+          () => libraryActions.search(libraryType, value, null, null, 10),
           150,
         ),
       });
@@ -88,10 +103,11 @@ class DropdownArtist extends Component {
 
   //on blur from the input box, reset the dropdown to its original value
   handleBlur = e => {
-    const { selectedArtist } = this.state;
+    const { selectedLibraryItem } = this.state;
 
     this.setState({
-      currentInputValue: selectedArtist != null ? selectedArtist.name : '',
+      currentInputValue:
+        selectedLibraryItem != null ? selectedLibraryItem.name : '',
       hasFocus: false,
       haveSelectedTextOnClick: false,
     });
@@ -111,7 +127,7 @@ class DropdownArtist extends Component {
 
   // process an artist being selected
   onSelect = (selection, stateAndHelpers) => {
-    const { input, onArtistSelect } = this.props;
+    const { input, onLibraryItemSelect } = this.props;
 
     if (selection === null) {
       return;
@@ -122,14 +138,14 @@ class DropdownArtist extends Component {
       input.onChange(selection._id);
     }
 
-    if (typeof onArtistSelect == 'function') {
-      onArtistSelect(selection);
+    if (typeof onLibraryItemSelect == 'function') {
+      onLibraryItemSelect(selection);
     }
 
     this.setState(
       {
         currentInputValue: selection != null ? selection.name : '',
-        selectedArtist: selection || null,
+        selectedLibraryItem: selection || null,
       },
       function() {
         document.activeElement.blur(); //remove focus from the Host text field
@@ -138,7 +154,22 @@ class DropdownArtist extends Component {
   };
 
   //function for rendering the options in the host dropdown results
-  renderArtistListItem = item => {
+  renderLibraryListItem = item => {
+    const { libraryType } = this.props;
+    if (libraryType === 'album') {
+      return (
+        <div key={item._id}>
+          {item.name + ' '}
+          {item.artist != null ? (
+            <>
+              by <i>{item.artist.name}</i>
+            </>
+          ) : (
+            ''
+          )}
+        </div>
+      );
+    }
     return <div key={item._id}>{`${item.name}`}</div>;
   };
 
@@ -155,17 +186,20 @@ class DropdownArtist extends Component {
       handleBlur,
       initialValue,
       onSelect,
-      renderArtistListItem,
+      renderLibraryListItem,
       props,
       state,
     } = this;
     const { cachedSearches, currentInputValue, hasFocus } = state;
-    const { autoFocus, className } = props;
+    const { autoFocus, className, libraryType } = props;
 
     // get the documents from the cachedResults property rather than Redux,
     // because Redux might not have the search results of the current input value if there
     // were multiple host search XHR requests that didn't finish in the order they were called
     const docs = cachedSearches[currentInputValue.toLowerCase()] || [];
+
+    const libraryTypeCapitalized =
+      libraryType.charAt(0).toUpperCase() + libraryType.substring(1);
 
     return (
       <Downshift
@@ -180,16 +214,16 @@ class DropdownArtist extends Component {
           isOpen,
           inputValue,
           highlightedIndex,
-          selectedItem,
+          selectedLibraryItem,
         }) => (
           <div
-            key="artist-field"
-            className={classnames('artist-field', className)}
+            key="library-field"
+            className={classnames('library-field', className)}
           >
             <Input
               className=""
-              label="Artist"
-              name="artist"
+              label={libraryTypeCapitalized}
+              name="libraryItem"
               type="text"
               {...getInputProps({
                 onChange: handleChange,
@@ -202,9 +236,9 @@ class DropdownArtist extends Component {
               value={currentInputValue}
             />
 
-            {/* Artist dropdown */}
+            {/* Library dropdown */}
             {hasFocus && docs.length > 0 ? (
-              <div className="dropdown__list dropdown__list--artist-list active">
+              <div className="dropdown__list dropdown__list--library-list active">
                 {docs.map((item, index) => (
                   <div
                     key={index}
@@ -217,7 +251,7 @@ class DropdownArtist extends Component {
                       item,
                     })}
                   >
-                    {renderArtistListItem(item)}
+                    {renderLibraryListItem(item)}
                   </div>
                 ))}
               </div>
@@ -244,4 +278,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(DropdownArtist);
+)(DropdownLibrary);

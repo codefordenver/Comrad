@@ -5,7 +5,7 @@ import { requiredValidate } from '../../../utils/validation';
 import { libraryActions } from '../../../redux';
 import Button from '../../Button';
 import ButtonIcon from '../../ButtonIcon';
-import DropdownArtist from '../../DropdownArtist';
+import DropdownLibrary from '../../DropdownLibrary';
 import Input from '../../Input';
 import { bindActionCreators } from 'redux';
 
@@ -43,6 +43,7 @@ class FormTrackAdd extends Component {
             <h3>Artists</h3>
             <ButtonIcon
               icon="plus"
+              type="button"
               onClick={e => {
                 e.preventDefault();
                 fields.push({});
@@ -54,8 +55,9 @@ class FormTrackAdd extends Component {
               <Field
                 name={`${fieldName}`}
                 type="text"
-                component={DropdownArtist}
-                onArtistSelect={this.handleDropdownArtistSelect}
+                component={DropdownLibrary}
+                libraryType="artist"
+                onLibraryItemSelect={this.handleDropdownArtistSelect}
                 label="Aritst"
                 artist={
                   artistsSelectedInDropdown.filter(
@@ -65,6 +67,7 @@ class FormTrackAdd extends Component {
               />
               <ButtonIcon
                 icon="cancel"
+                type="button"
                 onClick={e => {
                   e.preventDefault();
                   fields.remove(index);

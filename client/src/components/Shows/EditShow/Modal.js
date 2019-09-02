@@ -44,11 +44,19 @@ class EditModal extends Component {
 
   render() {
     const { submit, props } = this;
-    const { modalVisibility, data } = props;
+    const {
+      modalVisibility,
+      data,
+      editSummaryAndDescriptionOnly = false,
+    } = props;
 
     return (
       <Modal isOpen={modalVisibility}>
-        <Form onSubmit={submit} data={data} />
+        <Form
+          onSubmit={submit}
+          data={data}
+          editSummaryAndDescriptionOnly={editSummaryAndDescriptionOnly}
+        />
       </Modal>
     );
   }

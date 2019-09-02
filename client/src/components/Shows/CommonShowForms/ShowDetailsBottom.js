@@ -7,7 +7,7 @@ import TextArea from '../../TextArea';
 
 class ShowDetailsBottom extends Component {
   render() {
-    const { host } = this.props;
+    const { host, editSummaryAndDescriptionOnly = false } = this.props;
     return (
       <>
         <Field
@@ -26,19 +26,23 @@ class ShowDetailsBottom extends Component {
           type="text"
         />
 
-        <Field
-          label="Producer"
-          name="show_details.producer"
-          component={Input}
-          type="text"
-        />
+        {!editSummaryAndDescriptionOnly && (
+          <Field
+            label="Producer"
+            name="show_details.producer"
+            component={Input}
+            type="text"
+          />
+        )}
 
-        <Field
-          label="Host"
-          name="show_details.host"
-          component={DropdownHost}
-          host={host}
-        />
+        {!editSummaryAndDescriptionOnly && (
+          <Field
+            label="Host"
+            name="show_details.host"
+            component={DropdownHost}
+            host={host}
+          />
+        )}
       </>
     );
   }

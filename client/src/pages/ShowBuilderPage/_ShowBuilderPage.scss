@@ -35,6 +35,11 @@
         
         .edit-show-description {
           font-size: 1rem;
+          
+          span {
+            color: blue;
+            cursor: pointer;
+          }
         }
       }
     }

@@ -13,12 +13,17 @@ import Input from '../../components/Input';
 import Loading from '../../components/Loading';
 import ShowBuilderItemList from '../../components/ShowBuilderItemList';
 
+import { MODAL_EDIT_SHOW_INSTANCE_DESCRIPTION } from '../../components/Shows/ShowModalController';
+import { setModalVisibility } from '../../redux/modal';
+import ShowModalController from '../../components/Shows/ShowModalController';
+
 import { libraryActions, playlistActions, trafficActions } from '../../redux';
 import {
   clearShows,
   createInstanceShow,
   getShowsData,
   searchShow,
+  selectShow,
   updateShow,
 } from '../../redux/show';
 
@@ -102,6 +107,14 @@ class ShowBuilderPage extends Component {
     } else {
       libraryActions.search('track', form.q);
     }
+  };
+
+  showEditShowDescriptionModal = () => {
+    const { setModalVisibility, selectShow, shows } = this.props;
+    let show = shows[Object.keys(shows)[0]];
+
+    selectShow(show);
+    setModalVisibility(MODAL_EDIT_SHOW_INSTANCE_DESCRIPTION, true, null);
   };
 
   render() {
@@ -194,7 +207,10 @@ class ShowBuilderPage extends Component {
                 {formattedStartTime} - {formattedEndTime}
                 <br />
                 <div className="edit-show-description">
-                  Edit Show Description
+                  <span onClick={e => this.showEditShowDescriptionModal()}>
+                    Edit Show Description
+                  </span>
+                  <ShowModalController />
                 </div>
               </div>
             </div>
@@ -363,11 +379,13 @@ function mapStateToProps({ library, show, playlist, traffic }) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    libraryActions: bindActionCreators({ ...libraryActions }, dispatch),
-    playlistActions: bindActionCreators({ ...playlistActions }, dispatch),
     clearShows: bindActionCreators(clearShows, dispatch),
     createInstanceShow: bindActionCreators(createInstanceShow, dispatch),
+    libraryActions: bindActionCreators({ ...libraryActions }, dispatch),
+    playlistActions: bindActionCreators({ ...playlistActions }, dispatch),
     searchShow: bindActionCreators(searchShow, dispatch),
+    selectShow: bindActionCreators(selectShow, dispatch),
+    setModalVisibility: bindActionCreators(setModalVisibility, dispatch),
     updateShow: bindActionCreators(updateShow, dispatch),
     trafficActions: bindActionCreators({ ...trafficActions }, dispatch),
   };

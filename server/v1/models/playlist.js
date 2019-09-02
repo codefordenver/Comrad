@@ -39,7 +39,7 @@ const playlistSchema = new Schema({
       //for "track" type
       track: {
         type: Schema.Types.ObjectId,
-        ref: 'Track',
+        ref: 'Library',
       },
 
       //for "comment" type

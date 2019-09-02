@@ -3,7 +3,6 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Field, reduxForm, formValueSelector } from 'redux-form';
 
-import Button from '../../Button';
 import Filter from '../../Filter';
 import Input from '../../Input';
 

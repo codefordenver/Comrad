@@ -2,7 +2,7 @@
   position: relative;
   
   &__saving-overlay {
-    z-index: 1;
+    z-index: 3; /* sit over label on Input components */
     position: absolute;
     background: rgba(200,200,200,0.6);
     cursor: wait;
@@ -87,6 +87,21 @@
       border: 1px solid $color-grey-3;
       border-top: 0px;
       padding: 1rem;
+    }
+  }
+  
+  .library-results {
+    .dropdown__icon {
+      color: $color-grey-3;
+    }
+    &__add-new-track {
+      color: blue;
+      cursor: pointer;
+    }
+    &__no-results {
+      em {
+        font-style: italic;
+      }
     }
   }
 }

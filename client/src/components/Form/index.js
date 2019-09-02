@@ -1,1 +1,1 @@
-export { default as Form } from './Form';
+export { ConnectedReduxForm as Form } from './Form';

@@ -1,0 +1,45 @@
+.Heading {
+  &--1 {
+    color: $color-primary;
+    font-family: $font-family-secondary;
+    font-size: 3.4rem;
+    font-weight: $font-weight-heavy;
+
+    margin-bottom: 2rem;
+  }
+  &--2 {
+    color: $color-primary-light;
+    font-family: $font-family-primary;
+    font-weight: $font-weight-light;
+    font-size: 3rem;
+    line-height: 1.15;
+  }
+
+  &--3 {
+    color: $color-primary-light;
+    font-family: $font-family-primary;
+    font-weight: $font-weight-light;
+    font-size: 2.6rem;
+    line-height: 1.15;
+
+    margin-bottom: 1.4rem;
+  }
+
+  &--4 {
+    color: $color-primary-light;
+    font-family: $font-family-primary;
+    font-weight: $font-weight-light;
+    font-size: 2.2rem;
+    line-height: 1.15;
+
+    margin-bottom: 0.4rem;
+  }
+
+  &--5 {
+    color: $color-primary-light;
+    font-family: $font-family-primary;
+    font-weight: $font-weight-light;
+    font-size: 1.8rem;
+    line-height: 1.3;
+  }
+}

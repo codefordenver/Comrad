@@ -18,6 +18,7 @@
 @import '../components/Button/Button';
 @import '../components/ButtonIcon/ButtonIcon';
 @import '../components/Card/Card';
+@import '../components/CardV2/CardV2';
 @import '../components/Checkbox/Checkbox';
 @import '../components/DatePicker/DatePicker';
 @import '../components/Shows/Shows';
@@ -26,6 +27,7 @@
 @import '../components/DropdownHost/DropdownHost';
 @import '../components/Filter/Filter';
 @import '../components/Footer/Footer';
+@import '../components/Form/Form';
 @import '../components/forms/FormAlbumAdd/FormAlbumAdd';
 @import '../components/forms/FormAlbumEdit/FormAlbumEdit';
 @import '../components/forms/FormArtistAdd/FormArtistAdd';
@@ -37,7 +39,9 @@
 @import '../components/forms/FormHostAdd/FormHostAdd';
 @import '../components/forms/FormUserAdd/FormUserAdd.scss';
 @import '../components/forms/FormUserSearch/FormUserSearch';
+@import '../components/Heading/Heading';
 @import '../components/Input/Input';
+@import '../components/InputV2/Input';
 @import '../components/Logo/Logo';
 @import '../components/LargeText/LargeText';
 @import '../components/Loading/Loading';
@@ -49,6 +53,7 @@
 @import '../components/Root/Root';
 @import '../components/SearchTerm/SearchTerm';
 @import '../components/Select/Select';
+@import '../components/SelectV2/Select';
 @import '../components/ShowBuilderItemList/ShowBuilderItemList';
 @import '../components/ShowListForUser/ShowListForUser';
 @import '../components/Sidebar/Sidebar';

@@ -3,8 +3,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { isEmpty } from 'lodash';
 
-import { Link } from 'react-router-dom';
-
 import ButtonIcon from '../../components/ButtonIcon';
 import Card, { CardBody } from '../../components/Card';
 import Loading from '../../components/Loading';
@@ -12,16 +10,15 @@ import FormArtistUpdateName from '../../components/forms/FormArtistUpdateName';
 import LargeText from '../../components/LargeText';
 import TableArtistAlbums from '../../components/tables/TableArtistAlbums';
 
-import { artistActions } from '../../redux';
+import { libraryActions } from '../../redux';
 
 class ArtistViewPage extends Component {
   componentDidMount() {
-    const { artist, artistActions, match } = this.props;
-    const { _id } = artist.doc;
+    const { library, libraryActions, match } = this.props;
     const { id } = match.params;
 
-    if (id !== _id) {
-      artistActions.findOne(id);
+    if (library.doc == null || id !== library.doc._id) {
+      libraryActions.findOne(id);
     }
   }
 
@@ -36,17 +33,20 @@ class ArtistViewPage extends Component {
 
   render() {
     const { navigateToAlbum, props } = this;
-    const { match, artist } = props;
-    const { doc, loading } = artist;
-    const { albums, updated_at } = doc;
-    const dateObj = new Date(updated_at);
-    const lastUpdated = `${dateObj.toLocaleDateString()}`;
+    const { match, library } = props;
+    const { doc, loading } = library;
     const { url } = this.props.match;
+
+    let lastUpdated = '';
+    if (doc != null) {
+      const dateObj = new Date(doc.updated_at);
+      lastUpdated = `${dateObj.toLocaleDateString()} ${dateObj.toLocaleTimeString()}`;
+    }
 
     return (
       <div className="artist-view">
         {loading && <Loading />}
-        {!loading ? (
+        {!loading && doc != null ? (
           <>
             <Card>
               <CardBody className="artist-view__header">
@@ -69,7 +69,7 @@ class ArtistViewPage extends Component {
                     <ButtonIcon icon="plus" to={`${url}/add`} />
                   </div>
                 </div>
-                {isEmpty(albums) ? (
+                {isEmpty(doc.albums) ? (
                   <LargeText align="left">No Albums</LargeText>
                 ) : (
                   <TableArtistAlbums onRowClick={navigateToAlbum} />
@@ -85,13 +85,13 @@ class ArtistViewPage extends Component {
 
 function mapDispatchToProps(dispatch) {
   return {
-    artistActions: bindActionCreators({ ...artistActions }, dispatch),
+    libraryActions: bindActionCreators({ ...libraryActions }, dispatch),
   };
 }
 
-function mapStateToProps({ artist }) {
+function mapStateToProps({ library }) {
   return {
-    artist,
+    library,
   };
 }
 

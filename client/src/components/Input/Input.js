@@ -49,6 +49,8 @@ class Input extends Component {
       input,
       label,
       meta = {
+        active: false,
+        dirty: false,
         error: false,
         touched: false,
         submitting: false,

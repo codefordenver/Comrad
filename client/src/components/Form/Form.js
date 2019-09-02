@@ -4,21 +4,24 @@ import { reduxForm } from 'redux-form';
 
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import { Group } from './Group';
 
 /**
  * * WORK IN PROGRESS
  */
 
-function Form({ children, className, handleSubmit, submit }) {
+function Form({ children, className, handleSubmit, submitFunc }) {
   return (
     <form
       className={classnames('form', className)}
-      submit={handleSubmit(submit)}
+      onSubmit={handleSubmit(submitFunc)}
     >
       {children}
     </form>
   );
 }
+
+Form.Group = Group;
 
 Form.propTypes = {
   /**
@@ -35,7 +38,7 @@ Form.propTypes = {
   /**
    * Function passed to be called when form is submitted
    */
-  submit: PropTypes.func,
+  submitFunc: PropTypes.func,
 };
 
 const ReduxForm = reduxForm({

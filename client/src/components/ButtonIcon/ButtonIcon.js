@@ -55,21 +55,6 @@ class ButtonIcon extends Component {
     }
 
     return React.createElement(element, elementProps, null);
-
-    return (
-      <button
-        className={classnames(
-          'button-icon',
-          BUTTON_ICON[icon],
-          BUTTON_SIZE[size],
-          className,
-        )}
-        disabled={submitting}
-        onClick={onClick}
-        onMouseDown={onMouseDown}
-        type={BUTTON_TYPE[type]}
-      />
-    );
   }
 }
 

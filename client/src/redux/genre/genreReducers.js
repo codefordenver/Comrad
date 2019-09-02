@@ -1,7 +1,7 @@
 import { genreTypes } from './genreTypes';
 
 const initialState = {
-  docs: [],
+  docs: {},
 };
 
 export const genreReducer = (state = initialState, { type, payload }) => {

@@ -1,4 +1,6 @@
 .modal-main {
+  max-height: 95vh;
+  overflow: auto;
   position: fixed;
   background-color: white;
   width: auto;

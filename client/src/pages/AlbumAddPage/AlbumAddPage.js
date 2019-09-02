@@ -6,22 +6,29 @@ import Loading from '../../components/Loading';
 import { connect } from 'react-redux';
 import FormAlbumAdd from '../../components/forms/FormAlbumAdd';
 
-import { alertActions, artistActions } from '../../redux';
+import { alertActions, libraryActions } from '../../redux';
 
 class AlbumAddPage extends Component {
-  componentDidMount() {
-    const { artist, artistActions, match } = this.props;
+  componentWillMount() {
+    const { match, library, libraryActions } = this.props;
     const { id } = match.params;
 
-    if (artist.doc == null || id !== artist.doc._id) {
-      artistActions.findOne(id);
+    if (id != null && (library.doc == null || id !== library.doc._id)) {
+      libraryActions.findOne(id);
+    }
+
+    if (id == null) {
+      libraryActions.clear();
     }
   }
 
   addAlbumCallback = albumData => {
-    const { alertActions, artistActions, history } = this.props;
-    artistActions.clear();
-    history.push(`/library/artist/${albumData.artist}`);
+    const { alertActions, history } = this.props;
+    if (albumData.artist == null) {
+      history.push(`/library`);
+    } else {
+      history.push(`/library/artist/${albumData.artist}`);
+    }
     alertActions.show(
       'success',
       'Success',
@@ -30,8 +37,8 @@ class AlbumAddPage extends Component {
   };
 
   render() {
-    const { artist } = this.props;
-    const { _id } = artist.doc;
+    const { library, match } = this.props;
+    const { id } = match.params;
     return (
       <div className="aap">
         <Card className="mb-1">
@@ -41,12 +48,12 @@ class AlbumAddPage extends Component {
         </Card>
         <Card>
           <CardBody className="aap__form">
-            {artist.loading && <Loading />}
-            {!artist.loading && (
+            {library.loading && <Loading />}
+            {!library.loading && (
               <FormAlbumAdd
                 submitCallback={this.addAlbumCallback}
                 history={this.props.history}
-                artistId={_id}
+                artist={id != null ? library.doc : null}
               />
             )}
           </CardBody>
@@ -56,14 +63,14 @@ class AlbumAddPage extends Component {
   }
 }
 
-function mapStateToProps({ artist }) {
-  return { artist };
+function mapStateToProps({ library }) {
+  return { library };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     alertActions: bindActionCreators({ ...alertActions }, dispatch),
-    artistActions: bindActionCreators({ ...artistActions }, dispatch),
+    libraryActions: bindActionCreators({ ...libraryActions }, dispatch),
   };
 }
 

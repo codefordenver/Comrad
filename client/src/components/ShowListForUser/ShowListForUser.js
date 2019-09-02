@@ -6,6 +6,11 @@ import moment from 'moment';
 import { showAPI } from '../../api';
 
 import Loading from '../Loading';
+import { getShowType } from '../../utils/shows';
+import { MODAL_EDIT_SHOW } from '../Shows/ShowModalController';
+import { createInstanceAndEditShow, selectShow } from '../../redux/show';
+import { setModalVisibility } from '../../redux/modal';
+import ShowModalController from '../Shows/ShowModalController';
 
 class ShowListForUser extends Component {
   state = {
@@ -14,6 +19,15 @@ class ShowListForUser extends Component {
   };
 
   componentWillMount() {
+    this.findShows();
+  }
+
+  componentDidMount() {
+    const { setModalVisibility } = this.props;
+    setModalVisibility(false, false, null);
+  }
+
+  findShows = () => {
     const {
       currentUserId,
       doNotIncludeNowPlaying = false,
@@ -46,7 +60,23 @@ class ShowListForUser extends Component {
         data: results,
       });
     });
-  }
+  };
+
+  showEditInstanceModal = show => {
+    const {
+      setModalVisibility,
+      createInstanceAndEditShow,
+      selectShow,
+    } = this.props;
+    if (getShowType(show) === 'instance') {
+      selectShow(show);
+      setModalVisibility(MODAL_EDIT_SHOW, true, null, this.findShows);
+    } else {
+      createInstanceAndEditShow(show.master_event_id._id, show).then(() => {
+        setModalVisibility(MODAL_EDIT_SHOW, true, null, this.findShows);
+      });
+    }
+  };
 
   renderHeader = () => {
     return (
@@ -89,7 +119,18 @@ class ShowListForUser extends Component {
               <td>
                 <Link to={showUrl}>Show Builder</Link>
               </td>
-              <td>TODO edit show instance link</td>
+              <td>
+                <span
+                  className="show-list-for-user__edit-show-instance"
+                  onClick={e => {
+                    e.preventDefault();
+                    this.showEditInstanceModal(item);
+                  }}
+                >
+                  Edit Show Instance
+                </span>
+              </td>
+              <ShowModalController />
             </tr>
           );
         })}
@@ -106,7 +147,7 @@ class ShowListForUser extends Component {
       <div className="show-list-for-user">
         {loading && <Loading displayMode="static" />}
         {data.length > 0 ? (
-          <table>
+          <table className="base-table-style">
             {renderHeader()}
             {renderBody()}
           </table>
@@ -125,5 +166,10 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
+  {
+    createInstanceAndEditShow,
+    selectShow,
+    setModalVisibility,
+  },
   null,
 )(ShowListForUser);

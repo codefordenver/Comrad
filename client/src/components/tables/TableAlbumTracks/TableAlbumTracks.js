@@ -9,7 +9,7 @@ import Dropdown from '../../Dropdown';
 import Modal from '../../Modal';
 import Button from '../../Button';
 
-import { trackActions, alertActions } from '../../../redux';
+import { libraryActions, alertActions } from '../../../redux';
 
 const CellDuration = ({ value }) =>
   value ? (
@@ -28,8 +28,8 @@ class TableAlbumTracks extends Component {
   };
 
   deleteTrack = id => {
-    const { trackActions } = this.props;
-    trackActions.remove(id, this.deleteSuccess, this.deleteFailure);
+    const { libraryActions } = this.props;
+    libraryActions.remove(id, this.deleteSuccess, this.deleteFailure);
   };
 
   deleteFailure = () => {
@@ -80,8 +80,8 @@ class TableAlbumTracks extends Component {
   render() {
     const { handleRowClick, props, state } = this;
     const { deleteModal } = state;
-    const { albumState } = props;
-    const { tracks } = albumState.doc;
+    const { libraryState } = props;
+    const { tracks } = libraryState.doc;
 
     const columns = [
       {
@@ -174,16 +174,16 @@ class TableAlbumTracks extends Component {
   }
 }
 
-function mapStateToProps({ album }) {
+function mapStateToProps({ library }) {
   return {
-    albumState: album,
+    libraryState: library,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     alertActions: bindActionCreators({ ...alertActions }, dispatch),
-    trackActions: bindActionCreators({ ...trackActions }, dispatch),
+    libraryActions: bindActionCreators({ ...libraryActions }, dispatch),
   };
 }
 

@@ -31,14 +31,16 @@
     border-color: $color-danger;
   }
 
-  &__error {
-    color: $color-danger;
-    font-size: 1.2;
+  &__feedback {
+    &.error {
+      color: $color-danger;
+      font-size: 1.2;
 
-    margin-top: 3px;
-    padding-left: 1.2rem;
-    position: absolute;
-    transition: all 0.2s;
+      margin-top: 3px;
+      padding-left: 1.2rem;
+      position: absolute;
+      transition: all 0.2s;
+    }
   }
 
   &__label {
@@ -46,7 +48,7 @@
     color: $color-grey-3;
     cursor: text;
     font-size: 1.8rem;
-    padding: 0 1rem;
+    padding: 0 2.4rem;
     position: absolute;
     top: 0.4rem;
     left: 0.6rem;
@@ -60,8 +62,9 @@
     &.focus,
     &:focus {
       color: $color-primary;
-      transform: scale(0.6) translate(0.6rem, -4rem);
+      transform: scale(0.6) translate(3rem, -4rem);
       z-index: 2;
+      padding: 0 1rem;
     }
 
     &.error {

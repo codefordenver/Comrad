@@ -15,7 +15,8 @@ function requireAC(resource, action) {
     }
 
     if (eventType) {
-      resource = eventType;
+      resource =
+        eventType.charAt(0).toUpperCase() + eventType.substr(1).toLowerCase(); // capitalize the first letter of the resource
     }
 
     if (authorization) {

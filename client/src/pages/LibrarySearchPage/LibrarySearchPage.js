@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
-import axios from 'axios';
 
 import ReactTable from 'react-table';
 
@@ -12,28 +11,23 @@ import Dropdown from '../../components/Dropdown';
 import Input from '../../components/Input';
 import Modal from '../../components/Modal';
 
-import {
-  alertActions,
-  albumActions,
-  artistActions,
-  trackActions,
-} from '../../redux';
+import { alertActions, libraryActions } from '../../redux';
 
 class LibrarySearchPage extends Component {
   state = {
     activeFilter: 'all',
     deleteModal: false, //false to hide, or an object of data if the modal should be displayed
     deleteSuccessModal: false, //false to hide, or an object of data if the modal should be displayed
-    docs: [],
-    totalPages: null,
-    pageUrls: ['/v1/library'],
-    loading: true,
-    loadingError: false,
-    searchString: false,
+    page: 0,
+    searchString: null,
     sort: {
       id: null,
       desc: null,
     },
+  };
+
+  componentWillUnmount = () => {
+    this.props.libraryActions.clear();
   };
 
   closeDeleteModal = () => {
@@ -45,14 +39,8 @@ class LibrarySearchPage extends Component {
   };
 
   deleteEntity = (type, id) => {
-    const { albumActions, artistActions, trackActions } = this.props;
-    if (type === 'album') {
-      albumActions.remove(id, this.deleteSuccess, this.deleteFailure);
-    } else if (type === 'track') {
-      trackActions.remove(id, this.deleteSuccess, this.deleteFailure);
-    } else if (type === 'artist') {
-      artistActions.remove(id, this.deleteSuccess, this.deleteFailure);
-    }
+    const { libraryActions } = this.props;
+    libraryActions.remove(id, this.deleteSuccess, this.deleteFailure);
   };
 
   deleteFailure = () => {
@@ -75,71 +63,35 @@ class LibrarySearchPage extends Component {
     );
   };
 
-  fetchData = (state, instance) => {
-    this.setState({ loading: true }); //show loading overlay
-    let url = this.state.pageUrls[state.page];
-
-    //check that the sort value matches what was previously there
+  fetchData = (tableState, instance) => {
+    //if the sort values have changed, update that in state
     if (
-      state.sorted.length > 0 &&
-      (state.sorted[0].id !== this.state.sort.id ||
-        state.sorted[0].desc !== this.state.sort.desc)
+      tableState.sorted.length > 0 &&
+      (tableState.sorted[0].id !== this.state.sort.id ||
+        tableState.sorted[0].desc !== this.state.sort.desc)
     ) {
-      url +=
-        '?sortBy=' +
-        state.sorted[0].id +
-        '&sortDescending=' +
-        (state.sorted[0].desc ? '1' : '0');
-      this.setState({
-        pageUrls: [url], //reset page URLs, we will have to rebuild this list for each page with the new results since the sort order has changed
-        sort: {
-          id: state.sorted[0].id,
-          desc: state.sorted[0].desc,
+      this.setState(
+        {
+          page: tableState.page,
+          sort: {
+            id: tableState.sorted[0].id,
+            desc: tableState.sorted[0].desc,
+          },
         },
-      });
+        function() {
+          this.loadLibraryData();
+        },
+      );
+    } else {
+      this.setState(
+        {
+          page: tableState.page,
+        },
+        function() {
+          this.loadLibraryData();
+        },
+      );
     }
-
-    this.fetchTableDataFromApi(url);
-  };
-
-  fetchTableDataFromApi = url => {
-    axios
-      .get(url)
-      .then(response => {
-        let pageUrls = this.state.pageUrls;
-        if (typeof response.data.nextPage !== 'undefined') {
-          pageUrls.push(response.data.nextPage.url);
-        }
-        this.setState({
-          docs: response.data.results,
-          totalPages: response.data.totalPages,
-          pageUrls: pageUrls,
-          loading: false,
-          loadingError: false,
-        });
-      })
-      .catch(response => {
-        console.error(response);
-        this.setState({
-          loadingError: true,
-        });
-      });
-  };
-
-  getAllMusicLibraryRecords = () => {
-    let url = '/v1/library/';
-    if (this.state.activeFilter !== 'all') {
-      url = `/v1/library/${this.state.activeFilter}`;
-    }
-    this.setState(
-      {
-        pageUrls: [url],
-        searchString: false,
-      },
-      function() {
-        this.fetchTableDataFromApi(this.state.pageUrls[0]);
-      },
-    );
   };
 
   handleRowDeleteClick = data => {
@@ -157,6 +109,15 @@ class LibrarySearchPage extends Component {
     }
   };
 
+  loadLibraryData = () => {
+    const { activeFilter, searchString, sort, page } = this.state;
+    const { libraryActions, loadingSearch } = this.props;
+    //React Table can sometimes fire this function when it's already in the process of being called from a setstate callback
+    if (!loadingSearch) {
+      libraryActions.search(activeFilter, searchString, sort, page);
+    }
+  };
+
   navigateToRecord = (state, rowInfo, column, instance) => {
     return {
       onClick: (e, handleOriginal) => {
@@ -169,21 +130,14 @@ class LibrarySearchPage extends Component {
   };
 
   searchLibrary = form => {
-    if (form.q != null && form.q.length > 0) {
-      let url =
-        '/v1/library/search?s=' + form.q + '&type=' + this.state.activeFilter;
-      this.setState(
-        {
-          pageUrls: [url],
-          searchString: form.q,
-        },
-        function() {
-          this.fetchTableDataFromApi(url);
-        },
-      );
-    } else {
-      this.getAllMusicLibraryRecords();
-    }
+    this.setState(
+      {
+        searchString: form.q,
+      },
+      function() {
+        this.loadLibraryData();
+      },
+    );
   };
 
   setActiveFilter = event => {
@@ -192,14 +146,7 @@ class LibrarySearchPage extends Component {
         activeFilter: event.target.getAttribute('value'),
       },
       function() {
-        if (
-          this.state.searchString != null &&
-          this.state.searchString.length > 0
-        ) {
-          this.searchLibrary({ q: this.state.searchString });
-        } else {
-          this.getAllMusicLibraryRecords();
-        }
+        this.loadLibraryData();
       },
     );
   };
@@ -209,135 +156,25 @@ class LibrarySearchPage extends Component {
   };
 
   render() {
-    const { closeDeleteModal, closeDeleteSuccessModal, deleteEntity } = this;
-    const { handleSubmit } = this.props;
-    const { deleteModal, deleteSuccessModal } = this.state;
-
-    const columns = [
-      {
-        Header: 'Type',
-        accessor: 'type',
-        Cell: data => {
-          return data.value.charAt(0).toUpperCase() + data.value.slice(1); //capitalize the first letter
-        },
-      },
-      {
-        Header: 'Name',
-        accessor: 'name',
-        Cell: data => {
-          switch (data.row.type) {
-            case 'track':
-              let artistNames = [];
-              data.original.artists.forEach(function(a) {
-                if (
-                  a != null &&
-                  typeof a.name != 'undefined' &&
-                  a.name.length > 0
-                ) {
-                  artistNames.push(a.name);
-                }
-              });
-              let elements = [];
-              elements.push(data.value);
-              if (artistNames.length > 0) {
-                elements.push(
-                  <span
-                    key="artist-name"
-                    className="library-search__grid__secondary-text"
-                  >
-                    {' '}
-                    by {artistNames.join(', ')}
-                  </span>,
-                );
-              }
-              if (
-                data.original.album != null &&
-                typeof data.original.album.name != 'undefined' &&
-                data.original.album.name.length > 0
-              ) {
-                elements.push(
-                  <span
-                    key="album-name"
-                    className="library-search__grid__secondary-text"
-                  >
-                    {' '}
-                    (from the album: {data.original.album.name})
-                  </span>,
-                );
-              }
-              return elements;
-            case 'album':
-              if (
-                data.original.artist != null &&
-                typeof data.original.artist.name != 'undefined' &&
-                data.original.artist.name.length > 0
-              ) {
-                let elements = [];
-                elements.push(data.value);
-                elements.push(
-                  <span
-                    key="album-artist-name"
-                    className="library-search__grid__secondary-text"
-                  >
-                    {' '}
-                    by {data.original.artist.name}
-                  </span>,
-                );
-                return elements;
-              } else {
-                return data.value;
-              }
-            default:
-              return data.value;
-          }
-        },
-      },
-      {
-        Header: 'Updated At',
-        accessor: 'updated_at',
-        Cell: row => {
-          let dateObj = new Date(row.value);
-          return (
-            dateObj.toLocaleDateString() + ' ' + dateObj.toLocaleTimeString()
-          );
-        },
-        headerStyle: {
-          borderRight: '0',
-        },
-        style: {
-          borderRight: '0',
-        },
-      },
-      {
-        Header: '',
-        Cell: row => {
-          return (
-            <div onClick={this.stopPropagation}>
-              <Dropdown
-                position="bottom-left"
-                type="icon"
-                faClass="fas fa-ellipsis-h"
-              >
-                {row.row.type !== 'artist' && (
-                  <Dropdown.Item
-                    handleOnClick={() => this.handleRowEditClick(row.row)}
-                  >
-                    Edit
-                  </Dropdown.Item>
-                )}
-                <Dropdown.Item
-                  handleOnClick={() => this.handleRowDeleteClick(row.row)}
-                >
-                  Delete
-                </Dropdown.Item>
-              </Dropdown>
-            </div>
-          );
-        },
-        minWidth: undefined,
-        className: 'library-search__grid__edit-options',
-      },
-    ];
+    const {
+      closeDeleteModal,
+      closeDeleteSuccessModal,
+      columns,
+      deleteEntity,
+    } = this;
+    const {
+      handleSubmit,
+      docs,
+      loadingSearch,
+      loadingError,
+      totalPages,
+    } = this.props;
+    const {
+      activeFilter,
+      deleteModal,
+      deleteSuccessModal,
+      searchString,
+    } = this.state;
 
     return (
       <div className="library-search">
@@ -361,37 +198,28 @@ class LibrarySearchPage extends Component {
                 </form>
                 <div className="library-search__filters">
                   <span
-                    className={
-                      '' + (this.state.activeFilter === 'all' ? 'active' : '')
-                    }
+                    className={'' + (activeFilter === 'all' ? 'active' : '')}
                     onClick={this.setActiveFilter}
                     value="all"
                   >
                     ALL
                   </span>
                   <span
-                    className={
-                      '' +
-                      (this.state.activeFilter === 'artist' ? 'active' : '')
-                    }
+                    className={'' + (activeFilter === 'artist' ? 'active' : '')}
                     onClick={this.setActiveFilter}
                     value="artist"
                   >
                     ARTISTS
                   </span>
                   <span
-                    className={
-                      '' + (this.state.activeFilter === 'album' ? 'active' : '')
-                    }
+                    className={'' + (activeFilter === 'album' ? 'active' : '')}
                     onClick={this.setActiveFilter}
                     value="album"
                   >
                     ALBUMS
                   </span>
                   <span
-                    className={
-                      '' + (this.state.activeFilter === 'track' ? 'active' : '')
-                    }
+                    className={'' + (activeFilter === 'track' ? 'active' : '')}
                     onClick={this.setActiveFilter}
                     value="track"
                   >
@@ -407,13 +235,13 @@ class LibrarySearchPage extends Component {
               </div>
             </div>
 
-            {!this.state.loadingError && (
+            {!loadingError && (
               <ReactTable
                 className="-highlight library-search__grid clickable-rows"
                 columns={columns}
-                data={this.state.docs}
-                pages={this.state.totalPages}
-                loading={this.state.loading}
+                data={docs != null ? docs : []}
+                pages={totalPages}
+                loading={loadingSearch}
                 manual
                 noDataText="No Data Found"
                 showPageSizeOptions={false}
@@ -422,11 +250,11 @@ class LibrarySearchPage extends Component {
                   this.table = instance;
                 }}
                 showPageJump={false}
-                sortable={this.state.searchString === false}
+                sortable={searchString == null || searchString.length === 0}
                 getTdProps={this.navigateToRecord}
               />
             )}
-            {this.state.loadingError && (
+            {loadingError && (
               <div>An error occurred loading data. Please try again.</div>
             )}
           </CardBody>
@@ -471,22 +299,151 @@ class LibrarySearchPage extends Component {
       </div>
     );
   }
+
+  columns = [
+    {
+      Header: 'Type',
+      accessor: 'type',
+      Cell: data => {
+        return data.value.charAt(0).toUpperCase() + data.value.slice(1); //capitalize the first letter
+      },
+    },
+    {
+      Header: 'Name',
+      accessor: 'name',
+      Cell: data => {
+        switch (data.row.type) {
+          case 'track':
+            let artistNames = [];
+            if (typeof data.original.artists !== 'undefined') {
+              data.original.artists.forEach(function(a) {
+                if (
+                  a != null &&
+                  typeof a.name != 'undefined' &&
+                  a.name.length > 0
+                ) {
+                  artistNames.push(a.name);
+                }
+              });
+            }
+            let elements = [];
+            elements.push(data.value);
+            if (artistNames.length > 0) {
+              elements.push(
+                <span
+                  key="artist-name"
+                  className="library-search__grid__secondary-text"
+                >
+                  {' '}
+                  by {artistNames.join(', ')}
+                </span>,
+              );
+            }
+            if (
+              data.original.album != null &&
+              typeof data.original.album.name != 'undefined' &&
+              data.original.album.name.length > 0
+            ) {
+              elements.push(
+                <span
+                  key="album-name"
+                  className="library-search__grid__secondary-text"
+                >
+                  {' '}
+                  (from the album: {data.original.album.name})
+                </span>,
+              );
+            }
+            return elements;
+          case 'album':
+            if (
+              data.original.artist != null &&
+              typeof data.original.artist.name != 'undefined' &&
+              data.original.artist.name.length > 0
+            ) {
+              let elements = [];
+              elements.push(data.value);
+              elements.push(
+                <span
+                  key="album-artist-name"
+                  className="library-search__grid__secondary-text"
+                >
+                  {' '}
+                  by {data.original.artist.name}
+                </span>,
+              );
+              return elements;
+            } else {
+              return data.value;
+            }
+          default:
+            return data.value;
+        }
+      },
+    },
+    {
+      Header: 'Updated At',
+      accessor: 'updated_at',
+      Cell: row => {
+        let dateObj = new Date(row.value);
+        return (
+          dateObj.toLocaleDateString() + ' ' + dateObj.toLocaleTimeString()
+        );
+      },
+      headerStyle: {
+        borderRight: '0',
+      },
+      style: {
+        borderRight: '0',
+      },
+    },
+    {
+      Header: '',
+      Cell: row => {
+        return (
+          <div onClick={this.stopPropagation}>
+            <Dropdown
+              position="bottom-left"
+              type="icon"
+              faClass="fas fa-ellipsis-h"
+            >
+              {row.row.type !== 'artist' && (
+                <Dropdown.Item
+                  handleOnClick={() => this.handleRowEditClick(row.row)}
+                >
+                  Edit
+                </Dropdown.Item>
+              )}
+              <Dropdown.Item
+                handleOnClick={() => this.handleRowDeleteClick(row.row)}
+              >
+                Delete
+              </Dropdown.Item>
+            </Dropdown>
+          </div>
+        );
+      },
+      minWidth: undefined,
+      className: 'library-search__grid__edit-options',
+    },
+  ];
 }
 
 function mapStateToProps(state) {
-  const { error } = state.library;
+  const { docs, loadingSearch, loadingError, totalPages } = state.library;
 
   return {
-    error,
+    docs,
+    loadingSearch,
+    loadingError,
+    totalPages,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     alertActions: bindActionCreators({ ...alertActions }, dispatch),
-    artistActions: bindActionCreators({ ...artistActions }, dispatch),
-    albumActions: bindActionCreators({ ...albumActions }, dispatch),
-    trackActions: bindActionCreators({ ...trackActions }, dispatch),
+    libraryActions: bindActionCreators({ ...libraryActions }, dispatch),
   };
 }
 

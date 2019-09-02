@@ -1,0 +1,5 @@
+.Form {
+  &__group:not(:last-child) {
+    margin-bottom: 3rem;
+  }
+}

@@ -13,11 +13,11 @@ export function Label({
   dirtyOverride,
 }) {
   function getClassNames() {
-    const isActive = active || (initial && 'active');
-    const isDirty = dirty || (dirtyOverride && 'dirty');
-    const isTouchedAndError = touched && error && 'error';
+    const isActive = (active || initial) && 'active';
+    const isDirty = (dirty || dirtyOverride) && 'dirty';
+    const isTouchedOrError = touched && error && 'error';
 
-    return classnames('Input__label', isActive, isDirty, isTouchedAndError);
+    return classnames('Input__label', isActive, isDirty, isTouchedOrError);
   }
 
   return <div className={getClassNames()}>{children}</div>;

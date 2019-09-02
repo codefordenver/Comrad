@@ -1,4 +1,5 @@
 const db = require('../../models');
+const { populatePlaylist } = require('./utils');
 
 async function moveItemFromSavedItemsToScratchpad(req, res) {
   if (
@@ -64,7 +65,13 @@ async function moveItemFromSavedItemsToScratchpad(req, res) {
       );
     })
     .then(dbPlaylist => {
-      return res.json(dbPlaylist.scratchpad[dbPlaylist.scratchpad.length - 1]); //return the scratchpad item that was moved
+      return populatePlaylist(dbPlaylist)
+        .then(dbPlaylist => {
+          return res.json(
+            dbPlaylist.scratchpad[dbPlaylist.scratchpad.length - 1],
+          ); //return the scratchpad item that was moved
+        })
+        .catch(err => res.status(422).json({ errorMessage: err }));
     })
     .catch(err => res.status(422).json({ errorMessage: err }));
 }

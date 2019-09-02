@@ -1,13 +1,17 @@
+const create = require('./create');
+const createMany = require('./createMany');
 const findAll = require('./findAll');
-const findAllAlbums = require('./findAllAlbums');
-const findAllArtists = require('./findAllArtists');
-const findAllTracks = require('./findAllTracks');
+const findById = require('./findById');
+const remove = require('./remove');
 const search = require('./search');
+const update = require('./update');
 
 module.exports = {
+  create,
+  createMany,
   findAll,
-  findAllAlbums,
-  findAllArtists,
-  findAllTracks,
+  findById,
+  remove,
   search,
+  update,
 };

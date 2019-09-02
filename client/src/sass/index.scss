@@ -23,9 +23,11 @@
 @import '../components/DatePicker/DatePicker';
 @import '../components/Shows/Shows';
 @import '../components/Dropdown/Dropdown';
+@import '../components/DropdownArtist/DropdownArtist';
 @import '../components/DropdownHost/DropdownHost';
 @import '../components/Filter/Filter';
 @import '../components/Footer/Footer';
+@import '../components/Form/Form';
 @import '../components/forms/FormAlbumAdd/FormAlbumAdd';
 @import '../components/forms/FormAlbumEdit/FormAlbumEdit';
 @import '../components/forms/FormArtistAdd/FormArtistAdd';
@@ -51,6 +53,7 @@
 @import '../components/Root/Root';
 @import '../components/SearchTerm/SearchTerm';
 @import '../components/Select/Select';
+@import '../components/SelectV2/Select';
 @import '../components/ShowBuilderItemList/ShowBuilderItemList';
 @import '../components/ShowListForUser/ShowListForUser';
 @import '../components/Sidebar/Sidebar';
@@ -97,5 +100,6 @@
 @import './utils/margin';
 @import './utils/padding';
 @import './utils/position';
+@import './utils/tables';
 @import './utils/text';
 @import './utils/size';

@@ -1,18 +1,28 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { Field, reduxForm } from 'redux-form';
 import moment from 'moment';
 import queryString from 'query-string';
 
 import Card, { CardBody } from '../../components/Card';
+import Dropdown from '../../components/Dropdown';
 import DropdownHost from '../../components/DropdownHost';
 import FormShowBuilderComment from '../../components/forms/FormShowBuilderComment';
+import Input from '../../components/Input';
 import Loading from '../../components/Loading';
 import ShowBuilderItemList from '../../components/ShowBuilderItemList';
 
-import { playlistActions } from '../../redux';
-import { clearShows, getShowsData, searchShow } from '../../redux/show';
-import { trafficActions } from '../../redux';
+import { libraryActions, playlistActions, trafficActions } from '../../redux';
+import {
+  clearShows,
+  createInstanceShow,
+  getShowsData,
+  searchShow,
+  updateShow,
+} from '../../redux/show';
+
+import { getShowType } from '../../utils/shows';
 
 class ShowBuilderPage extends Component {
   state = {
@@ -54,12 +64,55 @@ class ShowBuilderPage extends Component {
   }
 
   componentWillUnmount() {
-    const { clearShows } = this.props;
+    const { clearShows, libraryActions } = this.props;
     clearShows();
+    libraryActions.clear();
   }
 
+  addTrackToSavedItems = trackId => {
+    const { playlist, playlistActions } = this.props;
+    playlistActions.addTrackToSavedItems(playlist.doc._id, trackId);
+  };
+
+  addTrackToScratchpad = trackId => {
+    const { playlist, playlistActions } = this.props;
+    playlistActions.addTrackToScratchpad(playlist.doc._id, trackId);
+  };
+
+  handleHostSelect = host => {
+    const { props } = this;
+    const { updateShow, shows } = props;
+    let show = shows[Object.keys(shows)[0]];
+    const { _id, master_event_id } = show;
+    const showType = getShowType(show);
+    if (showType === 'series') {
+      const { createInstanceShow } = this.props;
+      show.show_details.host = host._id;
+      createInstanceShow(master_event_id._id, show);
+    } else {
+      //Only update host if the show is regular or instance
+      updateShow(_id, { 'show_details.host': host._id });
+    }
+  };
+
+  searchLibrary = form => {
+    const { libraryActions } = this.props;
+    if (form.q.length === 0) {
+      libraryActions.clear();
+    } else {
+      libraryActions.search('track', form.q);
+    }
+  };
+
   render() {
-    const { playlist, shows, showFetching, traffic } = this.props;
+    const {
+      handleSubmit,
+      library,
+      playlist,
+      shows,
+      showFetching,
+      traffic,
+    } = this.props;
     const {
       activeTab,
       formattedDay,
@@ -69,13 +122,16 @@ class ShowBuilderPage extends Component {
     let { scratchpad, saved_items } = playlist.doc;
 
     let showName = '';
+    let host = null;
     if (shows && Object.keys(shows).length > 0) {
       if (Object.keys(shows).length > 1) {
         console.warn(
           'More than one show returned for show builder, using the first one',
         );
       }
-      showName = shows[Object.keys(shows)[0]].show_details.title;
+      let show = shows[Object.keys(shows)[0]];
+      showName = show.show_details.title;
+      host = show.show_details.host;
     }
 
     let scratchpadForDisplay = [];
@@ -122,7 +178,14 @@ class ShowBuilderPage extends Component {
           <div className="show-builder">
             <div className="show-builder__top-row">
               <div>
-                <DropdownHost />
+                {!showFetching && (
+                  <DropdownHost
+                    key={host != null ? host._id : 'no host'}
+                    host={host}
+                    onHostSelect={this.handleHostSelect}
+                    filterByStatus="Active"
+                  />
+                )}
               </div>
               <div>{showName}</div>
               <div>
@@ -187,7 +250,35 @@ class ShowBuilderPage extends Component {
                 </div>
                 {activeTab === 'search' && (
                   <div className="library-tab-container__tab-content">
-                    Search content
+                    <form onSubmit={handleSubmit(this.searchLibrary)}>
+                      <Field
+                        className="mb-1"
+                        component={Input}
+                        label="Search"
+                        name="q"
+                        type="text"
+                      />
+                    </form>
+                    {library.docs != null && library.docs.length > 0 && (
+                      <div className="library-results">
+                        <table className="base-table-style">
+                          {this.renderLibraryResultsHeader()}
+                          {this.renderLibraryResultsBody()}
+                        </table>
+                      </div>
+                    )}
+                    {library.docs != null && library.docs.length === 0 && (
+                      <div className="library-results__no-results">
+                        <em>
+                          There were no tracks found matching your search.
+                        </em>
+                        <br />
+                        <br />
+                        <span className="library-results__add-new-track">
+                          Add New Track
+                        </span>
+                      </div>
+                    )}
                   </div>
                 )}
                 {activeTab === 'voice' && (
@@ -207,10 +298,62 @@ class ShowBuilderPage extends Component {
       </Card>
     );
   }
+
+  renderLibraryResultsHeader = () => {
+    return (
+      <thead>
+        <tr>
+          <th>Track Name</th>
+          <th>Artist</th>
+          <th>Album</th>
+          <th />
+        </tr>
+      </thead>
+    );
+  };
+
+  renderLibraryResultsBody = () => {
+    const { docs } = this.props.library;
+
+    return (
+      <tbody>
+        {docs.map(item => {
+          return (
+            <tr key={item._id}>
+              <td>{item.name}</td>
+              <td>{item.artists.map(a => a.name).join(', ')}</td>
+              <td>{item.album != null && item.album.name}</td>
+              <td>
+                <div onClick={this.stopPropagation}>
+                  <Dropdown
+                    position="bottom-left"
+                    type="icon"
+                    faClass="fas fa-ellipsis-h"
+                  >
+                    <Dropdown.Item
+                      handleOnClick={() => this.addTrackToScratchpad(item._id)}
+                    >
+                      Add to Scratchpad
+                    </Dropdown.Item>
+                    <Dropdown.Item
+                      handleOnClick={() => this.addTrackToSavedItems(item._id)}
+                    >
+                      Add to Saved Items
+                    </Dropdown.Item>
+                  </Dropdown>
+                </div>
+              </td>
+            </tr>
+          );
+        })}
+      </tbody>
+    );
+  };
 }
 
-function mapStateToProps({ show, playlist, traffic }) {
+function mapStateToProps({ library, show, playlist, traffic }) {
   return {
+    library,
     playlist,
     showFetching: show.fetching,
     shows: getShowsData(show),
@@ -220,14 +363,21 @@ function mapStateToProps({ show, playlist, traffic }) {
 
 function mapDispatchToProps(dispatch) {
   return {
+    libraryActions: bindActionCreators({ ...libraryActions }, dispatch),
     playlistActions: bindActionCreators({ ...playlistActions }, dispatch),
     clearShows: bindActionCreators(clearShows, dispatch),
+    createInstanceShow: bindActionCreators(createInstanceShow, dispatch),
     searchShow: bindActionCreators(searchShow, dispatch),
+    updateShow: bindActionCreators(updateShow, dispatch),
     trafficActions: bindActionCreators({ ...trafficActions }, dispatch),
   };
 }
 
+const ReduxShowBuilderPage = reduxForm({
+  form: 'showBuilder',
+})(ShowBuilderPage);
+
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(ShowBuilderPage);
+)(ReduxShowBuilderPage);

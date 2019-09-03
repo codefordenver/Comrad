@@ -1,4 +1,4 @@
-.filter {
+.Filter {
   display: inline;
 
   &__text {
@@ -15,21 +15,20 @@
     cursor: pointer;
 
     &:checked + .filter__text {
-      border-bottom: 2px solid $color-primary-light;    
+      border-bottom: 2px solid $color-primary-light;
     }
   }
 
+  &__item {
+    color: $color-primary-light;
+    cursor: pointer;
+    display: inline;
 
-  // &__item {
-  //   color: $color-primary-light;
-  //   cursor: pointer;
-  //   display: inline;
+    margin-right: 1rem;
+    padding: 0 4px 2px;
 
-  //   margin-right: 1rem;
-  //   padding: 0 4px 2px;
-
-  //   &.active {
-  //     border-bottom: 2px solid $color-primary-light;
-  //   }
-  // }
+    &.active {
+      border-bottom: 2px solid $color-primary-light;
+    }
+  }
 }

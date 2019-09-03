@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import queryString from 'query-string';
 
 import Card, { CardBody } from '../../components/Card';
 import Dropdown from '../../components/Dropdown';

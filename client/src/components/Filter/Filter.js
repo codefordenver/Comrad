@@ -1,26 +1,30 @@
 import React from 'react';
-import { Field } from 'redux-form';
+import { connect } from 'react-redux';
+import { Field, submit } from 'redux-form';
 import classnames from 'classnames';
 
-export function Filter({ className, onChange, name, text, value }) {
-  function getClassNames(meta) {
+function Filter({ className, dispatch, name, submitOnClick, text, value }) {
+  function getClassNames() {
     return classnames('Filter__radio', className);
+  }
+
+  function handleOnClick() {
+    setTimeout(() => dispatch(submit('form')), 50);
   }
 
   return (
     <label className={classnames('Filter', className)}>
       <Field
         name={name}
-        onChange={onChange}
         type="radio"
         value={value}
         component={({ input, meta }) => {
           return (
             <input
-              className={getClassNames(meta)}
+              className={getClassNames()}
+              onClick={submitOnClick && handleOnClick}
               type="radio"
               {...input}
-              checked={true}
             />
           );
         }}
@@ -29,3 +33,5 @@ export function Filter({ className, onChange, name, text, value }) {
     </label>
   );
 }
+
+export const ConnectedFilter = connect()(Filter);

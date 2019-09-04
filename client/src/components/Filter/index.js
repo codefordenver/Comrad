@@ -1,1 +1,1 @@
-export { Filter } from './Filter';
+export { ConnectedFilter as Filter } from './Filter';

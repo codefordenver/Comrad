@@ -4,10 +4,6 @@ const initialState = {
   doc: {},
   docs: [],
   loading: false,
-  search: {
-    filter: 'all',
-    q: '',
-  },
 };
 
 export const userReducer = (state = initialState, { type, payload }) => {

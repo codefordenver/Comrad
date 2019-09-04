@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import { authActions } from '../../redux/auth';
 import { bindActionCreators } from 'redux';
 
+import { config } from './config';
+
 const navTestLinks = [
   {
     text: 'Dashboard',
@@ -22,7 +24,9 @@ class NavTest extends Component {
     const password = process.env.REACT_APP_TEST_PASSWORD;
 
     authActions.login({ email, password }, () => {
-      history.push('/dashboard');
+      if (config.redirectAfterLogin) {
+        history.push('/dashboard');
+      }
     });
   };
 

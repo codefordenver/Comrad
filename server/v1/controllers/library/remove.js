@@ -11,7 +11,7 @@ function remove(req, res) {
                 throw 'This album cannot be deleted because it has tracks.';
               }
 
-              db.Library.findById({ _id: req.params.id })
+              return db.Library.findById({ _id: req.params.id })
                 .then(dbAlbum => dbAlbum.remove())
                 .then(dbAlbum => res.json(dbAlbum))
                 .catch(err => res.status(422).json(err));
@@ -23,7 +23,7 @@ function remove(req, res) {
               if (albumReferencingArtist != null) {
                 throw 'The artist cannot be deleted because it has albums.';
               }
-              db.Library.findOne({ artist: req.params.id })
+              return db.Library.findOne({ artist: req.params.id })
                 .then(trackReferencingArtist => {
                   if (trackReferencingArtist != null) {
                     throw 'The artist cannot be deleted because it has tracks.';
@@ -37,25 +37,28 @@ function remove(req, res) {
             })
             .catch(err => res.status(422).json({ errorMessage: err }));
         case 'track':
-          return db.Playlist.findOne({ scratchpad: { track: req.params.id } })
+          return db.Playlist.findOne({ 'scratchpad.track': req.params.id })
             .then(trackReferencingPlaylist => {
               if (trackReferencingPlaylist != null) {
                 throw 'This track cannot be deleted because it is being used in a playlist.';
               }
+
+              return db.Playlist.findOne({
+                'saved_items.track': req.params.id,
+              })
+                .then(trackReferencingPlaylist => {
+                  if (trackReferencingPlaylist != null) {
+                    throw 'This track cannot be deleted because it is being used in a playlist.';
+                  }
+
+                  return db.Library.findById({ _id: req.params.id })
+                    .then(dbTrack => dbTrack.remove())
+                    .then(dbTrack => res.json(dbTrack))
+                    .catch(err => res.status(422).json({ errorMessage: err }));
+                })
+                .catch(err => res.status(422).json({ errorMessage: err }));
             })
-            .then(
-              db.Playlist.findOne({
-                saved_items: { track: req.params.id },
-              }).then(trackReferencingPlaylist => {
-                if (trackReferencingPlaylist != null) {
-                  throw 'This track cannot be deleted because it is being used in a playlist.';
-                }
-              }),
-            )
-            .then(db.Library.findById({ _id: req.params.id }))
-            .then(dbTrack => dbTrack.remove())
-            .then(dbTrack => res.json(dbTrack))
-            .catch(err => res.status(422).json(err));
+            .catch(err => res.status(422).json({ errorMessage: err }));
         default:
           return res.status(422).json({
             errorMessage: 'library entity was not of a known type',

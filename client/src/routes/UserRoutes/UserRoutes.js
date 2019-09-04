@@ -25,7 +25,7 @@ class UserRoutes extends Component {
           <Route
             exact
             path={`${url}/profile/:id`}
-            component={UserProfilePage}
+            component={UserPages.Profile}
           />
         </Switch>
       </MainLayout>

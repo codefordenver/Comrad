@@ -3,32 +3,55 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Row, Col } from 'react-grid-system';
 import ReactTable from 'react-table';
-import { config } from './config';
 import queryString from 'query-string';
+import { config } from './config';
 
-import { CardV2, Filter, Form, Heading, InputV2 } from '../../components';
 import Dropdown from '../../components/Dropdown';
+import { CardV2, Filter, Form, Heading, InputV2 } from '../../components';
 
 import { userActions } from '../../redux';
 
 class Search extends Component {
   componentDidMount() {
-    console.log(this.props);
+    const { getInitialValues, handleSubmit } = this;
+
+    handleSubmit(getInitialValues());
   }
-  handleOnChange = (e, value) => {
-    console.log(value);
-  };
 
   handleSubmit = values => {
-    console.log(values);
+    const { history, userActions } = this.props;
+    const querySearch = queryString.stringify(values);
+
+    userActions.search(values);
+    history.push(`/user/search?${querySearch}`);
+  };
+
+  handleRowClick = (state, rowInfo) => {
+    if (rowInfo) {
+      return {
+        onClick: () => {
+          const { _id } = rowInfo.original;
+          const { history } = this.props;
+
+          history.push(`/user/profile/${_id}`);
+        },
+      };
+    }
+
+    return false;
   };
 
   getInitialValues = () => {
-    return queryString.parse(this.props.location.search);
+    const { q = '', status = 'All' } = queryString.parse(
+      this.props.location.search,
+    );
+
+    return { q, status };
   };
 
   render() {
-    const { getInitialValues, handleOnChange, handleSubmit } = this;
+    const { getInitialValues, handleRowClick, handleSubmit, props } = this;
+    const { userState } = props;
     const { table } = config;
 
     return (
@@ -47,54 +70,58 @@ class Search extends Component {
 
         <CardV2>
           <CardV2.Body>
-            <Row className="mb-1">
-              <Col>
-                <Form
-                  initialValues={getInitialValues()}
-                  submitFunc={handleSubmit}
-                >
+            <Form initialValues={getInitialValues()} onSubmit={handleSubmit}>
+              <Row className="mb-1">
+                <Col>
                   <InputV2
                     className="input"
                     label="Search"
                     name="q"
                     type="text"
                   />
-                </Form>
-              </Col>
+                </Col>
 
-              <Col />
-            </Row>
+                <Col>
+                  <Dropdown position="right-centered" type="button" text="Add">
+                    <Dropdown.Item to="add">User</Dropdown.Item>
+                  </Dropdown>
+                </Col>
+              </Row>
 
-            <Row className="mb-1">
-              <Col>
-                <Form initialValues={{ status: 'all' }}>
+              <Row className="mb-2">
+                <Col>
                   <Filter
                     name="status"
-                    onChange={handleOnChange}
+                    submitOnClick={true}
                     text="All"
-                    value="all"
+                    value="All"
                   />
 
                   <Filter
                     name="status"
-                    onChange={handleOnChange}
+                    submitOnClick={true}
                     text="Active"
                     value="Active"
                   />
 
                   <Filter
                     name="status"
-                    onChange={handleOnChange}
+                    submitOnClick={true}
                     text="Inactive"
                     value="Inactive"
                   />
-                </Form>
-              </Col>
-            </Row>
+                </Col>
+              </Row>
+            </Form>
 
             <Row>
               <Col>
-                <ReactTable columns={table.columns} data={[]} />
+                <ReactTable
+                  className="-highlight clickable-rows"
+                  columns={table.search.columns}
+                  data={userState.docs}
+                  getTdProps={handleRowClick}
+                />
               </Col>
             </Row>
           </CardV2.Body>
@@ -104,6 +131,14 @@ class Search extends Component {
   }
 }
 
+function mapStateToProps(state) {
+  const { user } = state;
+
+  return {
+    userState: user,
+  };
+}
+
 function mapDispatchToProps(dispatch) {
   return {
     userActions: bindActionCreators({ ...userActions }, dispatch),
@@ -111,6 +146,6 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps,
 )(Search);

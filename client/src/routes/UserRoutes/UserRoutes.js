@@ -15,7 +15,7 @@ class UserRoutes extends Component {
       <MainLayout {...this.props}>
         <Route exact path={`${url}/add`} component={UserPages.Add} />
         <Route exact path={`${url}/edit`} component={UserPages.Add} />
-        <Route exact path={`${url}/search`} component={UserSearchPage} />
+        <Route exact path={`${url}/search`} component={UserPages.Search} />
         <Switch>
           <Route
             exact
@@ -25,7 +25,7 @@ class UserRoutes extends Component {
           <Route
             exact
             path={`${url}/profile/:id`}
-            component={UserProfilePage}
+            component={UserPages.Profile}
           />
         </Switch>
       </MainLayout>

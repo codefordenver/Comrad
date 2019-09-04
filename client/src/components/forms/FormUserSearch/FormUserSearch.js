@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Field, reduxForm, formValueSelector } from 'redux-form';
 
-import Filter from '../../Filter';
+import { Filter } from '../../Filter';
 import Input from '../../Input';
 
 import { userActions } from '../../../redux/user';
@@ -18,7 +18,6 @@ class FormUserSearch extends Component {
   submit = values => {
     const { userActions } = this.props;
 
-    console.log(values);
     userActions.search(values);
   };
 

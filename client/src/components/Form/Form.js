@@ -10,11 +10,12 @@ import { Group } from './Group';
  * * WORK IN PROGRESS
  */
 
-function Form({ children, className, handleSubmit, submitFunc }) {
+function Form({ children, className, handleSubmit, onChange, onSubmit }) {
   return (
     <form
       className={classnames('form', className)}
-      onSubmit={handleSubmit(submitFunc)}
+      onSubmit={onSubmit && handleSubmit(onSubmit)}
+      onChange={onChange && handleSubmit(onChange)}
     >
       {children}
     </form>

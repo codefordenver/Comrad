@@ -24,7 +24,7 @@ function create(req, res) {
       return validateAlbumData(req.body)
         .then(albumData => {
           db.Library.create(albumData)
-            .then(dbAlbum => db.Library.populate(dbAlbum, 'genre'))
+            .then(dbAlbum => db.Library.populate(dbAlbum, ['genre', 'artist']))
             .then(dbAlbum => res.json(dbAlbum))
             .catch(err => res.status(422).json(err));
         })

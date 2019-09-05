@@ -28,7 +28,9 @@ class MainLayout extends Component {
         </section>
 
         <section className="main-layout__body">
-          {alertState.active && <Alert {...this.props} />}
+          {alertState.active && alertState.displayAt === 'main' && (
+            <Alert {...this.props} />
+          )}
           {children}
         </section>
 

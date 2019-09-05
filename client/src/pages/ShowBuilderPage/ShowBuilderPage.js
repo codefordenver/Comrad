@@ -18,7 +18,12 @@ import Loading from '../../components/Loading';
 import Modal from '../../components/Modal';
 import ShowBuilderItemList from '../../components/ShowBuilderItemList';
 
-import { libraryActions, playlistActions, trafficActions } from '../../redux';
+import {
+  alertActions,
+  libraryActions,
+  playlistActions,
+  trafficActions,
+} from '../../redux';
 import {
   clearShows,
   createInstanceShow,
@@ -83,6 +88,8 @@ class ShowBuilderPage extends Component {
   /* START - add track modal */
 
   addTrackModalAddNewAlbum = newAlbum => {
+    const { alertActions } = this.props;
+    alertActions.hideWithoutChangingDisplayLocation();
     this.setState({
       addTrackModalCurrentPage: 'track',
       addTrackModalSelectedAlbum: newAlbum,
@@ -110,7 +117,8 @@ class ShowBuilderPage extends Component {
   };
 
   addTrackModalSelectExistingAlbum = form => {
-    const { library } = this.props;
+    const { alertActions, library } = this.props;
+    alertActions.hideWithoutChangingDisplayLocation();
     this.setState({
       addTrackModalSelectedAlbum:
         library.doc != null
@@ -127,6 +135,8 @@ class ShowBuilderPage extends Component {
   };
 
   addTrackModalOpen = () => {
+    const { alertActions } = this.props;
+    alertActions.changeDisplayLocation('modal');
     this.setState({
       addTrackModalCurrentPage: 'album',
       showAddTrackModal: true,
@@ -509,6 +519,7 @@ function mapStateToProps({ library, show, playlist, traffic }) {
 
 function mapDispatchToProps(dispatch) {
   return {
+    alertActions: bindActionCreators({ ...alertActions }, dispatch),
     libraryActions: bindActionCreators({ ...libraryActions }, dispatch),
     playlistActions: bindActionCreators({ ...playlistActions }, dispatch),
     clearShows: bindActionCreators(clearShows, dispatch),

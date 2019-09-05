@@ -15,13 +15,30 @@ class FormTrackAdd extends Component {
   };
 
   submit = values => {
-    const { albumId, libraryActions, submitCallback } = this.props;
+    const {
+      albumId,
+      customSubmitButtons,
+      libraryActions,
+      submitCallback,
+    } = this.props;
     values.album = albumId;
     values.duration_in_seconds =
       parseInt(values.seconds) + parseInt(values.minutes) * 60;
     return libraryActions.add('track', values, trackData => {
-      if (typeof submitCallback === 'function') {
-        submitCallback(trackData);
+      if (customSubmitButtons != null) {
+        let submittedButton = customSubmitButtons.filter(
+          btn => btn.text === values.customSubmitButton,
+        );
+        if (
+          submittedButton.length > 0 &&
+          typeof submittedButton[0].callback === 'function'
+        ) {
+          submittedButton[0].callback(trackData);
+        }
+      } else {
+        if (typeof submitCallback === 'function') {
+          submitCallback(trackData);
+        }
       }
     });
   };
@@ -83,7 +100,7 @@ class FormTrackAdd extends Component {
 
   render() {
     const { props, submit } = this;
-    const { handleSubmit } = props;
+    const { customSubmitButtons, handleSubmit } = props;
 
     return (
       <form className="form-track-add" onSubmit={handleSubmit(submit)}>
@@ -131,7 +148,19 @@ class FormTrackAdd extends Component {
         />
 
         <div>
-          <Button type="submit">Submit</Button>
+          {!customSubmitButtons && <Button type="submit">Submit</Button>}
+          {customSubmitButtons && (
+              <Field type="hidden" name="customSubmitButton" />
+            ) &&
+            customSubmitButtons.map(btn => (
+              <Button
+                key={btn.text}
+                type="submit"
+                onClick={e => this.props.change('customSubmitButton', btn.text)}
+              >
+                {btn.text}
+              </Button>
+            ))}
         </div>
       </form>
     );

@@ -8,6 +8,8 @@ import FormTrackAdd from '../../components/forms/FormTrackAdd';
 
 import { libraryActions, alertActions } from '../../redux';
 
+import { getNextDiskAndTrackNumberForAlbum } from '../../utils/library';
+
 class TrackAddPage extends Component {
   componentWillMount() {
     const { library, libraryActions, match } = this.props;
@@ -29,27 +31,15 @@ class TrackAddPage extends Component {
   };
 
   render() {
-    let name, tracks, _id, artist;
+    let name, _id, artist;
     if (this.props.library.doc != null) {
-      ({ name, tracks, _id, artist } = this.props.library.doc);
+      ({ name, _id, artist } = this.props.library.doc);
     }
     const artistId = artist == null ? null : artist._id;
-    let maxDiskNumber, maxTrackNumber;
-    //if there are no existing tracks, default disk number is one and track number is 0 (the form will use track number + 1 as its default)
-    maxDiskNumber = 1;
-    maxTrackNumber = 0;
-    if (tracks != null && tracks.length) {
-      for (var key in tracks) {
-        if (tracks[key].disk_number >= maxDiskNumber) {
-          if (tracks[key].disk_number > maxDiskNumber) {
-            maxDiskNumber = tracks[key].disk_number;
-            maxTrackNumber = tracks[key].track_number;
-          } else {
-            maxTrackNumber = Math.max(maxTrackNumber, tracks[key].track_number);
-          }
-        }
-      }
-    }
+    let { maxDiskNumber, maxTrackNumber } = getNextDiskAndTrackNumberForAlbum(
+      this.props.library.doc,
+    );
+
     return (
       <div className="track-add-page">
         <Card>
@@ -66,8 +56,6 @@ class TrackAddPage extends Component {
                   albumId={_id}
                   artistId={artistId}
                   artist={artist}
-                  tracks={tracks}
-                  history={this.props.history}
                 />
               </>
             )}

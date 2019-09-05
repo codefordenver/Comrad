@@ -11,6 +11,7 @@ import Dropdown from '../../components/Dropdown';
 import DropdownHost from '../../components/DropdownHost';
 import DropdownLibrary from '../../components/DropdownLibrary';
 import FormAlbumAdd from '../../components/forms/FormAlbumAdd';
+import FormTrackAdd from '../../components/forms/FormTrackAdd';
 import FormShowBuilderComment from '../../components/forms/FormShowBuilderComment';
 import Input from '../../components/Input';
 import Loading from '../../components/Loading';
@@ -27,6 +28,7 @@ import {
 } from '../../redux/show';
 
 import { getShowType } from '../../utils/shows';
+import { getNextDiskAndTrackNumberForAlbum } from '../../utils/library';
 
 class ShowBuilderPage extends Component {
   state = {
@@ -81,15 +83,54 @@ class ShowBuilderPage extends Component {
   /* START - add track modal */
 
   addTrackModalAddNewAlbum = newAlbum => {
-    console.log(newAlbum);
+    this.setState({
+      addTrackModalCurrentPage: 'track',
+      addTrackModalSelectedAlbum: newAlbum,
+    });
+  };
+
+  addTrackModalAddToSavedItems = track => {
+    this.addTrackToSavedItems(track._id);
+    this.addTrackModalClose();
+  };
+
+  addTrackModalAddToScratchpad = track => {
+    this.addTrackToScratchpad(track._id);
+    this.addTrackModalClose();
+  };
+
+  addTrackModalHandleAlbumSelect = selectedAlbum => {
+    const { libraryActions } = this.props;
+    // get the album from the API to populate the tracks
+    libraryActions.findOne(selectedAlbum._id);
+    // in case the form is submitted before the API call, we'll set the addTrackModalSelectedAlbum value to the current doc value
+    this.setState({
+      addTrackModalSelectedAlbum: selectedAlbum,
+    });
   };
 
   addTrackModalSelectExistingAlbum = form => {
-    console.log(form);
+    const { library } = this.props;
+    this.setState({
+      addTrackModalSelectedAlbum:
+        library.doc != null
+          ? library.doc
+          : this.state.addTrackModalSelectedAlbum, // check for this.props.library.doc in case there was an issue with the libraryActions.findOne API call
+      addTrackModalCurrentPage: 'track',
+    });
+  };
+
+  addTrackModalClose = () => {
+    this.setState({
+      showAddTrackModal: false,
+    });
   };
 
   addTrackModalOpen = () => {
-    this.setState({ showAddTrackModal: true });
+    this.setState({
+      addTrackModalCurrentPage: 'album',
+      showAddTrackModal: true,
+    });
   };
 
   addTrackToSavedItems = trackId => {
@@ -140,6 +181,8 @@ class ShowBuilderPage extends Component {
     } = this.props;
     const {
       activeTab,
+      addTrackModalCurrentPage,
+      addTrackModalSelectedAlbum,
       formattedDay,
       formattedEndTime,
       formattedStartTime,
@@ -194,6 +237,15 @@ class ShowBuilderPage extends Component {
       savedItemsForDisplay = [...saved_items];
       savedItemsForDisplay.reverse(); //display saved items in reverse chronological order
     }
+
+    /* START - Add Track modal variables */
+    let maxDiskNumber, maxTrackNumber;
+    if (addTrackModalSelectedAlbum != null) {
+      ({ maxDiskNumber, maxTrackNumber } = getNextDiskAndTrackNumberForAlbum(
+        addTrackModalSelectedAlbum,
+      ));
+    }
+    /* END - Add Track modal variables */
 
     return (
       <Card className="card--show-builder">
@@ -334,16 +386,57 @@ class ShowBuilderPage extends Component {
           {showAddTrackModal ? (
             <Modal isOpen={true}>
               <div className="add-track-modal">
-                <form
-                  onSubmit={handleSubmit(this.addTrackModalSelectExistingAlbum)}
-                >
-                  <h3>Select an existing album:</h3>
-                  <DropdownLibrary libraryType="album" name="existingAlbum" />
-                  <Button type="submit">Next</Button>
-                </form>
+                {addTrackModalCurrentPage === 'album' && (
+                  <div>
+                    <form
+                      onSubmit={handleSubmit(
+                        this.addTrackModalSelectExistingAlbum,
+                      )}
+                    >
+                      <h3>Select an existing album:</h3>
+                      <DropdownLibrary
+                        libraryType="album"
+                        name="existingAlbum"
+                        onLibraryItemSelect={
+                          this.addTrackModalHandleAlbumSelect
+                        }
+                      />
+                      <Button type="submit">Next</Button>
+                    </form>
 
-                <h3>Or, create a new album:</h3>
-                <FormAlbumAdd submitCallback={this.addTrackModalAddNewAlbum} />
+                    <h3>Or, create a new album:</h3>
+                    <FormAlbumAdd
+                      submitCallback={this.addTrackModalAddNewAlbum}
+                    />
+                  </div>
+                )}
+                {addTrackModalCurrentPage === 'track' && (
+                  <div>
+                    <h3>New Track</h3>
+                    <FormTrackAdd
+                      maxDiskNumber={maxDiskNumber}
+                      maxTrackNumber={maxTrackNumber}
+                      customSubmitButtons={[
+                        {
+                          text: 'Save and Add to Scratchpad',
+                          callback: this.addTrackModalAddToScratchpad,
+                        },
+                        {
+                          text: 'Save and Add to Saved Items',
+                          callback: this.addTrackModalAddToSavedItems,
+                        },
+                      ]}
+                      albumId={this.state.addTrackModalSelectedAlbum._id}
+                      artistId={
+                        this.state.addTrackModalSelectedAlbum.artist._id
+                      }
+                      artist={this.state.addTrackModalSelectedAlbum.artist}
+                    />
+                  </div>
+                )}
+                <Button color="neutral" onClick={this.addTrackModalClose}>
+                  Close
+                </Button>
               </div>
             </Modal>
           ) : null}

@@ -28,6 +28,7 @@ class DropdownLibrary extends Component {
           null,
           null,
           10,
+          true,
         );
       }
     }
@@ -68,12 +69,12 @@ class DropdownLibrary extends Component {
 
     // cache the search query in state so that we can quickly update the search results
     if (
-      libraryState.docs != null &&
+      libraryState.docsForDropdown != null &&
       libraryState.searchString != null &&
       !(libraryState.searchString.toLowerCase() in cachedSearches)
     ) {
       cachedSearches[libraryState.searchString.toLowerCase()] =
-        libraryState.docs;
+        libraryState.docsForDropdown;
       this.setState({ cachedSearches: cachedSearches });
     }
   }
@@ -91,7 +92,7 @@ class DropdownLibrary extends Component {
       }
       this.setState({
         librarySearchTimeout: setTimeout(
-          () => libraryActions.search(libraryType, value, null, null, 10),
+          () => libraryActions.search(libraryType, value, null, null, 10, true),
           150,
         ),
       });

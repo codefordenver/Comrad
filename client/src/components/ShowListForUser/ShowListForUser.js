@@ -122,10 +122,7 @@ class ShowListForUser extends Component {
               <td>
                 <span
                   className="show-list-for-user__edit-show-instance"
-                  onClick={e => {
-                    e.preventDefault();
-                    this.showEditInstanceModal(item);
-                  }}
+                  onClick={e => this.showEditInstanceModal(item)}
                 >
                   Edit Show Instance
                 </span>

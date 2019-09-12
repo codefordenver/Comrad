@@ -80,6 +80,7 @@ function allShowInstancesInDateRange(show, startDate, endDate) {
 }
 
 function createRRule(show) {
+  const { replace_event_date } = show;
   const {
     frequency,
     repeat_start_date,
@@ -98,9 +99,17 @@ function createRRule(show) {
     newRRule.freq = frequency;
   }
 
-  newRRule.dtstart = new Date(repeat_start_date);
+  if (repeat_start_date != null) {
+    newRRule.dtstart = new Date(repeat_start_date);
+  } else if (replace_event_date != null) {
+    newRRule.dtstart = new Date(replace_event_date);
+  }
 
-  newRRule.until = new Date(repeat_end_date);
+  if (repeat_end_date != null) {
+    newRRule.until = new Date(repeat_end_date);
+  } else if (replace_event_date != null) {
+    newRRule.until = new Date(replace_event_date);
+  }
 
   if (count) {
     newRRule.count = count;

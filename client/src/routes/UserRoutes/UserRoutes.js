@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 import MainLayout from '../../layouts/MainLayout';
-import UserSearchPage from '../../pages/UserSearchPage';
-import UserProfilePage from '../../pages/UserProfilePage';
 import ChangePasswordPage from '../../pages/ChangePasswordPage/ChangePasswordPage';
 
 import { UserPages } from '../../pages';

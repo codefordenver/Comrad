@@ -17,10 +17,13 @@ export default class ShowBuilderItemList extends Component {
     items.forEach(function(item, idx) {
       switch (item.type) {
         case 'track':
-          let trackName = item.track.name;
-          let artists = item.track.artists.map(function(artist) {
-            return artist.name;
-          });
+          let trackName = item.track != null ? item.track.name : '';
+          let artists =
+            item.track != null
+              ? item.track.artists.map(function(artist) {
+                  return artist.name;
+                })
+              : [];
           artists = artists.join(',');
           elements.push(
             <ShowBuilderItem key={idx} itemId={item._id} {...buttonProps}>
@@ -29,6 +32,11 @@ export default class ShowBuilderItemList extends Component {
           );
           break;
         case 'traffic':
+          if (item.traffic == null || typeof item.traffic === 'undefined') {
+            console.error('Missing traffic event for item: ');
+            console.error(item);
+            return <></>;
+          }
           let traffic = item.traffic;
           let trafficTime = moment(traffic.start_time_utc);
           let formattedTime = trafficTime.format('LT');

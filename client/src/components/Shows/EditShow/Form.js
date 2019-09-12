@@ -16,7 +16,12 @@ const ALLOW_REPEAT_SELECT = false;
 class EditShowForm extends Component {
   render() {
     const { props } = this;
-    const { isRepeat, handleSubmit, date } = props;
+    const {
+      isRepeat,
+      handleSubmit,
+      date,
+      editSummaryAndDescriptionOnly,
+    } = props;
     const host = props.initialValues.initial.show_details.host;
 
     return (
@@ -24,17 +29,22 @@ class EditShowForm extends Component {
         <CardBody>
           <form className="edit-show-form" onSubmit={handleSubmit}>
             <div className="edit-show-form__grid">
-              <ShowDetailsTop
-                formSelectorName={FORM_NAME}
-                date={date}
-                allowRepeatSelect={ALLOW_REPEAT_SELECT}
-              />
+              {!editSummaryAndDescriptionOnly && (
+                <ShowDetailsTop
+                  formSelectorName={FORM_NAME}
+                  date={date}
+                  allowRepeatSelect={ALLOW_REPEAT_SELECT}
+                />
+              )}
 
               {isRepeat && ALLOW_REPEAT_SELECT && (
                 <RepeatDropdown formSelectorName={FORM_NAME} date={date} />
               )}
 
-              <ShowDetailsBottom host={host} />
+              <ShowDetailsBottom
+                host={host}
+                editSummaryAndDescriptionOnly={editSummaryAndDescriptionOnly}
+              />
             </div>
 
             <div className="edit-show-form__buttons">

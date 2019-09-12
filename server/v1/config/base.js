@@ -1,4 +1,5 @@
 module.exports = {
+  inComplianceReportingPeriod: true, // when true, users will be prompted to enter a label for any track that does not have one when adding a track to their Show Builder playlist
   modelCustomFields: {
     //TODO: move this to a place where it could be edited by whatever station is running comrad
     //schema for custom fields:

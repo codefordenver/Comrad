@@ -24,6 +24,7 @@ import ShowModalController from '../../components/Shows/ShowModalController';
 
 import {
   alertActions,
+  configActions,
   libraryActions,
   playlistActions,
   trafficActions,
@@ -51,11 +52,15 @@ class ShowBuilderPage extends Component {
     const {
       location,
       searchShow,
+      configActions,
       libraryActions,
       playlistActions,
       trafficActions,
     } = this.props;
     const { startTime, endTime } = queryString.parse(location.search);
+
+    //get the settings for whether we are in a compliance reporting period
+    configActions.getInComplianceReportingPeriodSetting();
 
     //clear any existing library search
     libraryActions.clear();
@@ -537,6 +542,7 @@ function mapStateToProps({ library, show, playlist, traffic }) {
 function mapDispatchToProps(dispatch) {
   return {
     alertActions: bindActionCreators({ ...alertActions }, dispatch),
+    configActions: bindActionCreators({ ...configActions }, dispatch),
     clearShows: bindActionCreators(clearShows, dispatch),
     createInstanceShow: bindActionCreators(createInstanceShow, dispatch),
     libraryActions: bindActionCreators({ ...libraryActions }, dispatch),

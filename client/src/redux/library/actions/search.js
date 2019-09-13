@@ -15,6 +15,7 @@ export const search = (
   sort,
   page,
   limit,
+  useDocsForDropdown,
 ) => async dispatch => {
   try {
     dispatch({ type: libraryTypes.LOADING_SEARCH });
@@ -27,10 +28,15 @@ export const search = (
     }
 
     let { docs, totalPages } = apiResponse.data;
+    let payload = { docs, searchString, totalPages };
+
+    if (typeof useDocsForDropdown !== 'undefined' && useDocsForDropdown) {
+      payload.useDocsForDropdown = true;
+    }
 
     dispatch({
       type: libraryTypes.SEARCH,
-      payload: { docs, searchString, totalPages },
+      payload: payload,
     });
   } catch (err) {
     console.log(err);

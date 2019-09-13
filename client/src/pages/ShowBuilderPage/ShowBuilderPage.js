@@ -5,19 +5,30 @@ import { Field, reduxForm } from 'redux-form';
 import moment from 'moment';
 import queryString from 'query-string';
 
+import Button from '../../components/Button';
 import Card, { CardBody } from '../../components/Card';
 import Dropdown from '../../components/Dropdown';
 import DropdownHost from '../../components/DropdownHost';
+import DropdownLibrary from '../../components/DropdownLibrary';
+import FormAlbumAdd from '../../components/forms/FormAlbumAdd';
+import FormTrackAdd from '../../components/forms/FormTrackAdd';
 import FormShowBuilderComment from '../../components/forms/FormShowBuilderComment';
 import Input from '../../components/Input';
 import Loading from '../../components/Loading';
+import Modal from '../../components/Modal';
 import ShowBuilderItemList from '../../components/ShowBuilderItemList';
 
 import { MODAL_EDIT_SHOW_INSTANCE_DESCRIPTION } from '../../components/Shows/ShowModalController';
 import { setModalVisibility } from '../../redux/modal';
 import ShowModalController from '../../components/Shows/ShowModalController';
 
-import { libraryActions, playlistActions, trafficActions } from '../../redux';
+import {
+  alertActions,
+  libraryActions,
+  playlistActions,
+  trafficActions,
+} from '../../redux';
+
 import {
   clearShows,
   createInstanceShow,
@@ -28,20 +39,26 @@ import {
 } from '../../redux/show';
 
 import { getShowType } from '../../utils/shows';
+import { getNextDiskAndTrackNumberForAlbum } from '../../utils/library';
 
 class ShowBuilderPage extends Component {
   state = {
     activeTab: 'search',
+    showAddTrackModal: false,
   };
 
   componentDidMount() {
     const {
       location,
       searchShow,
+      libraryActions,
       playlistActions,
       trafficActions,
     } = this.props;
     const { startTime, endTime } = queryString.parse(location.search);
+
+    //clear any existing library search
+    libraryActions.clear();
 
     //find the playlist
     playlistActions.findOrCreateOne(startTime, endTime);
@@ -74,10 +91,70 @@ class ShowBuilderPage extends Component {
     libraryActions.clear();
   }
 
+  /* START - add track modal */
+
+  addTrackModalAddNewAlbum = newAlbum => {
+    const { alertActions } = this.props;
+    alertActions.hideWithoutChangingDisplayLocation();
+    this.setState({
+      addTrackModalCurrentPage: 'track',
+      addTrackModalSelectedAlbum: newAlbum,
+    });
+  };
+
+  addTrackModalAddToSavedItems = track => {
+    this.addTrackToSavedItems(track._id);
+    this.addTrackModalClose();
+  };
+
+  addTrackModalAddToScratchpad = track => {
+    this.addTrackToScratchpad(track._id);
+    this.addTrackModalClose();
+  };
+
+  addTrackModalHandleAlbumSelect = selectedAlbum => {
+    const { libraryActions } = this.props;
+    // get the album from the API to populate the tracks
+    libraryActions.findOne(selectedAlbum._id);
+    // in case the form is submitted before the API call, we'll set the addTrackModalSelectedAlbum value to the current doc value
+    this.setState({
+      addTrackModalSelectedAlbum: selectedAlbum,
+    });
+  };
+
+  addTrackModalSelectExistingAlbum = form => {
+    const { alertActions, library } = this.props;
+    alertActions.hideWithoutChangingDisplayLocation();
+    this.setState({
+      addTrackModalSelectedAlbum:
+        library.doc != null
+          ? library.doc
+          : this.state.addTrackModalSelectedAlbum, // check for this.props.library.doc in case there was an issue with the libraryActions.findOne API call
+      addTrackModalCurrentPage: 'track',
+    });
+  };
+
+  addTrackModalClose = () => {
+    this.setState({
+      showAddTrackModal: false,
+    });
+  };
+
+  addTrackModalOpen = () => {
+    const { alertActions } = this.props;
+    alertActions.changeDisplayLocation('modal');
+    this.setState({
+      addTrackModalCurrentPage: 'album',
+      showAddTrackModal: true,
+    });
+  };
+
   addTrackToSavedItems = trackId => {
     const { playlist, playlistActions } = this.props;
     playlistActions.addTrackToSavedItems(playlist.doc._id, trackId);
   };
+
+  /* END - add track modal */
 
   addTrackToScratchpad = trackId => {
     const { playlist, playlistActions } = this.props;
@@ -105,7 +182,7 @@ class ShowBuilderPage extends Component {
     if (form.q.length === 0) {
       libraryActions.clear();
     } else {
-      libraryActions.search('track', form.q);
+      libraryActions.search('track', form.q, null, null, 20);
     }
   };
 
@@ -128,9 +205,12 @@ class ShowBuilderPage extends Component {
     } = this.props;
     const {
       activeTab,
+      addTrackModalCurrentPage,
+      addTrackModalSelectedAlbum,
       formattedDay,
       formattedEndTime,
       formattedStartTime,
+      showAddTrackModal,
     } = this.state;
     let { scratchpad, saved_items } = playlist.doc;
 
@@ -181,6 +261,15 @@ class ShowBuilderPage extends Component {
       savedItemsForDisplay = [...saved_items];
       savedItemsForDisplay.reverse(); //display saved items in reverse chronological order
     }
+
+    /* START - Add Track modal variables */
+    let maxDiskNumber, maxTrackNumber;
+    if (addTrackModalSelectedAlbum != null) {
+      ({ maxDiskNumber, maxTrackNumber } = getNextDiskAndTrackNumberForAlbum(
+        addTrackModalSelectedAlbum,
+      ));
+    }
+    /* END - Add Track modal variables */
 
     return (
       <Card className="card--show-builder">
@@ -281,6 +370,12 @@ class ShowBuilderPage extends Component {
                           {this.renderLibraryResultsHeader()}
                           {this.renderLibraryResultsBody()}
                         </table>
+                        <span
+                          onClick={this.addTrackModalOpen}
+                          className="library-results__add-new-track"
+                        >
+                          Add New Track
+                        </span>
                       </div>
                     )}
                     {library.docs != null && library.docs.length === 0 && (
@@ -290,7 +385,10 @@ class ShowBuilderPage extends Component {
                         </em>
                         <br />
                         <br />
-                        <span className="library-results__add-new-track">
+                        <span
+                          onClick={this.addTrackModalOpen}
+                          className="library-results__add-new-track"
+                        >
                           Add New Track
                         </span>
                       </div>
@@ -310,6 +408,65 @@ class ShowBuilderPage extends Component {
               </div>
             </div>
           </div>
+
+          {/* Add Track Modal */}
+          {showAddTrackModal ? (
+            <Modal isOpen={true}>
+              <div className="add-track-modal">
+                {addTrackModalCurrentPage === 'album' && (
+                  <div>
+                    <form
+                      onSubmit={handleSubmit(
+                        this.addTrackModalSelectExistingAlbum,
+                      )}
+                    >
+                      <h3>Select an existing album:</h3>
+                      <DropdownLibrary
+                        libraryType="album"
+                        name="existingAlbum"
+                        onLibraryItemSelect={
+                          this.addTrackModalHandleAlbumSelect
+                        }
+                      />
+                      <Button type="submit">Next</Button>
+                    </form>
+
+                    <h3>Or, create a new album:</h3>
+                    <FormAlbumAdd
+                      submitCallback={this.addTrackModalAddNewAlbum}
+                    />
+                  </div>
+                )}
+                {addTrackModalCurrentPage === 'track' && (
+                  <div>
+                    <h3>New Track</h3>
+                    <FormTrackAdd
+                      maxDiskNumber={maxDiskNumber}
+                      maxTrackNumber={maxTrackNumber}
+                      customSubmitButtons={[
+                        {
+                          text: 'Save and Add to Scratchpad',
+                          callback: this.addTrackModalAddToScratchpad,
+                        },
+                        {
+                          text: 'Save and Add to Saved Items',
+                          callback: this.addTrackModalAddToSavedItems,
+                        },
+                      ]}
+                      albumId={this.state.addTrackModalSelectedAlbum._id}
+                      artistId={
+                        this.state.addTrackModalSelectedAlbum.artist._id
+                      }
+                      artist={this.state.addTrackModalSelectedAlbum.artist}
+                    />
+                  </div>
+                )}
+                <Button color="neutral" onClick={this.addTrackModalClose}>
+                  Close
+                </Button>
+              </div>
+            </Modal>
+          ) : null}
         </CardBody>
       </Card>
     );
@@ -379,6 +536,7 @@ function mapStateToProps({ library, show, playlist, traffic }) {
 
 function mapDispatchToProps(dispatch) {
   return {
+    alertActions: bindActionCreators({ ...alertActions }, dispatch),
     clearShows: bindActionCreators(clearShows, dispatch),
     createInstanceShow: bindActionCreators(createInstanceShow, dispatch),
     libraryActions: bindActionCreators({ ...libraryActions }, dispatch),

@@ -5,7 +5,7 @@ import { requiredValidate } from '../../../utils/validation';
 import { libraryActions } from '../../../redux';
 import Button from '../../Button';
 import ButtonIcon from '../../ButtonIcon';
-import DropdownArtist from '../../DropdownArtist';
+import DropdownLibrary from '../../DropdownLibrary';
 import Input from '../../Input';
 import { bindActionCreators } from 'redux';
 
@@ -15,13 +15,30 @@ class FormTrackAdd extends Component {
   };
 
   submit = values => {
-    const { albumId, libraryActions, submitCallback } = this.props;
+    const {
+      albumId,
+      customSubmitButtons,
+      libraryActions,
+      submitCallback,
+    } = this.props;
     values.album = albumId;
     values.duration_in_seconds =
       parseInt(values.seconds) + parseInt(values.minutes) * 60;
     return libraryActions.add('track', values, trackData => {
-      if (typeof submitCallback === 'function') {
-        submitCallback(trackData);
+      if (customSubmitButtons != null) {
+        let submittedButton = customSubmitButtons.filter(
+          btn => btn.text === values.customSubmitButton,
+        );
+        if (
+          submittedButton.length > 0 &&
+          typeof submittedButton[0].callback === 'function'
+        ) {
+          submittedButton[0].callback(trackData);
+        }
+      } else {
+        if (typeof submitCallback === 'function') {
+          submitCallback(trackData);
+        }
       }
     });
   };
@@ -43,6 +60,7 @@ class FormTrackAdd extends Component {
             <h3>Artists</h3>
             <ButtonIcon
               icon="plus"
+              type="button"
               onClick={e => {
                 e.preventDefault();
                 fields.push({});
@@ -54,8 +72,9 @@ class FormTrackAdd extends Component {
               <Field
                 name={`${fieldName}`}
                 type="text"
-                component={DropdownArtist}
-                onArtistSelect={this.handleDropdownArtistSelect}
+                component={DropdownLibrary}
+                libraryType="artist"
+                onLibraryItemSelect={this.handleDropdownArtistSelect}
                 label="Aritst"
                 artist={
                   artistsSelectedInDropdown.filter(
@@ -65,6 +84,7 @@ class FormTrackAdd extends Component {
               />
               <ButtonIcon
                 icon="cancel"
+                type="button"
                 onClick={e => {
                   e.preventDefault();
                   fields.remove(index);
@@ -80,7 +100,7 @@ class FormTrackAdd extends Component {
 
   render() {
     const { props, submit } = this;
-    const { handleSubmit } = props;
+    const { customSubmitButtons, handleSubmit } = props;
 
     return (
       <form className="form-track-add" onSubmit={handleSubmit(submit)}>
@@ -128,7 +148,19 @@ class FormTrackAdd extends Component {
         />
 
         <div>
-          <Button type="submit">Submit</Button>
+          {!customSubmitButtons && <Button type="submit">Submit</Button>}
+          {customSubmitButtons && (
+              <Field type="hidden" name="customSubmitButton" />
+            ) &&
+            customSubmitButtons.map(btn => (
+              <Button
+                key={btn.text}
+                type="submit"
+                onClick={e => this.props.change('customSubmitButton', btn.text)}
+              >
+                {btn.text}
+              </Button>
+            ))}
         </div>
       </form>
     );

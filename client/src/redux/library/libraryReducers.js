@@ -2,6 +2,7 @@ import { libraryTypes } from './libraryTypes';
 
 const initialState = {
   docs: null,
+  docsForDropdown: null,
   doc: null,
   editingName: false,
   loading: false,
@@ -57,7 +58,8 @@ export const libraryReducer = (state = initialState, { type, payload }) => {
     case libraryTypes.SEARCH:
       return {
         ...state,
-        docs: payload.docs,
+        docs: payload.useDocsForDropdown ? state.docs : payload.docs,
+        docsForDropdown: payload.useDocsForDropdown ? payload.docs : state.docs,
         loadingSearch: false,
         searchString: payload.searchString,
         totalPages: payload.totalPages,

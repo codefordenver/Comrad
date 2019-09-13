@@ -27,7 +27,15 @@ export default class ShowBuilderItemList extends Component {
           artists = artists.join(',');
           elements.push(
             <ShowBuilderItem key={idx} itemId={item._id} {...buttonProps}>
-              <b>Track:</b> <i>{trackName}</i> by <i>{artists}</i>
+              {item.track != null ? (
+                <>
+                  <b>Track:</b> <i>{trackName}</i> by <i>{artists}</i>
+                </>
+              ) : (
+                <>
+                  <b>Track:</b> <i>Track data missing from database</i>
+                </>
+              )}
             </ShowBuilderItem>,
           );
           break;

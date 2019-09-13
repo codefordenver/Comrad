@@ -11,6 +11,7 @@ import Dropdown from '../../components/Dropdown';
 import DropdownHost from '../../components/DropdownHost';
 import DropdownLibrary from '../../components/DropdownLibrary';
 import FormAlbumAdd from '../../components/forms/FormAlbumAdd';
+import FormAlbumLabelEdit from '../../components/forms/FormAlbumLabelEdit';
 import FormTrackAdd from '../../components/forms/FormTrackAdd';
 import FormShowBuilderComment from '../../components/forms/FormShowBuilderComment';
 import Input from '../../components/Input';
@@ -46,6 +47,7 @@ class ShowBuilderPage extends Component {
   state = {
     activeTab: 'search',
     showAddTrackModal: false,
+    showPromptForLabelModal: false,
   };
 
   componentDidMount() {
@@ -113,7 +115,7 @@ class ShowBuilderPage extends Component {
   };
 
   addTrackModalAddToScratchpad = track => {
-    this.addTrackToScratchpad(track._id);
+    this.checkIfTracksAlbumNeedsLabel(track, this.addTrackToScratchpad);
     this.addTrackModalClose();
   };
 
@@ -154,16 +156,53 @@ class ShowBuilderPage extends Component {
     });
   };
 
+  /* END - add track modal */
+
+  /* START - in compliance reporting periods, prompt the user for the album's label */
+
+  promptForLabelModalClose = () => {
+    const { libraryActions } = this.props;
+    libraryActions.clear(); //clear the library search results since the underlying data has changed
+    this.setState({
+      showPromptForLabelModal: false,
+    });
+  };
+
+  promptForLabelModalOpen = (track, callback) => {
+    this.setState({
+      showPromptForLabelModal: true,
+      promptForLabelModalAlbumId: track.album._id,
+      promptForLabelModalAlbumName: track.album.name,
+      promptForLabelModalTrackId: track._id,
+      promptForLabelModalCallback: callback,
+    });
+  };
+
+  /* END - in compliance reporting periods, prompt the user for the album's label */
+
   addTrackToSavedItems = trackId => {
     const { playlist, playlistActions } = this.props;
     playlistActions.addTrackToSavedItems(playlist.doc._id, trackId);
   };
 
-  /* END - add track modal */
-
   addTrackToScratchpad = trackId => {
     const { playlist, playlistActions } = this.props;
     playlistActions.addTrackToScratchpad(playlist.doc._id, trackId);
+  };
+
+  checkIfTracksAlbumNeedsLabel = (track, callback) => {
+    const { config } = this.props;
+    //if we are in a compliance reporting period, prompt the user for the label of the album
+    if (
+      config.inComplianceReportingPeriod &&
+      (typeof track.album.label === 'undefined' ||
+        track.album.label === null ||
+        track.album.label.length === 0)
+    ) {
+      this.promptForLabelModalOpen(track, callback);
+    } else {
+      callback(track._id);
+    }
   };
 
   handleHostSelect = host => {
@@ -472,6 +511,28 @@ class ShowBuilderPage extends Component {
               </div>
             </Modal>
           ) : null}
+
+          {/* Prompt for Label Modal */}
+          {this.state.showPromptForLabelModal ? (
+            <Modal isOpen={true}>
+              <div className="prompt-for-label-modal">
+                <div>
+                  We are currently in a compliance reporting period. Please
+                  provide the label for the album{' '}
+                  <i>{this.state.promptForLabelModalAlbumName}</i>.
+                </div>
+                <FormAlbumLabelEdit
+                  albumId={this.state.promptForLabelModalAlbumId}
+                  submitCallback={() => {
+                    this.state.promptForLabelModalCallback(
+                      this.state.promptForLabelModalTrackId,
+                    );
+                    this.promptForLabelModalClose();
+                  }}
+                />
+              </div>
+            </Modal>
+          ) : null}
         </CardBody>
       </Card>
     );
@@ -491,6 +552,7 @@ class ShowBuilderPage extends Component {
   };
 
   renderLibraryResultsBody = () => {
+    const { addTrackToScratchpad, addTrackToSavedItems } = this;
     const { docs } = this.props.library;
 
     return (
@@ -509,12 +571,22 @@ class ShowBuilderPage extends Component {
                     faClass="fas fa-ellipsis-h"
                   >
                     <Dropdown.Item
-                      handleOnClick={() => this.addTrackToScratchpad(item._id)}
+                      handleOnClick={() =>
+                        this.checkIfTracksAlbumNeedsLabel(
+                          item,
+                          addTrackToScratchpad,
+                        )
+                      }
                     >
                       Add to Scratchpad
                     </Dropdown.Item>
                     <Dropdown.Item
-                      handleOnClick={() => this.addTrackToSavedItems(item._id)}
+                      handleOnClick={() =>
+                        this.checkIfTracksAlbumNeedsLabel(
+                          item,
+                          addTrackToSavedItems,
+                        )
+                      }
                     >
                       Add to Saved Items
                     </Dropdown.Item>
@@ -529,8 +601,9 @@ class ShowBuilderPage extends Component {
   };
 }
 
-function mapStateToProps({ library, show, playlist, traffic }) {
+function mapStateToProps({ config, library, show, playlist, traffic }) {
   return {
+    config,
     library,
     playlist,
     showFetching: show.fetching,

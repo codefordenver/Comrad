@@ -27,7 +27,7 @@ class AlbumAddPage extends Component {
     if (albumData.artist == null) {
       history.push(`/library`);
     } else {
-      history.push(`/library/artist/${albumData.artist}`);
+      history.push(`/library/artist/${albumData.artist._id}`);
     }
     alertActions.show(
       'success',

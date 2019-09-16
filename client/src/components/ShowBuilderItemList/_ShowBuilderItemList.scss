@@ -1,5 +1,50 @@
 .show-builder-item-list {
   .show-builder-item {
+    &-announcement {
+      background-color: green; 
+      border-color: green; 
+      color: white;
+    }
+    &-comment {
+      background-color: #BBBBBB; 
+      border-color: #BBBBBB; 
+      color: white;
+    }
+    &-feature {
+      background-color: royalblue; 
+      border-color: royalblue; 
+      color: white;
+    }
+    &-giveaway {
+      background-color: darkgoldenrod; 
+      border-color: darkgoldenrod; 
+      color: white;
+    }
+    &-legalid {
+      background-color: indigo; 
+      border-color: indigo; 
+      color: white;
+    }
+    &-psa {
+      background-color: darkorange; 
+      border-color: darkorange; 
+      color: white;
+    }
+    &-track {
+      background-color: #2694E8; 
+      border-color: #2694E8; 
+      color: white;
+    }
+    &-underwriting { 
+      background-color: slategray; 
+      border-color: slategray; 
+      color: white;
+    }
+    &-voice_break {
+      background-color: #BBBBBB; 
+      border-color: #BBBBBB; 
+      color: white;
+    }
     border: 1px solid #333;
     border-radius: 4px;
     padding: 4px;

@@ -7,6 +7,8 @@ export const search = values => async dispatch => {
 
     const { data: docs } = await userAPI.search(values);
 
+    console.log(docs);
+
     dispatch({
       type: userTypes.SEARCH,
       payload: { docs },

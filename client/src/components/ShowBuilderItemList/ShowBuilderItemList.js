@@ -47,6 +47,7 @@ export default class ShowBuilderItemList extends Component {
               masterTimeId={item.traffic.master_time_id}
               {...buttonProps}
               deleteButton={false}
+              eventType="traffic"
             >
               {formattedTime} - <b>{traffic.traffic_details.type}:</b>{' '}
               {traffic.traffic_details.title}
@@ -55,14 +56,24 @@ export default class ShowBuilderItemList extends Component {
           break;
         case 'comment':
           elements.push(
-            <ShowBuilderItem key={idx} itemId={item._id} {...buttonProps}>
+            <ShowBuilderItem
+              key={idx}
+              itemId={item._id}
+              {...buttonProps}
+              eventType="comment"
+            >
               Comment
             </ShowBuilderItem>,
           );
           break;
         case 'voice_break':
           elements.push(
-            <ShowBuilderItem key={idx} itemId={item._id} {...buttonProps}>
+            <ShowBuilderItem
+              key={idx}
+              itemId={item._id}
+              {...buttonProps}
+              eventType="voice_break"
+            >
               Voice Break
             </ShowBuilderItem>,
           );

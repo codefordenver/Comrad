@@ -26,7 +26,12 @@ export default class ShowBuilderItemList extends Component {
               : [];
           artists = artists.join(',');
           elements.push(
-            <ShowBuilderItem key={idx} itemId={item._id} {...buttonProps}>
+            <ShowBuilderItem
+              key={idx}
+              itemId={item._id}
+              {...buttonProps}
+              eventType="track"
+            >
               <b>Track:</b> <i>{trackName}</i> by <i>{artists}</i>
             </ShowBuilderItem>,
           );
@@ -40,6 +45,9 @@ export default class ShowBuilderItemList extends Component {
           let traffic = item.traffic;
           let trafficTime = moment(traffic.start_time_utc);
           let formattedTime = trafficTime.format('LT');
+          let eventType = traffic.traffic_details.type
+            .replace(/\s/g, '')
+            .toLowerCase();
           elements.push(
             <ShowBuilderItem
               key={idx}
@@ -47,7 +55,7 @@ export default class ShowBuilderItemList extends Component {
               masterTimeId={item.traffic.master_time_id}
               {...buttonProps}
               deleteButton={false}
-              eventType="traffic"
+              eventType={eventType}
             >
               {formattedTime} - <b>{traffic.traffic_details.type}:</b>{' '}
               {traffic.traffic_details.title}

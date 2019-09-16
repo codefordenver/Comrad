@@ -37,10 +37,11 @@ class ShowBuilderItem extends Component {
       deleteButton,
       toSavedItemsButton,
       toScratchpadButton,
+      eventType,
     } = this.props;
 
     return (
-      <div className="show-builder-item">
+      <div className={`show-builder-item, show-builder-item-${eventType}`}>
         {toScratchpadButton && (
           <Button
             type="button"

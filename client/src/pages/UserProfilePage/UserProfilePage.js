@@ -22,15 +22,29 @@ class UserProfilePage extends Component {
   render() {
     const { userState } = this.props;
 
-    const { email, first_name, image, last_name, on_air_name } = userState.doc;
+    const { email, first_name, last_name, on_air_name } = userState.doc;
 
     return (
       <div className="u">
         {userState.loading || isEmpty(userState.doc) ? null : (
           <>
             <Row>
-              <Col md={3} />
-              <Col md={6}>
+              <Col>
+                <CardV2>
+                  <CardV2.Body>
+                    <Heading size={3}>Contact</Heading>
+
+                    <Heading size={5}>Name</Heading>
+                    <p>
+                      {first_name} {last_name}
+                    </p>
+
+                    <Heading size={5}>Email</Heading>
+                    <p>{email}</p>
+                  </CardV2.Body>
+                </CardV2>
+              </Col>
+              <Col>
                 <Row className="mb-1">
                   <Col md={6}>
                     <CardV2>
@@ -88,7 +102,7 @@ class UserProfilePage extends Component {
                   </Col>
                 </Row>
               </Col>
-              <Col md={3} />
+              <Col />
             </Row>
           </>
         )}

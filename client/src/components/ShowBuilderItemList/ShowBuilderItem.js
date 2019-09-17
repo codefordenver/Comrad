@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { playlistActions } from '../../redux';
+import classnames from 'classnames';
 
 import Button from '../Button';
 
@@ -41,7 +42,12 @@ class ShowBuilderItem extends Component {
     } = this.props;
 
     return (
-      <div className={`show-builder-item, show-builder-item-${eventType}`}>
+      <div
+        className={classnames(
+          'show-builder-item',
+          `show-builder-item--${eventType}`,
+        )}
+      >
         {toScratchpadButton && (
           <Button
             type="button"

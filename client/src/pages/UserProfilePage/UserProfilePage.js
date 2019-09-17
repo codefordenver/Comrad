@@ -8,7 +8,7 @@ import { isEmpty } from 'lodash';
 import { userActions } from '../../redux';
 
 import Button from '../../components/Button';
-import { CardV2, Heading, ProfileImg } from '../../components';
+import { CardV2, Form, Heading, ProfileImg } from '../../components';
 
 const customStyles = {
   content: {
@@ -47,8 +47,16 @@ class UserProfilePage extends Component {
     this.setState({ modalIsOpen: false });
   };
 
+  handleOnClick = () => {
+    const { history, match, userActions } = this.props;
+
+    userActions.remove(match.params.id, () => {
+      history.push('/user/search');
+    });
+  };
+
   render() {
-    const { closeModal, openModal, props } = this;
+    const { closeModal, handleOnClick, openModal, props } = this;
     const { userState } = props;
 
     const { email, first_name, last_name, on_air_name } = userState.doc;
@@ -130,7 +138,11 @@ class UserProfilePage extends Component {
               </Row>
               <Row>
                 <Col>
-                  <Button className="w-100" color="primary">
+                  <Button
+                    className="w-100"
+                    color="primary"
+                    onClick={handleOnClick}
+                  >
                     Yes
                   </Button>
                 </Col>

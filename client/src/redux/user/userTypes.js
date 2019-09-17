@@ -6,6 +6,7 @@ export const userTypes = {
   FIND_ONE: 'user_find_one',
   FIND_ALL: 'user_find_all',
   LOADING: 'user_loading',
+  REMOVE: 'user_remove',
   SEARCH: 'user_search',
   SEARCH_HOSTS: 'user_search_hosts',
 };

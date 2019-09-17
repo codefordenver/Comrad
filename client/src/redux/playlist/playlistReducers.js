@@ -154,6 +154,40 @@ export const playlistReducer = (state = initialState, { type, payload }) => {
       } else {
         return state;
       }
+    case playlistTypes.REARRANGE_SAVED_ITEM:
+      if (state.doc._id === payload.playlistId) {
+        let newSavedItems = [...state.doc.saved_items];
+        let element = state.doc.saved_items[payload.fromIndex];
+        newSavedItems.splice(payload.fromIndex, 1);
+        newSavedItems.splice(payload.toIndex, 0, element);
+        return {
+          ...state,
+          doc: {
+            ...state.doc,
+            saved_items: newSavedItems,
+          },
+          saving: false,
+        };
+      } else {
+        return state;
+      }
+    case playlistTypes.REARRANGE_SCRATCHPAD_ITEM:
+      if (state.doc._id === payload.playlistId) {
+        let newScratchpad = [...state.doc.scratchpad];
+        let element = state.doc.scratchpad[payload.fromIndex];
+        newScratchpad.splice(payload.fromIndex, 1);
+        newScratchpad.splice(payload.toIndex, 0, element);
+        return {
+          ...state,
+          doc: {
+            ...state.doc,
+            scratchpad: newScratchpad,
+          },
+          saving: false,
+        };
+      } else {
+        return state;
+      }
     case playlistTypes.SAVING:
       return {
         ...state,

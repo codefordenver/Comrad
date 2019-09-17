@@ -221,6 +221,25 @@ class ShowBuilderPage extends Component {
     }
   };
 
+  handleRearrangeSavedItem = (fromIndex, toIndex) => {
+    const { playlist, playlistActions } = this.props;
+    const savedItemsLength = playlist.doc.saved_items.length; //saved items is displayed in reverse, so we'll have to calculate the position in Redux based on the displayed index
+    playlistActions.rearrangeSavedItem(
+      playlist.doc._id,
+      savedItemsLength - toIndex,
+      savedItemsLength - fromIndex,
+    );
+  };
+
+  handleRearrangeScratchpadItem = (fromIndex, toIndex) => {
+    const { playlist, playlistActions } = this.props;
+    playlistActions.rearrangeScratchpadItem(
+      playlist.doc._id,
+      toIndex,
+      fromIndex,
+    );
+  };
+
   searchLibrary = form => {
     const { libraryActions } = this.props;
     if (form.q.length === 0) {
@@ -361,6 +380,7 @@ class ShowBuilderPage extends Component {
                       items={scratchpadForDisplay}
                       deleteButton={true}
                       toSavedItemsButton={true}
+                      onRearrangeItem={this.handleRearrangeScratchpadItem}
                     />
                   )}
               </div>
@@ -372,6 +392,7 @@ class ShowBuilderPage extends Component {
                     <ShowBuilderItemList
                       items={savedItemsForDisplay}
                       toScratchpadButton={true}
+                      onRearrangeItem={this.handleRearrangeSavedItem}
                     />
                   )}
               </div>

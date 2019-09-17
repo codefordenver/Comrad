@@ -12,5 +12,7 @@ export const playlistTypes = {
     'playlist_move_item_from_saved_items_to_scratchpad',
   MOVE_ITEM_FROM_SCRATCHPAD_TO_SAVED_ITEMS:
     'playlist_move_item_from_scratchpad_to_saved_items',
+  REARRANGE_SAVED_ITEM: 'playlist_rearrange_saved_item',
+  REARRANGE_SCRATCHPAD_ITEM: 'playlist_rearrange_scratchpad_item',
   SAVING: 'playlist_saving',
 };

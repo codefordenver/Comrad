@@ -8,6 +8,8 @@ import { findOne } from './findOne';
 import { findOrCreateOne } from './findOrCreateOne';
 import { moveItemFromSavedItemsToScratchpad } from './moveItemFromSavedItemsToScratchpad';
 import { moveItemFromScratchpadToSavedItems } from './moveItemFromScratchpadToSavedItems';
+import { rearrangeSavedItem } from './rearrangeSavedItem';
+import { rearrangeScratchpadItem } from './rearrangeScratchpadItem';
 
 export const playlistActions = {
   addCommentToSavedItems,
@@ -20,4 +22,6 @@ export const playlistActions = {
   findOrCreateOne,
   moveItemFromSavedItemsToScratchpad,
   moveItemFromScratchpadToSavedItems,
+  rearrangeSavedItem,
+  rearrangeScratchpadItem,
 };

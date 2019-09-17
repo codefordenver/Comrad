@@ -1,10 +1,21 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 
+import { DndProvider } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
+
 import ShowBuilderItem from './ShowBuilderItem';
 
 export default class ShowBuilderItemList extends Component {
+  onRearrangeShowBuilderItem = (fromIndex, toIndex) => {
+    const { onRearrangeItem } = this.props;
+    if (typeof onRearrangeItem === 'function') {
+      onRearrangeItem(fromIndex, toIndex);
+    }
+  };
+
   render() {
+    const { onRearrangeShowBuilderItem } = this;
     const { items } = this.props;
 
     const buttonProps = {
@@ -26,7 +37,13 @@ export default class ShowBuilderItemList extends Component {
               : [];
           artists = artists.join(',');
           elements.push(
-            <ShowBuilderItem key={idx} itemId={item._id} {...buttonProps}>
+            <ShowBuilderItem
+              key={item._id}
+              index={idx}
+              itemId={item._id}
+              onRearrangeShowBuilderItem={onRearrangeShowBuilderItem}
+              {...buttonProps}
+            >
               <b>Track:</b> <i>{trackName}</i> by <i>{artists}</i>
             </ShowBuilderItem>,
           );
@@ -43,8 +60,10 @@ export default class ShowBuilderItemList extends Component {
           elements.push(
             <ShowBuilderItem
               key={idx}
+              index={idx}
               itemId={item._id}
               masterTimeId={item.traffic.master_time_id}
+              onRearrangeShowBuilderItem={onRearrangeShowBuilderItem}
               {...buttonProps}
               deleteButton={false}
             >
@@ -55,14 +74,26 @@ export default class ShowBuilderItemList extends Component {
           break;
         case 'comment':
           elements.push(
-            <ShowBuilderItem key={idx} itemId={item._id} {...buttonProps}>
+            <ShowBuilderItem
+              key={idx}
+              index={idx}
+              itemId={item._id}
+              onRearrangeShowBuilderItem={onRearrangeShowBuilderItem}
+              {...buttonProps}
+            >
               Comment
             </ShowBuilderItem>,
           );
           break;
         case 'voice_break':
           elements.push(
-            <ShowBuilderItem key={idx} itemId={item._id} {...buttonProps}>
+            <ShowBuilderItem
+              key={idx}
+              index={idx}
+              itemId={item._id}
+              onRearrangeShowBuilderItem={onRearrangeShowBuilderItem}
+              {...buttonProps}
+            >
               Voice Break
             </ShowBuilderItem>,
           );
@@ -75,6 +106,10 @@ export default class ShowBuilderItemList extends Component {
       }
     });
 
-    return <div className="show-builder-item-list">{elements}</div>;
+    return (
+      <div className="show-builder-item-list">
+        <DndProvider backend={HTML5Backend}>{elements}</DndProvider>
+      </div>
+    );
   }
 }

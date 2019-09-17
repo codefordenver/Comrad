@@ -15,7 +15,6 @@ class UserProfilePage extends Component {
     const { id } = match.params;
 
     if (id !== _id) {
-      console.log('Test');
       userActions.findOne(id);
     }
   }
@@ -43,7 +42,7 @@ class UserProfilePage extends Component {
                     <Heading size={5}>Email</Heading>
                     <p>{email}</p>
 
-                    <Heading size={5}>Address</Heading>
+                    <Heading size={5}>Addres</Heading>
                   </CardV2.Body>
                 </CardV2>
 
@@ -56,64 +55,7 @@ class UserProfilePage extends Component {
                   </CardV2.Body>
                 </CardV2>
               </Col>
-              <Col>
-                <Row className="mb-1">
-                  <Col md={6}>
-                    <CardV2>
-                      <CardV2.Body>
-                        {/* {image ? (
-                          <img
-                            className="user-profile__image-pic"
-                            src={image}
-                            alt="profile pic"
-                          />
-                        ) : (
-                          <i className="fas fa-user user-profile__image-stock" />
-                        )} */}
-                      </CardV2.Body>
-                    </CardV2>
-                  </Col>
-                  <Col md={6}>
-                    <CardV2>
-                      <CardV2.Body>
-                        <Heading size={3}>Personal Info</Heading>
-
-                        <Heading size={5}>Name</Heading>
-
-                        <p>
-                          {first_name} {last_name}
-                        </p>
-
-                        <Heading size={3}>Contact</Heading>
-
-                        <Heading size={5}>Email</Heading>
-
-                        {email && <p>{email}</p>}
-                      </CardV2.Body>
-                    </CardV2>
-                  </Col>
-                </Row>
-
-                <Row>
-                  <Col>
-                    <CardV2 className="mb-1">
-                      <CardV2.Body>
-                        <Heading size={3}>Location</Heading>
-                      </CardV2.Body>
-                    </CardV2>
-
-                    <CardV2 className="mb-1">
-                      <CardV2.Body>
-                        <Heading size={3}>Station</Heading>
-
-                        <Heading size={5}>On Air Name</Heading>
-
-                        {on_air_name && <p>{on_air_name}</p>}
-                      </CardV2.Body>
-                    </CardV2>
-                  </Col>
-                </Row>
-              </Col>
+              <Col />
               <Col />
             </Row>
           </>

@@ -1,46 +1,46 @@
 .show-builder-item-list {
   .show-builder-item {
-    &-announcement {
+    &.show-builder-item--announcement {
       background-color: green; 
       border-color: green; 
       color: white;
     }
-    &-comment {
+    &.show-builder-item--comment {
       background-color: #BBBBBB; 
       border-color: #BBBBBB; 
       color: white;
     }
-    &-feature {
+    &.show-builder-item--feature {
       background-color: royalblue; 
       border-color: royalblue; 
       color: white;
     }
-    &-giveaway {
+    &.show-builder-item--giveaway {
       background-color: darkgoldenrod; 
       border-color: darkgoldenrod; 
       color: white;
     }
-    &-legalid {
+    &.show-builder-item--legalid {
       background-color: indigo; 
       border-color: indigo; 
       color: white;
     }
-    &-psa {
+    &.show-builder-item--psa {
       background-color: darkorange; 
       border-color: darkorange; 
       color: white;
     }
-    &-track {
+    &.show-builder-item--track {
       background-color: #2694E8; 
       border-color: #2694E8; 
       color: white;
     }
-    &-underwriting { 
+    &.show-builder-item--underwriting { 
       background-color: slategray; 
       border-color: slategray; 
       color: white;
     }
-    &-voice_break {
+    &.show-builder-item--voice_break {
       background-color: #BBBBBB; 
       border-color: #BBBBBB; 
       color: white;

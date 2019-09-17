@@ -8,6 +8,8 @@ function current(req, res) {
 
     res.json(userObj);
   }
+
+  res.send(false);
 }
 
 module.exports = current;

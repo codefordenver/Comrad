@@ -15,6 +15,7 @@ class UserProfilePage extends Component {
     const { id } = match.params;
 
     if (id !== _id) {
+      console.log('Test');
       userActions.findOne(id);
     }
   }
@@ -30,7 +31,7 @@ class UserProfilePage extends Component {
           <>
             <Row>
               <Col>
-                <CardV2>
+                <CardV2 className="mb-1">
                   <CardV2.Body>
                     <Heading size={3}>Contact</Heading>
 
@@ -41,6 +42,17 @@ class UserProfilePage extends Component {
 
                     <Heading size={5}>Email</Heading>
                     <p>{email}</p>
+
+                    <Heading size={5}>Address</Heading>
+                  </CardV2.Body>
+                </CardV2>
+
+                <CardV2>
+                  <CardV2.Body>
+                    <Heading size={3}>Station</Heading>
+
+                    <Heading size={5}>On Air Name</Heading>
+                    <p>{on_air_name}</p>
                   </CardV2.Body>
                 </CardV2>
               </Col>

@@ -3,6 +3,9 @@ const db = require('../models');
 
 function requireAC(resource, action) {
   return async function(req, res, next) {
+    if (process.env.NODE_ENV === 'development') {
+      return next();
+    }
     // TODO: Need to clean up logic a little bit
     const { authorization } = req.headers;
 

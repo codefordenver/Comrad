@@ -1,9 +1,13 @@
 function current(req, res) {
-  const userObj = req.user;
+  if (req.user) {
+    const userObj = req.user;
 
-  delete userObj._doc.password;
+    console.log(req.user);
 
-  res.json(userObj);
+    delete userObj._doc.password;
+
+    res.json(userObj);
+  }
 }
 
 module.exports = current;

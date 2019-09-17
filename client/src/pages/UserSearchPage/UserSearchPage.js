@@ -11,11 +11,19 @@ import { CardV2, Filter, Form, Heading, InputV2 } from '../../components';
 import { userActions } from '../../redux';
 
 class UserSearchPage extends Component {
+  state = {
+    initialValues: {
+      q: '',
+      status: 'All',
+    },
+  };
   componentDidMount() {
-    this.handleSubmit();
+    this.handleSubmit(this.state.initialValues);
   }
 
   handleSubmit = values => {
+    const { userActions } = this.props;
+
     userActions.search(values);
   };
 
@@ -35,8 +43,9 @@ class UserSearchPage extends Component {
   };
 
   render() {
-    const { handleRowClick, handleSubmit, props } = this;
+    const { handleRowClick, handleSubmit, props, state } = this;
     const { userState } = props;
+    const { initialValues } = state;
     const { table } = config;
 
     return (
@@ -61,7 +70,7 @@ class UserSearchPage extends Component {
           <Col>
             <CardV2>
               <CardV2.Body>
-                <Form initialValues={{ status: 'All' }} onSubmit={handleSubmit}>
+                <Form initialValues={initialValues} onSubmit={handleSubmit}>
                   <Row className="mb-1">
                     <Col>
                       <InputV2
@@ -117,6 +126,7 @@ class UserSearchPage extends Component {
                       columns={table.search.columns}
                       data={userState.docs}
                       getTdProps={handleRowClick}
+                      loading={userState.loading}
                     />
                   </Col>
                 </Row>

@@ -9,7 +9,14 @@ export const remove = (id, callback) => async dispatch => {
     const { data: doc } = await userAPI.remove(id);
 
     callback();
-    dispatch({ type: userTypes.REMOVE, payload: doc });
+
+    const alert = {
+      body: `User ${doc.first_name} ${doc.last_name} was removed`,
+      header: 'Success',
+      type: 'success',
+    };
+
+    dispatch({ type: alertTypes.ACTIVE, payload: alert });
   } catch (err) {
     console.log(err);
     dispatch({ type: alertTypes.ACTIVE, payload: { body: err.message } });

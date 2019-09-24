@@ -14,7 +14,7 @@
   },
   "scripts": {
     "start": "node index.js",
-    "server": "SET NODE_ENV=development & nodemon server/index.js",
+    "server": "cross-env NODE_ENV=development nodemon server/index.js",
     "client": "npm run start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "build": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client",
@@ -66,7 +66,7 @@
     "chance": "^1.0.18",
     "concurrently": "^4.1.0",
     "console.table": "^0.10.0",
-    "cross-env": "^5.2.0",
+    "cross-env": "^5.2.1",
     "eslint": "^5.16.0",
     "eslint-config-prettier": "^4.3.0",
     "eslint-config-react-app": "^4.0.1",

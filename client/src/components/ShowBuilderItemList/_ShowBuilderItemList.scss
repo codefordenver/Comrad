@@ -61,5 +61,9 @@
         margin-right: 4px;
       }
     }
+    
+    &--dragging {
+      opacity: 0.5;
+    }
   }
 }

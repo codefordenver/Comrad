@@ -1,6 +1,5 @@
 import { alertTypes } from '../../alert';
 import { playlistTypes } from '../playlistTypes';
-import { playlistAPI } from '../../../api';
 
 export const rearrangeScratchpadItem = (
   playlistId,

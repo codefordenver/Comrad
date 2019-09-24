@@ -14,8 +14,18 @@ export default class ShowBuilderItemList extends Component {
     }
   };
 
+  onFinishRearrangeShowBuilderItem = (itemId, toIndex) => {
+    const { onFinishRearrangeShowBuilderItem } = this.props;
+    if (typeof onFinishRearrangeShowBuilderItem === 'function') {
+      onFinishRearrangeShowBuilderItem(itemId, toIndex);
+    }
+  };
+
   render() {
-    const { onRearrangeShowBuilderItem } = this;
+    const {
+      onRearrangeShowBuilderItem,
+      onFinishRearrangeShowBuilderItem,
+    } = this;
     const { items } = this.props;
 
     const buttonProps = {
@@ -42,6 +52,9 @@ export default class ShowBuilderItemList extends Component {
               index={idx}
               itemId={item._id}
               onRearrangeShowBuilderItem={onRearrangeShowBuilderItem}
+              onFinishRearrangeShowBuilderItem={
+                onFinishRearrangeShowBuilderItem
+              }
               {...buttonProps}
               eventType="track"
             >
@@ -68,6 +81,9 @@ export default class ShowBuilderItemList extends Component {
               itemId={item._id}
               masterTimeId={item.traffic.master_time_id}
               onRearrangeShowBuilderItem={onRearrangeShowBuilderItem}
+              onFinishRearrangeShowBuilderItem={
+                onFinishRearrangeShowBuilderItem
+              }
               deleteButton={false}
               eventType={eventType}
               {...buttonProps}
@@ -84,6 +100,9 @@ export default class ShowBuilderItemList extends Component {
               index={idx}
               itemId={item._id}
               onRearrangeShowBuilderItem={onRearrangeShowBuilderItem}
+              onFinishRearrangeShowBuilderItem={
+                onFinishRearrangeShowBuilderItem
+              }
               eventType="comment"
               {...buttonProps}
             >
@@ -98,6 +117,9 @@ export default class ShowBuilderItemList extends Component {
               index={idx}
               itemId={item._id}
               onRearrangeShowBuilderItem={onRearrangeShowBuilderItem}
+              onFinishRearrangeShowBuilderItem={
+                onFinishRearrangeShowBuilderItem
+              }
               eventType="voice_break"
               {...buttonProps}
             >

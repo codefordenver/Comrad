@@ -8,6 +8,8 @@ import { moveItemFromSavedItemsToScratchpad } from './moveItemFromSavedItemsToSc
 import { moveItemFromScratchpadToSavedItems } from './moveItemFromScratchpadToSavedItems';
 import { findOne } from './findOne';
 import { findOrCreateOne } from './findOrCreateOne';
+import { rearrangeSavedItem } from './rearrangeSavedItem';
+import { rearrangeScratchpadItem } from './rearrangeScratchpadItem';
 
 export const playlistAPI = {
   addCommentToSavedItems,
@@ -20,4 +22,6 @@ export const playlistAPI = {
   moveItemFromScratchpadToSavedItems,
   findOne,
   findOrCreateOne,
+  rearrangeSavedItem,
+  rearrangeScratchpadItem,
 };

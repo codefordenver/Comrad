@@ -1,4 +1,4 @@
-import React, { Component, useRef } from 'react';
+import React, { useRef } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -18,6 +18,7 @@ const ShowBuilderItem = props => {
     itemId,
     masterTimeId,
     onRearrangeShowBuilderItem,
+    onFinishRearrangeShowBuilderItem,
     playlist,
     playlistActions,
     toSavedItemsButton,
@@ -51,6 +52,9 @@ const ShowBuilderItem = props => {
   const ref = useRef(null);
   const [, drop] = useDrop({
     accept: SHOW_BUILDER_ITEM_TYPE,
+    drop(item, monitor) {
+      onFinishRearrangeShowBuilderItem(item.itemId, item.index);
+    },
     hover(item, monitor) {
       if (!ref.current) {
         return;

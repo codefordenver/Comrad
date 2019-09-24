@@ -1,18 +1,15 @@
 import { alertTypes } from '../../alert';
-import { playlistTypes } from '../playlistTypes';
+import { playlistAPI } from '../../../api';
 
-export const rearrangeSavedItem = (
+export const finishRearrangeScratchpadItem = (
   playlistId,
-  fromIndex,
+  itemId,
   toIndex,
 ) => async dispatch => {
   try {
-    dispatch({
-      type: playlistTypes.REARRANGE_SAVED_ITEM,
-      payload: { playlistId, fromIndex, toIndex },
-    });
+    playlistAPI.rearrangeScratchpadItem(playlistId, itemId, toIndex);
   } catch (err) {
-    console.log('Playlist Rearrange Saved Item Error: ', err);
+    console.log('Playlist Finish Rearrange Saved Item Error: ', err);
     dispatch({
       type: alertTypes.ACTIVE,
       payload: {

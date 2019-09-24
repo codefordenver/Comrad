@@ -226,8 +226,8 @@ class ShowBuilderPage extends Component {
     const savedItemsLength = playlist.doc.saved_items.length; //saved items is displayed in reverse, so we'll have to calculate the position in Redux based on the displayed index
     playlistActions.rearrangeSavedItem(
       playlist.doc._id,
-      savedItemsLength - toIndex,
-      savedItemsLength - fromIndex,
+      savedItemsLength - 1 - toIndex,
+      savedItemsLength - 1 - fromIndex,
     );
   };
 

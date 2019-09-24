@@ -3,6 +3,7 @@ import { alertClose } from './alertClose';
 import { clear } from './clear';
 import { clearSearch } from './clearSearch';
 import { create } from './create';
+import { remove } from './remove';
 import { findAll } from './findAll';
 import { findOne } from './findOne';
 import { search } from './search';
@@ -17,6 +18,7 @@ export const userActions = {
   create,
   findAll,
   findOne,
+  remove,
   search,
   searchHosts,
   userClear,

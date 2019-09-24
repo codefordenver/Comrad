@@ -10,7 +10,7 @@ import { CardV2, Form, Heading, InputV2, SelectV2 } from '../../components';
 
 import { userActions } from '../../redux/user';
 
-class Add extends Component {
+class UserAddPage extends Component {
   handleSubmit = values => {
     const { handleGoBack, props } = this;
     const { userActions } = props;
@@ -48,7 +48,7 @@ class Add extends Component {
           <Col>
             <CardV2>
               <CardV2.Body>
-                <Form submitFunc={handleSubmit}>
+                <Form onSubmit={handleSubmit}>
                   <Form.Group>
                     <Row>
                       <Col md={4}>
@@ -156,4 +156,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   null,
   mapDispatchToProps,
-)(Add);
+)(UserAddPage);

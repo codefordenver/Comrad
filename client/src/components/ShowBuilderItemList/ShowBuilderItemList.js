@@ -38,11 +38,12 @@ export default class ShowBuilderItemList extends Component {
           artists = artists.join(',');
           elements.push(
             <ShowBuilderItem
-              key={item._id}
+              key={idx}
               index={idx}
               itemId={item._id}
               onRearrangeShowBuilderItem={onRearrangeShowBuilderItem}
               {...buttonProps}
+              eventType="track"
             >
               <b>Track:</b> <i>{trackName}</i> by <i>{artists}</i>
             </ShowBuilderItem>,
@@ -57,6 +58,9 @@ export default class ShowBuilderItemList extends Component {
           let traffic = item.traffic;
           let trafficTime = moment(traffic.start_time_utc);
           let formattedTime = trafficTime.format('LT');
+          let eventType = traffic.traffic_details.type
+            .replace(/\s/g, '')
+            .toLowerCase();
           elements.push(
             <ShowBuilderItem
               key={idx}
@@ -64,8 +68,9 @@ export default class ShowBuilderItemList extends Component {
               itemId={item._id}
               masterTimeId={item.traffic.master_time_id}
               onRearrangeShowBuilderItem={onRearrangeShowBuilderItem}
-              {...buttonProps}
               deleteButton={false}
+              eventType={eventType}
+              {...buttonProps}
             >
               {formattedTime} - <b>{traffic.traffic_details.type}:</b>{' '}
               {traffic.traffic_details.title}
@@ -79,6 +84,7 @@ export default class ShowBuilderItemList extends Component {
               index={idx}
               itemId={item._id}
               onRearrangeShowBuilderItem={onRearrangeShowBuilderItem}
+              eventType="comment"
               {...buttonProps}
             >
               Comment
@@ -92,6 +98,7 @@ export default class ShowBuilderItemList extends Component {
               index={idx}
               itemId={item._id}
               onRearrangeShowBuilderItem={onRearrangeShowBuilderItem}
+              eventType="voice_break"
               {...buttonProps}
             >
               Voice Break

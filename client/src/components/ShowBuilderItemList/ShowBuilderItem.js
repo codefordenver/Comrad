@@ -13,6 +13,7 @@ const ShowBuilderItem = props => {
   const {
     children,
     deleteButton,
+    eventType,
     index,
     itemId,
     masterTimeId,
@@ -103,6 +104,7 @@ const ShowBuilderItem = props => {
       ref={ref}
       className={classnames(
         'show-builder-item',
+        `show-builder-item--${eventType}`,
         isDragging ? 'show-builder-item--dragging' : '',
       )}
     >

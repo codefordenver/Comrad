@@ -410,7 +410,7 @@ class ShowBuilderPage extends Component {
                     />
                   )}
               </div>
-              <div>
+              <div className="show-builder__grid__saved-items">
                 <h5>Saved Items</h5>
                 {!playlist.loading &&
                   !traffic.loading &&

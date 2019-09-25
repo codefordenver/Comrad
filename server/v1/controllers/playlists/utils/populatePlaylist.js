@@ -5,11 +5,11 @@ async function populatePlaylist(docPlaylist) {
   docPlaylist = await db.Playlist.populate(docPlaylist, [
     {
       path: 'scratchpad.track',
-      populate: 'artists',
+      populate: { path: 'artists' },
     },
     {
       path: 'saved_items.track',
-      populate: 'artists',
+      populate: { path: 'artists' },
     },
     'saved_items.traffic',
   ]);

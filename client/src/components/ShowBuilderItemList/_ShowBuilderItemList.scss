@@ -1,4 +1,7 @@
 .show-builder-item-list {
+  overflow: auto;
+  max-height: calc(100% - 2.35rem); /* 2.35rem is for the h5 above this in the html: 1.8rem font size * 1.3 line height */
+
   .show-builder-item {
     &.show-builder-item--announcement {
       background-color: green; 

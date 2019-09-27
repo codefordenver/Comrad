@@ -6,17 +6,14 @@ export const createApiKey = values => async dispatch => {
   try {
     const { data: doc } = await userAPI.createApiKey(values);
 
-    console.log(doc);
-
     const alert = {
       body: `New API Key --> ${doc.api_key}`,
       header: 'SUCCESS',
       type: 'success',
     };
 
-    console.log(alert);
-
     dispatch({ type: alertTypes.ACTIVE, payload: alert });
+    dispatch({ type: userTypes.CREATE_API_KEY, payload: { doc: doc.doc } });
   } catch (err) {
     console.log(err);
   }

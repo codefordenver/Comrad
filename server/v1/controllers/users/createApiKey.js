@@ -32,10 +32,9 @@ async function createApiKey(req, res) {
       )
         .lean()
         .then(dbUser => {
-          delete dbUser.api_key;
           delete dbUser.password;
 
-          return res.json({ user: dbUser, api_key });
+          return res.json({ doc: dbUser, api_key });
         })
         .catch(err => {
           res.json(err);

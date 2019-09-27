@@ -5,6 +5,8 @@ const uuidv4 = require('uuid/v4');
 async function createApiKey(req, res) {
   const { id } = req.body;
 
+  console.log(id);
+
   const api_key = uuidv4();
 
   await bcrypt.genSalt(10, (err, salt) => {

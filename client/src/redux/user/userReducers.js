@@ -28,6 +28,12 @@ export const userReducer = (state = initialState, { type, payload }) => {
         },
       };
 
+    case userTypes.CREATE_API_KEY:
+      return {
+        ...state,
+        loading: false,
+      };
+
     case userTypes.FIND_ONE:
       return {
         ...state,

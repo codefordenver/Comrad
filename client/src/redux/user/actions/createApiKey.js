@@ -4,19 +4,19 @@ import { userAPI } from '../../../api';
 
 export const createApiKey = values => async dispatch => {
   try {
-    dispatch({ type: userTypes.LOADING });
     const { data: doc } = await userAPI.createApiKey(values);
 
     console.log(doc);
 
     const alert = {
-      body: `New API Key ${doc.api_key}`,
+      body: `New API Key --> ${doc.api_key}`,
       header: 'SUCCESS',
       type: 'success',
     };
 
-    dispatch({ type: alertTypes.ACTIVE, paylaod: alert });
-    dispatch({ type: userTypes.CREATE_API_KEY });
+    console.log(alert);
+
+    dispatch({ type: alertTypes.ACTIVE, payload: alert });
   } catch (err) {
     console.log(err);
   }

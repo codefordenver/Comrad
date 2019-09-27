@@ -11,6 +11,7 @@ const initialState = {
 export const alertReducer = (state = initialState, { type, payload }) => {
   switch (type) {
     case alertTypes.ACTIVE:
+      console.log(payload);
       return {
         ...state,
         active: true,

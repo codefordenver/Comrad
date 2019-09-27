@@ -3,10 +3,9 @@ const db = require('../../models');
 const uuidv4 = require('uuid/v4');
 
 async function createApiKey(req, res) {
-  const { id } = req.params;
-  const { existing_key } = req.query;
+  const { id } = req.body;
 
-  const api_key = existing_key || uuidv4();
+  const api_key = uuidv4();
 
   await bcrypt.genSalt(10, (err, salt) => {
     if (err) {
@@ -18,7 +17,7 @@ async function createApiKey(req, res) {
         return res.status(422).json(err);
       }
 
-      const dbUser = await db.User.findOneAndUpdate(
+      db.User.findOneAndUpdate(
         { _id: id },
         {
           api_key: {
@@ -28,12 +27,17 @@ async function createApiKey(req, res) {
           },
         },
         { new: true },
-      ).lean();
+      )
+        .lean()
+        .then(dbUser => {
+          delete dbUser.api_key;
+          delete dbUser.password;
 
-      delete dbUser.api_key;
-      delete dbUser.password;
-
-      return res.json({ user: dbUser, api_key });
+          return res.json({ user: dbUser, api_key });
+        })
+        .catch(err => {
+          res.json(err);
+        });
     });
   });
 }

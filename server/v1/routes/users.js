@@ -8,6 +8,11 @@ router
   .post(requireAC('Users', 'createAny'), usersController.create);
 
 router
+  .route('/api-key')
+  .post(requireAC('Users', 'createAny'), usersController.createApiKey)
+  .put(usersController.removeApiKey);
+
+router
   .route('/random')
   .post(requireAC('Users', 'createAny'), usersController.randomUser);
 
@@ -24,11 +29,6 @@ router
   .get(requireAC('Users', 'readAny'), usersController.findById)
   .put(requireAC('Users', 'updateAny'), usersController.update)
   .delete(requireAC('Users', 'deleteAny'), usersController.remove);
-
-router
-  .route('/:id/api-key')
-  .post(requireAC('Users', 'createAny'), usersController.createApiKey)
-  .put(usersController.removeApiKey);
 
 router
   .route('/:id/permission')

@@ -1,5 +1,8 @@
 const AccessControl = require('accesscontrol');
 const db = require('../models');
+const {
+  utils__mongoose: { findShowQueryByDateRange },
+} = require('../controllers/events/utils');
 
 function requireAC(resource, action) {
   return async function(req, res, next) {
@@ -57,27 +60,19 @@ function requireAC(resource, action) {
     req.ac.fields =
       permission.attributes.indexOf('*') !== -1 ? [] : permission.attributes;
 
-    // check permissions for "own" resources
-    if (action === 'updateOwn') {
+    // check permissions for "own" resources when user does not have updateAny access
+    if (
+      action === 'updateOwn' &&
+      !ac.can(req.user.role).updateAny(resource).granted
+    ) {
+      let show, userIsHost;
       switch (resource) {
         case 'Show':
           //check to ensure the user is the host of the show
           const { id } = req.params;
-          let show = await db.Show.find({ _id: id });
-          //TODO
-          console.log('is req user set: ');
-          console.log(req.user);
-          if (
-            typeof show.show_details.host === 'undefined' &&
-            typeof show.master_event_id !== 'undefined'
-          ) {
-            let series = await db.Show.find({ _id: show.master_event_id });
-            if (series.show_details.host !== req.user.id) {
-              return res.status(403).json({
-                message: 'You do not have permission to access this resource',
-              });
-            }
-          } else if (show.show_details.host !== req.user.id) {
+          show = await db.Show.findOne({ _id: id });
+          userIsHost = await userIsHostOfShow(req.user, show);
+          if (!userIsHost) {
             return res.status(403).json({
               message: 'You do not have permission to access this resource',
             });
@@ -87,7 +82,18 @@ function requireAC(resource, action) {
           //check to ensure the user is the host of the related show
           const { playlistId } = req.params;
           let playlist = await db.Playlist.find({ _id: playlistId });
-          //TODO: find shows
+          show = await db.Show.findOne(
+            findShowQueryByDateRange(
+              playlist.start_time_utc,
+              playlist.end_time_utc,
+            ),
+          );
+          userIsHost = await userIsHostOfShow(req.user, show);
+          if (!userIsHost) {
+            return res.status(403).json({
+              message: 'You do not have permission to access this resource',
+            });
+          }
           break;
         default:
           return res.status(500).json({
@@ -98,6 +104,24 @@ function requireAC(resource, action) {
 
     return next();
   };
+}
+
+async function userIsHostOfShow(user, show) {
+  //TODO
+  console.log('is req user set: ');
+  console.log(user);
+  if (
+    typeof show.show_details.host === 'undefined' &&
+    typeof show.master_event_id !== 'undefined'
+  ) {
+    let series = await db.Show.find({ _id: show.master_event_id });
+    if (series.show_details.host !== user.id) {
+      return false;
+    }
+  } else if (show.show_details.host !== user.id) {
+    return false;
+  }
+  return true;
 }
 
 module.exports = requireAC;

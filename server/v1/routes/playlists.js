@@ -8,7 +8,6 @@ router
 router
   .route('/')
   .put(requireAC('Playlist', 'readAny'), playlistsController.findOrCreateOne); //this is readAny even though it can create records because creating a playlist record is required to view the playlist page: without update permissions, you can't change the playlist in any way (it will just be a blank playlist)
-// TODO: updateOwn restriction, throughout
 router
   .route('/:playlistId/saved-items')
   .put(

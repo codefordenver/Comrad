@@ -1,9 +1,9 @@
 const {
-  utils: { getModelForEventType, showList },
+  utils: { getModelForEventType, eventList },
   utils__mongoose: {
-    findShowQueryByDateRange,
+    findEventQueryByDateRange,
     populateShowHost,
-    populateMasterShow,
+    populateMasterEvent,
   },
 } = require('../utils');
 
@@ -22,7 +22,7 @@ function find(req, res) {
 
   //This date filter allows the same endpoint to be used to find all shows or return a subset if both startDate and endDate are provided.
   const showDateFilter =
-    startDate && endDate ? findShowQueryByDateRange(startDate, endDate) : {};
+    startDate && endDate ? findEventQueryByDateRange(startDate, endDate) : {};
 
   let promiseChain = []; // an array of promises that we will run before the main show query (in case we need to gather addt'l data for filters)
 
@@ -73,9 +73,9 @@ function find(req, res) {
       return dbModel
         .find(filter)
         .populate(populateShowHost())
-        .populate(populateMasterShow())
+        .populate(populateMasterEvent())
         .then(dbShow => {
-          let showResults = showList(dbShow, startDate, endDate);
+          let showResults = eventList(dbShow, startDate, endDate);
           //apply filters, if they were provided
           //these filters can't be applied on the initial query because of series + instances possibly having
           //different values. For example, if we search for a show with a host of "Sean" and a series has

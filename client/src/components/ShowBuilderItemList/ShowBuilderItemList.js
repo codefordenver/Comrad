@@ -58,7 +58,15 @@ export default class ShowBuilderItemList extends Component {
               {...buttonProps}
               eventType="track"
             >
-              <b>Track:</b> <i>{trackName}</i> by <i>{artists}</i>
+              {item.track != null ? (
+                <>
+                  <b>Track:</b> <i>{trackName}</i> by <i>{artists}</i>
+                </>
+              ) : (
+                <>
+                  <b>Track:</b> <i>Track data missing from database</i>
+                </>
+              )}
             </ShowBuilderItem>,
           );
           break;

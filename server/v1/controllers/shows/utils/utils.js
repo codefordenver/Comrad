@@ -2,6 +2,7 @@ const moment = require('moment');
 const { RRule } = require('rrule');
 const _ = require('lodash');
 const db = require('../../../models');
+const keys = require('../../../config/keys');
 
 const {
   master_time_id,
@@ -137,6 +138,8 @@ function createRRule(show) {
     newRRule.bymonthday = [bymonthday];
   }
 
+  newRRule.tzid = keys.stationTimeZone;
+
   return newRRule;
 }
 
@@ -159,16 +162,11 @@ function reduceShowsByRepeatProperty(shows, recurringCheckValue) {
 function returnDatesArrayByRepeatRule(show, startDate, endDate) {
   const rule = new RRule(createRRule(show));
   try {
-    let shows = rule.between(new Date(startDate), new Date(endDate), true);
-
-    //the .between() function will not get a currently playing event, so we'll have to check for it
-    const showBefore = rule.before(new Date(startDate));
-    const showDurationInMs = moment(show.end_time_utc).diff(
-      moment(show.start_time_utc),
-    );
-    if (moment(showBefore).add(showDurationInMs, 'ms') > moment(startDate)) {
-      shows.unshift(showBefore);
-    }
+    let showDuration = show.end_time_utc - show.start_time_utc;
+    let adjustedStartDate = new Date(
+      moment(startDate).add(-1 * showDuration, 'milliseconds'),
+    ); //between searches on START times, and we want to get anything in progress in this date range, so subtract the show duration from the start time
+    let shows = rule.between(adjustedStartDate, new Date(endDate));
 
     return shows;
   } catch (e) {

@@ -1,5 +1,5 @@
 const {
-  utils: { getModelForEventType, showList },
+  utils: { getModelForEventType, eventList },
   utils__mongoose: { formatShow, populateShowHost },
 } = require('../utils');
 
@@ -18,7 +18,7 @@ function create(req, res) {
       dbModel
         .populate(dbShow, populateShowHost())
         .then(dbShow => {
-          res.json(showList(dbShow, startDate, endDate));
+          res.json(eventList(dbShow, startDate, endDate));
         })
         .catch(err => {
           console.log('Error Populating Show Data from linked records');

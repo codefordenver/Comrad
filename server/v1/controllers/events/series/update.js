@@ -1,9 +1,9 @@
 const {
-  utils: { showList, getModelForEventType },
+  utils: { eventList, getModelForEventType },
   utils__mongoose: {
     populateShowHost,
-    populateMasterShow,
-    findShowQueryByDateRange,
+    populateMasterEvent,
+    findEventQueryByDateRange,
   },
 } = require('../utils');
 
@@ -29,7 +29,7 @@ async function update(req, res) {
   });
 
   const showDateFilter =
-    startDate && endDate ? findShowQueryByDateRange(startDate, endDate) : {};
+    startDate && endDate ? findEventQueryByDateRange(startDate, endDate) : {};
 
   const filter = {
     $and: [
@@ -43,9 +43,9 @@ async function update(req, res) {
   const showResults = await dbModel
     .find(filter)
     .populate(populateShowHost())
-    .populate(populateMasterShow());
+    .populate(populateMasterEvent());
 
-  res.json(showList(showResults, startDate, endDate));
+  res.json(eventList(showResults, startDate, endDate));
 }
 
 module.exports = update;

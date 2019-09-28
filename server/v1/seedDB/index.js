@@ -162,8 +162,13 @@ async function seedDB() {
         '_id artist custom.old_comrad_id',
       );
       allAlbumsQuery.forEach(function(a) {
-        allAlbums[a.custom.old_comrad_id] = a._id;
-        allAlbumArtists[a.custom.old_comrad_id] = a.artist;
+        if (
+          typeof a.custom !== 'undefined' &&
+          typeof a.custom.old_comrad_id !== 'undefined'
+        ) {
+          allAlbums[a.custom.old_comrad_id] = a._id;
+          allAlbumArtists[a.custom.old_comrad_id] = a.artist;
+        }
       });
     }
 

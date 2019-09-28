@@ -21,7 +21,7 @@ function formatShow(data, res = null) {
   return show;
 }
 
-function findShowQueryByDateRange(start, end) {
+function findEventQueryByDateRange(start, end) {
   return [
     {
       $or: [
@@ -65,7 +65,7 @@ function populateShowHost() {
   };
 }
 
-function populateMasterShow() {
+function populateMasterEvent() {
   return {
     path: 'master_event_id',
   };
@@ -75,21 +75,21 @@ function master_time_id(_id, start_time) {
   return _id + '-' + moment(start_time);
 }
 
-function master_time_id__byShowType(show) {
-  if (show.master_event_id) {
-    //Instance Show
-    return master_time_id(show.master_event_id._id, show.replace_event_date);
+function master_time_id__byEventType(event) {
+  if (event.master_event_id) {
+    //Instance Event
+    return master_time_id(event.master_event_id._id, event.replace_event_date);
   } else {
-    //Regular Show
-    return show._id;
+    //Regular Event
+    return event._id;
   }
 }
 
 module.exports = {
   formatShow,
-  findShowQueryByDateRange,
+  findEventQueryByDateRange,
   populateShowHost,
-  populateMasterShow,
+  populateMasterEvent,
   master_time_id,
-  master_time_id__byShowType,
+  master_time_id__byEventType,
 };

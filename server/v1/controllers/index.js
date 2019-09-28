@@ -6,9 +6,9 @@ const genresController = require('./genres');
 const libraryController = require('./library');
 const playlistsController = require('./playlists');
 const resourcesController = require('./resources');
-const showRootController = require('./shows/root');
-const showInstanceController = require('./shows/instance');
-const showSeriesController = require('./shows/series');
+const eventRootController = require('./events/root');
+const eventInstanceController = require('./events/instance');
+const eventSeriesController = require('./events/series');
 const usersController = require('./users');
 
 module.exports = {
@@ -20,8 +20,8 @@ module.exports = {
   libraryController,
   playlistsController,
   resourcesController,
-  showRootController,
-  showInstanceController,
-  showSeriesController,
+  eventRootController,
+  eventInstanceController,
+  eventSeriesController,
   usersController,
 };

@@ -1,6 +1,6 @@
 const {
   utils: { getModelForEventType },
-  utils__mongoose: { master_time_id__byShowType },
+  utils__mongoose: { master_time_id__byEventType },
 } = require('../utils');
 
 async function remove(req, res) {
@@ -20,7 +20,7 @@ async function remove(req, res) {
   );
 
   const removedShow = await dbModel.findById({ _id: req.params.id }).lean();
-  removedShow.master_time_id = master_time_id__byShowType(removedShow);
+  removedShow.master_time_id = master_time_id__byEventType(removedShow);
   res.json(removedShow);
 }
 

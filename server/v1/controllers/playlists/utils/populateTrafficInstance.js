@@ -1,6 +1,6 @@
 const {
-  utils: { allShowInstancesInDateRange },
-} = require('../../shows/utils');
+  utils: { allEventInstancesInDateRange },
+} = require('../../events/utils');
 
 function populateTrafficInstance(
   trafficObj,
@@ -8,7 +8,7 @@ function populateTrafficInstance(
   startTimeUtc,
   endTimeUtc,
 ) {
-  let instances = allShowInstancesInDateRange(
+  let instances = allEventInstancesInDateRange(
     trafficObj,
     startTimeUtc,
     endTimeUtc,

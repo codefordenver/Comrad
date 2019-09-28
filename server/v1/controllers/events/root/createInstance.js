@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 
 const {
-  utils: { getModelForEventType, showList },
-  utils__mongoose: { populateShowHost, populateMasterShow, master_time_id },
+  utils: { getModelForEventType, eventList },
+  utils__mongoose: { populateShowHost, populateMasterEvent, master_time_id },
 } = require('../utils');
 
 function createInstance(req, res) {
@@ -41,9 +41,9 @@ function createInstance(req, res) {
       .then(dbShow => {
         dbModel.populate(dbShow, populateShowHost()).then(dbShow => {
           dbModel
-            .populate(dbShow, populateMasterShow())
+            .populate(dbShow, populateMasterEvent())
             .then(dbShow => {
-              res.json(showList(dbShow, start_time_utc, end_time_utc));
+              res.json(eventList(dbShow, start_time_utc, end_time_utc));
             })
             .catch(err => {
               res.status(422).json(err);

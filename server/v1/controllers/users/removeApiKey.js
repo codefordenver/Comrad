@@ -12,11 +12,12 @@ async function removeApiKey(req, res) {
         token: null,
       },
     },
+    {
+      new: true,
+    },
   )
     .then(dbUser => {
-      res
-        .status(200)
-        .json({ message: `User ID ${dbUser._id} API Key Removed` });
+      res.status(200).json(dbUser);
     })
     .catch(err => {
       res.json(err);

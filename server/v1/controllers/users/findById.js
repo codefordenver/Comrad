@@ -9,7 +9,7 @@ function findById(req, res) {
 
       res.json(dbUser);
     })
-    .catch(err => res.status(422).json({ message: err }));
+    .catch(err => res.status(422).json(err));
 }
 
 module.exports = findById;

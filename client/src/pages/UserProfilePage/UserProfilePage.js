@@ -57,9 +57,10 @@ class UserProfilePage extends Component {
   };
 
   handleApiDelete = () => {
-    const { _id } = this.props.userState.doc;
+    const { userActions, userState } = this.props;
+    const { _id } = userState.doc;
 
-    console.log(_id);
+    userActions.deleteApiKey({ _id });
   };
 
   handleUserDelete = () => {
@@ -80,7 +81,7 @@ class UserProfilePage extends Component {
       openModal,
       props,
     } = this;
-    const { userState } = props;
+    const { authState, userState } = props;
 
     const {
       api_key,
@@ -121,49 +122,54 @@ class UserProfilePage extends Component {
                   </CardV2.Body>
                 </CardV2>
 
-                <CardV2>
-                  <CardV2.Body>
-                    <Heading size={3}>API Key</Heading>
+                {/* ======= API KEY ======= */}
+                {authState.doc && authState.doc.role === 'Admin' ? (
+                  <CardV2>
+                    <CardV2.Body>
+                      <Heading size={3}>API Key</Heading>
 
-                    <Heading className="mb-1" size={5}>
-                      Status
-                      <span
-                        className={classnames(
-                          'user-profile-page__api-key-status',
-                          `user-profile-page__api-key-status--${
-                            api_key.token ? 'true' : 'false'
-                          }`,
-                        )}
-                      >
-                        {api_key.token ? 'TRUE' : 'FALSE'}
-                      </span>
-                    </Heading>
-
-                    <Row>
-                      <Col>
-                        <Button
-                          className="w-100"
-                          color="primary"
-                          onClick={handleApiCreateReset}
+                      <Heading className="mb-1" size={5}>
+                        Status
+                        <span
+                          className={classnames(
+                            'user-profile-page__api-key-status',
+                            `user-profile-page__api-key-status--${
+                              api_key.token ? 'true' : 'false'
+                            }`,
+                          )}
                         >
-                          {api_key.token ? 'Reset' : 'Create'}
-                        </Button>
-                      </Col>
-                      {api_key.token ? (
+                          {api_key.token ? 'TRUE' : 'FALSE'}
+                        </span>
+                      </Heading>
+
+                      <Row>
                         <Col>
                           <Button
                             className="w-100"
-                            color="danger"
-                            onClick={handleApiDelete}
+                            color="primary"
+                            onClick={handleApiCreateReset}
                           >
-                            Delete
+                            {api_key.token ? 'Reset' : 'Create'}
                           </Button>
                         </Col>
-                      ) : null}
-                    </Row>
-                  </CardV2.Body>
-                </CardV2>
+                        {api_key.token ? (
+                          <Col>
+                            <Button
+                              className="w-100"
+                              color="danger"
+                              onClick={handleApiDelete}
+                            >
+                              Delete
+                            </Button>
+                          </Col>
+                        ) : null}
+                      </Row>
+                    </CardV2.Body>
+                  </CardV2>
+                ) : null}
+                {/* ======= END API KEY ======= */}
               </Col>
+
               <Col>
                 <CardV2>
                   <CardV2.Body>
@@ -234,8 +240,9 @@ class UserProfilePage extends Component {
   }
 }
 
-function mapStateToProps({ user }) {
+function mapStateToProps({ auth, user }) {
   return {
+    authState: auth,
     userState: user,
   };
 }

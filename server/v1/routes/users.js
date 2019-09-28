@@ -10,7 +10,7 @@ router
 router
   .route('/api-key')
   .post(requireAC('Users', 'createAny'), usersController.createApiKey)
-  .put(usersController.removeApiKey);
+  .put(usersController.removeApiKey); //TODO: check with Devin to see if this is correct
 
 router
   .route('/random')

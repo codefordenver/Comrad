@@ -48,12 +48,53 @@ function requireAC(resource, action) {
     const permission = ac.can(req.user.role)[action](resource);
 
     if (!permission.granted) {
-      return res.status(403).json({ message: 'User Is Not Granted!' });
+      return res.status(403).json({
+        message: 'You do not have permission to access this resource',
+      });
     }
 
     req.ac = permission;
     req.ac.fields =
       permission.attributes.indexOf('*') !== -1 ? [] : permission.attributes;
+
+    // check permissions for "own" resources
+    if (action === 'updateOwn') {
+      switch (resource) {
+        case 'Show':
+          //check to ensure the user is the host of the show
+          const { id } = req.params;
+          let show = await db.Show.find({ _id: id });
+          //TODO
+          console.log('is req user set: ');
+          console.log(req.user);
+          if (
+            typeof show.show_details.host === 'undefined' &&
+            typeof show.master_event_id !== 'undefined'
+          ) {
+            let series = await db.Show.find({ _id: show.master_event_id });
+            if (series.show_details.host !== req.user.id) {
+              return res.status(403).json({
+                message: 'You do not have permission to access this resource',
+              });
+            }
+          } else if (show.show_details.host !== req.user.id) {
+            return res.status(403).json({
+              message: 'You do not have permission to access this resource',
+            });
+          }
+          break;
+        case 'Playlist':
+          //check to ensure the user is the host of the related show
+          const { playlistId } = req.params;
+          let playlist = await db.Playlist.find({ _id: playlistId });
+          //TODO: find shows
+          break;
+        default:
+          return res.status(500).json({
+            message: 'updateOwn access has not been configured for ' + resource,
+          });
+      }
+    }
 
     return next();
   };

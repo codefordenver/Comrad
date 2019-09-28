@@ -1,5 +1,4 @@
 const AccessControl = require('./AccessControl');
-const Auth = require('./Auth');
 const Genres = require('./Genres');
 const Hosts = require('./Hosts');
 const Library = require('./Library');
@@ -11,7 +10,6 @@ const Users = require('./Users');
 
 module.exports = {
   AccessControl,
-  Auth,
   Genres,
   Hosts,
   Library,

@@ -112,13 +112,19 @@ class UserAddPage extends Component {
                             Full Access
                           </SelectV2.Option>
 
-                          <SelectV2.Option value="Show Producer">
-                            Show Producer
+                          <SelectV2.Option value="Show Captain">
+                            Show Captain
                           </SelectV2.Option>
 
                           <SelectV2.Option value="DJ">DJ</SelectV2.Option>
 
-                          <SelectV2.Option value="Guest">Guest</SelectV2.Option>
+                          <SelectV2.Option value="Underwriting">
+                            Underwriting
+                          </SelectV2.Option>
+
+                          <SelectV2.Option value="Music Library Admin">
+                            Music Library Admin
+                          </SelectV2.Option>
                         </SelectV2>
                       </Col>
                     </Row>

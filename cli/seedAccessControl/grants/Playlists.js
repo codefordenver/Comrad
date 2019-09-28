@@ -3,12 +3,6 @@ const Playlists = [
   {
     role: 'Admin',
     resource: 'Playlists',
-    action: 'create:any',
-    attributes: '*',
-  },
-  {
-    role: 'Admin',
-    resource: 'Playlists',
     action: 'read:any',
     attributes: '*',
   },
@@ -29,12 +23,6 @@ const Playlists = [
   {
     role: 'Full Access',
     resource: 'Playlists',
-    action: 'create:any',
-    attributes: '*',
-  },
-  {
-    role: 'Full Access',
-    resource: 'Playlists',
     action: 'read:any',
     attributes: '*',
   },
@@ -51,27 +39,21 @@ const Playlists = [
     attributes: '*',
   },
 
-  // Show Producer
+  // Show Captain
   {
-    role: 'Show Producer',
-    resource: 'Playlists',
-    action: 'create:any',
-    attributes: '*',
-  },
-  {
-    role: 'Show Producer',
+    role: 'Show Captain',
     resource: 'Playlists',
     action: 'read:any',
     attributes: '*',
   },
   {
-    role: 'Show Producer',
+    role: 'Show Captain',
     resource: 'Playlists',
     action: 'update:any',
     attributes: '*',
   },
   {
-    role: 'Show Producer',
+    role: 'Show Captain',
     resource: 'Playlists',
     action: 'delete:any',
     attributes: '*',
@@ -81,25 +63,7 @@ const Playlists = [
   {
     role: 'Underwriting',
     resource: 'Playlists',
-    action: 'create:any',
-    attributes: '*',
-  },
-  {
-    role: 'Underwriting',
-    resource: 'Playlists',
     action: 'read:any',
-    attributes: '*',
-  },
-  {
-    role: 'Underwriting',
-    resource: 'Playlists',
-    action: 'update:any',
-    attributes: '*',
-  },
-  {
-    role: 'Underwriting',
-    resource: 'Playlists',
-    action: 'delete:any',
     attributes: '*',
   },
 
@@ -107,51 +71,21 @@ const Playlists = [
   {
     role: 'DJ',
     resource: 'Playlists',
-    action: 'create:any',
-    attributes: '*',
-  },
-  {
-    role: 'DJ',
-    resource: 'Playlists',
     action: 'read:any',
     attributes: '*',
   },
   {
     role: 'DJ',
     resource: 'Playlists',
-    action: 'update:any',
-    attributes: '*',
-  },
-  {
-    role: 'DJ',
-    resource: 'Playlists',
-    action: 'delete:any',
+    action: 'update:own',
     attributes: '*',
   },
 
-  // Guest
+  // Music Library Admin
   {
-    role: 'Guest',
-    resource: 'Playlists',
-    action: 'create:any',
-    attributes: '*',
-  },
-  {
-    role: 'Guest',
+    role: 'Music Library Admin',
     resource: 'Playlists',
     action: 'read:any',
-    attributes: '*',
-  },
-  {
-    role: 'Guest',
-    resource: 'Playlists',
-    action: 'update:any',
-    attributes: '*',
-  },
-  {
-    role: 'Guest',
-    resource: 'Playlists',
-    action: 'delete:any',
     attributes: '*',
   },
 ];

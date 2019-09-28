@@ -51,27 +51,27 @@ const Shows = [
     attributes: '*',
   },
 
-  // Show Producer
+  // Show Captain
   {
-    role: 'Show Producer',
+    role: 'Show Captain',
     resource: 'Shows',
     action: 'create:any',
     attributes: '*',
   },
   {
-    role: 'Show Producer',
+    role: 'Show Captain',
     resource: 'Shows',
     action: 'read:any',
     attributes: '*',
   },
   {
-    role: 'Show Producer',
+    role: 'Show Captain',
     resource: 'Shows',
     action: 'update:any',
     attributes: '*',
   },
   {
-    role: 'Show Producer',
+    role: 'Show Captain',
     resource: 'Shows',
     action: 'delete:any',
     attributes: '*',
@@ -81,25 +81,7 @@ const Shows = [
   {
     role: 'Underwriting',
     resource: 'Shows',
-    action: 'create:any',
-    attributes: '*',
-  },
-  {
-    role: 'Underwriting',
-    resource: 'Shows',
     action: 'read:any',
-    attributes: '*',
-  },
-  {
-    role: 'Underwriting',
-    resource: 'Shows',
-    action: 'update:any',
-    attributes: '*',
-  },
-  {
-    role: 'Underwriting',
-    resource: 'Shows',
-    action: 'delete:any',
     attributes: '*',
   },
 
@@ -107,51 +89,21 @@ const Shows = [
   {
     role: 'DJ',
     resource: 'Shows',
-    action: 'create:any',
-    attributes: '*',
-  },
-  {
-    role: 'DJ',
-    resource: 'Shows',
     action: 'read:any',
     attributes: '*',
   },
   {
     role: 'DJ',
     resource: 'Shows',
-    action: 'update:any',
-    attributes: '*',
-  },
-  {
-    role: 'DJ',
-    resource: 'Shows',
-    action: 'delete:any',
+    action: 'update:own',
     attributes: '*',
   },
 
-  // Guest
+  // Music Library Admin
   {
-    role: 'Guest',
-    resource: 'Shows',
-    action: 'create:any',
-    attributes: '*',
-  },
-  {
-    role: 'Guest',
+    role: 'Music Library Admin',
     resource: 'Shows',
     action: 'read:any',
-    attributes: '*',
-  },
-  {
-    role: 'Guest',
-    resource: 'Shows',
-    action: 'update:any',
-    attributes: '*',
-  },
-  {
-    role: 'Guest',
-    resource: 'Shows',
-    action: 'delete:any',
     attributes: '*',
   },
 ];

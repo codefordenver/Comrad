@@ -6,8 +6,12 @@ import { addTrafficToSavedItems } from './addTrafficToSavedItems';
 import { deleteItemFromScratchpad } from './deleteItemFromScratchpad';
 import { findOne } from './findOne';
 import { findOrCreateOne } from './findOrCreateOne';
+import { finishRearrangeSavedItem } from './finishRearrangeSavedItem';
+import { finishRearrangeScratchpadItem } from './finishRearrangeScratchpadItem';
 import { moveItemFromSavedItemsToScratchpad } from './moveItemFromSavedItemsToScratchpad';
 import { moveItemFromScratchpadToSavedItems } from './moveItemFromScratchpadToSavedItems';
+import { rearrangeSavedItem } from './rearrangeSavedItem';
+import { rearrangeScratchpadItem } from './rearrangeScratchpadItem';
 
 export const playlistActions = {
   addCommentToSavedItems,
@@ -18,6 +22,10 @@ export const playlistActions = {
   deleteItemFromScratchpad,
   findOne,
   findOrCreateOne,
+  finishRearrangeSavedItem,
+  finishRearrangeScratchpadItem,
   moveItemFromSavedItemsToScratchpad,
   moveItemFromScratchpadToSavedItems,
+  rearrangeSavedItem,
+  rearrangeScratchpadItem,
 };

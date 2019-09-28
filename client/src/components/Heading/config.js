@@ -14,5 +14,8 @@ export const config = {
       4: 'Heading--4',
       5: 'Heading--5',
     },
+    align: {
+      center: 'Heading--center',
+    },
   },
 };

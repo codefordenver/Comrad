@@ -8,6 +8,8 @@ const findOne = require('./findOne');
 const findOrCreateOne = require('./findOrCreateOne');
 const moveItemFromSavedItemsToScratchpad = require('./moveItemFromSavedItemsToScratchpad');
 const moveItemFromScratchpadToSavedItems = require('./moveItemFromScratchpadToSavedItems');
+const rearrangeSavedItem = require('./rearrangeSavedItem');
+const rearrangeScratchpadItem = require('./rearrangeScratchpadItem');
 
 module.exports = {
   addCommentToSavedItems,
@@ -20,4 +22,6 @@ module.exports = {
   findOrCreateOne,
   moveItemFromSavedItemsToScratchpad,
   moveItemFromScratchpadToSavedItems,
+  rearrangeSavedItem,
+  rearrangeScratchpadItem,
 };

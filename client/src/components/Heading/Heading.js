@@ -5,13 +5,18 @@ import classnames from 'classnames';
 
 import { config } from './config.js';
 
-export function Heading({ children, className, size }) {
+export function Heading({ align, children, className, size }) {
   function getElement() {
     return config.element[size];
   }
 
   function getClassNames() {
-    return classnames('Heading', config.style.size[size], className);
+    return classnames(
+      'Heading',
+      config.style.size[size],
+      config.style.align[align],
+      className,
+    );
   }
 
   return createElement(getElement(), { className: getClassNames() }, children);

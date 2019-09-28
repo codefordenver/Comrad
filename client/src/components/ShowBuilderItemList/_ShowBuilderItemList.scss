@@ -1,5 +1,53 @@
 .show-builder-item-list {
+  overflow: auto;
+  max-height: calc(100% - 2.35rem); /* 2.35rem is for the h5 above this in the html: 1.8rem font size * 1.3 line height */
+
   .show-builder-item {
+    &.show-builder-item--announcement {
+      background-color: green; 
+      border-color: green; 
+      color: white;
+    }
+    &.show-builder-item--comment {
+      background-color: #BBBBBB; 
+      border-color: #BBBBBB; 
+      color: white;
+    }
+    &.show-builder-item--feature {
+      background-color: royalblue; 
+      border-color: royalblue; 
+      color: white;
+    }
+    &.show-builder-item--giveaway {
+      background-color: darkgoldenrod; 
+      border-color: darkgoldenrod; 
+      color: white;
+    }
+    &.show-builder-item--legalid {
+      background-color: indigo; 
+      border-color: indigo; 
+      color: white;
+    }
+    &.show-builder-item--psa {
+      background-color: darkorange; 
+      border-color: darkorange; 
+      color: white;
+    }
+    &.show-builder-item--track {
+      background-color: #2694E8; 
+      border-color: #2694E8; 
+      color: white;
+    }
+    &.show-builder-item--underwriting { 
+      background-color: slategray; 
+      border-color: slategray; 
+      color: white;
+    }
+    &.show-builder-item--voice_break {
+      background-color: #BBBBBB; 
+      border-color: #BBBBBB; 
+      color: white;
+    }
     border: 1px solid #333;
     border-radius: 4px;
     padding: 4px;
@@ -15,6 +63,10 @@
         margin-left: 0px;
         margin-right: 4px;
       }
+    }
+    
+    &--dragging {
+      opacity: 0.5;
     }
   }
 }

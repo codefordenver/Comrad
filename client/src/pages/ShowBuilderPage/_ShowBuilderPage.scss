@@ -14,10 +14,15 @@
 }
 
 .show-builder {
+  $show-builder-height: 95vh;
+  $top-row-height: 7rem;
+  
+  height: $show-builder-height;
   font-size: 1.5rem;
   
   &__top-row {
     display: flex;
+    height: $top-row-height;
     
     > div {
       width: 33%;
@@ -48,10 +53,17 @@
   &__grid {
     display: grid;
     grid-template-columns: calc(50% - 2rem) calc(50% - 2rem);
+    grid-template-rows: auto min-content;
     grid-gap: 2rem;
+    height: calc(#{$show-builder-height} - #{$top-row-height});
     
     > div {
       min-height: 20rem;
+    }
+    
+    &__saved-items {
+      grid-column: 2;
+      grid-row: 1 / span 2;
     }
   }
   
@@ -91,11 +103,17 @@
       min-height: 10rem;
       border: 1px solid $color-grey-3;
       border-top: 0px;
-      padding: 1rem;
+      
+      form {
+        padding: 1rem;
+      }
     }
   }
   
   .library-results {
+    height: 28vh;
+    overflow-y: scroll;
+    
     .dropdown__icon {
       color: $color-grey-3;
     }

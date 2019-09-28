@@ -3,7 +3,15 @@ import { connect } from 'react-redux';
 import { Field, submit } from 'redux-form';
 import classnames from 'classnames';
 
-function Filter({ className, dispatch, name, submitOnClick, text, value }) {
+function Filter({
+  checked,
+  className,
+  dispatch,
+  name,
+  submitOnClick,
+  text,
+  value,
+}) {
   function getClassNames() {
     return classnames('Filter__radio', className);
   }
@@ -21,6 +29,7 @@ function Filter({ className, dispatch, name, submitOnClick, text, value }) {
         component={({ input, meta }) => {
           return (
             <input
+              checked={checked}
               className={getClassNames()}
               onClick={submitOnClick && handleOnClick}
               type="radio"

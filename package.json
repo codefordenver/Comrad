@@ -14,7 +14,7 @@
   },
   "scripts": {
     "start": "node index.js",
-    "server": "nodemon server/index.js --ignore tests --delay 1",
+    "server": "cross-env NODE_ENV=development nodemon server/index.js",
     "client": "npm run start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "build": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client",
@@ -53,6 +53,12 @@
     "*.js": [
       "eslint --fix --",
       "git add"
+    ]
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "client",
+      "tests"
     ]
   },
   "devDependencies": {

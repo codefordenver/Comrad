@@ -221,6 +221,48 @@ class ShowBuilderPage extends Component {
     }
   };
 
+  handleFinishRearrangeSavedItem = (itemId, toIndex) => {
+    //rearrange the saved item in the database
+    const { playlist, playlistActions } = this.props;
+    const savedItemsLength = playlist.doc.saved_items.length; //saved items is displayed in reverse, so we'll have to calculate the position in Redux based on the displayed index
+    playlistActions.finishRearrangeSavedItem(
+      playlist.doc._id,
+      itemId,
+      savedItemsLength - 1 - toIndex,
+    );
+  };
+
+  handleRearrangeSavedItem = (fromIndex, toIndex) => {
+    //rearrange the UI of the saved item
+    const { playlist, playlistActions } = this.props;
+    const savedItemsLength = playlist.doc.saved_items.length; //saved items is displayed in reverse, so we'll have to calculate the position in Redux based on the displayed index
+    playlistActions.rearrangeSavedItem(
+      playlist.doc._id,
+      savedItemsLength - 1 - fromIndex,
+      savedItemsLength - 1 - toIndex,
+    );
+  };
+
+  handleRearrangeScratchpadItem = (fromIndex, toIndex) => {
+    //rearrange the scratchpad item in the UI
+    const { playlist, playlistActions } = this.props;
+    playlistActions.rearrangeScratchpadItem(
+      playlist.doc._id,
+      toIndex,
+      fromIndex,
+    );
+  };
+
+  handleFinishRearrangeScratchpadItem = (itemId, toIndex) => {
+    //rearrange the scratchpad item in the database
+    const { playlist, playlistActions } = this.props;
+    playlistActions.finishRearrangeScratchpadItem(
+      playlist.doc._id,
+      itemId,
+      toIndex,
+    );
+  };
+
   searchLibrary = form => {
     const { libraryActions } = this.props;
     if (form.q.length === 0) {
@@ -361,10 +403,14 @@ class ShowBuilderPage extends Component {
                       items={scratchpadForDisplay}
                       deleteButton={true}
                       toSavedItemsButton={true}
+                      onRearrangeItem={this.handleRearrangeScratchpadItem}
+                      onFinishRearrangeShowBuilderItem={
+                        this.handleFinishRearrangeScratchpadItem
+                      }
                     />
                   )}
               </div>
-              <div>
+              <div className="show-builder__grid__saved-items">
                 <h5>Saved Items</h5>
                 {!playlist.loading &&
                   !traffic.loading &&
@@ -372,6 +418,10 @@ class ShowBuilderPage extends Component {
                     <ShowBuilderItemList
                       items={savedItemsForDisplay}
                       toScratchpadButton={true}
+                      onRearrangeItem={this.handleRearrangeSavedItem}
+                      onFinishRearrangeShowBuilderItem={
+                        this.handleFinishRearrangeSavedItem
+                      }
                     />
                   )}
               </div>

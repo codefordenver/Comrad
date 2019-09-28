@@ -4,16 +4,19 @@ import { Route, Switch } from 'react-router-dom';
 import MainLayout from '../../layouts/MainLayout';
 import ChangePasswordPage from '../../pages/ChangePasswordPage/ChangePasswordPage';
 
-import { UserPages } from '../../pages';
+import { UserAddPage, UserProfilePage, UserSearchPage } from '../../pages';
+
+// import { UserPages } from '../../pages';
 
 class UserRoutes extends Component {
   render() {
     const { url } = this.props.match;
+
     return (
       <MainLayout {...this.props}>
-        <Route exact path={`${url}/add`} component={UserPages.Add} />
-        <Route exact path={`${url}/edit`} component={UserPages.Add} />
-        <Route exact path={`${url}/search`} component={UserPages.Search} />
+        <Route exact path={`${url}/add`} component={UserAddPage} />
+        {/* <Route exact path={`${url}/edit`} component={UserPages.Add} /> */}
+        <Route exact path={`${url}/search`} component={UserSearchPage} />
         <Switch>
           <Route
             exact
@@ -23,7 +26,7 @@ class UserRoutes extends Component {
           <Route
             exact
             path={`${url}/profile/:id`}
-            component={UserPages.Profile}
+            component={UserProfilePage}
           />
         </Switch>
       </MainLayout>

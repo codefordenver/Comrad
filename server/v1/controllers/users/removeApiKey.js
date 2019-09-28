@@ -1,10 +1,10 @@
 const db = require('../../models');
 
 async function removeApiKey(req, res) {
-  const { id } = req.params;
+  const { _id } = req.body;
 
-  const dbUser = await db.User.updateOne(
-    { _id: id },
+  db.User.findByIdAndUpdate(
+    { _id },
     {
       api_key: {
         last_used: null,
@@ -12,9 +12,15 @@ async function removeApiKey(req, res) {
         token: null,
       },
     },
-  );
-
-  return res.json(dbUser);
+  )
+    .then(dbUser => {
+      res
+        .status(200)
+        .json({ message: `User ID ${dbUser._id} API Key Removed` });
+    })
+    .catch(err => {
+      res.json(err);
+    });
 }
 
 module.exports = removeApiKey;

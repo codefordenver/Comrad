@@ -17,4 +17,4 @@ class DashboardRoutes extends Component {
   }
 }
 
-export default requireAuth(DashboardRoutes);
+export default DashboardRoutes;

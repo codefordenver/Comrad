@@ -8,9 +8,12 @@ router
   .post(requireAC('Users', 'createAny'), usersController.create);
 
 router
-  .route('/api-key')
-  .post(requireAC('Users', 'createAny'), usersController.createApiKey)
-  .put(usersController.removeApiKey);
+  .route('/api-key/create')
+  .put(requireAC('Users', 'createAny'), usersController.createApiKey);
+
+router
+  .route('/api-key/delete')
+  .put(requireAC('Users', 'createAny'), usersController.removeApiKey);
 
 router
   .route('/random')

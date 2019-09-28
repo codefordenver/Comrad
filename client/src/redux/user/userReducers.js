@@ -28,6 +28,22 @@ export const userReducer = (state = initialState, { type, payload }) => {
         },
       };
 
+    case userTypes.CREATE_API_KEY:
+      return {
+        ...state,
+        doc: {
+          ...payload.doc,
+        },
+      };
+
+    case userTypes.DELETE_API_KEY:
+      return {
+        ...state,
+        doc: {
+          ...payload.doc,
+        },
+      };
+
     case userTypes.FIND_ONE:
       return {
         ...state,

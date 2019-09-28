@@ -3,6 +3,8 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Row, Col } from 'react-grid-system';
 import Modal from 'react-modal';
+
+import classnames from 'classnames';
 import { isEmpty } from 'lodash';
 
 import { userActions } from '../../redux';
@@ -47,7 +49,21 @@ class UserProfilePage extends Component {
     this.setState({ modalIsOpen: false });
   };
 
-  handleOnClick = () => {
+  handleApiCreateReset = () => {
+    const { userActions, userState } = this.props;
+    const id = userState.doc._id;
+
+    userActions.createApiKey({ id });
+  };
+
+  handleApiDelete = () => {
+    const { userActions, userState } = this.props;
+    const { _id } = userState.doc;
+
+    userActions.deleteApiKey({ _id });
+  };
+
+  handleUserDelete = () => {
     const { history, match, userActions } = this.props;
 
     userActions.remove(match.params.id, () => {
@@ -56,10 +72,24 @@ class UserProfilePage extends Component {
   };
 
   render() {
-    const { closeModal, handleOnClick, openModal, props } = this;
-    const { userState } = props;
+    const {
+      closeModal,
+      getApiKeyStatus,
+      handleApiCreateReset,
+      handleApiDelete,
+      handleUserDelete,
+      openModal,
+      props,
+    } = this;
+    const { authState, userState } = props;
 
-    const { email, first_name, last_name, on_air_name } = userState.doc;
+    const {
+      api_key,
+      email,
+      first_name,
+      last_name,
+      on_air_name,
+    } = userState.doc;
 
     return (
       <div className="u">
@@ -83,7 +113,7 @@ class UserProfilePage extends Component {
                   </CardV2.Body>
                 </CardV2>
 
-                <CardV2>
+                <CardV2 className="mb-1">
                   <CardV2.Body>
                     <Heading size={3}>Station</Heading>
 
@@ -91,7 +121,55 @@ class UserProfilePage extends Component {
                     <p>{on_air_name}</p>
                   </CardV2.Body>
                 </CardV2>
+
+                {/* ======= API KEY ======= */}
+                {authState.doc && authState.doc.role === 'Admin' ? (
+                  <CardV2>
+                    <CardV2.Body>
+                      <Heading size={3}>API Key</Heading>
+
+                      <Heading className="mb-1" size={5}>
+                        Status
+                        <span
+                          className={classnames(
+                            'user-profile-page__api-key-status',
+                            `user-profile-page__api-key-status--${
+                              api_key.token ? 'true' : 'false'
+                            }`,
+                          )}
+                        >
+                          {api_key.token ? 'TRUE' : 'FALSE'}
+                        </span>
+                      </Heading>
+
+                      <Row>
+                        <Col>
+                          <Button
+                            className="w-100"
+                            color="primary"
+                            onClick={handleApiCreateReset}
+                          >
+                            {api_key.token ? 'Reset' : 'Create'}
+                          </Button>
+                        </Col>
+                        {api_key.token ? (
+                          <Col>
+                            <Button
+                              className="w-100"
+                              color="danger"
+                              onClick={handleApiDelete}
+                            >
+                              Delete
+                            </Button>
+                          </Col>
+                        ) : null}
+                      </Row>
+                    </CardV2.Body>
+                  </CardV2>
+                ) : null}
+                {/* ======= END API KEY ======= */}
               </Col>
+
               <Col>
                 <CardV2>
                   <CardV2.Body>
@@ -122,6 +200,7 @@ class UserProfilePage extends Component {
               </Col>
             </Row>
 
+            {/* ======= MODAL ======= */}
             <Modal
               isOpen={this.state.modalIsOpen}
               onAfterOpen={this.afterOpenModal}
@@ -141,7 +220,7 @@ class UserProfilePage extends Component {
                   <Button
                     className="w-100"
                     color="primary"
-                    onClick={handleOnClick}
+                    onClick={handleUserDelete}
                   >
                     Yes
                   </Button>
@@ -153,6 +232,7 @@ class UserProfilePage extends Component {
                 </Col>
               </Row>
             </Modal>
+            {/* ======= END MODAL ======= */}
           </>
         )}
       </div>
@@ -160,8 +240,9 @@ class UserProfilePage extends Component {
   }
 }
 
-function mapStateToProps({ user }) {
+function mapStateToProps({ auth, user }) {
   return {
+    authState: auth,
     userState: user,
   };
 }

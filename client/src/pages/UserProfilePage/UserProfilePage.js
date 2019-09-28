@@ -74,7 +74,6 @@ class UserProfilePage extends Component {
   render() {
     const {
       closeModal,
-      getApiKeyStatus,
       handleApiCreateReset,
       handleApiDelete,
       handleUserDelete,

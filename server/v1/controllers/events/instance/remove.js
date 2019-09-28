@@ -1,7 +1,7 @@
 const {
   utils: { getModelForEventType },
 } = require('../utils');
-const { master_time_id__byShowType } = require('../utils/utils__mongoose');
+const { master_time_id__byEventType } = require('../utils/utils__mongoose');
 
 async function remove(req, res) {
   const { eventType } = req.params;
@@ -36,7 +36,7 @@ async function remove(req, res) {
 
     const show = await dbModel.create(newInstance);
     let returnedShow = show.toObject();
-    returnedShow.master_time_id = master_time_id__byShowType(returnedShow);
+    returnedShow.master_time_id = master_time_id__byEventType(returnedShow);
     res.json(returnedShow);
   } else {
     res.status(404).send('The series show does not exist');

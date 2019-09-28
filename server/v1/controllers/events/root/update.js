@@ -1,6 +1,6 @@
 const {
-  utils: { showList, getModelForEventType },
-  utils__mongoose: { populateShowHost, populateMasterShow },
+  utils: { eventList, getModelForEventType },
+  utils__mongoose: { populateShowHost, populateMasterEvent },
 } = require('../utils');
 
 function update(req, res) {
@@ -23,9 +23,9 @@ function update(req, res) {
   dbModel
     .findOneAndUpdate({ _id: id }, body, { new: true })
     .populate(populateShowHost())
-    .populate(populateMasterShow())
+    .populate(populateMasterEvent())
     .then(dbShow => {
-      res.json(showList(dbShow, startDate, endDate));
+      res.json(eventList(dbShow, startDate, endDate));
     })
     .catch(err => {
       res.status(422).json(err);

@@ -6,7 +6,7 @@ const keys = require('../../../config/keys');
 
 const {
   master_time_id,
-  master_time_id__byShowType,
+  master_time_id__byEventType,
 } = require('./utils__mongoose');
 
 function getModelForEventType(eventType) {
@@ -20,44 +20,46 @@ function getModelForEventType(eventType) {
   }
 }
 
-function showList(shows, startDate, endDate) {
+function eventList(events, startDate, endDate) {
   //Perform this check as the create route is an object, and the find route is an array.
   //This makes sure everything is an iterable array before going into the reducers.
-  if (!Array.isArray(shows)) {
-    shows = [shows];
+  if (!Array.isArray(events)) {
+    events = [events];
   }
-  //Filter all shows that are series
-  const allSeriesShows = reduceShowsByRepeatProperty(shows, true);
+  //Filter all events that are series
+  const allSeriesEvents = reduceEventsByRepeatProperty(events, true);
 
-  const allSeriesShowsExpanded = allSeriesShows.map(show => {
-    return allShowInstancesInDateRange(show, startDate, endDate);
+  const allSeriesEventsExpanded = allSeriesEvents.map(event => {
+    return allEventInstancesInDateRange(event, startDate, endDate);
   });
 
-  //Filter all shows that are instances
-  const allInstanceShows = reduceShowsByRepeatProperty(shows, false);
-  const allInstanceShowsExpanded = returnInstanceShowsArray(allInstanceShows);
+  //Filter all events that are instances
+  const allInstanceEvents = reduceEventsByRepeatProperty(events, false);
+  const allInstanceEventsExpanded = returnInstanceEventsArray(
+    allInstanceEvents,
+  );
 
-  //Replace repeat shows with instance shows here
-  const seriesFlattened = _.flatten(allSeriesShowsExpanded);
+  //Replace repeat events with instance events here
+  const seriesFlattened = _.flatten(allSeriesEventsExpanded);
   const seriesKeyBy = _.keyBy(seriesFlattened, 'master_time_id');
 
-  const instanceKeyBy = _.keyBy(allInstanceShowsExpanded, o => {
+  const instanceKeyBy = _.keyBy(allInstanceEventsExpanded, o => {
     return o.master_time_id;
   });
 
-  //Combined series and instance shows by object ID and then return the final array
-  let showsToReturn = { ...seriesKeyBy, ...instanceKeyBy };
+  //Combined series and instance events by object ID and then return the final array
+  let eventsToReturn = { ...seriesKeyBy, ...instanceKeyBy };
 
   //transform the object back to an array
-  let showsToReturnArray = [];
-  _.mapKeys(showsToReturn, function(show) {
-    if (show.status === 'active') {
-      showsToReturnArray.push(show);
+  let eventsToReturnArray = [];
+  _.mapKeys(eventsToReturn, function(event) {
+    if (event.status === 'active') {
+      eventsToReturnArray.push(event);
     }
   });
 
   //sort the array by event start time
-  showsToReturnArray = showsToReturnArray.sort(function(a, b) {
+  eventsToReturnArray = eventsToReturnArray.sort(function(a, b) {
     if (new Date(a.start_time_utc) > new Date(b.start_time_utc)) {
       return 1;
     } else if (new Date(a.start_time_utc) === new Date(b.start_time_utc)) {
@@ -67,21 +69,21 @@ function showList(shows, startDate, endDate) {
     }
   });
 
-  return showsToReturnArray;
+  return eventsToReturnArray;
 }
 
-function allShowInstancesInDateRange(show, startDate, endDate) {
-  const allShowDates = returnDatesArrayByRepeatRule(show, startDate, endDate);
-  const allSeriesShowsExpandedByDates = returnSeriesShowsArrayWithNewDates(
-    allShowDates,
-    show,
+function allEventInstancesInDateRange(event, startDate, endDate) {
+  const allEventDates = returnDatesArrayByRepeatRule(event, startDate, endDate);
+  const allSeriesEventsExpandedByDates = returnSeriesEventsArrayWithNewDates(
+    allEventDates,
+    event,
   );
 
-  return allSeriesShowsExpandedByDates;
+  return allSeriesEventsExpandedByDates;
 }
 
-function createRRule(show) {
-  const { replace_event_date } = show;
+function createRRule(event) {
+  const { replace_event_date } = event;
   const {
     frequency,
     repeat_start_date,
@@ -92,7 +94,7 @@ function createRRule(show) {
     bymonth,
     bysetpos,
     bymonthday,
-  } = show.repeat_rule;
+  } = event.repeat_rule;
 
   let newRRule = {};
 
@@ -143,32 +145,32 @@ function createRRule(show) {
   return newRRule;
 }
 
-function reduceShowsByRepeatProperty(shows, recurringCheckValue) {
-  const reducer = (accShows, currentShow) => {
+function reduceEventsByRepeatProperty(events, recurringCheckValue) {
+  const reducer = (accEvents, currentEvent) => {
     if (
-      currentShow.is_recurring === recurringCheckValue ||
-      (currentShow.is_recurring === undefined && recurringCheckValue === false)
+      currentEvent.is_recurring === recurringCheckValue ||
+      (currentEvent.is_recurring === undefined && recurringCheckValue === false)
     ) {
-      return [...accShows, currentShow];
+      return [...accEvents, currentEvent];
     }
-    return accShows;
+    return accEvents;
   };
 
-  const reducedShowList = shows.reduce(reducer, []);
+  const reducedEventList = events.reduce(reducer, []);
 
-  return reducedShowList;
+  return reducedEventList;
 }
 
-function returnDatesArrayByRepeatRule(show, startDate, endDate) {
-  const rule = new RRule(createRRule(show));
+function returnDatesArrayByRepeatRule(event, startDate, endDate) {
+  const rule = new RRule(createRRule(event));
   try {
-    let showDuration = show.end_time_utc - show.start_time_utc;
+    let eventDuration = event.end_time_utc - event.start_time_utc;
     let adjustedStartDate = new Date(
-      moment(startDate).add(-1 * showDuration, 'milliseconds'),
-    ); //between searches on START times, and we want to get anything in progress in this date range, so subtract the show duration from the start time
-    let shows = rule.between(adjustedStartDate, new Date(endDate));
+      moment(startDate).add(-1 * eventDuration, 'milliseconds'),
+    ); //between searches on START times, and we want to get anything in progress in this date range, so subtract the event duration from the start time
+    let events = rule.between(adjustedStartDate, new Date(endDate));
 
-    return shows;
+    return events;
   } catch (e) {
     console.log('Error in returnDatesArrayByRepeatRule');
     console.log(e);
@@ -231,64 +233,64 @@ function combineDayAndTime(
   }
 }
 
-function returnSeriesShowsArrayWithNewDates(dateArray, show) {
-  const returnedShows = dateArray.map((date, i) => {
-    let newShow = { ...show.toObject() };
-    let { start_time_utc, end_time_utc } = newShow;
+function returnSeriesEventsArrayWithNewDates(dateArray, event) {
+  const returnedEvents = dateArray.map((date, i) => {
+    let newEvent = { ...event.toObject() };
+    let { start_time_utc, end_time_utc } = newEvent;
 
     start_time_utc = combineDayAndTime(date, start_time_utc, 'STRING');
 
     end_time_utc = combineDayAndTime(date, end_time_utc, 'STRING', 'END');
 
-    const series_event_id = newShow._id;
-    newShow = { ...newShow, master_event_id: { _id: series_event_id } };
-    newShow.master_time_id = master_time_id(series_event_id, start_time_utc);
+    const series_event_id = newEvent._id;
+    newEvent = { ...newEvent, master_event_id: { _id: series_event_id } };
+    newEvent.master_time_id = master_time_id(series_event_id, start_time_utc);
 
-    newShow.start_time_utc = start_time_utc;
-    newShow.end_time_utc = end_time_utc;
-    return newShow;
+    newEvent.start_time_utc = start_time_utc;
+    newEvent.end_time_utc = end_time_utc;
+    return newEvent;
   });
-  return returnedShows;
+  return returnedEvents;
 }
 
-function returnInstanceShowsArray(shows) {
-  const allInstances = shows.map(show => {
-    let instanceShow = { ...show.toObject() };
-    const { master_event_id } = instanceShow;
+function returnInstanceEventsArray(events) {
+  const allInstances = events.map(event => {
+    let instanceEvent = { ...event.toObject() };
+    const { master_event_id } = instanceEvent;
 
     //This will merge any show details from the master show that are not on the instance.
     if (master_event_id) {
-      instanceShow.show_details = {
-        ...instanceShow.master_event_id.show_details,
-        ...instanceShow.show_details,
+      instanceEvent.show_details = {
+        ...instanceEvent.master_event_id.show_details,
+        ...instanceEvent.show_details,
       };
     }
 
-    const date = instanceShow.start_time_utc;
+    const date = instanceEvent.start_time_utc;
 
-    //Update properties of the instance show
-    instanceShow.start_time_utc = combineDayAndTime(
+    //Update properties of the instance event
+    instanceEvent.start_time_utc = combineDayAndTime(
       date,
-      instanceShow.start_time_utc,
+      instanceEvent.start_time_utc,
       'STRING',
     );
-    instanceShow.end_time_utc = combineDayAndTime(
+    instanceEvent.end_time_utc = combineDayAndTime(
       date,
-      instanceShow.end_time_utc,
+      instanceEvent.end_time_utc,
       'STRING',
       'END',
     );
 
-    instanceShow.master_event_id = master_event_id ? master_event_id : null;
-    instanceShow.master_time_id = master_time_id__byShowType(instanceShow);
+    instanceEvent.master_event_id = master_event_id ? master_event_id : null;
+    instanceEvent.master_time_id = master_time_id__byEventType(instanceEvent);
 
-    return instanceShow;
+    return instanceEvent;
   });
   return allInstances;
 }
 
 module.exports = {
-  allShowInstancesInDateRange,
+  allEventInstancesInDateRange,
   getModelForEventType,
-  showList,
+  eventList,
 };

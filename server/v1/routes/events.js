@@ -1,31 +1,31 @@
 const router = require('express').Router();
 const { requireAC } = require('../middlewares');
 const {
-  showRootController,
-  showInstanceController,
-  showSeriesController,
+  eventRootController,
+  eventInstanceController,
+  eventSeriesController,
 } = require('../controllers');
 
 // :type is either "shows" or "traffic"
 router
   .route('/:eventType/')
-  .get(requireAC(null, 'readAny'), showRootController.find)
-  .post(requireAC(null, 'createAny'), showRootController.create);
+  .get(requireAC(null, 'readAny'), eventRootController.find)
+  .post(requireAC(null, 'createAny'), eventRootController.create);
 
 router
   .route('/:eventType/:id')
-  .get(requireAC(null, 'readAny'), showRootController.findById)
-  .delete(requireAC(null, 'deleteAny'), showRootController.remove)
-  .put(requireAC(null, 'updateOwn'), showRootController.createInstance) // TODO: updateOwn restriction
-  .patch(requireAC(null, 'updateOwn'), showRootController.update); // TODO: updateOwn restriction
+  .get(requireAC(null, 'readAny'), eventRootController.findById)
+  .delete(requireAC(null, 'deleteAny'), eventRootController.remove)
+  .put(requireAC(null, 'updateOwn'), eventRootController.createInstance) // TODO: updateOwn restriction
+  .patch(requireAC(null, 'updateOwn'), eventRootController.update); // TODO: updateOwn restriction
 
 router
   .route('/:eventType/instance/:id')
-  .delete(requireAC(null, 'deleteAny'), showInstanceController.remove);
+  .delete(requireAC(null, 'deleteAny'), eventInstanceController.remove);
 
 router
   .route('/:eventType/series/:id')
-  .delete(requireAC(null, 'deleteAny'), showSeriesController.remove)
-  .patch(requireAC(null, 'updateOwn'), showSeriesController.update); // TODO: updateOwn restriction
+  .delete(requireAC(null, 'deleteAny'), eventSeriesController.remove)
+  .patch(requireAC(null, 'updateOwn'), eventSeriesController.update); // TODO: updateOwn restriction
 
 module.exports = router;

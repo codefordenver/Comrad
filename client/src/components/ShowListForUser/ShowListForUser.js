@@ -13,18 +13,39 @@ import { setModalVisibility } from '../../redux/modal';
 import ShowModalController from '../Shows/ShowModalController';
 
 class ShowListForUser extends Component {
-  state = {
-    loading: true,
-    data: [],
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      loading: true,
+      data: [],
+      userId: props.currentUserId,
+    };
+  }
 
   componentWillMount() {
-    this.findShows();
+    const { currentUserId } = this.props;
+    if (currentUserId != null) {
+      this.findShows();
+    }
   }
 
   componentDidMount() {
     const { setModalVisibility } = this.props;
     setModalVisibility(false, false, null);
+  }
+
+  componentDidUpdate() {
+    const { currentUserId } = this.props;
+    if (
+      typeof currentUserId !== 'undefined' &&
+      currentUserId !== this.state.userId
+    ) {
+      this.findShows();
+    }
+    if (this.state.userId !== currentUserId) {
+      this.setState({ userId: currentUserId });
+      this.findShows();
+    }
   }
 
   findShows = () => {

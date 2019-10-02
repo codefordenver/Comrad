@@ -6,9 +6,13 @@ const {
 
 function requireAC(resource, action) {
   return async function(req, res, next) {
-    if (process.env.NODE_ENV === 'development') {
+    if (
+      process.env.NODE_ENV === 'development' &&
+      !process.env.ENFORCE_PERMISSIONS_IN_DEV
+    ) {
       return next();
     }
+
     // TODO: Need to clean up logic a little bit
     const { authorization } = req.headers;
 
@@ -67,7 +71,7 @@ function requireAC(resource, action) {
     ) {
       let show, userIsHost;
       switch (resource) {
-        case 'Show':
+        case 'Shows':
           //check to ensure the user is the host of the show
           const { id } = req.params;
           show = await db.Show.findOne({ _id: id });
@@ -107,18 +111,15 @@ function requireAC(resource, action) {
 }
 
 async function userIsHostOfShow(user, show) {
-  //TODO
-  console.log('is req user set: ');
-  console.log(user);
   if (
     typeof show.show_details.host === 'undefined' &&
-    typeof show.master_event_id !== 'undefined'
+    show.master_event_id != null
   ) {
     let series = await db.Show.find({ _id: show.master_event_id });
-    if (series.show_details.host !== user.id) {
+    if (String(series.show_details.host) !== String(user._id)) {
       return false;
     }
-  } else if (show.show_details.host !== user.id) {
+  } else if (String(show.show_details.host) !== String(user._id)) {
     return false;
   }
   return true;

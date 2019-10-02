@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import { setModalVisibility } from '../../../redux/modal';
@@ -12,6 +13,7 @@ import {
   updateShow,
 } from '../../../redux/show';
 import { getShowType } from '../../../utils/shows';
+import { formatHostName } from '../../../utils/formatters';
 import { MODAL_EDIT_SHOW, MODAL_EDIT_SERIES } from '../ShowModalController';
 
 import DropdownHost from '../../DropdownHost';
@@ -61,6 +63,7 @@ class NewShowForm extends Component {
 
   FORM_OPTIONS = {
     series: data => {
+      const { auth } = this.props;
       return (
         <div className="series">
           <div
@@ -75,22 +78,29 @@ class NewShowForm extends Component {
           >
             Edit Show Series
           </div>
-          <div
-            className="event__tooltip__delete"
-            onClick={() => this.deleteInstanceShow(data)}
-          >
-            Delete Instance
-          </div>
-          <div
-            className="event__tooltip__delete"
-            onClick={() => this.deleteSeriesShow(data)}
-          >
-            Delete Series
-          </div>
+          {(auth.doc.role === 'Admin' ||
+            auth.doc.role === 'Full Access' ||
+            auth.doc.role === 'Show Captain') && (
+            <>
+              <div
+                className="event__tooltip__delete"
+                onClick={() => this.deleteInstanceShow(data)}
+              >
+                Delete Instance
+              </div>
+              <div
+                className="event__tooltip__delete"
+                onClick={() => this.deleteSeriesShow(data)}
+              >
+                Delete Series
+              </div>
+            </>
+          )}
         </div>
       );
     },
     instance: data => {
+      const { auth } = this.props;
       return (
         <div className="instance">
           <div
@@ -99,24 +109,36 @@ class NewShowForm extends Component {
           >
             Edit Show Instance
           </div>
-          <div
-            className="event__tooltip__edit"
-            onClick={() => this.showEditSeriesModal(data.master_event_id)}
-          >
-            Edit Show Series
-          </div>
-          <div
-            className="event__tooltip__delete"
-            onClick={() => this.deleteRegularShow(data)}
-          >
-            Delete Instance
-          </div>
-          <div
-            className="event__tooltip__delete"
-            onClick={() => this.deleteSeriesShow(data)}
-          >
-            Delete Series
-          </div>
+          {(auth.doc.role === 'Admin' ||
+            auth.doc.role === 'Full Access' ||
+            auth.doc.role === 'Show Captain' ||
+            (auth.doc.role === 'DJ' &&
+              auth.doc._id === data.master_event_id.show_details.host)) && (
+            <div
+              className="event__tooltip__edit"
+              onClick={() => this.showEditSeriesModal(data.master_event_id)}
+            >
+              Edit Show Series
+            </div>
+          )}
+          {(auth.doc.role === 'Admin' ||
+            auth.doc.role === 'Full Access' ||
+            auth.doc.role === 'Show Captain') && (
+            <>
+              <div
+                className="event__tooltip__delete"
+                onClick={() => this.deleteRegularShow(data)}
+              >
+                Delete Instance
+              </div>
+              <div
+                className="event__tooltip__delete"
+                onClick={() => this.deleteSeriesShow(data)}
+              >
+                Delete Series
+              </div>
+            </>
+          )}
         </div>
       );
     },
@@ -177,27 +199,51 @@ class NewShowForm extends Component {
 
   render() {
     const { props } = this;
-    const { show } = props;
+    const { show, auth, formatHostName } = props;
     const { _id } = show;
     const { host } = show.show_details;
 
     const showType = getShowType(show);
+
+    let formattedHostName;
+    if (host != null) {
+      formattedHostName = formatHostName(host);
+    }
 
     return (
       <main className="show show__padding">
         <section className="show__body">
           <div className="event__tooltip__title">{show.show_details.title}</div>
 
-          {false && this.showDebugData(show)}
-          {console.log(show)}
-          <DropdownHost
-            key={_id}
-            _id={_id}
-            host={host}
-            onHostSelect={this.handleHostSelect}
-            filterByStatus="Active"
-          />
-          {this.FORM_OPTIONS[showType](show)}
+          {/* false && this.showDebugData(show) */}
+          {(auth.doc.role === 'Admin' ||
+            auth.doc.role === 'Full Access' ||
+            auth.doc.role === 'Show Captain') && (
+            <>
+              <DropdownHost
+                key={_id}
+                _id={_id}
+                host={host}
+                onHostSelect={this.handleHostSelect}
+                filterByStatus="Active"
+              />
+              {this.FORM_OPTIONS[showType](show)}
+            </>
+          )}
+          {auth.doc.role !== 'Admin' &&
+            auth.doc.role !== 'Full Access' &&
+            auth.doc.role !== 'Show Captain' && (
+              <div>
+                <b>Host:</b>
+                {host != null && <>{formattedHostName}</>}
+                {(host === null || typeof host === 'undefined') && <>None</>}
+              </div>
+            )}
+          {auth.doc.role === 'DJ' &&
+            host != null &&
+            auth.doc._id === host._id && (
+              <>{this.FORM_OPTIONS[showType](show)}</>
+            )}
         </section>
       </main>
     );
@@ -206,20 +252,29 @@ class NewShowForm extends Component {
 
 function mapStateToProps(state) {
   return {
+    auth: state.auth,
     //shows: state.show.data,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    formatHostName: formatHostName,
+    selectShow: bindActionCreators(selectShow, dispatch),
+    deleteShow: bindActionCreators(deleteShow, dispatch),
+    updateShow: bindActionCreators(updateShow, dispatch),
+    setModalVisibility: bindActionCreators(setModalVisibility, dispatch),
+    deleteShowSeries: bindActionCreators(deleteShowSeries, dispatch),
+    deleteShowInstance: bindActionCreators(deleteShowInstance, dispatch),
+    createInstanceShow: bindActionCreators(createInstanceShow, dispatch),
+    createInstanceAndEditShow: bindActionCreators(
+      createInstanceAndEditShow,
+      dispatch,
+    ),
   };
 }
 
 export default connect(
   mapStateToProps,
-  {
-    selectShow,
-    deleteShow,
-    updateShow,
-    setModalVisibility,
-    deleteShowSeries,
-    deleteShowInstance,
-    createInstanceShow,
-    createInstanceAndEditShow,
-  },
+  mapDispatchToProps,
 )(NewShowForm);

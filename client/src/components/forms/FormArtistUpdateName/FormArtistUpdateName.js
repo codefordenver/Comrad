@@ -47,7 +47,7 @@ class FormArtistUpdateName extends Component {
 
   render() {
     const { handleDefault, handleEditClick, props, state, submit } = this;
-    const { library, className, handleSubmit, submitting } = props;
+    const { auth, library, className, handleSubmit, submitting } = props;
     const { editMode } = state;
     const { doc } = library;
     const { name } = doc;
@@ -81,13 +81,17 @@ class FormArtistUpdateName extends Component {
         ) : (
           <div className={classnames('faun__heading', className)}>
             <h1 className="mb-0">{name}</h1>
-            <ButtonIcon
-              className="faun__edit"
-              icon="pencil"
-              size="small"
-              inline={true}
-              onClick={handleEditClick}
-            />
+            {(auth.doc.role === 'Admin' ||
+              auth.doc.role === 'Full Access' ||
+              auth.doc.role === 'Music Library Admin') && (
+              <ButtonIcon
+                className="faun__edit"
+                icon="pencil"
+                size="small"
+                inline={true}
+                onClick={handleEditClick}
+              />
+            )}
           </div>
         )}
       </div>
@@ -107,8 +111,9 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-function mapStateToProps({ library }) {
+function mapStateToProps({ auth, library }) {
   return {
+    auth,
     library,
     initialValues: {
       ...library.doc,

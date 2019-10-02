@@ -21,7 +21,7 @@ class TrackViewPage extends Component {
 
   render() {
     let artistsHtml = [];
-    const { match, trackState } = this.props;
+    const { match, trackState, auth } = this.props;
     const { url, params } = match;
     const { id } = params;
     let lastUpdated = '';
@@ -56,14 +56,18 @@ class TrackViewPage extends Component {
               <Card>
                 <CardBody>
                   <div className="float-right">Last updated: {lastUpdated}</div>
-                  <Link
-                    className="track-edit-button-wrapper"
-                    to={`${url}/edit`}
-                  >
-                    <div className="track-edit-button">
-                      Edit <i className="fas fa-edit" />
-                    </div>
-                  </Link>
+                  {(auth.doc.role === 'Admin' ||
+                    auth.doc.role === 'Full Access' ||
+                    auth.doc.role === 'Music Library Admin') && (
+                    <Link
+                      className="track-edit-button-wrapper"
+                      to={`${url}/edit`}
+                    >
+                      <div className="track-edit-button">
+                        Edit <i className="fas fa-edit" />
+                      </div>
+                    </Link>
+                  )}
                   <h1 className="mb-0">{trackState.doc.name}</h1>
                   <div>
                     {' '}
@@ -94,6 +98,7 @@ class TrackViewPage extends Component {
 
 function mapStateToProps(state) {
   return {
+    auth: state.auth,
     trackState: state.library,
   };
 }

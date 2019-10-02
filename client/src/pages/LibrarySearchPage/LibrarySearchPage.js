@@ -163,6 +163,7 @@ class LibrarySearchPage extends Component {
       deleteEntity,
     } = this;
     const {
+      auth,
       handleSubmit,
       docs,
       loadingSearch,
@@ -227,12 +228,18 @@ class LibrarySearchPage extends Component {
                   </span>
                 </div>
               </div>
-              <div>
-                <Dropdown position="right-centered" type="button" text="Add">
-                  <Dropdown.Item to="library/artist/add">Artist</Dropdown.Item>
-                  <Dropdown.Item to="library/album/add">Album</Dropdown.Item>
-                </Dropdown>
-              </div>
+              {(auth.doc.role === 'Admin' ||
+                auth.doc.role === 'Full Access' ||
+                auth.doc.role === 'Music Library Admin') && (
+                <div>
+                  <Dropdown position="right-centered" type="button" text="Add">
+                    <Dropdown.Item to="library/artist/add">
+                      Artist
+                    </Dropdown.Item>
+                    <Dropdown.Item to="library/album/add">Album</Dropdown.Item>
+                  </Dropdown>
+                </div>
+              )}
             </div>
 
             {!loadingError && (
@@ -402,24 +409,28 @@ class LibrarySearchPage extends Component {
       Cell: row => {
         return (
           <div onClick={this.stopPropagation}>
-            <Dropdown
-              position="bottom-left"
-              type="icon"
-              faClass="fas fa-ellipsis-h"
-            >
-              {row.row.type !== 'artist' && (
-                <Dropdown.Item
-                  handleOnClick={() => this.handleRowEditClick(row.row)}
-                >
-                  Edit
-                </Dropdown.Item>
-              )}
-              <Dropdown.Item
-                handleOnClick={() => this.handleRowDeleteClick(row.row)}
+            {(this.props.auth.doc.role === 'Admin' ||
+              this.props.auth.doc.role === 'Full Access' ||
+              this.props.auth.doc.role === 'Music Library Admin') && (
+              <Dropdown
+                position="bottom-left"
+                type="icon"
+                faClass="fas fa-ellipsis-h"
               >
-                Delete
-              </Dropdown.Item>
-            </Dropdown>
+                {row.row.type !== 'artist' && (
+                  <Dropdown.Item
+                    handleOnClick={() => this.handleRowEditClick(row.row)}
+                  >
+                    Edit
+                  </Dropdown.Item>
+                )}
+                <Dropdown.Item
+                  handleOnClick={() => this.handleRowDeleteClick(row.row)}
+                >
+                  Delete
+                </Dropdown.Item>
+              </Dropdown>
+            )}
           </div>
         );
       },
@@ -431,8 +442,10 @@ class LibrarySearchPage extends Component {
 
 function mapStateToProps(state) {
   const { docs, loadingSearch, loadingError, totalPages } = state.library;
+  const { auth } = state;
 
   return {
+    auth,
     docs,
     loadingSearch,
     loadingError,

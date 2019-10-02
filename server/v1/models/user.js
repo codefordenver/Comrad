@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const bcrypt = require('bcrypt-nodejs');
 
+const dbShows = require('./show');
+
 const userSchema = new Schema({
   api_key: {
     last_used: {
@@ -131,6 +133,18 @@ userSchema.methods.compareApiKey = function(candidateKey, callback) {
       return resolve(isMatch);
     });
   });
+};
+
+userSchema.methods.canDelete = async function() {
+  const user = this;
+
+  const shows = await dbShows.find({ 'show_details.host': user._id });
+
+  if (shows.length > 0) {
+    return false;
+  }
+
+  return true;
 };
 
 const User = mongoose.model('User', userSchema);

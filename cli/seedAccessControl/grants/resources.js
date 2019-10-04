@@ -51,29 +51,11 @@ const Resources = [
     attributes: '*',
   },
 
-  // Show Producer
+  // Show Captain
   {
-    role: 'Show Producer',
-    resource: 'Resources',
-    action: 'create:any',
-    attributes: '*',
-  },
-  {
-    role: 'Show Producer',
+    role: 'Show Captain',
     resource: 'Resources',
     action: 'read:any',
-    attributes: '*',
-  },
-  {
-    role: 'Show Producer',
-    resource: 'Resources',
-    action: 'update:any',
-    attributes: '*',
-  },
-  {
-    role: 'Show Producer',
-    resource: 'Resources',
-    action: 'delete:any',
     attributes: '*',
   },
 
@@ -81,25 +63,7 @@ const Resources = [
   {
     role: 'Underwriting',
     resource: 'Resources',
-    action: 'create:any',
-    attributes: '*',
-  },
-  {
-    role: 'Underwriting',
-    resource: 'Resources',
     action: 'read:any',
-    attributes: '*',
-  },
-  {
-    role: 'Underwriting',
-    resource: 'Resources',
-    action: 'update:any',
-    attributes: '*',
-  },
-  {
-    role: 'Underwriting',
-    resource: 'Resources',
-    action: 'delete:any',
     attributes: '*',
   },
 
@@ -107,51 +71,15 @@ const Resources = [
   {
     role: 'DJ',
     resource: 'Resources',
-    action: 'create:any',
-    attributes: '*',
-  },
-  {
-    role: 'DJ',
-    resource: 'Resources',
     action: 'read:any',
-    attributes: '*',
-  },
-  {
-    role: 'DJ',
-    resource: 'Resources',
-    action: 'update:any',
-    attributes: '*',
-  },
-  {
-    role: 'DJ',
-    resource: 'Resources',
-    action: 'delete:any',
     attributes: '*',
   },
 
-  // Guest
+  // Music Library Admin
   {
-    role: 'Guest',
-    resource: 'Resources',
-    action: 'create:any',
-    attributes: '*',
-  },
-  {
-    role: 'Guest',
+    role: 'Music Library Admin',
     resource: 'Resources',
     action: 'read:any',
-    attributes: '*',
-  },
-  {
-    role: 'Guest',
-    resource: 'Resources',
-    action: 'update:any',
-    attributes: '*',
-  },
-  {
-    role: 'Guest',
-    resource: 'Resources',
-    action: 'delete:any',
     attributes: '*',
   },
 ];

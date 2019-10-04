@@ -16,8 +16,8 @@ router
   .route('/:eventType/:id')
   .get(requireAC(null, 'readAny'), eventRootController.findById)
   .delete(requireAC(null, 'deleteAny'), eventRootController.remove)
-  .put(requireAC(null, 'updateAny'), eventRootController.createInstance)
-  .patch(requireAC(null, 'updateAny'), eventRootController.update);
+  .put(requireAC(null, 'updateOwn'), eventRootController.createInstance)
+  .patch(requireAC(null, 'updateOwn'), eventRootController.update);
 
 router
   .route('/:eventType/instance/:id')
@@ -26,6 +26,6 @@ router
 router
   .route('/:eventType/series/:id')
   .delete(requireAC(null, 'deleteAny'), eventSeriesController.remove)
-  .patch(requireAC(null, 'updateAny'), eventSeriesController.update);
+  .patch(requireAC(null, 'updateOwn'), eventSeriesController.update);
 
 module.exports = router;

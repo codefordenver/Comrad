@@ -51,29 +51,11 @@ const Genres = [
     attributes: '*',
   },
 
-  // Show Producer
+  // Show Captain
   {
-    role: 'Show Producer',
-    resource: 'Genres',
-    action: 'create:any',
-    attributes: '*',
-  },
-  {
-    role: 'Show Producer',
+    role: 'Show Captain',
     resource: 'Genres',
     action: 'read:any',
-    attributes: '*',
-  },
-  {
-    role: 'Show Producer',
-    resource: 'Genres',
-    action: 'update:any',
-    attributes: '*',
-  },
-  {
-    role: 'Show Producer',
-    resource: 'Genres',
-    action: 'delete:any',
     attributes: '*',
   },
 
@@ -81,25 +63,7 @@ const Genres = [
   {
     role: 'Underwriting',
     resource: 'Genres',
-    action: 'create:any',
-    attributes: '*',
-  },
-  {
-    role: 'Underwriting',
-    resource: 'Genres',
     action: 'read:any',
-    attributes: '*',
-  },
-  {
-    role: 'Underwriting',
-    resource: 'Genres',
-    action: 'update:any',
-    attributes: '*',
-  },
-  {
-    role: 'Underwriting',
-    resource: 'Genres',
-    action: 'delete:any',
     attributes: '*',
   },
 
@@ -107,49 +71,31 @@ const Genres = [
   {
     role: 'DJ',
     resource: 'Genres',
-    action: 'create:any',
-    attributes: '*',
-  },
-  {
-    role: 'DJ',
-    resource: 'Genres',
     action: 'read:any',
-    attributes: '*',
-  },
-  {
-    role: 'DJ',
-    resource: 'Genres',
-    action: 'update:any',
-    attributes: '*',
-  },
-  {
-    role: 'DJ',
-    resource: 'Genres',
-    action: 'delete:any',
     attributes: '*',
   },
 
-  // Guest
+  // Music Library Admin
   {
-    role: 'Guest',
+    role: 'Music Library Admin',
     resource: 'Genres',
     action: 'create:any',
     attributes: '*',
   },
   {
-    role: 'Guest',
+    role: 'Music Library Admin',
     resource: 'Genres',
     action: 'read:any',
     attributes: '*',
   },
   {
-    role: 'Guest',
+    role: 'Music Library Admin',
     resource: 'Genres',
     action: 'update:any',
     attributes: '*',
   },
   {
-    role: 'Guest',
+    role: 'Music Library Admin',
     resource: 'Genres',
     action: 'delete:any',
     attributes: '*',

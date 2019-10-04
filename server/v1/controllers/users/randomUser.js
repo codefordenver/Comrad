@@ -5,7 +5,7 @@ const Chance = require('chance');
 const USER_PERMISSIONS = [
   'DJ',
   'Underwriting',
-  'Show Producer',
+  'Show Captain',
   'Full Access',
   'Admin',
 ];

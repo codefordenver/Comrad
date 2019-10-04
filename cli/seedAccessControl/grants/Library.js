@@ -51,29 +51,11 @@ const Library = [
     attributes: '*',
   },
 
-  // Show Producer
+  // Show Captain
   {
-    role: 'Show Producer',
-    resource: 'Library',
-    action: 'create:any',
-    attributes: '*',
-  },
-  {
-    role: 'Show Producer',
+    role: 'Show Captain',
     resource: 'Library',
     action: 'read:any',
-    attributes: '*',
-  },
-  {
-    role: 'Show Producer',
-    resource: 'Library',
-    action: 'update:any',
-    attributes: '*',
-  },
-  {
-    role: 'Show Producer',
-    resource: 'Library',
-    action: 'delete:any',
     attributes: '*',
   },
 
@@ -81,25 +63,7 @@ const Library = [
   {
     role: 'Underwriting',
     resource: 'Library',
-    action: 'create:any',
-    attributes: '*',
-  },
-  {
-    role: 'Underwriting',
-    resource: 'Library',
     action: 'read:any',
-    attributes: '*',
-  },
-  {
-    role: 'Underwriting',
-    resource: 'Library',
-    action: 'update:any',
-    attributes: '*',
-  },
-  {
-    role: 'Underwriting',
-    resource: 'Library',
-    action: 'delete:any',
     attributes: '*',
   },
 
@@ -107,49 +71,31 @@ const Library = [
   {
     role: 'DJ',
     resource: 'Library',
-    action: 'create:any',
-    attributes: '*',
-  },
-  {
-    role: 'DJ',
-    resource: 'Library',
     action: 'read:any',
-    attributes: '*',
-  },
-  {
-    role: 'DJ',
-    resource: 'Library',
-    action: 'update:any',
-    attributes: '*',
-  },
-  {
-    role: 'DJ',
-    resource: 'Library',
-    action: 'delete:any',
     attributes: '*',
   },
 
-  // Guest
+  // Music Library Admin
   {
-    role: 'Guest',
+    role: 'Music Library Admin',
     resource: 'Library',
     action: 'create:any',
     attributes: '*',
   },
   {
-    role: 'Guest',
+    role: 'Music Library Admin',
     resource: 'Library',
     action: 'read:any',
     attributes: '*',
   },
   {
-    role: 'Guest',
+    role: 'Music Library Admin',
     resource: 'Library',
     action: 'update:any',
     attributes: '*',
   },
   {
-    role: 'Guest',
+    role: 'Music Library Admin',
     resource: 'Library',
     action: 'delete:any',
     attributes: '*',

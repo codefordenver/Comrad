@@ -67,7 +67,7 @@ class CalendarHomePage extends Component {
   };
 
   render() {
-    const { showsError } = this.props;
+    const { auth, showsError } = this.props;
     const {
       filterByHost,
       onlyDisplayShowsWithNoHost,
@@ -87,15 +87,19 @@ class CalendarHomePage extends Component {
         <CardBody>
           <div className="calendar">
             <div className="calendar__sidebar">
-              <div className="add-button-wrapper">
-                <div
-                  className="calendar-add-button"
-                  onClick={this.showNewShowModal}
-                >
-                  <div className="calendar-add-button-text">Add</div>
-                  <i className="fas fa-plus" />
+              {(auth.doc.role === 'Admin' ||
+                auth.doc.role === 'Full Access' ||
+                auth.doc.role === 'Show Captain') && (
+                <div className="add-button-wrapper">
+                  <div
+                    className="calendar-add-button"
+                    onClick={this.showNewShowModal}
+                  >
+                    <div className="calendar-add-button-text">Add</div>
+                    <i className="fas fa-plus" />
+                  </div>
                 </div>
-              </div>
+              )}
               <DayPickerSingleDateController
                 key={dayPickerKey}
                 date={selectedDate}
@@ -113,7 +117,7 @@ class CalendarHomePage extends Component {
               <DropdownHost
                 onHostSelect={this.handleHostSelect}
                 showsWithNoHostOption="Shows with No Host"
-                displayAddNewHostOption={false}
+                showAddNewHostOption={false}
               />
             </div>
             <div className="calendar__view">
@@ -138,8 +142,9 @@ class CalendarHomePage extends Component {
   }
 }
 
-function mapStateToProps({ shows }) {
+function mapStateToProps({ auth, shows }) {
   return {
+    auth,
     shows: getShowsData(shows),
     showsFetching: fetchingShowsStatus(shows),
     showsPosting: postingShowsStatus(shows),

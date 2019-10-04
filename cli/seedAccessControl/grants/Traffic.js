@@ -51,29 +51,11 @@ const Traffic = [
     attributes: '*',
   },
 
-  // Show Producer
+  // Show Captain
   {
-    role: 'Show Producer',
-    resource: 'Traffic',
-    action: 'create:any',
-    attributes: '*',
-  },
-  {
-    role: 'Show Producer',
+    role: 'Show Captain',
     resource: 'Traffic',
     action: 'read:any',
-    attributes: '*',
-  },
-  {
-    role: 'Show Producer',
-    resource: 'Traffic',
-    action: 'update:any',
-    attributes: '*',
-  },
-  {
-    role: 'Show Producer',
-    resource: 'Traffic',
-    action: 'delete:any',
     attributes: '*',
   },
 
@@ -107,51 +89,15 @@ const Traffic = [
   {
     role: 'DJ',
     resource: 'Traffic',
-    action: 'create:any',
-    attributes: '*',
-  },
-  {
-    role: 'DJ',
-    resource: 'Traffic',
     action: 'read:any',
-    attributes: '*',
-  },
-  {
-    role: 'DJ',
-    resource: 'Traffic',
-    action: 'update:any',
-    attributes: '*',
-  },
-  {
-    role: 'DJ',
-    resource: 'Traffic',
-    action: 'delete:any',
     attributes: '*',
   },
 
-  // Guest
+  // Music Library Admin
   {
-    role: 'Guest',
-    resource: 'Traffic',
-    action: 'create:any',
-    attributes: '*',
-  },
-  {
-    role: 'Guest',
+    role: 'Music Library Admin',
     resource: 'Traffic',
     action: 'read:any',
-    attributes: '*',
-  },
-  {
-    role: 'Guest',
-    resource: 'Traffic',
-    action: 'update:any',
-    attributes: '*',
-  },
-  {
-    role: 'Guest',
-    resource: 'Traffic',
-    action: 'delete:any',
     attributes: '*',
   },
 ];

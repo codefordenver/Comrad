@@ -1,39 +1,73 @@
 const router = require('express').Router();
 const { playlistsController } = require('../controllers');
+const { requireAC } = require('../middlewares');
 
-router.route('/').get(playlistsController.findOne);
-router.route('/').put(playlistsController.findOrCreateOne);
-
+router
+  .route('/')
+  .get(requireAC('Playlists', 'readAny'), playlistsController.findOne);
+router
+  .route('/')
+  .put(requireAC('Playlists', 'readAny'), playlistsController.findOrCreateOne); //this is readAny even though it can create records because creating a playlist record is required to view the playlist page: without update permissions, you can't change the playlist in any way (it will just be a blank playlist)
 router
   .route('/:playlistId/saved-items')
-  .put(playlistsController.moveItemFromScratchpadToSavedItems);
+  .put(
+    requireAC('Playlists', 'updateOwn'),
+    playlistsController.moveItemFromScratchpadToSavedItems,
+  );
 router
   .route('/:playlistId/saved-items/comment')
-  .put(playlistsController.addCommentToSavedItems);
+  .put(
+    requireAC('Playlists', 'updateOwn'),
+    playlistsController.addCommentToSavedItems,
+  );
 router
   .route('/:playlistId/saved-items/track')
-  .put(playlistsController.addTrackToSavedItems);
+  .put(
+    requireAC('Playlists', 'updateOwn'),
+    playlistsController.addTrackToSavedItems,
+  );
 router
   .route('/:playlistId/saved-items/traffic')
-  .put(playlistsController.addTrafficToSavedItems);
+  .put(
+    requireAC('Playlists', 'updateOwn'),
+    playlistsController.addTrafficToSavedItems,
+  );
 router
   .route('/:playlistId/saved-items/:itemId/rearrange')
-  .put(playlistsController.rearrangeSavedItem);
+  .put(
+    requireAC('Playlists', 'updateOwn'),
+    playlistsController.rearrangeSavedItem,
+  );
 router
   .route('/:playlistId/saved-items/:itemId')
-  .delete(playlistsController.moveItemFromSavedItemsToScratchpad);
+  .delete(
+    requireAC('Playlists', 'updateOwn'),
+    playlistsController.moveItemFromSavedItemsToScratchpad,
+  );
 
 router
   .route('/:playlistId/scratchpad/comment')
-  .put(playlistsController.addCommentToScratchpad);
+  .put(
+    requireAC('Playlists', 'updateOwn'),
+    playlistsController.addCommentToScratchpad,
+  );
 router
   .route('/:playlistId/scratchpad/track')
-  .put(playlistsController.addTrackToScratchpad);
+  .put(
+    requireAC('Playlists', 'updateOwn'),
+    playlistsController.addTrackToScratchpad,
+  );
 router
   .route('/:playlistId/scratchpad/:itemId/rearrange')
-  .put(playlistsController.rearrangeScratchpadItem);
+  .put(
+    requireAC('Playlists', 'updateOwn'),
+    playlistsController.rearrangeScratchpadItem,
+  );
 router
   .route('/:playlistId/scratchpad/:itemId')
-  .delete(playlistsController.deleteItemFromScratchpad);
+  .delete(
+    requireAC('Playlists', 'updateOwn'),
+    playlistsController.deleteItemFromScratchpad,
+  );
 
 module.exports = router;

@@ -9,9 +9,7 @@ router
 
 router.route('/logout').get(authController.logout);
 
-router
-  .route('/current')
-  .get(requireAC('Auth', 'readAny'), authController.current);
+router.route('/current').get(authController.current);
 
 router.route('/password/reset').put(authController.passwordReset);
 

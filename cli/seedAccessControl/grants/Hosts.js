@@ -15,9 +15,9 @@ const Users = [
     attributes: '*',
   },
 
-  // Show Producer
+  // Show Captain
   {
-    role: 'Show Producer',
+    role: 'Show Captain',
     resource: 'Hosts',
     action: 'read:any',
     attributes: '*',
@@ -39,9 +39,9 @@ const Users = [
     attributes: '*',
   },
 
-  // Guest
+  // Music Library Admin
   {
-    role: 'Guest',
+    role: 'Music Library Admin',
     resource: 'Users',
     action: 'read:any',
     attributes: '*',

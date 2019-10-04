@@ -54,7 +54,7 @@ class AlbumViewPage extends Component {
 
   render() {
     const { navigateToTrack, props, renderLastUpdated } = this;
-    const { albumState, configState } = props;
+    const { auth, albumState, configState } = props;
     let { doc } = albumState;
     if (doc == null) {
       doc = {};
@@ -106,18 +106,26 @@ class AlbumViewPage extends Component {
                   <div className="album-view-page__last-updated">
                     {renderLastUpdated()}
                   </div>
-                  <Link className="edit-album-button" to={`${url}/edit`}>
-                    Edit Album
-                  </Link>
+                  {(auth.doc.role === 'Admin' ||
+                    auth.doc.role === 'Full Access' ||
+                    auth.doc.role === 'Music Library Admin') && (
+                    <Link className="edit-album-button" to={`${url}/edit`}>
+                      Edit Album
+                    </Link>
+                  )}
                 </div>
               </CardBody>
             </Card>
             <Card>
               <CardBody>
                 <h2 className="mb-1">Tracks</h2>
-                <Link className="add-track-button" to={`${url}/add`}>
-                  Add Track
-                </Link>
+                {(auth.doc.role === 'Admin' ||
+                  auth.doc.role === 'Full Access' ||
+                  auth.doc.role === 'Music Library Admin') && (
+                  <Link className="add-track-button" to={`${url}/add`}>
+                    Add Track
+                  </Link>
+                )}
                 {isEmpty(tracks) ? (
                   <LargeText align="left">No Tracks</LargeText>
                 ) : (
@@ -136,8 +144,9 @@ class AlbumViewPage extends Component {
   }
 }
 
-function mapStateToProps({ library, config }) {
+function mapStateToProps({ auth, library, config }) {
   return {
+    auth,
     albumState: library,
     configState: config,
   };

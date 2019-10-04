@@ -1,11 +1,19 @@
 const AccessControl = require('accesscontrol');
 const db = require('../models');
+const {
+  utils: { eventList },
+  utils__mongoose: { findEventQueryByDateRange },
+} = require('../controllers/events/utils');
 
 function requireAC(resource, action) {
   return async function(req, res, next) {
-    if (process.env.NODE_ENV === 'development') {
+    if (
+      process.env.NODE_ENV === 'development' &&
+      !process.env.ENFORCE_PERMISSIONS_IN_DEV
+    ) {
       return next();
     }
+
     // TODO: Need to clean up logic a little bit
     const { authorization } = req.headers;
 
@@ -48,15 +56,78 @@ function requireAC(resource, action) {
     const permission = ac.can(req.user.role)[action](resource);
 
     if (!permission.granted) {
-      return res.status(403).json({ message: 'User Is Not Granted!' });
+      return res.status(403).json({
+        message: 'You do not have permission to access this resource',
+      });
     }
 
     req.ac = permission;
     req.ac.fields =
       permission.attributes.indexOf('*') !== -1 ? [] : permission.attributes;
 
+    // check permissions for "own" resources when user does not have updateAny access
+    if (
+      action === 'updateOwn' &&
+      !ac.can(req.user.role).updateAny(resource).granted
+    ) {
+      let show, userIsHost;
+      switch (resource) {
+        case 'Shows':
+          //check to ensure the user is the host of the show
+          const { id } = req.params;
+          show = await db.Show.findOne({ _id: id });
+          userIsHost = await userIsHostOfShow(req.user, show);
+          if (!userIsHost) {
+            return res.status(403).json({
+              message: 'You do not have permission to access this resource',
+            });
+          }
+          break;
+        case 'Playlists':
+          //check to ensure the user is the host of the related show
+          const { playlistId } = req.params;
+          let playlist = await db.Playlist.findOne({ _id: playlistId });
+          let filter = findEventQueryByDateRange(
+            playlist.start_time_utc,
+            playlist.end_time_utc,
+          )[0];
+          let shows = await db.Show.find(filter);
+          let showResults = eventList(
+            shows,
+            playlist.start_time_utc,
+            playlist.end_time_utc,
+          );
+          userIsHost = await userIsHostOfShow(req.user, showResults[0]);
+          if (!userIsHost) {
+            return res.status(403).json({
+              message: 'You do not have permission to access this resource',
+            });
+          }
+          break;
+        default:
+          return res.status(500).json({
+            message: 'updateOwn access has not been configured for ' + resource,
+          });
+      }
+    }
+
     return next();
   };
+}
+
+async function userIsHostOfShow(user, show) {
+  if (
+    typeof show.show_details.host === 'undefined' &&
+    show.master_event_id != null
+  ) {
+    let series = await db.Show.find({ _id: show.master_event_id });
+    if (String(series.show_details.host) !== String(user._id)) {
+      return false;
+    }
+  } else if (String(show.show_details.host) !== String(user._id)) {
+    return false;
+  }
+  return true;
 }
 
 module.exports = requireAC;

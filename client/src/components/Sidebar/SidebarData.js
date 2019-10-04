@@ -16,6 +16,7 @@ export const SidebarData = [
     url: '/calendar',
     iconClass: 'fas fa-car',
     tooltipText: 'Traffic Calendar',
+    allowedRoles: ['Admin', 'Full Access', 'Underwriting'],
   },
   {
     name: 'calendar',
@@ -40,12 +41,13 @@ export const SidebarData = [
     url: '/reporting',
     iconClass: 'fas fa-chart-bar',
     tooltipText: 'Reporting',
+    allowedRoles: ['Admin', 'Underwriting', 'Full Access'],
   },
   {
     name: 'user',
     url: '/user/search',
     iconClass: 'fas fa-user',
     tooltipText: 'Users',
-    // role: 'Admin',
+    allowedRoles: ['Admin'],
   },
 ];

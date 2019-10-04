@@ -4,10 +4,10 @@ import Tooltip from '../Tooltip';
 import { SidebarData } from './SidebarData';
 
 class Sidebar extends Component {
-  checkRole = sidebarRole => {
+  checkRole = allowedRoles => {
     const { authRole } = this.props;
 
-    if (authRole !== sidebarRole) {
+    if (allowedRoles.indexOf(authRole) === -1) {
       return false;
     }
 
@@ -19,9 +19,9 @@ class Sidebar extends Component {
       <nav className="sidebar">
         <ul className="sidebar__list">
           {SidebarData.map(item => {
-            const { iconClass, name, role, tooltipText, url } = item;
+            const { iconClass, name, allowedRoles, tooltipText, url } = item;
 
-            if (item.role && !this.checkRole(role)) {
+            if (allowedRoles && !this.checkRole(allowedRoles)) {
               return false;
             }
 

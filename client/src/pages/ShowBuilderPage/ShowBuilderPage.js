@@ -40,6 +40,7 @@ import {
   updateShow,
 } from '../../redux/show';
 
+import { formatHostName } from '../../utils/formatters';
 import { getShowType } from '../../utils/shows';
 import { getNextDiskAndTrackNumberForAlbum } from '../../utils/library';
 
@@ -282,6 +283,7 @@ class ShowBuilderPage extends Component {
 
   render() {
     const {
+      auth,
       handleSubmit,
       library,
       playlist,
@@ -302,6 +304,7 @@ class ShowBuilderPage extends Component {
 
     let showName = '';
     let host = null;
+    let formattedHostName;
     if (shows && Object.keys(shows).length > 0) {
       if (Object.keys(shows).length > 1) {
         console.warn(
@@ -311,6 +314,9 @@ class ShowBuilderPage extends Component {
       let show = shows[Object.keys(shows)[0]];
       showName = show.show_details.title;
       host = show.show_details.host;
+      if (host != null) {
+        formattedHostName = formatHostName(host);
+      }
     }
 
     let scratchpadForDisplay = [];
@@ -348,6 +354,12 @@ class ShowBuilderPage extends Component {
       savedItemsForDisplay.reverse(); //display saved items in reverse chronological order
     }
 
+    let canEditPlaylist =
+      auth.doc.role === 'Admin' ||
+      auth.doc.role === 'Full Access' ||
+      auth.doc.role === 'Music Library Admin' ||
+      (auth.doc.role === 'DJ' && host != null && host._id === auth.doc._id);
+
     /* START - Add Track modal variables */
     let maxDiskNumber, maxTrackNumber;
     if (addTrackModalSelectedAlbum != null) {
@@ -367,12 +379,25 @@ class ShowBuilderPage extends Component {
             <div className="show-builder__top-row">
               <div>
                 {!showFetching && (
-                  <DropdownHost
-                    key={host != null ? host._id : 'no host'}
-                    host={host}
-                    onHostSelect={this.handleHostSelect}
-                    filterByStatus="Active"
-                  />
+                  <>
+                    {(auth.doc.role === 'Admin' ||
+                      auth.doc.role === 'Full Access' ||
+                      auth.doc.role === 'Music Library Admin') && (
+                      <DropdownHost
+                        key={host != null ? host._id : 'no host'}
+                        host={host}
+                        onHostSelect={this.handleHostSelect}
+                        filterByStatus="Active"
+                      />
+                    )}
+                    {(auth.doc.role !== 'Admin' ||
+                      auth.doc.role !== 'Full Access' ||
+                      auth.doc.role !== 'Music Library Admin') && (
+                      <>
+                        <b>Host:</b> {formattedHostName}
+                      </>
+                    )}
+                  </>
                 )}
               </div>
               <div>{showName}</div>
@@ -381,12 +406,15 @@ class ShowBuilderPage extends Component {
                 <br />
                 {formattedStartTime} - {formattedEndTime}
                 <br />
-                <div className="edit-show-description">
-                  <span onClick={e => this.showEditShowDescriptionModal()}>
-                    Edit Show Description
-                  </span>
-                  <ShowModalController />
-                </div>
+                {canEditPlaylist && (
+                  <div className="edit-show-description">
+                    <span onClick={e => this.showEditShowDescriptionModal()}>
+                      Edit Show Description
+                    </span>
+
+                    <ShowModalController />
+                  </div>
+                )}
               </div>
             </div>
 
@@ -401,8 +429,8 @@ class ShowBuilderPage extends Component {
                   typeof scratchpad !== 'undefined' && (
                     <ShowBuilderItemList
                       items={scratchpadForDisplay}
-                      deleteButton={true}
-                      toSavedItemsButton={true}
+                      deleteButton={canEditPlaylist}
+                      toSavedItemsButton={canEditPlaylist}
                       onRearrangeItem={this.handleRearrangeScratchpadItem}
                       onFinishRearrangeShowBuilderItem={
                         this.handleFinishRearrangeScratchpadItem
@@ -417,7 +445,7 @@ class ShowBuilderPage extends Component {
                   typeof saved_items !== 'undefined' && (
                     <ShowBuilderItemList
                       items={savedItemsForDisplay}
-                      toScratchpadButton={true}
+                      toScratchpadButton={canEditPlaylist}
                       onRearrangeItem={this.handleRearrangeSavedItem}
                       onFinishRearrangeShowBuilderItem={
                         this.handleFinishRearrangeSavedItem
@@ -426,80 +454,82 @@ class ShowBuilderPage extends Component {
                   )}
               </div>
 
-              <div className="library-tab-container">
-                <div className="library-tab-container__tabs">
-                  <div
-                    className={activeTab === 'search' ? 'active' : ''}
-                    onClick={() => this.setState({ activeTab: 'search' })}
-                  >
-                    Search
+              {canEditPlaylist && (
+                <div className="library-tab-container">
+                  <div className="library-tab-container__tabs">
+                    <div
+                      className={activeTab === 'search' ? 'active' : ''}
+                      onClick={() => this.setState({ activeTab: 'search' })}
+                    >
+                      Search
+                    </div>
+                    <div
+                      className={activeTab === 'voice' ? 'active' : ''}
+                      onClick={() => this.setState({ activeTab: 'voice' })}
+                    >
+                      Voice
+                    </div>
+                    <div
+                      className={activeTab === 'comment' ? 'active' : ''}
+                      onClick={() => this.setState({ activeTab: 'comment' })}
+                    >
+                      Comment
+                    </div>
                   </div>
-                  <div
-                    className={activeTab === 'voice' ? 'active' : ''}
-                    onClick={() => this.setState({ activeTab: 'voice' })}
-                  >
-                    Voice
-                  </div>
-                  <div
-                    className={activeTab === 'comment' ? 'active' : ''}
-                    onClick={() => this.setState({ activeTab: 'comment' })}
-                  >
-                    Comment
-                  </div>
+                  {activeTab === 'search' && (
+                    <div className="library-tab-container__tab-content">
+                      <form onSubmit={handleSubmit(this.searchLibrary)}>
+                        <Field
+                          className="mb-1"
+                          component={Input}
+                          label="Search"
+                          name="q"
+                          type="text"
+                        />
+                      </form>
+                      {library.docs != null && library.docs.length > 0 && (
+                        <div className="library-results">
+                          <table className="base-table-style">
+                            {this.renderLibraryResultsHeader()}
+                            {this.renderLibraryResultsBody()}
+                          </table>
+                          <span
+                            onClick={this.addTrackModalOpen}
+                            className="library-results__add-new-track"
+                          >
+                            Add New Track
+                          </span>
+                        </div>
+                      )}
+                      {library.docs != null && library.docs.length === 0 && (
+                        <div className="library-results__no-results">
+                          <em>
+                            There were no tracks found matching your search.
+                          </em>
+                          <br />
+                          <br />
+                          <span
+                            onClick={this.addTrackModalOpen}
+                            className="library-results__add-new-track"
+                          >
+                            Add New Track
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                  {activeTab === 'voice' && (
+                    <div className="library-tab-container__tab-content">
+                      Voice content
+                    </div>
+                  )}
+                  {activeTab === 'comment' && (
+                    <div className="library-tab-container__tab-content">
+                      <FormShowBuilderComment />
+                    </div>
+                  )}
                 </div>
-                {activeTab === 'search' && (
-                  <div className="library-tab-container__tab-content">
-                    <form onSubmit={handleSubmit(this.searchLibrary)}>
-                      <Field
-                        className="mb-1"
-                        component={Input}
-                        label="Search"
-                        name="q"
-                        type="text"
-                      />
-                    </form>
-                    {library.docs != null && library.docs.length > 0 && (
-                      <div className="library-results">
-                        <table className="base-table-style">
-                          {this.renderLibraryResultsHeader()}
-                          {this.renderLibraryResultsBody()}
-                        </table>
-                        <span
-                          onClick={this.addTrackModalOpen}
-                          className="library-results__add-new-track"
-                        >
-                          Add New Track
-                        </span>
-                      </div>
-                    )}
-                    {library.docs != null && library.docs.length === 0 && (
-                      <div className="library-results__no-results">
-                        <em>
-                          There were no tracks found matching your search.
-                        </em>
-                        <br />
-                        <br />
-                        <span
-                          onClick={this.addTrackModalOpen}
-                          className="library-results__add-new-track"
-                        >
-                          Add New Track
-                        </span>
-                      </div>
-                    )}
-                  </div>
-                )}
-                {activeTab === 'voice' && (
-                  <div className="library-tab-container__tab-content">
-                    Voice content
-                  </div>
-                )}
-                {activeTab === 'comment' && (
-                  <div className="library-tab-container__tab-content">
-                    <FormShowBuilderComment />
-                  </div>
-                )}
-              </div>
+              )}
             </div>
           </div>
 
@@ -651,8 +681,9 @@ class ShowBuilderPage extends Component {
   };
 }
 
-function mapStateToProps({ config, library, show, playlist, traffic }) {
+function mapStateToProps({ auth, config, library, show, playlist, traffic }) {
   return {
+    auth,
     config,
     library,
     playlist,

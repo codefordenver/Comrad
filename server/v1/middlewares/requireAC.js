@@ -1,7 +1,8 @@
 const AccessControl = require('accesscontrol');
 const db = require('../models');
 const {
-  utils__mongoose: { findShowQueryByDateRange },
+  utils: { eventList },
+  utils__mongoose: { findEventQueryByDateRange },
 } = require('../controllers/events/utils');
 
 function requireAC(resource, action) {
@@ -82,17 +83,21 @@ function requireAC(resource, action) {
             });
           }
           break;
-        case 'Playlist':
+        case 'Playlists':
           //check to ensure the user is the host of the related show
           const { playlistId } = req.params;
-          let playlist = await db.Playlist.find({ _id: playlistId });
-          show = await db.Show.findOne(
-            findShowQueryByDateRange(
-              playlist.start_time_utc,
-              playlist.end_time_utc,
-            ),
+          let playlist = await db.Playlist.findOne({ _id: playlistId });
+          let filter = findEventQueryByDateRange(
+            playlist.start_time_utc,
+            playlist.end_time_utc,
+          )[0];
+          let shows = await db.Show.find(filter);
+          let showResults = eventList(
+            shows,
+            playlist.start_time_utc,
+            playlist.end_time_utc,
           );
-          userIsHost = await userIsHostOfShow(req.user, show);
+          userIsHost = await userIsHostOfShow(req.user, showResults[0]);
           if (!userIsHost) {
             return res.status(403).json({
               message: 'You do not have permission to access this resource',

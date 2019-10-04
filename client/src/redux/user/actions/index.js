@@ -2,7 +2,9 @@ import { add } from './add';
 import { alertClose } from './alertClose';
 import { clear } from './clear';
 import { clearSearch } from './clearSearch';
+import { createApiKey } from './createApiKey';
 import { create } from './create';
+import { deleteApiKey } from './deleteApiKey';
 import { remove } from './remove';
 import { findAll } from './findAll';
 import { findOne } from './findOne';
@@ -16,6 +18,8 @@ export const userActions = {
   clear,
   clearSearch,
   create,
+  createApiKey,
+  deleteApiKey,
   findAll,
   findOne,
   remove,

@@ -4,7 +4,9 @@ function findById(req, res) {
   const { id } = req.params;
 
   db.User.findById(id)
-    .then(dbUser => {
+    .then(async dbUser => {
+      dbUser.can_delete = await dbUser.canDelete();
+
       delete dbUser._doc.password;
 
       res.json(dbUser);

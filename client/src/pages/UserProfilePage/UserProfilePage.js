@@ -63,10 +63,20 @@ class UserProfilePage extends Component {
     userActions.deleteApiKey({ _id });
   };
 
-  handleUserDelete = () => {
-    const { history, match, userActions } = this.props;
+  handleCanDeleteUser = () => {
+    const { history, userActions, userState } = this.props;
+    const { _id } = userState.doc;
 
-    userActions.remove(match.params.id, () => {
+    userActions.remove({ _id }, () => {
+      history.push('/user/search');
+    });
+  };
+
+  handleUserDelete = () => {
+    const { history, userState, userActions } = this.props;
+    const { _id } = userState.doc;
+
+    userActions.remove({ _id }, () => {
       history.push('/user/search');
     });
   };
@@ -84,6 +94,7 @@ class UserProfilePage extends Component {
 
     const {
       api_key,
+      can_delete,
       email,
       first_name,
       last_name,
@@ -121,52 +132,87 @@ class UserProfilePage extends Component {
                   </CardV2.Body>
                 </CardV2>
 
-                {/* ======= API KEY ======= */}
+                {/* ======= ADMIN ======= */}
                 {authState.doc && authState.doc.role === 'Admin' ? (
                   <CardV2>
                     <CardV2.Body>
-                      <Heading size={3}>API Key</Heading>
-
-                      <Heading className="mb-1" size={5}>
-                        Status
-                        <span
-                          className={classnames(
-                            'user-profile-page__api-key-status',
-                            `user-profile-page__api-key-status--${
-                              api_key.token ? 'true' : 'false'
-                            }`,
-                          )}
-                        >
-                          {api_key.token ? 'TRUE' : 'FALSE'}
-                        </span>
-                      </Heading>
+                      <Heading size={3}>Admin</Heading>
 
                       <Row>
+                        {/* ======= API KEY ======= */}
                         <Col>
-                          <Button
-                            className="w-100"
-                            color="primary"
-                            onClick={handleApiCreateReset}
-                          >
-                            {api_key.token ? 'Reset' : 'Create'}
-                          </Button>
-                        </Col>
-                        {api_key.token ? (
-                          <Col>
-                            <Button
-                              className="w-100"
-                              color="danger"
-                              onClick={handleApiDelete}
+                          <Heading className="mb-1" size={5}>
+                            Status
+                            <span
+                              className={classnames(
+                                'user-profile-page__api-key-status',
+                                `user-profile-page__api-key-status--${
+                                  api_key.token ? 'true' : 'false'
+                                }`,
+                              )}
                             >
-                              Delete
-                            </Button>
-                          </Col>
-                        ) : null}
+                              {api_key.token ? 'TRUE' : 'FALSE'}
+                            </span>
+                          </Heading>
+
+                          <Row>
+                            <Col>
+                              <Button
+                                className="w-100 mb-1"
+                                color="primary"
+                                onClick={handleApiCreateReset}
+                              >
+                                {api_key.token ? 'Reset' : 'Create'}
+                              </Button>
+                              {api_key.token ? (
+                                <Button
+                                  className="w-100"
+                                  color="danger"
+                                  onClick={handleApiDelete}
+                                >
+                                  Delete
+                                </Button>
+                              ) : null}
+                            </Col>
+                          </Row>
+                        </Col>
+                        {/* ======= END API KEY ======= */}
+
+                        {/* ======= CAN DELETE ======= */}
+                        <Col>
+                          <Heading className="mb-1" size={5}>
+                            Can Delete
+                            <span
+                              className={classnames(
+                                'user-profile-page__api-key-status',
+                                `user-profile-page__api-key-status--${
+                                  can_delete ? 'true' : 'false'
+                                }`,
+                              )}
+                            >
+                              {can_delete ? 'TRUE' : 'FALSE'}
+                            </span>
+                          </Heading>
+
+                          <Row>
+                            <Col>
+                              <Button
+                                className="w-100"
+                                color="danger"
+                                onClick={openModal}
+                                disabled={!can_delete}
+                              >
+                                Delete User
+                              </Button>
+                            </Col>
+                          </Row>
+                        </Col>
+                        {/* ======= END CAN DELETE ======= */}
                       </Row>
                     </CardV2.Body>
                   </CardV2>
                 ) : null}
-                {/* ======= END API KEY ======= */}
+                {/* ======= END ADMIN======= */}
               </Col>
 
               <Col>
@@ -177,15 +223,6 @@ class UserProfilePage extends Component {
                       <Col>
                         <Button className="w-100" color="primary">
                           Edit
-                        </Button>
-                      </Col>
-                      <Col>
-                        <Button
-                          className="w-100"
-                          color="danger"
-                          onClick={openModal}
-                        >
-                          Delete
                         </Button>
                       </Col>
                     </Row>

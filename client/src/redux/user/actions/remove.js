@@ -2,11 +2,11 @@ import { userTypes } from '../userTypes';
 import { alertTypes } from '../../alert/alertTypes';
 import { userAPI } from '../../../api';
 
-export const remove = (id, callback) => async dispatch => {
+export const remove = (values, callback) => async dispatch => {
   try {
     dispatch({ type: userTypes.LOADING });
 
-    const { data: doc } = await userAPI.remove(id);
+    const { data: doc } = await userAPI.remove(values);
 
     callback();
 

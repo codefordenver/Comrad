@@ -23,7 +23,6 @@ export function Heading({ align, children, className, size }) {
 }
 
 Heading.propTypes = {
-  children: PropTypes.string,
   /**
    * Any additional classes to add
    */

@@ -63,7 +63,7 @@ class Button extends Component {
           BUTTON_SIZE[size],
           className,
         )}
-        disabled={submitting}
+        disabled={disabled || submitting}
         onClick={onClick}
         size={size}
         type={BUTTON_TYPE[type]}

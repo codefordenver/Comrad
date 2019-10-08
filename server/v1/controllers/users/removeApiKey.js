@@ -16,7 +16,9 @@ async function removeApiKey(req, res) {
       new: true,
     },
   )
-    .then(dbUser => {
+    .then(async dbUser => {
+      dbUser.can_delete = await dbUser.canDelete();
+
       res.status(200).json(dbUser);
     })
     .catch(err => {

@@ -16,6 +16,10 @@ router
   .put(requireAC('Users', 'createAny'), usersController.removeApiKey);
 
 router
+  .route('/can-delete')
+  .get(requireAC('Users', 'readAny'), usersController.canDelete);
+
+router
   .route('/random')
   .post(requireAC('Users', 'createAny'), usersController.randomUser);
 

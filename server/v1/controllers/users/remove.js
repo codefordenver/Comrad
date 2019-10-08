@@ -6,7 +6,7 @@ async function remove(req, res) {
   const { id } = req.params;
 
   db.User.findById({ _id: id })
-    .then(dbUser => {
+    .then(async dbUser => {
       // can only delete admin if there are more than one
       // if (
       //   permissions.find(item => item.toLowerCase() === 'admin') &&
@@ -18,7 +18,7 @@ async function remove(req, res) {
       // }
 
       // can only delete user if can_delete = true
-      if (!dbUser.can_delete) {
+      if (await !dbUser.canDelete()) {
         return res
           .status(404)
           .json({ message: 'User cannot be deleted from the database' });

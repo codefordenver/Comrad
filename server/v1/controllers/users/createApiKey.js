@@ -28,8 +28,9 @@ async function createApiKey(req, res) {
         },
         { new: true },
       )
-        .lean()
-        .then(dbUser => {
+        .then(async dbUser => {
+          dbUser.can_delete = await dbUser.canDelete();
+
           delete dbUser.password;
 
           return res.json({ doc: dbUser, api_key });

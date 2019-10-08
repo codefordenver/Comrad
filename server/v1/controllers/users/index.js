@@ -1,3 +1,4 @@
+const canDelete = require('./canDelete');
 const create = require('./create');
 const createApiKey = require('./createApiKey');
 const findAll = require('./findAll');
@@ -11,6 +12,7 @@ const update = require('./update');
 const updatePermission = require('./updatePermission');
 
 module.exports = {
+  canDelete,
   create,
   createApiKey,
   findAll,

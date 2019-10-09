@@ -73,7 +73,7 @@ function mapStateToProps(state) {
       start_time_utc: startTime,
       end_time_utc: endTime,
       repeat_start_date: startTime,
-      repeat_end_date: endTime,
+      repeat_end_date: null,
       startDate: searchDates.start,
       endDate: searchDates.end,
       is_recurring: false,

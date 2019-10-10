@@ -259,60 +259,95 @@ async function seedDB() {
     if (!scriptProgress.shows) {
       console.log('seeding shows...');
       let bulkOperations = [];
-      await Promise.all(
-        seed.show.map(async show => {
-          if (show.show_details.host != null) {
-            show.show_details.host = await userByOnAirName(
-              show.show_details.host,
-            );
-          }
-          let showInstances = [];
-          if (show.instances) {
-            showInstances = show.instances;
-            delete show.instances;
-          }
+      //it's important for this to be synchronous so that we run through host names one-by-one so we don't trigger multiple insert operations for the same host
+      for (let sIdx = 0; sIdx < seed.show.length; sIdx++) {
+        let show = seed.show[sIdx];
+        if (show.show_details.host != null) {
+          show.show_details.host = await userByOnAirName(
+            show.show_details.host,
+          );
+        }
+        let showInstances = [];
+        if (show.instances) {
+          showInstances = show.instances;
+          delete show.instances;
+        }
+        let excludeDates = [];
+        if (show.exclude_dates) {
+          excludeDates = show.exclude_dates;
+          delete show.exclude_dates;
+        }
 
-          //If the end date does not exist, just put an infinite end date
-          if (show.repeat_rule) {
-            if (!show.repeat_rule.repeat_end_date) {
-              show.repeat_rule.repeat_end_date = new Date(
-                '9999-01-01T00:00:00',
+        //If the end date does not exist, just put an infinite end date
+        if (show.repeat_rule) {
+          if (!show.repeat_rule.repeat_end_date) {
+            show.repeat_rule.repeat_end_date = new Date('9999-01-01T00:00:00');
+          }
+        }
+
+        const newShow = await db.Show.create(show);
+        if (showInstances.length > 0) {
+          //it's important for this to be synchronous so that we run through host names one-by-one so we don't trigger multiple insert operations for the same host
+          for (let siIdx = 0; siIdx < showInstances.length; siIdx++) {
+            let instance = showInstances[siIdx];
+            instance.master_event_id = newShow;
+            if (
+              instance.show_details != null &&
+              instance.show_details.host != null
+            ) {
+              instance.show_details.host = await userByOnAirName(
+                instance.show_details.host,
               );
             }
+
+            //This assume that all instances are a single day so the start and end date are the same
+            if (instance.repeat_rule) {
+              if (!instance.repeat_rule.repeat_end_date) {
+                instance.repeat_rule.repeat_end_date =
+                  instance.repeat_rule.repeat_start_date;
+              }
+            }
+
+            bulkOperations.push({
+              insertOne: {
+                document: instance,
+              },
+            });
           }
-
-          const newShow = await db.Show.create(show);
-          if (showInstances.length > 0) {
-            await Promise.all(
-              showInstances.map(async instance => {
-                instance.master_event_id = newShow;
-                if (
-                  instance.show_details != null &&
-                  instance.show_details.host != null
-                ) {
-                  instance.show_details.host = await userByOnAirName(
-                    instance.show_details.host,
-                  );
-                }
-
-                //This assume that all instances are a single day so the start and end date are the same
-                if (instance.repeat_rule) {
-                  if (!instance.repeat_rule.repeat_end_date) {
-                    instance.repeat_rule.repeat_end_date =
-                      instance.repeat_rule.repeat_start_date;
-                  }
-                }
-
-                bulkOperations.push({
-                  insertOne: {
-                    document: instance,
-                  },
-                });
-              }),
+        }
+        if (excludeDates.length > 0) {
+          for (let edIdx = 0; edIdx < excludeDates.length; edIdx++) {
+            let excludeDate = excludeDates[edIdx];
+            let showLength = moment.duration(
+              moment(show.end_time_utc).diff(moment(show.start_time_utc)),
             );
+            let excludeEndTime = moment(excludeDate).add(
+              showLength.asMinutes(),
+              'minutes',
+            );
+            let deletedInstance = {
+              master_event_id: newShow,
+              status: 'deleted',
+              start_time_utc: excludeDate,
+              end_time_utc: excludeEndTime,
+              repeat_rule: {
+                repeat_start_date: excludeDate,
+                repeat_end_date: excludeEndTime,
+              },
+              replace_event_date: excludeDate,
+              is_recurring: false,
+              created_at: Date.now(),
+              updated_at: Date.now(),
+            };
+
+            bulkOperations.push({
+              insertOne: {
+                document: deletedInstance,
+              },
+            });
           }
-        }),
-      );
+        }
+      }
       console.log('seeding ' + bulkOperations.length + ' show instances...');
       if (bulkOperations.length > 0) {
         await db.Show.bulkWrite(bulkOperations);

@@ -367,6 +367,11 @@ async function seedDB() {
             trafficInstances = traffic.instances;
             delete traffic.instances;
           }
+          let excludeDates = [];
+          if (traffic.exclude_dates) {
+            excludeDates = traffic.exclude_dates;
+            delete traffic.exclude_dates;
+          }
 
           //If the end date does not exist, just put an infinite end date
           if (traffic.repeat_rule) {
@@ -398,6 +403,40 @@ async function seedDB() {
                 });
               }),
             );
+          }
+          if (excludeDates.length > 0) {
+            for (let edIdx = 0; edIdx < excludeDates.length; edIdx++) {
+              let excludeDate = excludeDates[edIdx];
+              let trafficLength = moment.duration(
+                moment(traffic.end_time_utc).diff(
+                  moment(traffic.start_time_utc),
+                ),
+              );
+              let excludeEndTime = moment(excludeDate).add(
+                trafficLength.asMinutes(),
+                'minutes',
+              );
+              let deletedInstance = {
+                master_event_id: newTraffic,
+                status: 'deleted',
+                start_time_utc: excludeDate,
+                end_time_utc: excludeEndTime,
+                repeat_rule: {
+                  repeat_start_date: excludeDate,
+                  repeat_end_date: excludeEndTime,
+                },
+                replace_event_date: excludeDate,
+                is_recurring: false,
+                created_at: Date.now(),
+                updated_at: Date.now(),
+              };
+
+              bulkOperations.push({
+                insertOne: {
+                  document: deletedInstance,
+                },
+              });
+            }
           }
         }),
       );

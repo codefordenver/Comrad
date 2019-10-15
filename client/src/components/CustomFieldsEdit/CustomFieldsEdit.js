@@ -7,12 +7,15 @@ import Select from '../Select';
 
 class CustomFieldsEdit extends Component {
   render() {
-    const { fieldsMeta } = this.props;
+    const { fieldsMeta, prefixToCustomProperty } = this.props;
 
     let elements = [];
 
     fieldsMeta.forEach(function(field, index) {
       let fieldName = 'custom.' + field.name;
+      if (prefixToCustomProperty != null) {
+        fieldName = prefixToCustomProperty + '.' + fieldName;
+      }
       switch (field.editFieldType) {
         case 'checkbox':
           elements.push(

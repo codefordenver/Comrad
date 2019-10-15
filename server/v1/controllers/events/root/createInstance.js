@@ -39,15 +39,20 @@ function createInstance(req, res) {
     d1.isNew = true;
     d1.save()
       .then(dbShow => {
-        dbModel.populate(dbShow, populateShowHost()).then(dbShow => {
-          dbModel
-            .populate(dbShow, populateMasterEvent())
-            .then(dbShow => {
-              res.json(eventList(dbShow, start_time_utc, end_time_utc));
-            })
-            .catch(err => {
-              res.status(422).json(err);
-            });
+        //query the database for the new record: dbShow will not be correct, because it
+        //sets an array for "guests" rather than leaving "guests" as undefined (the array's
+        //default value)
+        dbModel.findOne({ _id: dbShow._id }).then(dbShow => {
+          dbModel.populate(dbShow, populateShowHost()).then(dbShow => {
+            dbModel
+              .populate(dbShow, populateMasterEvent())
+              .then(dbShow => {
+                res.json(eventList(dbShow, start_time_utc, end_time_utc));
+              })
+              .catch(err => {
+                res.status(422).json(err);
+              });
+          });
         });
       })
       .catch(err => res.status(422).json(err));

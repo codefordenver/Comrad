@@ -35,7 +35,17 @@ class EditModal extends Component {
 
     if (changes) {
       changes.forEach(difference => {
-        this.assign(finalObject, difference.path, difference.rhs);
+        if (difference.kind === 'A') {
+          //array
+          // we will save the whole array, we don't need to determine the individual paths that were changed because the instance will contain the full array (there won't be a part of it stored on the series)
+          let array = values;
+          difference.path.forEach(idx => {
+            array = array[idx];
+          });
+          finalObject[difference.path.join('.')] = array;
+        } else {
+          this.assign(finalObject, difference.path, difference.rhs);
+        }
       });
     }
 

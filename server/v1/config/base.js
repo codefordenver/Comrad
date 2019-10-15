@@ -22,6 +22,13 @@ module.exports = {
         ],
       },
     ],
+    show: [
+      {
+        name: 'record_audio',
+        label: 'Record Audio',
+        editFieldType: 'checkbox',
+      },
+    ],
   },
   queryPageSize: 100,
   stationTimeZone: 'America/Denver', // all events will be adjusted to this time zone (for Daylight Savings Time adjustments), should be in a proper format for the Luxon package

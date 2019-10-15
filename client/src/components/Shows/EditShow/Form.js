@@ -17,6 +17,7 @@ class EditShowForm extends Component {
   render() {
     const { props } = this;
     const {
+      isInstance,
       isRepeat,
       handleSubmit,
       date,
@@ -44,6 +45,7 @@ class EditShowForm extends Component {
               <ShowDetailsBottom
                 host={host}
                 editSummaryAndDescriptionOnly={editSummaryAndDescriptionOnly}
+                isInstance={isInstance}
               />
             </div>
 
@@ -64,8 +66,8 @@ class EditShowForm extends Component {
 const selector = formValueSelector(FORM_NAME);
 
 function mapStateToProps(state) {
+  const selectedShow = getShowSelected(state.show);
   const initialValues = state => {
-    const selectedShow = getShowSelected(state.show);
     const searchDates = getSearchDate(state.show);
     if (!selectedShow.repeat_start_date) {
       selectedShow.repeat_start_date = selectedShow.start_time_utc;
@@ -79,10 +81,12 @@ function mapStateToProps(state) {
   };
 
   const isRepeat = selector(state, 'is_recurring');
+  const isInstance = selectedShow.master_event_id != null;
   const date = selector(state, 'start_time_utc');
 
   return {
     initialValues: initialValues(state),
+    isInstance,
     isRepeat,
     date,
   };

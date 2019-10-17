@@ -12,10 +12,10 @@ export const SidebarData = [
     tooltipText: 'Show Builder',
   },
   {
-    name: 'calendar-check',
-    url: '/calendar',
+    name: 'traffic',
+    url: '/traffic',
     iconClass: 'fas fa-car',
-    tooltipText: 'Traffic Calendar',
+    tooltipText: 'Traffic',
     allowedRoles: ['Admin', 'Full Access', 'Underwriting'],
   },
   {

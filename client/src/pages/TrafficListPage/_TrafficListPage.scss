@@ -5,4 +5,48 @@
     &__date-selector {
         max-width: 20rem;
     }
+    &__show {
+      margin-top: 1em;
+    }
+    &__traffic {
+      position: relative;
+      padding-left: 24px;
+      margin-bottom: 3px;
+      font-size: 1.2rem;
+      &::before {
+        content: ' ';
+        display: block;
+        position: absolute;
+        left: 0;
+        background: gray;
+        border-radius: 10px;
+        width: 20px;
+        height: 20px;
+      }
+      
+      &--announcement::before {
+        background-color: green; 
+      }
+      &--comment::before {
+        background-color: #BBBBBB; 
+      }
+      &--feature::before {
+        background-color: royalblue; 
+      }
+      &--giveaway::before {
+        background-color: darkgoldenrod; 
+      }
+      &--legal-id::before {
+        background-color: indigo; 
+      }
+      &--psa::before {
+        background-color: darkorange; 
+      }
+      &--track::before {
+        background-color: #2694E8; 
+      }
+      &--underwriting::before { 
+        background-color: slategray; 
+      }
+    }
 }

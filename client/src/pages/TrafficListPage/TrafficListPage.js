@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router-dom';
@@ -62,6 +63,9 @@ class TrafficListPage extends Component {
 
     let listElements = [];
     if (shows !== null && traffic.docs !== null) {
+      let trafficIndex = 0;
+      let currentTrafficObject =
+        trafficIndex < traffic.docs.length ? traffic.docs[trafficIndex] : null;
       let displayDate = '';
       Object.keys(shows).forEach(function(s) {
         let showObject = shows[s];
@@ -76,15 +80,38 @@ class TrafficListPage extends Component {
         listElements.push(
           <div className="traffic-list__show" key={'show-' + s}>
             <h2>{showObject.show_details.title}</h2>
-            <span>
+            <h5>
               {startTimeFormatted} - {endTimeFormatted}
-            </span>
+            </h5>
           </div>,
         );
-      });
-      Object.keys(traffic.docs).forEach(t => {
-        let trafficObject = traffic.docs[t];
-        listElements.push(<div>{trafficObject.traffic_details.title}</div>);
+
+        while (
+          currentTrafficObject != null &&
+          currentTrafficObject.start_time_utc < showObject.end_time_utc
+        ) {
+          listElements.push(
+            <div
+              className={classnames(
+                'traffic-list__traffic',
+                'traffic-list__traffic--' +
+                  currentTrafficObject.traffic_details.type
+                    .replace(/ /g, '-')
+                    .toLowerCase(),
+              )}
+              key={'traffic-' + trafficIndex}
+            >
+              {moment(currentTrafficObject.start_time_utc).format('h:mm a')}
+              <span>&nbsp;-&nbsp;</span>
+              {currentTrafficObject.traffic_details.title}
+            </div>,
+          );
+          trafficIndex++;
+          currentTrafficObject =
+            trafficIndex < traffic.docs.length
+              ? traffic.docs[trafficIndex]
+              : null;
+        }
       });
     }
 

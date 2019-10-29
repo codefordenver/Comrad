@@ -4,9 +4,9 @@ import { Field } from 'redux-form';
 import _ from 'lodash';
 import moment from 'moment';
 import RRule from 'rrule';
-import { DatePicker__React } from '../../DatePicker';
-import { InputLabel } from '../../Input';
-import { requiredValidate } from '../../../utils/validation';
+import { DatePicker__React } from '../DatePicker';
+import { InputLabel } from '../Input';
+import { requiredValidate } from '../../utils/validation';
 
 class RepeatDropdown extends Component {
   definedRepeatRules = date => {

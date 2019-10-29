@@ -5,7 +5,7 @@ import { reduxForm, formValueSelector } from 'redux-form';
 import Button from '../../Button';
 import Card, { CardBody } from '../../Card';
 import ModalClose from '../../Modal/Modal__Button_Close';
-import RepeatDropdown from '../CommonShowForms/RepeatDropdown';
+import RepeatDropdown from '../../RepeatDropdown';
 import ShowDetailsTop from '../CommonShowForms/ShowDetailsTop';
 import ShowDetailsBottom from '../CommonShowForms/ShowDetailsBottom';
 

@@ -7,6 +7,8 @@ const initialState = {
 
 export const trafficReducer = (state = initialState, { type, payload }) => {
   switch (type) {
+    case trafficTypes.CLEAR:
+      return initialState;
     case trafficTypes.FIND:
       return {
         ...state,

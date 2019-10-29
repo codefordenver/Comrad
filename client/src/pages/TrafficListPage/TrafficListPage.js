@@ -47,7 +47,7 @@ class TrafficListPage extends Component {
   };
 
   updateListData = () => {
-    const { trafficActions, searchShow, traffic } = this.props;
+    const { trafficActions, searchShow } = this.props;
     const { searchDate } = this.state;
 
     const nextDay = searchDate.clone();
@@ -66,17 +66,12 @@ class TrafficListPage extends Component {
       let trafficIndex = 0;
       let currentTrafficObject =
         trafficIndex < traffic.docs.length ? traffic.docs[trafficIndex] : null;
-      let displayDate = '';
       Object.keys(shows).forEach(function(s) {
         let showObject = shows[s];
         let startTime = moment(showObject.start_time_utc);
         let endTime = moment(showObject.end_time_utc);
         let startTimeFormatted = startTime.format('LT');
         let endTimeFormatted = endTime.format('LT');
-        let startTimeUtc = moment(showObject.start_time_utc).utc();
-        let endTimeUtc = moment(showObject.end_time_utc).utc();
-        let showDate = startTime.format('LL');
-        showDate = showDate.substring(0, showDate.lastIndexOf(',')); // format as "March 3"
         listElements.push(
           <div className="traffic-list__show" key={'show-' + s}>
             <h2>{showObject.show_details.title}</h2>
@@ -126,6 +121,10 @@ class TrafficListPage extends Component {
         <Card>
           <CardBody>
             <h1>Traffic List</h1>
+            <Link className="traffic-add-button" to="/traffic/add">
+              <div className="traffic-add-button__text">Add</div>
+              <i className="fas fa-plus" />
+            </Link>
           </CardBody>
         </Card>
         <Card>

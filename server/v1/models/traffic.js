@@ -27,7 +27,6 @@ const trafficSchema = new Schema(
       custom: Schema.Types.Mixed, // this will be an object that can contain any number of custom properties
 
       // for feature
-      summary: String,
       producer: String,
 
       // for underwriting

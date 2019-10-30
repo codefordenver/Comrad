@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 
 import MainLayout from '../../layouts/MainLayout';
 import TrafficAddPage from '../../pages/TrafficAddPage';
 import TrafficListPage from '../../pages/TrafficListPage';
+import TrafficViewPage from '../../pages/TrafficViewPage';
 
 class TrafficRoutes extends Component {
   render() {
@@ -12,7 +13,14 @@ class TrafficRoutes extends Component {
     return (
       <MainLayout>
         <Route exact path={`${url}/`} component={TrafficListPage} />
-        <Route exact path={`${url}/add`} component={TrafficAddPage} />
+        <Switch>
+          <Route exact path={`${url}/add`} component={TrafficAddPage} />
+          <Route
+            exact
+            path={`${url}/:masterTimeId`}
+            component={TrafficViewPage}
+          />
+        </Switch>
       </MainLayout>
     );
   }

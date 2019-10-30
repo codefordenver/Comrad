@@ -126,7 +126,9 @@ class TrafficListPage extends Component {
             >
               {moment(currentTrafficObject.start_time_utc).format('h:mm a')}
               <span>&nbsp;-&nbsp;</span>
-              {currentTrafficObject.traffic_details.title}
+              <Link to={'/traffic/' + currentTrafficObject.master_time_id}>
+                {currentTrafficObject.traffic_details.title}
+              </Link>
             </div>,
           );
           trafficIndex++;

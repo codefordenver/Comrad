@@ -1,5 +1,6 @@
 export const trafficTypes = {
   CLEAR: 'traffic_clear',
-  FIND: 'traffic_find_one',
+  FIND: 'traffic_find',
+  FIND_BY_ID: 'traffic_find_by_id',
   LOAD: 'traffic_load',
 };

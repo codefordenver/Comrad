@@ -9,7 +9,6 @@ import Input from '../../Input';
 import RepeatDropdown from '../../RepeatDropdown';
 import RichTextArea from '../../RichTextArea';
 import Select from '../../Select';
-import TextArea from '../../TextArea';
 
 import { requiredValidate } from '../../../utils/validation';
 

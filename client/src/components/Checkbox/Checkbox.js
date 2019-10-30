@@ -53,6 +53,9 @@ class Checkbox extends Component {
     if (this.props.input != null) {
       this.props.input.onChange(e.target.checked);
     }
+    if (this.props.onChange != null) {
+      this.props.onChange(e.target.checked);
+    }
     this.setState({ checked: e.target.checked });
   };
 

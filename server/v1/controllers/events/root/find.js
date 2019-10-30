@@ -8,7 +8,13 @@ const {
 } = require('../utils');
 
 function find(req, res) {
-  let { endDate, host, showsWithNoHost, startDate } = req.query;
+  let {
+    endDate,
+    host,
+    showsWithNoHost,
+    startDate,
+    filterByTrafficType,
+  } = req.query;
   const { eventType } = req.params;
 
   const dbModel = getModelForEventType(eventType);
@@ -40,6 +46,15 @@ function find(req, res) {
     );
   }
 
+  if (filterByTrafficType != null) {
+    promiseChain.push(
+      dbModel.find(
+        { 'traffic_details.type': { $in: filterByTrafficType } },
+        { _id: 1 },
+      ),
+    );
+  }
+
   Promise.all(promiseChain)
     .then(promiseResults => {
       if (host != null) {
@@ -64,6 +79,27 @@ function find(req, res) {
                 { _id: { $in: retrieveSeries } },
                 //the series has the matching host, we will get all instances:
                 { master_event_id: { $in: retrieveAllInstancesForSeries } },
+              ],
+            },
+          ],
+        };
+      }
+
+      if (filterByTrafficType != null) {
+        //only query traffic with a type in the list provided by filterByTrafficType
+        let matchingTrafficTypeIds = [];
+        promiseResults[0].forEach(traffic => {
+          matchingTrafficTypeIds.push(traffic._id);
+        });
+        filter = {
+          $and: [
+            filter,
+            {
+              $or: [
+                //instance is the traffic type:
+                { _id: { $in: matchingTrafficTypeIds } },
+                //the series matches the traffic type
+                { master_event_id: { $in: matchingTrafficTypeIds } },
               ],
             },
           ],

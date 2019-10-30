@@ -14,6 +14,7 @@ import {
 } from '../../redux/show';
 import Card, { CardBody } from '../../components/Card';
 import DatePicker from '../../components/DatePicker';
+import Loading from '../../components/Loading';
 
 class TrafficListPage extends Component {
   state = {
@@ -134,6 +135,9 @@ class TrafficListPage extends Component {
             </div>
             {!showsFetching && !traffic.loading && (
               <div className="traffic-list__events">{listElements}</div>
+            )}
+            {(showsFetching || traffic.loading) && (
+              <Loading displayMode="static" />
             )}
           </CardBody>
         </Card>

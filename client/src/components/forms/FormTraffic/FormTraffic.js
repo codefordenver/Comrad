@@ -8,6 +8,7 @@ import { DatePicker__React } from '../../DatePicker';
 import Input from '../../Input';
 import RepeatDropdown from '../../RepeatDropdown';
 import RichTextArea from '../../RichTextArea';
+import Select from '../../Select';
 import TextArea from '../../TextArea';
 
 import { requiredValidate } from '../../../utils/validation';
@@ -28,13 +29,16 @@ class FormTrafficAdd extends Component {
 
   render() {
     const { props } = this;
-    const { handleSubmit } = props;
+    const { formValues, handleSubmit, submitCallback } = props;
     const { isRepeat } = this.state;
 
     return (
       <Card>
         <CardBody>
-          <form className="traffic-form" onSubmit={handleSubmit}>
+          <form
+            className="traffic-form"
+            onSubmit={handleSubmit(submitCallback)}
+          >
             <div className="traffic-form__grid">
               <Field
                 className="grid-span--2"
@@ -48,19 +52,9 @@ class FormTrafficAdd extends Component {
               <Field
                 className="z-index--250"
                 component={DatePicker__React}
-                label="From"
+                label="Date/Time"
                 name="start_time_utc"
                 type="time"
-                validate={[requiredValidate]}
-                dateFormat="MM/dd/yyyy h:mm aa"
-                showTimeInput
-              />
-
-              <Field
-                className="z-index--250"
-                component={DatePicker__React}
-                label="To"
-                name="end_time_utc"
                 validate={[requiredValidate]}
                 dateFormat="MM/dd/yyyy h:mm aa"
                 showTimeInput
@@ -81,12 +75,59 @@ class FormTrafficAdd extends Component {
               )}
 
               <Field
-                className="grid-span--2"
-                component={TextArea}
-                label="Summary"
-                name="traffic_details.summary"
-                type="text"
+                className="grid-column-start--1"
+                component={Select}
+                label="Type"
+                name="traffic_details.type"
+                validate={[requiredValidate]}
+                selectOptions={[
+                  'Announcement',
+                  'Feature',
+                  'Giveaway',
+                  'Legal ID',
+                  'PSA',
+                  'Underwriting',
+                ]}
               />
+
+              {formValues.traffic_details != null &&
+                formValues.traffic_details.type === 'Feature' && (
+                  <Field
+                    component={Input}
+                    label="Producer"
+                    name="traffic_details.producer"
+                  />
+                )}
+
+              {formValues.traffic_details != null &&
+                formValues.traffic_details.type === 'Underwriting' && (
+                  <Field
+                    component={Input}
+                    label="Underwriter Name"
+                    name="traffic_details.underwriter_name"
+                  />
+                )}
+
+              {formValues.traffic_details != null &&
+                formValues.traffic_details.type === 'Giveaway' && (
+                  <>
+                    <Field
+                      component={Input}
+                      label="Event Name"
+                      name="traffic_details.giveaway_details.event_name"
+                    />
+                    <Field
+                      component={DatePicker__React}
+                      label="Event Date"
+                      name="traffic_details.giveaway_details.event_date"
+                    />
+                    <Field
+                      component={Input}
+                      label="Venue"
+                      name="traffic_details.giveaway_details.venue"
+                    />
+                  </>
+                )}
 
               <Field
                 className="grid-span--2"
@@ -110,7 +151,12 @@ class FormTrafficAdd extends Component {
 }
 
 function mapStateToProps(state, ownProps) {
+  let formValues = {};
+  if (state.form != null && state.form.trafficAdd != null) {
+    formValues = state.form.trafficAdd.values;
+  }
   return {
+    formValues: formValues,
     initialValues: {},
   };
 }

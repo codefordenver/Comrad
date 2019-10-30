@@ -10,3 +10,7 @@
 .react-datepicker__close-icon {
   z-index: 300;
 }
+
+.react-datepicker-popper {
+  z-index: 2; /* sit over the RichTextArea */
+}

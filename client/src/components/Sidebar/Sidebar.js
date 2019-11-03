@@ -34,7 +34,11 @@ class Sidebar extends Component {
                 placement="right"
               >
                 <li className="sibebar__item">
-                  <Link to={url} className="sidebar__link">
+                  <Link
+                    onClick={() => window.scrollTo(0, 0)}
+                    to={url}
+                    className="sidebar__link"
+                  >
                     <i className={`sidebar__icon ${iconClass}`} />
                   </Link>
                 </li>

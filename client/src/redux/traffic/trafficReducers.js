@@ -3,7 +3,10 @@ import { trafficTypes } from './trafficTypes';
 const initialState = {
   doc: null,
   docs: [],
+  docsForDropdown: [],
   loading: false,
+  loadingSearch: false,
+  searchString: null,
 };
 
 export const trafficReducer = (state = initialState, { type, payload }) => {
@@ -26,6 +29,18 @@ export const trafficReducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         loading: true,
+      };
+    case trafficTypes.LOADING_SEARCH:
+      return {
+        ...state,
+        loadingSearch: true,
+      };
+    case trafficTypes.SEARCH:
+      return {
+        ...state,
+        loadingSearch: false,
+        docsForDropdown: payload.docs,
+        searchString: payload.searchString,
       };
     default:
       return state;

@@ -50,6 +50,8 @@ const trafficSchema = new Schema(
   { collection: 'traffic' },
 );
 
+trafficSchema.index({ 'traffic_details.title': 'text' }, { background: true });
+
 const Traffic = mongoose.model('Traffic', trafficSchema);
 
 module.exports = Traffic;

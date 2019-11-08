@@ -2,97 +2,90 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import classnames from 'classnames';
 import Downshift from 'downshift';
+import moment from 'moment';
 import { connect } from 'react-redux';
 
-import { libraryActions } from '../../redux/';
+import { trafficActions } from '../../redux/';
 import Input from '../Input';
 
 // This is set up to be used with initial values for artists only
 // If you want to have an initial value displayed for an album or track, you'll have to modify the code
 
-class DropdownLibrary extends Component {
+class DropdownTraffic extends Component {
   constructor(props) {
     super(props);
 
-    const { artist, libraryActions, libraryType } = this.props;
+    const { traffic, trafficActions } = this.props;
 
-    let selectedLibraryItemDisplayName = '';
-    if (libraryType === 'artist') {
-      selectedLibraryItemDisplayName = artist ? artist.name : '';
+    let selectedTrafficDisplayName = traffic.doc
+      ? traffic.doc.traffic_details.title
+      : '';
 
-      //run a host search on the existing value so that the host list is populated with information
-      if (selectedLibraryItemDisplayName.length > 0) {
-        libraryActions.search(
-          libraryType,
-          selectedLibraryItemDisplayName,
-          null,
-          null,
-          10,
-          true,
-        );
-      }
+    //run a search on the existing value so that the list is populated with information
+    if (selectedTrafficDisplayName.length > 0) {
+      trafficActions.search(selectedTrafficDisplayName);
     }
 
     this.state = {
       cachedSearches: {},
-      currentInputValue: selectedLibraryItemDisplayName,
+      currentInputValue: selectedTrafficDisplayName,
       haveSelectedTextOnClick: false,
-      initialValue: libraryType === 'artist' && artist ? artist._id : null,
+      initialValue: traffic.doc ? traffic.doc._id : null,
       hasFocus: false,
-      selectedLibraryItem:
-        libraryType === 'artist' && artist
-          ? { _id: artist._id, name: selectedLibraryItemDisplayName }
-          : null,
+      selectedTrafficItem: traffic.doc
+        ? { _id: traffic.doc._id, name: selectedTrafficDisplayName }
+        : null,
     };
   }
 
   componentDidUpdate() {
-    const { artist, libraryState, libraryType } = this.props;
+    const { traffic } = this.props;
     const { cachedSearches } = this.state;
 
-    //check to see if the artist property has changed: if so, reset the initial value
-    if (libraryType === 'artist') {
-      if (artist != null && this.state.initialValue !== artist._id) {
-        this.setState({
-          currentInputValue: artist.name,
-          initialValue: artist._id,
-          selectedLibraryItem: artist,
-        });
-      } else if (artist === null && this.state.initialValue != null) {
-        this.setState({
-          currentInputValue: '',
-          initialValue: null,
-          selectedLibraryItem: null,
-        });
-      }
+    //check to see if the traffic doc has changed: if so, reset the initial value
+    if (traffic.doc != null && this.state.initialValue !== traffic._id) {
+      this.setState({
+        currentInputValue: traffic.doc.traffic_details.title,
+        initialValue: traffic.doc._id,
+        selectedTrafficItem: {
+          _id: traffic.doc._id,
+          name: traffic.doc.traffic_details.title,
+        },
+      });
+    } else if (traffic.doc === null && this.state.initialValue != null) {
+      this.setState({
+        currentInputValue: '',
+        initialValue: null,
+        selectedTrafficItem: null,
+      });
     }
 
     // cache the search query in state so that we can quickly update the search results
     if (
-      libraryState.docsForDropdown != null &&
-      libraryState.searchString != null &&
-      !(libraryState.searchString.toLowerCase() in cachedSearches)
+      traffic.docsForDropdown != null &&
+      traffic.searchString != null &&
+      !(traffic.searchString.toLowerCase() in cachedSearches)
     ) {
-      cachedSearches[libraryState.searchString.toLowerCase()] =
-        libraryState.docsForDropdown;
+      cachedSearches[traffic.searchString.toLowerCase()] =
+        traffic.docsForDropdown;
       this.setState({ cachedSearches: cachedSearches });
     }
   }
 
   //handles input box change
   handleChange = e => {
-    const { libraryActions, libraryType } = this.props;
-    const { cachedSearches, librarySearchTimeout } = this.state;
+    const { trafficActions } = this.props;
+    const { cachedSearches, trafficSearchTimeout } = this.state;
     const { value } = e.target;
 
     if (value.length && !(value.toLowerCase() in cachedSearches)) {
       //throttle the libraryActions.search function so we are not calling it rapidly if users are quickly deleting or typing text
-      if (librarySearchTimeout != null) {
-        clearTimeout(librarySearchTimeout);
+      if (trafficSearchTimeout != null) {
+        clearTimeout(trafficSearchTimeout);
       }
       this.setState({
-        librarySearchTimeout: setTimeout(
-          () => libraryActions.search(libraryType, value, null, null, 10, true),
+        trafficSearchTimeout: setTimeout(
+          () => trafficActions.search(value),
           150,
         ),
       });
@@ -104,11 +97,13 @@ class DropdownLibrary extends Component {
 
   //on blur from the input box, reset the dropdown to its original value
   handleBlur = e => {
-    const { selectedLibraryItem } = this.state;
+    const { selectedTrafficItem } = this.state;
 
     this.setState({
       currentInputValue:
-        selectedLibraryItem != null ? selectedLibraryItem.name : '',
+        selectedTrafficItem != null
+          ? selectedTrafficItem.traffic_details.title
+          : '',
       hasFocus: false,
       haveSelectedTextOnClick: false,
     });
@@ -128,7 +123,7 @@ class DropdownLibrary extends Component {
 
   // process an artist being selected
   onSelect = (selection, stateAndHelpers) => {
-    const { input, onLibraryItemSelect } = this.props;
+    const { input, onTrafficSelect } = this.props;
 
     if (selection === null) {
       return;
@@ -139,14 +134,15 @@ class DropdownLibrary extends Component {
       input.onChange(selection._id);
     }
 
-    if (typeof onLibraryItemSelect == 'function') {
-      onLibraryItemSelect(selection);
+    if (typeof onTrafficSelect == 'function') {
+      onTrafficSelect(selection);
     }
 
     this.setState(
       {
-        currentInputValue: selection != null ? selection.name : '',
-        selectedLibraryItem: selection || null,
+        currentInputValue:
+          selection != null ? selection.traffic_details.title : '',
+        selectedTrafficItem: selection || null,
       },
       function() {
         document.activeElement.blur(); //remove focus from the Host text field
@@ -155,23 +151,14 @@ class DropdownLibrary extends Component {
   };
 
   //function for rendering the options in the host dropdown results
-  renderLibraryListItem = item => {
-    const { libraryType } = this.props;
-    if (libraryType === 'album') {
-      return (
-        <div key={item._id}>
-          {item.name + ' '}
-          {item.artist != null ? (
-            <>
-              by <i>{item.artist.name}</i>
-            </>
-          ) : (
-            ''
-          )}
-        </div>
-      );
-    }
-    return <div key={item._id}>{`${item.name}`}</div>;
+  renderTrafficListItem = item => {
+    let startTime = moment(item.start_time_utc);
+    let startTimeFormatted = startTime.format('M/D/YY');
+    return (
+      <div key={item._id}>
+        {item.traffic_details.title} <i>Starts {startTimeFormatted}</i>
+      </div>
+    );
   };
 
   dirtyOverride = currentInputValue => {
@@ -187,26 +174,23 @@ class DropdownLibrary extends Component {
       handleBlur,
       initialValue,
       onSelect,
-      renderLibraryListItem,
+      renderTrafficListItem,
       props,
       state,
     } = this;
     const { cachedSearches, currentInputValue, hasFocus } = state;
-    const { autoFocus, className, libraryType } = props;
+    const { autoFocus, className } = props;
 
     // get the documents from the cachedResults property rather than Redux,
     // because Redux might not have the search results of the current input value if there
     // were multiple host search XHR requests that didn't finish in the order they were called
     const docs = cachedSearches[currentInputValue.toLowerCase()] || [];
 
-    const libraryTypeCapitalized =
-      libraryType.charAt(0).toUpperCase() + libraryType.substring(1);
-
     return (
       <Downshift
         onChange={onSelect}
         initialInputValue={initialValue}
-        itemToString={item => (item ? item.name : '')}
+        itemToString={item => (item ? item.traffic_details.title : '')}
       >
         {({
           getInputProps,
@@ -215,16 +199,16 @@ class DropdownLibrary extends Component {
           isOpen,
           inputValue,
           highlightedIndex,
-          selectedLibraryItem,
+          selectedTrafficItem,
         }) => (
           <div
-            key="library-field"
-            className={classnames('library-field', className)}
+            key="traffic-field"
+            className={classnames('traffic-field', className)}
           >
             <Input
               className=""
-              label={libraryTypeCapitalized}
-              name="libraryItem"
+              label="Traffic"
+              name="trafficItem"
               type="text"
               {...getInputProps({
                 onChange: handleChange,
@@ -237,9 +221,9 @@ class DropdownLibrary extends Component {
               value={currentInputValue}
             />
 
-            {/* Library dropdown */}
+            {/* traffic dropdown */}
             {hasFocus && docs.length > 0 ? (
-              <div className="dropdown__list dropdown__list--library-list active">
+              <div className="dropdown__list dropdown__list--traffic-list active">
                 {docs.map((item, index) => (
                   <div
                     key={index}
@@ -252,7 +236,7 @@ class DropdownLibrary extends Component {
                       item,
                     })}
                   >
-                    {renderLibraryListItem(item)}
+                    {renderTrafficListItem(item)}
                   </div>
                 ))}
               </div>
@@ -264,19 +248,19 @@ class DropdownLibrary extends Component {
   }
 }
 
-function mapStateToProps({ library }) {
+function mapStateToProps({ traffic }) {
   return {
-    libraryState: library,
+    traffic,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    libraryActions: bindActionCreators({ ...libraryActions }, dispatch),
+    trafficActions: bindActionCreators({ ...trafficActions }, dispatch),
   };
 }
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(DropdownLibrary);
+)(DropdownTraffic);

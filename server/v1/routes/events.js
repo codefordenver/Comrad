@@ -13,6 +13,10 @@ router
   .post(requireAC(null, 'createAny'), eventRootController.create);
 
 router
+  .route('/:eventType/search')
+  .get(requireAC(null, 'readAny'), eventRootController.search);
+
+router
   .route('/:eventType/:id')
   .get(requireAC(null, 'readAny'), eventRootController.findById)
   .delete(requireAC(null, 'deleteAny'), eventRootController.remove)

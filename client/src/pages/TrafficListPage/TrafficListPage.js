@@ -15,6 +15,7 @@ import {
 import Card, { CardBody } from '../../components/Card';
 import Checkbox from '../../components/Checkbox';
 import DatePicker from '../../components/DatePicker';
+import DropdownTraffic from '../../components/DropdownTraffic';
 import Loading from '../../components/Loading';
 
 class TrafficListPage extends Component {
@@ -54,6 +55,11 @@ class TrafficListPage extends Component {
         this.updateListData();
       },
     );
+  };
+
+  navigateToTraffic = traffic => {
+    const { history } = this.props;
+    history.push('/traffic/' + traffic._id);
   };
 
   toggleFilter = trafficType => {
@@ -163,6 +169,12 @@ class TrafficListPage extends Component {
               <div className="traffic-add-button__text">Add</div>
               <i className="fas fa-plus" />
             </Link>
+          </CardBody>
+        </Card>
+        <Card>
+          <CardBody>
+            Jump to traffic:
+            <DropdownTraffic onTrafficSelect={this.navigateToTraffic} />
           </CardBody>
         </Card>
         <Card>

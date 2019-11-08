@@ -16,6 +16,8 @@ const showSchema = new Schema({
   },
 });
 
+showSchema.index({ 'show_details.title': 'text' }, { background: true });
+
 const Show = mongoose.model('Show', showSchema);
 
 module.exports = Show;

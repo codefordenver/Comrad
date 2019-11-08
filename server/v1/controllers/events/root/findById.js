@@ -21,7 +21,24 @@ function findById(req, res) {
       .populate(populateMasterEvent())
       .then(dbEvent => {
         let timestamp = Number(idParts[1]);
-        let showResults = eventList(dbEvent, timestamp, timestamp + 1);
+
+        /* must do one hour each direction because rrule does not handle Daylight Savings properly for its .between implementation */
+        let showResults = eventList(
+          dbEvent,
+          timestamp - 1 - 60 * 60 * 1000,
+          timestamp + 60 * 60 * 1000 + 1,
+        );
+        /* example of what's causing the problem that requires an hour each way:
+          1. have an event with this rrule:
+            { byweekday: [ 'WE' ],
+            repeat_start_date: 2019-01-09T15:00:00.000Z,
+            frequency: 2,
+            repeat_end_date: 2019-12-25T15:00:00.000Z }
+          2. Change your computer time to 11/7/19, Mountain Standard Time
+          3. Try to get an event that repeats on 10/30/2019 (timestamp of 1572444000000)
+          4. rrule.between won't return a date unless you use 15:00 UTC instead (that timestamp is 14:00 UTC, which is when the event should be because of daylight savings adjustment
+        */
+
         res.json(showResults[0]);
       })
       .catch(err => {

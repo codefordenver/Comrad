@@ -10,7 +10,7 @@ import { isEmpty } from 'lodash';
 import { userActions } from '../../redux';
 
 import Button from '../../components/Button';
-import { CardV2, Form, Heading, ProfileImg } from '../../components';
+import { CardV2, Heading, ProfileImg } from '../../components';
 
 const customStyles = {
   content: {

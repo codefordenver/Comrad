@@ -113,24 +113,32 @@ class TrafficListPage extends Component {
           currentTrafficObject != null &&
           currentTrafficObject.start_time_utc < showObject.end_time_utc
         ) {
-          listElements.push(
-            <div
-              className={classnames(
-                'traffic-list__traffic',
-                'traffic-list__traffic--' +
-                  currentTrafficObject.traffic_details.type
-                    .replace(/ /g, '-')
-                    .toLowerCase(),
-              )}
-              key={'traffic-' + trafficIndex}
-            >
-              {moment(currentTrafficObject.start_time_utc).format('h:mm a')}
-              <span>&nbsp;-&nbsp;</span>
-              <Link to={'/traffic/' + currentTrafficObject.master_time_id}>
-                {currentTrafficObject.traffic_details.title}
-              </Link>
-            </div>,
-          );
+          if (
+            currentTrafficObject.traffic_details != null &&
+            currentTrafficObject.traffic_details.type != null
+          ) {
+            listElements.push(
+              <div
+                className={classnames(
+                  'traffic-list__traffic',
+                  'traffic-list__traffic--' +
+                    currentTrafficObject.traffic_details.type
+                      .replace(/ /g, '-')
+                      .toLowerCase(),
+                )}
+                key={'traffic-' + trafficIndex}
+              >
+                {moment(currentTrafficObject.start_time_utc).format('h:mm a')}
+                <span>&nbsp;-&nbsp;</span>
+                <Link to={'/traffic/' + currentTrafficObject.master_time_id}>
+                  {currentTrafficObject.traffic_details.title}
+                </Link>
+              </div>,
+            );
+          } else {
+            console.error('missing traffic type');
+            console.error(currentTrafficObject);
+          }
           trafficIndex++;
           currentTrafficObject =
             trafficIndex < traffic.docs.length

@@ -70,6 +70,7 @@ class RepeatDropdown extends Component {
     const { input, date, meta } = props;
     console.log(input);
     const repeatDropdownList = _.map(definedRepeatRules(date), option => {
+      // Dropdown values are using string of JSON instead of object. Inconclusive whether they can be set as object. See https://github.com/codefordenver/Comrad/issues/492
       return (
         <option key={option.name} value={JSON.stringify(option)}>
           {option.name}

@@ -33,8 +33,12 @@ class Sidebar extends Component {
                 trigger="hover"
                 placement="right"
               >
-                <li className="sibebar__item">
-                  <Link to={url} className="sidebar__link">
+                <li className="sidebar__item">
+                  <Link
+                    onClick={() => window.scrollTo(0, 0)}
+                    to={url}
+                    className="sidebar__link"
+                  >
                     <i className={`sidebar__icon ${iconClass}`} />
                   </Link>
                 </li>

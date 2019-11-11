@@ -1,4 +1,8 @@
 .ReactTable {
+  & .rt-tbody, & .rt-table {
+    overflow: visible; /* fixes https://github.com/codefordenver/Comrad/issues/546, but also makes it so the table can't have scrollbars */
+  }
+
   & .rt-th {
     font-size: 1.8rem;
 

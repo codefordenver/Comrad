@@ -6,6 +6,8 @@ import FormTraffic from '../../components/forms/FormTraffic';
 import Card, { CardBody } from '../../components/Card';
 import Loading from '../../components/Loading';
 
+import { getDifferencesForEventInstance } from '../../utils/events';
+
 import { alertActions, trafficActions } from '../../redux';
 
 class TrafficEditPage extends Component {
@@ -23,7 +25,14 @@ class TrafficEditPage extends Component {
   }
 
   editTrafficCallback = trafficData => {
-    const { alertActions, trafficActions, history, traffic } = this.props;
+    const {
+      alertActions,
+      trafficActions,
+      history,
+      match,
+      traffic,
+    } = this.props;
+    const { masterTimeOrSeriesId } = match.params;
     let successCallback = function() {
       history.push(`/traffic/`);
       alertActions.show(
@@ -33,8 +42,36 @@ class TrafficEditPage extends Component {
       );
     };
 
-    if (traffic.doc.master_event_id != null) {
-      console.log('TODO: updating instance');
+    if (masterTimeOrSeriesId.indexOf('-') !== -1) {
+      let updateData = function(instanceId, instanceData) {
+        // only submit the data in traffic_details that has changed from the initial values
+        let changedValues = getDifferencesForEventInstance(
+          traffic.doc,
+          instanceData,
+        );
+
+        trafficActions.updateInstance(
+          instanceId,
+          changedValues,
+          successCallback,
+        );
+      };
+      //if the traffic event we found is not an instance, and we're editing an instance,
+      //it means the instance doesn't exist in the database. create that instance
+      let seriesId = masterTimeOrSeriesId.substring(
+        0,
+        masterTimeOrSeriesId.indexOf('-'),
+      );
+      if (traffic.doc._id === seriesId) {
+        trafficActions.createInstance(seriesId, trafficData, function(
+          instance,
+        ) {
+          updateData(instance._id, trafficData);
+        });
+      } else {
+        //editing existing instance
+        updateData(trafficData._id, trafficData);
+      }
     } else {
       trafficActions.updateSeries(trafficData, successCallback);
     }
@@ -64,6 +101,14 @@ class TrafficEditPage extends Component {
   };
 
   render() {
+    const { masterTimeOrSeriesId } = this.props.match.params;
+    let editingInstance = false;
+    if (
+      masterTimeOrSeriesId != null &&
+      masterTimeOrSeriesId.indexOf('-') !== -1
+    ) {
+      editingInstance = true;
+    }
     return (
       <div className="traffic-add-page">
         <Card>
@@ -71,6 +116,7 @@ class TrafficEditPage extends Component {
             <h1>Edit Traffic</h1>
             {this.isDocumentLoaded() && (
               <FormTraffic
+                editingInstance={editingInstance}
                 initialValues={this.props.traffic.doc}
                 submitCallback={this.editTrafficCallback}
               />

@@ -29,7 +29,7 @@ class TrafficViewPage extends Component {
 
   handleEditInstance = () => {
     const { history, traffic } = this.props;
-    history.push('/traffic/edit/' + traffic.doc.master_time_id._id);
+    history.push('/traffic/edit/' + traffic.doc.master_time_id);
   };
 
   handleEditSeries = () => {

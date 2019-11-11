@@ -28,7 +28,7 @@ class FormTrafficAdd extends Component {
 
   render() {
     const { props } = this;
-    const { formValues, handleSubmit, submitCallback } = props;
+    const { editingInstance, formValues, handleSubmit, submitCallback } = props;
     const { isRepeat } = this.state;
 
     return (
@@ -59,17 +59,21 @@ class FormTrafficAdd extends Component {
                 showTimeInput
               />
 
-              <Field
-                component={Input}
-                dirtyOverride
-                label="Repeat"
-                name="is_recurring"
-                type="checkbox"
-                onChange={this.toggleIsRepeat}
-              />
-              {isRepeat && (
+              {!editingInstance && (
                 <>
-                  <RepeatDropdown />
+                  <Field
+                    component={Input}
+                    dirtyOverride
+                    label="Repeat"
+                    name="is_recurring"
+                    type="checkbox"
+                    onChange={this.toggleIsRepeat}
+                  />
+                  {isRepeat && (
+                    <>
+                      <RepeatDropdown />
+                    </>
+                  )}
                 </>
               )}
 

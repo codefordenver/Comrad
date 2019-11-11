@@ -6,11 +6,7 @@ const {
 } = require('../utils');
 
 function createInstance(req, res) {
-  const {
-    start_time_utc,
-    end_time_utc,
-    show_details: { host },
-  } = req.body;
+  const { start_time_utc, end_time_utc } = req.body;
   const { id, eventType } = req.params;
 
   const dbModel = getModelForEventType(eventType);
@@ -23,10 +19,16 @@ function createInstance(req, res) {
     let d1 = doc;
     d1._id = mongoose.Types.ObjectId();
     d1.master_event_id = id;
-    //Set show_details to an empty object first so it will inherit any updates on the master series
-    d1.show_details = {};
-    //Add only the new host if available
-    d1.show_details.host = host;
+    if (eventType === 'shows') {
+      //Set show_details to an empty object first so it will inherit any updates on the master series
+      d1.show_details = {};
+      //Add only the new host if available
+      if (req.params.show_details != null) {
+        d1.show_details.host = req.params.show_details.host;
+      }
+    } else {
+      d1.traffic_details = {};
+    }
     //Fill in remaining time details of instance
     d1.start_time_utc = start_time_utc;
     d1.end_time_utc = end_time_utc;

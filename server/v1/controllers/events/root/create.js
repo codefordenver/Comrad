@@ -12,6 +12,12 @@ function create(req, res) {
     res.send(404);
     return;
   }
+
+  if (eventType === 'traffic') {
+    // set the end date/time to the start date/time
+    body.end_time_utc = body.start_time_utc;
+  }
+
   dbModel
     .create(formatShow(body, res))
     .then(dbShow => {

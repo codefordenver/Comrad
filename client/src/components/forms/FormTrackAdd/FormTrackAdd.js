@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { Field, FieldArray, reduxForm } from 'redux-form';
 import { requiredValidate } from '../../../utils/validation';
 import { libraryActions } from '../../../redux';
@@ -7,7 +8,6 @@ import Button from '../../Button';
 import ButtonIcon from '../../ButtonIcon';
 import DropdownLibrary from '../../DropdownLibrary';
 import Input from '../../Input';
-import { bindActionCreators } from 'redux';
 
 class FormTrackAdd extends Component {
   state = {

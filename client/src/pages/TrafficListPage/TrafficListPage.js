@@ -13,10 +13,21 @@ import {
   searchShow,
 } from '../../redux/show';
 import Card, { CardBody } from '../../components/Card';
+import Checkbox from '../../components/Checkbox';
 import DatePicker from '../../components/DatePicker';
+import DropdownTraffic from '../../components/DropdownTraffic';
+import Loading from '../../components/Loading';
 
 class TrafficListPage extends Component {
   state = {
+    filterByType: [
+      'Announcement',
+      'Feature',
+      'Giveaway',
+      'Legal ID',
+      'PSA',
+      'Underwriting',
+    ],
     searchDate: moment().startOf('day'),
   };
 
@@ -46,14 +57,37 @@ class TrafficListPage extends Component {
     );
   };
 
+  navigateToTraffic = traffic => {
+    const { history } = this.props;
+    history.push('/traffic/' + traffic._id);
+  };
+
+  toggleFilter = trafficType => {
+    let { filterByType } = this.state;
+    let newFilterByType = filterByType.slice(); // make a copy of the array
+    if (filterByType.indexOf(trafficType) !== -1) {
+      newFilterByType.splice(newFilterByType.indexOf(trafficType), 1);
+    } else {
+      newFilterByType.push(trafficType);
+    }
+    this.setState(
+      {
+        filterByType: newFilterByType,
+      },
+      function() {
+        this.updateListData();
+      },
+    );
+  };
+
   updateListData = () => {
     const { trafficActions, searchShow } = this.props;
-    const { searchDate } = this.state;
+    const { filterByType, searchDate } = this.state;
 
     const nextDay = searchDate.clone();
     nextDay.add(1, 'day');
 
-    trafficActions.find(searchDate.format(), nextDay.format());
+    trafficActions.find(searchDate.format(), nextDay.format(), filterByType);
     searchShow(searchDate, nextDay);
   };
 
@@ -85,22 +119,32 @@ class TrafficListPage extends Component {
           currentTrafficObject != null &&
           currentTrafficObject.start_time_utc < showObject.end_time_utc
         ) {
-          listElements.push(
-            <div
-              className={classnames(
-                'traffic-list__traffic',
-                'traffic-list__traffic--' +
-                  currentTrafficObject.traffic_details.type
-                    .replace(/ /g, '-')
-                    .toLowerCase(),
-              )}
-              key={'traffic-' + trafficIndex}
-            >
-              {moment(currentTrafficObject.start_time_utc).format('h:mm a')}
-              <span>&nbsp;-&nbsp;</span>
-              {currentTrafficObject.traffic_details.title}
-            </div>,
-          );
+          if (
+            currentTrafficObject.traffic_details != null &&
+            currentTrafficObject.traffic_details.type != null
+          ) {
+            listElements.push(
+              <div
+                className={classnames(
+                  'traffic-list__traffic',
+                  'traffic-list__traffic--' +
+                    currentTrafficObject.traffic_details.type
+                      .replace(/ /g, '-')
+                      .toLowerCase(),
+                )}
+                key={'traffic-' + trafficIndex}
+              >
+                {moment(currentTrafficObject.start_time_utc).format('h:mm a')}
+                <span>&nbsp;-&nbsp;</span>
+                <Link to={'/traffic/' + currentTrafficObject.master_time_id}>
+                  {currentTrafficObject.traffic_details.title}
+                </Link>
+              </div>,
+            );
+          } else {
+            console.error('missing traffic type');
+            console.error(currentTrafficObject);
+          }
           trafficIndex++;
           currentTrafficObject =
             trafficIndex < traffic.docs.length
@@ -129,11 +173,65 @@ class TrafficListPage extends Component {
         </Card>
         <Card>
           <CardBody>
+            Jump to traffic:
+            <DropdownTraffic onTrafficSelect={this.navigateToTraffic} />
+          </CardBody>
+        </Card>
+        <Card>
+          <CardBody>
             <div className="traffic-list__date-selector">
               <DatePicker label="Date" input={dateInput} />
             </div>
+            <div>
+              Show: <br />
+              <Checkbox
+                id="announcement"
+                initialChecked={true}
+                className="checkbox--inline"
+                onChange={() => this.toggleFilter('Announcement')}
+              />{' '}
+              Announcement <br />
+              <Checkbox
+                id="feature"
+                initialChecked={true}
+                className="checkbox--inline"
+                onChange={() => this.toggleFilter('Feature')}
+              />{' '}
+              Feature <br />
+              <Checkbox
+                id="giveaway"
+                initialChecked={true}
+                className="checkbox--inline"
+                onChange={() => this.toggleFilter('Giveaway')}
+              />{' '}
+              Giveaway <br />
+              <Checkbox
+                id="legal-id"
+                initialChecked={true}
+                className="checkbox--inline"
+                onChange={() => this.toggleFilter('Legal ID')}
+              />{' '}
+              Legal ID <br />
+              <Checkbox
+                id="psa"
+                initialChecked={true}
+                className="checkbox--inline"
+                onChange={() => this.toggleFilter('PSA')}
+              />{' '}
+              PSA <br />
+              <Checkbox
+                id="underwriting"
+                initialChecked={true}
+                className="checkbox--inline"
+                onChange={() => this.toggleFilter('Underwriting')}
+              />{' '}
+              Underwriting
+            </div>
             {!showsFetching && !traffic.loading && (
               <div className="traffic-list__events">{listElements}</div>
+            )}
+            {(showsFetching || traffic.loading) && (
+              <Loading displayMode="static" />
             )}
           </CardBody>
         </Card>

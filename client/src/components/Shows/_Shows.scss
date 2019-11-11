@@ -40,6 +40,12 @@ $show_start_z: 200;
   }
 }
 
+.grid-column-start {
+  &--1 {
+    grid-column-start: 1;
+  }
+}
+
 .z-index--250 {
   z-index: 250 !important;
 }

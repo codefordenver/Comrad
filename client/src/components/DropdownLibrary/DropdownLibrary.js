@@ -61,7 +61,7 @@ class DropdownLibrary extends Component {
       } else if (artist === null && this.state.initialValue != null) {
         this.setState({
           currentInputValue: '',
-          intialValue: null,
+          initialValue: null,
           selectedLibraryItem: null,
         });
       }

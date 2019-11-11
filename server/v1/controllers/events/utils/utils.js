@@ -168,6 +168,7 @@ function returnDatesArrayByRepeatRule(event, startDate, endDate) {
     let adjustedStartDate = new Date(
       moment(startDate).add(-1 * eventDuration, 'milliseconds'),
     ); //between searches on START times, and we want to get anything in progress in this date range, so subtract the event duration from the start time
+
     let events = rule.between(adjustedStartDate, new Date(endDate));
 
     return events;
@@ -258,12 +259,26 @@ function returnInstanceEventsArray(events) {
     let instanceEvent = { ...event.toObject() };
     const { master_event_id } = instanceEvent;
 
-    //This will merge any show details from the master show that are not on the instance.
+    //This will merge any show/traffic details from the master show that are not on the instance.
     if (master_event_id) {
-      instanceEvent.show_details = {
-        ...instanceEvent.master_event_id.show_details,
-        ...instanceEvent.show_details,
-      };
+      if (
+        instanceEvent.show_details != null ||
+        instanceEvent.master_event_id.show_details != null
+      ) {
+        instanceEvent.show_details = {
+          ...instanceEvent.master_event_id.show_details,
+          ...instanceEvent.show_details,
+        };
+      }
+      if (
+        instanceEvent.traffic_details != null ||
+        instanceEvent.master_event_id.traffic_details != null
+      ) {
+        instanceEvent.traffic_details = {
+          ...instanceEvent.master_event_id.traffic_details,
+          ...instanceEvent.traffic_details,
+        };
+      }
     }
 
     const date = instanceEvent.start_time_utc;

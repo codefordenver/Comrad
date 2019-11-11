@@ -7,7 +7,7 @@ import Modal from '../../Modal';
 import { updateShow } from '../../../redux/show';
 import { setModalVisibility } from '../../../redux/modal';
 
-import { diff } from 'deep-diff';
+import { getDifferencesForEventInstance } from '../../../utils/events';
 
 class EditModal extends Component {
   handleFormSubmit = () => {
@@ -28,28 +28,12 @@ class EditModal extends Component {
       initial: { _id },
     } = values;
 
-    let finalObject = {};
     let updated = values;
     delete updated.initial;
-    let changes = diff(initial, updated);
 
-    if (changes) {
-      changes.forEach(difference => {
-        if (difference.kind === 'A') {
-          //array
-          // we will save the whole array, we don't need to determine the individual paths that were changed because the instance will contain the full array (there won't be a part of it stored on the series)
-          let array = values;
-          difference.path.forEach(idx => {
-            array = array[idx];
-          });
-          finalObject[difference.path.join('.')] = array;
-        } else {
-          this.assign(finalObject, difference.path, difference.rhs);
-        }
-      });
-    }
+    let changedObject = getDifferencesForEventInstance(initial, updated);
 
-    updateShow(_id, finalObject, handleFormSubmit);
+    updateShow(_id, changedObject, handleFormSubmit);
   };
 
   render() {

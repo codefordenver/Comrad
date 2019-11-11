@@ -6,7 +6,6 @@ function formatShow(data, res = null) {
 
   //Determine if the repeat attribute is set, convert to a JSON object.
   if (show.repeat_rule) {
-    show.repeat_rule = JSON.parse(show.repeat_rule);
     show.repeat_rule.repeat_start_date = show.repeat_start_date;
 
     if (!show.repeat_end_date) {

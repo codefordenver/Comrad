@@ -2,7 +2,6 @@ const {
   utils: { getModelForEventType, eventList },
   utils__mongoose: { populateMasterEvent },
 } = require('../utils');
-const moment = require('moment');
 
 function findById(req, res) {
   const { eventType } = req.params;
@@ -38,8 +37,14 @@ function findById(req, res) {
           3. Try to get an event that repeats on 10/30/2019 (timestamp of 1572444000000)
           4. rrule.between won't return a date unless you use 15:00 UTC instead (that timestamp is 14:00 UTC, which is when the event should be because of daylight savings adjustment
         */
-
-        res.json(showResults[0]);
+        /* be sure we are returning the result with the matching master_time_id */
+        let result = showResults[0];
+        showResults.forEach(function(event) {
+          if (event.master_time_id === req.params.id) {
+            result = event;
+          }
+        });
+        res.json(result);
       })
       .catch(err => {
         console.error(err);

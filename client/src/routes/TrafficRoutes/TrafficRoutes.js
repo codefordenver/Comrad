@@ -3,6 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 
 import MainLayout from '../../layouts/MainLayout';
 import TrafficAddPage from '../../pages/TrafficAddPage';
+import TrafficEditPage from '../../pages/TrafficEditPage';
 import TrafficListPage from '../../pages/TrafficListPage';
 import TrafficViewPage from '../../pages/TrafficViewPage';
 
@@ -21,6 +22,11 @@ class TrafficRoutes extends Component {
             component={TrafficViewPage}
           />
         </Switch>
+        <Route
+          exact
+          path={`${url}/edit/:masterTimeOrSeriesId`}
+          component={TrafficEditPage}
+        />
       </MainLayout>
     );
   }

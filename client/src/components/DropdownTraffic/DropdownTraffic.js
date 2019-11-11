@@ -8,68 +8,17 @@ import { connect } from 'react-redux';
 import { trafficActions } from '../../redux/';
 import Input from '../Input';
 
-// This is set up to be used with initial values for artists only
-// If you want to have an initial value displayed for an album or track, you'll have to modify the code
-
 class DropdownTraffic extends Component {
   constructor(props) {
     super(props);
 
-    const { traffic, trafficActions } = this.props;
-
-    let selectedTrafficDisplayName = traffic.doc
-      ? traffic.doc.traffic_details.title
-      : '';
-
-    //run a search on the existing value so that the list is populated with information
-    if (selectedTrafficDisplayName.length > 0) {
-      trafficActions.search(selectedTrafficDisplayName);
-    }
-
     this.state = {
       cachedSearches: {},
-      currentInputValue: selectedTrafficDisplayName,
+      currentInputValue: '',
       haveSelectedTextOnClick: false,
-      initialValue: traffic.doc ? traffic.doc._id : null,
       hasFocus: false,
-      selectedTrafficItem: traffic.doc
-        ? { _id: traffic.doc._id, name: selectedTrafficDisplayName }
-        : null,
+      selectedTrafficItem: null,
     };
-  }
-
-  componentDidUpdate() {
-    const { traffic } = this.props;
-    const { cachedSearches } = this.state;
-
-    //check to see if the traffic doc has changed: if so, reset the initial value
-    if (traffic.doc != null && this.state.initialValue !== traffic._id) {
-      this.setState({
-        currentInputValue: traffic.doc.traffic_details.title,
-        initialValue: traffic.doc._id,
-        selectedTrafficItem: {
-          _id: traffic.doc._id,
-          name: traffic.doc.traffic_details.title,
-        },
-      });
-    } else if (traffic.doc === null && this.state.initialValue != null) {
-      this.setState({
-        currentInputValue: '',
-        initialValue: null,
-        selectedTrafficItem: null,
-      });
-    }
-
-    // cache the search query in state so that we can quickly update the search results
-    if (
-      traffic.docsForDropdown != null &&
-      traffic.searchString != null &&
-      !(traffic.searchString.toLowerCase() in cachedSearches)
-    ) {
-      cachedSearches[traffic.searchString.toLowerCase()] =
-        traffic.docsForDropdown;
-      this.setState({ cachedSearches: cachedSearches });
-    }
   }
 
   //handles input box change
@@ -172,7 +121,6 @@ class DropdownTraffic extends Component {
       handleFocus,
       handleInputClick,
       handleBlur,
-      initialValue,
       onSelect,
       renderTrafficListItem,
       props,
@@ -189,7 +137,6 @@ class DropdownTraffic extends Component {
     return (
       <Downshift
         onChange={onSelect}
-        initialInputValue={initialValue}
         itemToString={item => (item ? item.traffic_details.title : '')}
       >
         {({

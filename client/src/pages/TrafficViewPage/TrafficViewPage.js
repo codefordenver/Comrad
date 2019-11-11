@@ -14,6 +14,7 @@ class TrafficViewPage extends Component {
     super(props);
     this.state = {
       showDeleteModal: false,
+      showEditModal: false,
     };
   }
 
@@ -26,10 +27,19 @@ class TrafficViewPage extends Component {
     }
   }
 
-  componentWillUnmount() {
-    const { trafficActions } = this.props;
-    trafficActions.clear();
-  }
+  handleEditInstance = () => {
+    const { history, traffic } = this.props;
+    history.push('/traffic/edit/' + traffic.doc.master_time_id._id);
+  };
+
+  handleEditSeries = () => {
+    const { history, traffic } = this.props;
+    let seriesId =
+      traffic.doc.master_event_id != null
+        ? traffic.doc.master_event_id._id
+        : traffic.doc._id;
+    history.push('/traffic/edit/' + seriesId);
+  };
 
   handleDeleteInstance = () => {
     const { alertActions, trafficActions, history, traffic } = this.props;
@@ -182,6 +192,9 @@ class TrafficViewPage extends Component {
                 >
                   Delete
                 </Button>
+                <Button onClick={() => this.setState({ showEditModal: true })}>
+                  Edit
+                </Button>
               </CardBody>
             </Card>
           </>
@@ -192,6 +205,16 @@ class TrafficViewPage extends Component {
             <Button onClick={this.handleDeleteSeries}>Delete Series</Button>
             <Button onClick={this.handleDeleteInstance}>Delete Instance</Button>
             <Button onClick={() => this.setState({ showDeleteModal: false })}>
+              Cancel
+            </Button>
+          </Modal>
+        )}
+        {this.state.showEditModal && (
+          <Modal>
+            Edit only this occurrence, or the whole series of traffic events?
+            <Button onClick={this.handleEditSeries}>Edit Series</Button>
+            <Button onClick={this.handleEditInstance}>Edit Instance</Button>
+            <Button onClick={() => this.setState({ showEditModal: false })}>
               Cancel
             </Button>
           </Modal>

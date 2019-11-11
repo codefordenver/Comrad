@@ -28,24 +28,27 @@ async function update(req, res) {
     new: true,
   });
 
-  const showDateFilter =
-    startDate && endDate ? findEventQueryByDateRange(startDate, endDate) : {};
-
-  const filter = {
-    $and: [
-      showDateFilter[0],
-      {
-        $or: [{ _id: id }, { master_event_id: id }],
-      },
-    ],
-  };
-
-  const showResults = await dbModel
-    .find(filter)
-    .populate(populateShowHost())
-    .populate(populateMasterEvent());
-
-  res.json(eventList(showResults, startDate, endDate));
+  if (startDate && endDate) {
+    let filter = {
+      $and: [
+        findEventQueryByDateRange(startDate, endDate)[0],
+        {
+          $or: [{ _id: id }, { master_event_id: id }],
+        },
+      ],
+    };
+    let showResults = await dbModel
+      .find(filter)
+      .populate(populateShowHost())
+      .populate(populateMasterEvent())
+      .catch(function(err) {
+        console.log('error updating series:');
+        console.log(err);
+      });
+    res.json(eventList(showResults, startDate, endDate));
+  } else {
+    return res.json(updateSeries);
+  }
 }
 
 module.exports = update;

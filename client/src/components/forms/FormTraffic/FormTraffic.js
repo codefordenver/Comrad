@@ -156,7 +156,7 @@ function mapStateToProps(state, ownProps) {
   }
   return {
     formValues: formValues,
-    initialValues: {},
+    initialValues: ownProps.initialValues != null ? ownProps.initialValues : {},
   };
 }
 

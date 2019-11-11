@@ -23,12 +23,17 @@ function find(req, res) {
     return;
   }
 
-  startDate = startDate ? JSON.parse(startDate) : null;
-  endDate = endDate ? JSON.parse(endDate) : null;
+  if (!startDate || !endDate) {
+    return res
+      .status(422)
+      .json({ message: 'startDate and endDate must be provided' });
+  }
+
+  startDate = JSON.parse(startDate);
+  endDate = JSON.parse(endDate);
 
   //This date filter allows the same endpoint to be used to find all shows or return a subset if both startDate and endDate are provided.
-  const showDateFilter =
-    startDate && endDate ? findEventQueryByDateRange(startDate, endDate) : {};
+  const showDateFilter = findEventQueryByDateRange(startDate, endDate);
 
   let promiseChain = []; // an array of promises that we will run before the main show query (in case we need to gather addt'l data for filters)
 

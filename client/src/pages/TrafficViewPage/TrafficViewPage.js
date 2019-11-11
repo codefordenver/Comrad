@@ -2,12 +2,21 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import moment from 'moment';
-import { trafficActions } from '../../redux';
+import { alertActions, trafficActions } from '../../redux';
 
+import Button from '../../components/Button';
 import Card, { CardBody } from '../../components/Card';
 import Loading from '../../components/Loading';
+import Modal from '../../components/Modal';
 
 class TrafficViewPage extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      showDeleteModal: false,
+    };
+  }
+
   componentDidMount() {
     const { match, trafficActions } = this.props;
     const { masterTimeId } = match.params;
@@ -21,6 +30,35 @@ class TrafficViewPage extends Component {
     const { trafficActions } = this.props;
     trafficActions.clear();
   }
+
+  handleDeleteInstance = () => {
+    const { alertActions, trafficActions, history, traffic } = this.props;
+    trafficActions.deleteInstance(traffic.doc, function() {
+      history.push('/traffic');
+      alertActions.show(
+        'success',
+        'Success',
+        'The traffic instance has been deleted',
+      );
+    });
+  };
+
+  handleDeleteSeries = () => {
+    const { alertActions, trafficActions, history, traffic } = this.props;
+    trafficActions.deleteSeries(
+      traffic.doc.master_event_id != null
+        ? traffic.doc.master_event_id._id
+        : traffic.doc._id,
+      function() {
+        history.push('/traffic');
+        alertActions.show(
+          'success',
+          'Success',
+          'The traffic series has been deleted',
+        );
+      },
+    );
+  };
 
   isDocumentLoaded = () => {
     const { match, traffic } = this.props;
@@ -138,9 +176,25 @@ class TrafficViewPage extends Component {
                     </div>
                   </>
                 )}
+
+                <Button
+                  onClick={() => this.setState({ showDeleteModal: true })}
+                >
+                  Delete
+                </Button>
               </CardBody>
             </Card>
           </>
+        )}
+        {this.state.showDeleteModal && (
+          <Modal>
+            Delete only this occurrence, or the whole series of traffic events?
+            <Button onClick={this.handleDeleteSeries}>Delete Series</Button>
+            <Button onClick={this.handleDeleteInstance}>Delete Instance</Button>
+            <Button onClick={() => this.setState({ showDeleteModal: false })}>
+              Cancel
+            </Button>
+          </Modal>
         )}
       </div>
     );
@@ -155,6 +209,7 @@ function mapStateToProps({ traffic }) {
 
 function mapDispatchToProps(dispatch) {
   return {
+    alertActions: bindActionCreators({ ...alertActions }, dispatch),
     trafficActions: bindActionCreators({ ...trafficActions }, dispatch),
   };
 }

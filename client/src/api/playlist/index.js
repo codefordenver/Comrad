@@ -3,6 +3,8 @@ import { addCommentToScratchpad } from './addCommentToScratchpad';
 import { addTrackToSavedItems } from './addTrackToSavedItems';
 import { addTrackToScratchpad } from './addTrackToScratchpad';
 import { addTrafficToSavedItems } from './addTrafficToSavedItems';
+import { addVoiceBreakToSavedItems } from './addVoiceBreakToSavedItems';
+import { addVoiceBreakToScratchpad } from './addVoiceBreakToScratchpad';
 import { deleteItemFromScratchpad } from './deleteItemFromScratchpad';
 import { moveItemFromSavedItemsToScratchpad } from './moveItemFromSavedItemsToScratchpad';
 import { moveItemFromScratchpadToSavedItems } from './moveItemFromScratchpadToSavedItems';
@@ -17,6 +19,8 @@ export const playlistAPI = {
   addTrackToSavedItems,
   addTrackToScratchpad,
   addTrafficToSavedItems,
+  addVoiceBreakToSavedItems,
+  addVoiceBreakToScratchpad,
   deleteItemFromScratchpad,
   moveItemFromSavedItemsToScratchpad,
   moveItemFromScratchpadToSavedItems,

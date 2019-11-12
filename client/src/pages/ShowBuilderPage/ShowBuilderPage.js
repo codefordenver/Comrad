@@ -287,6 +287,7 @@ class ShowBuilderPage extends Component {
       handleSubmit,
       library,
       playlist,
+      playlistActions,
       shows,
       showFetching,
       traffic,
@@ -464,16 +465,36 @@ class ShowBuilderPage extends Component {
                       Search
                     </div>
                     <div
-                      className={activeTab === 'voice' ? 'active' : ''}
-                      onClick={() => this.setState({ activeTab: 'voice' })}
-                    >
-                      Voice
-                    </div>
-                    <div
                       className={activeTab === 'comment' ? 'active' : ''}
                       onClick={() => this.setState({ activeTab: 'comment' })}
                     >
                       Comment
+                    </div>
+                    <div className="library-tab-container__voice-break-button">
+                      <Dropdown
+                        position="right-centered"
+                        type="button"
+                        text="Voice Break"
+                      >
+                        <Dropdown.Item
+                          handleOnClick={() =>
+                            playlistActions.addVoiceBreakToScratchpad(
+                              playlist.doc._id,
+                            )
+                          }
+                        >
+                          Add to Scratchpad
+                        </Dropdown.Item>
+                        <Dropdown.Item
+                          handleOnClick={() =>
+                            playlistActions.addVoiceBreakToSavedItems(
+                              playlist.doc._id,
+                            )
+                          }
+                        >
+                          Add to Saved Items
+                        </Dropdown.Item>
+                      </Dropdown>
                     </div>
                   </div>
                   {activeTab === 'search' && (
@@ -516,11 +537,6 @@ class ShowBuilderPage extends Component {
                           </span>
                         </div>
                       )}
-                    </div>
-                  )}
-                  {activeTab === 'voice' && (
-                    <div className="library-tab-container__tab-content">
-                      Voice content
                     </div>
                   )}
                   {activeTab === 'comment' && (

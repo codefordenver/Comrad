@@ -4,6 +4,8 @@ export const playlistTypes = {
   ADD_TRACK_TO_SAVED_ITEMS: 'playlist_add_track_to_saved_items',
   ADD_TRACK_TO_SCRATCHPAD: 'playlist_add_track_to_scratchpad',
   ADD_TRAFFIC_TO_SAVED_ITEMS: 'playlist_add_traffic_to_saved_items',
+  ADD_VOICE_BREAK_TO_SAVED_ITEMS: 'playlist_add_voice_break_to_saved_items',
+  ADD_VOICE_BREAK_TO_SCRATCHPAD: 'playlist_add_voice_break_to_scratchpad',
   DELETE_ITEM_FROM_SAVED_ITEMS: 'playlist_delete_item_from_saved_items',
   DELETE_ITEM_FROM_SCRATCHPAD: 'playlist_delete_item_from_scratchpad',
   FIND_ONE: 'playlist_find_one',

@@ -68,11 +68,12 @@
   }
   
   .library-tab-container {
+  
     &__tabs {
       display: flex;
       border-bottom: 1px solid $color-grey-3;
       
-      > div {
+      > div:not(.library-tab-container__voice-break-button) {
         padding: 0;
         background: $color-grey-1;
         border: 1px solid $color-grey-3;
@@ -98,6 +99,10 @@
           }
         }
       }
+    }
+    &__voice-break-button {
+      text-align: right;
+      flex-grow: 1;
     }
     &__tab-content {
       min-height: 10rem;

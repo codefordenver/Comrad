@@ -33,6 +33,12 @@ router
     playlistsController.addTrafficToSavedItems,
   );
 router
+  .route('/:playlistId/saved-items/voice-break')
+  .put(
+    requireAC('Playlists', 'updateOwn'),
+    playlistsController.addVoiceBreakToSavedItems,
+  );
+router
   .route('/:playlistId/saved-items/:itemId/rearrange')
   .put(
     requireAC('Playlists', 'updateOwn'),
@@ -56,6 +62,12 @@ router
   .put(
     requireAC('Playlists', 'updateOwn'),
     playlistsController.addTrackToScratchpad,
+  );
+router
+  .route('/:playlistId/scratchpad/voice-break')
+  .put(
+    requireAC('Playlists', 'updateOwn'),
+    playlistsController.addVoiceBreakToScratchpad,
   );
 router
   .route('/:playlistId/scratchpad/:itemId/rearrange')

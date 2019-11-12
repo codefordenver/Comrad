@@ -73,6 +73,32 @@ export const playlistReducer = (state = initialState, { type, payload }) => {
       } else {
         return state;
       }
+    case playlistTypes.ADD_VOICE_BREAK_TO_SAVED_ITEMS:
+      if (state.doc._id === payload.playlistId) {
+        return {
+          ...state,
+          doc: {
+            ...state.doc,
+            saved_items: [...state.doc.saved_items, payload.voice_break],
+          },
+          saving: false,
+        };
+      } else {
+        return state;
+      }
+    case playlistTypes.ADD_VOICE_BREAK_TO_SCRATCHPAD:
+      if (state.doc._id === payload.playlistId) {
+        return {
+          ...state,
+          doc: {
+            ...state.doc,
+            scratchpad: [...state.doc.scratchpad, payload.voice_break],
+          },
+          saving: false,
+        };
+      } else {
+        return state;
+      }
     case playlistTypes.DELETE_ITEM_FROM_SAVED_ITEMS:
       if (state.doc._id === payload.playlistId) {
         return {

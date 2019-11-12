@@ -3,6 +3,8 @@ const addCommentToScratchpad = require('./addCommentToScratchpad');
 const addTrackToSavedItems = require('./addTrackToSavedItems');
 const addTrackToScratchpad = require('./addTrackToScratchpad');
 const addTrafficToSavedItems = require('./addTrafficToSavedItems');
+const addVoiceBreakToSavedItems = require('./addVoiceBreakToSavedItems');
+const addVoiceBreakToScratchpad = require('./addVoiceBreakToScratchpad');
 const deleteItemFromScratchpad = require('./deleteItemFromScratchpad');
 const findOne = require('./findOne');
 const findOrCreateOne = require('./findOrCreateOne');
@@ -17,6 +19,8 @@ module.exports = {
   addTrackToSavedItems,
   addTrackToScratchpad,
   addTrafficToSavedItems,
+  addVoiceBreakToSavedItems,
+  addVoiceBreakToScratchpad,
   deleteItemFromScratchpad,
   findOne,
   findOrCreateOne,

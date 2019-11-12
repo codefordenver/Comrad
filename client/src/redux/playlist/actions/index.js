@@ -3,6 +3,8 @@ import { addCommentToScratchpad } from './addCommentToScratchpad';
 import { addTrackToSavedItems } from './addTrackToSavedItems';
 import { addTrackToScratchpad } from './addTrackToScratchpad';
 import { addTrafficToSavedItems } from './addTrafficToSavedItems';
+import { addVoiceBreakToSavedItems } from './addVoiceBreakToSavedItems';
+import { addVoiceBreakToScratchpad } from './addVoiceBreakToScratchpad';
 import { deleteItemFromScratchpad } from './deleteItemFromScratchpad';
 import { findOne } from './findOne';
 import { findOrCreateOne } from './findOrCreateOne';
@@ -19,6 +21,8 @@ export const playlistActions = {
   addTrackToSavedItems,
   addTrackToScratchpad,
   addTrafficToSavedItems,
+  addVoiceBreakToSavedItems,
+  addVoiceBreakToScratchpad,
   deleteItemFromScratchpad,
   findOne,
   findOrCreateOne,

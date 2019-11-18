@@ -1,32 +1,20 @@
 import React, { Component } from 'react';
 import Modal from '../Modal';
 import Button from '../Button';
+import { alertActions, libraryActions } from '../../redux';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
 class DeleteModal extends Component {
   deleteEntity = (type, id) => {
     const { libraryActions } = this.props;
-    libraryActions.remove(id, this.deleteSuccess, this.deleteFailure);
-  };
-
-  deleteFailure = () => {
-    window.scrollTo(0, 0);
-    this.closeDeleteModal();
-  };
-
-  deleteSuccess = entity => {
-    window.scrollTo(0, 0);
-    this.closeDeleteModal();
-    this.props.alertActions.hide();
-    this.setState(
-      {
-        deleteSuccessModal: entity.data,
-      },
-      function() {
-        //refresh data from the database - https://github.com/tannerlinsley/react-table/issues/808#issuecomment-373673915
-        this.table.fireFetchData();
-      },
+    libraryActions.remove(
+      id,
+      this.props.deleteSuccess,
+      this.props.deleteFailure,
     );
   };
+
   render() {
     const { deleteModal, closeDeleteModal, deleteEntity } = this.props;
     return (
@@ -41,7 +29,7 @@ class DeleteModal extends Component {
             <Button
               type="submit"
               onClick={() =>
-                deleteEntity(deleteModal.type, deleteModal._original._id)
+                this.deleteEntity(deleteModal.type, deleteModal._original._id)
               }
             >
               Yes
@@ -53,4 +41,14 @@ class DeleteModal extends Component {
   }
 }
 
-export default DeleteModal;
+function mapDispatchToProps(dispatch) {
+  return {
+    alertActions: bindActionCreators({ ...alertActions }, dispatch),
+    libraryActions: bindActionCreators({ ...libraryActions }, dispatch),
+  };
+}
+
+export default connect(
+  null,
+  mapDispatchToProps,
+)(DeleteModal);

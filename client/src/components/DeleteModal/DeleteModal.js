@@ -20,7 +20,9 @@ class DeleteModal extends Component {
     return (
       <Modal isOpen={true}>
         <div className="library-search__delete-modal">
-          Are you sure you want to delete the {deleteModal.type}{' '}
+          {/* Data type is sometimes stored as deleteModal.type and sometimes as deleteModal._original.type*/}
+          Are you sure you want to delete the{' '}
+          {deleteModal.type || deleteModal._original.type}{' '}
           <i>{deleteModal.name}</i>?
           <div>
             <Button color="neutral" onClick={closeDeleteModal}>

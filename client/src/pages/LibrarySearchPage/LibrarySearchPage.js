@@ -11,7 +11,6 @@ import Dropdown from '../../components/Dropdown';
 import Input from '../../components/Input';
 import Modal from '../../components/Modal';
 import DeleteModal from '../../components/DeleteModal';
-import DeleteSuccessModal from '../../components/DeleteModal/DeleteSuccessModal';
 
 import { alertActions, libraryActions } from '../../redux';
 

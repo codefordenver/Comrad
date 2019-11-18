@@ -47,11 +47,6 @@ class LibrarySearchPage extends Component {
     this.setState({ deleteSuccessModal: false });
   };
 
-  /* deleteEntity = (type, id) => {
-    const { libraryActions } = this.props;
-    libraryActions.remove(id, this.deleteSuccess, this.deleteFailure);
-  };*/
-
   deleteFailure = () => {
     window.scrollTo(0, 0);
     console.log('error');

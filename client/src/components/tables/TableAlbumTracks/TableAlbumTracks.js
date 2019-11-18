@@ -8,6 +8,8 @@ import { formatTotalSecondsAsMMSS } from '../../../utils/formatters';
 import Dropdown from '../../Dropdown';
 import Modal from '../../Modal';
 import Button from '../../Button';
+import DeleteModal from '../../DeleteModal';
+import DeleteSuccessModal from '../../DeleteModal/DeleteSuccessModal';
 
 import { libraryActions, alertActions } from '../../../redux';
 
@@ -25,11 +27,6 @@ class TableAlbumTracks extends Component {
 
   closeDeleteModal = () => {
     this.setState({ deleteModal: false });
-  };
-
-  deleteTrack = id => {
-    const { libraryActions } = this.props;
-    libraryActions.remove(id, this.deleteSuccess, this.deleteFailure);
   };
 
   deleteFailure = () => {
@@ -151,23 +148,13 @@ class TableAlbumTracks extends Component {
 
         {/* Delete modal */}
         {deleteModal ? (
-          <Modal isOpen={true}>
-            <div className="library-search__delete-modal">
-              Are you sure you want to delete the {deleteModal.type}{' '}
-              <i>{deleteModal.name}</i>?
-              <div>
-                <Button color="neutral" onClick={this.closeDeleteModal}>
-                  No
-                </Button>
-                <Button
-                  type="submit"
-                  onClick={() => this.deleteTrack(deleteModal._original._id)}
-                >
-                  Yes
-                </Button>
-              </div>
-            </div>
-          </Modal>
+          <DeleteModal
+            deleteModal={this.deleteModal}
+            closeDeleteModal={this.closeDeleteModal}
+            deleteEntity={this.deleteEntity}
+            deleteSuccess={this.deleteSuccess}
+            deleteFailure={this.deleteFailure}
+          />
         ) : null}
       </div>
     );

@@ -50,7 +50,11 @@ class LibrarySearchPage extends Component {
     window.scrollTo(0, 0);
     this.closeDeleteModal();
     this.props.alertActions.hide();
-    alert('Successfully deleted!');
+    this.props.alertActions.show(
+      'success',
+      'Success',
+      `${entity.data.name} was successfully deleted`,
+    );
     this.setState(function() {
       //refresh data from the database - https://github.com/tannerlinsley/react-table/issues/808#issuecomment-373673915
       this.table.fireFetchData();

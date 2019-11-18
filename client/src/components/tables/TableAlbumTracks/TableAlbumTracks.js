@@ -6,10 +6,7 @@ import isEmpty from 'lodash/isEmpty';
 
 import { formatTotalSecondsAsMMSS } from '../../../utils/formatters';
 import Dropdown from '../../Dropdown';
-import Modal from '../../Modal';
-import Button from '../../Button';
 import DeleteModal from '../../DeleteModal';
-import DeleteSuccessModal from '../../DeleteModal/DeleteSuccessModal';
 
 import { libraryActions, alertActions } from '../../../redux';
 

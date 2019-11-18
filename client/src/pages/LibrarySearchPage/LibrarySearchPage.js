@@ -10,10 +10,19 @@ import Card, { CardBody } from '../../components/Card';
 import Dropdown from '../../components/Dropdown';
 import Input from '../../components/Input';
 import Modal from '../../components/Modal';
+import DeleteModal from '../../components/DeleteModal';
+import DeleteSuccessModal from '../../components/DeleteModal/DeleteSuccessModal';
 
 import { alertActions, libraryActions } from '../../redux';
 
 class LibrarySearchPage extends Component {
+  constructor(props) {
+    super(props);
+    this.closeDeleteModal = this.closeDeleteModal.bind(this);
+    this.closeDeleteSuccessModal = this.closeDeleteSuccessModal.bind(this);
+    this.deleteSuccess = this.deleteSuccess.bind(this);
+    this.deleteFailure = this.deleteFailure.bind(this);
+  }
   state = {
     activeFilter: 'all',
     deleteModal: false, //false to hide, or an object of data if the modal should be displayed
@@ -38,13 +47,14 @@ class LibrarySearchPage extends Component {
     this.setState({ deleteSuccessModal: false });
   };
 
-  deleteEntity = (type, id) => {
+  /* deleteEntity = (type, id) => {
     const { libraryActions } = this.props;
     libraryActions.remove(id, this.deleteSuccess, this.deleteFailure);
-  };
+  };*/
 
   deleteFailure = () => {
     window.scrollTo(0, 0);
+    console.log('error');
     this.closeDeleteModal();
   };
 
@@ -269,39 +279,21 @@ class LibrarySearchPage extends Component {
 
         {/* Delete modal */}
         {deleteModal ? (
-          <Modal isOpen={true}>
-            <div className="library-search__delete-modal">
-              Are you sure you want to delete the {deleteModal.type}{' '}
-              <i>{deleteModal.name}</i>?
-              <div>
-                <Button color="neutral" onClick={closeDeleteModal}>
-                  No
-                </Button>
-                <Button
-                  type="submit"
-                  onClick={() =>
-                    deleteEntity(deleteModal.type, deleteModal._original._id)
-                  }
-                >
-                  Yes
-                </Button>
-              </div>
-            </div>
-          </Modal>
+          <DeleteModal
+            deleteModal={deleteModal}
+            closeDeleteModal={this.closeDeleteModal}
+            deleteEntity={deleteEntity}
+            deleteSuccess={this.deleteSuccess}
+            deleteFailure={this.deleteFailure}
+          />
         ) : null}
 
         {/* Delete confirmation modal */}
         {deleteSuccessModal ? (
-          <Modal isOpen={true}>
-            <div className="library-search__delete-success-modal">
-              <i>{deleteSuccessModal.name}</i> was successfully deleted.
-              <div>
-                <Button color="neutral" onClick={closeDeleteSuccessModal}>
-                  Close
-                </Button>
-              </div>
-            </div>
-          </Modal>
+          <DeleteSuccessModal
+            deleteSuccessModal={deleteSuccessModal}
+            closeDeleteSuccessModal={this.closeDeleteSuccessModal}
+          />
         ) : null}
       </div>
     );

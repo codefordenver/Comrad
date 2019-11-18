@@ -149,7 +149,7 @@ class TableAlbumTracks extends Component {
         {/* Delete modal */}
         {deleteModal ? (
           <DeleteModal
-            deleteModal={this.deleteModal}
+            deleteModal={deleteModal}
             closeDeleteModal={this.closeDeleteModal}
             deleteEntity={this.deleteEntity}
             deleteSuccess={this.deleteSuccess}

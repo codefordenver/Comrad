@@ -10,6 +10,9 @@
     .DayPicker__horizontal,.CalendarMonth, .CalendarMonthGrid {
       background: none;
     }
+    .DayPicker_transitionContainer {
+      width: 200px !important;
+    }
     .DayPicker_weekHeaders__horizontal {
       margin-left: 0px;
     }

@@ -5,11 +5,9 @@ import { Field, reduxForm } from 'redux-form';
 
 import ReactTable from 'react-table';
 
-import Button from '../../components/Button';
 import Card, { CardBody } from '../../components/Card';
 import Dropdown from '../../components/Dropdown';
 import Input from '../../components/Input';
-import Modal from '../../components/Modal';
 import DeleteModal from '../../components/DeleteModal';
 
 import { alertActions, libraryActions } from '../../redux';

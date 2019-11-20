@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Modal from '../Modal';
 import Button from '../Button';
-import { alertActions, libraryActions } from '../../redux';
+import { libraryActions } from '../../redux';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
@@ -45,7 +45,6 @@ class DeleteModal extends Component {
 
 function mapDispatchToProps(dispatch) {
   return {
-    alertActions: bindActionCreators({ ...alertActions }, dispatch),
     libraryActions: bindActionCreators({ ...libraryActions }, dispatch),
   };
 }

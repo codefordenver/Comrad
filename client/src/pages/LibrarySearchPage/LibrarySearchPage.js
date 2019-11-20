@@ -42,7 +42,6 @@ class LibrarySearchPage extends Component {
 
   deleteFailure = () => {
     window.scrollTo(0, 0);
-    console.log('error');
     this.closeDeleteModal();
   };
 

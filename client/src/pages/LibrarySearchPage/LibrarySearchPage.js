@@ -52,10 +52,8 @@ class LibrarySearchPage extends Component {
       'Success',
       `${entity.data.name} was successfully deleted`,
     );
-    this.setState(function() {
-      //refresh data from the database - https://github.com/tannerlinsley/react-table/issues/808#issuecomment-373673915
-      this.table.fireFetchData();
-    });
+    //refresh data from the database - https://github.com/tannerlinsley/react-table/issues/808#issuecomment-373673915
+    this.table.fireFetchData();
   };
 
   fetchData = (tableState, instance) => {

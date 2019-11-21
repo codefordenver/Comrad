@@ -41,6 +41,16 @@ class Calendar extends Component {
         console.log(`Prop '${key}' changed`);
         if (key === 'filterByHost' || key === 'onlyDisplayShowsWithNoHost') {
           this.searchShows();
+        } else if (key === 'date') {
+          this.setState(
+            {
+              searchStartDate: moment(val).subtract(8, 'days'),
+              searchEndDate: moment(val).add(8, 'days'),
+            },
+            function() {
+              this.searchShows();
+            },
+          );
         }
       }
     });

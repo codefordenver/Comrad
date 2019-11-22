@@ -30,7 +30,7 @@ class App extends Component {
     return (
       <Router>
         <div className="app">
-          {process.env.REACT_APP_SHOW_DEVELOPMENT_UX_HELPERS && (
+          {process.env.REACT_APP_SHOW_DEVELOPMENT_UX_HELPERS === 'true' && (
             <Route component={NavDevelopmentHelperMenuBar} />
           )}
           <Switch>

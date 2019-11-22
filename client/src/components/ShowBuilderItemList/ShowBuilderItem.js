@@ -30,7 +30,9 @@ const ShowBuilderItem = props => {
   } = props;
 
   const expandCollapseDetails = () => {
-    setExpanded(!this.state.expanded);
+    if (canExpand) {
+      setExpanded(!expanded);
+    }
   };
 
   const handleDelete = () => {
@@ -155,7 +157,7 @@ const ShowBuilderItem = props => {
         <div
           className={classnames(
             'show-builder-item__details',
-            expanded ? 'show-builder-item__details--open' : '',
+            expanded ? 'show-builder-item__details--expanded' : '',
           )}
         >
           {children}

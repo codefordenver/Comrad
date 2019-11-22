@@ -80,6 +80,28 @@
       }
     }
     
+    &__details {
+      background: rgba(255,255,255,0.8);
+      color: $color-grey-4;
+      border-radius: 4px;
+      padding: 0.2em 0.5em;
+      margin-top: 0.3em;
+      display: none;
+      
+      &--expanded {
+        display: block;
+      }
+      
+      b {
+        font-weight: bold;
+      }
+      
+      i {
+        font-style: italic;
+      }
+      
+    }
+    
     &--dragging {
       opacity: 0.5;
     }

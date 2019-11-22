@@ -200,7 +200,10 @@ export const playlistReducer = (state = initialState, { type, payload }) => {
     case playlistTypes.REARRANGE_SCRATCHPAD_ITEM:
       if (state.doc._id === payload.playlistId) {
         let newScratchpad = [...state.doc.scratchpad];
+        console.log(state.doc.scratchpad);
         let element = state.doc.scratchpad[payload.fromIndex];
+        console.log('the item:');
+        console.log(element);
         newScratchpad.splice(payload.fromIndex, 1);
         newScratchpad.splice(payload.toIndex, 0, element);
         return {

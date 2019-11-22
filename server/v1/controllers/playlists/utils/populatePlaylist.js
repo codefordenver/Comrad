@@ -8,8 +8,12 @@ async function populatePlaylist(docPlaylist) {
       populate: { path: 'artists' },
     },
     {
+      path: 'scratchpad.track',
+      populate: { path: 'album' },
+    },
+    {
       path: 'saved_items.track',
-      populate: { path: 'artists' },
+      populate: { path: 'artists album' },
     },
     'saved_items.traffic',
   ]);

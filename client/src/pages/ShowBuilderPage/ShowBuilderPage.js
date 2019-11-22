@@ -247,6 +247,7 @@ class ShowBuilderPage extends Component {
   handleRearrangeScratchpadItem = (fromIndex, toIndex) => {
     //rearrange the scratchpad item in the UI
     const { playlist, playlistActions } = this.props;
+    console.log('from ' + fromIndex + ' to ' + toIndex);
     playlistActions.rearrangeScratchpadItem(
       playlist.doc._id,
       toIndex,

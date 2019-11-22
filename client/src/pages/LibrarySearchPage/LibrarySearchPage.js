@@ -5,11 +5,10 @@ import { Field, reduxForm } from 'redux-form';
 
 import ReactTable from 'react-table';
 
-import Button from '../../components/Button';
 import Card, { CardBody } from '../../components/Card';
 import Dropdown from '../../components/Dropdown';
 import Input from '../../components/Input';
-import Modal from '../../components/Modal';
+import DeleteModal from '../../components/DeleteModal';
 
 import { alertActions, libraryActions } from '../../redux';
 
@@ -17,7 +16,6 @@ class LibrarySearchPage extends Component {
   state = {
     activeFilter: 'all',
     deleteModal: false, //false to hide, or an object of data if the modal should be displayed
-    deleteSuccessModal: false, //false to hide, or an object of data if the modal should be displayed
     page: 0,
     searchString: null,
     sort: {
@@ -34,15 +32,6 @@ class LibrarySearchPage extends Component {
     this.setState({ deleteModal: false });
   };
 
-  closeDeleteSuccessModal = () => {
-    this.setState({ deleteSuccessModal: false });
-  };
-
-  deleteEntity = (type, id) => {
-    const { libraryActions } = this.props;
-    libraryActions.remove(id, this.deleteSuccess, this.deleteFailure);
-  };
-
   deleteFailure = () => {
     window.scrollTo(0, 0);
     this.closeDeleteModal();
@@ -52,15 +41,13 @@ class LibrarySearchPage extends Component {
     window.scrollTo(0, 0);
     this.closeDeleteModal();
     this.props.alertActions.hide();
-    this.setState(
-      {
-        deleteSuccessModal: entity.data,
-      },
-      function() {
-        //refresh data from the database - https://github.com/tannerlinsley/react-table/issues/808#issuecomment-373673915
-        this.table.fireFetchData();
-      },
+    this.props.alertActions.show(
+      'success',
+      'Success',
+      `${entity.data.name} was successfully deleted`,
     );
+    //refresh data from the database - https://github.com/tannerlinsley/react-table/issues/808#issuecomment-373673915
+    this.table.fireFetchData();
   };
 
   fetchData = (tableState, instance) => {
@@ -156,12 +143,7 @@ class LibrarySearchPage extends Component {
   };
 
   render() {
-    const {
-      closeDeleteModal,
-      closeDeleteSuccessModal,
-      columns,
-      deleteEntity,
-    } = this;
+    const { closeDeleteModal, columns, deleteEntity } = this;
     const {
       auth,
       handleSubmit,
@@ -170,12 +152,7 @@ class LibrarySearchPage extends Component {
       loadingError,
       totalPages,
     } = this.props;
-    const {
-      activeFilter,
-      deleteModal,
-      deleteSuccessModal,
-      searchString,
-    } = this.state;
+    const { activeFilter, deleteModal, searchString } = this.state;
 
     return (
       <div className="library-search">
@@ -269,39 +246,13 @@ class LibrarySearchPage extends Component {
 
         {/* Delete modal */}
         {deleteModal ? (
-          <Modal isOpen={true}>
-            <div className="library-search__delete-modal">
-              Are you sure you want to delete the {deleteModal.type}{' '}
-              <i>{deleteModal.name}</i>?
-              <div>
-                <Button color="neutral" onClick={closeDeleteModal}>
-                  No
-                </Button>
-                <Button
-                  type="submit"
-                  onClick={() =>
-                    deleteEntity(deleteModal.type, deleteModal._original._id)
-                  }
-                >
-                  Yes
-                </Button>
-              </div>
-            </div>
-          </Modal>
-        ) : null}
-
-        {/* Delete confirmation modal */}
-        {deleteSuccessModal ? (
-          <Modal isOpen={true}>
-            <div className="library-search__delete-success-modal">
-              <i>{deleteSuccessModal.name}</i> was successfully deleted.
-              <div>
-                <Button color="neutral" onClick={closeDeleteSuccessModal}>
-                  Close
-                </Button>
-              </div>
-            </div>
-          </Modal>
+          <DeleteModal
+            deleteModal={deleteModal}
+            closeDeleteModal={closeDeleteModal}
+            deleteEntity={deleteEntity}
+            deleteSuccess={this.deleteSuccess}
+            deleteFailure={this.deleteFailure}
+          />
         ) : null}
       </div>
     );

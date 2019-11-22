@@ -12,7 +12,7 @@ module.exports = {
     'src/components/HOC/**',
     'src/components/Input/**',
     'src/components/LoginForm/**',
-    'src/components/NavTest/**',
+    'src/components/NavDevelopmentHelperMenuBar/**',
     'src/components/Root/**',
     'src/components/Shows/**',
     'src/components/TableAlbums/**',

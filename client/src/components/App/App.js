@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { authActions } from '../../redux/auth';
 
-import NavTest from '../NavTest';
+import NavDevelopmentHelperMenuBar from '../NavDevelopmentHelperMenuBar';
 
 import AdminRoutes from '../../routes/AdminRoutes';
 import BuilderRoutes from '../../routes/BuilderRoutes';
@@ -30,7 +30,9 @@ class App extends Component {
     return (
       <Router>
         <div className="app">
-          <Route component={NavTest} />
+          {process.env.REACT_APP_SHOW_DEVELOPMENT_UX_HELPERS && (
+            <Route component={NavDevelopmentHelperMenuBar} />
+          )}
           <Switch>
             <Route path="/admin" component={AdminRoutes} />
             <Route path="/builder" component={BuilderRoutes} />

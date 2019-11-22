@@ -13,12 +13,6 @@ import DeleteModal from '../../components/DeleteModal';
 import { alertActions, libraryActions } from '../../redux';
 
 class LibrarySearchPage extends Component {
-  constructor(props) {
-    super(props);
-    this.closeDeleteModal = this.closeDeleteModal.bind(this);
-    this.deleteSuccess = this.deleteSuccess.bind(this);
-    this.deleteFailure = this.deleteFailure.bind(this);
-  }
   state = {
     activeFilter: 'all',
     deleteModal: false, //false to hide, or an object of data if the modal should be displayed

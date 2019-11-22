@@ -149,12 +149,7 @@ class LibrarySearchPage extends Component {
   };
 
   render() {
-    const {
-      closeDeleteModal,
-      closeDeleteSuccessModal,
-      columns,
-      deleteEntity,
-    } = this;
+    const { closeDeleteModal, columns, deleteEntity } = this;
     const {
       auth,
       handleSubmit,
@@ -163,12 +158,7 @@ class LibrarySearchPage extends Component {
       loadingError,
       totalPages,
     } = this.props;
-    const {
-      activeFilter,
-      deleteModal,
-      deleteSuccessModal,
-      searchString,
-    } = this.state;
+    const { activeFilter, deleteModal, searchString } = this.state;
 
     return (
       <div className="library-search">
@@ -264,7 +254,7 @@ class LibrarySearchPage extends Component {
         {deleteModal ? (
           <DeleteModal
             deleteModal={deleteModal}
-            closeDeleteModal={this.closeDeleteModal}
+            closeDeleteModal={closeDeleteModal}
             deleteEntity={deleteEntity}
             deleteSuccess={this.deleteSuccess}
             deleteFailure={this.deleteFailure}

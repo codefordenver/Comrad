@@ -16,7 +16,7 @@ class DeleteModal extends Component {
   };
 
   render() {
-    const { deleteModal, closeDeleteModal, deleteEntity } = this.props;
+    const { deleteModal, closeDeleteModal } = this.props;
     return (
       <Modal isOpen={true}>
         <div className="library-search__delete-modal">

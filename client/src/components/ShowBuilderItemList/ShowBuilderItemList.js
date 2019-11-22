@@ -57,17 +57,12 @@ export default class ShowBuilderItemList extends Component {
               }
               {...buttonProps}
               eventType="track"
-            >
-              {item.track != null ? (
-                <>
-                  <b>Track:</b> <i>{trackName}</i> by <i>{artists}</i>
-                </>
-              ) : (
-                <>
-                  <b>Track:</b> <i>Track data missing from database</i>
-                </>
-              )}
-            </ShowBuilderItem>,
+              titleHtml={
+                item.track != null
+                  ? '<b>Track:</b> <i>{trackName}</i> by <i>{artists}</i>'
+                  : '<b>Track:</b> <i>Track data missing from database</i>'
+              }
+            ></ShowBuilderItem>,
           );
           break;
         case 'traffic':
@@ -94,11 +89,15 @@ export default class ShowBuilderItemList extends Component {
               }
               deleteButton={false}
               eventType={eventType}
+              titleHtml={
+                formattedTime +
+                ' - <b>' +
+                traffic.traffic_details.type +
+                ':</b> ' +
+                traffic.traffic_details.title
+              }
               {...buttonProps}
-            >
-              {formattedTime} - <b>{traffic.traffic_details.type}:</b>{' '}
-              {traffic.traffic_details.title}
-            </ShowBuilderItem>,
+            ></ShowBuilderItem>,
           );
           break;
         case 'comment':
@@ -112,9 +111,11 @@ export default class ShowBuilderItemList extends Component {
                 onFinishRearrangeShowBuilderItem
               }
               eventType="comment"
+              titleHtml="Comment"
+              canExpand={true}
               {...buttonProps}
             >
-              Comment
+              test expanding text
             </ShowBuilderItem>,
           );
           break;
@@ -130,9 +131,8 @@ export default class ShowBuilderItemList extends Component {
               }
               eventType="voice_break"
               {...buttonProps}
-            >
-              Voice Break
-            </ShowBuilderItem>,
+              titleHtml="Voice Break"
+            ></ShowBuilderItem>,
           );
           break;
         default:

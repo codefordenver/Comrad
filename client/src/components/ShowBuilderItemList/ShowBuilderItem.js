@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -10,7 +10,10 @@ import Button from '../Button';
 const SHOW_BUILDER_ITEM_TYPE = 'show_builder_item';
 
 const ShowBuilderItem = props => {
+  const [expanded, setExpanded] = useState(false);
+
   const {
+    canExpand,
     children,
     deleteButton,
     eventType,
@@ -21,9 +24,14 @@ const ShowBuilderItem = props => {
     onFinishRearrangeShowBuilderItem,
     playlist,
     playlistActions,
+    titleHtml,
     toSavedItemsButton,
     toScratchpadButton,
   } = props;
+
+  const expandCollapseDetails = () => {
+    setExpanded(!this.state.expanded);
+  };
 
   const handleDelete = () => {
     playlistActions.deleteItemFromScratchpad(playlist.doc._id, itemId);
@@ -112,26 +120,46 @@ const ShowBuilderItem = props => {
         isDragging ? 'show-builder-item--dragging' : '',
       )}
     >
-      {toScratchpadButton && (
-        <Button
-          type="button"
-          color="neutral"
-          className="button--to-scratchpad"
-          onClick={handleToScratchpad}
+      <div
+        className={classnames(
+          'show-builder-item__title-row',
+          canExpand ? 'show-builder-item__title-row--expandable' : '',
+        )}
+        onClick={expandCollapseDetails}
+      >
+        {toScratchpadButton && (
+          <Button
+            type="button"
+            color="neutral"
+            className="button--to-scratchpad"
+            onClick={handleToScratchpad}
+          >
+            &lt;
+          </Button>
+        )}
+        <span dangerouslySetInnerHTML={{ __html: titleHtml }} />
+        <div className="show-builder-item__title-row__right-buttons">
+          {deleteButton && (
+            <Button type="button" color="danger" onClick={handleDelete}>
+              X
+            </Button>
+          )}
+          {toSavedItemsButton && (
+            <Button type="button" color="success" onClick={handleToSavedItems}>
+              &gt;
+            </Button>
+          )}
+        </div>
+      </div>
+      {children && (
+        <div
+          className={classnames(
+            'show-builder-item__details',
+            expanded ? 'show-builder-item__details--open' : '',
+          )}
         >
-          &lt;
-        </Button>
-      )}
-      {children}
-      {toSavedItemsButton && (
-        <Button type="button" color="success" onClick={handleToSavedItems}>
-          &gt;
-        </Button>
-      )}
-      {deleteButton && (
-        <Button type="button" color="danger" onClick={handleDelete}>
-          X
-        </Button>
+          {children}
+        </div>
       )}
     </div>
   );

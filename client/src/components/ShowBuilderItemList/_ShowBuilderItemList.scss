@@ -54,14 +54,29 @@
     margin-bottom: 2px;
     overflow: hidden;
     
-    button {
-      float: right;
-      margin-left: 4px;
+    &__title-row {
+      display: flex;
+      align-items: center;
       
-      &.button--to-scratchpad {
-        float: left;
-        margin-left: 0px;
-        margin-right: 4px;
+      &--expandable {
+        cursor: pointer;
+      }
+      
+      &__right-buttons {
+        margin-left: auto;
+        width: 7.5em;
+        flex-grow: 0;
+        flex-shrink: 0;
+      }
+      
+      button {
+        width: 3.3em;
+        margin-left: 0.2em;
+        
+        &.button--to-scratchpad {
+          margin-left: 0em;
+          margin-right: 0.2em;
+        }
       }
     }
     

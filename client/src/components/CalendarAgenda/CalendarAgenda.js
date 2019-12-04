@@ -3,6 +3,7 @@ import './CalendarAgenda.scss';
 import moment from 'moment';
 import { showAPI } from '../../api';
 import Loading from '../../components/Loading';
+import Button from '../../components/Button';
 import { formatHostName } from '../../utils/formatters';
 
 class CalendarAgenda extends Component {
@@ -11,6 +12,7 @@ class CalendarAgenda extends Component {
     currentlyOnAir: null,
     loadingOnAirData: true,
     upNext: null,
+    allNext: null,
   };
 
   componentDidMount() {
@@ -21,6 +23,7 @@ class CalendarAgenda extends Component {
   loadCurrentlyOnAir = () => {
     let { currentlyOnAir, upNext } = this.state;
     const self = this;
+    let showsArray = [];
     showAPI.find(moment(), moment().add(1, 'day')).then(function(response) {
       response.data.forEach(function(show) {
         if (
@@ -30,12 +33,19 @@ class CalendarAgenda extends Component {
           currentlyOnAir = show;
         } else if (upNext == null && moment(show.start_time_utc) > moment()) {
           upNext = show;
+          showsArray = response.data;
+          showsArray.sort(function(a, b) {
+            return new Date(b.end_time_utc) - new Date(a.end_time_utc);
+          });
+          let index = response.data.indexOf(upNext);
+          showsArray = showsArray.slice(index + 1, response.data.length);
         }
       });
       self.setState({
         currentlyOnAir: currentlyOnAir,
         loadingOnAirData: false,
         upNext: upNext,
+        allNext: showsArray,
       });
     });
   };
@@ -59,22 +69,31 @@ class CalendarAgenda extends Component {
       });
   };
 
+  showAllNextShows = () => {
+    // need to render these results in upcoming shows container
+    this.state.allNext.map(show => {
+      return <div>{show.show_details.title}</div>;
+    });
+  };
+
   render() {
     const {
       previouslyOnAir,
       currentlyOnAir,
       loadingOnAirData,
       upNext,
+      allNext,
     } = this.state;
     const today = moment();
     const todayPlus3Months = moment().add('3', 'month');
     const oneYearAgo = moment().subtract('1', 'year');
+
     return (
       <>
-        <h2>Calendar Agenda</h2>
+        <h2 className="text-center">Calendar Agenda</h2>
         <div className="shows-container">
           <div className="show-container previous">
-            <h2>Previous show</h2>
+            <h2 className="text-center">Previous show</h2>
             {!loadingOnAirData ? (
               <>
                 {previouslyOnAir ? (
@@ -103,7 +122,7 @@ class CalendarAgenda extends Component {
             )}
           </div>
           <div className="show-container current">
-            <h2>Current show</h2>
+            <h2 className="text-center">Current show</h2>
             {!loadingOnAirData ? (
               <>
                 {currentlyOnAir ? (
@@ -124,7 +143,7 @@ class CalendarAgenda extends Component {
                     </div>
                   </>
                 ) : (
-                  <div>No Show On Air</div>
+                  <div className="text-center">No Show On Air</div>
                 )}
               </>
             ) : (
@@ -132,7 +151,7 @@ class CalendarAgenda extends Component {
             )}
           </div>
           <div className="show-container next">
-            <h2>Next shows</h2>
+            <h2 className="text-center">Next shows</h2>
             {!loadingOnAirData ? (
               <>
                 {upNext && (
@@ -146,6 +165,9 @@ class CalendarAgenda extends Component {
                       {moment(upNext.start_time_utc).format('LT')} -{' '}
                       {moment(upNext.end_time_utc).format('LT')}
                     </div>
+                    <Button onClick={() => this.showAllNextShows()}>
+                      Load more
+                    </Button>
                   </>
                 )}
               </>

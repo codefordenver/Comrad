@@ -7,6 +7,7 @@ import { formatHostName } from '../../utils/formatters';
 
 class CalendarAgenda extends Component {
   state = {
+    previouslyOnAir: null,
     currentlyOnAir: null,
     loadingOnAirData: true,
     upNext: null,
@@ -14,6 +15,7 @@ class CalendarAgenda extends Component {
 
   componentDidMount() {
     this.loadCurrentlyOnAir();
+    this.loadPreviouslyOnAir();
   }
 
   loadCurrentlyOnAir = () => {
@@ -38,18 +40,67 @@ class CalendarAgenda extends Component {
     });
   };
 
+  loadPreviouslyOnAir = () => {
+    let { previouslyOnAir } = this.state;
+    const self = this;
+    showAPI
+      .find(moment().subtract(1, 'day'), moment())
+      .then(function(response) {
+        response.data.forEach(function() {
+          let showsArray = response.data;
+          showsArray.sort(function(a, b) {
+            return new Date(a.end_time_utc) - new Date(b.end_time_utc);
+          });
+          previouslyOnAir = showsArray[showsArray.length - 2];
+        });
+        self.setState({
+          previouslyOnAir: previouslyOnAir,
+        });
+      });
+  };
+
   render() {
-    const { currentlyOnAir, loadingOnAirData, upNext } = this.state;
+    const {
+      previouslyOnAir,
+      currentlyOnAir,
+      loadingOnAirData,
+      upNext,
+    } = this.state;
     const today = moment();
     const todayPlus3Months = moment().add('3', 'month');
     const oneYearAgo = moment().subtract('1', 'year');
-
     return (
       <>
         <h2>Calendar Agenda</h2>
         <div className="shows-container">
           <div className="show-container previous">
             <h2>Previous show</h2>
+            {!loadingOnAirData ? (
+              <>
+                {previouslyOnAir ? (
+                  <>
+                    <h4 className="text-center">
+                      {previouslyOnAir.show_details.title}
+                    </h4>
+
+                    <div className="currently-on-air__host-name">
+                      {previouslyOnAir.show_details.host != null &&
+                        'hosted by ' +
+                          formatHostName(previouslyOnAir.show_details.host)}
+                    </div>
+
+                    <div className="currently-on-air__show-time">
+                      {moment(previouslyOnAir.start_time_utc).format('LT')} -{' '}
+                      {moment(previouslyOnAir.end_time_utc).format('LT')}
+                    </div>
+                  </>
+                ) : (
+                  <div>No previous shows</div>
+                )}
+              </>
+            ) : (
+              <Loading displayMode="static" />
+            )}
           </div>
           <div className="show-container current">
             <h2>Current show</h2>

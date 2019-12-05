@@ -8,11 +8,19 @@ function populateTrafficInstance(
   startTimeUtc,
   endTimeUtc,
 ) {
+  if (!trafficObj.is_recurring) {
+    return {
+      ...trafficObj.toObject(),
+      master_time_id: masterTimeId,
+    };
+  }
+
   let instances = allEventInstancesInDateRange(
     trafficObj,
     startTimeUtc,
     endTimeUtc,
   );
+
   let instance = instances.find(a => a.master_time_id === masterTimeId);
 
   // with legacy data from the old version of comrad, sometimes the time of the traffic event has changed from

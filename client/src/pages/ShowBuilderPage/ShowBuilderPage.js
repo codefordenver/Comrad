@@ -47,6 +47,8 @@ import { getNextDiskAndTrackNumberForAlbum } from '../../utils/library';
 class ShowBuilderPage extends Component {
   state = {
     activeTab: 'search',
+    scratchpadUpdatestoIndex: null,
+    scratchpadUpdatesPropertiesToUpdate: {},
     showAddTrackModal: false,
     showPromptForLabelModal: false,
   };
@@ -364,12 +366,12 @@ class ShowBuilderPage extends Component {
         itemBeingMoved.itemId,
         propertiesToUpdate,
       );
+      this.setState({ scratchpadPropertiesToUpdate: propertiesToUpdate });
 
       // todo: database save logic on finish move
     } else if (itemBeingMoved.isTraffic) {
-      console.log('here');
       let trafficItem = traffic.docs.filter(
-        t => (t._id = itemBeingMoved.itemId),
+        t => t._id === itemBeingMoved.itemId,
       )[0];
       console.log(trafficItem);
       let propertiesToUpdate = {
@@ -381,8 +383,12 @@ class ShowBuilderPage extends Component {
       } else {
         propertiesToUpdate.occurs_after_time_utc = trafficItem.start_time_utc;
       }
-      console.log(itemBeingMoved);
-      //playlistActions.updateSCratchpadItem(playlist.doc._id, itemBeingReplaced._id, propertiesToUpdate);
+      playlistActions.updateScratchpadItem(
+        playlist.doc._id,
+        itemBeingReplaced._id,
+        propertiesToUpdate,
+      );
+      this.setState({ scratchpadPropertiesToUpdate: propertiesToUpdate });
     } else {
       // make this use the toIndex/fromIndex among all non-traffic items
       let toIndexAmongScratchpad, fromIndexAmongScratchpad;
@@ -400,6 +406,7 @@ class ShowBuilderPage extends Component {
         toIndexAmongScratchpad,
         fromIndexAmongScratchpad,
       );
+      this.setState({ scratchpadToIndex: toIndexAmongScratchpad });
     }
   };
 
@@ -409,8 +416,13 @@ class ShowBuilderPage extends Component {
     playlistActions.finishRearrangeScratchpadItem(
       playlist.doc._id,
       itemId,
-      toIndex,
+      this.state.scratchpadUpdatesToIndex,
+      this.state.scratchpadUpdatesPropertiesToUpdate,
     );
+    this.setState({
+      scratchpadUpdatestoIndex: null,
+      scratchpadUpdatesPropertiesToUpdate: {},
+    });
   };
 
   searchLibrary = form => {

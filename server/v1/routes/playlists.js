@@ -77,6 +77,10 @@ router
   );
 router
   .route('/:playlistId/scratchpad/:itemId')
+  .put(
+    requireAC('Playlists', 'updateOwn'),
+    playlistsController.updateScratchpadItem,
+  )
   .delete(
     requireAC('Playlists', 'updateOwn'),
     playlistsController.deleteItemFromScratchpad,

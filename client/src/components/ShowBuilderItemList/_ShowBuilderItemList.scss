@@ -67,6 +67,10 @@
         width: 7.5em;
         flex-grow: 0;
         flex-shrink: 0;
+        
+        &--one-button {
+          width: auto;
+        }
       }
       
       button {

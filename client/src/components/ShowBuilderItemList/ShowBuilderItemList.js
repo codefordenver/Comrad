@@ -7,10 +7,10 @@ import HTML5Backend from 'react-dnd-html5-backend';
 import ShowBuilderItem from './ShowBuilderItem';
 
 export default class ShowBuilderItemList extends Component {
-  onRearrangeShowBuilderItem = (fromIndex, toIndex) => {
-    const { onRearrangeItem } = this.props;
+  onRearrangeShowBuilderItem = (fromIndex, toIndex, itemBeingMoved) => {
+    const { items, onRearrangeItem } = this.props;
     if (typeof onRearrangeItem === 'function') {
-      onRearrangeItem(fromIndex, toIndex);
+      onRearrangeItem(fromIndex, toIndex, itemBeingMoved, items[toIndex]);
     }
   };
 
@@ -102,13 +102,13 @@ export default class ShowBuilderItemList extends Component {
             <ShowBuilderItem
               key={idx}
               index={idx}
-              itemId={item._id}
+              itemId={item._id != null ? item._id : item.traffic._id}
               masterTimeId={item.traffic.master_time_id}
               onRearrangeShowBuilderItem={onRearrangeShowBuilderItem}
               onFinishRearrangeShowBuilderItem={
                 onFinishRearrangeShowBuilderItem
               }
-              deleteButton={false}
+              isTraffic={true}
               eventType={eventType}
               canExpand={true}
               titleHtml={
@@ -119,6 +119,7 @@ export default class ShowBuilderItemList extends Component {
                 traffic.traffic_details.title
               }
               {...buttonProps}
+              deleteButton={false}
             >
               {/* regex below is to replace HTML tags */}
               {traffic.traffic_details.description

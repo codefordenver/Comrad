@@ -14,6 +14,7 @@ import { moveItemFromSavedItemsToScratchpad } from './moveItemFromSavedItemsToSc
 import { moveItemFromScratchpadToSavedItems } from './moveItemFromScratchpadToSavedItems';
 import { rearrangeSavedItem } from './rearrangeSavedItem';
 import { rearrangeScratchpadItem } from './rearrangeScratchpadItem';
+import { updateScratchpadItem } from './updateScratchpadItem';
 
 export const playlistActions = {
   addCommentToSavedItems,
@@ -32,4 +33,5 @@ export const playlistActions = {
   moveItemFromScratchpadToSavedItems,
   rearrangeSavedItem,
   rearrangeScratchpadItem,
+  updateScratchpadItem,
 };

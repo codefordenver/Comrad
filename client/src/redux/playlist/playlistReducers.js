@@ -200,10 +200,7 @@ export const playlistReducer = (state = initialState, { type, payload }) => {
     case playlistTypes.REARRANGE_SCRATCHPAD_ITEM:
       if (state.doc._id === payload.playlistId) {
         let newScratchpad = [...state.doc.scratchpad];
-        console.log(state.doc.scratchpad);
         let element = state.doc.scratchpad[payload.fromIndex];
-        console.log('the item:');
-        console.log(element);
         newScratchpad.splice(payload.fromIndex, 1);
         newScratchpad.splice(payload.toIndex, 0, element);
         return {
@@ -222,6 +219,33 @@ export const playlistReducer = (state = initialState, { type, payload }) => {
         ...state,
         saving: true,
       };
+    case playlistTypes.UPDATE_SCRATCHPAD_ITEM:
+      if (state.doc._id === payload.playlistId) {
+        let newScratchpad = [...state.doc.scratchpad];
+        let itemIndex;
+        state.doc.scratchpad.forEach((elem, idx) => {
+          if (elem._id === payload.itemId) {
+            itemIndex = idx;
+          }
+        });
+        if (typeof itemIndex === 'undefined') {
+          console.error(
+            "in UPDATE_SCRATCHPAD_ITEM reducer, could not find the item's index in scratchpad",
+          );
+        } else {
+          newScratchpad[itemIndex] = {
+            ...newScratchpad[itemIndex],
+            ...payload.propertiesToUpdate,
+          };
+          return {
+            ...state,
+            doc: {
+              ...state.doc,
+              scratchpad: newScratchpad,
+            },
+          };
+        }
+      }
     default:
       return state;
   }

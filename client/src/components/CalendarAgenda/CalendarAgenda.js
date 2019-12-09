@@ -60,9 +60,13 @@ class CalendarAgenda extends Component {
         response.data.forEach(function() {
           let showsArray = response.data;
           showsArray.sort(function(a, b) {
-            return new Date(a.end_time_utc) - new Date(b.end_time_utc);
+            return new Date(b.end_time_utc) - new Date(a.end_time_utc);
           });
-          previouslyOnAir = showsArray[showsArray.length - 2];
+          for (let i = 0; i < showsArray.length; i++) {
+            if (moment(showsArray[i].end_time_utc) < moment()) {
+              return (previouslyOnAir = showsArray[i]);
+            }
+          }
         });
         self.setState({
           previouslyOnAir: previouslyOnAir,

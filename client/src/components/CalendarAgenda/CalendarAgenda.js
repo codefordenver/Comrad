@@ -13,6 +13,7 @@ class CalendarAgenda extends Component {
     loadingOnAirData: true,
     upNext: null,
     allNext: null,
+    showAll: false,
   };
 
   componentDidMount() {
@@ -35,7 +36,7 @@ class CalendarAgenda extends Component {
           upNext = show;
           showsArray = response.data;
           showsArray.sort(function(a, b) {
-            return new Date(b.end_time_utc) - new Date(a.end_time_utc);
+            return new Date(a.end_time_utc) - new Date(b.end_time_utc);
           });
           let index = response.data.indexOf(upNext);
           showsArray = showsArray.slice(index + 1, response.data.length);
@@ -69,13 +70,6 @@ class CalendarAgenda extends Component {
       });
   };
 
-  showAllNextShows = () => {
-    // need to render these results in upcoming shows container
-    this.state.allNext.map(show => {
-      return <div>{show.show_details.title}</div>;
-    });
-  };
-
   render() {
     const {
       previouslyOnAir,
@@ -83,6 +77,7 @@ class CalendarAgenda extends Component {
       loadingOnAirData,
       upNext,
       allNext,
+      showAll,
     } = this.state;
     const today = moment();
     const todayPlus3Months = moment().add('3', 'month');
@@ -165,9 +160,30 @@ class CalendarAgenda extends Component {
                       {moment(upNext.start_time_utc).format('LT')} -{' '}
                       {moment(upNext.end_time_utc).format('LT')}
                     </div>
-                    <Button onClick={() => this.showAllNextShows()}>
-                      Load more
-                    </Button>
+                    {showAll === false ? (
+                      <Button onClick={() => this.setState({ showAll: true })}>
+                        Load more
+                      </Button>
+                    ) : (
+                      allNext.map(show => {
+                        return (
+                          <>
+                            <h4 className="text-center">
+                              {show.show_details.title}
+                            </h4>
+                            <div className="up-next__host-name">
+                              {show.show_details.host != null &&
+                                'hosted by ' +
+                                  formatHostName(show.show_details.host)}
+                            </div>
+                            <div className="up-next__show-time">
+                              {moment(show.start_time_utc).format('LT')} -{' '}
+                              {moment(show.end_time_utc).format('LT')}
+                            </div>
+                          </>
+                        );
+                      })
+                    )}
                   </>
                 )}
               </>

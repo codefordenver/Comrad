@@ -161,9 +161,13 @@ class CalendarAgenda extends Component {
                       {moment(upNext.end_time_utc).format('LT')}
                     </div>
                     {showAll === false ? (
-                      <Button onClick={() => this.setState({ showAll: true })}>
-                        Load more
-                      </Button>
+                      <div className="load-more-button">
+                        <Button
+                          onClick={() => this.setState({ showAll: true })}
+                        >
+                          Load more
+                        </Button>
+                      </div>
                     ) : (
                       allNext.map(show => {
                         return (

@@ -173,9 +173,9 @@ class CalendarAgenda extends Component {
                         </Button>
                       </div>
                     ) : (
-                      allNext.map(show => {
+                      allNext.map((show, i) => {
                         return (
-                          <>
+                          <div key={i}>
                             <h4 className="text-center">
                               {show.show_details.title}
                             </h4>
@@ -188,7 +188,7 @@ class CalendarAgenda extends Component {
                               {moment(show.start_time_utc).format('LT')} -{' '}
                               {moment(show.end_time_utc).format('LT')}
                             </div>
-                          </>
+                          </div>
                         );
                       })
                     )}

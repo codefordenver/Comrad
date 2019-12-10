@@ -32,14 +32,17 @@ class CalendarAgenda extends Component {
           moment(show.end_time_utc) >= moment()
         ) {
           currentlyOnAir = show;
-        } else if (upNext == null && moment(show.start_time_utc) > moment()) {
-          upNext = show;
           showsArray = response.data;
+          let upNextIndex = response.data.indexOf(currentlyOnAir) + 1;
+          upNext = response.data[upNextIndex];
           showsArray.sort(function(a, b) {
             return new Date(a.end_time_utc) - new Date(b.end_time_utc);
           });
-          let index = response.data.indexOf(upNext);
-          showsArray = showsArray.slice(index + 1, response.data.length);
+          let allNextStartPoint = response.data.indexOf(upNextIndex);
+          showsArray = showsArray.slice(
+            allNextStartPoint + 1,
+            response.data.length,
+          );
         }
       });
       self.setState({

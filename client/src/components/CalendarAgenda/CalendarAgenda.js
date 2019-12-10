@@ -7,13 +7,18 @@ import Button from '../../components/Button';
 import { formatHostName } from '../../utils/formatters';
 
 class CalendarAgenda extends Component {
+  constructor(props) {
+    super(props);
+    this.handleShowMore = this.handleShowMore.bind(this);
+  }
+
   state = {
     previouslyOnAir: null,
     currentlyOnAir: null,
     loadingOnAirData: true,
     upNext: null,
-    allNext: null,
-    showAll: false,
+    allNext: [],
+    showItems: 0,
   };
 
   componentDidMount() {
@@ -38,7 +43,7 @@ class CalendarAgenda extends Component {
           showsArray.sort(function(a, b) {
             return new Date(a.end_time_utc) - new Date(b.end_time_utc);
           });
-          let allNextStartPoint = response.data.indexOf(upNextIndex);
+          let allNextStartPoint = response.data.indexOf(upNext);
           showsArray = showsArray.slice(
             allNextStartPoint + 1,
             response.data.length,
@@ -77,6 +82,13 @@ class CalendarAgenda extends Component {
       });
   };
 
+  handleShowMore() {
+    const { allNext, showItems } = this.state;
+    this.setState({
+      showItems: showItems >= allNext.length ? showItems : showItems + 5,
+    });
+  }
+
   render() {
     const {
       previouslyOnAir,
@@ -84,8 +96,23 @@ class CalendarAgenda extends Component {
       loadingOnAirData,
       upNext,
       allNext,
-      showAll,
+      showItems,
     } = this.state;
+    const allShows = allNext.slice(0, showItems).map((show, i) => {
+      return (
+        <div key={i}>
+          <h4 className="text-center">{show.show_details.title}</h4>
+          <div className="up-next__host-name">
+            {show.show_details.host != null &&
+              'hosted by ' + formatHostName(show.show_details.host)}
+          </div>
+          <div className="up-next__show-time">
+            {moment(show.start_time_utc).format('LT')} -{' '}
+            {moment(show.end_time_utc).format('LT')}
+          </div>
+        </div>
+      );
+    });
 
     return (
       <>
@@ -164,33 +191,21 @@ class CalendarAgenda extends Component {
                       {moment(upNext.start_time_utc).format('LT')} -{' '}
                       {moment(upNext.end_time_utc).format('LT')}
                     </div>
-                    {showAll === false ? (
+                    {showItems === 0 ? (
                       <div className="load-more-button">
-                        <Button
-                          onClick={() => this.setState({ showAll: true })}
-                        >
-                          Load more
-                        </Button>
+                        <Button onClick={this.handleShowMore}>Load more</Button>
                       </div>
                     ) : (
-                      allNext.map((show, i) => {
-                        return (
-                          <div key={i}>
-                            <h4 className="text-center">
-                              {show.show_details.title}
-                            </h4>
-                            <div className="up-next__host-name">
-                              {show.show_details.host != null &&
-                                'hosted by ' +
-                                  formatHostName(show.show_details.host)}
-                            </div>
-                            <div className="up-next__show-time">
-                              {moment(show.start_time_utc).format('LT')} -{' '}
-                              {moment(show.end_time_utc).format('LT')}
-                            </div>
+                      <>
+                        {allShows}
+                        {showItems < allNext.length && (
+                          <div className="load-more-button">
+                            <Button onClick={this.handleShowMore}>
+                              Load more
+                            </Button>
                           </div>
-                        );
-                      })
+                        )}
+                      </>
                     )}
                   </>
                 )}

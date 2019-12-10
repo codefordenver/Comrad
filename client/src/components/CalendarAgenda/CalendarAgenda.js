@@ -86,9 +86,6 @@ class CalendarAgenda extends Component {
       allNext,
       showAll,
     } = this.state;
-    const today = moment();
-    const todayPlus3Months = moment().add('3', 'month');
-    const oneYearAgo = moment().subtract('1', 'year');
 
     return (
       <>

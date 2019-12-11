@@ -19,6 +19,7 @@ class CalendarAgenda extends Component {
     upNext: null,
     allNext: [],
     showItems: 0,
+    day: 1,
   };
 
   componentDidMount() {
@@ -83,10 +84,31 @@ class CalendarAgenda extends Component {
   };
 
   handleShowMore() {
-    const { allNext, showItems } = this.state;
-    this.setState({
-      showItems: showItems >= allNext.length ? showItems : showItems + 5,
-    });
+    const { allNext, showItems, day } = this.state;
+    const self = this;
+    let showsArray = allNext;
+    let timeFrame = day;
+
+    if (showItems === allNext.length) {
+      console.log('api');
+      timeFrame++;
+      showAPI
+        .find(moment(), moment().add({ timeFrame }, 'day'))
+        .then(function(response) {
+          console.log(response.data);
+        });
+      self.setState({
+        allNext: showsArray,
+        day: timeFrame,
+      });
+    }
+    if (showItems < allNext.length) {
+      if (showItems + 5 > allNext.length) {
+        this.setState({ showItems: allNext.length });
+      } else {
+        this.setState({ showItems: showItems + 5 });
+      }
+    }
   }
 
   render() {
@@ -198,13 +220,11 @@ class CalendarAgenda extends Component {
                     ) : (
                       <>
                         {allShows}
-                        {showItems < allNext.length && (
-                          <div className="load-more-button">
-                            <Button onClick={this.handleShowMore}>
-                              Load more
-                            </Button>
-                          </div>
-                        )}
+                        <div className="load-more-button">
+                          <Button onClick={this.handleShowMore}>
+                            Load more
+                          </Button>
+                        </div>
                       </>
                     )}
                   </>

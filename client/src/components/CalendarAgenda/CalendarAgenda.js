@@ -30,7 +30,7 @@ class CalendarAgenda extends Component {
   loadCurrentlyOnAir = () => {
     let { currentlyOnAir, upNext } = this.state;
     const self = this;
-    let showsArray = [];
+    let futureShows = [];
     showAPI.find(moment(), moment().add(1, 'day')).then(function(response) {
       response.data.forEach(function(show) {
         if (
@@ -38,24 +38,20 @@ class CalendarAgenda extends Component {
           moment(show.end_time_utc) >= moment()
         ) {
           currentlyOnAir = show;
-          showsArray = response.data;
-          let upNextIndex = response.data.indexOf(currentlyOnAir) + 1;
-          upNext = response.data[upNextIndex];
-          showsArray.sort(function(a, b) {
-            return new Date(a.end_time_utc) - new Date(b.end_time_utc);
-          });
-          let allNextStartPoint = response.data.indexOf(upNext);
-          showsArray = showsArray.slice(
-            allNextStartPoint + 1,
-            response.data.length,
-          );
+        } else if (moment(show.start_time_utc > moment())) {
+          futureShows.push(show);
         }
       });
+      futureShows.sort(function(a, b) {
+        return new Date(a.start_time_utc) - new Date(b.start_time_utc);
+      });
+      upNext = futureShows[0];
+      let allNextShows = futureShows.slice(1, futureShows.length);
       self.setState({
         currentlyOnAir: currentlyOnAir,
         loadingOnAirData: false,
         upNext: upNext,
-        allNext: showsArray,
+        allNext: allNextShows,
       });
     });
   };
@@ -86,23 +82,31 @@ class CalendarAgenda extends Component {
   handleShowMore() {
     const { allNext, showItems, day } = this.state;
     const self = this;
-    let showsArray = allNext;
     let timeFrame = day;
-
+    let futureShows = [];
     if (showItems === allNext.length) {
       console.log('api');
       timeFrame++;
       showAPI
-        .find(moment(), moment().add({ timeFrame }, 'day'))
+        .find(moment(), moment().add(timeFrame, 'day'))
         .then(function(response) {
-          console.log(response.data);
+          for (let i = 0; i < response.data.length; i++) {
+            if (moment(response.data[i].start_time_utc) > moment()) {
+              futureShows.push(response.data[i]);
+            }
+          }
+          futureShows.sort(function(a, b) {
+            return new Date(a.start_time_utc) - new Date(b.start_time_utc);
+          });
+          console.log(futureShows);
         });
+      let addFive = showItems + 5;
       self.setState({
-        allNext: showsArray,
+        allNext: futureShows,
         day: timeFrame,
+        showItems: addFive,
       });
-    }
-    if (showItems < allNext.length) {
+    } else if (showItems < allNext.length) {
       if (showItems + 5 > allNext.length) {
         this.setState({ showItems: allNext.length });
       } else {

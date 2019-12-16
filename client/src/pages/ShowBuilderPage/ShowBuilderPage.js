@@ -48,7 +48,7 @@ class ShowBuilderPage extends Component {
   state = {
     activeTab: 'search',
     scratchpadUpdatestoIndex: null,
-    scratchpadUpdatesPropertiesToUpdate: {},
+    scratchpadPropertiesToUpdate: {},
     showAddTrackModal: false,
     showPromptForLabelModal: false,
   };
@@ -210,7 +210,7 @@ class ShowBuilderPage extends Component {
 
   // combines the scratchpad and traffic documents into one list
   getScratchpadCombinedWithNonexecutedTraffic = () => {
-    const { playlist, playlistActions, traffic } = this.props;
+    const { playlist, traffic } = this.props;
     let { scratchpad, saved_items } = playlist.doc;
     let scratchpadForDisplay = [];
     //modify the scratchpad list based on what traffic occurs at the time period
@@ -323,9 +323,6 @@ class ShowBuilderPage extends Component {
     //rearrange the scratchpad item in the UI
     const { playlist, playlistActions, traffic } = this.props;
     const { scratchpad } = playlist.doc;
-    console.log('from ' + fromIndex + ' to ' + toIndex);
-    console.log(itemBeingReplaced);
-    console.log(itemBeingMoved);
     if (itemBeingReplaced.type === 'traffic' && itemBeingMoved.isTraffic) {
       // do nothing
     } else if (itemBeingReplaced.type === 'traffic') {
@@ -367,13 +364,10 @@ class ShowBuilderPage extends Component {
         propertiesToUpdate,
       );
       this.setState({ scratchpadPropertiesToUpdate: propertiesToUpdate });
-
-      // todo: database save logic on finish move
     } else if (itemBeingMoved.isTraffic) {
       let trafficItem = traffic.docs.filter(
         t => t._id === itemBeingMoved.itemId,
       )[0];
-      console.log(trafficItem);
       let propertiesToUpdate = {
         occurs_after_time_utc: null,
         occurs_before_time_utc: null,
@@ -417,11 +411,11 @@ class ShowBuilderPage extends Component {
       playlist.doc._id,
       itemId,
       this.state.scratchpadUpdatesToIndex,
-      this.state.scratchpadUpdatesPropertiesToUpdate,
+      this.state.scratchpadPropertiesToUpdate,
     );
     this.setState({
       scratchpadUpdatestoIndex: null,
-      scratchpadUpdatesPropertiesToUpdate: {},
+      scratchpadPropertiesToUpdate: {},
     });
   };
 
@@ -491,7 +485,6 @@ class ShowBuilderPage extends Component {
       typeof saved_items !== 'undefined'
     ) {
       scratchpadForDisplay = this.getScratchpadCombinedWithNonexecutedTraffic();
-      console.log(scratchpadForDisplay);
     }
 
     if (typeof saved_items !== 'undefined') {

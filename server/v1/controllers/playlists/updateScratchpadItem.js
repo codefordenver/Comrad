@@ -7,13 +7,21 @@ async function updateScratchpadItem(req, res) {
   ) {
     return res.status(422).json('The required parameters were not provided');
   }
-  // todo: implement this
-  //need to update scratchpad item based on:
-  //req.body
 
-  //db.Playlist.findOne({ _id: req.params.playlistId })
+  let updateObj = {};
 
-  //.catch(err => res.status(422).json({ errorMessage: err }));
+  Object.keys(req.body).forEach(k => {
+    updateObj['scratchpad.$.' + k] = req.body[k];
+  });
+
+  db.Playlist.updateOne(
+    { _id: req.params.playlistId, 'scratchpad._id': req.params.itemId },
+    { $set: updateObj },
+  )
+    .then(dbPlaylist => {
+      return res.status(200).json({});
+    })
+    .catch(err => res.status(422).json({ errorMessage: err }));
 }
 
 module.exports = updateScratchpadItem;

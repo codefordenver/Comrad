@@ -246,6 +246,7 @@ export const playlistReducer = (state = initialState, { type, payload }) => {
           };
         }
       }
+      break;
     default:
       return state;
   }

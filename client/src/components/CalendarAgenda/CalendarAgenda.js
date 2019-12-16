@@ -99,13 +99,13 @@ class CalendarAgenda extends Component {
             return new Date(a.start_time_utc) - new Date(b.start_time_utc);
           });
           console.log(futureShows);
+          let addFive = showItems + 5;
+          self.setState({
+            allNext: futureShows,
+            day: timeFrame,
+            showItems: addFive,
+          });
         });
-      let addFive = showItems + 5;
-      self.setState({
-        allNext: futureShows,
-        day: timeFrame,
-        showItems: addFive,
-      });
     } else if (showItems < allNext.length) {
       if (showItems + 5 > allNext.length) {
         this.setState({ showItems: allNext.length });

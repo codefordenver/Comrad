@@ -85,7 +85,6 @@ class CalendarAgenda extends Component {
     let timeFrame = day;
     let futureShows = [];
     if (showItems === allNext.length) {
-      console.log('api');
       timeFrame++;
       showAPI
         .find(moment(), moment().add(timeFrame, 'day'))
@@ -98,7 +97,6 @@ class CalendarAgenda extends Component {
           futureShows.sort(function(a, b) {
             return new Date(a.start_time_utc) - new Date(b.start_time_utc);
           });
-          console.log(futureShows);
           let addFive = showItems + 5;
           self.setState({
             allNext: futureShows,

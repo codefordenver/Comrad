@@ -166,7 +166,10 @@ function returnDatesArrayByRepeatRule(event, startDate, endDate) {
   try {
     let eventDuration = event.end_time_utc - event.start_time_utc;
     let adjustedStartDate = new Date(
-      moment(startDate).add(-1 * eventDuration, 'milliseconds'),
+      moment(startDate).add(
+        -1 * eventDuration - 1 * 1000 * 60 * 60,
+        'milliseconds',
+      ), // we are subtracting one hour because RRule has not been accounting for Daylight Savings Time properly - may need to consider rewriting to remove Rrule implementation with something that's more transparent about how it handles DST
     ); //between searches on START times, and we want to get anything in progress in this date range, so subtract the event duration from the start time
 
     let events = rule.between(adjustedStartDate, new Date(endDate));
@@ -217,7 +220,16 @@ function combineDayAndTime(
       .utc();
   } else {
     //Neither date or time is at midnight, so set hours
+    // the date/time could different, which may mean we have differences between the dates related to DST
+    //get the time difference, in hours
+    let difference = desiredTime__hours - desiredDate__hours;
+    if (difference < -12) {
+      difference = difference + 24;
+    } else if (difference > 12) {
+      difference = difference - 24;
+    }
     returnedValue = moment(desiredDate)
+      .add(difference, 'hour')
       .hours(desiredTime__hours)
       .minutes(desiredTime__minutes)
       .seconds(0)

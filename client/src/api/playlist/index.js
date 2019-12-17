@@ -12,6 +12,7 @@ import { findOne } from './findOne';
 import { findOrCreateOne } from './findOrCreateOne';
 import { rearrangeSavedItem } from './rearrangeSavedItem';
 import { rearrangeScratchpadItem } from './rearrangeScratchpadItem';
+import { updateScratchpadItem } from './updateScratchpadItem';
 
 export const playlistAPI = {
   addCommentToSavedItems,
@@ -28,4 +29,5 @@ export const playlistAPI = {
   findOrCreateOne,
   rearrangeSavedItem,
   rearrangeScratchpadItem,
+  updateScratchpadItem,
 };

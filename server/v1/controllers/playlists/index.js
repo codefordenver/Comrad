@@ -12,6 +12,7 @@ const moveItemFromSavedItemsToScratchpad = require('./moveItemFromSavedItemsToSc
 const moveItemFromScratchpadToSavedItems = require('./moveItemFromScratchpadToSavedItems');
 const rearrangeSavedItem = require('./rearrangeSavedItem');
 const rearrangeScratchpadItem = require('./rearrangeScratchpadItem');
+const updateScratchpadItem = require('./updateScratchpadItem');
 
 module.exports = {
   addCommentToSavedItems,
@@ -28,4 +29,5 @@ module.exports = {
   moveItemFromScratchpadToSavedItems,
   rearrangeSavedItem,
   rearrangeScratchpadItem,
+  updateScratchpadItem,
 };

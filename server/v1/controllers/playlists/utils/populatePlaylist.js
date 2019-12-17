@@ -8,10 +8,16 @@ async function populatePlaylist(docPlaylist) {
       populate: { path: 'artists' },
     },
     {
-      path: 'saved_items.track',
-      populate: { path: 'artists' },
+      path: 'scratchpad.track',
+      populate: { path: 'album' },
     },
-    'saved_items.traffic',
+    {
+      path: 'saved_items.track',
+      populate: { path: 'artists album' },
+    },
+    {
+      path: 'saved_items.traffic',
+    },
   ]);
 
   let objPlaylist = docPlaylist.toObject();

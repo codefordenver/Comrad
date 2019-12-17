@@ -7,10 +7,10 @@ import HTML5Backend from 'react-dnd-html5-backend';
 import ShowBuilderItem from './ShowBuilderItem';
 
 export default class ShowBuilderItemList extends Component {
-  onRearrangeShowBuilderItem = (fromIndex, toIndex) => {
-    const { onRearrangeItem } = this.props;
+  onRearrangeShowBuilderItem = (fromIndex, toIndex, itemBeingMoved) => {
+    const { items, onRearrangeItem } = this.props;
     if (typeof onRearrangeItem === 'function') {
-      onRearrangeItem(fromIndex, toIndex);
+      onRearrangeItem(fromIndex, toIndex, itemBeingMoved, items[toIndex]);
     }
   };
 
@@ -39,6 +39,15 @@ export default class ShowBuilderItemList extends Component {
       switch (item.type) {
         case 'track':
           let trackName = item.track != null ? item.track.name : '';
+          let albumName =
+            item.track != null && item.track.album != null
+              ? item.track.album.name
+              : null;
+          let label =
+            item.track != null && item.track.album != null
+              ? item.track.label
+              : null;
+          let canExpand = albumName != null || label != null;
           let artists =
             item.track != null
               ? item.track.artists.map(function(artist) {
@@ -57,15 +66,22 @@ export default class ShowBuilderItemList extends Component {
               }
               {...buttonProps}
               eventType="track"
+              titleHtml={
+                item.track != null
+                  ? `<b>Track:</b> <i>${trackName}</i> by <i>${artists}</i>`
+                  : `<b>Track:</b> <i>Track data missing from database</i>`
+              }
+              canExpand={canExpand}
             >
-              {item.track != null ? (
-                <>
-                  <b>Track:</b> <i>{trackName}</i> by <i>{artists}</i>
-                </>
-              ) : (
-                <>
-                  <b>Track:</b> <i>Track data missing from database</i>
-                </>
+              {albumName != null && (
+                <div>
+                  <b>Album:</b> {albumName}
+                </div>
+              )}
+              {label != null && (
+                <div>
+                  <b>Label:</b> {label}
+                </div>
               )}
             </ShowBuilderItem>,
           );
@@ -86,18 +102,42 @@ export default class ShowBuilderItemList extends Component {
             <ShowBuilderItem
               key={idx}
               index={idx}
-              itemId={item._id}
+              itemId={item._id != null ? item._id : item.traffic._id}
               masterTimeId={item.traffic.master_time_id}
               onRearrangeShowBuilderItem={onRearrangeShowBuilderItem}
               onFinishRearrangeShowBuilderItem={
                 onFinishRearrangeShowBuilderItem
               }
-              deleteButton={false}
+              isTraffic={true}
               eventType={eventType}
+              canExpand={true}
+              titleHtml={
+                formattedTime +
+                ' - <b>' +
+                traffic.traffic_details.type +
+                ':</b> ' +
+                traffic.traffic_details.title
+              }
               {...buttonProps}
+              deleteButton={false}
             >
-              {formattedTime} - <b>{traffic.traffic_details.type}:</b>{' '}
-              {traffic.traffic_details.title}
+              {/* regex below is to replace HTML tags */}
+              {traffic.traffic_details.description
+                .replace(/<(.*?)>/gi, '')
+                .trim().length > 0 && (
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: traffic.traffic_details.description,
+                  }}
+                />
+              )}
+              {traffic.traffic_details.description
+                .replace(/<(.*?)>/gi, '')
+                .trim().length === 0 && (
+                <div>
+                  <i>There are no additional details for this traffic event.</i>
+                </div>
+              )}
             </ShowBuilderItem>,
           );
           break;
@@ -112,9 +152,11 @@ export default class ShowBuilderItemList extends Component {
                 onFinishRearrangeShowBuilderItem
               }
               eventType="comment"
+              titleHtml="Comment"
+              canExpand={true}
               {...buttonProps}
             >
-              Comment
+              <div dangerouslySetInnerHTML={{ __html: item.description }} />
             </ShowBuilderItem>,
           );
           break;
@@ -130,9 +172,8 @@ export default class ShowBuilderItemList extends Component {
               }
               eventType="voice_break"
               {...buttonProps}
-            >
-              Voice Break
-            </ShowBuilderItem>,
+              titleHtml="Voice Break"
+            ></ShowBuilderItem>,
           );
           break;
         default:

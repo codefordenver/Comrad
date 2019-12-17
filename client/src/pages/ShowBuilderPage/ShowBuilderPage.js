@@ -47,6 +47,8 @@ import { getNextDiskAndTrackNumberForAlbum } from '../../utils/library';
 class ShowBuilderPage extends Component {
   state = {
     activeTab: 'search',
+    scratchpadUpdatestoIndex: null,
+    scratchpadPropertiesToUpdate: {},
     showAddTrackModal: false,
     showPromptForLabelModal: false,
   };
@@ -206,6 +208,74 @@ class ShowBuilderPage extends Component {
     }
   };
 
+  // combines the scratchpad and traffic documents into one list
+  getScratchpadCombinedWithNonexecutedTraffic = () => {
+    const { playlist, traffic } = this.props;
+    let { scratchpad, saved_items } = playlist.doc;
+    let scratchpadForDisplay = [];
+    //modify the scratchpad list based on what traffic occurs at the time period
+    //we will add any traffic items not accounted for to scratchpad
+    let trafficItemsForScratchpad = [...traffic.docs];
+    saved_items.forEach(si => {
+      if (si.type === 'traffic') {
+        let matchingIndex = trafficItemsForScratchpad.findIndex(
+          a => a.master_time_id === si.master_time_id,
+        );
+        trafficItemsForScratchpad.splice(matchingIndex, 1);
+      }
+    });
+    trafficItemsForScratchpad.reverse();
+    trafficItemsForScratchpad.forEach(t => {
+      scratchpadForDisplay.unshift({
+        type: 'traffic',
+        traffic: t,
+      });
+    });
+    let scratchpadIndex = 0;
+    scratchpad.forEach(s => {
+      if (typeof s === 'undefined' || s == null) {
+        console.error('Empty item in scratchpad list, skipping...');
+        return;
+      }
+      if (!s.occurs_after_time_utc && !s.occurs_before_time_utc) {
+        scratchpadForDisplay.push(s); // item goes at the end
+        scratchpadIndex = scratchpadForDisplay.length;
+      } else {
+        // add the scratchpad item at a particular index based on the time values
+        if (scratchpadIndex > scratchpadForDisplay.length) {
+          console.error(
+            'Scratchpad has items with occurs_after_time_utc or occurs_before_time_utc after items that do not have it set, scratchpad items may not display correctly.',
+          );
+          scratchpadForDisplay.push(s); // item goes at the end
+          scratchpadIndex = scratchpadForDisplay.length;
+        } else {
+          for (let i = scratchpadIndex; i < scratchpadForDisplay.length; i++) {
+            if (scratchpadForDisplay[i].type === 'traffic') {
+              let traffic = scratchpadForDisplay[i].traffic;
+              if (
+                s.occurs_before_time_utc &&
+                traffic.start_time_utc >= s.occurs_before_time_utc
+              ) {
+                scratchpadIndex = i; // insert right before this item
+                break;
+              } else if (
+                s.occurs_after_time_utc &&
+                traffic.start_time_utc > s.occurs_after_time_utc
+              ) {
+                scratchpadIndex = i; // insert right before this item
+                break;
+              }
+            }
+            scratchpadIndex = i + 1;
+          }
+          scratchpadForDisplay.splice(scratchpadIndex, 0, s);
+          scratchpadIndex++;
+        }
+      }
+    });
+    return scratchpadForDisplay;
+  };
+
   handleHostSelect = host => {
     const { props } = this;
     const { updateShow, shows } = props;
@@ -244,14 +314,94 @@ class ShowBuilderPage extends Component {
     );
   };
 
-  handleRearrangeScratchpadItem = (fromIndex, toIndex) => {
+  handleRearrangeScratchpadItem = (
+    fromIndex,
+    toIndex,
+    itemBeingMoved,
+    itemBeingReplaced,
+  ) => {
     //rearrange the scratchpad item in the UI
-    const { playlist, playlistActions } = this.props;
-    playlistActions.rearrangeScratchpadItem(
-      playlist.doc._id,
-      toIndex,
-      fromIndex,
-    );
+    const { playlist, playlistActions, traffic } = this.props;
+    const { scratchpad } = playlist.doc;
+    if (itemBeingReplaced.type === 'traffic' && itemBeingMoved.isTraffic) {
+      // do nothing
+    } else if (itemBeingReplaced.type === 'traffic') {
+      let propertiesToUpdate = {
+        occurs_after_time_utc: null,
+        occurs_before_time_utc: null,
+      };
+      if (fromIndex > toIndex) {
+        propertiesToUpdate.occurs_before_time_utc =
+          itemBeingReplaced.traffic.start_time_utc;
+        //see if there is a previous traffic event so we can set occurs_after_time_utc
+        let foundTrafficEvent = false;
+        let reversedTrafficDocs = [...traffic.docs];
+        reversedTrafficDocs = reversedTrafficDocs.reverse();
+        reversedTrafficDocs.forEach(item => {
+          if (foundTrafficEvent) {
+            propertiesToUpdate.occurs_after_time_utc = item.start_time_utc;
+            foundTrafficEvent = false;
+          } else if (item._id === itemBeingReplaced._id) {
+            foundTrafficEvent = true;
+          }
+        });
+      } else {
+        propertiesToUpdate.occurs_after_time_utc =
+          itemBeingReplaced.traffic.start_time_utc;
+        let foundTrafficEvent = false;
+        traffic.docs.forEach(item => {
+          if (foundTrafficEvent) {
+            propertiesToUpdate.occurs_before_time_utc = item.start_time_utc;
+            foundTrafficEvent = false;
+          } else if (item._id === itemBeingReplaced._id) {
+            foundTrafficEvent = true;
+          }
+        });
+      }
+      playlistActions.updateScratchpadItem(
+        playlist.doc._id,
+        itemBeingMoved.itemId,
+        propertiesToUpdate,
+      );
+      this.setState({ scratchpadPropertiesToUpdate: propertiesToUpdate });
+    } else if (itemBeingMoved.isTraffic) {
+      let trafficItem = traffic.docs.filter(
+        t => t._id === itemBeingMoved.itemId,
+      )[0];
+      let propertiesToUpdate = {
+        occurs_after_time_utc: null,
+        occurs_before_time_utc: null,
+      };
+      if (fromIndex < toIndex) {
+        propertiesToUpdate.occurs_before_time_utc = trafficItem.start_time_utc;
+      } else {
+        propertiesToUpdate.occurs_after_time_utc = trafficItem.start_time_utc;
+      }
+      playlistActions.updateScratchpadItem(
+        playlist.doc._id,
+        itemBeingReplaced._id,
+        propertiesToUpdate,
+      );
+      this.setState({ scratchpadPropertiesToUpdate: propertiesToUpdate });
+    } else {
+      // make this use the toIndex/fromIndex among all non-traffic items
+      let toIndexAmongScratchpad, fromIndexAmongScratchpad;
+      scratchpad.forEach(function(item, idx) {
+        if (item != null) {
+          if (item._id === itemBeingMoved.itemId) {
+            fromIndexAmongScratchpad = idx;
+          } else if (item._id === itemBeingReplaced._id) {
+            toIndexAmongScratchpad = idx;
+          }
+        }
+      });
+      playlistActions.rearrangeScratchpadItem(
+        playlist.doc._id,
+        toIndexAmongScratchpad,
+        fromIndexAmongScratchpad,
+      );
+      this.setState({ scratchpadToIndex: toIndexAmongScratchpad });
+    }
   };
 
   handleFinishRearrangeScratchpadItem = (itemId, toIndex) => {
@@ -260,8 +410,13 @@ class ShowBuilderPage extends Component {
     playlistActions.finishRearrangeScratchpadItem(
       playlist.doc._id,
       itemId,
-      toIndex,
+      this.state.scratchpadUpdatesToIndex,
+      this.state.scratchpadPropertiesToUpdate,
     );
+    this.setState({
+      scratchpadUpdatestoIndex: null,
+      scratchpadPropertiesToUpdate: {},
+    });
   };
 
   searchLibrary = form => {
@@ -329,25 +484,7 @@ class ShowBuilderPage extends Component {
       typeof scratchpad !== 'undefined' &&
       typeof saved_items !== 'undefined'
     ) {
-      scratchpadForDisplay = [...scratchpad];
-      //modify the scratchpad list based on what traffic occurs at the time period
-      //we will add any traffic itemsnot accounted for to scratchpad
-      let trafficItemsForScratchpad = [...traffic.docs];
-      saved_items.forEach(si => {
-        if (si.type === 'traffic') {
-          let matchingIndex = trafficItemsForScratchpad.findIndex(
-            a => a.master_time_id === si.master_time_id,
-          );
-          trafficItemsForScratchpad.splice(matchingIndex, 1);
-        }
-      });
-      trafficItemsForScratchpad.reverse();
-      trafficItemsForScratchpad.forEach(t => {
-        scratchpadForDisplay.unshift({
-          type: 'traffic',
-          traffic: t,
-        });
-      });
+      scratchpadForDisplay = this.getScratchpadCombinedWithNonexecutedTraffic();
     }
 
     if (typeof saved_items !== 'undefined') {

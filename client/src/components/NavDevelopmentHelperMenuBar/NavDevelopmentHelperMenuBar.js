@@ -17,7 +17,7 @@ const navTestLinks = [
   },
 ];
 
-class NavTest extends Component {
+class NavDevelopmentHelperMenuBar extends Component {
   handleQuickSignIn = () => {
     const { authActions, history } = this.props;
     const email = process.env.REACT_APP_TEST_EMAIL;
@@ -78,4 +78,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(NavTest);
+)(NavDevelopmentHelperMenuBar);

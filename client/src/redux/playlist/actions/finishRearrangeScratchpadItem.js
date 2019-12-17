@@ -5,9 +5,15 @@ export const finishRearrangeScratchpadItem = (
   playlistId,
   itemId,
   toIndex,
+  propertiesToUpdate,
 ) => async dispatch => {
   try {
-    playlistAPI.rearrangeScratchpadItem(playlistId, itemId, toIndex);
+    if (toIndex != null) {
+      playlistAPI.rearrangeScratchpadItem(playlistId, itemId, toIndex);
+    }
+    if (Object.keys(propertiesToUpdate).length > 0) {
+      playlistAPI.updateScratchpadItem(playlistId, itemId, propertiesToUpdate);
+    }
   } catch (err) {
     console.log('Playlist Finish Rearrange Saved Item Error: ', err);
     dispatch({

@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -10,26 +10,39 @@ import Button from '../Button';
 const SHOW_BUILDER_ITEM_TYPE = 'show_builder_item';
 
 const ShowBuilderItem = props => {
+  const [expanded, setExpanded] = useState(false);
+
   const {
+    canExpand,
     children,
     deleteButton,
     eventType,
     index,
+    isTraffic = false,
     itemId,
     masterTimeId,
     onRearrangeShowBuilderItem,
     onFinishRearrangeShowBuilderItem,
     playlist,
     playlistActions,
+    titleHtml,
     toSavedItemsButton,
     toScratchpadButton,
   } = props;
 
-  const handleDelete = () => {
+  const expandCollapseDetails = () => {
+    if (canExpand) {
+      setExpanded(!expanded);
+    }
+  };
+
+  const handleDelete = e => {
+    e.stopPropagation(); //prevent click event from expanding/collapsing the item
     playlistActions.deleteItemFromScratchpad(playlist.doc._id, itemId);
   };
 
-  const handleToSavedItems = () => {
+  const handleToSavedItems = e => {
+    e.stopPropagation(); //prevent click event from expanding/collapsing the item
     if (typeof masterTimeId !== 'undefined') {
       playlistActions.addTrafficToSavedItems(playlist.doc._id, masterTimeId);
     } else {
@@ -40,7 +53,8 @@ const ShowBuilderItem = props => {
     }
   };
 
-  const handleToScratchpad = () => {
+  const handleToScratchpad = e => {
+    e.stopPropagation(); //prevent click event from expanding/collapsing the item
     playlistActions.moveItemFromSavedItemsToScratchpad(
       playlist.doc._id,
       itemId,
@@ -86,7 +100,7 @@ const ShowBuilderItem = props => {
         return;
       }
       // Time to actually perform the action
-      onRearrangeShowBuilderItem(dragIndex, hoverIndex);
+      onRearrangeShowBuilderItem(dragIndex, hoverIndex, item);
       // Note: we're mutating the monitor item here!
       // Generally it's better to avoid mutations,
       // but it's good here for the sake of performance
@@ -95,7 +109,7 @@ const ShowBuilderItem = props => {
     },
   });
   const [{ isDragging }, drag] = useDrag({
-    item: { type: SHOW_BUILDER_ITEM_TYPE, itemId, index },
+    item: { type: SHOW_BUILDER_ITEM_TYPE, isTraffic, itemId, index },
     collect: monitor => ({
       isDragging: monitor.isDragging(),
     }),
@@ -112,26 +126,53 @@ const ShowBuilderItem = props => {
         isDragging ? 'show-builder-item--dragging' : '',
       )}
     >
-      {toScratchpadButton && (
-        <Button
-          type="button"
-          color="neutral"
-          className="button--to-scratchpad"
-          onClick={handleToScratchpad}
+      <div
+        className={classnames(
+          'show-builder-item__title-row',
+          canExpand ? 'show-builder-item__title-row--expandable' : '',
+        )}
+        onClick={expandCollapseDetails}
+      >
+        {toScratchpadButton && (
+          <Button
+            type="button"
+            color="neutral"
+            className="button--to-scratchpad"
+            onClick={handleToScratchpad}
+          >
+            &lt;
+          </Button>
+        )}
+        <span dangerouslySetInnerHTML={{ __html: titleHtml }} />
+        <div
+          className={classnames(
+            'show-builder-item__title-row__right-buttons',
+            !deleteButton
+              ? 'show-builder-item__title-row__right-buttons--one-button'
+              : '',
+          )}
         >
-          &lt;
-        </Button>
-      )}
-      {children}
-      {toSavedItemsButton && (
-        <Button type="button" color="success" onClick={handleToSavedItems}>
-          &gt;
-        </Button>
-      )}
-      {deleteButton && (
-        <Button type="button" color="danger" onClick={handleDelete}>
-          X
-        </Button>
+          {deleteButton && (
+            <Button type="button" color="danger" onClick={handleDelete}>
+              X
+            </Button>
+          )}
+          {toSavedItemsButton && (
+            <Button type="button" color="success" onClick={handleToSavedItems}>
+              &gt;
+            </Button>
+          )}
+        </div>
+      </div>
+      {children && (
+        <div
+          className={classnames(
+            'show-builder-item__details',
+            expanded ? 'show-builder-item__details--expanded' : '',
+          )}
+        >
+          {children}
+        </div>
       )}
     </div>
   );

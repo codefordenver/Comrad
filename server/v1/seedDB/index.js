@@ -55,6 +55,16 @@ async function seedDB() {
       updateProgressFile(scriptProgress);
     }
 
+    // Users
+    if (!scriptProgress.users) {
+      console.log('seeding users...');
+      await Promise.all(
+        seed.users.map(async user => await db.User.create(user)),
+      );
+      scriptProgress.users = 1;
+      updateProgressFile(scriptProgress);
+    }
+
     // Artists
     let allArtists = {};
     if (!scriptProgress.artists) {

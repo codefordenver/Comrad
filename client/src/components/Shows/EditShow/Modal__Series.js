@@ -29,7 +29,7 @@ class EditModal extends Component {
     } = values;
 
     let finalObject = {};
-    let updated = values;
+    let updated = JSON.parse(JSON.stringify(values));
     delete updated.initial;
     let changes = diff(initial, updated);
 
@@ -37,6 +37,22 @@ class EditModal extends Component {
       changes.forEach(difference => {
         this.assign(finalObject, difference.path, difference.rhs);
       });
+    }
+
+    if ('end_time_utc' in finalObject || 'start_time_utc' in finalObject) {
+      if (!('end_time_utc' in finalObject)) {
+        finalObject.end_time_utc = values.end_time_utc;
+      }
+      if (!('start_time_utc' in finalObject)) {
+        finalObject.start_time_utc = values.start_time_utc;
+      }
+      if (
+        !window.confirm(
+          "You're changing the start/end time of a series, which means the start/end time of all future instances of this show will be modified with the new start/end time. Click OK to confirm.",
+        )
+      ) {
+        return false;
+      }
     }
 
     updateSeries(_id, finalObject, handleFormSubmit);

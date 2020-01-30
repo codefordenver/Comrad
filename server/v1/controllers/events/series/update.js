@@ -101,15 +101,13 @@ async function update(req, res) {
       start_time_utc: { $gte: oldSeries.start_time_utc },
       status: 'active',
     });
+    console.log({
+      master_event_id: id,
+      start_time_utc: { $gte: oldSeries.start_time_utc },
+      status: 'active',
+    });
     for (let i = 0; i < documentsToUpdate.length; i++) {
       let d = documentsToUpdate[i];
-      console.log(d._id);
-      console.log({
-        $set: {
-          start_time_utc: d.start_time_utc.getTime() + differenceStartTime,
-          start_time_utc: d.start_time_utc.getTime() + differenceStartTime,
-        },
-      });
       await dbModel.update(
         { _id: d._id },
         {

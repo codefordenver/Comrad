@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Field } from 'redux-form';
+import { Field, change } from 'redux-form';
 import _ from 'lodash';
 import moment from 'moment';
 import RRule from 'rrule';
@@ -9,6 +9,16 @@ import { InputLabel } from '../Input';
 import { requiredValidate } from '../../utils/validation';
 
 class RepeatDropdown extends Component {
+  componentWillMount() {
+    const { change, formSelectorName, initialValues } = this.props;
+    console.log('will mount:');
+    if (initialValues != null && initialValues.repeat_rule != null) {
+      console.log(initialValues);
+      console.log(change);
+      //TODO: set repeat_rule_dropdown_value
+    }
+  }
+
   definedRepeatRules = date => {
     const dateSpelled = moment(date).format('dddd');
     const dateNumber = moment(date).date();
@@ -68,7 +78,6 @@ class RepeatDropdown extends Component {
   render() {
     const { definedRepeatRules, props } = this;
     const { input, date, meta } = props;
-    console.log(input);
     const repeatDropdownList = _.map(definedRepeatRules(date), option => {
       // Dropdown values are using string of JSON instead of object. Inconclusive whether they can be set as object. See https://github.com/codefordenver/Comrad/issues/492
       return (
@@ -86,15 +95,15 @@ class RepeatDropdown extends Component {
           className="z-index--200"
           component={DatePicker__React}
           label="Start"
-          name="repeat_start_date"
+          name="repeat_rule.repeat_start_date"
           validate={[requiredValidate]}
-          disabled
-          controlledDate={date}
+          disabled={date != null ? true : false}
+          controlledDate={date != null ? date : null}
         />
 
         <div className="form-group">
           <Field
-            name="repeat_rule"
+            name="repeat_rule_dropdown_value"
             component="select"
             className="input"
             validate={[requiredValidate]}
@@ -112,7 +121,7 @@ class RepeatDropdown extends Component {
           className="z-index--150"
           component={DatePicker__React}
           label="End"
-          name="repeat_end_date"
+          name="repeat_rule.repeat_end_date"
           placeholderText="Never"
           isClearable={true}
           allowNullDate
@@ -124,5 +133,5 @@ class RepeatDropdown extends Component {
 
 export default connect(
   null,
-  null,
+  { change },
 )(RepeatDropdown);

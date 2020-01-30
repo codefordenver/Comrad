@@ -15,6 +15,11 @@ import { getShowSelected, getSearchDate } from '../../../redux/show';
 const FORM_NAME = 'NEW_SHOW';
 const ALLOW_REPEAT_SELECT = true;
 class NewShowForm extends Component {
+  componentDidMount() {
+    const { change, date } = this.props;
+    change(FORM_NAME, 'repeat_rule.repeat_start_date', date);
+  }
+
   render() {
     const { props } = this;
     const { isRepeat, handleSubmit, date } = props;
@@ -24,11 +29,7 @@ class NewShowForm extends Component {
         <CardBody>
           <form className="new-show-form" onSubmit={handleSubmit}>
             <div className="edit-show-form__grid">
-              <ShowDetailsTop
-                formSelectorName={FORM_NAME}
-                date={date}
-                allowRepeatSelect={ALLOW_REPEAT_SELECT}
-              />
+              <ShowDetailsTop allowRepeatSelect={ALLOW_REPEAT_SELECT} />
               {isRepeat && ALLOW_REPEAT_SELECT && (
                 <>
                   <RepeatDropdown formSelectorName={FORM_NAME} date={date} />

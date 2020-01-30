@@ -12,6 +12,8 @@ import Select from '../../Select';
 
 import { requiredValidate } from '../../../utils/validation';
 
+const FORM_NAME = 'trafficAdd';
+
 class FormTrafficAdd extends Component {
   constructor(props) {
     super(props);
@@ -71,7 +73,10 @@ class FormTrafficAdd extends Component {
                   />
                   {isRepeat && (
                     <>
-                      <RepeatDropdown />
+                      <RepeatDropdown
+                        formSelectorName={FORM_NAME}
+                        initialValues={this.props.initialValues}
+                      />
                     </>
                   )}
                 </>
@@ -165,7 +170,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 const ReduxFormTrafficAdd = reduxForm({
-  form: 'trafficAdd',
+  form: FORM_NAME,
 })(FormTrafficAdd);
 
 export default connect(

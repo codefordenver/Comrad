@@ -9,6 +9,8 @@ import { setModalVisibility } from '../../../redux/modal';
 
 import { getDifferencesForEventInstance } from '../../../utils/events';
 
+//TODO: is this the instance modal? should rename if so.
+
 class EditModal extends Component {
   handleFormSubmit = () => {
     const { setModalVisibility } = this.props;

@@ -12,7 +12,7 @@ import ShowDetailsBottom from '../CommonShowForms/ShowDetailsBottom';
 import { getShowSelected, getSearchDate } from '../../../redux/show';
 
 const FORM_NAME = 'EDIT_SHOW';
-const ALLOW_REPEAT_SELECT = false;
+const ALLOW_REPEAT_SELECT = true;
 class EditShowForm extends Component {
   render() {
     const { props } = this;
@@ -31,15 +31,14 @@ class EditShowForm extends Component {
           <form className="edit-show-form" onSubmit={handleSubmit}>
             <div className="edit-show-form__grid">
               {!editSummaryAndDescriptionOnly && (
-                <ShowDetailsTop
-                  formSelectorName={FORM_NAME}
-                  date={date}
-                  allowRepeatSelect={ALLOW_REPEAT_SELECT}
-                />
+                <ShowDetailsTop allowRepeatSelect={ALLOW_REPEAT_SELECT} />
               )}
 
               {isRepeat && ALLOW_REPEAT_SELECT && (
-                <RepeatDropdown formSelectorName={FORM_NAME} date={date} />
+                <RepeatDropdown
+                  formSelectorName={FORM_NAME}
+                  initialValues={this.props.initialValues}
+                />
               )}
 
               <ShowDetailsBottom
@@ -69,9 +68,6 @@ function mapStateToProps(state) {
   const selectedShow = getShowSelected(state.show);
   const initialValues = state => {
     const searchDates = getSearchDate(state.show);
-    if (!selectedShow.repeat_start_date) {
-      selectedShow.repeat_start_date = selectedShow.start_time_utc;
-    }
     return {
       ...selectedShow,
       initial: { ...selectedShow },

@@ -3,6 +3,7 @@ import 'moment';
 import {
   SHOW_CLEAR,
   SHOW_CLEAR_ONE,
+  SHOW_CLEAR_ALL_BUT_PAST_INSTANCES_FOR_SHOW,
   SHOW_POSTING,
   SHOW_UPDATE,
   SHOW_SEARCH,
@@ -34,6 +35,31 @@ export function showReducer(state = initialState, { type, payload }) {
       return {
         ...state,
         selected: {},
+      };
+    case SHOW_CLEAR_ALL_BUT_PAST_INSTANCES_FOR_SHOW:
+      let newStateData = state.data;
+
+      let instanceToDeleteFrom = state.data[payload];
+      Object.keys(state.data).forEach(function(k) {
+        if (
+          state.data[k].master_event_id._id ===
+          instanceToDeleteFrom.master_event_id._id
+        ) {
+          if (
+            state.data[k].start_time_utc >= instanceToDeleteFrom.start_time_utc
+          ) {
+            delete state.data[k];
+          } else if (state.data[k].master_event_id._id === state.data[k]._id) {
+            //delete, if not an instance
+            delete state.data[k];
+          }
+        }
+      });
+      delete state.data[payload];
+
+      return {
+        ...state,
+        data: { ...newStateData },
       };
     case SHOW_UPDATE:
       return {

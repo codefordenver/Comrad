@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import Form from './Form';
 import Modal from '../../Modal';
 
-import { updateSeries } from '../../../redux/show';
+import { clearAllInstancesForShow, updateSeries } from '../../../redux/show';
 import { setModalVisibility } from '../../../redux/modal';
 
 import { diff } from 'deep-diff';
@@ -22,7 +22,7 @@ class EditModal extends Component {
 
   submit = values => {
     const { handleFormSubmit, props } = this;
-    const { updateSeries } = props;
+    const { clearAllInstancesForShow, updateSeries } = props;
     const {
       initial,
       initial: { _id },
@@ -55,6 +55,13 @@ class EditModal extends Component {
       }
     }
 
+    if (
+      'repeat_rule.repeat_end_date' in finalObject ||
+      'repeat_rule.repeat_start_date' in finalObject ||
+      'repeat_rule_dropdown_value' in finalObject
+    ) {
+      clearAllInstancesForShow(values.master_time_id);
+    }
     updateSeries(_id, finalObject, handleFormSubmit);
   };
 
@@ -72,5 +79,5 @@ class EditModal extends Component {
 
 export default connect(
   null,
-  { setModalVisibility, updateSeries },
+  { clearAllInstancesForShow, setModalVisibility, updateSeries },
 )(EditModal);

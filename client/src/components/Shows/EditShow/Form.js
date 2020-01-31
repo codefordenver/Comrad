@@ -17,10 +17,10 @@ class EditShowForm extends Component {
   render() {
     const { props } = this;
     const {
+      currentValues,
       isInstance,
       isRepeat,
       handleSubmit,
-      date,
       editSummaryAndDescriptionOnly,
     } = props;
     const host = props.initialValues.initial.show_details.host;
@@ -37,6 +37,14 @@ class EditShowForm extends Component {
               {isRepeat && ALLOW_REPEAT_SELECT && (
                 <RepeatDropdown
                   formSelectorName={FORM_NAME}
+                  date={
+                    currentValues.repeat_rule != null &&
+                    currentValues.repeat_rule.repeat_start_date != null
+                      ? currentValues.repeat_rule.repeat_start_date
+                      : currentValues.start_time_utc != null
+                      ? currentValues.start_time_utc
+                      : new Date()
+                  }
                   initialValues={this.props.initialValues}
                 />
               )}
@@ -80,7 +88,11 @@ function mapStateToProps(state) {
   const isInstance = selectedShow.master_event_id != null;
   const date = selector(state, 'start_time_utc');
 
+  const currentValues =
+    state.form[FORM_NAME] != null ? state.form[FORM_NAME].values : {};
+
   return {
+    currentValues,
     initialValues: initialValues(state),
     isInstance,
     isRepeat,

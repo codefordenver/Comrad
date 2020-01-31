@@ -11,11 +11,25 @@ import { requiredValidate } from '../../utils/validation';
 class RepeatDropdown extends Component {
   componentWillMount() {
     const { change, formSelectorName, initialValues } = this.props;
-    console.log('will mount:');
     if (initialValues != null && initialValues.repeat_rule != null) {
-      console.log(initialValues);
-      console.log(change);
-      //TODO: set repeat_rule_dropdown_value
+      let rules = this.definedRepeatRules(this.props.date);
+      let repeatRule = initialValues.repeat_rule;
+      Object.keys(rules).forEach(function(k) {
+        let i = rules[k];
+        if (
+          i.frequency === repeatRule.frequency &&
+          JSON.stringify(i.byweekday) ===
+            JSON.stringify(repeatRule.byweekday) &&
+          i.bysetpos === repeatRule.bysetpos &&
+          JSON.stringify(i.bymonthday) === JSON.stringify(repeatRule.bymonthday)
+        ) {
+          change(
+            formSelectorName,
+            'repeat_rule_dropdown_value',
+            JSON.stringify(i),
+          );
+        }
+      });
     }
   }
 
@@ -77,7 +91,7 @@ class RepeatDropdown extends Component {
 
   render() {
     const { definedRepeatRules, props } = this;
-    const { input, date, meta } = props;
+    const { date, meta } = props;
     const repeatDropdownList = _.map(definedRepeatRules(date), option => {
       // Dropdown values are using string of JSON instead of object. Inconclusive whether they can be set as object. See https://github.com/codefordenver/Comrad/issues/492
       return (

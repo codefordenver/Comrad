@@ -41,7 +41,20 @@ async function update(req, res) {
     oldSeries = await dbModel.findOne({ _id: id });
   }
 
-  //Need to refresh updated at
+  //update repeat rule, if it was changed
+  if ('repeat_rule_dropdown_value' in body) {
+    if (body.repeat_rule != null) {
+      body.repeat_rule = {
+        ...body.repeat_rule,
+        ...JSON.parse(body.repeat_rule_dropdown_value),
+      };
+    } else {
+      body.repeat_rule = { ...JSON.parse(body.repeat_rule_dropdown_value) };
+    }
+  }
+  console.log('updating');
+  console.log(body);
+
   const updateSeries = await dbModel.findOneAndUpdate({ _id: id }, body, {
     new: true,
   });
@@ -103,13 +116,6 @@ async function update(req, res) {
     });
     for (let i = 0; i < documentsToUpdate.length; i++) {
       let d = documentsToUpdate[i];
-      console.log(d._id);
-      console.log({
-        $set: {
-          start_time_utc: d.start_time_utc.getTime() + differenceStartTime,
-          start_time_utc: d.start_time_utc.getTime() + differenceStartTime,
-        },
-      });
       await dbModel.update(
         { _id: d._id },
         {

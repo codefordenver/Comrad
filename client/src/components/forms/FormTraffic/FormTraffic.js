@@ -30,7 +30,13 @@ class FormTrafficAdd extends Component {
 
   render() {
     const { props } = this;
-    const { editingInstance, formValues, handleSubmit, submitCallback } = props;
+    const {
+      currentValues,
+      editingInstance,
+      formValues,
+      handleSubmit,
+      submitCallback,
+    } = props;
     const { isRepeat } = this.state;
 
     return (
@@ -75,6 +81,14 @@ class FormTrafficAdd extends Component {
                     <>
                       <RepeatDropdown
                         formSelectorName={FORM_NAME}
+                        date={
+                          currentValues.repeat_rule != null &&
+                          currentValues.repeat_rule.repeat_start_date != null
+                            ? currentValues.repeat_rule.repeat_start_date
+                            : currentValues.start_time_utc != null
+                            ? currentValues.start_time_utc
+                            : new Date()
+                        }
                         initialValues={this.props.initialValues}
                       />
                     </>
@@ -163,7 +177,10 @@ function mapStateToProps(state, ownProps) {
   if (state.form != null && state.form.trafficAdd != null) {
     formValues = state.form.trafficAdd.values;
   }
+  const currentValues =
+    state.form[FORM_NAME] != null ? state.form[FORM_NAME].values : {};
   return {
+    currentValues,
     formValues: formValues,
     initialValues: ownProps.initialValues != null ? ownProps.initialValues : {},
   };

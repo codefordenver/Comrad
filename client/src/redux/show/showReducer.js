@@ -2,6 +2,7 @@ import _ from 'lodash';
 import 'moment';
 import {
   SHOW_CLEAR,
+  SHOW_CLEAR_ALL_INSTANCES_FOR_SERIES,
   SHOW_CLEAR_ONE,
   SHOW_POSTING,
   SHOW_UPDATE,
@@ -35,6 +36,24 @@ export function showReducer(state = initialState, { type, payload }) {
         ...state,
         selected: {},
       };
+
+    case SHOW_CLEAR_ALL_INSTANCES_FOR_SERIES:
+      let newStateData = state.data;
+      let instanceToDeleteFrom = state.data[payload];
+      Object.keys(state.data).forEach(function(k) {
+        if (
+          state.data[k].master_event_id._id ===
+          instanceToDeleteFrom.master_event_id._id
+        ) {
+          delete state.data[k];
+        }
+      });
+
+      return {
+        ...state,
+        data: { ...newStateData },
+      };
+
     case SHOW_UPDATE:
       return {
         ...state,

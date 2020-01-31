@@ -4,7 +4,11 @@ import { connect } from 'react-redux';
 import Form from './Form';
 import Modal from '../../Modal';
 
-import { clearAllInstancesForShow, updateSeries } from '../../../redux/show';
+import {
+  clearAllInstancesForShow,
+  clearAllButPastInstancesForShow,
+  updateSeries,
+} from '../../../redux/show';
 import { setModalVisibility } from '../../../redux/modal';
 
 import { diff } from 'deep-diff';
@@ -22,7 +26,11 @@ class EditModal extends Component {
 
   submit = values => {
     const { handleFormSubmit, props } = this;
-    const { clearAllInstancesForShow, updateSeries } = props;
+    const {
+      clearAllButPastInstancesForShow,
+      clearAllInstancesForShow,
+      updateSeries,
+    } = props;
     const {
       initial,
       initial: { _id },
@@ -53,6 +61,7 @@ class EditModal extends Component {
       ) {
         return false;
       }
+      clearAllButPastInstancesForShow(values.master_time_id);
     }
 
     if (
@@ -79,5 +88,10 @@ class EditModal extends Component {
 
 export default connect(
   null,
-  { clearAllInstancesForShow, setModalVisibility, updateSeries },
+  {
+    clearAllButPastInstancesForShow,
+    clearAllInstancesForShow,
+    setModalVisibility,
+    updateSeries,
+  },
 )(EditModal);

@@ -4,6 +4,7 @@ import {
   SHOW_CLEAR,
   SHOW_CLEAR_ALL_INSTANCES_FOR_SERIES,
   SHOW_CLEAR_ONE,
+  SHOW_CLEAR_ALL_BUT_PAST_INSTANCES_FOR_SHOW,
   SHOW_POSTING,
   SHOW_UPDATE,
   SHOW_SEARCH,
@@ -22,6 +23,7 @@ const initialState = {
 };
 
 export function showReducer(state = initialState, { type, payload }) {
+  let newStateData;
   switch (type) {
     case SHOW_CLEAR:
       return {
@@ -37,8 +39,33 @@ export function showReducer(state = initialState, { type, payload }) {
         selected: {},
       };
 
+    case SHOW_CLEAR_ALL_BUT_PAST_INSTANCES_FOR_SHOW:
+      newStateData = state.data;
+      Object.keys(state.data).forEach(function(k) {
+        if (
+          state.data[k].master_event_id._id ===
+          instanceToDeleteFrom.master_event_id._id
+        ) {
+          if (
+            state.data[k].start_time_utc >= instanceToDeleteFrom.start_time_utc
+          ) {
+            delete state.data[k];
+          } else if (state.data[k].master_event_id._id === state.data[k]._id) {
+            //delete, if not an instance
+            delete state.data[k];
+          }
+        }
+      });
+      delete state.data[payload];
+
+      return {
+        ...state,
+        data: { ...newStateData },
+      };
+      break;
+
     case SHOW_CLEAR_ALL_INSTANCES_FOR_SERIES:
-      let newStateData = state.data;
+      newStateData = state.data;
       let instanceToDeleteFrom = state.data[payload];
       Object.keys(state.data).forEach(function(k) {
         if (
@@ -53,7 +80,6 @@ export function showReducer(state = initialState, { type, payload }) {
         ...state,
         data: { ...newStateData },
       };
-
     case SHOW_UPDATE:
       return {
         ...state,

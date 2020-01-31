@@ -114,6 +114,11 @@ async function update(req, res) {
       start_time_utc: { $gte: oldSeries.start_time_utc },
       status: 'active',
     });
+    console.log({
+      master_event_id: id,
+      start_time_utc: { $gte: oldSeries.start_time_utc },
+      status: 'active',
+    });
     for (let i = 0; i < documentsToUpdate.length; i++) {
       let d = documentsToUpdate[i];
       await dbModel.update(

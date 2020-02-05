@@ -12,11 +12,16 @@ import Select from '../../Select';
 
 import { requiredValidate } from '../../../utils/validation';
 
+const FORM_NAME = 'trafficAdd';
+
 class FormTrafficAdd extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isRepeat: this.props.isRepeat != null ? this.props.isRepease : false,
+      isRepeat:
+        this.props.initialValues != null
+          ? this.props.initialValues.is_recurring
+          : false,
     };
   }
 
@@ -28,7 +33,7 @@ class FormTrafficAdd extends Component {
 
   render() {
     const { props } = this;
-    const { editingInstance, formValues, handleSubmit, submitCallback } = props;
+    const { currentValues, formValues, handleSubmit, submitCallback } = props;
     const { isRepeat } = this.state;
 
     return (
@@ -59,21 +64,28 @@ class FormTrafficAdd extends Component {
                 showTimeInput
               />
 
-              {!editingInstance && (
+              <Field
+                component={Input}
+                dirtyOverride
+                label="Repeat"
+                name="is_recurring"
+                type="checkbox"
+                onChange={this.toggleIsRepeat}
+              />
+              {isRepeat && (
                 <>
-                  <Field
-                    component={Input}
-                    dirtyOverride
-                    label="Repeat"
-                    name="is_recurring"
-                    type="checkbox"
-                    onChange={this.toggleIsRepeat}
+                  <RepeatDropdown
+                    formSelectorName={FORM_NAME}
+                    date={
+                      currentValues.repeat_rule != null &&
+                      currentValues.repeat_rule.repeat_start_date != null
+                        ? currentValues.repeat_rule.repeat_start_date
+                        : currentValues.start_time_utc != null
+                        ? currentValues.start_time_utc
+                        : new Date()
+                    }
+                    initialValues={this.props.initialValues}
                   />
-                  {isRepeat && (
-                    <>
-                      <RepeatDropdown />
-                    </>
-                  )}
                 </>
               )}
 
@@ -158,14 +170,17 @@ function mapStateToProps(state, ownProps) {
   if (state.form != null && state.form.trafficAdd != null) {
     formValues = state.form.trafficAdd.values;
   }
+  const currentValues =
+    state.form[FORM_NAME] != null ? state.form[FORM_NAME].values : {};
   return {
+    currentValues,
     formValues: formValues,
     initialValues: ownProps.initialValues != null ? ownProps.initialValues : {},
   };
 }
 
 const ReduxFormTrafficAdd = reduxForm({
-  form: 'trafficAdd',
+  form: FORM_NAME,
 })(FormTrafficAdd);
 
 export default connect(

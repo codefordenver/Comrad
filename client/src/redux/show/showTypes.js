@@ -1,4 +1,6 @@
 export const SHOW_CLEAR = 'show_clear';
+export const SHOW_CLEAR_ALL_INSTANCES_FOR_SERIES =
+  'show_clear_all_instances_for_series';
 export const SHOW_CLEAR_ONE = 'show_clear_one';
 export const SHOW_CLEAR_ALL_BUT_PAST_INSTANCES_FOR_SHOW =
   'show_clear_all_but_past_instances_for_show';

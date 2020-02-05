@@ -5,6 +5,7 @@ import Form from './Form';
 import Modal from '../../Modal';
 
 import {
+  clearAllInstancesForShow,
   clearAllButPastInstancesForShow,
   updateSeries,
 } from '../../../redux/show';
@@ -25,7 +26,11 @@ class EditModal extends Component {
 
   submit = values => {
     const { handleFormSubmit, props } = this;
-    const { clearAllButPastInstancesForShow, updateSeries } = props;
+    const {
+      clearAllButPastInstancesForShow,
+      clearAllInstancesForShow,
+      updateSeries,
+    } = props;
     const {
       initial,
       initial: { _id },
@@ -59,6 +64,13 @@ class EditModal extends Component {
       clearAllButPastInstancesForShow(values.master_time_id);
     }
 
+    if (
+      'repeat_rule.repeat_end_date' in finalObject ||
+      'repeat_rule.repeat_start_date' in finalObject ||
+      'repeat_rule_dropdown_value' in finalObject
+    ) {
+      clearAllInstancesForShow(values.master_time_id);
+    }
     updateSeries(_id, finalObject, handleFormSubmit);
   };
 
@@ -76,5 +88,10 @@ class EditModal extends Component {
 
 export default connect(
   null,
-  { clearAllButPastInstancesForShow, setModalVisibility, updateSeries },
+  {
+    clearAllButPastInstancesForShow,
+    clearAllInstancesForShow,
+    setModalVisibility,
+    updateSeries,
+  },
 )(EditModal);

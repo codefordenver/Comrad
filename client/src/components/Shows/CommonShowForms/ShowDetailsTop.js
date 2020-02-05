@@ -8,8 +8,7 @@ import { requiredValidate } from '../../../utils/validation';
 class ShowDetailsTop extends Component {
   render() {
     const { props } = this;
-    const { date, change, formSelectorName, allowRepeatSelect } = props;
-    change(formSelectorName, 'repeat_start_date', date);
+    const { allowRepeatSelect } = props;
     return (
       <>
         <Field

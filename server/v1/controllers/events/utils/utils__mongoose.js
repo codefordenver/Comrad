@@ -4,15 +4,15 @@ function formatShow(data, res = null) {
   let show = data;
   //Set the show end date.  If it is empty set a date that is never ending.
 
-  //Determine if the repeat attribute is set, convert to a JSON object.
-  if (show.repeat_rule) {
-    show.repeat_rule = JSON.parse(show.repeat_rule);
-    show.repeat_rule.repeat_start_date = show.repeat_start_date;
+  //Determine if the repeat dropdown was set, convert to a JSON object.
+  if (show.repeat_rule_dropdown_value) {
+    let repeat_rule = JSON.parse(show.repeat_rule_dropdown_value);
+    repeat_rule.repeat_start_date = show.repeat_rule.repeat_start_date;
 
     if (!show.repeat_end_date) {
       show.repeat_rule.repeat_end_date = moment('9999', 'YYYY');
     } else {
-      show.repeat_rule.repeat_end_date = show.repeat_end_date;
+      show.repeat_rule.repeat_end_date = show.repeat_rule.repeat_end_date;
     }
   } else {
     show.repeat_rule = {};

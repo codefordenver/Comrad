@@ -102,13 +102,6 @@ class TrafficEditPage extends Component {
 
   render() {
     const { masterTimeOrSeriesId } = this.props.match.params;
-    let editingInstance = false;
-    if (
-      masterTimeOrSeriesId != null &&
-      masterTimeOrSeriesId.indexOf('-') !== -1
-    ) {
-      editingInstance = true;
-    }
     return (
       <div className="traffic-add-page">
         <Card>
@@ -116,7 +109,6 @@ class TrafficEditPage extends Component {
             <h1>Edit Traffic</h1>
             {this.isDocumentLoaded() && (
               <FormTraffic
-                editingInstance={editingInstance}
                 initialValues={this.props.traffic.doc}
                 submitCallback={this.editTrafficCallback}
               />

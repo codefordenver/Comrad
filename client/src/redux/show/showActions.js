@@ -1,6 +1,7 @@
 import axios from 'axios';
 import {
   SHOW_CLEAR,
+  SHOW_CLEAR_ALL_INSTANCES_FOR_SERIES,
   SHOW_CLEAR_ONE,
   SHOW_CLEAR_ALL_BUT_PAST_INSTANCES_FOR_SHOW,
   SHOW_FETCHING,
@@ -14,6 +15,10 @@ import {
 import { SHOW_DELETE_SERIES } from './showTypes';
 
 import { showAPI } from '../../api';
+
+export const clearAllInstancesForShow = id => async dispatch => {
+  dispatch({ type: SHOW_CLEAR_ALL_INSTANCES_FOR_SERIES, payload: id });
+};
 
 export const clearShows = () => async dispatch => {
   dispatch({ type: SHOW_CLEAR });

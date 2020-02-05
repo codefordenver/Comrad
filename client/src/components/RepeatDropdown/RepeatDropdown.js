@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Field } from 'redux-form';
+import { Field, change } from 'redux-form';
 import _ from 'lodash';
 import moment from 'moment';
 import RRule from 'rrule';
@@ -9,6 +9,39 @@ import { InputLabel } from '../Input';
 import { requiredValidate } from '../../utils/validation';
 
 class RepeatDropdown extends Component {
+  componentWillMount() {
+    const { change, formSelectorName, initialValues } = this.props;
+    if (initialValues != null && initialValues.repeat_rule != null) {
+      let rules = this.definedRepeatRules(this.props.date);
+      let repeatRule = initialValues.repeat_rule;
+      Object.keys(rules).forEach(function(k) {
+        let i = rules[k];
+        if (
+          i.frequency === repeatRule.frequency &&
+          ((typeof i.byweekday !== 'undefined' &&
+            JSON.stringify(i.byweekday.concat().sort()) === // use concact() to make copy of the array so it doesn't affect the rule, otherwise it won't match a value from the dropdown
+              JSON.stringify(repeatRule.byweekday.sort())) ||
+            (typeof i.byweekday === 'undefined' &&
+              repeatRule.byweekday.length === 0)) &&
+          i.bysetpos === repeatRule.bysetpos &&
+          JSON.stringify(i.bymonthday) === JSON.stringify(repeatRule.bymonthday)
+        ) {
+          change(
+            formSelectorName,
+            'repeat_rule_dropdown_value',
+            JSON.stringify(i),
+          );
+        }
+      });
+      if (
+        new Date(repeatRule.repeat_end_date).getFullYear() === 9999 ||
+        new Date(repeatRule.repeat_end_date).getFullYear() === 9998
+      ) {
+        change(formSelectorName, 'repeat_rule.repeat_end_date', null);
+      }
+    }
+  }
+
   definedRepeatRules = date => {
     const dateSpelled = moment(date).format('dddd');
     const dateNumber = moment(date).date();
@@ -67,8 +100,7 @@ class RepeatDropdown extends Component {
 
   render() {
     const { definedRepeatRules, props } = this;
-    const { input, date, meta } = props;
-    console.log(input);
+    const { date, meta } = props;
     const repeatDropdownList = _.map(definedRepeatRules(date), option => {
       // Dropdown values are using string of JSON instead of object. Inconclusive whether they can be set as object. See https://github.com/codefordenver/Comrad/issues/492
       return (
@@ -86,15 +118,15 @@ class RepeatDropdown extends Component {
           className="z-index--200"
           component={DatePicker__React}
           label="Start"
-          name="repeat_start_date"
+          name="repeat_rule.repeat_start_date"
           validate={[requiredValidate]}
-          disabled
-          controlledDate={date}
+          disabled={date != null ? true : false}
+          controlledDate={date != null ? date : null}
         />
 
         <div className="form-group">
           <Field
-            name="repeat_rule"
+            name="repeat_rule_dropdown_value"
             component="select"
             className="input"
             validate={[requiredValidate]}
@@ -112,7 +144,7 @@ class RepeatDropdown extends Component {
           className="z-index--150"
           component={DatePicker__React}
           label="End"
-          name="repeat_end_date"
+          name="repeat_rule.repeat_end_date"
           placeholderText="Never"
           isClearable={true}
           allowNullDate
@@ -124,5 +156,5 @@ class RepeatDropdown extends Component {
 
 export default connect(
   null,
-  null,
+  { change },
 )(RepeatDropdown);

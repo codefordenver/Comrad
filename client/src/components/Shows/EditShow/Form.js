@@ -12,15 +12,15 @@ import ShowDetailsBottom from '../CommonShowForms/ShowDetailsBottom';
 import { getShowSelected, getSearchDate } from '../../../redux/show';
 
 const FORM_NAME = 'EDIT_SHOW';
-const ALLOW_REPEAT_SELECT = false;
+const ALLOW_REPEAT_SELECT = true;
 class EditShowForm extends Component {
   render() {
     const { props } = this;
     const {
+      currentValues,
       isInstance,
       isRepeat,
       handleSubmit,
-      date,
       editSummaryAndDescriptionOnly,
     } = props;
     const host = props.initialValues.initial.show_details.host;
@@ -31,15 +31,22 @@ class EditShowForm extends Component {
           <form className="edit-show-form" onSubmit={handleSubmit}>
             <div className="edit-show-form__grid">
               {!editSummaryAndDescriptionOnly && (
-                <ShowDetailsTop
-                  formSelectorName={FORM_NAME}
-                  date={date}
-                  allowRepeatSelect={ALLOW_REPEAT_SELECT}
-                />
+                <ShowDetailsTop allowRepeatSelect={ALLOW_REPEAT_SELECT} />
               )}
 
               {isRepeat && ALLOW_REPEAT_SELECT && (
-                <RepeatDropdown formSelectorName={FORM_NAME} date={date} />
+                <RepeatDropdown
+                  formSelectorName={FORM_NAME}
+                  date={
+                    currentValues.repeat_rule != null &&
+                    currentValues.repeat_rule.repeat_start_date != null
+                      ? currentValues.repeat_rule.repeat_start_date
+                      : currentValues.start_time_utc != null
+                      ? currentValues.start_time_utc
+                      : new Date()
+                  }
+                  initialValues={this.props.initialValues}
+                />
               )}
 
               <ShowDetailsBottom
@@ -69,9 +76,6 @@ function mapStateToProps(state) {
   const selectedShow = getShowSelected(state.show);
   const initialValues = state => {
     const searchDates = getSearchDate(state.show);
-    if (!selectedShow.repeat_start_date) {
-      selectedShow.repeat_start_date = selectedShow.start_time_utc;
-    }
     return {
       ...selectedShow,
       initial: { ...selectedShow },
@@ -84,7 +88,11 @@ function mapStateToProps(state) {
   const isInstance = selectedShow.master_event_id != null;
   const date = selector(state, 'start_time_utc');
 
+  const currentValues =
+    state.form[FORM_NAME] != null ? state.form[FORM_NAME].values : {};
+
   return {
+    currentValues,
     initialValues: initialValues(state),
     isInstance,
     isRepeat,

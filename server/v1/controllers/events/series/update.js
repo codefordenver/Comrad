@@ -43,21 +43,43 @@ async function update(req, res) {
 
   //update repeat rule, if it was changed
   if ('repeat_rule_dropdown_value' in body) {
-    if (body.repeat_rule != null) {
-      body.repeat_rule = {
-        ...body.repeat_rule,
-        ...JSON.parse(body.repeat_rule_dropdown_value),
-      };
-    } else {
-      body.repeat_rule = { ...JSON.parse(body.repeat_rule_dropdown_value) };
+    if (typeof oldSeries === 'undefined') {
+      oldSeries = await dbModel.findOne({ _id: id });
+    }
+    body.repeat_rule = oldSeries.repeat_rule;
+    body.repeat_rule = {
+      ...oldSeries.repeat_rule,
+      ...JSON.parse(body.repeat_rule_dropdown_value),
+    };
+    if ('repeat_rule.repeat_end_date' in body) {
+      if (body['repeat_rule.repeat_end_date'] !== null) {
+        if (!('repeat_rule' in body)) {
+          body.repeat_rule = {};
+        }
+        body.repeat_rule.repeat_end_date = body['repeat_rule.repeat_end_date'];
+      }
+      delete body['repeat_rule.repeat_end_date'];
+    }
+    if ('repeat_rule.repeat_start_date' in body) {
+      if (body['repeat_rule.repeat_start_date'] !== null) {
+        if (!('repeat_rule' in body)) {
+          body.repeat_rule = {};
+        }
+        body.repeat_rule.repeat_start_date =
+          body['repeat_rule.repeat_start_date'];
+      }
+      delete body['repeat_rule.repeat_start_date'];
     }
   }
-  console.log('updating');
+
+  console.log('updating series');
   console.log(body);
 
   const updateSeries = await dbModel.findOneAndUpdate({ _id: id }, body, {
     new: true,
   });
+
+  console.log('finished updating series');
 
   //if date/time was changed, update the times of all instances that occur in the future
   if (

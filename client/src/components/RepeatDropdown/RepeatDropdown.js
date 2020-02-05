@@ -18,8 +18,11 @@ class RepeatDropdown extends Component {
         let i = rules[k];
         if (
           i.frequency === repeatRule.frequency &&
-          JSON.stringify(i.byweekday) ===
-            JSON.stringify(repeatRule.byweekday) &&
+          ((typeof i.byweekday !== 'undefined' &&
+            JSON.stringify(i.byweekday.concat().sort()) === // use concact() to make copy of the array so it doesn't affect the rule, otherwise it won't match a value from the dropdown
+              JSON.stringify(repeatRule.byweekday.sort())) ||
+            (typeof i.byweekday === 'undefined' &&
+              repeatRule.byweekday.length === 0)) &&
           i.bysetpos === repeatRule.bysetpos &&
           JSON.stringify(i.bymonthday) === JSON.stringify(repeatRule.bymonthday)
         ) {
@@ -30,6 +33,12 @@ class RepeatDropdown extends Component {
           );
         }
       });
+      if (
+        new Date(repeatRule.repeat_end_date).getFullYear() === 9999 ||
+        new Date(repeatRule.repeat_end_date).getFullYear() === 9998
+      ) {
+        change(formSelectorName, 'repeat_rule.repeat_end_date', null);
+      }
     }
   }
 

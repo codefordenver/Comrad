@@ -195,46 +195,20 @@ function combineDayAndTime(
 
   let returnedValue = null;
 
-  if (
-    //Both date and time happen at midnight, so need to subtract 1 minute
-    type === 'END' &&
-    desiredTime__hours === 0 &&
-    desiredTime__minutes === 0 &&
-    desiredDate__hours === 0 &&
-    desiredDate__minutes === 0
-  ) {
-    returnedValue = moment(desiredDate)
-      .subtract(1, 'minute')
-      .seconds(0)
-      .utc();
-  } else if (
-    //Only Time is at midnight, so take date and set 1 minute before midnight
-    type === 'END' &&
-    desiredTime__hours === 0 &&
-    desiredTime__minutes === 0
-  ) {
-    returnedValue = moment(desiredDate)
-      .hours(23)
-      .minutes(59)
-      .seconds(0)
-      .utc();
-  } else {
-    //Neither date or time is at midnight, so set hours
-    // the date/time could different, which may mean we have differences between the dates related to DST
-    //get the time difference, in hours
-    let difference = desiredTime__hours - desiredDate__hours;
-    if (difference < -12) {
-      difference = difference + 24;
-    } else if (difference > 12) {
-      difference = difference - 24;
-    }
-    returnedValue = moment(desiredDate)
-      .add(difference, 'hour')
-      .hours(desiredTime__hours)
-      .minutes(desiredTime__minutes)
-      .seconds(0)
-      .utc();
+  // the date/time could different, which may mean we have differences between the dates related to DST
+  //get the time difference, in hours
+  let difference = desiredTime__hours - desiredDate__hours;
+  if (difference < -12) {
+    difference = difference + 24;
+  } else if (difference > 12) {
+    difference = difference - 24;
   }
+  returnedValue = moment(desiredDate)
+    .add(difference, 'hour')
+    .hours(desiredTime__hours)
+    .minutes(desiredTime__minutes)
+    .seconds(0)
+    .utc();
 
   if (format === 'MOMENT') {
     return returnedValue;

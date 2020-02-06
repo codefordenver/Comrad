@@ -101,7 +101,6 @@ class TrafficEditPage extends Component {
   };
 
   render() {
-    const { masterTimeOrSeriesId } = this.props.match.params;
     return (
       <div className="traffic-add-page">
         <Card>

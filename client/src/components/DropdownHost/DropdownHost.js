@@ -110,7 +110,6 @@ class DropdownHost extends Component {
   // close the Add Host modal
   handleFormHostAddCancel = () => {
     this.setState({ showAddHostModal: false });
-    this.props.userAlertClose();
   };
 
   // callback for submitting the Add Host modal

@@ -62,7 +62,6 @@ export function showReducer(state = initialState, { type, payload }) {
         ...state,
         data: { ...newStateData },
       };
-      break;
 
     case SHOW_CLEAR_ALL_INSTANCES_FOR_SERIES:
       newStateData = state.data;

@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 
 import Button from '../../components/Button';
-import FormUserSignup from '../../components/forms/FormUserSignup';
+import FormUserDevelopmentSignup from '../../components/forms/FormUserDevelopmentSignup';
 
-class SignupPage extends Component {
+// for development only - not in production
+// shown by the REACT_APP_SHOW_DEVELOPMENT_SIGN_UP and SHOW_DEVELOPMENT_SIGN_UP environment variables
+
+class DevelopmentSignUpPage extends Component {
   render() {
     const { props } = this;
 
@@ -12,7 +15,7 @@ class SignupPage extends Component {
         <p>Enter your information</p>
 
         <div className="signup-page__form mb-5">
-          <FormUserSignup {...props} />
+          <FormUserDevelopmentSignup {...props} />
         </div>
 
         <div className="signup-page__go-back">
@@ -23,4 +26,4 @@ class SignupPage extends Component {
   }
 }
 
-export default SignupPage;
+export default DevelopmentSignUpPage;

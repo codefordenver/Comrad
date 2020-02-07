@@ -5,7 +5,10 @@ const { requireAC } = require('../middlewares');
 router
   .route('/')
   .get(requireAC('Users', 'readAny'), usersController.findAll)
-  .post(requireAC('Users', 'createAny'), usersController.create);
+  .post(
+    !process.env.SHOW_DEVELOPMENT_SIGN_UP || requireAC('Users', 'createAny'),
+    usersController.create,
+  );
 
 router
   .route('/api-key/create')

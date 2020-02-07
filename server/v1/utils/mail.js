@@ -1,6 +1,5 @@
 const nodemailer = require('nodemailer');
-console.log('here!');
-console.log(process.env.MAIL_USER);
+
 const transport = nodemailer.createTransport({
   host: process.env.MAIL_HOST,
   port: process.env.MAIL_PORT,

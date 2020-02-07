@@ -19,13 +19,15 @@ class LoginPage extends Component {
           <Button to="/reset">Reset Password</Button>
         </div>
 
-        <div className="login-page__new-user">
-          <p>Sign Up To Help Contribute to Comrad</p>
+        {process.env.REACT_APP_SHOW_DEVELOPMENT_SIGN_UP === 'true' && (
+          <div className="login-page__new-user">
+            <p>Sign Up To Help Contribute to Comrad</p>
 
-          <Button to="/signup" color="primary">
-            Sign Up
-          </Button>
-        </div>
+            <Button to="/signup" color="primary">
+              Sign Up
+            </Button>
+          </div>
+        )}
       </div>
     );
   }

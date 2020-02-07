@@ -209,12 +209,15 @@ class Calendar extends Component {
   eventStyleGetter = show => {
     let className = '';
     let showType = getShowType(show);
-    if (showType === 'series') {
-      className = 'event-series';
-    } else if (showType === 'instance') {
-      className = 'event-instance';
-    } else {
-      className = 'event-regular';
+
+    if (process.env.REACT_APP_SHOW_SHOW_TYPES_IN_DIFFERENT_STYLES === 'true') {
+      if (showType === 'series') {
+        className = 'event-series--dev-environment-only-style';
+      } else if (showType === 'instance') {
+        className = 'event-instance--dev-environment-only-style';
+      } else {
+        className = 'event-regular--dev-environment-only-style';
+      }
     }
 
     return {
@@ -236,6 +239,7 @@ class Calendar extends Component {
           localizer={localizer}
           events={this.convertShowsToArray(shows)}
           defaultView={Views.WEEK}
+          views={['week', 'day']}
           defaultDate={new Date()}
           {...calendarDateProperty}
           //onSelectEvent={show => this.onSelectShow(show)}

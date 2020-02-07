@@ -234,7 +234,7 @@ class NewShowForm extends Component {
             auth.doc.role !== 'Full Access' &&
             auth.doc.role !== 'Show Captain' && (
               <div>
-                <b>Host:</b>
+                <b>Host: </b>
                 {host != null && <>{formattedHostName}</>}
                 {(host === null || typeof host === 'undefined') && <>None</>}
               </div>

@@ -528,13 +528,13 @@ class ShowBuilderPage extends Component {
                         filterByStatus="Active"
                       />
                     )}
-                    {(auth.doc.role !== 'Admin' ||
-                      auth.doc.role !== 'Full Access' ||
-                      auth.doc.role !== 'Music Library Admin') && (
-                      <>
-                        <b>Host:</b> {formattedHostName}
-                      </>
-                    )}
+                    {auth.doc.role !== 'Admin' &&
+                      auth.doc.role !== 'Full Access' &&
+                      auth.doc.role !== 'Music Library Admin' && (
+                        <>
+                          <b>Host:</b> {formattedHostName}
+                        </>
+                      )}
                   </>
                 )}
               </div>

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import './CalendarAgenda.scss';
 import moment from 'moment';
 import { showAPI } from '../../api';
 import Loading from '../../components/Loading';
@@ -16,6 +15,7 @@ class CalendarAgenda extends Component {
     previouslyOnAir: null,
     currentlyOnAir: null,
     loadingOnAirData: true,
+    loadingPreviouslyOnAirData: true,
     upNext: null,
     allNext: [],
     showItems: 0,
@@ -38,7 +38,7 @@ class CalendarAgenda extends Component {
           moment(show.end_time_utc) >= moment()
         ) {
           currentlyOnAir = show;
-        } else if (moment(show.start_time_utc > moment())) {
+        } else if (moment(show.start_time_utc) > moment()) {
           futureShows.push(show);
         }
       });
@@ -75,6 +75,7 @@ class CalendarAgenda extends Component {
         });
         self.setState({
           previouslyOnAir: previouslyOnAir,
+          loadingPreviouslyOnAirData: false,
         });
       });
   };
@@ -102,6 +103,7 @@ class CalendarAgenda extends Component {
             allNext: futureShows,
             day: timeFrame,
             showItems: addFive,
+            upNext: false, // unset upNext, since it will now be included in allNext
           });
         });
     } else if (showItems < allNext.length) {
@@ -118,124 +120,115 @@ class CalendarAgenda extends Component {
       previouslyOnAir,
       currentlyOnAir,
       loadingOnAirData,
+      loadingPreviouslyOnAirData,
       upNext,
       allNext,
       showItems,
     } = this.state;
+    let previousShowTime;
     const allShows = allNext.slice(0, showItems).map((show, i) => {
+      let dayHeader = <></>;
+      if (
+        previousShowTime != null &&
+        previousShowTime.format('dddd, MMMM D') !==
+          moment(show.start_time_utc).format('dddd, MMMM D')
+      ) {
+        dayHeader = (
+          <div className="calendar-agenda__grid__day-header">
+            {moment(show.start_time_utc).format('dddd, MMMM D')}
+          </div>
+        );
+      }
+      previousShowTime = moment(show.start_time_utc);
       return (
-        <div key={i}>
-          <h4 className="text-center">{show.show_details.title}</h4>
-          <div className="up-next__host-name">
-            {show.show_details.host != null &&
-              'hosted by ' + formatHostName(show.show_details.host)}
+        <>
+          <div className="calendar-agenda__grid__show-time">
+            {moment(show.start_time_utc).format('LT')}
           </div>
-          <div className="up-next__show-time">
-            {moment(show.start_time_utc).format('LT')} -{' '}
-            {moment(show.end_time_utc).format('LT')}
+          <div>
+            <div className="calendar-agenda__grid__show-title">
+              {show.show_details.title}
+            </div>
+            {show.show_details.host != null && (
+              <div>hosted by {formatHostName(show.show_details.host)}</div>
+            )}
           </div>
-        </div>
+          {dayHeader}
+        </>
       );
     });
 
     return (
       <>
-        <h2 className="text-center">Calendar Agenda</h2>
-        <div className="shows-container">
-          <div className="show-container previous">
-            <h2 className="text-center">Previous show</h2>
-            {!loadingOnAirData ? (
-              <>
-                {previouslyOnAir ? (
+        <h2 className="mb-1">Show Schedule</h2>
+        <div className="calendar-agenda">
+          {!loadingOnAirData && !loadingPreviouslyOnAirData ? (
+            <>
+              <div className="calendar-agenda__grid mb-1">
+                {previouslyOnAir && (
                   <>
-                    <h4 className="text-center">
-                      {previouslyOnAir.show_details.title}
-                    </h4>
-
-                    <div className="currently-on-air__host-name">
-                      {previouslyOnAir.show_details.host != null &&
-                        'hosted by ' +
-                          formatHostName(previouslyOnAir.show_details.host)}
+                    <div className="calendar-agenda__grid__show-time">
+                      {moment(previouslyOnAir.start_time_utc).format('LT')}
                     </div>
 
-                    <div className="currently-on-air__show-time">
-                      {moment(previouslyOnAir.start_time_utc).format('LT')} -{' '}
-                      {moment(previouslyOnAir.end_time_utc).format('LT')}
+                    <div>
+                      <div className="calendar-agenda__grid__show-title">
+                        {previouslyOnAir.show_details.title}
+                      </div>
+                      {previouslyOnAir.show_details.host != null && (
+                        <div>
+                          hosted by{' '}
+                          {formatHostName(previouslyOnAir.show_details.host)}
+                        </div>
+                      )}
                     </div>
                   </>
-                ) : (
-                  <div>No previous shows</div>
                 )}
-              </>
-            ) : (
-              <Loading displayMode="static" />
-            )}
-          </div>
-          <div className="show-container current">
-            <h2 className="text-center">Current show</h2>
-            {!loadingOnAirData ? (
-              <>
-                {currentlyOnAir ? (
+                {currentlyOnAir && (
                   <>
-                    <h4 className="text-center">
-                      {currentlyOnAir.show_details.title}
-                    </h4>
-
-                    <div className="currently-on-air__host-name">
-                      {currentlyOnAir.show_details.host != null &&
-                        'hosted by ' +
-                          formatHostName(currentlyOnAir.show_details.host)}
+                    <div className="calendar-agenda__grid__show-time">
+                      {moment(currentlyOnAir.start_time_utc).format('LT')}
                     </div>
 
-                    <div className="currently-on-air__show-time">
-                      {moment(currentlyOnAir.start_time_utc).format('LT')} -{' '}
-                      {moment(currentlyOnAir.end_time_utc).format('LT')}
+                    <div>
+                      <div className="calendar-agenda__grid__show-title">
+                        {currentlyOnAir.show_details.title}
+                      </div>
+                      {currentlyOnAir.show_details.host != null && (
+                        <div>
+                          hosted by{' '}
+                          {formatHostName(currentlyOnAir.show_details.host)}
+                        </div>
+                      )}
                     </div>
                   </>
-                ) : (
-                  <div className="text-center">No Show On Air</div>
                 )}
-              </>
-            ) : (
-              <Loading displayMode="static" />
-            )}
-          </div>
-          <div className="show-container next">
-            <h2 className="text-center">Next shows</h2>
-            {!loadingOnAirData ? (
-              <>
                 {upNext && (
                   <>
-                    <h4 className="text-center">{upNext.show_details.title}</h4>
-                    <div className="up-next__host-name">
-                      {upNext.show_details.host != null &&
-                        'hosted by ' + formatHostName(upNext.show_details.host)}
+                    <div className="calendar-agenda__grid__show-time">
+                      {moment(upNext.start_time_utc).format('LT')}
                     </div>
-                    <div className="up-next__show-time">
-                      {moment(upNext.start_time_utc).format('LT')} -{' '}
-                      {moment(upNext.end_time_utc).format('LT')}
-                    </div>
-                    {showItems === 0 ? (
-                      <div className="load-more-button">
-                        <Button onClick={this.handleShowMore}>Load more</Button>
+                    <div className="">
+                      <div className="calendar-agenda__grid__show-title">
+                        {upNext.show_details.title}
                       </div>
-                    ) : (
-                      <>
-                        {allShows}
-                        <div className="load-more-button">
-                          <Button onClick={this.handleShowMore}>
-                            Load more
-                          </Button>
+                      {upNext.show_details.host != null && (
+                        <div>
+                          hosted by {formatHostName(upNext.show_details.host)}
                         </div>
-                      </>
-                    )}
+                      )}
+                    </div>
                   </>
                 )}
-              </>
-            ) : (
-              <Loading displayMode="static" />
-            )}
-          </div>
+                {showItems > 0 && allShows}
+              </div>
+              <div className="load-more-button">
+                <Button onClick={this.handleShowMore}>Load more</Button>
+              </div>
+            </>
+          ) : (
+            <Loading displayMode="static" />
+          )}
         </div>
       </>
     );

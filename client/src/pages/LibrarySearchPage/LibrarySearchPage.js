@@ -205,9 +205,9 @@ class LibrarySearchPage extends Component {
                   </span>
                 </div>
               </div>
-              {(auth.doc.role === 'Admin' ||
-                auth.doc.role === 'Full Access' ||
-                auth.doc.role === 'Music Library Admin') && (
+              {(auth.doc.roles.indexOf('Admin') !== -1 ||
+                auth.doc.roles.indexOf('Full Access') !== -1 ||
+                auth.doc.roles.indexOf('Music Library Admin') !== -1) && (
                 <div>
                   <Dropdown position="right-centered" type="button" text="Add">
                     <Dropdown.Item to="library/artist/add">
@@ -360,9 +360,10 @@ class LibrarySearchPage extends Component {
       Cell: row => {
         return (
           <div onClick={this.stopPropagation}>
-            {(this.props.auth.doc.role === 'Admin' ||
-              this.props.auth.doc.role === 'Full Access' ||
-              this.props.auth.doc.role === 'Music Library Admin') && (
+            {(this.props.auth.doc.roles.indexOf('Admin') !== -1 ||
+              this.props.auth.doc.roles.indexOf('Full Access') !== -1 ||
+              this.props.auth.doc.roles.indexOf('Music Library Admin') !==
+                -1) && (
               <Dropdown
                 position="bottom-left"
                 type="icon"

@@ -19,6 +19,7 @@ class Navbar extends Component {
   };
 
   render() {
+    const { authState, location } = this.props;
     return (
       <div className="navbar">
         <div className="navbar__logo">
@@ -30,7 +31,14 @@ class Navbar extends Component {
           </div>
           <div className="navbar__user">
             <Dropdown position="bottom-left" type="icon">
-              <Dropdown.Item to="/profile/edit">Edit Profile</Dropdown.Item>
+              <Dropdown.Item
+                to={{
+                  pathname: '/user/profile/edit/' + authState.doc._id,
+                  state: { prevPath: location.pathname },
+                }}
+              >
+                Edit Profile
+              </Dropdown.Item>
               <Dropdown.Item to="/user/profile/change-password">
                 Change Password
               </Dropdown.Item>

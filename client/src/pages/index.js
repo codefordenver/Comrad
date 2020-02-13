@@ -1,4 +1,4 @@
 // User Pages
-export * from './UserAddPage';
+export * from './UserAddEditPage';
 export * from './UserProfilePage';
 export * from './UserSearchPage';

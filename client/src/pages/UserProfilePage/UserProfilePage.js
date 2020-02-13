@@ -133,7 +133,8 @@ class UserProfilePage extends Component {
                 </CardV2>
 
                 {/* ======= ADMIN ======= */}
-                {authState.doc && authState.doc.role === 'Admin' ? (
+                {authState.doc &&
+                authState.doc.roles.indexOf('Admin') !== -1 ? (
                   <CardV2>
                     <CardV2.Body>
                       <Heading size={3}>Admin</Heading>

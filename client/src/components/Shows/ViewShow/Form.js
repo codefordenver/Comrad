@@ -78,9 +78,9 @@ class NewShowForm extends Component {
           >
             Edit Show Series
           </div>
-          {(auth.doc.role === 'Admin' ||
-            auth.doc.role === 'Full Access' ||
-            auth.doc.role === 'Show Captain') && (
+          {(auth.doc.roles.indexOf('Admin') !== -1 ||
+            auth.doc.roles.indexOf('Full Access') !== -1 ||
+            auth.doc.roles.indexOf('Show Captain') !== -1) && (
             <>
               <div
                 className="event__tooltip__delete"
@@ -109,10 +109,10 @@ class NewShowForm extends Component {
           >
             Edit Show Instance
           </div>
-          {(auth.doc.role === 'Admin' ||
-            auth.doc.role === 'Full Access' ||
-            auth.doc.role === 'Show Captain' ||
-            (auth.doc.role === 'DJ' &&
+          {(auth.doc.roles.indexOf('Admin') !== -1 ||
+            auth.doc.roles.indexOf('Full Access') !== -1 ||
+            auth.doc.roles.indexOf('Show Captain') !== -1 ||
+            (auth.doc.roles.indexOf('DJ') !== -1 &&
               auth.doc._id === data.master_event_id.show_details.host)) && (
             <div
               className="event__tooltip__edit"
@@ -121,9 +121,9 @@ class NewShowForm extends Component {
               Edit Show Series
             </div>
           )}
-          {(auth.doc.role === 'Admin' ||
-            auth.doc.role === 'Full Access' ||
-            auth.doc.role === 'Show Captain') && (
+          {(auth.doc.roles.indexOf('Admin') !== -1 ||
+            auth.doc.roles.indexOf('Full Access') !== -1 ||
+            auth.doc.roles.indexOf('Show Captain') !== -1) && (
             <>
               <div
                 className="event__tooltip__delete"
@@ -216,9 +216,9 @@ class NewShowForm extends Component {
           <div className="event__tooltip__title">{show.show_details.title}</div>
 
           {/* false && this.showDebugData(show) */}
-          {(auth.doc.role === 'Admin' ||
-            auth.doc.role === 'Full Access' ||
-            auth.doc.role === 'Show Captain') && (
+          {(auth.doc.roles.indexOf('Admin') !== -1 ||
+            auth.doc.roles.indexOf('Full Access') !== -1 ||
+            auth.doc.roles.indexOf('Show Captain') !== -1) && (
             <>
               <DropdownHost
                 key={_id}
@@ -230,16 +230,16 @@ class NewShowForm extends Component {
               {this.FORM_OPTIONS[showType](show)}
             </>
           )}
-          {auth.doc.role !== 'Admin' &&
-            auth.doc.role !== 'Full Access' &&
-            auth.doc.role !== 'Show Captain' && (
+          {auth.doc.roles.indexOf('Admin') === -1 &&
+            auth.doc.roles.indexOf('Full Access') === -1 &&
+            auth.doc.roles.indexOf('Show Captain') === -1 && (
               <div>
                 <b>Host: </b>
                 {host != null && <>{formattedHostName}</>}
                 {(host === null || typeof host === 'undefined') && <>None</>}
               </div>
             )}
-          {auth.doc.role === 'DJ' &&
+          {auth.doc.roles.indexOf('DJ') !== -1 &&
             host != null &&
             auth.doc._id === host._id && (
               <>{this.FORM_OPTIONS[showType](show)}</>

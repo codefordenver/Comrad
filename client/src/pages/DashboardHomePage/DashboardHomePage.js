@@ -155,11 +155,7 @@ export default class DashboardHomePage extends Component {
           <Card>
             <CardBody>
               <div className="mb-1 text-center">
-                {!loadingOnAirData ? (
-                  <CalendarAgenda />
-                ) : (
-                  <Loading displayMode="static" />
-                )}
+                <CalendarAgenda />
               </div>
             </CardBody>
           </Card>

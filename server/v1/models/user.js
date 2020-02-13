@@ -76,8 +76,8 @@ const userSchema = new Schema({
     default: null,
   },
 
-  role: {
-    type: String,
+  roles: {
+    type: [String],
   },
 
   status: {

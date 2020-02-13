@@ -5,13 +5,20 @@ import { SidebarData } from './SidebarData';
 
 class Sidebar extends Component {
   checkRole = allowedRoles => {
-    const { authRole } = this.props;
+    const { authRoles } = this.props;
 
-    if (allowedRoles.indexOf(authRole) === -1) {
+    if (typeof authRoles === 'undefined') {
       return false;
     }
 
-    return true;
+    for (let i = 0; i < allowedRoles.length; i++) {
+      let allowedRole = allowedRoles[i];
+      if (authRoles.indexOf(allowedRole) !== -1) {
+        return true;
+      }
+    }
+
+    return false;
   };
 
   render() {

@@ -231,7 +231,7 @@ class DropdownHost extends Component {
 
     items.push({ _id: null, value: 'Clear' });
 
-    if (showAddNewHostOption && authState.doc.role === 'Admin') {
+    if (showAddNewHostOption && authState.doc.roles.indexOf('Admin') !== -1) {
       items.push(ADD_NEW_HOST);
     }
 

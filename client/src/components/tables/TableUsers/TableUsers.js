@@ -33,7 +33,7 @@ const columns = [
   },
   {
     Header: 'Role',
-    accessor: 'role',
+    accessor: 'roles',
     Cell: row => <CellUserRole {...row} />,
   },
   {

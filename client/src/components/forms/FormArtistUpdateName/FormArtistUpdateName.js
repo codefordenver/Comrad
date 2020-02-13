@@ -81,9 +81,9 @@ class FormArtistUpdateName extends Component {
         ) : (
           <div className={classnames('faun__heading', className)}>
             <h1 className="mb-0">{name}</h1>
-            {(auth.doc.role === 'Admin' ||
-              auth.doc.role === 'Full Access' ||
-              auth.doc.role === 'Music Library Admin') && (
+            {(auth.doc.roles.indexOf('Admin') !== -1 ||
+              auth.doc.roles.indexOf('Full Access') !== -1 ||
+              auth.doc.roles.indexOf('Music Library Admin') !== -1) && (
               <ButtonIcon
                 className="faun__edit"
                 icon="pencil"

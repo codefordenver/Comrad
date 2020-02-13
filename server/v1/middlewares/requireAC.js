@@ -53,7 +53,7 @@ function requireAC(resource, action) {
     const dbAccessControl = await db.AccessControl.find({}, '-_id').lean();
     const ac = new AccessControl(dbAccessControl);
 
-    const permission = ac.can(req.user.role)[action](resource);
+    const permission = ac.can(req.user.roles)[action](resource);
 
     if (!permission.granted) {
       return res.status(403).json({
@@ -68,7 +68,7 @@ function requireAC(resource, action) {
     // check permissions for "own" resources when user does not have updateAny access
     if (
       action === 'updateOwn' &&
-      !ac.can(req.user.role).updateAny(resource).granted
+      !ac.can(req.user.roles).updateAny(resource).granted
     ) {
       let show, userIsHost;
       switch (resource) {

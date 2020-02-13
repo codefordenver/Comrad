@@ -681,7 +681,7 @@ async function userByOnAirName(onAirName) {
       email: emailAddress,
       on_air_name: onAirName,
       password: 'temppassword',
-      role: 'DJ',
+      roles: ['DJ'],
     });
   }
   usersByOnAirName[onAirName] = user;

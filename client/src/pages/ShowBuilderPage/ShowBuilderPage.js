@@ -493,10 +493,12 @@ class ShowBuilderPage extends Component {
     }
 
     let canEditPlaylist =
-      auth.doc.role === 'Admin' ||
-      auth.doc.role === 'Full Access' ||
-      auth.doc.role === 'Music Library Admin' ||
-      (auth.doc.role === 'DJ' && host != null && host._id === auth.doc._id);
+      auth.doc.roles.indexOf('Admin') !== -1 ||
+      auth.doc.roles.indexOf('Full Access') !== -1 ||
+      auth.doc.roles.indexOf('Music Library Admin') !== -1 ||
+      (auth.doc.roles.indexOf('DJ') !== -1 &&
+        host != null &&
+        host._id === auth.doc._id);
 
     /* START - Add Track modal variables */
     let maxDiskNumber, maxTrackNumber;
@@ -518,9 +520,9 @@ class ShowBuilderPage extends Component {
               <div>
                 {!showFetching && (
                   <>
-                    {(auth.doc.role === 'Admin' ||
-                      auth.doc.role === 'Full Access' ||
-                      auth.doc.role === 'Music Library Admin') && (
+                    {(auth.doc.roles.indexOf('Admin') !== -1 ||
+                      auth.doc.roles.indexOf('Full Access') !== -1 ||
+                      auth.doc.roles.indexOf('Music Library Admin') !== -1) && (
                       <DropdownHost
                         key={host != null ? host._id : 'no host'}
                         host={host}
@@ -528,9 +530,9 @@ class ShowBuilderPage extends Component {
                         filterByStatus="Active"
                       />
                     )}
-                    {auth.doc.role !== 'Admin' &&
-                      auth.doc.role !== 'Full Access' &&
-                      auth.doc.role !== 'Music Library Admin' && (
+                    {auth.doc.roles.indexOf('Admin') === -1 &&
+                      auth.doc.roles.indexOf('Full Access') === -1 &&
+                      auth.doc.roles.indexOf('Music Library Admin') === -1 && (
                         <>
                           <b>Host:</b> {formattedHostName}
                         </>

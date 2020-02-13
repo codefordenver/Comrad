@@ -1,3 +1,5 @@
+/* WORK IN PROGRESS - uses new Form component rather than Redux Form */
+
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -10,7 +12,19 @@ import { CardV2, Form, Heading, InputV2, SelectV2 } from '../../components';
 
 import { userActions } from '../../redux/user';
 
-class UserAddPage extends Component {
+class UserAddEditPage extends Component {
+  componentDidMount() {
+    const { match, userActions, userState } = this.props;
+    const { _id } = userState.doc;
+    const { id } = match.params;
+
+    if (typeof id === 'undefined') {
+      userActions.userClear();
+    } else if (id !== _id) {
+      userActions.findOne(id);
+    }
+  }
+
   handleSubmit = values => {
     const { handleGoBack, props } = this;
     const { userActions } = props;
@@ -21,9 +35,13 @@ class UserAddPage extends Component {
   };
 
   handleGoBack = () => {
-    const { history } = this.props;
+    const { history, location } = this.props;
 
-    history.push('/user/search');
+    if (location.state != null && location.state.prevPath != null) {
+      history.push(location.state.prevPath);
+    } else {
+      history.push('/user/search');
+    }
   };
 
   render() {
@@ -105,6 +123,7 @@ class UserAddPage extends Component {
                   <Form.Group>
                     <Row className="mb-1">
                       <Col md={4}>
+                        {/* TODO: this will need to support entering/editing multiple roles */}
                         <SelectV2 label="Role" name="role" selected="blank">
                           <SelectV2.Option value="Admin">Admin</SelectV2.Option>
 
@@ -153,6 +172,18 @@ class UserAddPage extends Component {
   }
 }
 
+function mapStateToProps({ auth, user }, ownProps) {
+  let initialValues = {};
+  if (ownProps.match.params.id === user.doc._id) {
+    initialValues = user.doc;
+  }
+  return {
+    authState: auth,
+    userState: user,
+    initialValues,
+  };
+}
+
 function mapDispatchToProps(dispatch) {
   return {
     userActions: bindActionCreators({ ...userActions }, dispatch),
@@ -160,6 +191,6 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps,
-)(UserAddPage);
+)(UserAddEditPage);

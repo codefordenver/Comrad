@@ -7,7 +7,6 @@ import { configReducer } from './config';
 import { genreReducer } from './genre';
 import { libraryReducer } from './library';
 import { modalReducer } from './modal';
-import { permissionReducer } from './permission';
 import { playlistReducer } from './playlist';
 import { resourceReducer } from './resource';
 import { showReducer } from './show';
@@ -19,7 +18,6 @@ export * from './auth';
 export * from './config';
 export * from './genre';
 export * from './library';
-export * from './permission';
 export * from './playlist';
 export * from './traffic';
 export * from './user';
@@ -32,7 +30,6 @@ export default combineReducers({
   genre: genreReducer,
   library: libraryReducer,
   modal: modalReducer,
-  permission: permissionReducer,
   playlist: playlistReducer,
   resource: resourceReducer,
   show: showReducer,

@@ -12,7 +12,7 @@ import Select from '../../Select';
 
 import { requiredValidate } from '../../../utils/validation';
 
-const FORM_NAME = 'trafficAdd';
+const FORM_NAME = 'trafficAddEdit';
 
 class FormTrafficAdd extends Component {
   constructor(props) {

@@ -9,6 +9,7 @@ import { findAll } from './findAll';
 import { findOne } from './findOne';
 import { search } from './search';
 import { searchHosts } from './searchHosts';
+import { update } from './update';
 import { userClear } from './userClear';
 
 export const userActions = {
@@ -23,5 +24,6 @@ export const userActions = {
   remove,
   search,
   searchHosts,
+  update,
   userClear,
 };

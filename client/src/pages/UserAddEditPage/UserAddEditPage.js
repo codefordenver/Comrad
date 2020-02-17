@@ -6,7 +6,7 @@ import Card, { CardBody } from '../../components/Card';
 import Loading from '../../components/Loading';
 import FormUser from '../../components/forms/FormUser';
 
-import { userActions } from '../../redux/user';
+import { alertActions, userActions } from '../../redux';
 
 class UserAddEditPage extends Component {
   state = {
@@ -44,10 +44,11 @@ class UserAddEditPage extends Component {
   };
 
   editUserCallback = values => {
-    console.log(values);
-    //userActions.add(values, () => {
-    //handleGoBack();
-    //});
+    const { alertActions, userActions } = this.props;
+    userActions.update(values, () => {
+      this.handleGoBack();
+      alertActions.show('success', 'Success', 'User has been updated');
+    });
   };
 
   handleGoBack = () => {
@@ -103,6 +104,7 @@ function mapStateToProps({ user }, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
+    alertActions: bindActionCreators({ ...alertActions }, dispatch),
     userActions: bindActionCreators({ ...userActions }, dispatch),
   };
 }

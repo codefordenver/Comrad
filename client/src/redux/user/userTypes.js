@@ -11,4 +11,5 @@ export const userTypes = {
   REMOVE: 'user_remove',
   SEARCH: 'user_search',
   SEARCH_HOSTS: 'user_search_hosts',
+  UPDATE: 'user_update',
 };

@@ -80,6 +80,13 @@ export const userReducer = (state = initialState, { type, payload }) => {
         loading: false,
       };
 
+    case userTypes.UPDATE:
+      return {
+        ...state,
+        ...payload,
+        loading: false,
+      };
+
     default:
       return state;
   }

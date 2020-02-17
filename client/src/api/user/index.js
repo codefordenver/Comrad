@@ -7,6 +7,7 @@ import { findOne } from './findOne';
 import { remove } from './remove';
 import { search } from './search';
 import { searchHosts } from './searchHosts';
+import { update } from './update';
 
 export const userAPI = {
   add,
@@ -18,4 +19,5 @@ export const userAPI = {
   remove,
   search,
   searchHosts,
+  update,
 };

@@ -23,6 +23,8 @@ class UserAddEditPage extends Component {
       this.setState({ dataLoaded: true });
     } else if (id !== _id) {
       userActions.findOne(id);
+    } else {
+      this.setState({ dataLoaded: true });
     }
   }
 
@@ -37,10 +39,11 @@ class UserAddEditPage extends Component {
   }
 
   addUserCallback = values => {
-    console.log(values);
-    //userActions.add(values, () => {
-    //handleGoBack();
-    //});
+    const { alertActions, userActions } = this.props;
+    userActions.add(values, () => {
+      this.handleGoBack();
+      alertActions.show('success', 'Success', 'User has been created');
+    });
   };
 
   editUserCallback = values => {

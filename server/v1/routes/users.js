@@ -37,7 +37,7 @@ router
 router
   .route('/:id')
   .get(requireAC('Users', 'readAny'), usersController.findById)
-  .put(requireAC('Users', 'updateAny'), usersController.update)
+  .put(requireAC('Users', 'updateOwn'), usersController.update)
   .delete(requireAC('Users', 'deleteAny'), usersController.remove);
 
 router

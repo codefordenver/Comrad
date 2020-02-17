@@ -93,6 +93,7 @@ class UserProfilePage extends Component {
     const { authState, userState } = props;
 
     const {
+      _id,
       api_key,
       can_delete,
       email,
@@ -222,7 +223,11 @@ class UserProfilePage extends Component {
                     <ProfileImg />
                     <Row>
                       <Col>
-                        <Button className="w-100" color="primary">
+                        <Button
+                          className="w-100"
+                          color="primary"
+                          to={'/user/profile/edit/' + _id}
+                        >
                           Edit
                         </Button>
                       </Col>

@@ -18,7 +18,6 @@ module.exports = {
     'src/components/TableAlbums/**',
     'src/components/TableArtists/**',
     'src/components/TableTracks/**',
-    'src/components/TableUsers/**',
   ],
   styleguideComponents: {
     Wrapper: path.join(__dirname, './src/components/Root'),

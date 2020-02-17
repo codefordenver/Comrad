@@ -19,7 +19,9 @@ class DevelopmentSignUpPage extends Component {
         </div>
 
         <div className="signup-page__go-back">
-          <Button to="/">Go Back</Button>
+          <Button to="/" color="link">
+            Go Back
+          </Button>
         </div>
       </div>
     );

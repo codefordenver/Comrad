@@ -90,7 +90,7 @@ describe('<Link />', () => {
     linkWrapper = mount(
       <Router>
         <Route>
-          <Button to="/home" />
+          <Button to="/home" color="link" />
         </Route>
       </Router>,
     );

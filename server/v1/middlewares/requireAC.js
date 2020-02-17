@@ -104,6 +104,13 @@ function requireAC(resource, action) {
             });
           }
           break;
+        case 'Users':
+          //check to ensure the user is the user they're trying to update
+          if (req.params.id !== req.user.id) {
+            return res.status(403).json({
+              message: 'You do not have permission to access this resource',
+            });
+          }
         default:
           return res.status(500).json({
             message: 'updateOwn access has not been configured for ' + resource,

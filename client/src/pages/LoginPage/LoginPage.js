@@ -16,7 +16,9 @@ class LoginPage extends Component {
         </div>
 
         <div className="login-page__reset-button">
-          <Button to="/reset">Reset Password</Button>
+          <Button to="/reset" color="link">
+            Reset Password
+          </Button>
         </div>
 
         {process.env.REACT_APP_SHOW_DEVELOPMENT_SIGN_UP === 'true' && (

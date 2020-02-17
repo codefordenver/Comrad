@@ -23,7 +23,7 @@ export const config = {
         {
           Header: 'Roles',
           accessor: 'roles',
-          Cell: ({ value }) => <span className="">{value}</span>,
+          Cell: ({ value }) => <span className="">{value.join(', ')}</span>,
         },
         {
           Header: 'Status',

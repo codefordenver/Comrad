@@ -105,6 +105,15 @@ class FormUser extends Component {
               />
 
               <FieldArray name="roles" component={this.renderRoles} />
+
+              <Field
+                className="mb-2"
+                component={Select}
+                selectOptions={['Active', 'Inactive']}
+                hasBlankOption={false}
+                label="Status"
+                name="status"
+              />
             </div>
 
             <h3 className="form-user__headers mb-2">
@@ -160,7 +169,10 @@ const ReduxFormUser = reduxForm({
 function mapStateToProps(state, ownProps) {
   return {
     permissionState: state.permission,
-    initialValues: ownProps.initialValues != null ? ownProps.initialValues : {},
+    initialValues:
+      ownProps.initialValues != null
+        ? ownProps.initialValues
+        : { roles: [''], status: 'Active' }, // have an array with one value for roles, so there's at least one role required
     mode: ownProps.initialValues != null ? 'edit' : 'add',
   };
 }

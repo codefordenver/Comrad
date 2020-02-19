@@ -11,6 +11,8 @@ async function passwordReset(req, res) {
 
   if (!user) {
     return res.status(404).json('Email does not exist!');
+  } else if (user.status != 'Active') {
+    return res.status(404).json('The email is currently inactive.');
   }
 
   const randomBytesPromiseified = promisify(randomBytes);

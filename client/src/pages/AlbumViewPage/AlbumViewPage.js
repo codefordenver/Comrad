@@ -106,26 +106,28 @@ class AlbumViewPage extends Component {
                   <div className="album-view-page__last-updated">
                     {renderLastUpdated()}
                   </div>
-                  {(auth.doc.roles.indexOf('Admin') !== -1 ||
-                    auth.doc.roles.indexOf('Full Access') !== -1 ||
-                    auth.doc.roles.indexOf('Music Library Admin') !== -1) && (
-                    <Link className="edit-album-button" to={`${url}/edit`}>
-                      Edit Album
-                    </Link>
-                  )}
+                  {auth.doc.roles != null &&
+                    (auth.doc.roles.indexOf('Admin') !== -1 ||
+                      auth.doc.roles.indexOf('Full Access') !== -1 ||
+                      auth.doc.roles.indexOf('Music Library Admin') !== -1) && (
+                      <Link className="edit-album-button" to={`${url}/edit`}>
+                        Edit Album
+                      </Link>
+                    )}
                 </div>
               </CardBody>
             </Card>
             <Card>
               <CardBody>
                 <h2 className="mb-1">Tracks</h2>
-                {(auth.doc.roles.indexOf('Admin') !== -1 ||
-                  auth.doc.roles.indexOf('Full Access') !== -1 ||
-                  auth.doc.roles.indexOf('Music Library Admin') !== -1) && (
-                  <Link className="add-track-button" to={`${url}/add`}>
-                    Add Track
-                  </Link>
-                )}
+                {auth.doc.roles != null &&
+                  (auth.doc.roles.indexOf('Admin') !== -1 ||
+                    auth.doc.roles.indexOf('Full Access') !== -1 ||
+                    auth.doc.roles.indexOf('Music Library Admin') !== -1) && (
+                    <Link className="add-track-button" to={`${url}/add`}>
+                      Add Track
+                    </Link>
+                  )}
                 {isEmpty(tracks) ? (
                   <LargeText align="left">No Tracks</LargeText>
                 ) : (

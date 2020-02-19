@@ -62,13 +62,14 @@ function requireAC(resource, action) {
     }
 
     req.ac = permission;
-    req.ac.fields =
-      permission.attributes.indexOf('*') !== -1 ? [] : permission.attributes;
+    req.ac.fields = permission.attributes;
 
     // check permissions for "own" resources when user does not have updateAny access
     if (
-      action === 'updateOwn' &&
-      !ac.can(req.user.roles).updateAny(resource).granted
+      (action === 'updateOwn' &&
+        !ac.can(req.user.roles).updateAny(resource).granted) ||
+      (action === 'readOwn' &&
+        !ac.can(req.user.roles).readAny(resource).granted)
     ) {
       let show, userIsHost;
       switch (resource) {
@@ -111,6 +112,7 @@ function requireAC(resource, action) {
               message: 'You do not have permission to access this resource',
             });
           }
+          break;
         default:
           return res.status(500).json({
             message: 'updateOwn access has not been configured for ' + resource,

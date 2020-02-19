@@ -69,7 +69,10 @@ class FormUser extends Component {
 
   render() {
     const { props } = this;
-    const { handleSubmit, submitCallback, goBackCallback, mode } = props;
+    const { auth, handleSubmit, submitCallback, goBackCallback, mode } = props;
+
+    let isAdmin =
+      auth.doc.roles != null && auth.doc.roles.indexOf('Admin') !== -1;
 
     return (
       <Card>
@@ -104,50 +107,66 @@ class FormUser extends Component {
                 validate={[emailValidate, requiredValidate]}
               />
 
-              <FieldArray name="roles" component={this.renderRoles} />
-
-              <Field
-                className="mb-2"
-                component={Select}
-                selectOptions={['Active', 'Inactive']}
-                hasBlankOption={false}
-                label="Status"
-                name="status"
-              />
-            </div>
-
-            <h3 className="form-user__headers mb-2">
-              {mode === 'add' ? 'Password' : 'Change Password'}
-            </h3>
-
-            <div className="form-user__password">
               <Field
                 className="mb-2"
                 component={Input}
-                label="Password"
-                name="password"
-                type="password"
-                autoComplete="new-password"
-                validate={
-                  mode === 'add'
-                    ? [requiredValidate, passwordConfirmValidate]
-                    : [passwordConfirmValidate]
-                }
+                label="On-Air Name"
+                name="on_air_name"
+                type="text"
               />
 
-              <Field
-                className="mb-2"
-                component={Input}
-                label="Confirm Password"
-                name="confirm_password"
-                type="password"
-                validate={
-                  mode === 'add'
-                    ? [requiredValidate, passwordConfirmValidate]
-                    : [passwordConfirmValidate]
-                }
-              />
+              {isAdmin && (
+                <FieldArray name="roles" component={this.renderRoles} />
+              )}
+
+              {isAdmin && (
+                <Field
+                  className="mb-2"
+                  component={Select}
+                  selectOptions={['Active', 'Inactive']}
+                  hasBlankOption={false}
+                  label="Status"
+                  name="status"
+                />
+              )}
             </div>
+
+            {isAdmin && (
+              <div>
+                <h3 className="form-user__headers mb-2">
+                  {mode === 'add' ? 'Password' : 'Change Password'}
+                </h3>
+
+                <div className="form-user__password">
+                  <Field
+                    className="mb-2"
+                    component={Input}
+                    label="Password"
+                    name="password"
+                    type="password"
+                    autoComplete="new-password"
+                    validate={
+                      mode === 'add'
+                        ? [requiredValidate, passwordConfirmValidate]
+                        : [passwordConfirmValidate]
+                    }
+                  />
+
+                  <Field
+                    className="mb-2"
+                    component={Input}
+                    label="Confirm Password"
+                    name="confirm_password"
+                    type="password"
+                    validate={
+                      mode === 'add'
+                        ? [requiredValidate, passwordConfirmValidate]
+                        : [passwordConfirmValidate]
+                    }
+                  />
+                </div>
+              </div>
+            )}
 
             <Button className="btn btn-primary" type="submit">
               Submit
@@ -168,6 +187,7 @@ const ReduxFormUser = reduxForm({
 
 function mapStateToProps(state, ownProps) {
   return {
+    auth: state.auth,
     permissionState: state.permission,
     initialValues:
       ownProps.initialValues != null

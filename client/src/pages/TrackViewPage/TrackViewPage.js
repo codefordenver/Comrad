@@ -56,18 +56,19 @@ class TrackViewPage extends Component {
               <Card>
                 <CardBody>
                   <div className="float-right">Last updated: {lastUpdated}</div>
-                  {(auth.doc.roles.indexOf('Admin') !== -1 ||
-                    auth.doc.roles.indexOf('Full Access') !== -1 ||
-                    auth.doc.roles.indexOf('Music Library Admin') !== -1) && (
-                    <Link
-                      className="track-edit-button-wrapper"
-                      to={`${url}/edit`}
-                    >
-                      <div className="track-edit-button">
-                        Edit <i className="fas fa-edit" />
-                      </div>
-                    </Link>
-                  )}
+                  {auth.doc.roles != null &&
+                    (auth.doc.roles.indexOf('Admin') !== -1 ||
+                      auth.doc.roles.indexOf('Full Access') !== -1 ||
+                      auth.doc.roles.indexOf('Music Library Admin') !== -1) && (
+                      <Link
+                        className="track-edit-button-wrapper"
+                        to={`${url}/edit`}
+                      >
+                        <div className="track-edit-button">
+                          Edit <i className="fas fa-edit" />
+                        </div>
+                      </Link>
+                    )}
                   <h1 className="mb-0">{trackState.doc.name}</h1>
                   <div>
                     {' '}

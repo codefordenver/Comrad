@@ -36,12 +36,8 @@ router
 
 router
   .route('/:id')
-  .get(requireAC('Users', 'readAny'), usersController.findById)
+  .get(requireAC('Users', 'readOwn'), usersController.findById)
   .put(requireAC('Users', 'updateOwn'), usersController.update)
   .delete(requireAC('Users', 'deleteAny'), usersController.remove);
-
-router
-  .route('/:id/permission')
-  .put(requireAC('Users', 'updateAny'), usersController.updatePermission);
 
 module.exports = router;

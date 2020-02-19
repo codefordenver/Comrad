@@ -9,7 +9,6 @@ const removeApiKey = require('./removeApiKey');
 const search = require('./search');
 const searchHosts = require('./searchHosts');
 const update = require('./update');
-const updatePermission = require('./updatePermission');
 
 module.exports = {
   canDelete,
@@ -23,5 +22,4 @@ module.exports = {
   search,
   searchHosts,
   update,
-  updatePermission,
 };

@@ -79,6 +79,11 @@
     &.selected {
       background-color: $color-grey-1;
     }
+    
+    &--no-results {
+      color: $color-grey-4;
+      font-style: italic;
+    }
   }
 
   & .bottom-left {

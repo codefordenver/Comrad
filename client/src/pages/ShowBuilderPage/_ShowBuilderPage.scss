@@ -125,8 +125,16 @@
     &__add-new-track {
       color: blue;
       cursor: pointer;
+      display: block;
+      padding: 1rem;
     }
     &__no-results {
+      padding: 0 1rem 1rem;
+      
+      .library-results__add-new-track {
+        display: inline;
+        padding: 0;
+      }
       em {
         font-style: italic;
       }
@@ -134,6 +142,21 @@
   }
   
   
+}
+
+.add-track-modal {
+  display: flex;
+  > div {
+    margin-left: 5rem;
+  }
+  > div:first-child {
+    margin-left: 0;
+  }
+  
+  .form-track-add {
+    max-width: 100%;
+    width: 60rem;
+  }
 }
 
 .prompt-for-label-modal {

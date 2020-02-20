@@ -9,5 +9,25 @@ export const passwordsMatchValidate = (value, { passNew }) =>
 export const requiredValidate = value =>
   value || typeof value === 'number' ? undefined : 'Required';
 
+export const albumNeedsArtistOrCompilation = (value, allValues) => {
+  // Artist set and compilation is true
+  if (
+    allValues.artist != null &&
+    allValues.compilation != null &&
+    allValues.compilation
+  ) {
+    return 'Album must have artist or be a compilation';
+  }
+  //Artist not set and compilation is false
+  if (
+    (typeof allValues.artist === 'undefined' || allValues.artist === null) &&
+    (typeof allValues.compilation === 'undefined' ||
+      allValues.compilation === false)
+  ) {
+    return 'Album must have artist or be a compilation';
+  }
+  return undefined;
+};
+
 export const passwordConfirmValidate = (value, { password }) =>
   value !== password ? 'Passwords to not match' : undefined;

@@ -17,11 +17,13 @@ class DropdownLibrary extends Component {
     const { artist, libraryActions, libraryType } = this.props;
 
     let selectedLibraryItemDisplayName = '';
+    let searching = false;
     if (libraryType === 'artist') {
       selectedLibraryItemDisplayName = artist ? artist.name : '';
-
       //run a host search on the existing value so that the host list is populated with information
       if (selectedLibraryItemDisplayName.length > 0) {
+        let searching = true;
+        let self = this;
         libraryActions.search(
           libraryType,
           selectedLibraryItemDisplayName,
@@ -29,6 +31,9 @@ class DropdownLibrary extends Component {
           null,
           10,
           true,
+          function() {
+            self.setState({ searching: false });
+          },
         );
       }
     }
@@ -43,6 +48,7 @@ class DropdownLibrary extends Component {
         libraryType === 'artist' && artist
           ? { _id: artist._id, name: selectedLibraryItemDisplayName }
           : null,
+      searching: searching,
     };
   }
 
@@ -90,9 +96,22 @@ class DropdownLibrary extends Component {
       if (librarySearchTimeout != null) {
         clearTimeout(librarySearchTimeout);
       }
+      let self = this;
       this.setState({
+        searching: true,
         librarySearchTimeout: setTimeout(
-          () => libraryActions.search(libraryType, value, null, null, 10, true),
+          () =>
+            libraryActions.search(
+              libraryType,
+              value,
+              null,
+              null,
+              10,
+              true,
+              function() {
+                self.setState({ searching: false });
+              },
+            ),
           150,
         ),
       });
@@ -191,8 +210,20 @@ class DropdownLibrary extends Component {
       props,
       state,
     } = this;
-    const { cachedSearches, currentInputValue, hasFocus } = state;
-    const { autoFocus, className, libraryType } = props;
+    const { cachedSearches, currentInputValue, hasFocus, searching } = state;
+    const {
+      autoFocus,
+      className,
+      inputClass = '',
+      libraryType,
+      meta = {
+        active: false,
+        dirty: false,
+        error: false,
+        touched: false,
+        submitting: false,
+      } /* default values for when component is not used within React Form */,
+    } = props;
 
     // get the documents from the cachedResults property rather than Redux,
     // because Redux might not have the search results of the current input value if there
@@ -222,7 +253,7 @@ class DropdownLibrary extends Component {
             className={classnames('library-field', className)}
           >
             <Input
-              className=""
+              inputClassName={inputClass}
               label={libraryTypeCapitalized}
               name="libraryItem"
               type="text"
@@ -235,10 +266,11 @@ class DropdownLibrary extends Component {
               autoFocus={autoFocus}
               dirtyOverride={dirtyOverride(currentInputValue)}
               value={currentInputValue}
+              meta={meta}
             />
 
             {/* Library dropdown */}
-            {hasFocus && docs.length > 0 ? (
+            {hasFocus && docs.length > 0 && (
               <div className="dropdown__list dropdown__list--library-list active">
                 {docs.map((item, index) => (
                   <div
@@ -256,7 +288,17 @@ class DropdownLibrary extends Component {
                   </div>
                 ))}
               </div>
-            ) : null}
+            )}
+            {hasFocus &&
+              docs.length === 0 &&
+              !searching &&
+              currentInputValue.length > 0 && (
+                <div className="dropdown__list dropdown__list--library-list active">
+                  <div className="dropdown__item dropdown__item--no-results">
+                    No Results
+                  </div>
+                </div>
+              )}
           </div>
         )}
       </Downshift>

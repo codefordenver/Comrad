@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
-import { requiredValidate } from '../../../utils/validation';
+import {
+  requiredValidate,
+  albumNeedsArtistOrCompilation,
+} from '../../../utils/validation';
 import { libraryActions, configActions, genreActions } from '../../../redux';
 import Button from '../../Button';
+import DropdownLibrary from '../../DropdownLibrary';
 import Input from '../../Input';
 import { bindActionCreators } from 'redux';
 import Checkbox from '../../Checkbox';
@@ -56,8 +60,22 @@ class FormAlbumEdit extends Component {
           autoFocus
           validate={requiredValidate}
         />
+        <Field
+          component={DropdownLibrary}
+          libraryType="artist"
+          className="mb-1-5"
+          label="Artist"
+          name="artist"
+          artist={this.props.initialValues.artist}
+          validate={albumNeedsArtistOrCompilation}
+        />
+        <Field
+          component={Checkbox}
+          label="Compilation"
+          name="compilation"
+          validate={albumNeedsArtistOrCompilation}
+        />
         <Field component={Input} label="Label" name="label" />
-        <Field component={Checkbox} label="Compilation" name="compilation" />
         <Field
           component={Select}
           label="Genre"
@@ -74,14 +92,23 @@ class FormAlbumEdit extends Component {
 }
 
 function mapStateToProps(state) {
-  let name, label, compilation, _id, custom, genre;
+  let artist, name, label, compilation, _id, custom, genre;
   if (state.library.doc != null) {
-    ({ name, label, compilation, _id, custom, genre } = state.library.doc);
+    ({
+      artist,
+      name,
+      label,
+      compilation,
+      _id,
+      custom,
+      genre,
+    } = state.library.doc);
   }
   return {
     configState: state.config,
     genreState: state.genre,
     initialValues: {
+      artist: artist,
       name: name,
       label: label,
       compilation: compilation,

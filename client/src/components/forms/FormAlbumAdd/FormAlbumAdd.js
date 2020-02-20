@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import { bindActionCreators } from 'redux';
-import { requiredValidate } from '../../../utils/validation';
+import {
+  albumNeedsArtistOrCompilation,
+  requiredValidate,
+} from '../../../utils/validation';
 import { configActions, genreActions, libraryActions } from '../../../redux';
 
 import Button from '../../Button';
@@ -46,31 +49,38 @@ class FormAlbumAdd extends Component {
     return (
       <form className="form-album-add" onSubmit={handleSubmit(submit)}>
         <Field
-          component={DropdownLibrary}
-          libraryType="artist"
-          className="mb-2"
-          label="Artist"
-          name="artist"
-          artist={artist}
-          autoFocus={artist == null ? true : false}
-        />
-        <Field
           component={Input}
-          className="mb-2"
+          className="mb-1-5"
           label="Name"
           name="name"
           autoFocus={artist != null ? true : false}
           validate={requiredValidate}
         />
-        <Field component={Input} className="mb-2" label="Label" name="label" />
         <Field
-          component={Checkbox}
-          className="mb-2"
-          label="Compilation"
-          name="compilation"
+          component={DropdownLibrary}
+          libraryType="artist"
+          className="mb-1-5"
+          label="Artist"
+          name="artist"
+          artist={artist}
+          autoFocus={artist == null ? true : false}
+          validate={albumNeedsArtistOrCompilation}
         />
         <Field
-          className="mb-2"
+          component={Checkbox}
+          className="mb-1-5"
+          label="Compilation"
+          name="compilation"
+          validate={albumNeedsArtistOrCompilation}
+        />
+        <Field
+          component={Input}
+          className="mb-1-5"
+          label="Label"
+          name="label"
+        />
+        <Field
+          className="mb-1-5"
           component={Select}
           label="Genre"
           name="genre"
@@ -78,7 +88,10 @@ class FormAlbumAdd extends Component {
         />
         <CustomFieldsEdit fieldsMeta={albumCustomFields} />
         <div>
-          <Button type="submit">Submit</Button>
+          <Button type="submit" className="mr-1">
+            Submit
+          </Button>
+          {this.props.additionalButton != null && this.props.additionalButton}
         </div>
       </form>
     );

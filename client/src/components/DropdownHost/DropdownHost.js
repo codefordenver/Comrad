@@ -250,7 +250,7 @@ class DropdownHost extends Component {
           highlightedIndex,
           selectedItem,
         }) => (
-          <div key="host-field" className="mb-1 host-field">
+          <div key="host-field" className="mb-1-5 host-field">
             <Input
               className=""
               label="Host"

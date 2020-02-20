@@ -20,7 +20,7 @@ import {
 class FormUser extends Component {
   renderRoles = ({ fields, meta: { error, submitFailed } }) => {
     return (
-      <div className="mb-2">
+      <div className="mb-1-5">
         <ul className="form-user__role-list">
           <li>
             <h3>Roles</h3>
@@ -78,10 +78,10 @@ class FormUser extends Component {
       <Card>
         <CardBody>
           <form className="form-user" onSubmit={handleSubmit(submitCallback)}>
-            <h3 className="form-user__headers mb-2">Contact Info</h3>
+            <h3 className="form-user__headers mb-1-5">Contact Info</h3>
             <div className="form-user__contact-info">
               <Field
-                className="mb-2"
+                className="mb-1-5"
                 component={Input}
                 label="First Name"
                 name="first_name"
@@ -90,7 +90,7 @@ class FormUser extends Component {
               />
 
               <Field
-                className="mb-2"
+                className="mb-1-5"
                 component={Input}
                 label="Last Name"
                 name="last_name"
@@ -99,7 +99,7 @@ class FormUser extends Component {
               />
 
               <Field
-                className="mb-2"
+                className="mb-1-5"
                 component={Input}
                 label="Email Address"
                 name="email"
@@ -108,7 +108,7 @@ class FormUser extends Component {
               />
 
               <Field
-                className="mb-2"
+                className="mb-1-5"
                 component={Input}
                 label="On-Air Name"
                 name="on_air_name"
@@ -121,7 +121,7 @@ class FormUser extends Component {
 
               {isAdmin && (
                 <Field
-                  className="mb-2"
+                  className="mb-1-5"
                   component={Select}
                   selectOptions={['Active', 'Inactive']}
                   hasBlankOption={false}
@@ -133,13 +133,13 @@ class FormUser extends Component {
 
             {isAdmin && (
               <div>
-                <h3 className="form-user__headers mb-2">
+                <h3 className="form-user__headers mb-1-5">
                   {mode === 'add' ? 'Password' : 'Change Password'}
                 </h3>
 
                 <div className="form-user__password">
                   <Field
-                    className="mb-2"
+                    className="mb-1-5"
                     component={Input}
                     label="Password"
                     name="password"
@@ -153,7 +153,7 @@ class FormUser extends Component {
                   />
 
                   <Field
-                    className="mb-2"
+                    className="mb-1-5"
                     component={Input}
                     label="Confirm Password"
                     name="confirm_password"

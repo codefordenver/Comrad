@@ -16,6 +16,7 @@ export const search = (
   page,
   limit,
   useDocsForDropdown,
+  callback,
 ) => async dispatch => {
   try {
     dispatch({ type: libraryTypes.LOADING_SEARCH });
@@ -38,6 +39,10 @@ export const search = (
       type: libraryTypes.SEARCH,
       payload: payload,
     });
+
+    if (typeof callback === 'function') {
+      callback();
+    }
   } catch (err) {
     console.log(err);
     dispatch({ type: libraryTypes.LOADING_ERROR });

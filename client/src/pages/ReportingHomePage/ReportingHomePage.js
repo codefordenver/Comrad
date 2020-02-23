@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class ReportHomePage extends Component {
+class ReportingHomePage extends Component {
   state = {};
 
   render() {
@@ -8,4 +8,4 @@ class ReportHomePage extends Component {
   }
 }
 
-export default ReportHomePage;
+export default ReportingHomePage;

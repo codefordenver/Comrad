@@ -515,7 +515,7 @@
     "email": "admin@comrad.com",
     "on_air_name": "DJ Admin",
     "password": "password",
-    "first_name": "Admin"],
+    "first_name": "Admin",
     "last_name": "Test",
     "roles":["Admin"],
     "status": "Active"
@@ -526,7 +526,7 @@
     "email": "full.access@comrad.com",
     "on_air_name": "DJ Full Access",
     "password": "password",
-    "first_name": "Full Access"],
+    "first_name": "Full Access",
     "last_name": "Test",
     "roles":["Full Access"],
     "status": "Active"
@@ -537,7 +537,7 @@
     "email": "show.producer@comrad.com",
     "on_air_name": "DJ Show Producer",
     "password": "password",
-    "first_name": "Show Producer"],
+    "first_name": "Show Producer",
     "last_name": "Test",
     "roles":["Show Producer"],
     "status": "Active"
@@ -548,7 +548,7 @@
     "email": "underwriting@comrad.com",
     "on_air_name": "DJ Underwriting",
     "password": "password",
-    "first_name": "Underwriting"],
+    "first_name": "Underwriting",
     "last_name": "Test",
     "roles":["Underwriting"],
     "status": "Active"
@@ -562,7 +562,7 @@
     "reset_token_expiry": null,
     "status": "Active",
     "email": "dj@comrad.com",
-    "first_name": "DJ"],
+    "first_name": "DJ",
     "last_name": "Test",
     "roles":["DJ"],
     "password": "password"

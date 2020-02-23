@@ -2,13 +2,15 @@ const router = require('express').Router();
 const { usersController } = require('../controllers');
 const { requireAC } = require('../middlewares');
 
-router
-  .route('/')
-  .get(requireAC('Users', 'readAny'), usersController.findAll)
-  .post(
-    !process.env.SHOW_DEVELOPMENT_SIGN_UP || requireAC('Users', 'createAny'),
-    usersController.create,
-  );
+router.route('/').get(requireAC('Users', 'readAny'), usersController.findAll);
+
+if (process.env.SHOW_DEVELOPMENT_SIGN_UP) {
+  router.route('/').post(usersController.create);
+} else {
+  router
+    .route('/')
+    .post(requireAC('Users', 'createAny'), usersController.create);
+}
 
 router
   .route('/api-key/create')

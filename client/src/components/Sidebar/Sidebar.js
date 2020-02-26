@@ -41,8 +41,13 @@ class Sidebar extends Component {
                 placement="right"
               >
                 <li className="sidebar__item">
+                  {/* check for ctrl key so that we don't scroll to top if the link is being opened in a new tab */}
                   <Link
-                    onClick={() => window.scrollTo(0, 0)}
+                    onClick={e => {
+                      if (!e.ctrlKey) {
+                        window.scrollTo(0, 0);
+                      }
+                    }}
                     to={url}
                     className="sidebar__link"
                   >

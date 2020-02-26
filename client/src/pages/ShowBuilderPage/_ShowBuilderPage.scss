@@ -161,6 +161,11 @@
 
 .prompt-for-label-modal {
   font-size: 1.5rem;
+  max-width: 300px;
+  
+  > div:first-child {
+    margin-bottom: 1em;
+  }
   
   i {
     font-style: italic;

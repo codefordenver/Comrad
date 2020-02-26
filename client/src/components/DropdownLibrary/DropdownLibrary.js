@@ -18,12 +18,13 @@ class DropdownLibrary extends Component {
 
     let selectedLibraryItemDisplayName = '';
     let searching = false;
+    let self = this;
     if (libraryType === 'artist') {
       selectedLibraryItemDisplayName = artist ? artist.name : '';
       //run a host search on the existing value so that the host list is populated with information
       if (selectedLibraryItemDisplayName.length > 0) {
-        let searching = true;
-        let self = this;
+        searching = true;
+
         libraryActions.search(
           libraryType,
           selectedLibraryItemDisplayName,
@@ -32,7 +33,11 @@ class DropdownLibrary extends Component {
           10,
           true,
           function() {
-            self.setState({ searching: false });
+            if (typeof self.state.showSearchingText === 'number') {
+              //it's a timeout
+              clearTimeout(self.state.showSearchingText);
+            }
+            self.setState({ searching: false, showSearchingText: false });
           },
         );
       }
@@ -49,6 +54,11 @@ class DropdownLibrary extends Component {
           ? { _id: artist._id, name: selectedLibraryItemDisplayName }
           : null,
       searching: searching,
+      showSearchingText: searching
+        ? setTimeout(function() {
+            self.setState({ showSearchingText: true });
+          }, 2000)
+        : false, //note: there's some duplicated code throughout this related to this timeout, so may want to consolidate when changing
     };
   }
 
@@ -99,21 +109,28 @@ class DropdownLibrary extends Component {
       let self = this;
       this.setState({
         searching: true,
-        librarySearchTimeout: setTimeout(
-          () =>
-            libraryActions.search(
-              libraryType,
-              value,
-              null,
-              null,
-              10,
-              true,
-              function() {
-                self.setState({ searching: false });
-              },
-            ),
-          150,
-        ),
+        librarySearchTimeout: setTimeout(() => {
+          self.setState({
+            showSearchingText: setTimeout(function() {
+              self.setState({ showSearchingText: true });
+            }, 2000),
+          }); //note: there's some duplicated code throughout this related to this timeout, so may want to consolidate when changing
+          libraryActions.search(
+            libraryType,
+            value,
+            null,
+            null,
+            10,
+            true,
+            function() {
+              if (typeof self.state.showSearchingText === 'number') {
+                //it's a timeout
+                clearTimeout(self.state.showSearchingText);
+              }
+              self.setState({ searching: false, showSearchingText: false });
+            },
+          );
+        }, 150),
       });
     }
 
@@ -210,7 +227,13 @@ class DropdownLibrary extends Component {
       props,
       state,
     } = this;
-    const { cachedSearches, currentInputValue, hasFocus, searching } = state;
+    const {
+      cachedSearches,
+      currentInputValue,
+      hasFocus,
+      searching,
+      showSearchingText,
+    } = state;
     const {
       autoFocus,
       className,
@@ -296,6 +319,16 @@ class DropdownLibrary extends Component {
                 <div className="dropdown__list dropdown__list--library-list active">
                   <div className="dropdown__item dropdown__item--no-results">
                     No Results
+                  </div>
+                </div>
+              )}
+            {hasFocus &&
+              searching &&
+              showSearchingText === true &&
+              currentInputValue.length > 0 && (
+                <div className="dropdown__list dropdown__list--library-list active">
+                  <div className="dropdown__item dropdown__item--no-results">
+                    Searching...
                   </div>
                 </div>
               )}

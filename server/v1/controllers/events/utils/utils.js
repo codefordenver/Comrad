@@ -58,6 +58,24 @@ function eventList(events, startDate, endDate) {
     }
   });
 
+  //filter out events that do not fall in the start time / end time range
+  //we need to do this because returnDatesArrayByRepeatRule searches for a wider range than the provided date range,
+  //and that's because the RRule library does not properly account for daylight savings time
+  eventsToReturnArray = eventsToReturnArray.filter(function(e) {
+    if (
+      new Date(e.start_time_utc) < new Date(endDate) &&
+      new Date(e.start_time_utc) >= new Date(startDate)
+    ) {
+      return true;
+    } else if (
+      new Date(e.end_time_utc) <= new Date(endDate) &&
+      new Date(e.end_time_utc) > new Date(startDate)
+    ) {
+      return true;
+    }
+    return false;
+  });
+
   //sort the array by event start time
   eventsToReturnArray = eventsToReturnArray.sort(function(a, b) {
     if (new Date(a.start_time_utc) > new Date(b.start_time_utc)) {

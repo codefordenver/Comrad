@@ -1,0 +1,24 @@
+.traffic-view-page {
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-row-gap: 1rem;
+  font-size: 1.5em;
+  
+  &__datetime {
+    color: $color-primary;
+    font-size: 1.1em;
+  }
+  
+  b {
+    font-weight: bold;
+  }
+  
+  
+}
+
+.edit-traffic-modal, .delete-traffic-modal {
+    font-size: 1.5em;
+    > div {
+    margin-top:1em;
+    }
+  }

@@ -29,9 +29,11 @@ class TrafficAddPage extends Component {
             <h1>Add Traffic</h1>
           </CardBody>
         </Card>
-        <>
-          <FormTraffic submitCallback={this.addTrafficCallback} />
-        </>
+        <Card>
+          <CardBody>
+            <FormTraffic submitCallback={this.addTrafficCallback} />
+          </CardBody>
+        </Card>
       </div>
     );
   }

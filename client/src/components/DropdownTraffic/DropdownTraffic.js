@@ -127,7 +127,7 @@ class DropdownTraffic extends Component {
       state,
     } = this;
     const { cachedSearches, currentInputValue, hasFocus } = state;
-    const { autoFocus, className } = props;
+    const { autoFocus, className, inputLabel = 'Traffic' } = props;
 
     // get the documents from the cachedResults property rather than Redux,
     // because Redux might not have the search results of the current input value if there
@@ -154,7 +154,7 @@ class DropdownTraffic extends Component {
           >
             <Input
               className=""
-              label="Traffic"
+              label={inputLabel}
               name="trafficItem"
               type="text"
               {...getInputProps({

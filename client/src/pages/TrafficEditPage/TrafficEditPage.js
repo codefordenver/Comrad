@@ -102,10 +102,14 @@ class TrafficEditPage extends Component {
 
   render() {
     return (
-      <div className="traffic-add-page">
+      <div className="traffic-edit-page">
         <Card>
           <CardBody>
             <h1>Edit Traffic</h1>
+          </CardBody>
+        </Card>
+        <Card>
+          <CardBody>
             {this.isDocumentLoaded() && (
               <FormTraffic
                 initialValues={this.props.traffic.doc}

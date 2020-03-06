@@ -29,12 +29,12 @@ function findEventQueryByDateRange(start, end) {
           $and: [
             {
               'repeat_rule.repeat_start_date': {
-                $lte: end,
+                $lte: new Date(end),
               },
             },
             {
               'repeat_rule.repeat_end_date': {
-                $gte: start,
+                $gte: new Date(start),
               },
             },
           ],
@@ -43,12 +43,12 @@ function findEventQueryByDateRange(start, end) {
           $and: [
             {
               start_time_utc: {
-                $lte: end,
+                $lte: new Date(end),
               },
             },
             {
               end_time_utc: {
-                $gt: start, //use $gt so we do not get events that start at the exact endDate time
+                $gt: new Date(start), //use $gt so we do not get events that start at the exact endDate time
               },
             },
           ],

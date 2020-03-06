@@ -240,7 +240,12 @@ function combineDayAndTime(
 
 function returnSeriesEventsArrayWithNewDates(dateArray, event) {
   const returnedEvents = dateArray.map((date, i) => {
-    let newEvent = { ...event.toObject() };
+    let newEvent;
+    if (typeof event.toObject === 'function') {
+      newEvent = { ...event.toObject() };
+    } else {
+      newEvent = { ...event };
+    }
     let { start_time_utc, end_time_utc } = newEvent;
 
     start_time_utc = combineDayAndTime(date, start_time_utc, 'STRING');

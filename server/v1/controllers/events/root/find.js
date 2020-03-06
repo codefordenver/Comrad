@@ -51,15 +51,6 @@ function find(req, res) {
     );
   }
 
-  if (filterByTrafficType != null) {
-    promiseChain.push(
-      dbModel.find(
-        { 'traffic_details.type': { $in: filterByTrafficType } },
-        { _id: 1 },
-      ),
-    );
-  }
-
   Promise.all(promiseChain)
     .then(promiseResults => {
       if (host != null) {
@@ -90,59 +81,75 @@ function find(req, res) {
         };
       }
 
+      const processEventResults = dbShow => {
+        //populateMasterEvent
+        let showResults = eventList(dbShow, startDate, endDate);
+        //apply filters, if they were provided
+        //these filters can't be applied on the initial query because of series + instances possibly having
+        //different values. For example, if we search for a show with a host of "Sean" and a series has
+        //a host of "Sean" but the June 1 instance has a host of "Josh", the instance would be excluded from the initial
+        //query, and this function would incorrectly return the June 1 instance thinking it has a hos a host of "Sean"
+        if (host != null) {
+          showResults = showResults.filter(function(val) {
+            return (
+              val.show_details.host != null && val.show_details.host._id == host
+            );
+          });
+        }
+
+        if (showsWithNoHost == 'true') {
+          showResults = showResults.filter(function(val) {
+            return val.show_details.host == null;
+          });
+        }
+
+        res.json(showResults);
+      };
+
       if (filterByTrafficType != null) {
         //only query traffic with a type in the list provided by filterByTrafficType
         let matchingTrafficTypeIds = [];
-        promiseResults[0].forEach(traffic => {
-          matchingTrafficTypeIds.push(traffic._id);
-        });
-        filter = {
-          $and: [
-            filter,
+
+        return dbModel
+          .aggregate([
+            { $match: filter },
             {
-              $or: [
-                //instance is the traffic type:
-                { _id: { $in: matchingTrafficTypeIds } },
-                //the series matches the traffic type
-                { master_event_id: { $in: matchingTrafficTypeIds } },
-              ],
+              $lookup: {
+                from: 'traffics',
+                localField: 'master_event_id',
+                foreignField: '_id',
+                as: 'MasterEvent',
+              },
             },
-          ],
-        };
+            {
+              $match: {
+                $or: [
+                  { 'traffic_details.type': { $in: filterByTrafficType } },
+                  {
+                    'MasterEvent.traffic_details.type': {
+                      $in: filterByTrafficType,
+                    },
+                  },
+                ],
+              },
+            },
+          ])
+          .then(processEventResults)
+          .catch(err => {
+            console.error(err);
+            return res.status(422).json(err);
+          });
+      } else {
+        return dbModel
+          .find(filter)
+          .populate(populateShowHost())
+          .populate(populateMasterEvent())
+          .then(processEventResults)
+          .catch(err => {
+            console.error(err);
+            return res.status(422).json(err);
+          });
       }
-
-      return dbModel
-        .find(filter)
-        .populate(populateShowHost())
-        .populate(populateMasterEvent())
-        .then(dbShow => {
-          let showResults = eventList(dbShow, startDate, endDate);
-          //apply filters, if they were provided
-          //these filters can't be applied on the initial query because of series + instances possibly having
-          //different values. For example, if we search for a show with a host of "Sean" and a series has
-          //a host of "Sean" but the June 1 instance has a host of "Josh", the instance would be excluded from the initial
-          //query, and this function would incorrectly return the June 1 instance thinking it has a hos a host of "Sean"
-          if (host != null) {
-            showResults = showResults.filter(function(val) {
-              return (
-                val.show_details.host != null &&
-                val.show_details.host._id == host
-              );
-            });
-          }
-
-          if (showsWithNoHost == 'true') {
-            showResults = showResults.filter(function(val) {
-              return val.show_details.host == null;
-            });
-          }
-
-          res.json(showResults);
-        })
-        .catch(err => {
-          console.error(err);
-          return res.status(422).json(err);
-        });
     })
     .catch(err => {
       console.error(err);

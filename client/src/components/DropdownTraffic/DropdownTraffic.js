@@ -21,6 +21,22 @@ class DropdownTraffic extends Component {
     };
   }
 
+  componentDidUpdate() {
+    const { traffic } = this.props;
+    const { cachedSearches } = this.state;
+
+    // cache the search query in state so that we can quickly update the search results
+    if (
+      traffic.docsForDropdown != null &&
+      traffic.searchString != null &&
+      !(traffic.searchString.toLowerCase() in cachedSearches)
+    ) {
+      cachedSearches[traffic.searchString.toLowerCase()] =
+        traffic.docsForDropdown;
+      this.setState({ cachedSearches: cachedSearches });
+    }
+  }
+
   //handles input box change
   handleChange = e => {
     const { trafficActions } = this.props;

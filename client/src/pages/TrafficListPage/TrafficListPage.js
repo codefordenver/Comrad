@@ -157,7 +157,12 @@ class TrafficListPage extends Component {
 
         if (numberOfTrafficItems === 0) {
           listElements.push(
-            <div className="traffic-list__no-traffic">No Traffic Events</div>,
+            <div
+              key={'no-traffic-' + showObject._id}
+              className="traffic-list__no-traffic"
+            >
+              No Traffic Events
+            </div>,
           );
         }
       });

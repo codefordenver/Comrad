@@ -85,7 +85,9 @@ function mapStateToProps(state) {
   };
 
   const isRepeat = selector(state, 'is_recurring');
-  const isInstance = selectedShow.master_event_id != null;
+  const isInstance =
+    selectedShow.master_event_id != null &&
+    selectedShow.master_event_id._id !== selectedShow._id;
   const date = selector(state, 'start_time_utc');
 
   const currentValues =

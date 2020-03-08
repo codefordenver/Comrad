@@ -16,7 +16,7 @@ class DeleteModal extends Component {
   };
 
   render() {
-    const { deleteModal, closeDeleteModal } = this.props;
+    const { deleteCallback, deleteModal, closeDeleteModal } = this.props;
     return (
       <Modal isOpen={true}>
         <div className="library-search__delete-modal">
@@ -25,16 +25,22 @@ class DeleteModal extends Component {
           {deleteModal.type || deleteModal._original.type}{' '}
           <i>{deleteModal.name}</i>?
           <div>
-            <Button color="neutral" onClick={closeDeleteModal}>
+            {deleteCallback != null ? (
+              <Button type="submit" onClick={() => deleteCallback()}>
+                Yes
+              </Button>
+            ) : (
+              <Button
+                type="submit"
+                onClick={() =>
+                  this.deleteEntity(deleteModal.type, deleteModal._original._id)
+                }
+              >
+                Yes
+              </Button>
+            )}
+            <Button color="neutral" onClick={closeDeleteModal} className="ml-1">
               No
-            </Button>
-            <Button
-              type="submit"
-              onClick={() =>
-                this.deleteEntity(deleteModal.type, deleteModal._original._id)
-              }
-            >
-              Yes
             </Button>
           </div>
         </div>

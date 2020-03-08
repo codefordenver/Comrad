@@ -52,33 +52,13 @@ class TrackViewPage extends Component {
         {!trackState.loading &&
           trackState.doc != null &&
           trackState.doc._id === id && (
-            <div>
+            <>
               <Card>
                 <CardBody>
                   <div className="float-right">Last updated: {lastUpdated}</div>
-                  {auth.doc.roles != null &&
-                    (auth.doc.roles.indexOf('Admin') !== -1 ||
-                      auth.doc.roles.indexOf('Full Access') !== -1 ||
-                      auth.doc.roles.indexOf('Music Library Admin') !== -1) && (
-                      <Link
-                        className="track-edit-button-wrapper"
-                        to={`${url}/edit`}
-                      >
-                        <div className="track-edit-button">
-                          Edit <i className="fas fa-edit" />
-                        </div>
-                      </Link>
-                    )}
                   <h1 className="mb-0">{trackState.doc.name}</h1>
                   <div>
-                    {' '}
                     by <span>{artistsHtml}</span>
-                  </div>
-                  <div>
-                    Track duration:{' '}
-                    {formatTotalSecondsAsMMSS(
-                      trackState.doc.duration_in_seconds,
-                    )}
                   </div>
                   <div>
                     from the album{' '}
@@ -86,11 +66,34 @@ class TrackViewPage extends Component {
                       {trackState.doc.album.name}
                     </a>
                   </div>
-                  <div>Disk number: {trackState.doc.disk_number}</div>
-                  <div>Track number: {trackState.doc.track_number}</div>
                 </CardBody>
               </Card>
-            </div>
+              <Card>
+                <CardBody>
+                  <div>
+                    Track duration:{' '}
+                    {formatTotalSecondsAsMMSS(
+                      trackState.doc.duration_in_seconds,
+                    )}
+                  </div>
+                  <div>Disk number: {trackState.doc.disk_number}</div>
+                  <div>Track number: {trackState.doc.track_number}</div>
+                  {auth.doc.roles != null &&
+                    (auth.doc.roles.indexOf('Admin') !== -1 ||
+                      auth.doc.roles.indexOf('Full Access') !== -1 ||
+                      auth.doc.roles.indexOf('Music Library Admin') !== -1) && (
+                      <Link
+                        className="track-edit-button-wrapper mt-1"
+                        to={`${url}/edit`}
+                      >
+                        <div className="track-edit-button">
+                          Edit <i className="fas fa-edit" />
+                        </div>
+                      </Link>
+                    )}
+                </CardBody>
+              </Card>
+            </>
           )}
       </div>
     );

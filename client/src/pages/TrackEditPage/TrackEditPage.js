@@ -35,15 +35,19 @@ class TrackEditPage extends Component {
       <div className="track-edit-page">
         <Card>
           <CardBody>
-            <h1>Edit Track</h1>
+            <h1 className="mb-0">Edit Track</h1>
           </CardBody>
         </Card>
         {library.loading && <Loading />}
         {library.doc !== null && !library.loading && (
-          <FormTrackEdit
-            submitCallback={this.editTrackCallback}
-            history={this.props.history}
-          />
+          <Card>
+            <CardBody>
+              <FormTrackEdit
+                submitCallback={this.editTrackCallback}
+                history={this.props.history}
+              />
+            </CardBody>
+          </Card>
         )}
       </div>
     );

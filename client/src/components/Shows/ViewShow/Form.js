@@ -16,13 +16,23 @@ import { getShowType } from '../../../utils/shows';
 import { formatHostName } from '../../../utils/formatters';
 import { MODAL_EDIT_SHOW, MODAL_EDIT_SERIES } from '../ShowModalController';
 
+import DeleteModal from '../../DeleteModal';
 import DropdownHost from '../../DropdownHost';
 
 class NewShowForm extends Component {
+  state = {
+    deleteModal: false,
+    deleteCallback: null,
+  };
+
   componentDidMount() {
     const { setModalVisibility } = this.props;
     setModalVisibility(false, false, null);
   }
+
+  closeDeleteModal = () => {
+    this.setState({ deleteModal: false });
+  };
 
   showEditShowModal = show => {
     const { setModalVisibility, selectShow } = this.props;
@@ -65,37 +75,55 @@ class NewShowForm extends Component {
     series: data => {
       const { auth } = this.props;
       return (
-        <div className="series">
-          <div
-            className="event__tooltip__edit"
-            onClick={() => this.showEditInstanceModal(data)}
-          >
-            Edit Show Instance
-          </div>
-          <div
-            className="event__tooltip__edit"
-            onClick={() => this.showEditSeriesModal(data)}
-          >
-            Edit Show Series
+        <div className="event__tooltip__commands series">
+          <div>
+            <div
+              className="event__tooltip__edit"
+              onClick={() => this.showEditInstanceModal(data)}
+            >
+              Edit Show Instance
+            </div>
+            <div
+              className="event__tooltip__edit"
+              onClick={() => this.showEditSeriesModal(data)}
+            >
+              Edit Show Series
+            </div>
           </div>
           {auth.doc.roles != null &&
             (auth.doc.roles.indexOf('Admin') !== -1 ||
               auth.doc.roles.indexOf('Full Access') !== -1 ||
               auth.doc.roles.indexOf('Show Captain') !== -1) && (
-              <>
+              <div>
                 <div
                   className="event__tooltip__delete"
-                  onClick={() => this.deleteInstanceShow(data)}
+                  onClick={() =>
+                    this.setState({
+                      deleteCallback: () => this.deleteInstanceShow(data),
+                      deleteModal: {
+                        type: 'show instance of ',
+                        name: data.show_details.title,
+                      },
+                    })
+                  }
                 >
                   Delete Instance
                 </div>
                 <div
                   className="event__tooltip__delete"
-                  onClick={() => this.deleteSeriesShow(data)}
+                  onClick={() =>
+                    this.setState({
+                      deleteCallback: () => this.deleteSeriesShow(data),
+                      deleteModal: {
+                        type: 'show series',
+                        name: data.show_details.title,
+                      },
+                    })
+                  }
                 >
                   Delete Series
                 </div>
-              </>
+              </div>
             )}
         </div>
       );
@@ -103,44 +131,62 @@ class NewShowForm extends Component {
     instance: data => {
       const { auth } = this.props;
       return (
-        <div className="instance">
-          <div
-            className="event__tooltip__edit"
-            onClick={() => this.showEditShowModal(data)}
-          >
-            Edit Show Instance
+        <div className="event__tooltip__commands instance">
+          <div>
+            <div
+              className="event__tooltip__edit"
+              onClick={() => this.showEditShowModal(data)}
+            >
+              Edit Show Instance
+            </div>
+            {auth.doc.roles != null &&
+              (auth.doc.roles.indexOf('Admin') !== -1 ||
+                auth.doc.roles.indexOf('Full Access') !== -1 ||
+                auth.doc.roles.indexOf('Show Captain') !== -1 ||
+                (auth.doc.roles.indexOf('DJ') !== -1 &&
+                  auth.doc._id === data.master_event_id.show_details.host)) && (
+                <div
+                  className="event__tooltip__edit"
+                  onClick={() => this.showEditSeriesModal(data.master_event_id)}
+                >
+                  Edit Show Series
+                </div>
+              )}
           </div>
           {auth.doc.roles != null &&
             (auth.doc.roles.indexOf('Admin') !== -1 ||
               auth.doc.roles.indexOf('Full Access') !== -1 ||
-              auth.doc.roles.indexOf('Show Captain') !== -1 ||
-              (auth.doc.roles.indexOf('DJ') !== -1 &&
-                auth.doc._id === data.master_event_id.show_details.host)) && (
-              <div
-                className="event__tooltip__edit"
-                onClick={() => this.showEditSeriesModal(data.master_event_id)}
-              >
-                Edit Show Series
-              </div>
-            )}
-          {auth.doc.roles != null &&
-            (auth.doc.roles.indexOf('Admin') !== -1 ||
-              auth.doc.roles.indexOf('Full Access') !== -1 ||
               auth.doc.roles.indexOf('Show Captain') !== -1) && (
-              <>
+              <div>
                 <div
                   className="event__tooltip__delete"
-                  onClick={() => this.deleteRegularShow(data)}
+                  onClick={() =>
+                    this.setState({
+                      deleteCallback: () => this.deleteRegularShow(data),
+                      deleteModal: {
+                        type: 'show instance of ',
+                        name: data.show_details.title,
+                      },
+                    })
+                  }
                 >
                   Delete Instance
                 </div>
                 <div
                   className="event__tooltip__delete"
-                  onClick={() => this.deleteSeriesShow(data)}
+                  onClick={() =>
+                    this.setState({
+                      deleteCallback: () => this.deleteSeriesShow(data),
+                      deleteModal: {
+                        type: 'show series',
+                        name: data.show_details.title,
+                      },
+                    })
+                  }
                 >
                   Delete Series
                 </div>
-              </>
+              </div>
             )}
         </div>
       );
@@ -156,7 +202,15 @@ class NewShowForm extends Component {
           </div>
           <div
             className="event__tooltip__delete"
-            onClick={() => this.deleteRegularShow(data)}
+            onClick={() =>
+              this.setState({
+                deleteCallback: () => this.deleteRegularShow(data),
+                deleteModal: {
+                  type: 'show',
+                  name: data.show_details.title,
+                },
+              })
+            }
           >
             Delete
           </div>
@@ -201,7 +255,8 @@ class NewShowForm extends Component {
   );
 
   render() {
-    const { props } = this;
+    const { props, state } = this;
+    const { deleteModal, deleteCallback } = state;
     const { show, auth, formatHostName } = props;
     const { _id } = show;
     const { host } = show.show_details;
@@ -251,6 +306,14 @@ class NewShowForm extends Component {
               <>{this.FORM_OPTIONS[showType](show)}</>
             )}
         </section>
+        {/* Delete modal */}
+        {deleteModal ? (
+          <DeleteModal
+            deleteModal={deleteModal}
+            closeDeleteModal={this.closeDeleteModal}
+            deleteCallback={deleteCallback}
+          />
+        ) : null}
       </main>
     );
   }

@@ -109,13 +109,24 @@ $show_start_z: 200;
   margin-bottom: 1rem;
 }
 
+.event__tooltip__commands {
+  display: flex;
+  
+  > div {
+    width: 50%;
+    padding-right: 1%;
+  }
+}
+
 .event__tooltip__edit,
 .event__tooltip__delete {
   color: $color-primary;
-  &:hover {
-    color: $color-primary-darker;
-    cursor: pointer;
-  }
+  cursor: pointer;
+  margin-top: 0.2em;
+}
+
+.event__tooltip__delete {
+  color: $color-danger;
 }
 
 .not_done {

@@ -1,6 +1,7 @@
 .album-view-page {
   display: grid;
   grid-row-gap: 1rem;
+  font-size: 1.5rem;
   
   &__header {
     display: grid;
@@ -17,7 +18,7 @@
     margin-top: 1.4rem;
   }
   
-  .add-track-button, .edit-album-button {
+  .edit-album-button {
     display: inline-block;
     position: relative;
     width: max-content;
@@ -29,6 +30,15 @@
     transition: background-color 0.1s;
     font-size: 1.8rem;
     border-radius: $border-radius;  
+  }
+  
+  .tracks-header {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-column-gap: 0.6rem;
+    &__add {
+      align-self: center;
+    }
   }
 
 }

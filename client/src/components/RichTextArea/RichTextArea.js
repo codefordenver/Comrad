@@ -126,6 +126,7 @@ class RichTextArea extends Component {
             onBlur={() => input.onBlur()}
             modules={this.modules}
             formats={this.formats}
+            bounds={'.editor-container'}
           />
           <CustomToolbar />
 

@@ -9,6 +9,7 @@ class Select extends Component {
     const {
       className,
       disabled,
+      hasBlankOption = true,
       input,
       label,
       meta = {
@@ -33,7 +34,7 @@ class Select extends Component {
           className={classnames('select', touched && error && 'error')}
           disabled={disabled || submitting}
         >
-          <option value="" />
+          {hasBlankOption && <option value="" />}
           {isObj
             ? Object.keys(selectOptions).map((option, index) => {
                 return (
@@ -44,8 +45,11 @@ class Select extends Component {
               })
             : selectOptions.map((option, index) => {
                 return (
-                  <option key={index} value={option}>
-                    {option}
+                  <option
+                    key={index}
+                    value={typeof option === 'string' ? option : option.value}
+                  >
+                    {typeof option === 'string' ? option : option.text}
                   </option>
                 );
               }) || null}

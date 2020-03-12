@@ -17,6 +17,7 @@
 @import '../components/App/App';
 @import '../components/Button/Button';
 @import '../components/ButtonIcon/ButtonIcon';
+@import '../components/CalendarAgenda/CalendarAgenda';
 @import '../components/Card/Card';
 @import '../components/CardV2/CardV2';
 @import '../components/Checkbox/Checkbox';
@@ -40,7 +41,7 @@
 @import '../components/forms/FormTrackEdit/FormTrackEdit';
 @import '../components/forms/FormTraffic/FormTraffic';
 @import '../components/forms/FormHostAdd/FormHostAdd';
-@import '../components/forms/FormUserAdd/FormUserAdd.scss';
+@import '../components/forms/FormUser/FormUser';
 @import '../components/forms/FormUserSearch/FormUserSearch';
 @import '../components/Heading/Heading';
 @import '../components/Input/Input';
@@ -60,7 +61,6 @@
 @import '../components/ShowBuilderItemList/ShowBuilderItemList';
 @import '../components/ShowListForUser/ShowListForUser';
 @import '../components/Sidebar/Sidebar';
-@import '../components/tables/TableUsers/TableUsers';
 @import '../components/tables/TableAlbumTracks/TableAlbumTracks';
 @import '../components/TextArea/TextArea';
 @import '../components/Tooltip/Tooltip';
@@ -78,21 +78,23 @@
 @import '../pages/AlbumViewPage/AlbumViewPage';
 @import '../pages/ArtistAddPage/ArtistAddPage';
 @import '../pages/ArtistViewPage/ArtistViewPage';
-@import '../pages/BuilderHomePage/BuilderHomePage';
 @import '../pages/CalendarHomePage/CalendarHomePage';
 @import '../pages/ChangePasswordPage/ChangePasswordPage';
 @import '../pages/DashboardHomePage/DashboardHomePage';
 @import '../pages/Error404Page/Error404Page';
 @import '../pages/LibrarySearchPage/LibrarySearchPage';
 @import '../pages/LoginPage/LoginPage';
-@import '../pages/ReportHomePage/ReportHomePage';
+@import '../pages/ReportingHomePage/ReportingHomePage';
 @import '../pages/ResourcePoliciesPage/ResourcePoliciesPage';
 @import '../pages/ShowBuilderPage/ShowBuilderPage';
 @import '../pages/ShowBuilderShowListPage/ShowBuilderShowListPage';
 @import '../pages/TrackAddPage/TrackAddPage';
 @import '../pages/TrackEditPage/TrackEditPage';
 @import '../pages/TrackViewPage/TrackViewPage';
+@import '../pages/TrafficAddPage/TrafficAddPage';
+@import '../pages/TrafficEditPage/TrafficEditPage';
 @import '../pages/TrafficListPage/TrafficListPage';
+@import '../pages/TrafficViewPage/TrafficViewPage';
 @import '../pages/UserProfilePage/UserProfilePage';
 
 // utils

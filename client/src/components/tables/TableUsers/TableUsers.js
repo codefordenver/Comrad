@@ -4,7 +4,7 @@ import ReactTable from 'react-table';
 
 const CellUserRole = ({ value }) => {
   if (value) {
-    return <span className="table-users__role">{value}</span>;
+    return <span className="table-users__role">{value.join(', ')}</span>;
   }
 
   return <span className="table-users__role">No Role</span>;
@@ -33,7 +33,7 @@ const columns = [
   },
   {
     Header: 'Role',
-    accessor: 'role',
+    accessor: 'roles',
     Cell: row => <CellUserRole {...row} />,
   },
   {

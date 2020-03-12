@@ -25,6 +25,10 @@ passport.use(
         return done(null, false);
       }
 
+      if (dbUser.status !== 'Active') {
+        return done(null, false);
+      }
+
       dbUser.comparePassword(password, async (err, isMatch) => {
         if (err) {
           return done(err);

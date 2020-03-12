@@ -87,19 +87,20 @@ class CalendarHomePage extends Component {
         <CardBody>
           <div className="calendar">
             <div className="calendar__sidebar">
-              {(auth.doc.role === 'Admin' ||
-                auth.doc.role === 'Full Access' ||
-                auth.doc.role === 'Show Captain') && (
-                <div className="add-button-wrapper">
-                  <div
-                    className="calendar-add-button"
-                    onClick={this.showNewShowModal}
-                  >
-                    <div className="calendar-add-button-text">Add</div>
-                    <i className="fas fa-plus" />
+              {auth.doc.roles != null &&
+                (auth.doc.roles.indexOf('Admin') !== -1 ||
+                  auth.doc.roles.indexOf('Full Access') !== -1 ||
+                  auth.doc.roles.indexOf('Show Captain') !== -1) && (
+                  <div className="add-button-wrapper">
+                    <div
+                      className="calendar-add-button"
+                      onClick={this.showNewShowModal}
+                    >
+                      <div className="calendar-add-button-text">Add</div>
+                      <i className="fas fa-plus" />
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
               <DayPickerSingleDateController
                 key={dayPickerKey}
                 date={selectedDate}

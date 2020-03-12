@@ -13,7 +13,9 @@ class PasswordResetPage extends Component {
 
         <FormPasswordReset className="mb-3" {...props} />
 
-        <Button to="/">Go Back</Button>
+        <Button to="/" color="link">
+          Go Back
+        </Button>
       </div>
     );
   }

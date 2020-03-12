@@ -38,6 +38,7 @@ class FormShowBuilderComment extends Component {
         onSubmit={handleSubmit(handleReduxFormSubmit)}
       >
         <Field
+          className="mb-1-5"
           component={RichTextArea}
           label="Comment"
           name="comment"
@@ -45,7 +46,11 @@ class FormShowBuilderComment extends Component {
           validate={requiredValidate}
         />
         <div>
-          <Button type="submit" onClick={this.handleAddToScratchpad}>
+          <Button
+            type="submit"
+            onClick={this.handleAddToScratchpad}
+            className="mr-1"
+          >
             Add to Scratchpad
           </Button>
           <Button type="submit" onClick={this.handleAddToSavedItems}>

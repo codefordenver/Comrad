@@ -53,7 +53,7 @@ function requireAC(resource, action) {
     const dbAccessControl = await db.AccessControl.find({}, '-_id').lean();
     const ac = new AccessControl(dbAccessControl);
 
-    const permission = ac.can(req.user.role)[action](resource);
+    const permission = ac.can(req.user.roles)[action](resource);
 
     if (!permission.granted) {
       return res.status(403).json({
@@ -62,13 +62,14 @@ function requireAC(resource, action) {
     }
 
     req.ac = permission;
-    req.ac.fields =
-      permission.attributes.indexOf('*') !== -1 ? [] : permission.attributes;
+    req.ac.fields = permission.attributes;
 
     // check permissions for "own" resources when user does not have updateAny access
     if (
-      action === 'updateOwn' &&
-      !ac.can(req.user.role).updateAny(resource).granted
+      (action === 'updateOwn' &&
+        !ac.can(req.user.roles).updateAny(resource).granted) ||
+      (action === 'readOwn' &&
+        !ac.can(req.user.roles).readAny(resource).granted)
     ) {
       let show, userIsHost;
       switch (resource) {
@@ -99,6 +100,14 @@ function requireAC(resource, action) {
           );
           userIsHost = await userIsHostOfShow(req.user, showResults[0]);
           if (!userIsHost) {
+            return res.status(403).json({
+              message: 'You do not have permission to access this resource',
+            });
+          }
+          break;
+        case 'Users':
+          //check to ensure the user is the user they're trying to update
+          if (req.params.id !== req.user.id) {
             return res.status(403).json({
               message: 'You do not have permission to access this resource',
             });

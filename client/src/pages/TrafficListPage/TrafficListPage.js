@@ -115,6 +115,8 @@ class TrafficListPage extends Component {
           </div>,
         );
 
+        let numberOfTrafficItems = 0;
+
         while (
           currentTrafficObject != null &&
           currentTrafficObject.start_time_utc < showObject.end_time_utc
@@ -123,6 +125,7 @@ class TrafficListPage extends Component {
             currentTrafficObject.traffic_details != null &&
             currentTrafficObject.traffic_details.type != null
           ) {
+            numberOfTrafficItems++;
             listElements.push(
               <div
                 className={classnames(
@@ -151,6 +154,17 @@ class TrafficListPage extends Component {
               ? traffic.docs[trafficIndex]
               : null;
         }
+
+        if (numberOfTrafficItems === 0) {
+          listElements.push(
+            <div
+              key={'no-traffic-' + showObject._id}
+              className="traffic-list__no-traffic"
+            >
+              No Traffic Events
+            </div>,
+          );
+        }
       });
     }
 
@@ -165,67 +179,90 @@ class TrafficListPage extends Component {
         <Card>
           <CardBody>
             <h1>Traffic List</h1>
-            <Link className="traffic-add-button" to="/traffic/add">
-              <div className="traffic-add-button__text">Add</div>
-              <i className="fas fa-plus" />
-            </Link>
           </CardBody>
         </Card>
         <Card>
           <CardBody>
-            Jump to traffic:
-            <DropdownTraffic onTrafficSelect={this.navigateToTraffic} />
-          </CardBody>
-        </Card>
-        <Card>
-          <CardBody>
-            <div className="traffic-list__date-selector">
-              <DatePicker label="Date" input={dateInput} />
+            <div className="traffic-list__jump-to-traffic">
+              <DropdownTraffic
+                onTrafficSelect={this.navigateToTraffic}
+                inputLabel="Jump to Traffic"
+              />
+              <Link className="traffic-add-button" to="/traffic/add">
+                <div className="traffic-add-button__text">Add</div>
+                <i className="fas fa-plus" />
+              </Link>
             </div>
-            <div>
-              Show: <br />
-              <Checkbox
-                id="announcement"
-                initialChecked={true}
-                className="checkbox--inline"
-                onChange={() => this.toggleFilter('Announcement')}
-              />{' '}
-              Announcement <br />
-              <Checkbox
-                id="feature"
-                initialChecked={true}
-                className="checkbox--inline"
-                onChange={() => this.toggleFilter('Feature')}
-              />{' '}
-              Feature <br />
-              <Checkbox
-                id="giveaway"
-                initialChecked={true}
-                className="checkbox--inline"
-                onChange={() => this.toggleFilter('Giveaway')}
-              />{' '}
-              Giveaway <br />
-              <Checkbox
-                id="legal-id"
-                initialChecked={true}
-                className="checkbox--inline"
-                onChange={() => this.toggleFilter('Legal ID')}
-              />{' '}
-              Legal ID <br />
-              <Checkbox
-                id="psa"
-                initialChecked={true}
-                className="checkbox--inline"
-                onChange={() => this.toggleFilter('PSA')}
-              />{' '}
-              PSA <br />
-              <Checkbox
-                id="underwriting"
-                initialChecked={true}
-                className="checkbox--inline"
-                onChange={() => this.toggleFilter('Underwriting')}
-              />{' '}
-              Underwriting
+          </CardBody>
+        </Card>
+        <Card>
+          <CardBody>
+            <div className="traffic-list__filters">
+              <div className="traffic-list__filters__date-selector">
+                <DatePicker label="Date" input={dateInput} />
+              </div>
+              <div className="traffic-list__filters__traffic-types">
+                <div>
+                  <Checkbox
+                    id="announcement"
+                    initialChecked={true}
+                    className="checkbox--inline"
+                    onChange={() => this.toggleFilter('Announcement')}
+                  />
+                  <div className="traffic-type-icon traffic-type-icon--announcement" />
+                  Announcement
+                </div>
+                <div>
+                  <Checkbox
+                    id="feature"
+                    initialChecked={true}
+                    className="checkbox--inline"
+                    onChange={() => this.toggleFilter('Feature')}
+                  />
+                  <div className="traffic-type-icon traffic-type-icon--feature" />
+                  Feature
+                </div>
+                <div>
+                  <Checkbox
+                    id="giveaway"
+                    initialChecked={true}
+                    className="checkbox--inline"
+                    onChange={() => this.toggleFilter('Giveaway')}
+                  />
+                  <div className="traffic-type-icon traffic-type-icon--giveaway" />
+                  Giveaway
+                </div>
+                <div>
+                  <Checkbox
+                    id="legal-id"
+                    initialChecked={true}
+                    className="checkbox--inline"
+                    onChange={() => this.toggleFilter('Legal ID')}
+                  />
+                  <div className="traffic-type-icon traffic-type-icon--legal-id" />
+                  Legal ID
+                </div>
+                <div>
+                  <Checkbox
+                    id="psa"
+                    initialChecked={true}
+                    className="checkbox--inline"
+                    onChange={() => this.toggleFilter('PSA')}
+                  />
+                  <div className="traffic-type-icon traffic-type-icon--psa" />
+                  PSA
+                </div>
+                <div>
+                  <Checkbox
+                    id="underwriting"
+                    initialChecked={true}
+                    className="checkbox--inline"
+                    onChange={() => this.toggleFilter('Underwriting')}
+                  />
+                  <div className="traffic-type-icon traffic-type-icon--underwriting" />
+                  Underwriting
+                </div>
+              </div>
             </div>
             {!showsFetching && !traffic.loading && (
               <div className="traffic-list__events">{listElements}</div>

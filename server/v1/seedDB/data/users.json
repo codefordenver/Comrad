@@ -5,7 +5,7 @@
     "first_name": "Rosabella",
     "last_name": "Stuttman",
     "on_air_name": "Rosabella Stuttman",
-    "role": "Show Producer",
+    "roles":["Show Producer"],
     "status": "Active",
     "can_delete": true
   },
@@ -15,7 +15,7 @@
     "first_name": "Rayshell",
     "last_name": "Singers",
     "on_air_name": "Rayshell Singers",
-    "role": "Show Producer",
+    "roles":["Show Producer"],
     "status": "Active",
     "can_delete": true
   },
@@ -25,7 +25,7 @@
     "first_name": "Hallsy",
     "last_name": "Conradsen",
     "on_air_name": "Hallsy Conradsen",
-    "role": "Show Producer",
+    "roles":["Show Producer"],
     "status": "Active",
     "can_delete": true
   },
@@ -35,7 +35,7 @@
     "first_name": "Timi",
     "last_name": "Mc Ilory",
     "on_air_name": "Timi Mc Ilory",
-    "role": "Show Producer",
+    "roles":["Show Producer"],
     "status": "Active",
     "can_delete": true
   },
@@ -45,7 +45,7 @@
     "first_name": "Neal",
     "last_name": "Tousey",
     "on_air_name": "Neal Tousey",
-    "role": "Show Producer",
+    "roles":["Show Producer"],
     "status": "Inactive",
     "can_delete": false
   },
@@ -55,7 +55,7 @@
     "first_name": "Thedrick",
     "last_name": "Phifer",
     "on_air_name": "Thedrick Phifer",
-    "role": "Show Producer",
+    "roles":["Show Producer"],
     "status": "Inactive",
     "can_delete": false
   },
@@ -65,7 +65,7 @@
     "first_name": "Nan",
     "last_name": "McRitchie",
     "on_air_name": "Nan McRitchie",
-    "role": "Show Producer",
+    "roles":["Show Producer"],
     "status": "Inactive",
     "can_delete": false
   },
@@ -75,7 +75,7 @@
     "first_name": "Larine",
     "last_name": "Filipiak",
     "on_air_name": "Larine Filipiak",
-    "role": "Show Producer",
+    "roles":["Show Producer"],
     "status": "Inactive",
     "can_delete": false
   },
@@ -85,7 +85,7 @@
     "first_name": "Florie",
     "last_name": "Bushe",
     "on_air_name": "Florie Bushe",
-    "role": "Show Producer",
+    "roles":["Show Producer"],
     "status": "Inactive",
     "can_delete": false
   },
@@ -95,7 +95,7 @@
     "first_name": "Orelia",
     "last_name": "Sustin",
     "on_air_name": "Orelia Sustin",
-    "role": "Show Producer",
+    "roles":["Show Producer"],
     "status": "Inactive",
     "can_delete": false
   },
@@ -105,7 +105,7 @@
     "first_name": "Culver",
     "last_name": "Dukes",
     "on_air_name": "Culver Dukes",
-    "role": "Show Producer",
+    "roles":["Show Producer"],
     "status": "Inactive",
     "can_delete": false
   },
@@ -115,7 +115,7 @@
     "first_name": "Easter",
     "last_name": "Bladge",
     "on_air_name": "Easter Bladge",
-    "role": "Show Producer",
+    "roles":["Show Producer"],
     "status": "Inactive",
     "can_delete": false
   },
@@ -125,7 +125,7 @@
     "first_name": "Hatti",
     "last_name": "Dongate",
     "on_air_name": "Hatti Dongate",
-    "role": "Show Producer",
+    "roles":["Show Producer"],
     "status": "Inactive",
     "can_delete": false
   },
@@ -135,7 +135,7 @@
     "first_name": "Davita",
     "last_name": "Van Arsdalen",
     "on_air_name": "Davita Van Arsdalen",
-    "role": "Show Producer",
+    "roles":["Show Producer"],
     "status": "Inactive",
     "can_delete": false
   },
@@ -145,7 +145,7 @@
     "first_name": "Jandy",
     "last_name": "Jesty",
     "on_air_name": "Jandy Jesty",
-    "role": "Show Producer",
+    "roles":["Show Producer"],
     "status": "Inactive",
     "can_delete": false
   },
@@ -155,7 +155,7 @@
     "first_name": "Fonsie",
     "last_name": "Pinney",
     "on_air_name": "Fonsie Pinney",
-    "role": "Show Producer",
+    "roles":["Show Producer"],
     "status": "Inactive",
     "can_delete": false
   },
@@ -165,7 +165,7 @@
     "first_name": "Madelina",
     "last_name": "Mayhead",
     "on_air_name": "Madelina Mayhead",
-    "role": "Show Producer",
+    "roles":["Show Producer"],
     "status": "Inactive",
     "can_delete": false
   },
@@ -175,7 +175,7 @@
     "first_name": "Tuesday",
     "last_name": "Allerton",
     "on_air_name": "Tuesday Allerton",
-    "role": "Show Producer",
+    "roles":["Show Producer"],
     "status": "Inactive",
     "can_delete": false
   },
@@ -185,7 +185,7 @@
     "first_name": "Vannie",
     "last_name": "Testin",
     "on_air_name": "Vannie Testin",
-    "role": "Full Access",
+    "roles":["Full Access"],
     "status": "Inactive",
     "can_delete": false
   },
@@ -195,7 +195,7 @@
     "first_name": "Arlin",
     "last_name": "Capp",
     "on_air_name": "Arlin Capp",
-    "role": "Full Access",
+    "roles":["Full Access"],
     "status": "Inactive",
     "can_delete": false
   },
@@ -205,7 +205,7 @@
     "first_name": "Clarice",
     "last_name": "Burlingham",
     "on_air_name": "Clarice Burlingham",
-    "role": "Admin",
+    "roles":["Admin"],
     "status": "Inactive",
     "can_delete": false
   },
@@ -215,7 +215,7 @@
     "first_name": "Edeline",
     "last_name": "Spilsted",
     "on_air_name": "Edeline Spilsted",
-    "role": "Admin",
+    "roles":["Admin"],
     "status": "Inactive",
     "can_delete": false
   },
@@ -225,7 +225,7 @@
     "first_name": "Klarika",
     "last_name": "Braxay",
     "on_air_name": "Klarika Braxay",
-    "role": "Admin",
+    "roles":["Admin"],
     "status": "Inactive",
     "can_delete": false
   },
@@ -235,7 +235,7 @@
     "first_name": "Shell",
     "last_name": "Bawdon",
     "on_air_name": "Shell Bawdon",
-    "role": "Underwriting",
+    "roles":["Underwriting"],
     "status": "Inactive",
     "can_delete": false
   },
@@ -245,7 +245,7 @@
     "first_name": "Jdavie",
     "last_name": "Trobridge",
     "on_air_name": "Jdavie Trobridge",
-    "role": "Underwriting",
+    "roles":["Underwriting"],
     "status": "Inactive",
     "can_delete": false
   },
@@ -255,7 +255,7 @@
     "first_name": "Glen",
     "last_name": "Fehner",
     "on_air_name": "Glen Fehner",
-    "role": "Underwriting",
+    "roles":["Underwriting"],
     "status": "Inactive",
     "can_delete": false
   },
@@ -265,7 +265,7 @@
     "first_name": "Jeromy",
     "last_name": "Batie",
     "on_air_name": "Jeromy Batie",
-    "role": "Underwriting",
+    "roles":["Underwriting"],
     "status": "Inactive",
     "can_delete": false
   },
@@ -275,7 +275,7 @@
     "first_name": "Martina",
     "last_name": "Rowet",
     "on_air_name": "Martina Rowet",
-    "role": "Underwriting",
+    "roles":["Underwriting"],
     "status": "Inactive",
     "can_delete": false
   },
@@ -285,7 +285,7 @@
     "first_name": "Kiley",
     "last_name": "Izzatt",
     "on_air_name": "Kiley Izzatt",
-    "role": "Underwriting",
+    "roles":["Underwriting"],
     "status": "Active",
     "can_delete": false
   },
@@ -295,7 +295,7 @@
     "first_name": "Haslett",
     "last_name": "Anster",
     "on_air_name": "Haslett Anster",
-    "role": "Underwriting",
+    "roles":["Underwriting"],
     "status": "Active",
     "can_delete": false
   },
@@ -305,7 +305,7 @@
     "first_name": "Honoria",
     "last_name": "MacAnelley",
     "on_air_name": "Honoria MacAnelley",
-    "role": "Underwriting",
+    "roles":["Underwriting"],
     "status": "Active",
     "can_delete": false
   },
@@ -315,7 +315,7 @@
     "first_name": "Mattheus",
     "last_name": "Dymott",
     "on_air_name": "Mattheus Dymott",
-    "role": "Underwriting",
+    "roles":["Underwriting"],
     "status": "Active",
     "can_delete": false
   },
@@ -325,7 +325,7 @@
     "first_name": "Flss",
     "last_name": "Northall",
     "on_air_name": "Flss Northall",
-    "role": "Underwriting",
+    "roles":["Underwriting"],
     "status": "Active",
     "can_delete": false
   },
@@ -335,7 +335,7 @@
     "first_name": "Bobinette",
     "last_name": "Gunthorpe",
     "on_air_name": "Bobinette Gunthorpe",
-    "role": "DJ",
+    "roles":["DJ"],
     "status": "Active",
     "can_delete": false
   },
@@ -345,7 +345,7 @@
     "first_name": "Aubree",
     "last_name": "Smithen",
     "on_air_name": "Aubree Smithen",
-    "role": "DJ",
+    "roles":["DJ"],
     "status": "Active",
     "can_delete": false
   },
@@ -355,7 +355,7 @@
     "first_name": "Emlen",
     "last_name": "Spender",
     "on_air_name": "Emlen Spender",
-    "role": "DJ",
+    "roles":["DJ"],
     "status": "Active",
     "can_delete": false
   },
@@ -365,7 +365,7 @@
     "first_name": "Moina",
     "last_name": "Joye",
     "on_air_name": "Moina Joye",
-    "role": "DJ",
+    "roles":["DJ"],
     "status": "Active",
     "can_delete": true
   },
@@ -375,7 +375,7 @@
     "first_name": "Mose",
     "last_name": "Blabey",
     "on_air_name": "Mose Blabey",
-    "role": "DJ",
+    "roles":["DJ"],
     "status": "Active",
     "can_delete": true
   },
@@ -385,7 +385,7 @@
     "first_name": "Curtice",
     "last_name": "Bremeyer",
     "on_air_name": "Curtice Bremeyer",
-    "role": "DJ",
+    "roles":["DJ"],
     "status": "Active",
     "can_delete": true
   },
@@ -395,7 +395,7 @@
     "first_name": "Lonni",
     "last_name": "Sogg",
     "on_air_name": "Lonni Sogg",
-    "role": "DJ",
+    "roles":["DJ"],
     "status": "Active",
     "can_delete": true
   },
@@ -405,7 +405,7 @@
     "first_name": "Jermain",
     "last_name": "Gredden",
     "on_air_name": "Jermain Gredden",
-    "role": "DJ",
+    "roles":["DJ"],
     "status": "Active",
     "can_delete": true
   },
@@ -415,7 +415,7 @@
     "first_name": "Emmanuel",
     "last_name": "Olivier",
     "on_air_name": "Emmanuel Olivier",
-    "role": "DJ",
+    "roles":["DJ"],
     "status": "Active",
     "can_delete": true
   },
@@ -425,7 +425,7 @@
     "first_name": "Valeda",
     "last_name": "Ovendale",
     "on_air_name": "Valeda Ovendale",
-    "role": "DJ",
+    "roles":["DJ"],
     "status": "Active",
     "can_delete": true
   },
@@ -435,7 +435,7 @@
     "first_name": "Giulia",
     "last_name": "Leemans",
     "on_air_name": "Giulia Leemans",
-    "role": "DJ",
+    "roles":["DJ"],
     "status": "Active",
     "can_delete": true
   },
@@ -445,7 +445,7 @@
     "first_name": "Renault",
     "last_name": "Muslim",
     "on_air_name": "Renault Muslim",
-    "role": "DJ",
+    "roles":["DJ"],
     "status": "Active",
     "can_delete": true
   },
@@ -455,7 +455,7 @@
     "first_name": "Branden",
     "last_name": "Blinder",
     "on_air_name": "Branden Blinder",
-    "role": "DJ",
+    "roles":["DJ"],
     "status": "Active",
     "can_delete": true
   },
@@ -465,7 +465,7 @@
     "first_name": "Freddy",
     "last_name": "Pickworth",
     "on_air_name": "Freddy Pickworth",
-    "role": "DJ",
+    "roles":["DJ"],
     "status": "Active",
     "can_delete": true
   },
@@ -475,7 +475,7 @@
     "first_name": "Farris",
     "last_name": "Neild",
     "on_air_name": "Farris Neild",
-    "role": "DJ",
+    "roles":["DJ"],
     "status": "Active",
     "can_delete": true
   },
@@ -485,7 +485,7 @@
     "first_name": "Aubree",
     "last_name": "Dreakin",
     "on_air_name": "Aubree Dreakin",
-    "role": "Show Producer",
+    "roles":["Show Producer"],
     "status": "Active",
     "can_delete": true
   },
@@ -495,7 +495,7 @@
     "first_name": "Lari",
     "last_name": "Rubbens",
     "on_air_name": "Lari Rubbens",
-    "role": "Show Producer",
+    "roles":["Show Producer"],
     "status": "Active",
     "can_delete": true
   },
@@ -505,7 +505,7 @@
     "first_name": "Comrad",
     "last_name": "Develpment",
     "on_air_name": "DJ Cool Software",
-    "role": "Admin",
+    "roles":["Admin"],
     "status": "Active",
     "can_delete": true
   },
@@ -517,7 +517,7 @@
     "password": "password",
     "first_name": "Admin",
     "last_name": "Test",
-    "role": "Admin",
+    "roles":["Admin"],
     "status": "Active"
   },
   {
@@ -528,7 +528,7 @@
     "password": "password",
     "first_name": "Full Access",
     "last_name": "Test",
-    "role": "Full Access",
+    "roles":["Full Access"],
     "status": "Active"
   },
   {
@@ -539,7 +539,7 @@
     "password": "password",
     "first_name": "Show Producer",
     "last_name": "Test",
-    "role": "Show Producer",
+    "roles":["Show Producer"],
     "status": "Active"
   },
   {
@@ -550,7 +550,7 @@
     "password": "password",
     "first_name": "Underwriting",
     "last_name": "Test",
-    "role": "Underwriting",
+    "roles":["Underwriting"],
     "status": "Active"
   },
   {
@@ -564,7 +564,7 @@
     "email": "dj@comrad.com",
     "first_name": "DJ",
     "last_name": "Test",
-    "role": "DJ",
+    "roles":["DJ"],
     "password": "password"
   },
   {
@@ -577,7 +577,7 @@
     "email": "guest@comrad.com",
     "first_name": "Guest",
     "last_name": "Test",
-    "role": "Guest",
+    "roles":["Guest"],
     "password": "password"
   }
 ]

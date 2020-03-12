@@ -93,6 +93,7 @@ class UserProfilePage extends Component {
     const { authState, userState } = props;
 
     const {
+      _id,
       api_key,
       can_delete,
       email,
@@ -133,7 +134,8 @@ class UserProfilePage extends Component {
                 </CardV2>
 
                 {/* ======= ADMIN ======= */}
-                {authState.doc && authState.doc.role === 'Admin' ? (
+                {authState.doc &&
+                authState.doc.roles.indexOf('Admin') !== -1 ? (
                   <CardV2>
                     <CardV2.Body>
                       <Heading size={3}>Admin</Heading>
@@ -221,7 +223,11 @@ class UserProfilePage extends Component {
                     <ProfileImg />
                     <Row>
                       <Col>
-                        <Button className="w-100" color="primary">
+                        <Button
+                          className="w-100"
+                          color="primary"
+                          to={'/user/profile/edit/' + _id}
+                        >
                           Edit
                         </Button>
                       </Col>

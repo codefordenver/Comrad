@@ -24,7 +24,7 @@ class MainLayout extends Component {
         </section>
 
         <section className="main-layout__sidebar">
-          <Sidebar authRole={authState.doc.role} />
+          <Sidebar authRoles={authState.doc.roles} />
         </section>
 
         <section className="main-layout__body">

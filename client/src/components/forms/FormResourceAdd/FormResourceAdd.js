@@ -25,7 +25,7 @@ class FormResourceAdd extends Component {
       <form className="fra" onSubmit={handleSubmit(submit)}>
         <div className="fra__fields">
           <Field
-            className="mb-2"
+            className="mb-1-5"
             component={Input}
             label="Description"
             name="description"
@@ -33,7 +33,7 @@ class FormResourceAdd extends Component {
           />
 
           <Field
-            className="mb-2"
+            className="mb-1-5"
             component={Input}
             label="Link"
             name="link"

@@ -13,7 +13,7 @@ class ResourceLayout extends Component {
         <section className="resource-layout__header">
           <Card>
             <CardBody>
-              <h1 className="mb-0">Resource</h1>
+              <h1 className="mb-0">Resources</h1>
             </CardBody>
           </Card>
         </section>

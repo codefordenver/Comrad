@@ -205,18 +205,25 @@ class LibrarySearchPage extends Component {
                   </span>
                 </div>
               </div>
-              {(auth.doc.role === 'Admin' ||
-                auth.doc.role === 'Full Access' ||
-                auth.doc.role === 'Music Library Admin') && (
-                <div>
-                  <Dropdown position="right-centered" type="button" text="Add">
-                    <Dropdown.Item to="library/artist/add">
-                      Artist
-                    </Dropdown.Item>
-                    <Dropdown.Item to="library/album/add">Album</Dropdown.Item>
-                  </Dropdown>
-                </div>
-              )}
+              {auth.doc.roles != null &&
+                (auth.doc.roles.indexOf('Admin') !== -1 ||
+                  auth.doc.roles.indexOf('Full Access') !== -1 ||
+                  auth.doc.roles.indexOf('Music Library Admin') !== -1) && (
+                  <div>
+                    <Dropdown
+                      position="right-centered"
+                      type="button"
+                      text="Add"
+                    >
+                      <Dropdown.Item to="library/artist/add">
+                        Artist
+                      </Dropdown.Item>
+                      <Dropdown.Item to="library/album/add">
+                        Album
+                      </Dropdown.Item>
+                    </Dropdown>
+                  </div>
+                )}
             </div>
 
             {!loadingError && (
@@ -360,28 +367,30 @@ class LibrarySearchPage extends Component {
       Cell: row => {
         return (
           <div onClick={this.stopPropagation}>
-            {(this.props.auth.doc.role === 'Admin' ||
-              this.props.auth.doc.role === 'Full Access' ||
-              this.props.auth.doc.role === 'Music Library Admin') && (
-              <Dropdown
-                position="bottom-left"
-                type="icon"
-                faClass="fas fa-ellipsis-h"
-              >
-                {row.row.type !== 'artist' && (
-                  <Dropdown.Item
-                    handleOnClick={() => this.handleRowEditClick(row.row)}
-                  >
-                    Edit
-                  </Dropdown.Item>
-                )}
-                <Dropdown.Item
-                  handleOnClick={() => this.handleRowDeleteClick(row.row)}
+            {this.props.auth.doc.roles != null &&
+              (this.props.auth.doc.roles.indexOf('Admin') !== -1 ||
+                this.props.auth.doc.roles.indexOf('Full Access') !== -1 ||
+                this.props.auth.doc.roles.indexOf('Music Library Admin') !==
+                  -1) && (
+                <Dropdown
+                  position="bottom-left"
+                  type="icon"
+                  faClass="fas fa-ellipsis-h"
                 >
-                  Delete
-                </Dropdown.Item>
-              </Dropdown>
-            )}
+                  {row.row.type !== 'artist' && (
+                    <Dropdown.Item
+                      handleOnClick={() => this.handleRowEditClick(row.row)}
+                    >
+                      Edit
+                    </Dropdown.Item>
+                  )}
+                  <Dropdown.Item
+                    handleOnClick={() => this.handleRowDeleteClick(row.row)}
+                  >
+                    Delete
+                  </Dropdown.Item>
+                </Dropdown>
+              )}
           </div>
         );
       },

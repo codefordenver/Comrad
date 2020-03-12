@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { isEmpty } from 'lodash';
 
+import ButtonIcon from '../../components/ButtonIcon';
 import Card, { CardBody } from '../../components/Card';
 import CustomFieldsView from '../../components/CustomFieldsView';
 import LargeText from '../../components/LargeText';
@@ -106,26 +107,35 @@ class AlbumViewPage extends Component {
                   <div className="album-view-page__last-updated">
                     {renderLastUpdated()}
                   </div>
-                  {(auth.doc.role === 'Admin' ||
-                    auth.doc.role === 'Full Access' ||
-                    auth.doc.role === 'Music Library Admin') && (
-                    <Link className="edit-album-button" to={`${url}/edit`}>
-                      Edit Album
-                    </Link>
-                  )}
+                  {auth.doc.roles != null &&
+                    (auth.doc.roles.indexOf('Admin') !== -1 ||
+                      auth.doc.roles.indexOf('Full Access') !== -1 ||
+                      auth.doc.roles.indexOf('Music Library Admin') !== -1) && (
+                      <Link
+                        className="edit-album-button mt-1"
+                        to={`${url}/edit`}
+                      >
+                        Edit Album <i className="fas fa-edit" />
+                      </Link>
+                    )}
                 </div>
               </CardBody>
             </Card>
             <Card>
               <CardBody>
-                <h2 className="mb-1">Tracks</h2>
-                {(auth.doc.role === 'Admin' ||
-                  auth.doc.role === 'Full Access' ||
-                  auth.doc.role === 'Music Library Admin') && (
-                  <Link className="add-track-button" to={`${url}/add`}>
-                    Add Track
-                  </Link>
-                )}
+                <div className="tracks-header mb-1">
+                  <h2>Tracks</h2>
+                  {auth.doc.roles != null &&
+                    (auth.doc.roles.indexOf('Admin') !== -1 ||
+                      auth.doc.roles.indexOf('Full Access') !== -1 ||
+                      auth.doc.roles.indexOf('Music Library Admin') !== -1) && (
+                      <ButtonIcon
+                        icon="plus"
+                        className="tracks-header__add"
+                        to={`${url}/add`}
+                      />
+                    )}
+                </div>
                 {isEmpty(tracks) ? (
                   <LargeText align="left">No Tracks</LargeText>
                 ) : (

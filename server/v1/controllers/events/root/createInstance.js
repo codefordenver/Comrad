@@ -23,8 +23,8 @@ function createInstance(req, res) {
       //Set show_details to an empty object first so it will inherit any updates on the master series
       d1.show_details = {};
       //Add only the new host if available
-      if (req.params.show_details != null) {
-        d1.show_details.host = req.params.show_details.host;
+      if (req.body.show_details != null) {
+        d1.show_details.host = req.body.show_details.host;
       }
     } else {
       d1.traffic_details = {};

@@ -5,13 +5,20 @@ import { SidebarData } from './SidebarData';
 
 class Sidebar extends Component {
   checkRole = allowedRoles => {
-    const { authRole } = this.props;
+    const { authRoles } = this.props;
 
-    if (allowedRoles.indexOf(authRole) === -1) {
+    if (typeof authRoles === 'undefined') {
       return false;
     }
 
-    return true;
+    for (let i = 0; i < allowedRoles.length; i++) {
+      let allowedRole = allowedRoles[i];
+      if (authRoles.indexOf(allowedRole) !== -1) {
+        return true;
+      }
+    }
+
+    return false;
   };
 
   render() {
@@ -34,8 +41,13 @@ class Sidebar extends Component {
                 placement="right"
               >
                 <li className="sidebar__item">
+                  {/* check for ctrl key so that we don't scroll to top if the link is being opened in a new tab */}
                   <Link
-                    onClick={() => window.scrollTo(0, 0)}
+                    onClick={e => {
+                      if (!e.ctrlKey) {
+                        window.scrollTo(0, 0);
+                      }
+                    }}
                     to={url}
                     className="sidebar__link"
                   >

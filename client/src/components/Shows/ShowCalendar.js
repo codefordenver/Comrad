@@ -2,7 +2,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import _ from 'lodash';
-import BigCalendar from 'react-big-calendar';
+import {
+  Calendar as BigCalendar,
+  momentLocalizer,
+  Views,
+} from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 import { setModalVisibility } from '../../redux/modal';
@@ -205,12 +209,15 @@ class Calendar extends Component {
   eventStyleGetter = show => {
     let className = '';
     let showType = getShowType(show);
-    if (showType === 'series') {
-      className = 'event-series';
-    } else if (showType === 'instance') {
-      className = 'event-instance';
-    } else {
-      className = 'event-regular';
+
+    if (process.env.REACT_APP_SHOW_SHOW_TYPES_IN_DIFFERENT_STYLES === 'true') {
+      if (showType === 'series') {
+        className = 'event-series--dev-environment-only-style';
+      } else if (showType === 'instance') {
+        className = 'event-instance--dev-environment-only-style';
+      } else {
+        className = 'event-regular--dev-environment-only-style';
+      }
     }
 
     return {
@@ -220,7 +227,7 @@ class Calendar extends Component {
 
   render() {
     const { date, shows } = this.props;
-    const localizer = BigCalendar.momentLocalizer(moment);
+    const localizer = momentLocalizer(moment);
 
     //if date provided in properties, always have the calendar display that date
     let calendarDateProperty = typeof date == 'undefined' ? {} : { date: date };
@@ -231,7 +238,8 @@ class Calendar extends Component {
           selectable
           localizer={localizer}
           events={this.convertShowsToArray(shows)}
-          defaultView={BigCalendar.Views.WEEK}
+          defaultView={Views.WEEK}
+          views={['week', 'day']}
           defaultDate={new Date()}
           {...calendarDateProperty}
           //onSelectEvent={show => this.onSelectShow(show)}
@@ -242,6 +250,7 @@ class Calendar extends Component {
           onRangeChange={dateRange => this.handleDateChange(dateRange)}
           onNavigate={date => this.handleNavigate(date)}
           eventPropGetter={this.eventStyleGetter}
+          showMultiDayTimes
           components={{
             eventWrapper: this.customEventWrapper,
           }}

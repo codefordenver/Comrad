@@ -134,14 +134,20 @@ class ShowBuilderPage extends Component {
 
   addTrackModalSelectExistingAlbum = form => {
     const { alertActions, library } = this.props;
-    alertActions.hideWithoutChangingDisplayLocation();
-    this.setState({
-      addTrackModalSelectedAlbum:
-        library.doc != null
-          ? library.doc
-          : this.state.addTrackModalSelectedAlbum, // check for this.props.library.doc in case there was an issue with the libraryActions.findOne API call
-      addTrackModalCurrentPage: 'track',
-    });
+    this.setState({ addTrackModalSelectedError: false });
+    if (this.state.addTrackModalSelectedAlbum != null) {
+      alertActions.hideWithoutChangingDisplayLocation();
+      this.setState({
+        addTrackModalSelectedAlbum:
+          library.doc != null
+            ? library.doc
+            : this.state.addTrackModalSelectedAlbum, // check for this.props.library.doc in case there was an issue with the libraryActions.findOne API call
+        addTrackModalCurrentPage: 'track',
+      });
+    } else {
+      this.setState({ addTrackModalSelectedError: true });
+      return false;
+    }
   };
 
   addTrackModalClose = () => {
@@ -421,7 +427,7 @@ class ShowBuilderPage extends Component {
 
   searchLibrary = form => {
     const { libraryActions } = this.props;
-    if (form.q.length === 0) {
+    if (typeof form.q === 'undefined' || form.q.length === 0) {
       libraryActions.clear();
     } else {
       libraryActions.search('track', form.q, null, null, 20);
@@ -493,10 +499,13 @@ class ShowBuilderPage extends Component {
     }
 
     let canEditPlaylist =
-      auth.doc.role === 'Admin' ||
-      auth.doc.role === 'Full Access' ||
-      auth.doc.role === 'Music Library Admin' ||
-      (auth.doc.role === 'DJ' && host != null && host._id === auth.doc._id);
+      auth.doc.roles != null &&
+      (auth.doc.roles.indexOf('Admin') !== -1 ||
+        auth.doc.roles.indexOf('Full Access') !== -1 ||
+        auth.doc.roles.indexOf('Music Library Admin') !== -1 ||
+        (auth.doc.roles.indexOf('DJ') !== -1 &&
+          host != null &&
+          host._id === auth.doc._id));
 
     /* START - Add Track modal variables */
     let maxDiskNumber, maxTrackNumber;
@@ -518,23 +527,27 @@ class ShowBuilderPage extends Component {
               <div>
                 {!showFetching && (
                   <>
-                    {(auth.doc.role === 'Admin' ||
-                      auth.doc.role === 'Full Access' ||
-                      auth.doc.role === 'Music Library Admin') && (
-                      <DropdownHost
-                        key={host != null ? host._id : 'no host'}
-                        host={host}
-                        onHostSelect={this.handleHostSelect}
-                        filterByStatus="Active"
-                      />
-                    )}
-                    {(auth.doc.role !== 'Admin' ||
-                      auth.doc.role !== 'Full Access' ||
-                      auth.doc.role !== 'Music Library Admin') && (
-                      <>
-                        <b>Host:</b> {formattedHostName}
-                      </>
-                    )}
+                    {auth.doc.roles != null &&
+                      (auth.doc.roles.indexOf('Admin') !== -1 ||
+                        auth.doc.roles.indexOf('Full Access') !== -1 ||
+                        auth.doc.roles.indexOf('Music Library Admin') !==
+                          -1) && (
+                        <DropdownHost
+                          key={host != null ? host._id : 'no host'}
+                          host={host}
+                          onHostSelect={this.handleHostSelect}
+                          filterByStatus="Active"
+                        />
+                      )}
+                    {auth.doc.roles != null &&
+                      (auth.doc.roles.indexOf('Admin') === -1 &&
+                        auth.doc.roles.indexOf('Full Access') === -1 &&
+                        auth.doc.roles.indexOf('Music Library Admin') ===
+                          -1) && (
+                        <>
+                          <b>Host:</b> {formattedHostName}
+                        </>
+                      )}
                   </>
                 )}
               </div>
@@ -665,7 +678,6 @@ class ShowBuilderPage extends Component {
                             There were no tracks found matching your search.
                           </em>
                           <br />
-                          <br />
                           <span
                             onClick={this.addTrackModalOpen}
                             className="library-results__add-new-track"
@@ -691,28 +703,45 @@ class ShowBuilderPage extends Component {
             <Modal isOpen={true}>
               <div className="add-track-modal">
                 {addTrackModalCurrentPage === 'album' && (
-                  <div>
-                    <form
-                      onSubmit={handleSubmit(
-                        this.addTrackModalSelectExistingAlbum,
-                      )}
-                    >
-                      <h3>Select an existing album:</h3>
-                      <DropdownLibrary
-                        libraryType="album"
-                        name="existingAlbum"
-                        onLibraryItemSelect={
-                          this.addTrackModalHandleAlbumSelect
+                  <>
+                    <div>
+                      <form
+                        onSubmit={handleSubmit(
+                          this.addTrackModalSelectExistingAlbum,
+                        )}
+                      >
+                        <h3>Select an existing album:</h3>
+                        <DropdownLibrary
+                          libraryType="album"
+                          name="existingAlbum"
+                          onLibraryItemSelect={
+                            this.addTrackModalHandleAlbumSelect
+                          }
+                          className="mb-1"
+                          inputClass={
+                            this.state.addTrackModalSelectedError
+                              ? 'error'
+                              : null
+                          }
+                        />
+                        <Button type="submit">Next</Button>
+                      </form>
+                    </div>
+                    <div>
+                      <h3>Or, create a new album:</h3>
+                      <FormAlbumAdd
+                        submitCallback={this.addTrackModalAddNewAlbum}
+                        additionalButton={
+                          <Button
+                            color="neutral"
+                            onClick={this.addTrackModalClose}
+                          >
+                            Cancel
+                          </Button>
                         }
                       />
-                      <Button type="submit">Next</Button>
-                    </form>
-
-                    <h3>Or, create a new album:</h3>
-                    <FormAlbumAdd
-                      submitCallback={this.addTrackModalAddNewAlbum}
-                    />
-                  </div>
+                    </div>
+                  </>
                 )}
                 {addTrackModalCurrentPage === 'track' && (
                   <div>
@@ -722,12 +751,18 @@ class ShowBuilderPage extends Component {
                       maxTrackNumber={maxTrackNumber}
                       customSubmitButtons={[
                         {
-                          text: 'Save and Add to Scratchpad',
+                          text: 'Add to Scratchpad',
                           callback: this.addTrackModalAddToScratchpad,
                         },
                         {
-                          text: 'Save and Add to Saved Items',
+                          text: 'Add to Saved Items',
                           callback: this.addTrackModalAddToSavedItems,
+                        },
+                        {
+                          color: 'neutral',
+                          callback: this.addTrackModalClose,
+                          text: 'Cancel',
+                          isCancel: true,
                         },
                       ]}
                       albumId={this.state.addTrackModalSelectedAlbum._id}
@@ -738,9 +773,6 @@ class ShowBuilderPage extends Component {
                     />
                   </div>
                 )}
-                <Button color="neutral" onClick={this.addTrackModalClose}>
-                  Close
-                </Button>
               </div>
             </Modal>
           ) : null}

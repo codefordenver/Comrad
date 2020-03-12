@@ -75,10 +75,10 @@ class FormHostAdd extends Component {
           />
 
           <div className="form-host-add__buttons">
+            <Button type="submit">Submit</Button>
             <Button color="neutral" onClick={cancelCallback}>
               Cancel
             </Button>
-            <Button type="submit">Submit</Button>
           </div>
         </form>
       </div>

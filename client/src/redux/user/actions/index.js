@@ -1,6 +1,5 @@
 import { add } from './add';
 import { alertClose } from './alertClose';
-import { clear } from './clear';
 import { clearSearch } from './clearSearch';
 import { createApiKey } from './createApiKey';
 import { create } from './create';
@@ -10,12 +9,12 @@ import { findAll } from './findAll';
 import { findOne } from './findOne';
 import { search } from './search';
 import { searchHosts } from './searchHosts';
+import { update } from './update';
 import { userClear } from './userClear';
 
 export const userActions = {
   add,
   alertClose,
-  clear,
   clearSearch,
   create,
   createApiKey,
@@ -25,5 +24,6 @@ export const userActions = {
   remove,
   search,
   searchHosts,
+  update,
   userClear,
 };

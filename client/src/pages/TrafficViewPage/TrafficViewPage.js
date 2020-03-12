@@ -120,10 +120,14 @@ class TrafficViewPage extends Component {
             </Card>
             <Card>
               <CardBody>
-                <div>{formattedTime}</div>
-                <div>Type: {doc.traffic_details.type}</div>
+                <div className="traffic-view-page__datetime">
+                  {formattedTime}
+                </div>
                 <div>
-                  Description:
+                  <b>Type:</b> {doc.traffic_details.type}
+                </div>
+                <div>
+                  <b>Description:</b>
                   <div
                     dangerouslySetInnerHTML={{
                       __html: doc.traffic_details.description,
@@ -188,12 +192,16 @@ class TrafficViewPage extends Component {
                 )}
 
                 <Button
+                  className="mr-1"
+                  onClick={() => this.setState({ showEditModal: true })}
+                >
+                  Edit
+                </Button>
+                <Button
+                  color="danger"
                   onClick={() => this.setState({ showDeleteModal: true })}
                 >
                   Delete
-                </Button>
-                <Button onClick={() => this.setState({ showEditModal: true })}>
-                  Edit
                 </Button>
               </CardBody>
             </Card>
@@ -201,22 +209,45 @@ class TrafficViewPage extends Component {
         )}
         {this.state.showDeleteModal && (
           <Modal>
-            Delete only this occurrence, or the whole series of traffic events?
-            <Button onClick={this.handleDeleteSeries}>Delete Series</Button>
-            <Button onClick={this.handleDeleteInstance}>Delete Instance</Button>
-            <Button onClick={() => this.setState({ showDeleteModal: false })}>
-              Cancel
-            </Button>
+            <div className="delete-traffic-modal">
+              Delete only this occurrence, or the whole series of traffic
+              events?
+              <div>
+                <Button className="mr-1" onClick={this.handleDeleteSeries}>
+                  Delete Series
+                </Button>
+                <Button className="mr-1" onClick={this.handleDeleteInstance}>
+                  Delete Instance
+                </Button>
+                <Button
+                  color="neutral"
+                  onClick={() => this.setState({ showDeleteModal: false })}
+                >
+                  Cancel
+                </Button>
+              </div>
+            </div>
           </Modal>
         )}
         {this.state.showEditModal && (
           <Modal>
-            Edit only this occurrence, or the whole series of traffic events?
-            <Button onClick={this.handleEditSeries}>Edit Series</Button>
-            <Button onClick={this.handleEditInstance}>Edit Instance</Button>
-            <Button onClick={() => this.setState({ showEditModal: false })}>
-              Cancel
-            </Button>
+            <div className="edit-traffic-modal">
+              Edit only this occurrence, or the whole series of traffic events?
+              <div>
+                <Button className="mr-1" onClick={this.handleEditSeries}>
+                  Edit Series
+                </Button>
+                <Button className="mr-1" onClick={this.handleEditInstance}>
+                  Edit Instance
+                </Button>
+                <Button
+                  color="neutral"
+                  onClick={() => this.setState({ showEditModal: false })}
+                >
+                  Cancel
+                </Button>
+              </div>
+            </div>
           </Modal>
         )}
       </div>

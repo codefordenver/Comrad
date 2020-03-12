@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
+import { InputError } from '../Input';
+
 class Checkbox extends Component {
   static propTypes = {
     /**
@@ -61,15 +63,35 @@ class Checkbox extends Component {
 
   render() {
     let { id } = this.props;
-    const { className, disabled, hover, label, input } = this.props;
+    const {
+      meta = {
+        active: false,
+        dirty: false,
+        error: false,
+        touched: false,
+        submitting: false,
+      } /* default values for when component is not used within React Form */,
+      className,
+      disabled,
+      hover,
+      label,
+      input,
+    } = this.props;
     const { checked } = this.state;
+    const { error, touched } = meta;
 
     if (input != null) {
       id = input.name;
     }
 
     return (
-      <div className={classnames('checkbox', className)}>
+      <div
+        className={classnames(
+          'checkbox',
+          className,
+          touched && error && 'error',
+        )}
+      >
         <input
           {...input}
           checked={checked}
@@ -89,6 +111,7 @@ class Checkbox extends Component {
         >
           {label}
         </label>
+        {touched && error && <InputError>{error}</InputError>}
       </div>
     );
   }

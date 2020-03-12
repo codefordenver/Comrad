@@ -21,9 +21,9 @@ export const config = {
           accessor: 'on_air_name',
         },
         {
-          Header: 'Role',
-          accessor: 'role',
-          Cell: ({ value }) => <span className="">{value}</span>,
+          Header: 'Roles',
+          accessor: 'roles',
+          Cell: ({ value }) => <span className="">{value.join(', ')}</span>,
         },
         {
           Header: 'Status',

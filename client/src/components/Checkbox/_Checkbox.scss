@@ -26,10 +26,12 @@
         transform: rotate(45deg);
       }
     }
+    
   }
 
   &__label {
     font-size: 2rem;
+    line-height: 2rem;
 
     cursor: pointer;
     position: relative;

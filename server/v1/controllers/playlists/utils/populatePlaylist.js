@@ -5,10 +5,6 @@ async function populatePlaylist(docPlaylist) {
   docPlaylist = await db.Playlist.populate(docPlaylist, [
     {
       path: 'scratchpad.track',
-      populate: { path: 'artists' },
-    },
-    {
-      path: 'scratchpad.track',
       populate: { path: 'album' },
     },
     {
@@ -17,6 +13,14 @@ async function populatePlaylist(docPlaylist) {
     },
     {
       path: 'saved_items.traffic',
+    },
+  ]);
+
+  // I am unsure why, but as of 2/26/2020 at least, this query doesn't work if included with the populate statements above
+  docPlaylist = await db.Library.populate(docPlaylist, [
+    {
+      path: 'scratchpad.track.artists',
+      model: 'Library',
     },
   ]);
 

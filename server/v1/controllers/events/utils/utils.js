@@ -58,6 +58,24 @@ function eventList(events, startDate, endDate) {
     }
   });
 
+  //filter out events that do not fall in the start time / end time range
+  //we need to do this because returnDatesArrayByRepeatRule searches for a wider range than the provided date range,
+  //and that's because the RRule library does not properly account for daylight savings time
+  eventsToReturnArray = eventsToReturnArray.filter(function(e) {
+    if (
+      new Date(e.start_time_utc) < new Date(endDate) &&
+      new Date(e.start_time_utc) >= new Date(startDate)
+    ) {
+      return true;
+    } else if (
+      new Date(e.end_time_utc) <= new Date(endDate) &&
+      new Date(e.end_time_utc) > new Date(startDate)
+    ) {
+      return true;
+    }
+    return false;
+  });
+
   //sort the array by event start time
   eventsToReturnArray = eventsToReturnArray.sort(function(a, b) {
     if (new Date(a.start_time_utc) > new Date(b.start_time_utc)) {
@@ -195,46 +213,20 @@ function combineDayAndTime(
 
   let returnedValue = null;
 
-  if (
-    //Both date and time happen at midnight, so need to subtract 1 minute
-    type === 'END' &&
-    desiredTime__hours === 0 &&
-    desiredTime__minutes === 0 &&
-    desiredDate__hours === 0 &&
-    desiredDate__minutes === 0
-  ) {
-    returnedValue = moment(desiredDate)
-      .subtract(1, 'minute')
-      .seconds(0)
-      .utc();
-  } else if (
-    //Only Time is at midnight, so take date and set 1 minute before midnight
-    type === 'END' &&
-    desiredTime__hours === 0 &&
-    desiredTime__minutes === 0
-  ) {
-    returnedValue = moment(desiredDate)
-      .hours(23)
-      .minutes(59)
-      .seconds(0)
-      .utc();
-  } else {
-    //Neither date or time is at midnight, so set hours
-    // the date/time could different, which may mean we have differences between the dates related to DST
-    //get the time difference, in hours
-    let difference = desiredTime__hours - desiredDate__hours;
-    if (difference < -12) {
-      difference = difference + 24;
-    } else if (difference > 12) {
-      difference = difference - 24;
-    }
-    returnedValue = moment(desiredDate)
-      .add(difference, 'hour')
-      .hours(desiredTime__hours)
-      .minutes(desiredTime__minutes)
-      .seconds(0)
-      .utc();
+  // the date/time could different, which may mean we have differences between the dates related to DST
+  //get the time difference, in hours
+  let difference = desiredTime__hours - desiredDate__hours;
+  if (difference < -12) {
+    difference = difference + 24;
+  } else if (difference > 12) {
+    difference = difference - 24;
   }
+  returnedValue = moment(desiredDate)
+    .add(difference, 'hour')
+    .hours(desiredTime__hours)
+    .minutes(desiredTime__minutes)
+    .seconds(0)
+    .utc();
 
   if (format === 'MOMENT') {
     return returnedValue;
@@ -248,7 +240,12 @@ function combineDayAndTime(
 
 function returnSeriesEventsArrayWithNewDates(dateArray, event) {
   const returnedEvents = dateArray.map((date, i) => {
-    let newEvent = { ...event.toObject() };
+    let newEvent;
+    if (typeof event.toObject === 'function') {
+      newEvent = { ...event.toObject() };
+    } else {
+      newEvent = { ...event };
+    }
     let { start_time_utc, end_time_utc } = newEvent;
 
     start_time_utc = combineDayAndTime(date, start_time_utc, 'STRING');

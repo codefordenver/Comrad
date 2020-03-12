@@ -34,7 +34,11 @@ class AlbumEditPage extends Component {
       <div className="album-edit-page">
         <Card>
           <CardBody>
-            <h1>Edit Album</h1>
+            <h1 className="mb-0">Edit Album</h1>
+          </CardBody>
+        </Card>
+        <Card>
+          <CardBody>
             {library.loading && <Loading />}
             {!library.loading && (
               <FormAlbumEdit submitCallback={this.editAlbumCallback} />

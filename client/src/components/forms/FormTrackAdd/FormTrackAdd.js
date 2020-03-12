@@ -155,8 +155,16 @@ class FormTrackAdd extends Component {
             customSubmitButtons.map(btn => (
               <Button
                 key={btn.text}
-                type="submit"
-                onClick={e => this.props.change('customSubmitButton', btn.text)}
+                type={btn.isCancel ? 'button' : 'submit'}
+                onClick={e => {
+                  if (btn.isCancel) {
+                    btn.callback();
+                  } else {
+                    this.props.change('customSubmitButton', btn.text);
+                  }
+                }}
+                className="mr-1"
+                color={btn.color != null ? btn.color : 'primary'}
               >
                 {btn.text}
               </Button>

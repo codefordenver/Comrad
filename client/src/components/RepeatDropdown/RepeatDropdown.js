@@ -5,7 +5,7 @@ import _ from 'lodash';
 import moment from 'moment';
 import RRule from 'rrule';
 import { DatePicker__React } from '../DatePicker';
-import { InputLabel } from '../Input';
+import Select from '../Select';
 import { requiredValidate } from '../../utils/validation';
 
 class RepeatDropdown extends Component {
@@ -100,18 +100,12 @@ class RepeatDropdown extends Component {
 
   render() {
     const { definedRepeatRules, props } = this;
-    const { date, meta } = props;
+    const { date } = props;
     const repeatDropdownList = _.map(definedRepeatRules(date), option => {
       // Dropdown values are using string of JSON instead of object. Inconclusive whether they can be set as object. See https://github.com/codefordenver/Comrad/issues/492
-      return (
-        <option key={option.name} value={JSON.stringify(option)}>
-          {option.name}
-        </option>
-      );
+      return { text: option.name, value: JSON.stringify(option) };
     });
 
-    // TODO Componentize the select component
-    //https://stackoverflow.com/questions/40075281/how-to-create-custom-dropdown-field-component-with-redux-form-v6
     return (
       <>
         <Field
@@ -124,21 +118,14 @@ class RepeatDropdown extends Component {
           controlledDate={date != null ? date : null}
         />
 
-        <div className="form-group">
-          <Field
-            name="repeat_rule_dropdown_value"
-            component="select"
-            className="input"
-            validate={[requiredValidate]}
-          >
-            <option />
-            {repeatDropdownList}
-          </Field>
-
-          <InputLabel {...meta} dirtyOverride={true}>
-            {`Repeat Type`}
-          </InputLabel>
-        </div>
+        <Field
+          name="repeat_rule_dropdown_value"
+          component={Select}
+          label="Repeat Type"
+          validate={[requiredValidate]}
+          selectOptions={repeatDropdownList}
+          hasBlankOption={true}
+        ></Field>
 
         <Field
           className="z-index--150"

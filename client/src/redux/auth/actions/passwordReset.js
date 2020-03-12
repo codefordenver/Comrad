@@ -24,7 +24,10 @@ export const passwordReset = (values, callback) => async dispatch => {
       type: alertTypes.ACTIVE,
       payload: {
         header: 'Error',
-        body: 'Error trying to reset your password',
+        body:
+          err.response.data === 'string'
+            ? err.response.data
+            : 'Unknown error trying to reset password',
         type: 'danger',
       },
     });

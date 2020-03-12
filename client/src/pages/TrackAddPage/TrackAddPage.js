@@ -36,19 +36,24 @@ class TrackAddPage extends Component {
       ({ name, _id, artist } = this.props.library.doc);
     }
     const artistId = artist == null ? null : artist._id;
-    let { maxDiskNumber, maxTrackNumber } = getNextDiskAndTrackNumberForAlbum(
-      this.props.library.doc,
-    );
+    let { maxDiskNumber, maxTrackNumber } =
+      this.props.library.doc != null
+        ? getNextDiskAndTrackNumberForAlbum(this.props.library.doc)
+        : { maxDiskNumber: 1, maxTrackNumber: 1 };
 
     return (
       <div className="track-add-page">
         <Card>
           <CardBody>
             <h1>Add Track to Album</h1>
+            <h2 className="track-add-page__album-name mb-0">Album: {name}</h2>
+          </CardBody>
+        </Card>
+        <Card>
+          <CardBody>
             {!_id && <Loading />}
             {_id && (
               <>
-                <h2 className="track-add-page__album-name">Album: {name}</h2>
                 <FormTrackAdd
                   maxDiskNumber={maxDiskNumber}
                   maxTrackNumber={maxTrackNumber}

@@ -6,13 +6,12 @@ import { authActions } from '../../redux/auth';
 import NavDevelopmentHelperMenuBar from '../NavDevelopmentHelperMenuBar';
 
 import AdminRoutes from '../../routes/AdminRoutes';
-import BuilderRoutes from '../../routes/BuilderRoutes';
 import CalendarRoutes from '../../routes/CalendarRoutes';
 import DashboardRoutes from '../../routes/DashboardRoutes';
 import ErrorRoutes from '../../routes/ErrorRoutes';
 import HomeRoutes from '../../routes/HomeRoutes';
 import LibraryRoutes from '../../routes/LibraryRoutes';
-import ReportRoutes from '../../routes/ReportRoutes';
+import ReportingRoutes from '../../routes/ReportingRoutes';
 import ResourceRoutes from '../../routes/ResourceRoutes';
 import ShowBuilderRoutes from '../../routes/ShowBuilderRoutes';
 import TrafficRoutes from '../../routes/TrafficRoutes';
@@ -35,12 +34,11 @@ class App extends Component {
           )}
           <Switch>
             <Route path="/admin" component={AdminRoutes} />
-            <Route path="/builder" component={BuilderRoutes} />
             <Route path="/calendar" component={CalendarRoutes} />
             <Route path="/dashboard" component={DashboardRoutes} />
             <Route path="/error" component={ErrorRoutes} />
             <Route path="/library" component={LibraryRoutes} />
-            <Route path="/report" component={ReportRoutes} />
+            <Route path="/reporting" component={ReportingRoutes} />
             <Route path="/resource" component={ResourceRoutes} />
             <Route path="/show-builder" component={ShowBuilderRoutes} />
             <Route path="/traffic" component={TrafficRoutes} />

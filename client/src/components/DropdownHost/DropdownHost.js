@@ -110,7 +110,6 @@ class DropdownHost extends Component {
   // close the Add Host modal
   handleFormHostAddCancel = () => {
     this.setState({ showAddHostModal: false });
-    this.props.userAlertClose();
   };
 
   // callback for submitting the Add Host modal
@@ -232,7 +231,7 @@ class DropdownHost extends Component {
 
     items.push({ _id: null, value: 'Clear' });
 
-    if (showAddNewHostOption && authState.doc.role === 'Admin') {
+    if (showAddNewHostOption && authState.doc.roles.indexOf('Admin') !== -1) {
       items.push(ADD_NEW_HOST);
     }
 
@@ -251,7 +250,7 @@ class DropdownHost extends Component {
           highlightedIndex,
           selectedItem,
         }) => (
-          <div key="host-field" className="mb-1 host-field">
+          <div key="host-field" className="mb-1-5 host-field">
             <Input
               className=""
               label="Host"

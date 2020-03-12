@@ -51,6 +51,13 @@ const trafficSchema = new Schema(
 );
 
 trafficSchema.index({ 'traffic_details.title': 'text' }, { background: true });
+trafficSchema.index(
+  { 'repeat_rule.repeat_start_date': 1 },
+  { background: true },
+);
+trafficSchema.index({ 'repeat_rule.repeat_end_date': 1 }, { background: true });
+trafficSchema.index({ start_time_utc: 1 }, { background: true });
+trafficSchema.index({ end_time_utc: 1 }, { background: true });
 
 const Traffic = mongoose.model('Traffic', trafficSchema);
 

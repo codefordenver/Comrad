@@ -1,5 +1,5 @@
 .track-add-page {
-  &__album-name {
-    margin-bottom: 20px;
-  }
+  display: grid;
+  grid-row-gap: 1rem;
+
 }

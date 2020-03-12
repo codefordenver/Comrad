@@ -17,11 +17,14 @@ class DropdownLibrary extends Component {
     const { artist, libraryActions, libraryType } = this.props;
 
     let selectedLibraryItemDisplayName = '';
+    let searching = false;
+    let self = this;
     if (libraryType === 'artist') {
       selectedLibraryItemDisplayName = artist ? artist.name : '';
-
       //run a host search on the existing value so that the host list is populated with information
       if (selectedLibraryItemDisplayName.length > 0) {
+        searching = true;
+
         libraryActions.search(
           libraryType,
           selectedLibraryItemDisplayName,
@@ -29,6 +32,13 @@ class DropdownLibrary extends Component {
           null,
           10,
           true,
+          function() {
+            if (typeof self.state.showSearchingText === 'number') {
+              //it's a timeout
+              clearTimeout(self.state.showSearchingText);
+            }
+            self.setState({ searching: false, showSearchingText: false });
+          },
         );
       }
     }
@@ -43,6 +53,12 @@ class DropdownLibrary extends Component {
         libraryType === 'artist' && artist
           ? { _id: artist._id, name: selectedLibraryItemDisplayName }
           : null,
+      searching: searching,
+      showSearchingText: searching
+        ? setTimeout(function() {
+            self.setState({ showSearchingText: true });
+          }, 2000)
+        : false, //note: there's some duplicated code throughout this related to this timeout, so may want to consolidate when changing
     };
   }
 
@@ -90,11 +106,31 @@ class DropdownLibrary extends Component {
       if (librarySearchTimeout != null) {
         clearTimeout(librarySearchTimeout);
       }
+      let self = this;
       this.setState({
-        librarySearchTimeout: setTimeout(
-          () => libraryActions.search(libraryType, value, null, null, 10, true),
-          150,
-        ),
+        searching: true,
+        librarySearchTimeout: setTimeout(() => {
+          self.setState({
+            showSearchingText: setTimeout(function() {
+              self.setState({ showSearchingText: true });
+            }, 2000),
+          }); //note: there's some duplicated code throughout this related to this timeout, so may want to consolidate when changing
+          libraryActions.search(
+            libraryType,
+            value,
+            null,
+            null,
+            10,
+            true,
+            function() {
+              if (typeof self.state.showSearchingText === 'number') {
+                //it's a timeout
+                clearTimeout(self.state.showSearchingText);
+              }
+              self.setState({ searching: false, showSearchingText: false });
+            },
+          );
+        }, 150),
       });
     }
 
@@ -191,8 +227,26 @@ class DropdownLibrary extends Component {
       props,
       state,
     } = this;
-    const { cachedSearches, currentInputValue, hasFocus } = state;
-    const { autoFocus, className, libraryType } = props;
+    const {
+      cachedSearches,
+      currentInputValue,
+      hasFocus,
+      searching,
+      showSearchingText,
+    } = state;
+    const {
+      autoFocus,
+      className,
+      inputClass = '',
+      libraryType,
+      meta = {
+        active: false,
+        dirty: false,
+        error: false,
+        touched: false,
+        submitting: false,
+      } /* default values for when component is not used within React Form */,
+    } = props;
 
     // get the documents from the cachedResults property rather than Redux,
     // because Redux might not have the search results of the current input value if there
@@ -222,7 +276,7 @@ class DropdownLibrary extends Component {
             className={classnames('library-field', className)}
           >
             <Input
-              className=""
+              inputClassName={inputClass}
               label={libraryTypeCapitalized}
               name="libraryItem"
               type="text"
@@ -235,10 +289,11 @@ class DropdownLibrary extends Component {
               autoFocus={autoFocus}
               dirtyOverride={dirtyOverride(currentInputValue)}
               value={currentInputValue}
+              meta={meta}
             />
 
             {/* Library dropdown */}
-            {hasFocus && docs.length > 0 ? (
+            {hasFocus && docs.length > 0 && (
               <div className="dropdown__list dropdown__list--library-list active">
                 {docs.map((item, index) => (
                   <div
@@ -256,7 +311,27 @@ class DropdownLibrary extends Component {
                   </div>
                 ))}
               </div>
-            ) : null}
+            )}
+            {hasFocus &&
+              docs.length === 0 &&
+              !searching &&
+              currentInputValue.length > 0 && (
+                <div className="dropdown__list dropdown__list--library-list active">
+                  <div className="dropdown__item dropdown__item--no-results">
+                    No Results
+                  </div>
+                </div>
+              )}
+            {hasFocus &&
+              searching &&
+              showSearchingText === true &&
+              currentInputValue.length > 0 && (
+                <div className="dropdown__list dropdown__list--library-list active">
+                  <div className="dropdown__item dropdown__item--no-results">
+                    Searching...
+                  </div>
+                </div>
+              )}
           </div>
         )}
       </Downshift>

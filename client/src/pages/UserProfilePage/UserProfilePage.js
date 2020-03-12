@@ -120,7 +120,7 @@ class UserProfilePage extends Component {
                     <Heading size={5}>Email</Heading>
                     <p>{email}</p>
 
-                    <Heading size={5}>Addres</Heading>
+                    <Heading size={5}>Address</Heading>
                   </CardV2.Body>
                 </CardV2>
 

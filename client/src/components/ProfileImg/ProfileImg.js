@@ -1,7 +1,7 @@
 import React from 'react';
 
 function DefaultImg() {
-  return <i className="fas fa-user-circle" />;
+  return <i className="fas fa-user-circle fa-4x" />;
 }
 
 export function ProfileImg({ profile_img }) {

@@ -101,7 +101,6 @@ class UserProfilePage extends Component {
       last_name,
       on_air_name,
     } = userState.doc;
-
     return (
       <div className="u">
         {userState.loading || isEmpty(userState.doc) ? null : (
@@ -198,14 +197,21 @@ class UserProfilePage extends Component {
 
                           <Row>
                             <Col>
-                              <Button
-                                className="w-100"
-                                color="danger"
-                                onClick={openModal}
-                                disabled={!can_delete}
-                              >
-                                Delete User
-                              </Button>
+                              {can_delete ? (
+                                <Button
+                                  className="w-100"
+                                  color="danger"
+                                  onClick={openModal}
+                                  disabled={!can_delete}
+                                >
+                                  Delete User
+                                </Button>
+                              ) : (
+                                <h3>
+                                  This user cannot be deleted because they are a
+                                  host of a show.
+                                </h3>
+                              )}
                             </Col>
                           </Row>
                         </Col>

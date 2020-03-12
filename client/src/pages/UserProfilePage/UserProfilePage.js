@@ -153,7 +153,7 @@ class UserProfilePage extends Component {
                                 }`,
                               )}
                             >
-                              {api_key.token ? 'TRUE' : 'FALSE'}
+                              {api_key.token ? 'Active' : 'Inactive'}
                             </span>
                           </Heading>
 

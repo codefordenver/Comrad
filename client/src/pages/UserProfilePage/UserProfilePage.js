@@ -139,56 +139,62 @@ class UserProfilePage extends Component {
                     <CardV2.Body>
                       <Heading size={3}>Access and API</Heading>
                       <Row>
-                        <Col>
-                          <Heading className="mb-1" size={5}>
-                            Status
-                            <span
-                              className={classnames(
-                                'user-profile-page__api-key-status',
-                                `user-profile-page__api-key-status--${
-                                  api_key.token ? 'true' : 'false'
-                                }`,
-                              )}
-                            >
-                              {api_key.token ? 'Active' : 'Inactive'}
-                            </span>
-                          </Heading>
-                        </Col>
-                        {/* ======= CAN DELETE ======= */}
-                        <Col>
-                          {can_delete ? (
-                            <Button
-                              className="w-100"
-                              color="danger"
-                              onClick={openModal}
-                              disabled={!can_delete}
-                            >
-                              Delete User
-                            </Button>
-                          ) : (
-                            <p>
-                              This user cannot be deleted because they are a
-                              host of a show.
-                            </p>
-                          )}
-                        </Col>
-                        {/* ======= END CAN DELETE ======= */}
+                        <Heading className="mb-1" align="center" size={5}>
+                          Status
+                          <span
+                            className={classnames(
+                              'user-profile-page__api-key-status',
+                              `user-profile-page__api-key-status--${
+                                api_key.token ? 'true' : 'false'
+                              }`,
+                            )}
+                          >
+                            {api_key.token ? 'Active' : 'Inactive'}
+                          </span>
+                        </Heading>
                       </Row>
+                      {/* ======= CAN DELETE ======= */}
+                      <Row>
+                        {can_delete ? (
+                          <Button
+                            className="w-75"
+                            color="danger"
+                            onClick={openModal}
+                            disabled={!can_delete}
+                          >
+                            Delete User
+                          </Button>
+                        ) : (
+                          <p>
+                            This user cannot be deleted because they are a host
+                            of a show.
+                          </p>
+                        )}
+                      </Row>
+                      {/* ======= END CAN DELETE ======= */}
                       {/* ======= API KEY ======= */}
                       <Row>
-                        <Heading align="center" size={5}>
+                        <Heading
+                          className="user-profile-page__api-key-header"
+                          align="center"
+                          size={5}
+                        >
                           API Key
                         </Heading>
+                      </Row>
+                      <Row>
                         <Button
-                          className="w-100 mb-1"
+                          className="w-75 mb-1"
                           color="primary"
                           onClick={handleApiCreateReset}
                         >
                           {api_key.token ? 'Reset API Key' : 'Create API Key'}
                         </Button>
+                      </Row>
+                      <Row>
                         {api_key.token ? (
                           <Button
-                            className="w-100"
+                            className="w-75"
                             color="danger"
                             onClick={handleApiDelete}
                           >

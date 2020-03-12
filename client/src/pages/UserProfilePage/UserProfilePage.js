@@ -207,10 +207,10 @@ class UserProfilePage extends Component {
                                   Delete User
                                 </Button>
                               ) : (
-                                <h3>
+                                <p>
                                   This user cannot be deleted because they are a
                                   host of a show.
-                                </h3>
+                                </p>
                               )}
                             </Col>
                           </Row>

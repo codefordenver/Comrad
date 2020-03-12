@@ -138,7 +138,7 @@ class UserProfilePage extends Component {
                 authState.doc.roles.indexOf('Admin') !== -1 ? (
                   <CardV2>
                     <CardV2.Body>
-                      <Heading size={3}>Admin</Heading>
+                      <Heading size={3}>Access and API</Heading>
 
                       <Row>
                         {/* ======= API KEY ======= */}

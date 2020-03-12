@@ -138,9 +138,7 @@ class UserProfilePage extends Component {
                   <CardV2>
                     <CardV2.Body>
                       <Heading size={3}>Access and API</Heading>
-
                       <Row>
-                        {/* ======= API KEY ======= */}
                         <Col>
                           <Heading className="mb-1" size={5}>
                             Status
@@ -155,54 +153,50 @@ class UserProfilePage extends Component {
                               {api_key.token ? 'Active' : 'Inactive'}
                             </span>
                           </Heading>
-
-                          <Row>
-                            <Col>
-                              <Button
-                                className="w-100 mb-1"
-                                color="primary"
-                                onClick={handleApiCreateReset}
-                              >
-                                {api_key.token ? 'Reset' : 'Create'}
-                              </Button>
-                              {api_key.token ? (
-                                <Button
-                                  className="w-100"
-                                  color="danger"
-                                  onClick={handleApiDelete}
-                                >
-                                  Delete
-                                </Button>
-                              ) : null}
-                            </Col>
-                          </Row>
                         </Col>
-                        {/* ======= END API KEY ======= */}
-
                         {/* ======= CAN DELETE ======= */}
                         <Col>
-                          <Row>
-                            <Col>
-                              {can_delete ? (
-                                <Button
-                                  className="w-100"
-                                  color="danger"
-                                  onClick={openModal}
-                                  disabled={!can_delete}
-                                >
-                                  Delete User
-                                </Button>
-                              ) : (
-                                <p>
-                                  This user cannot be deleted because they are a
-                                  host of a show.
-                                </p>
-                              )}
-                            </Col>
-                          </Row>
+                          {can_delete ? (
+                            <Button
+                              className="w-100"
+                              color="danger"
+                              onClick={openModal}
+                              disabled={!can_delete}
+                            >
+                              Delete User
+                            </Button>
+                          ) : (
+                            <p>
+                              This user cannot be deleted because they are a
+                              host of a show.
+                            </p>
+                          )}
                         </Col>
                         {/* ======= END CAN DELETE ======= */}
                       </Row>
+                      {/* ======= API KEY ======= */}
+                      <Row>
+                        <Heading align="center" size={5}>
+                          API Key
+                        </Heading>
+                        <Button
+                          className="w-100 mb-1"
+                          color="primary"
+                          onClick={handleApiCreateReset}
+                        >
+                          {api_key.token ? 'Reset API Key' : 'Create API Key'}
+                        </Button>
+                        {api_key.token ? (
+                          <Button
+                            className="w-100"
+                            color="danger"
+                            onClick={handleApiDelete}
+                          >
+                            Delete API Key
+                          </Button>
+                        ) : null}
+                      </Row>
+                      {/* ======= END API KEY ======= */}
                     </CardV2.Body>
                   </CardV2>
                 ) : null}

@@ -6,10 +6,12 @@ import Modal from 'react-modal';
 
 import classnames from 'classnames';
 import { isEmpty } from 'lodash';
+import moment from 'moment';
 
 import { userActions } from '../../redux';
 
 import Button from '../../components/Button';
+import ShowListForUser from '../../components/ShowListForUser';
 import { CardV2, Heading, ProfileImg } from '../../components';
 
 const customStyles = {
@@ -101,6 +103,11 @@ class UserProfilePage extends Component {
       last_name,
       on_air_name,
     } = userState.doc;
+
+    const today = moment();
+    const todayPlus3Months = moment().add('3', 'month');
+    const oneYearAgo = moment().subtract('1', 'year');
+
     return (
       <div className="u">
         {userState.loading || isEmpty(userState.doc) ? null : (
@@ -230,6 +237,22 @@ class UserProfilePage extends Component {
               <Col>
                 <CardV2>
                   <CardV2.Body>3 Section</CardV2.Body>
+                  <p>Upcoming shows</p>
+                  <ShowListForUser
+                    maxItems="3"
+                    startDate={today}
+                    endDate={todayPlus3Months}
+                    noItemsText="You have no upcoming shows in the next three months."
+                  />
+                  <p>Past shows</p>
+                  <ShowListForUser
+                    maxItems="10"
+                    doNotIncludeNowPlaying={true}
+                    sortNewestToOldest={true}
+                    startDate={oneYearAgo}
+                    endDate={today}
+                    noItemsText="You haven't hosted any shows in the past year."
+                  />
                 </CardV2>
               </Col>
             </Row>

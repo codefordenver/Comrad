@@ -181,20 +181,6 @@ class UserProfilePage extends Component {
 
                         {/* ======= CAN DELETE ======= */}
                         <Col>
-                          <Heading className="mb-1" size={5}>
-                            Can Delete
-                            <span
-                              className={classnames(
-                                'user-profile-page__api-key-status',
-                                `user-profile-page__api-key-status--${
-                                  can_delete ? 'true' : 'false'
-                                }`,
-                              )}
-                            >
-                              {can_delete ? 'TRUE' : 'FALSE'}
-                            </span>
-                          </Heading>
-
                           <Row>
                             <Col>
                               {can_delete ? (

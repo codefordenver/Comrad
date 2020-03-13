@@ -41,6 +41,16 @@ class UserSearchPage extends Component {
     return false;
   };
 
+  stopPropagation = event => {
+    event.stopPropagation();
+  };
+
+  handleRowEditClick = data => {
+    const { history, userState } = this.props;
+    const { _id } = data._original;
+    history.push('/user/profile/edit/' + _id);
+  };
+
   columns = [
     {
       Header: 'First Name',
@@ -73,10 +83,10 @@ class UserSearchPage extends Component {
       },
     },
     {
-      Header: 'Edit',
+      Header: '',
       Cell: row => {
         return (
-          <div>
+          <div onClick={this.stopPropagation}>
             <Dropdown
               position="bottom-left"
               type="icon"

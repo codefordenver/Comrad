@@ -3,7 +3,6 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Row, Col } from 'react-grid-system';
 import ReactTable from 'react-table';
-import { config } from './config';
 
 import Dropdown from '../../components/Dropdown';
 import { CardV2, Filter, Form, Heading, InputV2 } from '../../components';
@@ -42,11 +41,66 @@ class UserSearchPage extends Component {
     return false;
   };
 
+  columns = [
+    {
+      Header: 'First Name',
+      accessor: 'first_name', // String-based value accessors!
+    },
+    {
+      Header: 'Last Name',
+      accessor: 'last_name',
+    },
+    {
+      Header: 'Email',
+      accessor: 'email',
+    },
+    {
+      Header: 'On Air Name',
+      accessor: 'on_air_name',
+    },
+    {
+      Header: 'Roles',
+      accessor: 'roles',
+      Cell: ({ value }) => <span className="">{value.join(', ')}</span>,
+    },
+    {
+      Header: 'Status',
+      accessor: 'status',
+      Cell: ({ value }) => {
+        const status = value === 'Active' ? 'active' : 'inactive';
+
+        return <span className={`Table__status ${status}`}>{value}</span>;
+      },
+    },
+    {
+      Header: 'Edit',
+      Cell: row => {
+        return (
+          <div>
+            <Dropdown
+              position="bottom-left"
+              type="icon"
+              faClass="fas fa-ellipsis-h"
+            >
+              <Dropdown.Item
+                handleOnClick={() => this.handleRowEditClick(row.row)}
+              >
+                Edit
+              </Dropdown.Item>
+            </Dropdown>
+          </div>
+        );
+      },
+      minWidth: undefined,
+      className: 'user-search__grid__edit-options',
+    },
+  ];
+
   render() {
     const { handleRowClick, handleSubmit, props, state } = this;
     const { userState } = props;
     const { initialValues } = state;
-    const { table } = config;
+    const { columns } = this;
 
     return (
       <div className="usp">
@@ -123,7 +177,7 @@ class UserSearchPage extends Component {
                   <Col>
                     <ReactTable
                       className="-highlight clickable-rows"
-                      columns={table.search.columns}
+                      columns={columns}
                       data={userState.docs}
                       getTdProps={handleRowClick}
                       loading={userState.loading}

@@ -186,7 +186,7 @@ class UserSearchPage extends Component {
                 <Row>
                   <Col>
                     <ReactTable
-                      className="-highlight clickable-rows"
+                      className="-highlight user-search__grid clickable-rows"
                       columns={columns}
                       data={userState.docs}
                       getTdProps={handleRowClick}

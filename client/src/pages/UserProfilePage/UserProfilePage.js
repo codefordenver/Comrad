@@ -235,16 +235,19 @@ class UserProfilePage extends Component {
                 </CardV2>
               </Col>
               <Col>
-                <CardV2>
-                  <CardV2.Body>3 Section</CardV2.Body>
-                  <p>Upcoming shows</p>
+                <CardV2 className="user-profile-page__past-future-shows">
+                  <h3 className="Heading Heading--3 user-profile-page__shows-headings">
+                    Upcoming Shows
+                  </h3>
                   <ShowListForUser
                     maxItems="3"
                     startDate={today}
                     endDate={todayPlus3Months}
                     noItemsText="You have no upcoming shows in the next three months."
                   />
-                  <p>Past shows</p>
+                  <h3 className="Heading Heading--3 user-profile-page__shows-headings">
+                    Past Shows
+                  </h3>
                   <ShowListForUser
                     maxItems="10"
                     doNotIncludeNowPlaying={true}

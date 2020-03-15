@@ -44,9 +44,6 @@
   }
 
   &--center {
-    /* replaced text-align: center with following style */
-    left: 0;
-    right: 0;
-    margin: auto;
+    text-align: center;
   }
 }

@@ -109,7 +109,7 @@ class UserProfilePage extends Component {
     const oneYearAgo = moment().subtract('1', 'year');
 
     return (
-      <div className="u">
+      <div className="user-profile-page">
         {userState.loading || isEmpty(userState.doc) ? null : (
           <>
             <Row>
@@ -145,7 +145,7 @@ class UserProfilePage extends Component {
                   <CardV2>
                     <CardV2.Body>
                       <Heading size={3}>Access and API</Heading>
-                      <Row>
+                      <div>
                         <Heading className="mb-1" align="center" size={5}>
                           Status
                           <span
@@ -159,9 +159,9 @@ class UserProfilePage extends Component {
                             {api_key.token ? 'Active' : 'Inactive'}
                           </span>
                         </Heading>
-                      </Row>
+                      </div>
                       {/* ======= CAN DELETE ======= */}
-                      <Row>
+                      <div>
                         {can_delete ? (
                           <Button
                             className="w-75"
@@ -177,10 +177,10 @@ class UserProfilePage extends Component {
                             of a show.
                           </p>
                         )}
-                      </Row>
+                      </div>
                       {/* ======= END CAN DELETE ======= */}
                       {/* ======= API KEY ======= */}
-                      <Row>
+                      <div>
                         <Heading
                           className="user-profile-page__api-key-header"
                           align="center"
@@ -188,8 +188,8 @@ class UserProfilePage extends Component {
                         >
                           API Key
                         </Heading>
-                      </Row>
-                      <Row>
+                      </div>
+                      <div className="api-button">
                         <Button
                           className="w-75 mb-1"
                           color="primary"
@@ -197,8 +197,8 @@ class UserProfilePage extends Component {
                         >
                           {api_key.token ? 'Reset API Key' : 'Create API Key'}
                         </Button>
-                      </Row>
-                      <Row>
+                      </div>
+                      <div className="mt-1 api-button">
                         {api_key.token ? (
                           <Button
                             className="w-75"
@@ -208,7 +208,7 @@ class UserProfilePage extends Component {
                             Delete API Key
                           </Button>
                         ) : null}
-                      </Row>
+                      </div>
                       {/* ======= END API KEY ======= */}
                     </CardV2.Body>
                   </CardV2>
@@ -243,9 +243,9 @@ class UserProfilePage extends Component {
                     maxItems="3"
                     startDate={today}
                     endDate={todayPlus3Months}
-                    noItemsText="You have no upcoming shows in the next three months."
+                    noItemsText="This user has no upcoming shows in the next three months."
                   />
-                  <h3 className="Heading Heading--3 user-profile-page__shows-headings">
+                  <h3 className="Heading Heading--3 user-profile-page__shows-headings mt-2">
                     Past Shows
                   </h3>
                   <ShowListForUser
@@ -254,7 +254,7 @@ class UserProfilePage extends Component {
                     sortNewestToOldest={true}
                     startDate={oneYearAgo}
                     endDate={today}
-                    noItemsText="You haven't hosted any shows in the past year."
+                    noItemsText="This user hasn't hosted any shows in the past year."
                   />
                 </CardV2>
               </Col>

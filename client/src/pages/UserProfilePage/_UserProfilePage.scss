@@ -13,10 +13,23 @@
       color: $color-danger;
     }
   }
+  
+  .profile-img {
+    margin-bottom: 1rem;
+    text-align: center;
+    
+    .fas::before {
+      font-size: 10rem;
+    }
+  }
 
   &__api-key-header {
     margin-top: 20px;
     margin-bottom: 10px;
+  }
+  
+  .api-button {
+    text-align: center;
   }
 
   &__past-future-shows {

@@ -6,10 +6,12 @@ import Modal from 'react-modal';
 
 import classnames from 'classnames';
 import { isEmpty } from 'lodash';
+import moment from 'moment';
 
 import { userActions } from '../../redux';
 
 import Button from '../../components/Button';
+import ShowListForUser from '../../components/ShowListForUser';
 import { CardV2, Heading, ProfileImg } from '../../components';
 
 const customStyles = {
@@ -102,8 +104,12 @@ class UserProfilePage extends Component {
       on_air_name,
     } = userState.doc;
 
+    const today = moment();
+    const todayPlus3Months = moment().add('3', 'month');
+    const oneYearAgo = moment().subtract('1', 'year');
+
     return (
-      <div className="u">
+      <div className="user-profile-page">
         {userState.loading || isEmpty(userState.doc) ? null : (
           <>
             <Row>
@@ -120,7 +126,7 @@ class UserProfilePage extends Component {
                     <Heading size={5}>Email</Heading>
                     <p>{email}</p>
 
-                    <Heading size={5}>Addres</Heading>
+                    <Heading size={5}>Address</Heading>
                   </CardV2.Body>
                 </CardV2>
 
@@ -138,79 +144,72 @@ class UserProfilePage extends Component {
                 authState.doc.roles.indexOf('Admin') !== -1 ? (
                   <CardV2>
                     <CardV2.Body>
-                      <Heading size={3}>Admin</Heading>
-
-                      <Row>
-                        {/* ======= API KEY ======= */}
-                        <Col>
-                          <Heading className="mb-1" size={5}>
-                            Status
-                            <span
-                              className={classnames(
-                                'user-profile-page__api-key-status',
-                                `user-profile-page__api-key-status--${
-                                  api_key.token ? 'true' : 'false'
-                                }`,
-                              )}
-                            >
-                              {api_key.token ? 'TRUE' : 'FALSE'}
-                            </span>
-                          </Heading>
-
-                          <Row>
-                            <Col>
-                              <Button
-                                className="w-100 mb-1"
-                                color="primary"
-                                onClick={handleApiCreateReset}
-                              >
-                                {api_key.token ? 'Reset' : 'Create'}
-                              </Button>
-                              {api_key.token ? (
-                                <Button
-                                  className="w-100"
-                                  color="danger"
-                                  onClick={handleApiDelete}
-                                >
-                                  Delete
-                                </Button>
-                              ) : null}
-                            </Col>
-                          </Row>
-                        </Col>
-                        {/* ======= END API KEY ======= */}
-
-                        {/* ======= CAN DELETE ======= */}
-                        <Col>
-                          <Heading className="mb-1" size={5}>
-                            Can Delete
-                            <span
-                              className={classnames(
-                                'user-profile-page__api-key-status',
-                                `user-profile-page__api-key-status--${
-                                  can_delete ? 'true' : 'false'
-                                }`,
-                              )}
-                            >
-                              {can_delete ? 'TRUE' : 'FALSE'}
-                            </span>
-                          </Heading>
-
-                          <Row>
-                            <Col>
-                              <Button
-                                className="w-100"
-                                color="danger"
-                                onClick={openModal}
-                                disabled={!can_delete}
-                              >
-                                Delete User
-                              </Button>
-                            </Col>
-                          </Row>
-                        </Col>
-                        {/* ======= END CAN DELETE ======= */}
-                      </Row>
+                      <Heading size={3}>Access and API</Heading>
+                      <div>
+                        <Heading className="mb-1" align="center" size={5}>
+                          Status
+                          <span
+                            className={classnames(
+                              'user-profile-page__api-key-status',
+                              `user-profile-page__api-key-status--${
+                                api_key.token ? 'true' : 'false'
+                              }`,
+                            )}
+                          >
+                            {api_key.token ? 'Active' : 'Inactive'}
+                          </span>
+                        </Heading>
+                      </div>
+                      {/* ======= CAN DELETE ======= */}
+                      <div>
+                        {can_delete ? (
+                          <Button
+                            className="w-75"
+                            color="danger"
+                            onClick={openModal}
+                            disabled={!can_delete}
+                          >
+                            Delete User
+                          </Button>
+                        ) : (
+                          <p>
+                            This user cannot be deleted because they are a host
+                            of a show.
+                          </p>
+                        )}
+                      </div>
+                      {/* ======= END CAN DELETE ======= */}
+                      {/* ======= API KEY ======= */}
+                      <div>
+                        <Heading
+                          className="user-profile-page__api-key-header"
+                          align="center"
+                          size={5}
+                        >
+                          API Key
+                        </Heading>
+                      </div>
+                      <div className="api-button">
+                        <Button
+                          className="w-75 mb-1"
+                          color="primary"
+                          onClick={handleApiCreateReset}
+                        >
+                          {api_key.token ? 'Reset API Key' : 'Create API Key'}
+                        </Button>
+                      </div>
+                      <div className="mt-1 api-button">
+                        {api_key.token ? (
+                          <Button
+                            className="w-75"
+                            color="danger"
+                            onClick={handleApiDelete}
+                          >
+                            Delete API Key
+                          </Button>
+                        ) : null}
+                      </div>
+                      {/* ======= END API KEY ======= */}
                     </CardV2.Body>
                   </CardV2>
                 ) : null}
@@ -236,8 +235,27 @@ class UserProfilePage extends Component {
                 </CardV2>
               </Col>
               <Col>
-                <CardV2>
-                  <CardV2.Body>3 Section</CardV2.Body>
+                <CardV2 className="user-profile-page__past-future-shows">
+                  <h3 className="Heading Heading--3 user-profile-page__shows-headings">
+                    Upcoming Shows
+                  </h3>
+                  <ShowListForUser
+                    maxItems="3"
+                    startDate={today}
+                    endDate={todayPlus3Months}
+                    noItemsText="This user has no upcoming shows in the next three months."
+                  />
+                  <h3 className="Heading Heading--3 user-profile-page__shows-headings mt-2">
+                    Past Shows
+                  </h3>
+                  <ShowListForUser
+                    maxItems="10"
+                    doNotIncludeNowPlaying={true}
+                    sortNewestToOldest={true}
+                    startDate={oneYearAgo}
+                    endDate={today}
+                    noItemsText="This user hasn't hosted any shows in the past year."
+                  />
                 </CardV2>
               </Col>
             </Row>

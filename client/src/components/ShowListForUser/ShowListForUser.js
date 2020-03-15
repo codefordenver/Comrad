@@ -176,9 +176,10 @@ class ShowListForUser extends Component {
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
   return {
-    currentUserId: state.auth.doc._id,
+    currentUserId:
+      state.user.doc._id != null ? state.user.doc._id : state.auth.doc._id,
   };
 }
 

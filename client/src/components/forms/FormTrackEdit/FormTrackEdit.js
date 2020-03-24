@@ -141,6 +141,9 @@ function mapStateToProps(state) {
     artistIds = artists.map(a => a._id);
     minutes = Math.floor(parseInt(duration_in_seconds) / 60);
     seconds = duration_in_seconds - minutes * 60;
+    if (seconds < 10) {
+      seconds = '0' + String(seconds);
+    }
   }
 
   return {

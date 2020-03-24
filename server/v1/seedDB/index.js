@@ -39,6 +39,7 @@ async function seedDB() {
         artists: 0,
         albums: 0,
         tracks: 0,
+        resources: 0,
         showHosts: 0,
         shows: 0,
         traffic: 0,
@@ -52,6 +53,18 @@ async function seedDB() {
       await mongoose.connection.dropDatabase();
 
       scriptProgress.droppedDatabase = 1;
+      updateProgressFile(scriptProgress);
+    }
+
+    // Resources
+    if (!scriptProgress.resources) {
+      console.log('seeding resources...');
+      await Promise.all(
+        seed.resources.map(
+          async resource => await db.Resource.create(resource),
+        ),
+      );
+      scriptProgress.resources = 1;
       updateProgressFile(scriptProgress);
     }
 

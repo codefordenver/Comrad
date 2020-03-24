@@ -56,7 +56,6 @@ class FormTrafficAdd extends Component {
             type="time"
             validate={[requiredValidate]}
             dateFormat="MM/dd/yyyy h:mm aa"
-            showTimeInput
           />
 
           <Field

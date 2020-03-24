@@ -7,11 +7,24 @@
       display: flex;
       flex-direction: row;
       align-items: center;
+      
+      /* hide spinner arrows, since those can be hard to use */
+      input[type=number] { /* Firefox */
+        -moz-appearance: textfield;
+      }
+      input::-webkit-outer-spin-button,
+      input::-webkit-inner-spin-button { /* Chrome, Safari, Edge, Opera */
+        -webkit-appearance: none;
+        margin: 0;
+      }
   
     }
   
+    .minutes input { 
+      text-align: right;
+    }
     .minutes, .seconds {
-      width: 75px;
+      width: 5rem;
     }
   
     .duration-label, .duration-colon {

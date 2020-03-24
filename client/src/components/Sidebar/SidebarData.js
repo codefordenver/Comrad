@@ -32,7 +32,7 @@ export const SidebarData = [
   },
   {
     name: 'copy',
-    url: '/resource',
+    url: '/resources',
     iconClass: 'fas fa-copy',
     tooltipText: 'Resources',
   },

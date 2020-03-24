@@ -31,5 +31,11 @@ module.exports = {
     ],
   },
   queryPageSize: 100,
+  resourcesCategories: [
+    'Announcements',
+    'Policies',
+    'Fund Drives',
+    'Other Important Documents',
+  ],
   stationTimeZone: 'America/Denver', // all events will be adjusted to this time zone (for Daylight Savings Time adjustments), should be in a proper format for the Luxon package
 };

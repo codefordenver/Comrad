@@ -146,19 +146,19 @@ class UserProfilePage extends Component {
                     <CardV2.Body>
                       <Heading size={3}>Access and API</Heading>
                       <div>
-                        <Heading className="mb-1" align="center" size={5}>
+                        <Heading className="mb-1" size={5}>
                           Status
-                          <span
-                            className={classnames(
-                              'user-profile-page__api-key-status',
-                              `user-profile-page__api-key-status--${
-                                api_key.token ? 'true' : 'false'
-                              }`,
-                            )}
-                          >
-                            {api_key.token ? 'Active' : 'Inactive'}
-                          </span>
                         </Heading>
+                        <p
+                          className={classnames(
+                            'user-profile-page__status',
+                            `user-profile-page__status--${
+                              api_key.token ? 'true' : 'false'
+                            }`,
+                          )}
+                        >
+                          {api_key.token ? 'Active' : 'Inactive'}
+                        </p>
                       </div>
                       {/* ======= CAN DELETE ======= */}
                       <div>
@@ -268,29 +268,21 @@ class UserProfilePage extends Component {
               style={customStyles}
               contentLabel="Example Modal"
             >
-              <Row>
-                <Col>
-                  <Heading align="center" className="mb-1" size={2}>
-                    Are You Sure?
-                  </Heading>
-                </Col>
-              </Row>
-              <Row>
-                <Col>
-                  <Button
-                    className="w-100"
-                    color="primary"
-                    onClick={handleUserDelete}
-                  >
+              <div className="confirm-user-delete-modal">
+                <div className="mb-1">
+                  Are You Sure you want to delete{' '}
+                  <i>{(first_name + ' ' + last_name).trim()}</i>?
+                </div>
+                <div>
+                  <Button color="primary" onClick={handleUserDelete}>
                     Yes
                   </Button>
-                </Col>
-                <Col>
-                  <Button className="w-100" color="danger" onClick={closeModal}>
-                    Cancel
+
+                  <Button className="ml-1" color="neutral" onClick={closeModal}>
+                    No
                   </Button>
-                </Col>
-              </Row>
+                </div>
+              </div>
             </Modal>
             {/* ======= END MODAL ======= */}
           </>

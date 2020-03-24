@@ -28,17 +28,16 @@ class ShowDetailsTop extends Component {
           type="time"
           validate={[requiredValidate]}
           dateFormat="MM/dd/yyyy h:mm aa"
-          showTimeInput
         />
 
         <Field
           className="z-index--250"
           component={DatePicker__React}
           label="To"
+          type="time"
           name="end_time_utc"
           validate={[requiredValidate]}
           dateFormat="MM/dd/yyyy h:mm aa"
-          showTimeInput
         />
 
         {allowRepeatSelect && (

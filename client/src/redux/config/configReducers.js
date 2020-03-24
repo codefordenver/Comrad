@@ -3,6 +3,7 @@ import { configTypes } from './configTypes';
 const initialState = {
   customFields: {},
   inComplianceReportingPeriod: null,
+  resourcesCategories: null,
 };
 
 export const configReducer = (state = initialState, { type, payload }) => {
@@ -20,6 +21,12 @@ export const configReducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         inComplianceReportingPeriod: payload,
+      };
+
+    case configTypes.RESOURCES_CATEGORIES:
+      return {
+        ...state,
+        resourcesCategories: payload,
       };
 
     default:

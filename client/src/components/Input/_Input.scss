@@ -30,6 +30,10 @@
   z-index: 1;
 
   transition: outline 0.2s border 0.2s;
+  
+  &[type=number] {
+    padding: 0.8rem 1rem;
+  }
 
   &:focus {
     outline: none;

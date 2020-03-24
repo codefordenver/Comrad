@@ -38,6 +38,7 @@ class DatePicker__React extends Component {
       label,
       meta,
       controlledDate,
+      type,
       ...rest
     } = props;
     let { date } = state;
@@ -46,16 +47,31 @@ class DatePicker__React extends Component {
       date = new Date(controlledDate);
     }
 
+    console.log(rest);
+
     return (
       <div className={classnames('form-group', className)}>
-        <DatePicker
-          id={`${name}_picker`}
-          className="input"
-          selected={date}
-          onChange={handleDateChange}
-          timeInputLabel={`${label}:`}
-          {...rest}
-        />
+        {type === 'time' ? (
+          <DatePicker
+            id={`${name}_picker`}
+            className="input"
+            selected={date}
+            onChange={handleDateChange}
+            showTimeSelect
+            timeFormat="h:mmaa"
+            timeIntervals={15}
+            timeCaption="Time"
+            {...rest}
+          />
+        ) : (
+          <DatePicker
+            id={`${name}_picker`}
+            className="input"
+            selected={date}
+            onChange={handleDateChange}
+            {...rest}
+          />
+        )}
 
         <InputLabel {...meta} dirtyOverride>
           {label}

@@ -46,7 +46,7 @@ class UserSearchPage extends Component {
   };
 
   handleRowEditClick = data => {
-    const { history, userState } = this.props;
+    const { history } = this.props;
     const { _id } = data._original;
     history.push('/user/profile/edit/' + _id);
   };

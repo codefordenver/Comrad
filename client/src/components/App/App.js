@@ -12,7 +12,7 @@ import ErrorRoutes from '../../routes/ErrorRoutes';
 import HomeRoutes from '../../routes/HomeRoutes';
 import LibraryRoutes from '../../routes/LibraryRoutes';
 import ReportingRoutes from '../../routes/ReportingRoutes';
-import ResourceRoutes from '../../routes/ResourceRoutes';
+import ResourcesRoutes from '../../routes/ResourcesRoutes';
 import ShowBuilderRoutes from '../../routes/ShowBuilderRoutes';
 import TrafficRoutes from '../../routes/TrafficRoutes';
 import UserRoutes from '../../routes/UserRoutes';
@@ -39,7 +39,7 @@ class App extends Component {
             <Route path="/error" component={ErrorRoutes} />
             <Route path="/library" component={LibraryRoutes} />
             <Route path="/reporting" component={ReportingRoutes} />
-            <Route path="/resource" component={ResourceRoutes} />
+            <Route path="/resources" component={ResourcesRoutes} />
             <Route path="/show-builder" component={ShowBuilderRoutes} />
             <Route path="/traffic" component={TrafficRoutes} />
             <Route path="/user" component={UserRoutes} />

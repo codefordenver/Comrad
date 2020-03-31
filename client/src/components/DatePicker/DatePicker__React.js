@@ -5,6 +5,7 @@ import moment from 'moment';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
+import { InputError } from '../Input';
 import { InputLabel } from '../Input';
 
 class DatePicker__React extends Component {
@@ -36,25 +37,30 @@ class DatePicker__React extends Component {
       className,
       input: { name },
       label,
-      meta,
+      meta = {
+        active: false,
+        dirty: false,
+        error: false,
+        touched: false,
+        submitting: false,
+      } /* default values for when component is not used within React Form */,
       controlledDate,
       type,
       ...rest
     } = props;
+    let { touched, error } = meta;
     let { date } = state;
 
     if (controlledDate && moment(controlledDate).isValid()) {
       date = new Date(controlledDate);
     }
 
-    console.log(rest);
-
     return (
       <div className={classnames('form-group', className)}>
         {type === 'time' ? (
           <DatePicker
             id={`${name}_picker`}
-            className="input"
+            className={classnames('input', touched && error && 'error')}
             selected={date}
             onChange={handleDateChange}
             showTimeSelect
@@ -66,7 +72,7 @@ class DatePicker__React extends Component {
         ) : (
           <DatePicker
             id={`${name}_picker`}
-            className="input"
+            className={classnames('input', touched && error && 'error')}
             selected={date}
             onChange={handleDateChange}
             {...rest}
@@ -76,6 +82,7 @@ class DatePicker__React extends Component {
         <InputLabel {...meta} dirtyOverride>
           {label}
         </InputLabel>
+        {touched && error && <InputError>{error}</InputError>}
       </div>
     );
   }

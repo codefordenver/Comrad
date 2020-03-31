@@ -3,7 +3,12 @@ import { Route } from 'react-router-dom';
 
 import MainLayout from '../../layouts/MainLayout';
 
-import ReportingHomePage from '../../pages/ReportingHomePage';
+import ReportingLayout from '../../layouts/ReportingLayout';
+
+import ReportingSoundExchangePage from '../../pages/ReportingSoundExchangePage';
+import ReportingChartingPage from '../../pages/ReportingChartingPage';
+import ReportingGiveawayWinnersPage from '../../pages/ReportingGiveawayWinnersPage';
+import ReportingUnderwritingPage from '../../pages/ReportingUnderwritingPage';
 
 class ReportRoutes extends Component {
   render() {
@@ -11,7 +16,28 @@ class ReportRoutes extends Component {
 
     return (
       <MainLayout>
-        <Route exact path={`${url}/`} component={ReportingHomePage} />
+        <ReportingLayout>
+          <Route
+            exact
+            path={`${url}/`}
+            component={ReportingSoundExchangePage}
+          />
+          <Route
+            exact
+            path={`${url}/charting`}
+            component={ReportingChartingPage}
+          />
+          <Route
+            exact
+            path={`${url}/giveaway-winners`}
+            component={ReportingGiveawayWinnersPage}
+          />
+          <Route
+            exact
+            path={`${url}/underwriting`}
+            component={ReportingUnderwritingPage}
+          />
+        </ReportingLayout>
       </MainLayout>
     );
   }

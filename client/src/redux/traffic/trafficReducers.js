@@ -4,6 +4,7 @@ const initialState = {
   doc: null,
   docs: [],
   docsForDropdown: [],
+  earliest: null,
   loading: false,
   loadingSearch: false,
   searchString: null,
@@ -13,6 +14,12 @@ export const trafficReducer = (state = initialState, { type, payload }) => {
   switch (type) {
     case trafficTypes.CLEAR:
       return initialState;
+    case trafficTypes.EARLIEST:
+      return {
+        ...state,
+        earliest: payload,
+        loading: false,
+      };
     case trafficTypes.FIND:
       return {
         ...state,

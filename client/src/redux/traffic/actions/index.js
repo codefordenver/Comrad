@@ -4,6 +4,7 @@ import { createInstance } from './createInstance';
 import { deleteInstance } from './deleteInstance';
 import { deleteSeries } from './deleteSeries';
 import { find } from './find';
+import { findEarliest } from './findEarliest';
 import { findById } from './findById';
 import { search } from './search';
 import { updateInstance } from './updateInstance';
@@ -17,6 +18,7 @@ export const trafficActions = {
   deleteSeries,
   find,
   findById,
+  findEarliest,
   search,
   updateInstance,
   updateSeries,

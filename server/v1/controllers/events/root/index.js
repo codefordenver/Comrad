@@ -5,6 +5,7 @@ const findById = require('./findById');
 const findEarliest = require('./findEarliest');
 const remove = require('./remove');
 const search = require('./search');
+const searchUnderwriters = require('./searchUnderwriters');
 const update = require('./update');
 
 module.exports = {
@@ -14,6 +15,7 @@ module.exports = {
   create,
   createInstance,
   search,
+  searchUnderwriters,
   update,
   remove,
 };

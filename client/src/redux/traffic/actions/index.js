@@ -7,6 +7,7 @@ import { find } from './find';
 import { findEarliest } from './findEarliest';
 import { findById } from './findById';
 import { search } from './search';
+import { searchUnderwriters } from './searchUnderwriters';
 import { updateInstance } from './updateInstance';
 import { updateSeries } from './updateSeries';
 
@@ -20,6 +21,7 @@ export const trafficActions = {
   findById,
   findEarliest,
   search,
+  searchUnderwriters,
   updateInstance,
   updateSeries,
 };

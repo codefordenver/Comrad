@@ -38,10 +38,17 @@ export const SidebarData = [
   },
   {
     name: 'report',
-    url: '/reporting',
+    url: '/reporting/sound-exchange',
     iconClass: 'fas fa-chart-bar',
     tooltipText: 'Reporting',
-    allowedRoles: ['Admin', 'Underwriting', 'Full Access'],
+    allowedRoles: ['Admin', 'Full Access'],
+  },
+  {
+    name: 'report',
+    url: '/reporting/giveaway-winners',
+    iconClass: 'fas fa-chart-bar',
+    tooltipText: 'Reporting',
+    allowedRoles: ['Underwriting'],
   },
   {
     name: 'user',

@@ -91,7 +91,7 @@ function requireAC(resource, action) {
           let filter = findEventQueryByDateRange(
             playlist.start_time_utc,
             playlist.end_time_utc,
-          )[0];
+          );
           let shows = await db.Show.find(filter);
           let showResults = eventList(
             shows,

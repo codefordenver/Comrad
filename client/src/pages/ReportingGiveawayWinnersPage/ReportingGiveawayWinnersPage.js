@@ -17,9 +17,13 @@ class ReportingGiveawayWinnersPage extends Component {
     window.location.href =
       process.env.REACT_APP_API_SERVER_URL +
       'reporting/giveaways?from=' +
-      encodeURIComponent(values.from) +
+      encodeURIComponent(moment(values.from).toISOString()) +
       '&to=' +
-      encodeURIComponent(values.to);
+      encodeURIComponent(
+        moment(values.to)
+          .add(1, 'day')
+          .toISOString(),
+      );
   };
 
   componentDidMount = () => {

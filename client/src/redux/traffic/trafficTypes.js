@@ -6,4 +6,5 @@ export const trafficTypes = {
   LOAD: 'traffic_load',
   LOADING_SEARCH: 'traffic_loading_search',
   SEARCH: 'traffic_search',
+  SEARCH_UNDERWRITERS: 'traffic_search_underwriters',
 };

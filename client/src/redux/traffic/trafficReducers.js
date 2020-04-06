@@ -8,6 +8,8 @@ const initialState = {
   loading: false,
   loadingSearch: false,
   searchString: null,
+  underwriterSearchDocs: [],
+  underwriterSearchString: null,
 };
 
 export const trafficReducer = (state = initialState, { type, payload }) => {
@@ -48,6 +50,13 @@ export const trafficReducer = (state = initialState, { type, payload }) => {
         loadingSearch: false,
         docsForDropdown: payload.docs,
         searchString: payload.searchString,
+      };
+    case trafficTypes.SEARCH_UNDERWRITERS:
+      return {
+        ...state,
+        loadingSearch: false,
+        underwriterSearchDocs: payload.docs,
+        underwriterSearchString: payload.searchString,
       };
     default:
       return state;

@@ -19,7 +19,7 @@ class ReportRoutes extends Component {
         <ReportingLayout>
           <Route
             exact
-            path={`${url}/`}
+            path={`${url}/sound-exchange`}
             component={ReportingSoundExchangePage}
           />
           <Route

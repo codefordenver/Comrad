@@ -21,6 +21,10 @@ router
   .get(requireAC(null, 'readAny'), eventRootController.search);
 
 router
+  .route('/:eventType/search-underwriters')
+  .get(requireAC(null, 'readAny'), eventRootController.searchUnderwriters);
+
+router
   .route('/:eventType/:id')
   .get(requireAC(null, 'readAny'), eventRootController.findById)
   .delete(requireAC(null, 'deleteAny'), eventRootController.remove)

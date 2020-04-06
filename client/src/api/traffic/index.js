@@ -6,6 +6,7 @@ import { find } from './find';
 import { findById } from './findById';
 import { findEarliest } from './findEarliest';
 import { search } from './search';
+import { searchUnderwriters } from './searchUnderwriters';
 import { updateInstance } from './updateInstance';
 import { updateSeries } from './updateSeries';
 
@@ -18,6 +19,7 @@ export const trafficAPI = {
   findById,
   findEarliest,
   search,
+  searchUnderwriters,
   updateInstance,
   updateSeries,
 };

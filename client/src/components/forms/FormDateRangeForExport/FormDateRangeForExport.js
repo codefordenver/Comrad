@@ -6,6 +6,7 @@ import { requiredValidate } from '../../../utils/validation';
 
 import Button from '../../Button';
 import { DatePicker__React } from '../../DatePicker';
+import DropdownUnderwriter from '../../DropdownUnderwriter';
 
 class FormDateRangeForExport extends Component {
   submit = values => {
@@ -21,6 +22,7 @@ class FormDateRangeForExport extends Component {
       handleSubmit,
       requireFromDate = true,
       requireToDate = true,
+      withUnderwriterName = false,
     } = this.props;
 
     return (
@@ -44,6 +46,14 @@ class FormDateRangeForExport extends Component {
           validate={requireToDate ? requiredValidate : null}
           dateFormat="MM/dd/yyyy"
         />
+        {withUnderwriterName && (
+          <Field
+            component={DropdownUnderwriter}
+            className="mb-1-5"
+            label="Underwriter Nmae"
+            name="underwriter"
+          />
+        )}
         <div>
           <Button type="submit">Submit</Button>
         </div>

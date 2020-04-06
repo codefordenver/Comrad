@@ -22,40 +22,38 @@ function formatShow(data, res = null) {
 }
 
 function findEventQueryByDateRange(start, end) {
-  return [
-    {
-      $or: [
-        {
-          $and: [
-            {
-              'repeat_rule.repeat_start_date': {
-                $lte: new Date(end),
-              },
+  return {
+    $or: [
+      {
+        $and: [
+          {
+            'repeat_rule.repeat_start_date': {
+              $lte: new Date(end),
             },
-            {
-              'repeat_rule.repeat_end_date': {
-                $gte: new Date(start),
-              },
+          },
+          {
+            'repeat_rule.repeat_end_date': {
+              $gte: new Date(start),
             },
-          ],
-        },
-        {
-          $and: [
-            {
-              start_time_utc: {
-                $lte: new Date(end),
-              },
+          },
+        ],
+      },
+      {
+        $and: [
+          {
+            start_time_utc: {
+              $lte: new Date(end),
             },
-            {
-              end_time_utc: {
-                $gt: new Date(start), //use $gt so we do not get events that start at the exact endDate time
-              },
+          },
+          {
+            end_time_utc: {
+              $gt: new Date(start), //use $gt so we do not get events that start at the exact endDate time
             },
-          ],
-        },
-      ],
-    },
-  ];
+          },
+        ],
+      },
+    ],
+  };
 }
 
 function populateShowHost() {

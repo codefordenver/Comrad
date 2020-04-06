@@ -13,8 +13,16 @@ router
   .post(requireAC(null, 'createAny'), eventRootController.create);
 
 router
+  .route('/:eventType/earliest')
+  .get(requireAC(null, 'readAny'), eventRootController.findEarliest);
+
+router
   .route('/:eventType/search')
   .get(requireAC(null, 'readAny'), eventRootController.search);
+
+router
+  .route('/:eventType/search-underwriters')
+  .get(requireAC(null, 'readAny'), eventRootController.searchUnderwriters);
 
 router
   .route('/:eventType/:id')

@@ -50,7 +50,13 @@ const trafficSchema = new Schema(
   { collection: 'traffic' },
 );
 
-trafficSchema.index({ 'traffic_details.title': 'text' }, { background: true });
+trafficSchema.index(
+  {
+    'traffic_details.title': 'text',
+    'traffic_details.underwriter_name': 'text',
+  },
+  { background: true },
+);
 trafficSchema.index(
   { 'repeat_rule.repeat_start_date': 1 },
   { background: true },

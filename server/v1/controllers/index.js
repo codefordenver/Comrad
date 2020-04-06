@@ -5,6 +5,7 @@ const configController = require('./config');
 const genresController = require('./genres');
 const libraryController = require('./library');
 const playlistsController = require('./playlists');
+const reportingController = require('./reporting');
 const resourcesController = require('./resources');
 const eventRootController = require('./events/root');
 const eventInstanceController = require('./events/instance');
@@ -19,6 +20,7 @@ module.exports = {
   genresController,
   libraryController,
   playlistsController,
+  reportingController,
   resourcesController,
   eventRootController,
   eventInstanceController,

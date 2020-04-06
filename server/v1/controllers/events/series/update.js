@@ -84,8 +84,8 @@ async function update(req, res) {
   //if date/time was changed, update the times of all instances that occur in the future
   if (
     oldSeries != null &&
-    (oldSeries.start_time_utc != updateSeries.start_time_utc ||
-      oldSeries.end_time_utc != updateSeries.end_time_utc)
+    (oldSeries.start_time_utc !== updateSeries.start_time_utc ||
+      oldSeries.end_time_utc !== updateSeries.end_time_utc)
   ) {
     // get the offset that the event has changed, adjusting for a day at a time so that we get the time for the current day
 
@@ -162,7 +162,7 @@ async function update(req, res) {
   if (startDate && endDate) {
     let filter = {
       $and: [
-        findEventQueryByDateRange(startDate, endDate)[0],
+        findEventQueryByDateRange(startDate, endDate),
         {
           $or: [{ _id: id }, { master_event_id: id }],
         },

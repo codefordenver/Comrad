@@ -1,10 +1,5 @@
 const {
-  utils: { getModelForEventType, eventList },
-  utils__mongoose: {
-    findEventQueryByDateRange,
-    populateShowHost,
-    populateMasterEvent,
-  },
+  utils: { getModelForEventType },
 } = require('../utils');
 
 // searches the series titles

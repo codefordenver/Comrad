@@ -4,15 +4,24 @@ const initialState = {
   doc: null,
   docs: [],
   docsForDropdown: [],
+  earliest: null,
   loading: false,
   loadingSearch: false,
   searchString: null,
+  underwriterSearchDocs: [],
+  underwriterSearchString: null,
 };
 
 export const trafficReducer = (state = initialState, { type, payload }) => {
   switch (type) {
     case trafficTypes.CLEAR:
       return initialState;
+    case trafficTypes.EARLIEST:
+      return {
+        ...state,
+        earliest: payload,
+        loading: false,
+      };
     case trafficTypes.FIND:
       return {
         ...state,
@@ -41,6 +50,13 @@ export const trafficReducer = (state = initialState, { type, payload }) => {
         loadingSearch: false,
         docsForDropdown: payload.docs,
         searchString: payload.searchString,
+      };
+    case trafficTypes.SEARCH_UNDERWRITERS:
+      return {
+        ...state,
+        loadingSearch: false,
+        underwriterSearchDocs: payload.docs,
+        underwriterSearchString: payload.searchString,
       };
     default:
       return state;

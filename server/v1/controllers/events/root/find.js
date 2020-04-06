@@ -33,11 +33,9 @@ function find(req, res) {
   endDate = JSON.parse(endDate);
 
   //This date filter allows the same endpoint to be used to find all shows or return a subset if both startDate and endDate are provided.
-  const showDateFilter = findEventQueryByDateRange(startDate, endDate);
+  let filter = findEventQueryByDateRange(startDate, endDate);
 
   let promiseChain = []; // an array of promises that we will run before the main show query (in case we need to gather addt'l data for filters)
-
-  let filter = showDateFilter[0];
 
   if (host != null) {
     //only query shows where any instance or the series has the provided host
@@ -92,12 +90,13 @@ function find(req, res) {
         if (host != null) {
           showResults = showResults.filter(function(val) {
             return (
-              val.show_details.host != null && val.show_details.host._id == host
+              val.show_details.host != null &&
+              val.show_details.host._id === host
             );
           });
         }
 
-        if (showsWithNoHost == 'true') {
+        if (showsWithNoHost === 'true') {
           showResults = showResults.filter(function(val) {
             return val.show_details.host == null;
           });
@@ -108,7 +107,6 @@ function find(req, res) {
 
       if (filterByTrafficType != null) {
         //only query traffic with a type in the list provided by filterByTrafficType
-        let matchingTrafficTypeIds = [];
 
         return dbModel
           .aggregate([

@@ -20,7 +20,7 @@ class ReportingUnderwritingPage extends Component {
       encodeURIComponent(moment(values.from).toISOString()) +
       '&to=' +
       encodeURIComponent(moment(values.to).toISOString());
-    if (typeof values.underwriter != null) {
+    if (values.underwriter != null) {
       url += '&underwriter=' + encodeURIComponent(values.underwriter);
     }
     window.location.href = url;
@@ -53,6 +53,7 @@ class ReportingUnderwritingPage extends Component {
         {!loading && (
           <>
             <FormDateRangeForExport
+              key="form-underwriting"
               submitCallback={this.handleSubmit}
               initialValues={{
                 from:

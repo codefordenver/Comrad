@@ -54,6 +54,7 @@ class ReportingGiveawayWinnersPage extends Component {
           <>
             <h4>Filter by Scheduled Date/Time for Giveaway</h4>
             <FormDateRangeForExport
+              key="form-giveaway-winners"
               submitCallback={this.handleSubmit}
               initialValues={{
                 from:

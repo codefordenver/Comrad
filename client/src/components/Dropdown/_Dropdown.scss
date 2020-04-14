@@ -2,6 +2,7 @@
   display: inline-block;
   position: relative;
   width: max-content;
+  text-align: left;
 
   &__button {
     display: flex;
@@ -77,6 +78,11 @@
     &:hover,
     &.selected {
       background-color: $color-grey-1;
+    }
+    
+    &--no-results {
+      color: $color-grey-4;
+      font-style: italic;
     }
   }
 

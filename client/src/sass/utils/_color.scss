@@ -7,7 +7,7 @@
 }
 
 .primary {
-  color: #007283;
+  color: $color-primary;
 }
 
 .secondary {
@@ -15,7 +15,7 @@
 }
 
 .dark-grey {
-  color: #555759;
+  color: $color-grey-4;
 }
 
 .white {
@@ -32,7 +32,7 @@
   color: #a4a9ad;
 }
 .grey-4 {
-  color: #555759;
+  color: $color-grey-4;
 }
 
 /* ------------------------------------------
@@ -40,7 +40,7 @@
 ------------------------------------------ */
 
 .background-color-primary {
-  background-color: #007283;
+  background-color: $color-primary;
 }
 
 .background-color-secondary {
@@ -48,7 +48,7 @@
 }
 
 .background-color-dark-grey {
-  background-color: #555759;
+  background-color: $color-grey-4;
 }
 
 .background-color-white {

@@ -24,7 +24,9 @@ class HomeLayout extends Component {
             <img className="home-layout__kgnu" src={kgnuLogo} alt="KGNU" />
           </div>
           <div className="home-layout__children">
-            {alertState.active && <Alert {...this.props} />}
+            {alertState.active && alertState.displayAt === 'main' && (
+              <Alert {...this.props} />
+            )}
             {children}
           </div>
         </section>

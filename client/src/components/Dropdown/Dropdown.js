@@ -10,10 +10,12 @@ const DROPDOWN_TYPE = {
       <i className="fas fa-plus" />
     </div>
   ),
-  icon: ({ src }) => (
+  icon: ({ src, faClass }) => (
     <div className="dropdown__icon">
       {src ? (
         <img alt="profile=" className="dropdown__img" src={src} />
+      ) : faClass ? (
+        <i className={faClass} />
       ) : (
         <i className="fas fa-user" />
       )}
@@ -89,6 +91,11 @@ class Dropdown extends Component {
     } else {
       removeClickListener();
     }
+  }
+
+  componentWillUnmount() {
+    const { removeClickListener } = this;
+    removeClickListener();
   }
 
   handleOnClick = e => {

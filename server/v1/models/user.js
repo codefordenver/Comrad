@@ -2,7 +2,26 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const bcrypt = require('bcrypt-nodejs');
 
+const dbShows = require('./show');
+
 const userSchema = new Schema({
+  api_key: {
+    last_used: {
+      type: Date,
+      default: null,
+    },
+
+    short: {
+      type: String,
+      default: null,
+    },
+
+    token: {
+      type: String,
+      default: null,
+    },
+  },
+
   can_delete: {
     type: Boolean,
     default: true,
@@ -40,16 +59,7 @@ const userSchema = new Schema({
 
   password: {
     type: String,
-    required: true,
   },
-
-  permissions: [
-    {
-      type: String,
-      enum: ['DJ', 'Underwriting', 'Show Producer', 'Full Access', 'Admin'],
-      default: 'DJ',
-    },
-  ],
 
   primary_phone: {
     type: String,
@@ -64,6 +74,10 @@ const userSchema = new Schema({
   reset_token_expiry: {
     type: Number,
     default: null,
+  },
+
+  roles: {
+    type: [String],
   },
 
   status: {
@@ -87,6 +101,7 @@ userSchema.pre('save', function(next) {
       }
 
       user.password = hash;
+
       next();
     });
   });
@@ -100,6 +115,36 @@ userSchema.methods.comparePassword = function(candidatePassword, callback) {
 
     callback(null, isMatch);
   });
+};
+
+userSchema.methods.compareApiKey = function(candidateKey, callback) {
+  const user = this;
+  const { token } = user.api_key;
+
+  return new Promise(function(resolve, reject) {
+    bcrypt.compare(candidateKey, token, function(err, isMatch) {
+      if (err) {
+        return reject(err);
+      }
+
+      user.api_key.last_used = new Date();
+      user.save();
+
+      return resolve(isMatch);
+    });
+  });
+};
+
+userSchema.methods.canDelete = async function() {
+  const user = this;
+
+  const shows = await dbShows.find({ 'show_details.host': user._id });
+
+  if (shows.length > 0) {
+    return false;
+  }
+
+  return true;
 };
 
 const User = mongoose.model('User', userSchema);

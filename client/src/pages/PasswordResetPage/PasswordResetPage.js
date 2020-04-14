@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import Button from '../../components/Button';
-import FormPasswordReset from '../../components/FormPasswordReset';
+import FormPasswordReset from '../../components/forms/FormPasswordReset';
 
 class PasswordResetPage extends Component {
   render() {
@@ -13,7 +13,9 @@ class PasswordResetPage extends Component {
 
         <FormPasswordReset className="mb-3" {...props} />
 
-        <Button to="/">Go Back</Button>
+        <Button to="/" color="link">
+          Go Back
+        </Button>
       </div>
     );
   }

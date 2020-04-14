@@ -1,0 +1,37 @@
+.faun {
+  min-height: 4rem;
+
+  &__heading {
+    display: inline-grid;
+    grid-template-columns: auto auto;
+    grid-column-gap: 1rem;
+    align-items: end;
+  }
+
+  &__name {
+    color: $color-primary;
+    font-size: 3.6rem;
+    font-weight: bold;
+    line-height: 1.1;
+    vertical-align: bottom;
+  }
+
+  &__type {
+    color: $color-primary-lighter;
+    font-size: 2rem;
+    font-style: italic;
+    font-weight: light;
+  }
+
+  &__edit {
+    cursor: pointer;
+    margin-bottom: 1.6rem;
+  }
+
+  &__form {
+    display: inline-grid;
+    grid-template-columns: 30rem 2rem 2rem;
+    grid-column-gap: 1rem;
+    justify-content: end;
+  }
+}

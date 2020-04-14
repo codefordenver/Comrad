@@ -1,27 +1,29 @@
-const albumsController = require('./albums');
+const accessControlController = require('./accessControl');
 const announcementsController = require('./announcements');
-const artistsController = require('./artists');
 const authController = require('./auth');
-const featuresController = require('./features');
-const giveawaysController = require('./giveaways');
+const configController = require('./config');
+const genresController = require('./genres');
 const libraryController = require('./library');
-const showsController = require('./shows');
-const tracksController = require('./tracks');
-const trafficController = require('./traffic');
+const playlistsController = require('./playlists');
+const reportingController = require('./reporting');
+const resourcesController = require('./resources');
+const eventRootController = require('./events/root');
+const eventInstanceController = require('./events/instance');
+const eventSeriesController = require('./events/series');
 const usersController = require('./users');
-const venuesController = require('./venues');
 
 module.exports = {
-  albumsController,
+  accessControlController,
   announcementsController,
-  artistsController,
   authController,
-  featuresController,
-  giveawaysController,
+  configController,
+  genresController,
   libraryController,
-  showsController,
-  tracksController,
-  trafficController,
+  playlistsController,
+  reportingController,
+  resourcesController,
+  eventRootController,
+  eventInstanceController,
+  eventSeriesController,
   usersController,
-  venuesController,
 };

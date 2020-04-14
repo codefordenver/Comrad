@@ -10,6 +10,9 @@
     .DayPicker__horizontal,.CalendarMonth, .CalendarMonthGrid {
       background: none;
     }
+    .DayPicker_transitionContainer {
+      width: 200px !important;
+    }
     .DayPicker_weekHeaders__horizontal {
       margin-left: 0px;
     }
@@ -53,4 +56,34 @@
       END - override react-dates styles 
     */
   }
+}
+.add-button-wrapper {
+  display: inline-block;
+  position: relative;
+  width: max-content;
+}
+
+.calendar-add-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: $color-primary;
+  color: white;
+  cursor: pointer;
+  height: 3.8rem;
+  transition: background-color 0.1s;
+  border-radius: $border-radius;
+  width: max-content;
+  margin-bottom: 10px;
+
+  &-text {
+    font-size: 1.8rem;
+    border-right: 1px solid rgba(0, 0, 0, 0.3);
+    padding: 0 1rem;
+  }
+  & .fas {
+    padding: 0 1rem;
+    display: inline-block;
+  }
+  
 }

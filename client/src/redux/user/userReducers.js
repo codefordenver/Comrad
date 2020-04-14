@@ -4,14 +4,46 @@ const initialState = {
   doc: {},
   docs: [],
   loading: false,
-  search: {
-    filter: 'all',
-    q: '',
-  },
 };
 
 export const userReducer = (state = initialState, { type, payload }) => {
   switch (type) {
+    case userTypes.ADD:
+      return {
+        ...state,
+        ...payload,
+        loading: false,
+      };
+
+    case userTypes.CLEAR:
+      return {
+        ...initialState,
+      };
+
+    case userTypes.CLEAR_SEARCH:
+      return {
+        ...state,
+        search: {
+          ...initialState.search,
+        },
+      };
+
+    case userTypes.CREATE_API_KEY:
+      return {
+        ...state,
+        doc: {
+          ...payload.doc,
+        },
+      };
+
+    case userTypes.DELETE_API_KEY:
+      return {
+        ...state,
+        doc: {
+          ...payload.doc,
+        },
+      };
+
     case userTypes.FIND_ONE:
       return {
         ...state,
@@ -28,6 +60,12 @@ export const userReducer = (state = initialState, { type, payload }) => {
         loading: false,
       };
 
+    case userTypes.LOADING:
+      return {
+        ...state,
+        loading: true,
+      };
+
     case userTypes.SEARCH:
       return {
         ...state,
@@ -42,34 +80,11 @@ export const userReducer = (state = initialState, { type, payload }) => {
         loading: false,
       };
 
-    case userTypes.ADD:
-      return {
-        ...payload,
-      };
-
-    case userTypes.CLEAR:
-      return {
-        ...initialState,
-      };
-
-    case userTypes.CLEAR_SEARCH:
-      return {
-        ...state,
-        search: {
-          ...initialState.search,
-        },
-      };
-
-    case userTypes.CREATE:
+    case userTypes.UPDATE:
       return {
         ...state,
         ...payload,
-      };
-
-    case userTypes.LOADING:
-      return {
-        ...state,
-        loading: true,
+        loading: false,
       };
 
     default:

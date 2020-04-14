@@ -1,0 +1,70 @@
+.form-track-add {
+  display: grid;
+  grid-row-gap: 2em;
+  max-width: 30rem;
+  
+  .duration-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    
+    /* hide spinner arrows, since those can be hard to use */
+    input[type=number] { /* Firefox */
+      -moz-appearance: textfield;
+    }
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button { /* Chrome, Safari, Edge, Opera */
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+  }
+
+  .minutes input { 
+    text-align: right;
+  }
+  .minutes, .seconds {
+    width: 5rem;
+  }
+
+  .duration-label, .duration-colon {
+    font-size: 1.8rem;
+    font-family: inherit;
+    color: $color-primary;
+  }
+
+  .duration-label {
+    order: 1;
+    margin-right: 5px;
+  }
+
+  .minutes {
+    order: 2;
+  }
+
+  .duration-colon {
+    order: 3;
+    width: 10px;
+    text-align: center;
+  }
+
+  .seconds {
+    order: 4;
+  }
+  
+  &__artist-list {
+    li {
+      display: flex;
+      margin-bottom: 1em;
+      
+      h3 {
+        margin-bottom: 0;
+        margin-right: 0.3em;
+      }
+      
+      > div {
+        margin-right: 1em;
+      }
+    }
+  }
+} 

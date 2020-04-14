@@ -12,10 +12,11 @@ export const SidebarData = [
     tooltipText: 'Show Builder',
   },
   {
-    name: 'calendar-check',
+    name: 'traffic',
     url: '/traffic',
-    iconClass: 'fas fa-calendar-check',
-    tooltipText: 'Traffic Calendar',
+    iconClass: 'fas fa-car',
+    tooltipText: 'Traffic',
+    allowedRoles: ['Admin', 'Full Access', 'Underwriting'],
   },
   {
     name: 'calendar',
@@ -37,14 +38,23 @@ export const SidebarData = [
   },
   {
     name: 'report',
-    url: '/reporting',
+    url: '/reporting/sound-exchange',
     iconClass: 'fas fa-chart-bar',
     tooltipText: 'Reporting',
+    allowedRoles: ['Admin', 'Full Access'],
+  },
+  {
+    name: 'report',
+    url: '/reporting/giveaway-winners',
+    iconClass: 'fas fa-chart-bar',
+    tooltipText: 'Reporting',
+    allowedRoles: ['Underwriting'],
   },
   {
     name: 'user',
     url: '/user/search',
     iconClass: 'fas fa-user',
     tooltipText: 'Users',
+    allowedRoles: ['Admin'],
   },
 ];

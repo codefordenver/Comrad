@@ -2,11 +2,16 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import _ from 'lodash';
-import BigCalendar from 'react-big-calendar';
+import {
+  Calendar as BigCalendar,
+  momentLocalizer,
+  Views,
+} from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 import { setModalVisibility } from '../../redux/modal';
 import {
+  clearShows,
   getShowsData,
   fetchingShowsStatus,
   postingShowsStatus,
@@ -17,59 +22,89 @@ import {
 } from '../../redux/show';
 
 import ShowModalController from './ShowModalController';
-import { MODAL_NEW_SHOW, MODAL_VIEW_SHOW } from './ShowModalController';
+import { MODAL_NEW_SHOW } from './ShowModalController';
 import Tooltip from '../Tooltip';
 import ViewShowForm from './ViewShow/Form';
+import { getShowType } from '../../utils/shows';
 
 class Calendar extends Component {
   state = {
     newShow: null,
+    searchStartDate: moment().subtract(2, 'week'),
+    searchEndDate: moment().add(2, 'week'),
     shows: [],
   };
 
   componentDidMount() {
-    const { searchShow } = this.props;
-
-    const initialSearchStartDate = moment().subtract(2, 'week');
-    const initialSearchEndDate = moment().add(2, 'week');
-
-    searchShow(initialSearchStartDate, initialSearchEndDate);
+    this.searchShows();
   }
 
   componentDidUpdate(prevProps, prevState) {
-    Object.entries(this.props).forEach(
-      ([key, val]) =>
-        prevProps[key] !== val && console.log(`Prop '${key}' changed`),
-    );
+    Object.entries(this.props).forEach(([key, val]) => {
+      if (prevProps[key] !== val) {
+        console.log(`Prop '${key}' changed`);
+        if (key === 'filterByHost' || key === 'onlyDisplayShowsWithNoHost') {
+          this.searchShows();
+        } else if (key === 'date') {
+          this.setState(
+            {
+              searchStartDate: moment(val).subtract(8, 'days'),
+              searchEndDate: moment(val).add(8, 'days'),
+            },
+            function() {
+              this.searchShows();
+            },
+          );
+        }
+      }
+    });
     Object.entries(this.state).forEach(
       ([key, val]) =>
         prevState[key] !== val && console.log(`State '${key}' changed`),
     );
   }
 
-  handleDateChange = dates => {
-    const { searchShow } = this.props;
+  componentWillUnmount() {
+    const { clearShows } = this.props;
+    clearShows();
+  }
 
+  handleDateChange = dates => {
     if (Array.isArray(dates)) {
       if (dates.length === 1) {
         //For when changing days
-        const dayStart = moment(dates[0]).subtract(2, 'days');
-        const dayEnd = moment(dates[0]).add(2, 'days');
-
-        searchShow(dayStart, dayEnd);
+        this.setState(
+          {
+            searchStartDate: moment(dates[0]).subtract(2, 'days'),
+            searchEndDate: moment(dates[0]).add(2, 'days'),
+          },
+          function() {
+            this.searchShows();
+          },
+        );
       } else {
         //For when changing weeks
-        const rangeStart = moment(dates[0]).subtract(8, 'days');
-        const rangeEnd = moment(dates[dates.length - 1]).add(8, 'days');
-
-        searchShow(rangeStart, rangeEnd);
+        this.setState(
+          {
+            searchStartDate: moment(dates[0]).subtract(8, 'days'),
+            searchEndDate: moment(dates[dates.length - 1]).add(8, 'days'),
+          },
+          function() {
+            this.searchShows();
+          },
+        );
       }
     } else {
       //For when changing months/agenda
-      const objectStart = moment(dates.start).subtract(1, 'month');
-      const objectEnd = moment(dates.end).add(1, 'month');
-
-      searchShow(objectStart, objectEnd);
+      this.setState(
+        {
+          searchStartDate: moment(dates.start).subtract(1, 'month'),
+          searchEndDate: moment(dates.end).add(1, 'month'),
+        },
+        function() {
+          this.searchShows();
+        },
+      );
     }
   };
 
@@ -102,17 +137,26 @@ class Calendar extends Component {
     return newShowsArray;
   };
 
+  searchShows = () => {
+    const { searchStartDate, searchEndDate } = this.state;
+    const {
+      filterByHost,
+      onlyDisplayShowsWithNoHost = false,
+      searchShow,
+    } = this.props;
+    searchShow(
+      searchStartDate,
+      searchEndDate,
+      filterByHost,
+      onlyDisplayShowsWithNoHost,
+    );
+  };
+
   showNewShowModal = show => {
     const { setModalVisibility, selectShow } = this.props;
 
     selectShow(show);
-    setModalVisibility(MODAL_NEW_SHOW, true, show);
-  };
-
-  showViewShowModal = show => {
-    const { setModalVisibility } = this.props;
-
-    setModalVisibility(MODAL_VIEW_SHOW, true, show);
+    setModalVisibility(MODAL_NEW_SHOW, true, null);
   };
 
   customEventWrapper = props => {
@@ -162,19 +206,28 @@ class Calendar extends Component {
     //do nothing
   };
 
-  eventStyleGetter = () => {
-    var style = {
-      backgroundColor: '#007283',
-    };
+  eventStyleGetter = show => {
+    let className = '';
+    let showType = getShowType(show);
+
+    if (process.env.REACT_APP_SHOW_SHOW_TYPES_IN_DIFFERENT_STYLES === 'true') {
+      if (showType === 'series') {
+        className = 'event-series--dev-environment-only-style';
+      } else if (showType === 'instance') {
+        className = 'event-instance--dev-environment-only-style';
+      } else {
+        className = 'event-regular--dev-environment-only-style';
+      }
+    }
 
     return {
-      style,
+      className,
     };
   };
 
   render() {
     const { date, shows } = this.props;
-    const localizer = BigCalendar.momentLocalizer(moment);
+    const localizer = momentLocalizer(moment);
 
     //if date provided in properties, always have the calendar display that date
     let calendarDateProperty = typeof date == 'undefined' ? {} : { date: date };
@@ -185,7 +238,8 @@ class Calendar extends Component {
           selectable
           localizer={localizer}
           events={this.convertShowsToArray(shows)}
-          defaultView={BigCalendar.Views.WEEK}
+          defaultView={Views.WEEK}
+          views={['week', 'day']}
           defaultDate={new Date()}
           {...calendarDateProperty}
           //onSelectEvent={show => this.onSelectShow(show)}
@@ -196,6 +250,7 @@ class Calendar extends Component {
           onRangeChange={dateRange => this.handleDateChange(dateRange)}
           onNavigate={date => this.handleNavigate(date)}
           eventPropGetter={this.eventStyleGetter}
+          showMultiDayTimes
           components={{
             eventWrapper: this.customEventWrapper,
           }}
@@ -219,6 +274,7 @@ function mapStateToProps({ show }) {
 export default connect(
   mapStateToProps,
   {
+    clearShows,
     getShowsData,
     fetchingShowsStatus,
     postingShowsStatus,

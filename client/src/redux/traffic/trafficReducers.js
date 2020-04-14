@@ -1,70 +1,63 @@
-import {
-  TRAFFIC_GET,
-  TRAFFIC_POST,
-  TRAFFIC_UPDATE,
-  TRAFFIC_ERROR,
-} from './trafficTypes';
+import { trafficTypes } from './trafficTypes';
 
-const initialState = [
-  {
-    id: 0,
-    title: 'Traffic Event 1',
-    start: new Date(2018, 0, 29, 9, 0, 0),
-    end: new Date(2018, 0, 29, 13, 0, 0),
-    resourceId: 2,
-  },
-  {
-    id: 1,
-    title: 'Traffic Event 2',
-    start: new Date(2018, 0, 29, 14, 0, 0),
-    end: new Date(2018, 0, 29, 16, 30, 0),
-    resourceId: 2,
-  },
-  {
-    id: 2,
-    title: 'Traffic Event 3',
-    start: new Date(2018, 0, 29, 8, 30, 0),
-    end: new Date(2018, 0, 29, 12, 30, 0),
-    resourceId: 2,
-  },
-  {
-    id: 11,
-    title: 'Traffic Event 4',
-    start: new Date(2018, 0, 30, 7, 0, 0),
-    end: new Date(2018, 0, 30, 10, 30, 0),
-    resourceId: 2,
-  },
-];
+const initialState = {
+  doc: null,
+  docs: [],
+  docsForDropdown: [],
+  earliest: null,
+  loading: false,
+  loadingSearch: false,
+  searchString: null,
+  underwriterSearchDocs: [],
+  underwriterSearchString: null,
+};
 
 export const trafficReducer = (state = initialState, { type, payload }) => {
   switch (type) {
-    case TRAFFIC_GET:
+    case trafficTypes.CLEAR:
+      return initialState;
+    case trafficTypes.EARLIEST:
       return {
-        payload,
+        ...state,
+        earliest: payload,
+        loading: false,
       };
-
-    case TRAFFIC_POST:
-      const updatedState = state.concat(payload);
-      return updatedState;
-
-    case TRAFFIC_UPDATE:
-      const { existingTraffic, updatedTraffic } = payload;
-      const { start, end } = updatedTraffic;
-
-      const nextTraffic = state.map(stateTraffic => {
-        return stateTraffic.id === existingTraffic.id
-          ? { ...stateTraffic, start, end }
-          : stateTraffic;
-      });
-      return nextTraffic;
-
-    //Need some type of error response from server.
-    case TRAFFIC_ERROR:
+    case trafficTypes.FIND:
       return {
-        status: 'ERROR',
-        errorMessage: payload,
+        ...state,
+        docs: payload,
+        loading: false,
       };
-
+    case trafficTypes.FIND_BY_ID:
+      return {
+        ...state,
+        doc: payload,
+        loading: false,
+      };
+    case trafficTypes.LOAD:
+      return {
+        ...state,
+        loading: true,
+      };
+    case trafficTypes.LOADING_SEARCH:
+      return {
+        ...state,
+        loadingSearch: true,
+      };
+    case trafficTypes.SEARCH:
+      return {
+        ...state,
+        loadingSearch: false,
+        docsForDropdown: payload.docs,
+        searchString: payload.searchString,
+      };
+    case trafficTypes.SEARCH_UNDERWRITERS:
+      return {
+        ...state,
+        loadingSearch: false,
+        underwriterSearchDocs: payload.docs,
+        underwriterSearchString: payload.searchString,
+      };
     default:
       return state;
   }

@@ -7,6 +7,7 @@ import kgnuLogo from '../../images/kgnu-logo-white-gray.png';
 import Logo from '../Logo';
 import { authActions } from '../../redux/auth';
 import { bindActionCreators } from 'redux';
+import { withRouter } from 'react-router-dom';
 
 class Navbar extends Component {
   handleSignOut = () => {
@@ -18,6 +19,7 @@ class Navbar extends Component {
   };
 
   render() {
+    const { authState, location } = this.props;
     return (
       <div className="navbar">
         <div className="navbar__logo">
@@ -29,8 +31,15 @@ class Navbar extends Component {
           </div>
           <div className="navbar__user">
             <Dropdown position="bottom-left" type="icon">
-              <Dropdown.Item to="/profile/edit">Edit Profile</Dropdown.Item>
-              <Dropdown.Item to="/profile/change-password">
+              <Dropdown.Item
+                to={{
+                  pathname: '/user/profile/edit/' + authState.doc._id,
+                  state: { prevPath: location.pathname },
+                }}
+              >
+                Edit Profile
+              </Dropdown.Item>
+              <Dropdown.Item to="/user/profile/change-password">
                 Change Password
               </Dropdown.Item>
               <Dropdown.Item handleOnClick={this.handleSignOut}>
@@ -56,7 +65,9 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(Navbar);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  )(Navbar),
+);

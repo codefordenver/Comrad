@@ -1,6 +1,10 @@
-export const TRAFFIC_GET = 'traffic_get';
-export const TRAFFIC_POST = 'traffic_post';
-export const TRAFFIC_UPDATE = 'traffic_update';
-export const TRAFFIC_DELETE = 'traffic_delete';
-export const TRAFFIC_ERROR = 'traffic_error';
-export const TRAFFIC_SEARCH = 'traffic_search';
+export const trafficTypes = {
+  CLEAR: 'traffic_clear',
+  EARLIEST: 'traffic_earliest',
+  FIND: 'traffic_find',
+  FIND_BY_ID: 'traffic_find_by_id',
+  LOAD: 'traffic_load',
+  LOADING_SEARCH: 'traffic_loading_search',
+  SEARCH: 'traffic_search',
+  SEARCH_UNDERWRITERS: 'traffic_search_underwriters',
+};

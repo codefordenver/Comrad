@@ -47,8 +47,11 @@ class Input extends Component {
       icon,
       inline,
       input,
+      inputClassName,
       label,
       meta = {
+        active: false,
+        dirty: false,
         error: false,
         touched: false,
         submitting: false,
@@ -69,7 +72,11 @@ class Input extends Component {
           {...input}
           {...other}
           autoFocus={autoFocus}
-          className={classnames('input', touched && error && 'error')}
+          className={classnames(
+            'input',
+            touched && error && 'error',
+            inputClassName,
+          )}
           disabled={disabled || submitting}
           type={type}
           onBlur={event => {

@@ -43,9 +43,6 @@ const EventSchema = {
     bymonthday: Number,
   },
 
-  exclude_rule: String, //an rrule, for dates to exclude
-  exclude_dates: [Date], //individual dates to exclude from the repeating
-
   created_at: {
     type: Date,
     default: Date.now,

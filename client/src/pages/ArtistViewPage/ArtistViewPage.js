@@ -1,23 +1,24 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { isEmpty } from 'lodash';
 
-import Alert from '../../components/Alert';
+import ButtonIcon from '../../components/ButtonIcon';
 import Card, { CardBody } from '../../components/Card';
-import FormArtistUpdateName from '../../components/FormArtistUpdateName';
+import Loading from '../../components/Loading';
+import FormArtistUpdateName from '../../components/forms/FormArtistUpdateName';
 import LargeText from '../../components/LargeText';
-import TableArtistAlbums from '../../components/TableArtistAlbums';
+import TableArtistAlbums from '../../components/tables/TableArtistAlbums';
 
-import { artistAlertClose, artistFindOne } from '../../redux/artist';
+import { libraryActions } from '../../redux';
 
 class ArtistViewPage extends Component {
   componentDidMount() {
-    const { artist, artistFindOne, match } = this.props;
-    const { _id } = artist.doc;
+    const { library, libraryActions, match } = this.props;
     const { id } = match.params;
 
-    if (id !== _id) {
-      artistFindOne(id);
+    if (library.doc == null || id !== library.doc._id) {
+      libraryActions.findOne(id);
     }
   }
 
@@ -32,28 +33,43 @@ class ArtistViewPage extends Component {
 
   render() {
     const { navigateToAlbum, props } = this;
-    const { match, artist, artistAlertClose } = props;
-    const { alert, doc, loading } = artist;
-    const { albums, updated_at } = doc;
-    const dateObj = new Date(updated_at);
-    const lastUpdated = `${dateObj.toLocaleDateString()} ${dateObj.toLocaleTimeString()}`;
+    const { match, library } = props;
+    const { doc, loading } = library;
+    const { url } = this.props.match;
+
+    let lastUpdated = '';
+    if (doc != null) {
+      const dateObj = new Date(doc.updated_at);
+      lastUpdated = `${dateObj.toLocaleDateString()} ${dateObj.toLocaleTimeString()}`;
+    }
 
     return (
       <div className="artist-view">
-        <Alert alertClose={artistAlertClose} {...alert} />
-        {!loading ? (
+        {loading && <Loading />}
+        {!loading && doc != null ? (
           <>
             <Card>
-              <CardBody>
-                <div className="float-right">Last updated: {lastUpdated}</div>
-                <FormArtistUpdateName match={match} />
+              <CardBody className="artist-view__header">
+                <FormArtistUpdateName
+                  className="artist-view__name"
+                  match={match}
+                />
+                <div className="artist-view__type">Artist</div>
+                <div className="artist-view__last-updated">
+                  Last updated: {lastUpdated}
+                </div>
               </CardBody>
             </Card>
 
             <Card>
               <CardBody>
-                <h2 className="mb-1">Albums</h2>
-                {isEmpty(albums) ? (
+                <div className="artist-view__header2 mb-1">
+                  <h2 className="artist-view__name2">Albums</h2>
+                  <div className="artist-view__add-album2">
+                    <ButtonIcon icon="plus" to={`${url}/add`} />
+                  </div>
+                </div>
+                {isEmpty(doc.albums) ? (
                   <LargeText align="left">No Albums</LargeText>
                 ) : (
                   <TableArtistAlbums onRowClick={navigateToAlbum} />
@@ -67,13 +83,19 @@ class ArtistViewPage extends Component {
   }
 }
 
-function mapStateToProps({ artist }) {
+function mapDispatchToProps(dispatch) {
   return {
-    artist,
+    libraryActions: bindActionCreators({ ...libraryActions }, dispatch),
+  };
+}
+
+function mapStateToProps({ library }) {
+  return {
+    library,
   };
 }
 
 export default connect(
   mapStateToProps,
-  { artistAlertClose, artistFindOne },
+  mapDispatchToProps,
 )(ArtistViewPage);

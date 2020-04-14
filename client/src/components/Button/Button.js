@@ -43,7 +43,12 @@ class Button extends Component {
     if (to) {
       return (
         <Link
-          className={classnames('button', 'button--link', className)}
+          className={classnames(
+            'button',
+            BUTTON_CLASS[color],
+            BUTTON_SIZE[size],
+            className,
+          )}
           disabled={disabled}
           onClick={onClick}
           to={to}
@@ -63,7 +68,7 @@ class Button extends Component {
           BUTTON_SIZE[size],
           className,
         )}
-        disabled={submitting}
+        disabled={disabled || submitting}
         onClick={onClick}
         size={size}
         type={BUTTON_TYPE[type]}

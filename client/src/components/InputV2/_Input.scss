@@ -1,0 +1,74 @@
+.Input {
+  font-size: 1.8rem;
+  font-family: inherit;
+  color: $color-primary;
+
+  background: none;
+  background-clip: padding-box;
+  border: 2px solid $color-primary-light;
+  border-radius: $border-radius;
+  display: block;
+  height: 3.8rem;
+  padding: 1rem;
+  padding-left: 1.4rem;
+  position: relative;
+  width: 100%;
+  z-index: 1;
+
+  transition: outline 0.2s border 0.2s;
+
+  &:focus {
+    outline: none;
+    border: 2px solid $color-primary;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+  }
+
+  &.error,
+  &.invalid {
+    border-color: $color-danger;
+  }
+
+  &__feedback {
+    &.error {
+      color: $color-danger;
+      font-size: 1.2;
+
+      margin-top: 3px;
+      padding-left: 1.2rem;
+      position: absolute;
+      transition: all 0.2s;
+    }
+  }
+
+  &__label {
+    background: $color-white;
+    color: $color-grey-3;
+    cursor: text;
+    font-size: 1.8rem;
+    padding: 0 2.4rem;
+    position: absolute;
+    top: 0.2rem;
+    left: 0.6rem;
+
+    transform-origin: 0% 100%;
+    transition: all 0.2s;
+
+    &.active,
+    &:active,
+    &.dirty,
+    &.focus,
+    &:focus {
+      color: $color-primary;
+      transform: scale(0.6) translate(3rem, -4rem);
+      z-index: 2;
+      padding: 0 1rem;
+    }
+
+    &.error {
+      color: $color-danger;
+    }
+  }
+}

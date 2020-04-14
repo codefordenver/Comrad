@@ -1,0 +1,128 @@
+.traffic-list {
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-row-gap: 1rem;
+
+  h1 {
+      margin-bottom: 0;
+  }
+  &__jump-to-traffic {
+    display: grid;
+    grid-template-columns: 50rem 1fr;
+    grid-column-gap: 1rem;
+  }
+  &__filters {
+    display: grid;
+    grid-template-columns: 20rem auto;
+    grid-column-gap: 1rem;
+    &__date-selector {
+        
+    }
+    &__traffic-types {
+      display: grid;
+      grid-template-columns: 33% 33% 33%;
+      grid-column-gap: 0.5em;
+      grid-row-gap: 0.5em;
+      font-size: 1.5em;
+      max-width: 53rem;
+      
+      .traffic-type-icon {
+        display: inline-block;
+        width: 1.2rem;
+        height: 1.2rem;
+        border-radius: 1rem;
+        margin-right: 0.3rem;
+        
+        &--announcement {
+          background-color: green; 
+        }
+        &--feature {
+          background-color: royalblue; 
+        }
+        &--giveaway {
+          background-color: darkgoldenrod; 
+        }
+        &--legal-id {
+          background-color: indigo; 
+        }
+        &--psa {
+          background-color: darkorange; 
+        }
+        &--underwriting { 
+          background-color: slategray; 
+        }
+      
+      }
+    }
+  }
+  &__show {
+    margin-top: 1em;
+    
+    h5 {
+      margin-top: 0.4rem;
+    }
+  }
+  &__no-traffic {
+    font-style: italic;
+  }
+  &__traffic {
+    position: relative;
+    padding-left: 24px;
+    padding-top:0.4rem;
+    margin-bottom: 3px;
+    font-size: 1.2rem;
+    &::before {
+      content: ' ';
+      display: block;
+      position: absolute;
+      left: 0;
+      background: gray;
+      border-radius: 10px;
+      width: 20px;
+      height: 20px;
+    }
+    
+    &--announcement::before {
+      background-color: green; 
+    }
+    &--feature::before {
+      background-color: royalblue; 
+    }
+    &--giveaway::before {
+      background-color: darkgoldenrod; 
+    }
+    &--legal-id::before {
+      background-color: indigo; 
+    }
+    &--psa::before {
+      background-color: darkorange; 
+    }
+    &--underwriting::before { 
+      background-color: slategray; 
+    }
+  }
+  .traffic-add-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: $color-primary;
+    color: white;
+    cursor: pointer;
+    height: 3.8rem;
+    transition: background-color 0.1s;
+    border-radius: $border-radius;
+    width: max-content;
+    margin-bottom: 10px;
+
+    &__text {
+      font-size: 1.8rem;
+      border-right: 1px solid rgba(0, 0, 0, 0.3);
+      padding: 0 1rem;
+    }
+    & .fas {
+      padding: 0 1rem;
+      display: inline-block;
+    }
+
+    }
+}

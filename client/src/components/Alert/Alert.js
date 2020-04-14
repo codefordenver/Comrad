@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 
@@ -22,6 +23,10 @@ export const ALERT_ICON = {
 };
 
 class Alert extends Component {
+  state = {
+    active: false,
+  };
+
   static propTypes = {
     /**
      * Additional classes added to root element
@@ -68,7 +73,12 @@ class Alert extends Component {
 
     return (
       <div
-        className={classnames('alert', ALERT_CLASS[alertState.type], className)}
+        className={classnames(
+          'alert',
+          alertState.active ? 'alert--active' : 'alert--inactive',
+          ALERT_CLASS[alertState.type],
+          className,
+        )}
       >
         {/* TODO: Need to figure out how to handle clicks */}
         <div className="alert__times" onClick={handleAlertClose}>
@@ -77,7 +87,8 @@ class Alert extends Component {
         <div className="alert__icon">{ALERT_ICON[alertState.type]}</div>
         <div className="alert__container">
           <div className="alert__header">{alertState.header}</div>
-          <div className="alert__body">{alertState.body}</div>
+          {/* Use String() since the body is sometimes passed response messages from APIs: in case an object is accidentally passed, this will prevent a breaking error */}
+          <div className="alert__body">{String(alertState.body)}</div>
         </div>
       </div>
     );
@@ -95,7 +106,9 @@ function mapDispatchToProps(dispatch) {
     alertInactive: () => dispatch({ type: alertTypes.INACTIVE }),
   };
 }
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(Alert);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  )(Alert),
+);

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import Button from '../../components/Button';
-import FormPasswordNew from '../../components/FormPasswordNew';
+import FormPasswordNew from '../../components/forms/FormPasswordNew';
 
 class PasswordNewPage extends Component {
   render() {
@@ -11,7 +11,9 @@ class PasswordNewPage extends Component {
       <div className="password-new-page">
         <p>Enter Your New Password</p>
         <FormPasswordNew className="mb-3" {...props} />
-        <Button to="/">Go Back</Button>
+        <Button to="/" color="link">
+          Go Back
+        </Button>
       </div>
     );
   }

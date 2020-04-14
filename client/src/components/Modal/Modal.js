@@ -1,23 +1,53 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import ReactModal from 'react-modal';
 
-const Modal = props => {
-  const { isOpen, children, styleName, ...rest } = props;
+import Alert from '../Alert';
 
-  ReactModal.setAppElement('body');
+import { alertTypes } from '../../redux';
 
-  return (
-    <>
-      <ReactModal
-        className={`modal-main`}
-        overlayClassName={`modal-overlay`}
-        isOpen
-        {...rest}
-      >
-        {children}
-      </ReactModal>
-    </>
-  );
-};
+class Modal extends Component {
+  componentWillUnmount() {
+    const { alertState, alertInactive } = this.props;
+    if (alertState.displayAt === 'modal') {
+      alertInactive();
+    }
+  }
 
-export default Modal;
+  render() {
+    const { alertState, isOpen, children, styleName, ...rest } = this.props;
+
+    ReactModal.setAppElement('body');
+
+    return (
+      <>
+        <ReactModal
+          className={`modal-main`}
+          overlayClassName={`modal-overlay`}
+          isOpen
+          {...rest}
+        >
+          {alertState.active && alertState.displayAt === 'modal' && (
+            <Alert {...this.props} />
+          )}
+          {children}
+        </ReactModal>
+      </>
+    );
+  }
+}
+
+function mapStateToProps({ alert }) {
+  return { alertState: alert };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    alertInactive: () => dispatch({ type: alertTypes.INACTIVE }),
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Modal);

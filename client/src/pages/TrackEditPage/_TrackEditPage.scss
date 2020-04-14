@@ -1,0 +1,8 @@
+.track-edit-page {
+  display: grid;
+  grid-row-gap: 1rem;
+  
+    &__album-name {
+      margin-bottom: 20px;
+    }
+  }

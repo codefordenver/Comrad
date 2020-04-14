@@ -1,0 +1,151 @@
+.form-group {
+    position: relative;
+    
+    &--inline {
+      display: inline; 
+      margin-right: 0.5rem;
+      
+      .editor-container {
+        width: auto;
+        display: inline;
+      } 
+    }
+  }
+  
+  .editor-container {
+    font-size: 1.8rem;
+    font-family: inherit;
+    color: $color-primary;
+    background: none;
+    background-clip: padding-box;
+    border: 2px solid $color-primary-light;
+    border-radius: $border-radius;
+    display: flex;
+    flex-direction: column;
+    height: 12rem;
+    position: relative;
+    width: 100%;
+    z-index: 1;
+    resize: none;
+    transition: all 0.2s;
+  
+    &:focus {
+      outline: none;
+      border: 2px solid $color-primary;
+    }
+  
+    &.error,
+    &.invalid {
+      border-color: $color-danger;
+    }
+  
+    &__error {
+      color: $color-danger;
+      font-size: 1.2;
+  
+      margin-top: 3px;
+      padding-left: 1.2rem;
+      position: absolute;
+      transition: all .2s;
+    }
+  
+    &__label {
+      background: $color-white;
+      color: $color-grey-3;
+      cursor: text;
+      font-size: 1.8rem;
+      padding: 0 1rem;
+      position: absolute;
+      top: 0.4rem;
+      left: 0.6rem;
+  
+      transform-origin: 0% 100%;
+      transition: all 0.2s;
+  
+      &.active,
+      &:active,
+      &.dirty,
+      &.focus,
+      &:focus {
+        color: $color-primary;
+        transform: scale(0.6) translate(0.6rem, -4rem);
+        z-index: 2;
+      }
+  
+      &.error {
+        color: $color-danger;
+      }
+    }
+  }
+  
+  .icon {
+    color: $color-primary;
+    height: 2rem;
+    width: 2rem;
+  
+    font-size: 2rem;
+  
+    position: absolute;
+    top: 0.8rem;
+    right:1.5rem;
+}
+
+.headlineButtonWrapper {
+  display: inline-block;
+}
+
+.headlineButton {
+  background: #fbfbfb;
+  color: #888;
+  font-size: 18px;
+  border: 0;
+  padding-top: 5px;
+  vertical-align: bottom;
+  height: 34px;
+  width: 36px;
+}
+
+.headlineButton:hover,
+.headlineButton:focus {
+  background: #f3f3f3;
+}
+
+strong {
+  font-weight: bold;
+}
+
+em {
+  font-style: italic;
+}
+
+.ql-editor {
+  padding: 4px 4px;
+  height: 90px;
+  order: 1;
+  padding: 4px;
+}
+
+.ql-container.ql-snow {
+  border: 0;
+}
+
+.ql-toolbar.ql-snow {
+  padding: 0;
+}
+
+.ql-tooltip {
+  z-index: 1;
+}
+
+#toolbar {
+  border-top: 1px solid;
+  border-left: 0;
+  border-right: 0;
+  border-bottom: 0;
+  bottom: 0px;
+  order: 2;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}

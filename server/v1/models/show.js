@@ -11,10 +11,12 @@ const showSchema = new Schema({
     description: String,
     producer: String,
     host: { type: Schema.Types.ObjectId, ref: 'User' },
-    guests: [String],
+    guests: { type: [String], default: null },
     custom: Schema.Types.Mixed, // this will be an object that can contain any number of custom properties
   },
 });
+
+showSchema.index({ 'show_details.title': 'text' }, { background: true });
 
 const Show = mongoose.model('Show', showSchema);
 

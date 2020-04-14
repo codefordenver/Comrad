@@ -1,6 +1,10 @@
 .ReactTable {
+  & .rt-tbody, & .rt-table {
+    overflow: visible; /* fixes https://github.com/codefordenver/Comrad/issues/546, but also makes it so the table can't have scrollbars */
+  }
+
   & .rt-th {
-    font-size: 1.4rem;
+    font-size: 1.8rem;
 
     background-color: $color-primary-lighter;
     color: white;
@@ -8,7 +12,7 @@
   }
 
   & .rt-td {
-    font-size: 1.2rem;
+    font-size: 1.4rem;
   }
 
   & .rt-thead {
@@ -20,6 +24,7 @@
         box-shadow: inset 0 -3px 0 0 $color-primary;
       }
     }
+    overflow-x: hidden !important;
   }
 
   & .-next,
@@ -30,11 +35,10 @@
       color: white;
     }
   }
-  
+
   &.clickable-rows {
     .rt-tr-group {
       cursor: pointer;
     }
   }
 }
-

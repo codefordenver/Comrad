@@ -1,30 +1,46 @@
-import React, { Component } from 'react';
-import { Field } from 'redux-form';
+import React from 'react';
+import { connect } from 'react-redux';
+import { Field, submit } from 'redux-form';
 import classnames from 'classnames';
 
-const Radio = props => {
-  const { input } = props;
-
-  return <input className="filter__radio" type="radio" {...input} />;
-};
-
-class Filter extends Component {
-  render() {
-    const { className, onChange, name, text, value } = this.props;
-
-    return (
-      <label className={classnames('filter', className)}>
-        <Field
-          component={Radio}
-          name={name}
-          onChange={onChange}
-          type="radio"
-          value={value}
-        />
-        <span className={'filter__text'}>{text}</span>
-      </label>
-    );
+function Filter({
+  checked,
+  className,
+  dispatch,
+  name,
+  submitOnClick,
+  text,
+  value,
+}) {
+  function getClassNames() {
+    return classnames('Filter__radio', className);
   }
+
+  function handleOnClick() {
+    setTimeout(() => dispatch(submit('form')), 50);
+  }
+
+  return (
+    <label className={classnames('Filter', className)}>
+      <Field
+        name={name}
+        type="radio"
+        value={value}
+        component={({ input, meta }) => {
+          return (
+            <input
+              checked={checked}
+              className={getClassNames()}
+              onClick={submitOnClick && handleOnClick}
+              type="radio"
+              {...input}
+            />
+          );
+        }}
+      />
+      <span className={'Filter__text'}>{text}</span>
+    </label>
+  );
 }
 
-export default Filter;
+export const ConnectedFilter = connect()(Filter);

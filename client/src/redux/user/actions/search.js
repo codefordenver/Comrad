@@ -9,7 +9,7 @@ export const search = values => async dispatch => {
 
     dispatch({
       type: userTypes.SEARCH,
-      payload: { docs, searchParams: values },
+      payload: { docs },
     });
   } catch (err) {
     console.log(err);

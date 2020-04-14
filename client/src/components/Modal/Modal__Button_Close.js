@@ -11,7 +11,7 @@ const ModalClose = props => {
   };
 
   return (
-    <Button color="danger" onClick={handleModalCancel}>
+    <Button color="neutral" onClick={handleModalCancel}>
       Cancel
     </Button>
   );

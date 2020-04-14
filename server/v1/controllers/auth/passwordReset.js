@@ -1,4 +1,5 @@
 const db = require('../../models');
+const fs = require('fs');
 const { randomBytes } = require('crypto');
 const { promisify } = require('util');
 const { emailTemplate, transport } = require('../../utils/mail');
@@ -10,6 +11,8 @@ async function passwordReset(req, res) {
 
   if (!user) {
     return res.status(404).json('Email does not exist!');
+  } else if (user.status != 'Active') {
+    return res.status(404).json('The email is currently inactive.');
   }
 
   const randomBytesPromiseified = promisify(randomBytes);
@@ -32,9 +35,13 @@ async function passwordReset(req, res) {
   await transport.sendMail({
     from: 'comrad.development@gmail.com',
     to: user.email,
-    subject: 'Your Password Reset Token',
+    subject: 'Comrad: Reset Your Password',
     html: emailTemplate(
-      `<a target="_blank" href="${PORT}/new?rt=${resetToken}">Click Here</a>`,
+      fs.readFileSync('server/v1/templates/emailChangePassword.html', 'utf-8'),
+      {
+        password_reset_link: `${PORT}/new?rt=${resetToken}`,
+        user_first_name: user.first_name,
+      },
     ),
   });
 }

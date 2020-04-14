@@ -1,17 +1,19 @@
-const Album = require('./album');
-const Artist = require('./artist');
+const AccessControl = require('./accessControl');
+const Genre = require('./genre');
+const Library = require('./library');
 const Playlist = require('./playlist');
+const Resource = require('./resource');
 const Show = require('./show');
-const Track = require('./track');
 const Traffic = require('./traffic');
 const User = require('./user');
 
 module.exports = {
-  Album,
-  Artist,
+  AccessControl,
+  Genre,
+  Library,
   Playlist,
+  Resource,
   Show,
-  Track,
   Traffic,
   User,
 };

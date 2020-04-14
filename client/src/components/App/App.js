@@ -3,16 +3,18 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { authActions } from '../../redux/auth';
 
-import NavTest from '../NavTest';
+import NavDevelopmentHelperMenuBar from '../NavDevelopmentHelperMenuBar';
 
 import AdminRoutes from '../../routes/AdminRoutes';
-import BuilderRoutes from '../../routes/BuilderRoutes';
 import CalendarRoutes from '../../routes/CalendarRoutes';
 import DashboardRoutes from '../../routes/DashboardRoutes';
 import ErrorRoutes from '../../routes/ErrorRoutes';
 import HomeRoutes from '../../routes/HomeRoutes';
 import LibraryRoutes from '../../routes/LibraryRoutes';
-import ReportRoutes from '../../routes/ReportRoutes';
+import ReportingRoutes from '../../routes/ReportingRoutes';
+import ResourcesRoutes from '../../routes/ResourcesRoutes';
+import ShowBuilderRoutes from '../../routes/ShowBuilderRoutes';
+import TrafficRoutes from '../../routes/TrafficRoutes';
 import TrafficCalendarRoutes from '../../routes/TrafficCalendarRoutes';
 import UserRoutes from '../../routes/UserRoutes';
 import { bindActionCreators } from 'redux';
@@ -28,16 +30,20 @@ class App extends Component {
     return (
       <Router>
         <div className="app">
-          <Route component={NavTest} />
+          {process.env.REACT_APP_SHOW_DEVELOPMENT_UX_HELPERS === 'true' && (
+            <Route component={NavDevelopmentHelperMenuBar} />
+          )}
           <Switch>
             <Route path="/admin" component={AdminRoutes} />
-            <Route path="/builder" component={BuilderRoutes} />
             <Route path="/calendar" component={CalendarRoutes} />
             <Route path="/dashboard" component={DashboardRoutes} />
             <Route path="/error" component={ErrorRoutes} />
             <Route path="/library" component={LibraryRoutes} />
-            <Route path="/report" component={ReportRoutes} />
-            <Route path="/traffic" component={TrafficCalendarRoutes} />
+            <Route path="/traffic-calendar" component={TrafficCalendarRoutes} />
+            <Route path="/reporting" component={ReportingRoutes} />
+            <Route path="/resources" component={ResourcesRoutes} />
+            <Route path="/show-builder" component={ShowBuilderRoutes} />
+            <Route path="/traffic" component={TrafficRoutes} />
             <Route path="/user" component={UserRoutes} />
             <Route component={HomeRoutes} />
           </Switch>

@@ -1,22 +1,45 @@
 const router = require('express').Router();
 const { usersController } = require('../controllers');
-const { requireAdmin, requireLogin } = require('../middlewares');
+const { requireAC } = require('../middlewares');
+
+router.route('/').get(requireAC('Users', 'readAny'), usersController.findAll);
+
+if (process.env.SHOW_DEVELOPMENT_SIGN_UP) {
+  router.route('/').post(usersController.create);
+} else {
+  router
+    .route('/')
+    .post(requireAC('Users', 'createAny'), usersController.create);
+}
 
 router
-  .route('/')
-  .get(requireLogin, usersController.findAll)
-  .post(usersController.create);
+  .route('/api-key/create')
+  .put(requireAC('Users', 'createAny'), usersController.createApiKey);
 
-router.route('/random').post(usersController.randomUser);
-router.route('/search').get(usersController.search);
-router.route('/search-hosts').get(usersController.searchHosts);
+router
+  .route('/api-key/delete')
+  .put(requireAC('Users', 'createAny'), usersController.removeApiKey);
+
+router
+  .route('/can-delete')
+  .get(requireAC('Users', 'readAny'), usersController.canDelete);
+
+router
+  .route('/random')
+  .post(requireAC('Users', 'createAny'), usersController.randomUser);
+
+router
+  .route('/search')
+  .get(requireAC('Users', 'readAny'), usersController.search);
+
+router
+  .route('/search-hosts')
+  .get(requireAC('Hosts', 'readAny'), usersController.searchHosts);
 
 router
   .route('/:id')
-  .get(usersController.findById)
-  .put(usersController.update)
-  .delete(requireLogin, requireAdmin, usersController.remove);
-
-router.route('/:id/permission').put(usersController.updatePermission);
+  .get(requireAC('Users', 'readOwn'), usersController.findById)
+  .put(requireAC('Users', 'updateOwn'), usersController.update)
+  .delete(requireAC('Users', 'deleteAny'), usersController.remove);
 
 module.exports = router;

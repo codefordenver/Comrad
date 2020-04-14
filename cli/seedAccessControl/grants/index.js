@@ -1,0 +1,21 @@
+const Genres = require('./Genres');
+const Hosts = require('./Hosts');
+const Library = require('./Library');
+const Playlists = require('./Playlists');
+const Reporting = require('./Reporting');
+const Resources = require('./Resources');
+const Shows = require('./Shows');
+const Traffic = require('./Traffic');
+const Users = require('./Users');
+
+module.exports = {
+  Genres,
+  Hosts,
+  Library,
+  Playlists,
+  Reporting,
+  Resources,
+  Shows,
+  Traffic,
+  Users,
+};

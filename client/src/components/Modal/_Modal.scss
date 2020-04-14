@@ -1,4 +1,6 @@
 .modal-main {
+  max-height: 95vh;
+  overflow: auto;
   position: fixed;
   background-color: white;
   width: auto;
@@ -8,6 +10,9 @@
   transform: translate(-50%, -50%);
   opacity: 1;
   z-index: 10;
+  border: 2px solid $color-primary-light;
+  border-radius: $border-radius;
+  padding: 1rem;
 }
 
 .modal-overlay {

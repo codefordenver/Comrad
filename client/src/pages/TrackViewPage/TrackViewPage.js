@@ -1,87 +1,119 @@
 import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import axios from 'axios';
 import { formatTotalSecondsAsMMSS } from '../../utils/formatters';
 
 import Card, { CardBody } from '../../components/Card';
+import Loading from '../../components/Loading';
+
+import { libraryActions } from '../../redux';
 
 class TrackViewPage extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      track: null,
-      last_updated: '',
-    };
+  componentWillMount() {
+    const { trackState, libraryActions, match } = this.props;
+    const { id } = match.params;
 
-    axios.get('/v1/tracks/' + this.props.match.params.id).then(response => {
-      let dateObj = new Date(response.data.updated_at);
-      this.setState({
-        track: response.data,
-        last_updated:
-          dateObj.toLocaleDateString() + ' ' + dateObj.toLocaleTimeString(),
-      });
-    });
+    if (trackState.doc == null || id !== trackState.doc._id) {
+      libraryActions.findOne(id);
+    }
   }
 
   render() {
     let artistsHtml = [];
-    if (this.state.track != null) {
-      for (var i = 0; i < this.state.track.artists.length; i++) {
-        let artist = this.state.track.artists[i];
-        if (i > 0) {
-          artistsHtml.push(<span>, </span>);
+    const { match, trackState, auth } = this.props;
+    const { url, params } = match;
+    const { id } = params;
+    let lastUpdated = '';
+    if (trackState.doc != null) {
+      for (var i = 0; i < trackState.doc.artists.length; i++) {
+        let artist = trackState.doc.artists[i];
+        if (artist != null) {
+          if (i > 0) {
+            artistsHtml.push(<span>, </span>);
+          }
+          artistsHtml.push(
+            <a key={artist._id} href={'/library/artist/' + artist._id}>
+              {artist.name}
+            </a>,
+          );
         }
-        artistsHtml.push(
-          <a href={'/library/artist/' + artist._id}>{artist.name}</a>,
-        );
       }
+      let lastUpdatedDateObj = new Date(trackState.doc.updated_at);
+      lastUpdated =
+        lastUpdatedDateObj.toLocaleDateString() +
+        ' ' +
+        lastUpdatedDateObj.toLocaleTimeString();
     }
 
     return (
       <div className="track-view-page">
-        {this.state.track != null && (
-          <div>
-            <Card>
-              <CardBody>
-                <div className="float-right">
-                  Last updated: {this.state.last_updated}
-                </div>
-                <h1 className="mb-0">{this.state.track.name}</h1>
-                <div>
-                  {' '}
-                  by <span>{artistsHtml}</span>
-                </div>
-                <div>
-                  Track duration:{' '}
-                  {formatTotalSecondsAsMMSS(
-                    this.state.track.duration_in_seconds,
-                  )}
-                </div>
-                <div>
-                  from the album{' '}
-                  <a href={'/library/album/' + this.state.track.album._id}>
-                    {this.state.track.album.name}
-                  </a>
-                </div>
-                <div>Disk number: {this.state.track.disk_number}</div>
-                <div>Track number: {this.state.track.track_number}</div>
-              </CardBody>
-            </Card>
-          </div>
-        )}
+        {trackState.loading && <Loading />}
+        {!trackState.loading &&
+          trackState.doc != null &&
+          trackState.doc._id === id && (
+            <>
+              <Card>
+                <CardBody>
+                  <div className="float-right">Last updated: {lastUpdated}</div>
+                  <h1 className="mb-0">{trackState.doc.name}</h1>
+                  <div>
+                    by <span>{artistsHtml}</span>
+                  </div>
+                  <div>
+                    from the album{' '}
+                    <a href={'/library/album/' + trackState.doc.album._id}>
+                      {trackState.doc.album.name}
+                    </a>
+                  </div>
+                </CardBody>
+              </Card>
+              <Card>
+                <CardBody>
+                  <div>
+                    Track duration:{' '}
+                    {formatTotalSecondsAsMMSS(
+                      trackState.doc.duration_in_seconds,
+                    )}
+                  </div>
+                  <div>Disk number: {trackState.doc.disk_number}</div>
+                  <div>Track number: {trackState.doc.track_number}</div>
+                  {auth.doc.roles != null &&
+                    (auth.doc.roles.indexOf('Admin') !== -1 ||
+                      auth.doc.roles.indexOf('Full Access') !== -1 ||
+                      auth.doc.roles.indexOf('Music Library Admin') !== -1) && (
+                      <Link
+                        className="track-edit-button-wrapper mt-1"
+                        to={`${url}/edit`}
+                      >
+                        <div className="track-edit-button">
+                          Edit <i className="fas fa-edit" />
+                        </div>
+                      </Link>
+                    )}
+                </CardBody>
+              </Card>
+            </>
+          )}
       </div>
     );
   }
 }
 
 function mapStateToProps(state) {
-  const { error } = state.library;
   return {
-    error,
+    auth: state.auth,
+    trackState: state.library,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    libraryActions: bindActionCreators({ ...libraryActions }, dispatch),
   };
 }
 
 export default connect(
   mapStateToProps,
-  {},
+  mapDispatchToProps,
 )(TrackViewPage);

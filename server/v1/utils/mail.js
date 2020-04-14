@@ -9,13 +9,16 @@ const transport = nodemailer.createTransport({
   },
 });
 
-const emailTemplate = text => `
-  <div>
-    <h1>Reset Password!</h1>
-    <p>Link here: <span>${text}</span></p>
-    <p>Comrad Team</p>
-  </div>
-`;
+const emailTemplate = (template, mergeTags) => {
+  Object.keys(mergeTags).forEach(function(key) {
+    template = template.replace(
+      new RegExp('\\[' + key + '\\]', 'g'),
+      mergeTags[key],
+    );
+  });
+  template = template.replace(/\[(.*)\]/g, '');
+  return template;
+};
 
 module.exports = {
   transport,

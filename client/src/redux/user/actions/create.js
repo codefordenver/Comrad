@@ -4,8 +4,8 @@ import { userAPI } from '../../../api';
 export const create = (values, callback) => async dispatch => {
   try {
     dispatch({ type: userTypes.LOADING });
-
     const { data: doc } = await userAPI.create(values);
+
     const alert = {
       display: true,
       header: 'SUCCESS',

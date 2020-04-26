@@ -12,22 +12,40 @@
     max-height: 3em;
   }
 
-  .event--show {
-    max-width: 40px;
-    min-width: 40px;
+  .rbc-event--in-first-10-minutes { /* React Big Calendar incorrectly gives these a negative value for top, which would cause them not to completely display. So, we'll override that here */
+    top: 0% !important;
   }
-  .event--legal_id {
-    background: #008800;
+  
+  .event--announcement {
+    background-color: green; 
   }
-  .event--underwriting {
-    background: #880000;
+  .event--comment {
+    background-color: #BBBBBB; 
+  }
+  .event--feature {
+    background-color: royalblue; 
+  }
+  .event--giveaway {
+    background-color: darkgoldenrod; 
+  }
+  .event--legal-id {
+    background-color: indigo; 
+  }
+  .event--psa {
+    background-color: darkorange; 
+  }
+  .event--track {
+    background-color: #2694E8; 
+  }
+  .event--underwriting { 
+    background-color: slategray; 
   }
   
   .rbc-events-container {
     margin-left: 2.5em;
   }
   
-  .sleepless {
+  .show-name {
     display: grid;
     position: relative;
     
@@ -51,7 +69,6 @@
     
     &--start {
       &::before {
-        content: "Sleepless Nights";
         padding-top: 1em;
         color: #fff;
       }

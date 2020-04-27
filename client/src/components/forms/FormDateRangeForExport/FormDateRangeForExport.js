@@ -16,6 +16,10 @@ class FormDateRangeForExport extends Component {
     }
   };
 
+  componentWillUnmount() {
+    this.props.clearFields();
+  }
+
   render() {
     const { submit } = this;
     const {

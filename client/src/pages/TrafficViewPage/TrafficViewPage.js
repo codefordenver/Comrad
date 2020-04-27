@@ -7,6 +7,7 @@ import { alertActions, trafficActions } from '../../redux';
 import Button from '../../components/Button';
 import Card, { CardBody } from '../../components/Card';
 import Loading from '../../components/Loading';
+import DeleteModal from '../../components/DeleteModal';
 import Modal from '../../components/Modal';
 
 class TrafficViewPage extends Component {
@@ -42,9 +43,19 @@ class TrafficViewPage extends Component {
   };
 
   handleDeleteInstance = () => {
-    const { alertActions, trafficActions, history, traffic } = this.props;
+    const {
+      addDeleteActionReturnLocation,
+      alertActions,
+      trafficActions,
+      history,
+      traffic,
+    } = this.props;
     trafficActions.deleteInstance(traffic.doc, function() {
-      history.push('/traffic');
+      history.push(
+        addDeleteActionReturnLocation != null
+          ? addDeleteActionReturnLocation
+          : '/traffic',
+      );
       alertActions.show(
         'success',
         'Success',
@@ -54,13 +65,23 @@ class TrafficViewPage extends Component {
   };
 
   handleDeleteSeries = () => {
-    const { alertActions, trafficActions, history, traffic } = this.props;
+    const {
+      addDeleteActionReturnLocation,
+      alertActions,
+      trafficActions,
+      history,
+      traffic,
+    } = this.props;
     trafficActions.deleteSeries(
       traffic.doc.master_event_id != null
         ? traffic.doc.master_event_id._id
         : traffic.doc._id,
       function() {
-        history.push('/traffic');
+        history.push(
+          addDeleteActionReturnLocation != null
+            ? addDeleteActionReturnLocation
+            : '/traffic',
+        );
         alertActions.show(
           'success',
           'Success',
@@ -207,7 +228,7 @@ class TrafficViewPage extends Component {
             </Card>
           </>
         )}
-        {this.state.showDeleteModal && (
+        {this.state.showDeleteModal && doc.is_recurring && (
           <Modal>
             <div className="delete-traffic-modal">
               Delete only this occurrence, or the whole series of traffic
@@ -229,6 +250,14 @@ class TrafficViewPage extends Component {
             </div>
           </Modal>
         )}
+        {this.state.showDeleteModal &&
+          (!doc.is_recurring || typeof doc.is_recurring === 'undefined') && (
+            <DeleteModal
+              deleteModal={{ name: doc.traffic_details.title, type: 'traffic' }}
+              closeDeleteModal={() => this.setState({ showDeleteModal: false })}
+              deleteCallback={this.handleDeleteSeries}
+            />
+          )}
         {this.state.showEditModal && (
           <Modal>
             <div className="edit-traffic-modal">
@@ -257,6 +286,7 @@ class TrafficViewPage extends Component {
 
 function mapStateToProps({ traffic }) {
   return {
+    addDeleteActionReturnLocation: traffic.addDeleteActionReturnLocation,
     traffic,
   };
 }

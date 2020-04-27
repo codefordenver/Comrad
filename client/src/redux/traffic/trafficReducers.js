@@ -1,6 +1,7 @@
 import { trafficTypes } from './trafficTypes';
 
 const initialState = {
+  addDeleteActionReturnLocation: '/traffic',
   doc: null,
   docs: [],
   docsForDropdown: [],
@@ -14,6 +15,11 @@ const initialState = {
 
 export const trafficReducer = (state = initialState, { type, payload }) => {
   switch (type) {
+    case trafficTypes.ADD_DELETE_ACTION_RETURN_LOCATION:
+      return {
+        ...state,
+        addDeleteActionReturnLocation: payload,
+      };
     case trafficTypes.CLEAR:
       return initialState;
     case trafficTypes.EARLIEST:

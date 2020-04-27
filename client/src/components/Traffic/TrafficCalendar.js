@@ -6,11 +6,7 @@ import {
   clearShows,
   showsByTimeSlot,
   fetchingShowsStatus,
-  postingShowsStatus,
   searchShow,
-  selectShow,
-  errorShowsMessage,
-  createInstanceShow,
 } from '../../redux/show';
 import { trafficActions } from '../../redux';
 import {
@@ -61,6 +57,11 @@ class TrafficCalendar extends Component {
     const { clearShows } = this.props;
     clearShows();
   }
+
+  handleClickEvent = event => {
+    const { history } = this.props;
+    history.push('/traffic/' + event.master_time_id);
+  };
 
   handleDateChange = dates => {
     if (Array.isArray(dates)) {
@@ -115,7 +116,7 @@ class TrafficCalendar extends Component {
   };
 
   slotPropGetter = date => {
-    const { shows, timeSlotShows } = this.props;
+    const { timeSlotShows } = this.props;
 
     let className = '';
 
@@ -217,6 +218,7 @@ class TrafficCalendar extends Component {
           }}
           slotPropGetter={this.slotPropGetter}
           onNavigate={date => this.handleNavigate(date)}
+          onSelectEvent={event => this.handleClickEvent(event)}
           step={10}
           showMultiDayTimes
         />

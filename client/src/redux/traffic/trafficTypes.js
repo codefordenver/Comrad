@@ -1,4 +1,6 @@
 export const trafficTypes = {
+  ADD_DELETE_ACTION_RETURN_LOCATION:
+    'traffic_add_delete_action_return_location',
   CLEAR: 'traffic_clear',
   EARLIEST: 'traffic_earliest',
   FIND: 'traffic_find',

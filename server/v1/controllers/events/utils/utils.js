@@ -265,7 +265,12 @@ function returnSeriesEventsArrayWithNewDates(dateArray, event) {
 
 function returnInstanceEventsArray(events) {
   const allInstances = events.map(event => {
-    let instanceEvent = { ...event.toObject() };
+    let instanceEvent;
+    if (typeof event.toObject !== 'function') {
+      instanceEvent = { ...event };
+    } else {
+      instanceEvent = { ...event.toObject() };
+    }
     const { master_event_id } = instanceEvent;
 
     //This will merge any show/traffic details from the master show that are not on the instance.

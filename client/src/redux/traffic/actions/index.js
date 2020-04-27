@@ -8,6 +8,7 @@ import { findEarliest } from './findEarliest';
 import { findById } from './findById';
 import { search } from './search';
 import { searchUnderwriters } from './searchUnderwriters';
+import { setReturnPageAfterAddDeleteActions } from './setReturnPageAfterAddDeleteActions';
 import { updateInstance } from './updateInstance';
 import { updateSeries } from './updateSeries';
 
@@ -22,6 +23,7 @@ export const trafficActions = {
   findEarliest,
   search,
   searchUnderwriters,
+  setReturnPageAfterAddDeleteActions,
   updateInstance,
   updateSeries,
 };

@@ -9,10 +9,19 @@ import { alertActions, trafficActions } from '../../redux';
 
 class TrafficAddPage extends Component {
   addTrafficCallback = trafficData => {
-    const { alertActions, trafficActions, history } = this.props;
+    const {
+      addDeleteActionReturnLocation,
+      alertActions,
+      trafficActions,
+      history,
+    } = this.props;
 
     trafficActions.add(trafficData, function() {
-      history.push(`/traffic/`);
+      history.push(
+        addDeleteActionReturnLocation
+          ? addDeleteActionReturnLocation
+          : `/traffic/`,
+      );
       alertActions.show(
         'success',
         'Success',
@@ -39,6 +48,12 @@ class TrafficAddPage extends Component {
   }
 }
 
+function mapStateToProps({ traffic }) {
+  return {
+    addDeleteActionReturnLocation: traffic.addDeleteActionReturnLocation,
+  };
+}
+
 function mapDispatchToProps(dispatch) {
   return {
     alertActions: bindActionCreators({ ...alertActions }, dispatch),
@@ -47,6 +62,6 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps,
 )(TrafficAddPage);

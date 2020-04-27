@@ -178,7 +178,7 @@ export function showsByTimeSlot(state = initialState) {
   if (
     typeof state.data === 'undefined' ||
     state.data === null ||
-    state.data.length === 0
+    Object.values(state.data).length === 0
   ) {
     return timeSlots;
   }

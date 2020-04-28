@@ -163,10 +163,15 @@ function mapStateToProps(state, ownProps) {
   }
   const currentValues =
     state.form[FORM_NAME] != null ? state.form[FORM_NAME].values : {};
+  let initialValues =
+    ownProps.initialValues != null ? ownProps.initialValues : {};
+  if (ownProps.timeToAddAt != null) {
+    initialValues.start_time_utc = ownProps.timeToAddAt;
+  }
   return {
     currentValues,
     formValues: formValues,
-    initialValues: ownProps.initialValues != null ? ownProps.initialValues : {},
+    initialValues,
   };
 }
 

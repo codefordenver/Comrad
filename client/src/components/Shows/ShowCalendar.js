@@ -179,29 +179,6 @@ class Calendar extends Component {
     );
   };
 
-  startAccessorCalc(show) {
-    const { start_time_utc } = show;
-    //Basic check for shows that start and end at midnight.
-    if (
-      moment(start_time_utc).format('HH') === '00' &&
-      moment(start_time_utc).format('mm') === '00'
-    ) {
-      return new Date(moment(start_time_utc).add(1, 'second'));
-    }
-    return new Date(moment(start_time_utc));
-  }
-
-  endAccessorCalc(show) {
-    const { end_time_utc } = show;
-    if (
-      moment(end_time_utc).format('HH') === '00' &&
-      moment(end_time_utc).format('mm') === '00'
-    ) {
-      return new Date(moment(end_time_utc).add(-1, 'minute'));
-    }
-    return new Date(moment(end_time_utc));
-  }
-
   onSelectShow = show => {
     //do nothing
   };
@@ -245,8 +222,8 @@ class Calendar extends Component {
           //onSelectEvent={show => this.onSelectShow(show)}
           onSelectSlot={show => this.showNewShowModal(show)}
           titleAccessor={show => show.show_details.title}
-          startAccessor={show => this.startAccessorCalc(show)}
-          endAccessor={show => this.endAccessorCalc(show)}
+          startAccessor={show => new Date(show.start_time_utc)}
+          endAccessor={show => new Date(show.end_time_utc)}
           onRangeChange={dateRange => this.handleDateChange(dateRange)}
           onNavigate={date => this.handleNavigate(date)}
           eventPropGetter={this.eventStyleGetter}

@@ -31,6 +31,8 @@ class TrafficAddPage extends Component {
   };
 
   render() {
+    const { match } = this.props;
+    const { timeToAddAt } = match.params;
     return (
       <div className="traffic-add-page">
         <Card>
@@ -40,7 +42,10 @@ class TrafficAddPage extends Component {
         </Card>
         <Card>
           <CardBody>
-            <FormTraffic submitCallback={this.addTrafficCallback} />
+            <FormTraffic
+              submitCallback={this.addTrafficCallback}
+              timeToAddAt={timeToAddAt}
+            />
           </CardBody>
         </Card>
       </div>

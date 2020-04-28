@@ -63,6 +63,11 @@ class TrafficCalendar extends Component {
     history.push('/traffic/' + event.master_time_id);
   };
 
+  handleClickSlotEvent = slot => {
+    const { history } = this.props;
+    history.push('/traffic/add/' + moment(slot.start).format());
+  };
+
   handleDateChange = dates => {
     if (Array.isArray(dates)) {
       if (dates.length === 1) {
@@ -219,6 +224,7 @@ class TrafficCalendar extends Component {
           slotPropGetter={this.slotPropGetter}
           onNavigate={date => this.handleNavigate(date)}
           onSelectEvent={event => this.handleClickEvent(event)}
+          onSelectSlot={slot => this.handleClickSlotEvent(slot)}
           step={10}
           showMultiDayTimes
         />

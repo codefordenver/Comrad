@@ -24,6 +24,11 @@ class TrafficRoutes extends Component {
         </Switch>
         <Route
           exact
+          path={`${url}/add/:timeToAddAt`}
+          component={TrafficAddPage}
+        />
+        <Route
+          exact
           path={`${url}/edit/:masterTimeOrSeriesId`}
           component={TrafficEditPage}
         />

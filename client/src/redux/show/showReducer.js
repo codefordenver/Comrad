@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import 'moment';
+import moment from 'moment';
 import {
   SHOW_CLEAR,
   SHOW_CLEAR_ALL_INSTANCES_FOR_SERIES,
@@ -170,6 +170,48 @@ export function showReducer(state = initialState, { type, payload }) {
     default:
       return state;
   }
+}
+
+export function showsByTimeSlot(state = initialState) {
+  let timeSlots = {};
+
+  if (
+    typeof state.data === 'undefined' ||
+    state.data === null ||
+    Object.values(state.data).length === 0
+  ) {
+    return timeSlots;
+  }
+
+  // order shows by date
+  let shows = Object.values(state.data).sort(
+    (a, b) => a.start_time_utc > b.start_time_utc,
+  );
+
+  var currentShowIndex = 0;
+  var currentShow = shows[currentShowIndex];
+  var currentDateTime = moment(currentShow.start_time_utc);
+  currentDateTime.startOf('day');
+  while (currentShowIndex < shows.length) {
+    var showName = '';
+    if (
+      moment(currentShow.start_time_utc) <= currentDateTime &&
+      moment(currentShow.end_time_utc) > currentDateTime
+    ) {
+      showName = currentShow.show_details.title;
+    }
+    timeSlots[currentDateTime.format('YYYY-MM-DD HH:mm')] = showName;
+    currentDateTime.add(10, 'minutes');
+    while (moment(currentShow.end_time_utc) <= currentDateTime) {
+      currentShowIndex++;
+      if (currentShowIndex < shows.length) {
+        currentShow = shows[currentShowIndex];
+      } else {
+        break;
+      }
+    }
+  }
+  return timeSlots;
 }
 
 export function getShowsData(state = initialState) {

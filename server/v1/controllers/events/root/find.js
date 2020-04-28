@@ -134,6 +134,7 @@ function find(req, res) {
           ])
           .then(processEventResults)
           .catch(err => {
+            console.log('error in events > root > find');
             console.error(err);
             return res.status(422).json(err);
           });
@@ -144,12 +145,14 @@ function find(req, res) {
           .populate(populateMasterEvent())
           .then(processEventResults)
           .catch(err => {
+            console.log('error in events > root > find');
             console.error(err);
             return res.status(422).json(err);
           });
       }
     })
     .catch(err => {
+      console.log('error in events > root > find');
       console.error(err);
       return res.status(422).json(err);
     });

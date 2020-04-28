@@ -1,0 +1,84 @@
+.traffic-calendar {
+  .rbc-event {
+    background: $color-primary;
+    display: block;
+    height: auto !important;
+  }
+  .rbc-event-label {
+    padding-right: 0;
+  }
+  .rbc-event-content {
+    word-wrap: normal;
+    max-height: 3em;
+  }
+
+  .rbc-event--in-first-10-minutes { /* React Big Calendar incorrectly gives these a negative value for top, which would cause them not to completely display. So, we'll override that here */
+    top: 0% !important;
+  }
+  
+  .event--announcement {
+    background-color: green; 
+  }
+  .event--comment {
+    background-color: #BBBBBB; 
+  }
+  .event--feature {
+    background-color: royalblue; 
+  }
+  .event--giveaway {
+    background-color: darkgoldenrod; 
+  }
+  .event--legal-id {
+    background-color: indigo; 
+  }
+  .event--psa {
+    background-color: darkorange; 
+  }
+  .event--track {
+    background-color: #2694E8; 
+  }
+  .event--underwriting { 
+    background-color: slategray; 
+  }
+  
+  .rbc-events-container {
+    margin-left: 2.5em;
+  }
+  
+  .show-name {
+    display: grid;
+    position: relative;
+    
+    &::before {
+      background: $color-grey-4;
+      width: 2.5em;
+      padding-left: 0.4em;
+      position: relative;
+      top: -1px;
+      content: " ";
+      writing-mode: vertical-lr;
+    }
+    &::after {
+        width:2.5em;
+        position: absolute;
+        bottom: -1px;
+        height: 2px;
+        background: $color-grey-4;
+        content: " ";
+      }
+    
+    &--start {
+      &::before {
+        padding-top: 1em;
+        color: #fff;
+      }
+    }
+    
+    &--end {
+      &::after {
+        display: none;
+      }
+    }
+  }
+
+}

@@ -15,6 +15,7 @@ import ReportingRoutes from '../../routes/ReportingRoutes';
 import ResourcesRoutes from '../../routes/ResourcesRoutes';
 import ShowBuilderRoutes from '../../routes/ShowBuilderRoutes';
 import TrafficRoutes from '../../routes/TrafficRoutes';
+import TrafficCalendarRoutes from '../../routes/TrafficCalendarRoutes';
 import UserRoutes from '../../routes/UserRoutes';
 import { bindActionCreators } from 'redux';
 
@@ -38,6 +39,7 @@ class App extends Component {
             <Route path="/dashboard" component={DashboardRoutes} />
             <Route path="/error" component={ErrorRoutes} />
             <Route path="/library" component={LibraryRoutes} />
+            <Route path="/traffic-calendar" component={TrafficCalendarRoutes} />
             <Route path="/reporting" component={ReportingRoutes} />
             <Route path="/resources" component={ResourcesRoutes} />
             <Route path="/show-builder" component={ShowBuilderRoutes} />

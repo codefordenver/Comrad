@@ -3,8 +3,15 @@
   grid-template-rows: 1fr;
   grid-row-gap: 1rem;
 
+  &__header {
+    display: flex;
+  }
   h1 {
       margin-bottom: 0;
+  }
+  &__calendar-link {
+    margin-left: auto;
+    font-size: 1.5em;
   }
   &__jump-to-traffic {
     display: grid;

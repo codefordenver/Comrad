@@ -33,6 +33,7 @@ class TrafficListPage extends Component {
 
   componentDidMount = () => {
     this.updateListData();
+    trafficActions.setReturnPageAfterAddDeleteActions('/traffic');
   };
 
   componentWillUnmount() {
@@ -158,7 +159,12 @@ class TrafficListPage extends Component {
         if (numberOfTrafficItems === 0) {
           listElements.push(
             <div
-              key={'no-traffic-' + showObject._id}
+              key={
+                'no-traffic-' +
+                (showObject.master_time_id != null
+                  ? showObject.master_time_id
+                  : showObject._id)
+              }
               className="traffic-list__no-traffic"
             >
               No Traffic Events
@@ -178,7 +184,12 @@ class TrafficListPage extends Component {
       <div className="traffic-list">
         <Card>
           <CardBody>
-            <h1>Traffic List</h1>
+            <div className="traffic-list__header">
+              <h1>Traffic List</h1>
+              <div className="traffic-list__calendar-link">
+                <Link to="/traffic-calendar">Traffic Calendar</Link>
+              </div>
+            </div>
           </CardBody>
         </Card>
         <Card>

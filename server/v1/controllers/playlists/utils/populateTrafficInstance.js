@@ -9,10 +9,17 @@ function populateTrafficInstance(
   endTimeUtc,
 ) {
   if (!trafficObj.is_recurring) {
-    return {
+    let returnTraffic = {
       ...trafficObj.toObject(),
       master_time_id: masterTimeId,
     };
+    if (returnTraffic.master_event_id != null) {
+      returnTraffic.traffic_details = {
+        ...returnTraffic.master_event_id.traffic_details,
+        ...returnTraffic.traffic_details,
+      };
+    }
+    return returnTraffic;
   }
 
   let instances = allEventInstancesInDateRange(

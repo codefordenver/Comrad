@@ -5,8 +5,13 @@ module.exports = {
     //schema for custom fields:
     // name (required) - String - The name of the field in the database
     // label (required) - String - The human-readable name of the field to use in UX
-    // editFieldType (required) - String - How to display the field for editing. Possible values: checkbox, dropdown
+    // editFieldType (required) - String - How to display the field for editing. Possible values: checkbox, dropdown, text
     // options (optional) - Array - If displayType is "dropdown", this is the list of possible values to select from
+    // includeInTextIndex - Boolean - only configured for albums right now. will include this in the full text index - but requires removing & recreating the index
+    // includeInChartingReport - Boolean - only configured for albums right now. will include this in the charting report export
+    //
+    // When we set up a way to edit this, we will need a way to modify full text indexes
+    //   Mongoose will not do it on its own -- https://github.com/Automattic/mongoose/issues/4644
     album: [
       { name: 'local', label: 'Local Artist', editFieldType: 'checkbox' },
       {
@@ -20,6 +25,13 @@ module.exports = {
           'KGNU Library - discarded',
           'Not in library',
         ],
+      },
+      {
+        name: 'library_number',
+        label: 'Library Number',
+        editFieldType: 'text',
+        includeInTextIndex: true,
+        includeInChartingReport: true,
       },
     ],
     show: [

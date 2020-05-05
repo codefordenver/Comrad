@@ -19,6 +19,23 @@ function charting(req, res) {
     match_query['saved_items.executed_time_utc'] = { $lte: new Date(to) };
   }
 
+  // look for custom properties we should include in the export
+  var customPropertiesToInclude = [];
+  let customPropertiesProjection = {};
+  let customPropertiesGroup = {};
+  if ('album' in keys.modelCustomFields) {
+    keys.modelCustomFields.album.forEach(function(a) {
+      if (a.includeInChartingReport != null && a.includeInChartingReport) {
+        customPropertiesToInclude.push(a.name);
+        customPropertiesProjection[a.name + '_custom_field'] =
+          '$album_info.custom.' + a.name;
+        customPropertiesGroup[a.name + '_custom_field'] = {
+          $first: '$' + a.name + '_custom_field',
+        };
+      }
+    });
+  }
+
   db.Playlist.aggregate([
     { $unwind: { path: '$saved_items' } },
     { $match: match_query },
@@ -80,6 +97,7 @@ function charting(req, res) {
         add_date: '$album_info.created_at',
         label: '$album_info.label',
         genre: '$genre.name',
+        ...customPropertiesProjection,
       },
     },
 
@@ -92,6 +110,7 @@ function charting(req, res) {
         add_date: { $first: '$add_date' },
         label: { $first: '$label' },
         genre: { $first: '$genre' },
+        ...customPropertiesGroup,
       },
     },
     {
@@ -108,12 +127,22 @@ function charting(req, res) {
       if (albumsForCharting.length === 0) {
         return res
           .status(200)
-          .end('plays,album_title,artist,add_date,label,genre');
+          .end(
+            'plays,album_title,artist,add_date,label,genre' +
+              (customPropertiesToInclude.length > 0
+                ? ',' + customPropertiesToInclude.join(',')
+                : ''),
+          );
       }
 
       const parser = new Parser();
       const csv = parser.parse(
         albumsForCharting.map(t => {
+          let customPropertiesMapping = {};
+          for (let i = 0; i < customPropertiesToInclude.length; i++) {
+            customPropertiesMapping[customPropertiesToInclude[i]] =
+              t[customPropertiesToInclude[i] + '_custom_field'];
+          }
           return {
             plays: t.plays,
             album_title: t.album_title,
@@ -124,6 +153,7 @@ function charting(req, res) {
               .tz(keys.stationTimeZone)
               .format('YYYY-M-D h:mm:ss a'),
             genre: t.genre,
+            ...customPropertiesMapping,
           };
         }),
       );

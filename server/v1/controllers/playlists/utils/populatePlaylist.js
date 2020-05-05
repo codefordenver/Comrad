@@ -13,6 +13,7 @@ async function populatePlaylist(docPlaylist) {
     },
     {
       path: 'saved_items.traffic',
+      populate: { path: 'master_event_id' },
     },
   ]);
 

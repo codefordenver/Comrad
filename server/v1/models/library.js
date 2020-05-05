@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+const keys = require('../config/keys');
+
 //
 // The model for artists, albums and tracks is combined into one entity so
 // we can run a full-text search across the entire model
@@ -89,9 +91,20 @@ const librarySchema = new Schema(
   { collection: 'library' },
 );
 
+// check if any additional keys should be included in the text index
+let textIndex = { name: 'text' };
+if ('album' in keys.modelCustomFields) {
+  let fieldsForCustomIndex = keys.modelCustomFields.album.filter(
+    a => a.includeInTextIndex,
+  );
+  fieldsForCustomIndex.forEach(a => {
+    textIndex['custom.' + a.name] = 'text';
+  });
+}
+
 librarySchema
   .index({ type: 1, updated_at: -1 }, { background: true })
-  .index({ name: 'text' }, { background: true })
+  .index(textIndex, { background: true })
   .index({ artist: 1 }, { background: true })
   .index({ artists: 1 }, { background: true })
   .index({ album: 1, disk_number: 1, track_number: 1 }, { background: true })

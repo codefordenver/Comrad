@@ -95,6 +95,14 @@ export default class ShowBuilderItemList extends Component {
           let traffic = item.traffic;
           let trafficTime = moment(traffic.start_time_utc);
           let formattedTime = trafficTime.format('LT');
+          if (
+            traffic.traffic_details.type === null ||
+            typeof traffic.traffic_details.type === 'undefined'
+          ) {
+            console.error('Traffic event is missing its type: ');
+            console.error(traffic);
+            return <></>;
+          }
           let eventType = traffic.traffic_details.type
             .replace(/\s/g, '')
             .toLowerCase();

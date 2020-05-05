@@ -4,6 +4,7 @@ import { Field } from 'redux-form';
 
 import Checkbox from '../Checkbox';
 import Select from '../Select';
+import Input from '../Input';
 
 class CustomFieldsEdit extends Component {
   render() {
@@ -45,6 +46,17 @@ class CustomFieldsEdit extends Component {
               />,
             );
           }
+          break;
+        case 'text':
+          elements.push(
+            <Field
+              key={index}
+              className="mb-1-5"
+              component={Input}
+              label={field.label}
+              name={fieldName}
+            />,
+          );
           break;
         default:
           console.error(

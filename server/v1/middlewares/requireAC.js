@@ -9,7 +9,7 @@ function requireAC(resource, action) {
   return async function(req, res, next) {
     if (
       process.env.NODE_ENV === 'development' &&
-      !process.env.ENFORCE_PERMISSIONS_IN_DEV
+      !process.env.ENFORCE_PERMISSIONS
     ) {
       return next();
     }

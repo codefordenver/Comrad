@@ -3,9 +3,15 @@ import moment from 'moment';
 
 import FormDateRangeForExport from '../../components/forms/FormDateRangeForExport';
 
+import { API_VERSION } from '../../api/root';
+
 class ReportingChartingPage extends Component {
   handleSubmit = values => {
-    let url = process.env.REACT_APP_API_SERVER_URL + 'reporting/charting?';
+    let url =
+      process.env.REACT_APP_API_SERVER_URL +
+      '/' +
+      API_VERSION +
+      '/reporting/charting?';
 
     if (values.from != null) {
       url += 'from=' + encodeURIComponent(moment(values.from).toISOString());

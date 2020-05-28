@@ -6,6 +6,8 @@ import moment from 'moment';
 import FormDateRangeForExport from '../../components/forms/FormDateRangeForExport';
 import Loading from '../../components/Loading';
 
+import { API_VERSION } from '../../api/root';
+
 import { trafficActions } from '../../redux';
 
 class ReportingGiveawayWinnersPage extends Component {
@@ -16,7 +18,9 @@ class ReportingGiveawayWinnersPage extends Component {
   handleSubmit = values => {
     window.location.href =
       process.env.REACT_APP_API_SERVER_URL +
-      'reporting/giveaways?from=' +
+      '/' +
+      API_VERSION +
+      '/reporting/giveaways?from=' +
       encodeURIComponent(moment(values.from).toISOString()) +
       '&to=' +
       encodeURIComponent(

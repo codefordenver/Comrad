@@ -3,10 +3,15 @@ import moment from 'moment';
 
 import FormDateRangeForExport from '../../components/forms/FormDateRangeForExport';
 
+import { API_VERSION } from '../../api/root';
+
 class ReportingSoundExchangePage extends Component {
   handleSubmit = values => {
     let url =
-      process.env.REACT_APP_API_SERVER_URL + 'reporting/sound-exchange?';
+      process.env.REACT_APP_API_SERVER_URL +
+      '/' +
+      API_VERSION +
+      '/reporting/sound-exchange?';
 
     if (values.from != null) {
       url += 'from=' + encodeURIComponent(moment(values.from).toISOString());

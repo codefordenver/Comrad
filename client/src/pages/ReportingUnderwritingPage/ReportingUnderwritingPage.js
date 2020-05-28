@@ -6,6 +6,8 @@ import moment from 'moment';
 import FormDateRangeForExport from '../../components/forms/FormDateRangeForExport';
 import Loading from '../../components/Loading';
 
+import { API_VERSION } from '../../api/root';
+
 import { trafficActions } from '../../redux';
 
 class ReportingUnderwritingPage extends Component {
@@ -16,7 +18,9 @@ class ReportingUnderwritingPage extends Component {
   handleSubmit = values => {
     let url =
       process.env.REACT_APP_API_SERVER_URL +
-      'reporting/underwriting?from=' +
+      '/' +
+      API_VERSION +
+      '/reporting/underwriting?from=' +
       encodeURIComponent(moment(values.from).toISOString()) +
       '&to=' +
       encodeURIComponent(moment(values.to).toISOString());

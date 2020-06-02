@@ -9,6 +9,14 @@ require('console.table');
 
 const app = express();
 
+const logger = function(req, res, next) {
+  console.log(req.method + ': ' + req.path + ' from ' + req.ip);
+  next();
+};
+
+app.enable('trust proxy');
+
+app.use(logger);
 app.use(bodyParser.json());
 app.use(session({ secret: keys.secretKey, resave: false }));
 app.use(passport.initialize());

@@ -52,8 +52,13 @@ function requireAC(resource, action) {
 
     const dbAccessControl = await db.AccessControl.find({}, '-_id').lean();
     const ac = new AccessControl(dbAccessControl);
-
-    const permission = ac.can(req.user.roles)[action](resource);
+    let permission;
+    try {
+      permission = ac.can(req.user.roles)[action](resource);
+    } catch (err) {
+      next(err);
+      return;
+    }
 
     if (!permission.granted) {
       return res.status(403).json({

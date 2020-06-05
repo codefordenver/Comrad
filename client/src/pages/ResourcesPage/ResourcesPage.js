@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 import Button from '../../components/Button';
 import FormResourceAdd from '../../components/forms/FormResourceAdd';
@@ -26,14 +27,18 @@ class ResourcesPage extends Component {
   renderHeader = () => {
     const { handleSwitch, state } = this;
     const { resource } = this.state;
-    const { resourceCategory } = this.props;
+    const { resourceCategory, auth } = this.props;
 
     switch (state.content) {
       case 'table':
         return (
           <>
             <h3>{resourceCategory}</h3>
-            <Button onClick={() => handleSwitch('form')}>Add</Button>
+            {auth.doc.roles != null &&
+              (auth.doc.roles.indexOf('Admin') !== -1 ||
+                auth.doc.roles.indexOf('Full Access') !== -1) && (
+                <Button onClick={() => handleSwitch('form')}>Add</Button>
+              )}
           </>
         );
 
@@ -95,4 +100,13 @@ class ResourcesPage extends Component {
   }
 }
 
-export default ResourcesPage;
+function mapStateToProps({ auth }) {
+  return {
+    auth,
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  null,
+)(ResourcesPage);

@@ -545,7 +545,10 @@ class ShowBuilderPage extends Component {
                         auth.doc.roles.indexOf('Music Library Admin') ===
                           -1) && (
                         <>
-                          <b>Host:</b> {formattedHostName}
+                          <b>Host:</b>{' '}
+                          {formattedHostName.length > 0
+                            ? formattedHostName
+                            : 'No Host'}
                         </>
                       )}
                   </>
@@ -577,7 +580,8 @@ class ShowBuilderPage extends Component {
                 <h5>Scratchpad</h5>
                 {!playlist.loading &&
                   !traffic.loading &&
-                  typeof scratchpad !== 'undefined' && (
+                  typeof scratchpad !== 'undefined' &&
+                  scratchpadForDisplay.length > 0 && (
                     <ShowBuilderItemList
                       items={scratchpadForDisplay}
                       deleteButton={canEditPlaylist}
@@ -588,12 +592,19 @@ class ShowBuilderPage extends Component {
                       }
                     />
                   )}
+                {!playlist.loading &&
+                  !traffic.loading &&
+                  typeof scratchpad !== 'undefined' &&
+                  scratchpadForDisplay.length === 0 && (
+                    <i>No items on this show's Scratchpad</i>
+                  )}
               </div>
               <div className="show-builder__grid__saved-items">
                 <h5>Saved Items</h5>
                 {!playlist.loading &&
                   !traffic.loading &&
-                  typeof saved_items !== 'undefined' && (
+                  typeof saved_items !== 'undefined' &&
+                  saved_items.length > 0 && (
                     <ShowBuilderItemList
                       items={savedItemsForDisplay}
                       toScratchpadButton={canEditPlaylist}
@@ -602,6 +613,13 @@ class ShowBuilderPage extends Component {
                         this.handleFinishRearrangeSavedItem
                       }
                     />
+                  )}
+
+                {!playlist.loading &&
+                  !traffic.loading &&
+                  typeof saved_items !== 'undefined' &&
+                  saved_items.length === 0 && (
+                    <i>No items on this show's Saved Items</i>
                   )}
               </div>
 

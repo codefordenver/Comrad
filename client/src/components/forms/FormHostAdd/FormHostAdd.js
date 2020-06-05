@@ -15,7 +15,7 @@ import Input from '../../Input';
 class FormHostAdd extends Component {
   submit = (values, dispatch, props) => {
     const { userActions, submitCallback } = this.props;
-    userActions.create(values, submitCallback);
+    userActions.add(values, submitCallback, true);
   };
 
   render() {

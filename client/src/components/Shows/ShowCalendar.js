@@ -153,10 +153,17 @@ class Calendar extends Component {
   };
 
   showNewShowModal = show => {
-    const { setModalVisibility, selectShow } = this.props;
+    const { auth, setModalVisibility, selectShow } = this.props;
 
-    selectShow(show);
-    setModalVisibility(MODAL_NEW_SHOW, true, null);
+    if (
+      auth.doc.roles != null &&
+      (auth.doc.roles.indexOf('Admin') !== -1 ||
+        auth.doc.roles.indexOf('Full Access') !== -1 ||
+        auth.doc.roles.indexOf('Show Captain') !== -1)
+    ) {
+      selectShow(show);
+      setModalVisibility(MODAL_NEW_SHOW, true, null);
+    }
   };
 
   customEventWrapper = props => {
@@ -239,8 +246,9 @@ class Calendar extends Component {
   }
 }
 
-function mapStateToProps({ show }) {
+function mapStateToProps({ auth, show }) {
   return {
+    auth,
     shows: getShowsData(show),
     showsFetching: fetchingShowsStatus(show),
     showsPosting: postingShowsStatus(show),

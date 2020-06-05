@@ -2,7 +2,7 @@ import { userTypes } from '../userTypes';
 import { userAPI } from '../../../api';
 import { alertTypes } from '../../alert';
 
-export const add = (values, callback) => async dispatch => {
+export const add = (values, callback, hideAlert) => async dispatch => {
   try {
     dispatch({ type: userTypes.LOADING });
 
@@ -12,6 +12,10 @@ export const add = (values, callback) => async dispatch => {
 
     callback();
 
+    if (hideAlert) {
+      return;
+    }
+
     const alert = {
       body: `User ${doc.first_name} ${doc.last_name} was added`,
       header: 'Success',
@@ -19,7 +23,15 @@ export const add = (values, callback) => async dispatch => {
     };
 
     dispatch({ type: alertTypes.ACTIVE, payload: alert });
-  } catch (err) {
-    console.log('User Add', err);
+  } catch (e) {
+    console.log('User Add', e);
+    dispatch({
+      type: alertTypes.ACTIVE,
+      payload: {
+        type: 'danger',
+        header: 'Error',
+        body: e.response.data.errorMessage,
+      },
+    });
   }
 };

@@ -168,7 +168,7 @@ class FormUser extends Component {
               </div>
             )}
 
-            <Button className="btn btn-primary" type="submit">
+            <Button className="btn btn-primary mr-1" type="submit">
               Submit
             </Button>
             <Button color="danger" onClick={goBackCallback}>

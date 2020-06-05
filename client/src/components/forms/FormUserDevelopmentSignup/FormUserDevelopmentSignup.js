@@ -17,7 +17,7 @@ class FormUserDevelopmentSignup extends Component {
   submit = values => {
     const { history, userActions } = this.props;
 
-    return userActions.create(values, () => {
+    return userActions.add(values, () => {
       history.push('/');
     });
   };

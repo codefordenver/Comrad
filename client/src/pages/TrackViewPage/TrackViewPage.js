@@ -33,9 +33,9 @@ class TrackViewPage extends Component {
             artistsHtml.push(<span>, </span>);
           }
           artistsHtml.push(
-            <a key={artist._id} href={'/library/artist/' + artist._id}>
+            <Link key={artist._id} to={'/library/artist/' + artist._id}>
               {artist.name}
-            </a>,
+            </Link>,
           );
         }
       }
@@ -62,9 +62,9 @@ class TrackViewPage extends Component {
                   </div>
                   <div>
                     from the album{' '}
-                    <a href={'/library/album/' + trackState.doc.album._id}>
+                    <Link to={'/library/album/' + trackState.doc.album._id}>
                       {trackState.doc.album.name}
-                    </a>
+                    </Link>
                   </div>
                 </CardBody>
               </Card>

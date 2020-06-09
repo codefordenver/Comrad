@@ -189,8 +189,9 @@ function returnDatesArrayByRepeatRule(event, startDate, endDate) {
         'milliseconds',
       ), // we are subtracting one hour because RRule has not been accounting for Daylight Savings Time properly - may need to consider rewriting to remove Rrule implementation with something that's more transparent about how it handles DST
     ); //between searches on START times, and we want to get anything in progress in this date range, so subtract the event duration from the start time
+    let adjustedEndDate = new Date(moment(endDate).add(1, 'hour')); // add an hour to the end date since RRule does not account for Daylight Savings Time
 
-    let events = rule.between(adjustedStartDate, new Date(endDate));
+    let events = rule.between(adjustedStartDate, adjustedEndDate);
 
     return events;
   } catch (e) {

@@ -8,7 +8,10 @@ const initialSession = {
   nextStep: 'home',
 };
 
-mongoose.connect(keys.mongoURI, { useNewUrlParser: true });
+mongoose.connect(keys.mongoURI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
 async function index(session) {
   const updatedSession = await prompts[session.nextStep](session);

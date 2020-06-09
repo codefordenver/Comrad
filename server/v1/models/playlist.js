@@ -97,7 +97,9 @@ const playlistSchema = new Schema({
   },
 });
 
-playlistSchema.index({ start_time_utc: 1 }, { background: true });
+playlistSchema
+  .index({ start_time_utc: 1 }, { background: true })
+  .index({ 'saved_items.track': 1 }, { background: true }); //index on track for popularity aggregation
 
 const Playlist = mongoose.model('Playlist', playlistSchema);
 

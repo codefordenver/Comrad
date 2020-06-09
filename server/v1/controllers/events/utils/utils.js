@@ -1,4 +1,4 @@
-const moment = require('moment');
+const moment = require('moment-timezone');
 const { RRule } = require('rrule');
 const _ = require('lodash');
 const db = require('../../../models');
@@ -183,14 +183,28 @@ function returnDatesArrayByRepeatRule(event, startDate, endDate) {
   const rule = new RRule(createRRule(event));
   try {
     let eventDuration = event.end_time_utc - event.start_time_utc;
+    // rule.between requires that our start date and end date be adjusted by the difference between the station's timezone offset and our server timezone's offset
+    // this isn't documented, so far I've found it out by trial and error
+    // prior to 6/9/2020, I was subtracting an hour from adjustedStartDate and adding an hour to adjustedEndDate because I thought it was a DST quirk with rrule
+    // tested with:
+    // 1. Go to the dashboard while testing locally in Central Time and be sure the most recent preceding show appears in the Show Schedule on the right
+    // 2. Do the same with the server running in UTC
+    // 3. Go into a Show Builder for Morning Sound Alternative and Afternoon Sound Alternative. Ensure traffic events show in the first and last hour of the program.
+    // 4. Do the same with the server running in UTC
+    // 5. On Show Calendar, go to the DST cutoff for the year and be sure the show times are correct before and after the cutoff
+    // 6. Do the same with the server running in UTC
+    let minutesOffset =
+      moment.tz.zone(keys.stationTimeZone).utcOffset(moment(endDate)) -
+      new Date().getTimezoneOffset();
     let adjustedStartDate = new Date(
       moment(startDate).add(
-        -1 * eventDuration - 1 * 1000 * 60 * 60,
+        -1 * eventDuration - 1 * 1000 * minutesOffset * 60,
         'milliseconds',
-      ), // we are subtracting one hour because RRule has not been accounting for Daylight Savings Time properly - may need to consider rewriting to remove Rrule implementation with something that's more transparent about how it handles DST
+      ),
     ); //between searches on START times, and we want to get anything in progress in this date range, so subtract the event duration from the start time
-    let adjustedEndDate = new Date(moment(endDate).add(1, 'hour')); // add an hour to the end date since RRule does not account for Daylight Savings Time
-
+    let adjustedEndDate = new Date(
+      moment(endDate).add(minutesOffset, 'minutes'),
+    );
     let events = rule.between(adjustedStartDate, adjustedEndDate);
 
     return events;

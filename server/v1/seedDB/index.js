@@ -25,7 +25,10 @@ const PROGRESS_FILE_NAME = 'seedScriptProgress.json';
 
 async function seedDB() {
   try {
-    mongoose.connect(keys.mongoURI, { useNewUrlParser: true });
+    mongoose.connect(keys.mongoURI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: false,
+    });
 
     let scriptProgress;
 
@@ -614,45 +617,68 @@ async function seedDB() {
 
       //get the number of playlist plays for each track
       console.log('calculating plays for each track...');
-      let trackPlays = await db.Playlist.aggregate([
-        { $unwind: { path: '$saved_items' } },
-        { $match: { 'saved_items.track': { $exists: true } } },
-        { $group: { _id: '$saved_items.track', count: { $sum: 1 } } },
-        { $sort: { count: -1 } },
-        {
-          $lookup: {
-            from: 'library',
-            localField: '_id',
-            foreignField: '_id',
-            as: 'track_doc',
-          },
-        },
-        { $unwind: { path: '$track_doc' } },
-      ]).allowDiskUse(true);
-      maximumPlays = Math.log(trackPlays[0].count); //use logarithmic scale since differences in listens can be huge
+      let trackLoops = 0;
+      maximumPlays = null;
       bulkOperations = [];
-      trackPlays.forEach(function(plays) {
-        // a portion of the popularity will come from the artist, the other part will come from track plays
-        let popularity = Math.ceil((Math.log(plays.count) / maximumPlays) * 50);
-        //add the average popularity of the artists on the track
-        let artistOnTrackPopularity = [];
-        for (let i = 0; i < plays.track_doc.artists.length; i++) {
-          let artistId = plays.track_doc.artists[i];
-          if (artistId in artistPopularity) {
-            artistOnTrackPopularity.push(artistPopularity[artistId]);
-          }
-        }
-        if (artistOnTrackPopularity.length > 0) {
-          let sum = artistOnTrackPopularity.reduce((a, b) => a + b, 0);
-          popularity += Math.ceil(sum / artistOnTrackPopularity.length / 2);
-        }
-        bulkOperations.push({
-          updateOne: {
-            filter: { _id: plays._id },
-            update: { popularity: popularity },
+      // process the playlists in groups to prevent Mongo timeouts with large data sets
+      while (true) {
+        let trackPlays = await db.Playlist.aggregate([
+          { $unwind: { path: '$saved_items' } },
+          { $match: { 'saved_items.track': { $exists: true } } },
+          { $sort: { 'saved_items.track': 1 } },
+          { $group: { _id: '$saved_items.track', count: { $sum: 1 } } },
+          { $sort: { count: -1 } },
+          { $skip: trackLoops * 1000 },
+          { $limit: 1000 },
+          {
+            $lookup: {
+              from: 'library',
+              localField: '_id',
+              foreignField: '_id',
+              as: 'track_doc',
+            },
           },
+          { $unwind: { path: '$track_doc' } },
+        ]).allowDiskUse(true);
+
+        console.log(
+          'finished getting 1000 tracks for track popularity query (loops: ' +
+            String(trackLoops) +
+            ')',
+        );
+        trackLoops = trackLoops + 1;
+        if (trackPlays.length === 0) {
+          break;
+        }
+        if (maximumPlays === null) {
+          maximumPlays = Math.log(trackPlays[0].count); //use logarithmic scale since differences in listens can be huge
+        }
+        console.log('processing ' + trackPlays.length + ' tracks');
+        trackPlays.forEach(function(plays) {
+          // a portion of the popularity will come from the artist, the other part will come from track plays
+          let popularity = Math.ceil(
+            (Math.log(plays.count) / maximumPlays) * 50,
+          );
+          //add the average popularity of the artists on the track
+          let artistOnTrackPopularity = [];
+          for (let i = 0; i < plays.track_doc.artists.length; i++) {
+            let artistId = plays.track_doc.artists[i];
+            if (artistId in artistPopularity) {
+              artistOnTrackPopularity.push(artistPopularity[artistId]);
+            }
+          }
+          if (artistOnTrackPopularity.length > 0) {
+            let sum = artistOnTrackPopularity.reduce((a, b) => a + b, 0);
+            popularity += Math.ceil(sum / artistOnTrackPopularity.length / 2);
+          }
+          bulkOperations.push({
+            updateOne: {
+              filter: { _id: plays._id },
+              update: { popularity: popularity },
+            },
+          });
         });
-      });
+      }
       await db.Library.bulkWrite(bulkOperations);
 
       scriptProgress.popularityCalculation = 1;

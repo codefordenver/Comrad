@@ -207,6 +207,12 @@ function returnDatesArrayByRepeatRule(event, startDate, endDate) {
       moment(endDate).add(minutesOffset, 'minutes'),
     );
     let events = rule.between(adjustedStartDate, adjustedEndDate);
+    // undo the minutes offset
+    for (let i = 0; i < events.length; i++) {
+      events[i] = moment(events[i])
+        .subtract(minutesOffset, 'minute')
+        .format();
+    }
 
     return events;
   } catch (e) {
@@ -293,7 +299,7 @@ function returnSeriesEventsArrayWithNewDates(dateArray, event) {
       start_time_utc,
       'STRING',
       // for debugging the function
-      //, 'START', event.show_details.title === 'Sleepless Nights'
+      // 'START', event.show_details.title === 'Sleepless Nights'
     );
 
     end_time_utc = combineDayAndTime(date, end_time_utc, 'STRING', 'END');

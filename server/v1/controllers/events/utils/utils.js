@@ -186,6 +186,7 @@ function returnDatesArrayByRepeatRule(event, startDate, endDate) {
     // rule.between requires that our start date and end date be adjusted by the difference between the station's timezone offset and our server timezone's offset
     // this isn't documented, so far I've found it out by trial and error
     // prior to 6/9/2020, I was subtracting an hour from adjustedStartDate and adding an hour to adjustedEndDate because I thought it was a DST quirk with rrule
+    // the combineDayandTime function is also responsible for what gets returned on the front end: and maybe that is why this is so complicated? Maybe it could be easier if it wasn't done that way.
     // tested with:
     // 1. Go to the dashboard while testing locally in Central Time and be sure the most recent preceding show appears in the Show Schedule on the right
     // 2. Do the same with the server running in UTC
@@ -220,7 +221,11 @@ function combineDayAndTime(
   desiredTime,
   format = 'MOMENT',
   type = 'START',
+  //log = false,
 ) {
+  //if (log) {
+  //  console.log(desiredDate, desiredTime);
+  //}
   const desiredTime__hours = moment(desiredTime).hours();
   const desiredTime__minutes = moment(desiredTime).minutes();
   const desiredDate__hours = moment(desiredDate).hours();
@@ -236,12 +241,32 @@ function combineDayAndTime(
   } else if (difference > 12) {
     difference = difference - 24;
   }
+  //this code adjusts the date for daylight savings time if the server's time zone is not in daylight savings time
+  //it does this by comparing the offsets for the local server w/offsets from the station's time zone
+  //if (log) {
+  //  console.log(moment.tz.zone(moment.tz.guess()).utcOffset(moment(desiredDate)) - moment.tz.zone(moment.tz.guess()).utcOffset(moment(desiredTime)));
+  //}
+  let adjustment =
+    moment.tz.zone(keys.stationTimeZone).utcOffset(moment(desiredDate)) -
+    moment.tz.zone(keys.stationTimeZone).utcOffset(moment(desiredTime)) -
+    (moment.tz.zone(moment.tz.guess()).utcOffset(moment(desiredDate)) -
+      moment.tz.zone(moment.tz.guess()).utcOffset(moment(desiredTime)));
+  //if (log) {
+  //  console.log('adjustment',adjustment);
+  //}
+
   returnedValue = moment(desiredDate)
     .add(difference, 'hour')
     .hours(desiredTime__hours)
     .minutes(desiredTime__minutes)
     .seconds(0)
     .utc();
+
+  returnedValue.add(adjustment, 'minute');
+
+  //if (log) {
+  //  console.log('returning: ' + new Date(returnedValue));
+  //}
 
   if (format === 'MOMENT') {
     return returnedValue;
@@ -263,7 +288,13 @@ function returnSeriesEventsArrayWithNewDates(dateArray, event) {
     }
     let { start_time_utc, end_time_utc } = newEvent;
 
-    start_time_utc = combineDayAndTime(date, start_time_utc, 'STRING');
+    start_time_utc = combineDayAndTime(
+      date,
+      start_time_utc,
+      'STRING',
+      // for debugging the function
+      //, 'START', event.show_details.title === 'Sleepless Nights'
+    );
 
     end_time_utc = combineDayAndTime(date, end_time_utc, 'STRING', 'END');
 

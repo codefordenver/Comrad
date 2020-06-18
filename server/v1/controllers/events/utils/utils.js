@@ -207,6 +207,7 @@ function returnDatesArrayByRepeatRule(event, startDate, endDate) {
       moment(endDate).add(minutesOffset, 'minutes'),
     );
     let events = rule.between(adjustedStartDate, adjustedEndDate);
+
     // undo the minutes offset
     for (let i = 0; i < events.length; i++) {
       events[i] = moment(events[i])
@@ -226,12 +227,11 @@ function combineDayAndTime(
   desiredDate,
   desiredTime,
   format = 'MOMENT',
-  type = 'START',
   //log = false,
 ) {
   //if (log) {
-  //  console.log(desiredDate, desiredTime);
-  //}
+  // console.log(desiredDate, desiredTime);
+  // }
   const desiredTime__hours = moment(desiredTime).hours();
   const desiredTime__minutes = moment(desiredTime).minutes();
   const desiredDate__hours = moment(desiredDate).hours();
@@ -249,17 +249,17 @@ function combineDayAndTime(
   }
   //this code adjusts the date for daylight savings time if the server's time zone is not in daylight savings time
   //it does this by comparing the offsets for the local server w/offsets from the station's time zone
-  //if (log) {
-  //  console.log(moment.tz.zone(moment.tz.guess()).utcOffset(moment(desiredDate)) - moment.tz.zone(moment.tz.guess()).utcOffset(moment(desiredTime)));
-  //}
+  // if (log) {
+  // console.log(moment.tz.zone(moment.tz.guess()).utcOffset(moment(desiredDate)) - moment.tz.zone(moment.tz.guess()).utcOffset(moment(desiredTime)));
+  // }
   let adjustment =
     moment.tz.zone(keys.stationTimeZone).utcOffset(moment(desiredDate)) -
     moment.tz.zone(keys.stationTimeZone).utcOffset(moment(desiredTime)) -
     (moment.tz.zone(moment.tz.guess()).utcOffset(moment(desiredDate)) -
       moment.tz.zone(moment.tz.guess()).utcOffset(moment(desiredTime)));
-  //if (log) {
-  //  console.log('adjustment',adjustment);
-  //}
+  // if (log) {
+  // console.log('adjustment',adjustment);
+  // }
 
   returnedValue = moment(desiredDate)
     .add(difference, 'hour')
@@ -270,9 +270,9 @@ function combineDayAndTime(
 
   returnedValue.add(adjustment, 'minute');
 
-  //if (log) {
-  //  console.log('returning: ' + new Date(returnedValue));
-  //}
+  // if (log) {
+  // console.log('returning: ' + new Date(returnedValue));
+  // }
 
   if (format === 'MOMENT') {
     return returnedValue;
@@ -294,6 +294,8 @@ function returnSeriesEventsArrayWithNewDates(dateArray, event) {
     }
     let { start_time_utc, end_time_utc } = newEvent;
 
+    let duration = moment(end_time_utc).diff(moment(start_time_utc), 'minutes');
+
     start_time_utc = combineDayAndTime(
       date,
       start_time_utc,
@@ -302,7 +304,16 @@ function returnSeriesEventsArrayWithNewDates(dateArray, event) {
       // 'START', event.show_details.title === 'Sleepless Nights'
     );
 
-    end_time_utc = combineDayAndTime(date, end_time_utc, 'STRING', 'END');
+    //add the show duration to date so that we accurately represent show times that overlap the daylight savings break
+    end_time_utc = combineDayAndTime(
+      moment(date)
+        .add(duration, 'minutes')
+        .format(),
+      end_time_utc,
+      'STRING',
+      // for debugging the function
+      //event.show_details.title === 'Sleepless Nights'
+    );
 
     const series_event_id = newEvent._id;
     newEvent = { ...newEvent, master_event_id: { _id: series_event_id } };
@@ -359,7 +370,6 @@ function returnInstanceEventsArray(events) {
       date,
       instanceEvent.end_time_utc,
       'STRING',
-      'END',
     );
 
     instanceEvent.master_event_id = master_event_id ? master_event_id : null;

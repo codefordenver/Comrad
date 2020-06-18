@@ -11,6 +11,7 @@ import {
   SHOW_ERROR,
   SHOW_SELECTED,
 } from './showTypes';
+import { ROOT_SHOWS_URL } from '../../api/root';
 
 import { SHOW_DELETE_SERIES } from './showTypes';
 
@@ -31,7 +32,7 @@ export const clearAllButPastInstancesForShow = _id => async dispatch => {
 export const postShow = (input, callback) => async dispatch => {
   const show = input;
   try {
-    const response = await axios.post(`/v1/events/shows/`, show);
+    const response = await axios.post(`${ROOT_SHOWS_URL}/`, show);
 
     dispatch({ type: SHOW_UPDATE, payload: response.data });
 
@@ -44,7 +45,7 @@ export const postShow = (input, callback) => async dispatch => {
 
 export const createInstanceShow = (show_id, data) => async dispatch => {
   try {
-    const response = await axios.put(`/v1/events/shows/${show_id}`, data);
+    const response = await axios.put(`${ROOT_SHOWS_URL}/${show_id}`, data);
     dispatch({ type: SHOW_UPDATE, payload: response.data });
   } catch (e) {
     dispatch({ type: SHOW_ERROR, payload: e });
@@ -53,7 +54,7 @@ export const createInstanceShow = (show_id, data) => async dispatch => {
 
 export const createInstanceAndEditShow = (show_id, data) => async dispatch => {
   try {
-    const response = await axios.put(`/v1/events/shows/${show_id}`, data);
+    const response = await axios.put(`${ROOT_SHOWS_URL}/${show_id}`, data);
     dispatch({ type: SHOW_UPDATE, payload: response.data });
     const returnedShow = response.data[0];
     dispatch(selectShow(returnedShow));
@@ -68,7 +69,7 @@ export const updateShow = (
   callback = null,
 ) => async dispatch => {
   try {
-    const response = await axios.patch(`/v1/events/shows/${show_id}`, data);
+    const response = await axios.patch(`${ROOT_SHOWS_URL}/${show_id}`, data);
     dispatch({ type: SHOW_UPDATE, payload: response.data });
     if (callback) {
       callback();
@@ -85,7 +86,7 @@ export const updateSeries = (
 ) => async dispatch => {
   try {
     const response = await axios.patch(
-      `/v1/events/shows/series/${show_id}`,
+      `${ROOT_SHOWS_URL}/series/${show_id}`,
       data,
     );
     dispatch({ type: SHOW_UPDATE, payload: response.data });
@@ -99,7 +100,7 @@ export const updateSeries = (
 
 export const deleteShow = show => async dispatch => {
   try {
-    const response = await axios.delete(`/v1/events/shows/${show}`);
+    const response = await axios.delete(`${ROOT_SHOWS_URL}/${show}`);
     dispatch({ type: SHOW_DELETE, payload: response.data });
   } catch (e) {
     dispatch({ type: SHOW_ERROR, payload: e });
@@ -109,7 +110,7 @@ export const deleteShow = show => async dispatch => {
 export const deleteShowInstance = (show_id, data) => async dispatch => {
   try {
     const response = await axios.delete(
-      `/v1/events/shows/instance/${show_id}`,
+      `${ROOT_SHOWS_URL}/instance/${show_id}`,
       {
         data,
       },
@@ -122,7 +123,7 @@ export const deleteShowInstance = (show_id, data) => async dispatch => {
 
 export const deleteShowSeries = show => async dispatch => {
   try {
-    const response = await axios.delete(`/v1/events/shows/series/${show}`);
+    const response = await axios.delete(`${ROOT_SHOWS_URL}/series/${show}`);
     dispatch({ type: SHOW_DELETE_SERIES, payload: response.data });
   } catch (e) {
     dispatch({ type: SHOW_ERROR, payload: e });

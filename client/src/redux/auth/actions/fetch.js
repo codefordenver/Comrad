@@ -7,7 +7,10 @@ export const fetch = () => async dispatch => {
 
     const { data: doc } = await authAPI.fetch();
 
-    dispatch({ type: authTypes.LOGIN, payload: { doc } });
+    if (doc) {
+      //doc will be false if user is not logged in
+      dispatch({ type: authTypes.LOGIN, payload: { doc } });
+    }
   } catch (e) {
     console.log(e);
     dispatch({ type: authTypes.LOGOUT });

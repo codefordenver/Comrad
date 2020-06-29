@@ -12,6 +12,7 @@ export const login = (values, callback) => async dispatch => {
 
     callback();
   } catch (err) {
+    console.error(err);
     dispatch({
       type: alertTypes.ACTIVE,
       payload: {

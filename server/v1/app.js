@@ -1,5 +1,6 @@
 const express = require('express');
 const session = require('express-session');
+const MongoDBStore = require('connect-mongodb-session')(session);
 const passport = require('passport');
 const bodyParser = require('body-parser');
 const keys = require('./config/keys');
@@ -8,6 +9,15 @@ require('./services/passport');
 require('console.table');
 
 const app = express();
+const store = new MongoDBStore({
+  uri: keys.mongoURI,
+  collection: 'sessions',
+});
+
+store.on('error', function(error) {
+  console.log('Store ERROR');
+  console.log(error);
+});
 
 const logger = function(req, res, next) {
   console.log(req.method + ': ' + req.path + ' from ' + req.ip);
@@ -18,13 +28,31 @@ app.enable('trust proxy');
 
 app.use(logger);
 app.use(bodyParser.json());
-app.use(session({ secret: keys.secretKey, resave: false }));
+app.use(
+  session({
+    secret: keys.secretKey,
+    secure: process.env.USE_SECURE_COOKIES,
+    maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
+    resave: false,
+    saveUninitialized: false,
+    store: store,
+  }),
+);
 app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(function(req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', '*');
+  if (process.env.NODE_ENV === 'development') {
+    // allow passing credentials so API can live at a different URL than the application
+    res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+    res.header('Access-Control-Allow-Credentials', 'true');
+  } else {
+    res.header('Access-Control-Allow-Origin', '*');
+  }
+  res.header(
+    'Access-Control-Allow-Methods',
+    'POST,GET,OPTIONS,PATCH,PUT,DELETE',
+  );
   res.header(
     'Access-Control-Allow-Headers',
     'Origin, X-Requested-With, Content-Type, Accept',

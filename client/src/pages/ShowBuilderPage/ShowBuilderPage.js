@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Field, reduxForm } from 'redux-form';
 import moment from 'moment';
-import queryString from 'query-string';
 
 import Button from '../../components/Button';
 import Card, { CardBody } from '../../components/Card';
@@ -62,7 +61,9 @@ class ShowBuilderPage extends Component {
       playlistActions,
       trafficActions,
     } = this.props;
-    const { startTime, endTime } = queryString.parse(location.search);
+    const params = new URLSearchParams(location.search);
+    const startTime = params.get('startTime');
+    const endTime = params.get('endTime');
 
     //get the settings for whether we are in a compliance reporting period
     configActions.getInComplianceReportingPeriodSetting();

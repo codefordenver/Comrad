@@ -91,6 +91,7 @@
     "capitalize": "^2.0.0",
     "chance": "^1.1.0",
     "classnames": "^2.2.6",
+    "connect-mongodb-session": "^2.3.3",
     "deep-diff": "^1.0.2",
     "dotenv": "^8.1.0",
     "express": "^4.17.1",

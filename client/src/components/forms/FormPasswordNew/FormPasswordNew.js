@@ -9,7 +9,6 @@ import {
   requiredValidate,
 } from '../../../utils/validation';
 import { authActions } from '../../../redux';
-import queryString from 'query-string';
 
 import Button from '../../Button';
 import Input from '../../Input';
@@ -18,15 +17,21 @@ class FormPasswordNew extends Component {
   componentDidMount() {
     const { location, history } = this.props;
 
-    if (!location || !queryString.parse(location.search).rt) {
+    if (!location) {
       history.push('/');
+    } else {
+      let params = new URLSearchParams(location.search);
+      if (!params.get('rt')) {
+        history.push('/');
+      }
     }
   }
 
   submit = values => {
     const { authActions, history, location } = this.props;
 
-    const resetToken = queryString.parse(location.search).rt;
+    let params = new URLSearchParams(location.search);
+    const resetToken = params.get('rt');
 
     return authActions.passwordNew({ resetToken, ...values }, () => {
       history.push('/');

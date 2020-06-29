@@ -30,8 +30,6 @@ async function passwordReset(req, res) {
     .then(dbUser => res.json(dbUser))
     .catch(err => res.status(422).json(err));
 
-  const PORT = process.env.PORT || 'localhost:3000';
-
   await transport.sendMail({
     from: 'comrad.development@gmail.com',
     to: user.email,
@@ -39,7 +37,7 @@ async function passwordReset(req, res) {
     html: emailTemplate(
       fs.readFileSync('server/v1/templates/emailChangePassword.html', 'utf-8'),
       {
-        password_reset_link: `${PORT}/new?rt=${resetToken}`,
+        password_reset_link: `${process.env.URL}/new?rt=${resetToken}`,
         user_first_name: user.first_name,
       },
     ),

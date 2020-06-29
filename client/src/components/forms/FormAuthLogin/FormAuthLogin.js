@@ -4,17 +4,31 @@ import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 
 import { authActions } from '../../../redux/auth';
+import { alertTypes } from '../../../redux/alert';
 import { emailValidate, requiredValidate } from '../../../utils/validation.js';
 
 import Button from '../../Button';
 import Input from '../../Input';
 
 class FormAuthLogin extends Component {
+  componentDidMount() {
+    const { location, loginExpired } = this.props;
+    let params = new URLSearchParams(location.search);
+    if (params.get('reauthenticate') !== null) {
+      loginExpired();
+    }
+  }
+
   submit = values => {
-    const { authActions, history } = this.props;
+    const { authActions, history, location } = this.props;
 
     return authActions.login(values, () => {
-      history.push('/dashboard');
+      let params = new URLSearchParams(location.search);
+      if (params.get('returnUrl')) {
+        history.push(params.get('returnUrl'));
+      } else {
+        history.push('/dashboard');
+      }
     });
   };
 
@@ -55,6 +69,15 @@ const ReduxFormAuthLogin = reduxForm({
 function mapDispatchToProps(dispatch) {
   return {
     authActions: bindActionCreators({ ...authActions }, dispatch),
+    loginExpired: () =>
+      dispatch({
+        type: alertTypes.ACTIVE,
+        payload: {
+          header: 'Error',
+          body: 'Your session has expired. Please log in again.',
+          type: 'danger',
+        },
+      }),
   };
 }
 

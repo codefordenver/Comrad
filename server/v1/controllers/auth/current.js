@@ -4,7 +4,7 @@ function current(req, res) {
 
     delete userObj._doc.password;
 
-    res.json(userObj);
+    return res.json(userObj);
   }
 
   res.send(false);

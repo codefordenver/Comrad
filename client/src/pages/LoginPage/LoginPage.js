@@ -1,9 +1,18 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 import Button from '../../components/Button';
 import FormAuthLogin from '../../components/forms/FormAuthLogin';
 
 class LoginPage extends Component {
+  componentDidUpdate() {
+    const { auth, history } = this.props;
+    if (auth.loggedIn === true) {
+      console.log('logged in, redirecting to dashboard');
+      history.push('/dashboard');
+    }
+  }
+
   render() {
     const { props } = this;
 
@@ -35,4 +44,13 @@ class LoginPage extends Component {
   }
 }
 
-export default LoginPage;
+function mapStateToProps({ auth }) {
+  return {
+    auth,
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  null,
+)(LoginPage);

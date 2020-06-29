@@ -5,9 +5,9 @@ export const logout = callback => async dispatch => {
   try {
     await authAPI.logout('/v1/auth/logout');
 
-    dispatch({ type: authTypes.LOGOUT });
-
     callback();
+
+    dispatch({ type: authTypes.LOGOUT });
   } catch (err) {
     console.log(err);
   }

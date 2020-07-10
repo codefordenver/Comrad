@@ -1,0 +1,14 @@
+.form-host-group-add {
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-column-gap: 2rem;
+  
+  &__buttons {
+    grid-column-start: span 2;
+    text-align: right;
+    
+    button {
+      margin-left: 1rem;
+    }
+  }
+}

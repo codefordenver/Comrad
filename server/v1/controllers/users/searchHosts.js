@@ -1,5 +1,5 @@
 const db = require('../../models');
-const Fuse = require('fuse.js');
+const Fuse = require('fuse.js'); //Fuse library will let us do a fuzzy search across multiple collections, which a Mongo full-text search will not
 
 function searchHosts(req, res) {
   if (!req.user) {
@@ -30,9 +30,13 @@ function searchHosts(req, res) {
         keys: ['on_air_name', 'last_name', 'first_name'],
       };
 
-      const fuse = new Fuse(dbUsers, options);
-      const results = fuse.search(q).slice(0, maxResults);
-      return res.status(200).json(results);
+      db.UserGroups.find({}, { on_air_name: 1 })
+        .then(dbUserGroups => {
+          const fuse = new Fuse(dbUsers.concat(dbUserGroups), options);
+          const results = fuse.search(q).slice(0, maxResults);
+          return res.status(200).json(results);
+        })
+        .catch(err => res.status(422).json(err));
     })
     .catch(err => res.status(422).json(err));
 }

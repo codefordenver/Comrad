@@ -1,6 +1,7 @@
 export { authAPI } from './auth';
 export { configAPI } from './config';
 export { genreAPI } from './genre';
+export { hostGroupAPI } from './hostGroup';
 export { libraryAPI } from './library';
 export { playlistAPI } from './playlist';
 export { resourceAPI } from './resource';

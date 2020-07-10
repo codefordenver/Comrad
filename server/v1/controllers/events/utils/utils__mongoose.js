@@ -1,24 +1,20 @@
+const db = require('../../../models');
 const moment = require('moment');
 
-function formatShow(data, res = null) {
-  let show = data;
-  //Set the show end date.  If it is empty set a date that is never ending.
-
-  //Determine if the repeat dropdown was set, convert to a JSON object.
-  if (show.repeat_rule_dropdown_value) {
-    let repeat_rule = JSON.parse(show.repeat_rule_dropdown_value);
-    repeat_rule.repeat_start_date = show.repeat_rule.repeat_start_date;
-
-    if (!show.repeat_end_date) {
-      show.repeat_rule.repeat_end_date = moment('9999', 'YYYY');
+async function determineHostType(data) {
+  // if host is provided, we need to determine if this host is a User or a HostGroup
+  if ('show_details' in data && 'host' in data.show_details) {
+    console.log(
+      'seeing if ' + data.show_details.host + ' is User or HostGroup',
+    );
+    let hostGroup = await db.HostGroup.findOne({ _id: data.show_details.host });
+    if (hostGroup != null) {
+      data.show_details.host_type = 'HostGroup';
     } else {
-      show.repeat_rule.repeat_end_date = show.repeat_rule.repeat_end_date;
+      data.show_details.host_type = 'User';
     }
-  } else {
-    show.repeat_rule = {};
   }
-
-  return show;
+  return data;
 }
 
 function findEventQueryByDateRange(start, end) {
@@ -84,7 +80,7 @@ function master_time_id__byEventType(event) {
 }
 
 module.exports = {
-  formatShow,
+  determineHostType,
   findEventQueryByDateRange,
   populateShowHost,
   populateMasterEvent,

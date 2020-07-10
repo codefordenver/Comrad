@@ -119,6 +119,7 @@ class CalendarHomePage extends Component {
                 onHostSelect={this.handleHostSelect}
                 showsWithNoHostOption="Shows with No Host"
                 showAddNewHostOption={false}
+                showNewGroupOfHostsOption={false}
               />
             </div>
             <div className="calendar__view">

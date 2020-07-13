@@ -44,13 +44,6 @@ export const SidebarData = [
     allowedRoles: ['Admin', 'Full Access'],
   },
   {
-    name: 'report',
-    url: '/reporting/giveaway-winners',
-    iconClass: 'fas fa-chart-bar',
-    tooltipText: 'Reporting',
-    allowedRoles: ['Underwriting'],
-  },
-  {
     name: 'user',
     url: '/user/search',
     iconClass: 'fas fa-user',

@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import moment from 'moment';
-import { alertActions, trafficActions } from '../../redux';
+import { alertActions, configActions, trafficActions } from '../../redux';
 
 import Button from '../../components/Button';
 import Card, { CardBody } from '../../components/Card';
+import CustomFieldsView from '../../components/CustomFieldsView';
 import Loading from '../../components/Loading';
 import DeleteModal from '../../components/DeleteModal';
 import Modal from '../../components/Modal';
@@ -20,11 +21,15 @@ class TrafficViewPage extends Component {
   }
 
   componentDidMount() {
-    const { match, trafficActions } = this.props;
+    const { configActions, configState, match, trafficActions } = this.props;
     const { masterTimeId } = match.params;
 
     if (!this.isDocumentLoaded()) {
       trafficActions.findById(masterTimeId);
+    }
+
+    if (!('giveaway' in configState.customFields)) {
+      configActions.customFieldsForModel('giveaway');
     }
   }
 
@@ -114,12 +119,17 @@ class TrafficViewPage extends Component {
   };
 
   render() {
-    const { traffic } = this.props;
+    const { configState, traffic } = this.props;
     const { doc } = traffic;
 
     let formattedTime = '';
     if (this.isDocumentLoaded()) {
       formattedTime = moment(doc.start_time_utc).format('ddd, MMM D h:ma');
+    }
+
+    let giveawayCustomFields = [];
+    if ('giveaway' in configState.customFields) {
+      giveawayCustomFields = configState.customFields.giveaway;
     }
 
     return (
@@ -172,49 +182,37 @@ class TrafficViewPage extends Component {
                     </div>
                     <div>
                       Event Date:{' '}
-                      {doc.traffic_details.giveaway_details.event_date}
+                      {moment(
+                        doc.traffic_details.giveaway_details.event_date,
+                      ).format('L')}
+                    </div>
+                    <div>
+                      Event Time:{' '}
+                      {doc.traffic_details.giveaway_details.event_time}
                     </div>
                     <div>
                       Venue: {doc.traffic_details.giveaway_details.venue}
                     </div>
-                    <div>
-                      Winner:
-                      {doc.traffic_details.giveaway_details.no_winner && (
-                        <>No Winner</>
-                      )}
-                      {!doc.traffic_details.giveaway_details.no_winner &&
-                        (typeof doc.traffic_details.giveaway_details.winner ===
-                          'undefined' ||
-                          doc.traffic_details.giveaway_details.winner ===
-                            null) && (
-                          <>Giveaway result has not been entered yet</>
-                        )}
-                      {doc.traffic_details.giveaway_details.winner != null && (
-                        <ul>
-                          <li>
-                            {doc.traffic_details_giveaway_details.winner.name}
-                          </li>
-                          <li>
-                            {doc.traffic_details_giveaway_details.winner.phone}
-                          </li>
-                          <li>
-                            {doc.traffic_details_giveaway_details.winner.email}
-                          </li>
-                          <li>
-                            {
-                              doc.traffic_details_giveaway_details.winner
-                                .address
-                            }
-                          </li>
-                        </ul>
-                      )}
-                    </div>
+                    {doc.traffic_details.giveaway_details.custom && (
+                      <CustomFieldsView
+                        fieldsMeta={giveawayCustomFields}
+                        fieldsValues={
+                          doc.traffic_details.giveaway_details.custom
+                        }
+                      />
+                    )}
                   </>
                 )}
 
                 <Button
                   className="mr-1"
-                  onClick={() => this.setState({ showEditModal: true })}
+                  onClick={() => {
+                    if (this.props.traffic.doc.is_recurring) {
+                      this.setState({ showEditModal: true });
+                    } else {
+                      this.handleEditSeries();
+                    }
+                  }}
                 >
                   Edit
                 </Button>
@@ -284,9 +282,10 @@ class TrafficViewPage extends Component {
   }
 }
 
-function mapStateToProps({ traffic }) {
+function mapStateToProps({ config, traffic }) {
   return {
     addDeleteActionReturnLocation: traffic.addDeleteActionReturnLocation,
+    configState: config,
     traffic,
   };
 }
@@ -294,6 +293,7 @@ function mapStateToProps({ traffic }) {
 function mapDispatchToProps(dispatch) {
   return {
     alertActions: bindActionCreators({ ...alertActions }, dispatch),
+    configActions: bindActionCreators({ ...configActions }, dispatch),
     trafficActions: bindActionCreators({ ...trafficActions }, dispatch),
   };
 }

@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
+import { bindActionCreators } from 'redux';
+
+import { configActions } from '../../../redux';
 
 import Button from '../../Button';
 import Checkbox from '../../Checkbox';
+import CustomFieldsEdit from '../../CustomFieldsEdit';
 import { DatePicker__React } from '../../DatePicker';
 import Input from '../../Input';
 import RepeatDropdown from '../../RepeatDropdown';
@@ -25,6 +29,14 @@ class FormTrafficAdd extends Component {
     };
   }
 
+  componentWillMount() {
+    const { configState, configActions } = this.props;
+
+    if (!('giveaway' in configState.customFields)) {
+      configActions.customFieldsForModel('giveaway');
+    }
+  }
+
   toggleIsRepeat = () => {
     this.setState({
       isRepeat: !this.state.isRepeat,
@@ -33,8 +45,19 @@ class FormTrafficAdd extends Component {
 
   render() {
     const { props } = this;
-    const { currentValues, formValues, handleSubmit, submitCallback } = props;
+    const {
+      configState,
+      currentValues,
+      formValues,
+      handleSubmit,
+      submitCallback,
+    } = props;
     const { isRepeat } = this.state;
+
+    let giveawayCustomFields = [];
+    if ('giveaway' in configState.customFields) {
+      giveawayCustomFields = configState.customFields.giveaway;
+    }
 
     return (
       <form className="traffic-form" onSubmit={handleSubmit(submitCallback)}>
@@ -131,8 +154,17 @@ class FormTrafficAdd extends Component {
                 />
                 <Field
                   component={Input}
+                  label="Event Time"
+                  name="traffic_details.giveaway_details.event_time"
+                />
+                <Field
+                  component={Input}
                   label="Venue"
                   name="traffic_details.giveaway_details.venue"
+                />
+                <CustomFieldsEdit
+                  fieldsMeta={giveawayCustomFields}
+                  prefixToCustomProperty="traffic_details.giveaway_details"
                 />
               </>
             )}
@@ -158,8 +190,8 @@ class FormTrafficAdd extends Component {
 
 function mapStateToProps(state, ownProps) {
   let formValues = {};
-  if (state.form != null && state.form.trafficAdd != null) {
-    formValues = state.form.trafficAdd.values;
+  if (state.form != null && state.form[FORM_NAME] != null) {
+    formValues = state.form[FORM_NAME].values;
   }
   const currentValues =
     state.form[FORM_NAME] != null ? state.form[FORM_NAME].values : {};
@@ -169,9 +201,16 @@ function mapStateToProps(state, ownProps) {
     initialValues.start_time_utc = ownProps.timeToAddAt;
   }
   return {
+    configState: state.config,
     currentValues,
     formValues: formValues,
     initialValues,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    configActions: bindActionCreators({ ...configActions }, dispatch),
   };
 }
 
@@ -181,5 +220,5 @@ const ReduxFormTrafficAdd = reduxForm({
 
 export default connect(
   mapStateToProps,
-  {},
+  mapDispatchToProps,
 )(ReduxFormTrafficAdd);

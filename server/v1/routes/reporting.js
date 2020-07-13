@@ -11,10 +11,6 @@ router
   );
 
 router
-  .route('/giveaways')
-  .get(requireAC('Traffic', 'readAny'), reportingController.giveawayExport);
-
-router
   .route('/sound-exchange')
   .get(
     requireAC('Library', 'readAny'),

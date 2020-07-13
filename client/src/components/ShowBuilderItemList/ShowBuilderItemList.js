@@ -192,7 +192,7 @@ class ShowBuilderItemList extends Component {
                   <Button
                     color="neutral"
                     href={
-                      process.env.REACT_JOTFORM_GIVEAWAY_WINNER_FORM_URL +
+                      process.env.REACT_APP_JOTFORM_GIVEAWAY_WINNER_FORM_URL +
                       '?venue=' +
                       encodeURIComponent(
                         traffic.traffic_details.giveaway_details.venue,

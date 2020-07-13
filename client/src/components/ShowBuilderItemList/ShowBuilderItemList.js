@@ -1,12 +1,27 @@
 import React, { Component } from 'react';
 import moment from 'moment';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
+import { configActions } from '../../redux';
 
 import { DndProvider } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 
+import Button from '../Button';
 import ShowBuilderItem from './ShowBuilderItem';
 
-export default class ShowBuilderItemList extends Component {
+import { stripHtml } from '../../utils/formatters';
+
+class ShowBuilderItemList extends Component {
+  componentWillMount() {
+    const { configState, configActions } = this.props;
+
+    if (!('giveaway' in configState.customFields)) {
+      configActions.customFieldsForModel('giveaway');
+    }
+  }
+
   onRearrangeShowBuilderItem = (fromIndex, toIndex, itemBeingMoved) => {
     const { items, onRearrangeItem } = this.props;
     if (typeof onRearrangeItem === 'function') {
@@ -21,10 +36,36 @@ export default class ShowBuilderItemList extends Component {
     }
   };
 
+  urlParametersForCustomGiveawayProperties = traffic => {
+    const { configState } = this.props;
+
+    let urlParameters = '';
+
+    if (
+      'giveaway' in configState.customFields &&
+      traffic.traffic_details.giveaway_details.custom != null
+    ) {
+      configState.customFields.giveaway.forEach(function(cf) {
+        if (cf.name in traffic.traffic_details.giveaway_details.custom) {
+          urlParameters +=
+            '&' +
+            cf.jotformUrlParameter +
+            '=' +
+            encodeURIComponent(
+              traffic.traffic_details.giveaway_details.custom[cf.name],
+            );
+        }
+      });
+    }
+
+    return urlParameters;
+  };
+
   render() {
     const {
       onRearrangeShowBuilderItem,
       onFinishRearrangeShowBuilderItem,
+      urlParametersForCustomGiveawayProperties,
     } = this;
     const { items } = this.props;
 
@@ -146,6 +187,42 @@ export default class ShowBuilderItemList extends Component {
                   <i>There are no additional details for this traffic event.</i>
                 </div>
               )}
+              {traffic.traffic_details.type === 'Giveaway' && (
+                <>
+                  <Button
+                    color="neutral"
+                    href={
+                      'https://form.jotform.com/200157176078051?venue=' +
+                      encodeURIComponent(
+                        traffic.traffic_details.giveaway_details.venue,
+                      ) +
+                      '&showArtist=' +
+                      encodeURIComponent(
+                        traffic.traffic_details.giveaway_details.event_name,
+                      ) +
+                      '&showInfo=' +
+                      encodeURIComponent(
+                        stripHtml(traffic.traffic_details.description),
+                      ) +
+                      '&showTime=' +
+                      encodeURIComponent(
+                        traffic.traffic_details.giveaway_details.event_time,
+                      ) +
+                      '&showDate=' +
+                      encodeURIComponent(
+                        moment(
+                          traffic.traffic_details.giveaway_details.event_date,
+                        ).format('L'),
+                      ) +
+                      urlParametersForCustomGiveawayProperties(traffic)
+                    }
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Enter Winner Details
+                  </Button>
+                </>
+              )}
             </ShowBuilderItem>,
           );
           break;
@@ -199,3 +276,18 @@ export default class ShowBuilderItemList extends Component {
     );
   }
 }
+
+function mapStateToProps({ config }) {
+  return { configState: config };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    configActions: bindActionCreators({ ...configActions }, dispatch),
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(ShowBuilderItemList);

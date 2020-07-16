@@ -7,7 +7,6 @@ import ReportingLayout from '../../layouts/ReportingLayout';
 
 import ReportingSoundExchangePage from '../../pages/ReportingSoundExchangePage';
 import ReportingChartingPage from '../../pages/ReportingChartingPage';
-import ReportingGiveawayWinnersPage from '../../pages/ReportingGiveawayWinnersPage';
 import ReportingUnderwritingPage from '../../pages/ReportingUnderwritingPage';
 
 class ReportRoutes extends Component {
@@ -26,11 +25,6 @@ class ReportRoutes extends Component {
             exact
             path={`${url}/charting`}
             component={ReportingChartingPage}
-          />
-          <Route
-            exact
-            path={`${url}/giveaway-winners`}
-            component={ReportingGiveawayWinnersPage}
           />
           <Route
             exact

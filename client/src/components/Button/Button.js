@@ -31,6 +31,7 @@ class Button extends Component {
       className,
       color,
       disabled,
+      href,
       loading,
       onClick,
       size,
@@ -57,6 +58,24 @@ class Button extends Component {
         >
           {children}
         </Link>
+      );
+    }
+
+    if (href) {
+      return (
+        <a
+          className={classnames(
+            'button',
+            BUTTON_CLASS[color],
+            BUTTON_SIZE[size],
+            className,
+          )}
+          href={href}
+          type={type}
+          {...rest}
+        >
+          {children}
+        </a>
       );
     }
 

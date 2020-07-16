@@ -36,14 +36,9 @@ const trafficSchema = new Schema(
       giveaway_details: {
         event_name: String,
         event_date: Date,
+        event_time: String,
         venue: String,
-        winner: {
-          name: String,
-          phone: String,
-          email: String,
-          address: String,
-        },
-        no_winner: Boolean,
+        custom: Schema.Types.Mixed,
       },
     },
   },

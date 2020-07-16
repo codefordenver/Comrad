@@ -44,11 +44,6 @@ class ReportingLayout extends Component {
                   auth.doc.roles.indexOf('Full Access') !== -1 ||
                   auth.doc.roles.indexOf('Underwriting') !== -1) && (
                   <>
-                    <NavLink to="/reporting/giveaway-winners">
-                      <Button className="block mb-1 text-center w-100">
-                        Giveaway Winners
-                      </Button>
-                    </NavLink>
                     <NavLink to="/reporting/underwriting">
                       <Button className="block mb-1 text-center w-100">
                         Underwriting

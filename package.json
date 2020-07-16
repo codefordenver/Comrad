@@ -98,7 +98,7 @@
     "express-session": "^1.16.2",
     "json2csv": "^5.0.0",
     "fuse.js": "^3.4.5",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "luxon": "^1.19.3",
     "moment": "^2.24.0",
     "moment-timezone": "^0.5.27",

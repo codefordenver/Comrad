@@ -3,15 +3,21 @@ const moment = require('moment');
 
 async function determineHostType(data) {
   // if host is provided, we need to determine if this host is a User or a HostGroup
-  if ('show_details' in data && 'host' in data.show_details) {
-    console.log(
-      'seeing if ' + data.show_details.host + ' is User or HostGroup',
-    );
-    let hostGroup = await db.HostGroup.findOne({ _id: data.show_details.host });
+  if (
+    ('show_details' in data && 'host' in data.show_details) ||
+    'show_details.host' in data
+  ) {
+    let host =
+      'show_details' in data && 'host' in data.show_details
+        ? data.show_details.host
+        : data['show_details.host'];
+    console.log('seeing if ' + host + ' is User or HostGroup');
+    let hostGroup = await db.HostGroup.findOne({ _id: host });
+    console.log('found', hostGroup);
     if (hostGroup != null) {
-      data.show_details.host_type = 'HostGroup';
+      data['show_details.host_type'] = 'HostGroup';
     } else {
-      data.show_details.host_type = 'User';
+      data['show_details.host_type'] = 'User';
     }
   }
   return data;

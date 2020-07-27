@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const hostGroupSchema = new Schema({
-  onAirName: {
+  on_air_name: {
     type: String,
     required: true,
   },

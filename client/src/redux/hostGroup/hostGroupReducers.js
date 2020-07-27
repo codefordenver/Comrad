@@ -2,7 +2,7 @@ import { hostGroupTypes } from './hostGroupTypes';
 
 const initialState = {
   doc: {},
-  docsByHosts: {},
+  docsByHosts: [],
   loadingByHosts: false,
 };
 
@@ -18,6 +18,7 @@ export const hostGroupReducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         docsByHosts: payload,
+        loadingByHosts: false,
       };
 
     case hostGroupTypes.LOADING_BY_HOSTS:

@@ -7,16 +7,19 @@ function create(req, res) {
     });
     return;
   }
-  if (typeof req.body.hosts === 'undefined' || req.body.hosts.length === 0) {
+  if (typeof req.body.users === 'undefined' || req.body.users.length === 0) {
     res.status(422).json({
-      errorMessage: 'hosts is required',
+      errorMessage: 'users is required',
     });
     return;
   }
 
   return db.HostGroup.create(req.body)
     .then(dbHostGroup => res.json(dbHostGroup))
-    .catch(err => res.status(422).json(err));
+    .catch(err => {
+      console.error(err);
+      return res.status(422).json({ message: 'Error creating host group' });
+    });
 }
 
 module.exports = create;

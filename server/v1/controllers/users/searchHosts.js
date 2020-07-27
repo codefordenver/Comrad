@@ -30,15 +30,23 @@ function searchHosts(req, res) {
         keys: ['on_air_name', 'last_name', 'first_name'],
       };
 
-      db.UserGroups.find({}, { on_air_name: 1 })
-        .then(dbUserGroups => {
-          const fuse = new Fuse(dbUsers.concat(dbUserGroups), options);
+      return db.HostGroup.find({}, { on_air_name: 1 })
+        .then(dbHostGroups => {
+          const fuse = new Fuse(dbUsers.concat(dbHostGroups), options);
           const results = fuse.search(q).slice(0, maxResults);
           return res.status(200).json(results);
         })
-        .catch(err => res.status(422).json(err));
+        .catch(err => {
+          console.error('error finding host group');
+          console.error(err);
+          return res.status(422).json(err);
+        });
     })
-    .catch(err => res.status(422).json(err));
+    .catch(err => {
+      console.error('error finding users');
+      console.error(err);
+      return res.status(422).json(err);
+    });
 }
 
 module.exports = searchHosts;

@@ -6,8 +6,27 @@ export const emailValidate = value =>
 export const passwordsMatchValidate = (value, { passNew }) =>
   value !== passNew ? 'Passwords do not match' : undefined;
 
-export const requiredValidate = value =>
-  value || typeof value === 'number' ? undefined : 'Required';
+export const requiredValidate = value => {
+  if (Array.isArray(value)) {
+    if (value.length === 0) {
+      return 'Required';
+    } else {
+      let error = undefined;
+      value.forEach(v => {
+        if (
+          !v ||
+          v === null ||
+          (typeof v === 'object' && Object.keys(v).length === 0)
+        ) {
+          error = 'Required';
+        }
+      });
+      return error;
+    }
+  } else {
+    return value || typeof value === 'number' ? undefined : 'Required';
+  }
+};
 
 export const albumNeedsArtistOrCompilation = (value, allValues) => {
   // Artist set and compilation is true

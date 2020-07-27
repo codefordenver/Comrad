@@ -4,6 +4,7 @@ import classnames from 'classnames';
 import Downshift from 'downshift';
 import { connect } from 'react-redux';
 
+import { alertActions } from '../../redux/alert';
 import { authActions } from '../../redux/auth';
 import { userActions } from '../../redux/user';
 import FormHostAdd from '../forms/FormHostAdd';
@@ -126,21 +127,26 @@ class DropdownHost extends Component {
 
   // close the Add Host modal
   handleFormNewGroupOfHostsCancel = () => {
+    const { alertActions } = this.props;
     this.setState({ showNewGroupOfHostsModal: false });
+    alertActions.hide();
   };
 
   // callback for submitting the Add Host modal
   handleFormNewGroupOfHostsSubmit = hostGroup => {
+    const { alertActions } = this.props;
     this.setState({ showNewGroupOfHostsModal: false });
     this.onSelect({
       _id: hostGroup._id,
+      type: 'HostGroup',
       value: this.props.formatHostName(hostGroup),
     });
+    alertActions.hide();
   };
 
   // process a host being selected
   onSelect = (selection, stateAndHelpers) => {
-    const { input, onHostSelect } = this.props;
+    const { alertActions, input, onHostSelect } = this.props;
 
     if (selection === null) {
       return;
@@ -150,6 +156,7 @@ class DropdownHost extends Component {
       this.setState({
         showNewGroupOfHostsModal: true,
       });
+      alertActions.changeDisplayLocation('modal');
       return;
     }
 
@@ -221,6 +228,7 @@ class DropdownHost extends Component {
     } = this;
     const {
       authState,
+      hostFieldClass = 'mb-1-5',
       formatHostName,
       showAddNewHostOption = true,
       showNewGroupOfHostsOption = true,
@@ -290,7 +298,10 @@ class DropdownHost extends Component {
           highlightedIndex,
           selectedItem,
         }) => (
-          <div key="host-field" className="mb-1-5 host-field">
+          <div
+            key="host-field"
+            className={classnames('host-field', hostFieldClass)}
+          >
             <Input
               className=""
               label="Host"
@@ -317,7 +328,9 @@ class DropdownHost extends Component {
                       className: classnames(
                         'dropdown__item',
                         highlightedIndex === index && 'selected',
-                        (item === ADD_NEW_HOST || item._id === null) &&
+                        (item === ADD_NEW_HOST ||
+                          item._id === null ||
+                          item === NEW_GROUP_OF_HOSTS) &&
                           'dropdown__item--grey',
                       ),
                       item,
@@ -370,6 +383,7 @@ function mapStateToProps({ auth, user }) {
 
 function mapDispatchToProps(dispatch) {
   return {
+    alertActions: bindActionCreators({ ...alertActions }, dispatch),
     authActions: bindActionCreators({ ...authActions }, dispatch),
     formatHostName: formatHostName,
     userActions: bindActionCreators({ ...userActions }, dispatch),

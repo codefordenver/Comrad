@@ -19,7 +19,7 @@ function update(req, res) {
     return;
   }
 
-  determineHostType(body)
+  return determineHostType(body)
     .then(body => {
       //Need to refresh updated at
       dbModel

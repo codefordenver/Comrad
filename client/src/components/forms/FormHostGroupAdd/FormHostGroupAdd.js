@@ -12,20 +12,27 @@ import Input from '../../Input';
 import Loading from '../../Loading';
 
 class FormHostGroupAdd extends Component {
+  state = {
+    hostsSelectedInDropdown: [],
+  };
+
   submit = (values, dispatch, props) => {
     const { hostGroupActions, submitCallback } = this.props;
+    console.log(values);
     hostGroupActions.add(values, submitCallback, true);
   };
 
   handleHostSelect = host => {
     let { hostsSelectedInDropdown } = this.state;
+    const { hostGroupActions } = this.props;
     hostsSelectedInDropdown.push(host);
     this.setState({
       hostsSelectedInDropdown: hostsSelectedInDropdown,
     });
+    hostGroupActions.findByHosts(hostsSelectedInDropdown);
   };
 
-  renderHosts = ({ fields, meta: { error, submitFailed } }) => {
+  renderUsers = ({ fields, meta: { error, submitFailed } }) => {
     const { hostsSelectedInDropdown } = this.state;
     return (
       <div>
@@ -48,13 +55,14 @@ class FormHostGroupAdd extends Component {
                 name={`${fieldName}`}
                 type="text"
                 component={DropdownHost}
+                hostFieldClass={false}
                 onHostSelect={this.handleHostSelect}
                 showAddNewHostOption={false}
                 showNewGroupOfHostsOption={false}
                 label="Host"
                 host={
                   hostsSelectedInDropdown.filter(
-                    obj => obj._id === fields.findByHosts(index),
+                    obj => obj._id === fields.get(index),
                   )[0]
                 }
               />
@@ -64,23 +72,23 @@ class FormHostGroupAdd extends Component {
                 onClick={e => {
                   e.preventDefault();
                   fields.remove(index);
-                  hostGroupActions.getByHosts(fields);
+                  hostGroupActions.findByHosts(fields);
                 }}
               />
             </li>
           ))}
         </ul>
-        {submitFailed && error && <span>{error}</span>}
+        {submitFailed && error && <span className="input__error">{error}</span>}
       </div>
     );
   };
 
   render() {
     const { props, submit } = this;
-    const { cancelCallback, handleSubmit, hostGroups } = props;
+    const { cancelCallback, handleSubmit, hostGroup } = props;
 
     let existingHostGroups = [];
-    hostGroups.forEach(hg => {
+    hostGroup.docsByHosts.forEach(hg => {
       existingHostGroups.push(<div>{hg.on_air_name}</div>);
     });
 
@@ -88,21 +96,26 @@ class FormHostGroupAdd extends Component {
       <div>
         <form className="form-host-group-add" onSubmit={handleSubmit(submit)}>
           <Field
-            className="mb-3"
             component={Input}
             label="On-Air Name"
             name="on_air_name"
             autoFocus
             validate={requiredValidate}
           />
-          <FieldArray name="hosts" component={this.renderHosts} />
-          Existing host groups that already use these:
-          {hostGroups.loadingByHosts && <Loading />}
-          {!hostGroups.loadingByHosts && hostGroups.docsByHosts.length > 0 && (
-            <>{existingHostGroups}</>
-          )}
+          <FieldArray
+            name="users"
+            component={this.renderUsers}
+            validate={requiredValidate}
+          />
+          <div>Existing host groups that already use these:</div>
+          <div>
+            {hostGroup.loadingByHosts && <Loading displayMode="static" />}
+            {!hostGroup.loadingByHosts && hostGroup.docsByHosts.length > 0 && (
+              <>{existingHostGroups}</>
+            )}
+          </div>
           <div className="form-host-group-add__buttons">
-            <Button type="submit" disabled={!hostGroups.loadingByHosts}>
+            <Button type="submit" disabled={hostGroup.loadingByHosts}>
               Submit
             </Button>
             <Button color="neutral" onClick={cancelCallback}>
@@ -125,8 +138,8 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-function mapStateToProps({ hostGroups }) {
-  return { hostGroups };
+function mapStateToProps({ hostGroup }) {
+  return { hostGroup };
 }
 
 export default connect(

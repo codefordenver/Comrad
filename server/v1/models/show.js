@@ -13,7 +13,7 @@ const showSchema = new Schema({
     host: {
       type: Schema.Types.ObjectId,
       refPath: function() {
-        return 'Show.show_details.host_type';
+        return 'show_details.host_type';
       },
     },
     host_type: { type: String, default: 'User' }, // whichever collection the host value refers to, either User or HostGroup

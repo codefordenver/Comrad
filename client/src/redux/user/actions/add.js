@@ -6,11 +6,11 @@ export const add = (values, callback, hideAlert) => async dispatch => {
   try {
     dispatch({ type: userTypes.LOADING });
 
-    const { data: doc } = await userAPI.add(values);
+    const doc = await userAPI.add(values);
 
     dispatch({ type: userTypes.ADD, payload: { doc } });
 
-    callback();
+    callback(doc);
 
     if (hideAlert) {
       return;

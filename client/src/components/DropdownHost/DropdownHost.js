@@ -156,6 +156,7 @@ class DropdownHost extends Component {
       this.setState({
         showNewGroupOfHostsModal: true,
       });
+      stateAndHelpers.clearSelection(); // clear the Downshift selection so that we can click the "add new host" button again
       alertActions.changeDisplayLocation('modal');
       return;
     }

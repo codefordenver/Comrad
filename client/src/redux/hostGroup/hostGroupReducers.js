@@ -1,8 +1,10 @@
 import { hostGroupTypes } from './hostGroupTypes';
 
 const initialState = {
-  doc: {},
+  doc: null,
+  docs: [],
   docsByHosts: [],
+  loading: false,
   loadingByHosts: false,
 };
 
@@ -14,11 +16,35 @@ export const hostGroupReducer = (state = initialState, { type, payload }) => {
         ...payload,
       };
 
+    case hostGroupTypes.CLEAR:
+      return {
+        ...initialState,
+      };
+
+    case hostGroupTypes.FIND_ALL:
+      return {
+        ...state,
+        loading: false,
+        docs: payload,
+      };
+
+    case hostGroupTypes.FIND_BY_ID:
+      return {
+        ...state,
+        doc: payload,
+      };
+
     case hostGroupTypes.FOUND_BY_HOSTS:
       return {
         ...state,
         docsByHosts: payload,
         loadingByHosts: false,
+      };
+
+    case hostGroupTypes.LOADING:
+      return {
+        ...state,
+        loading: true,
       };
 
     case hostGroupTypes.LOADING_BY_HOSTS:

@@ -9,7 +9,7 @@ function find(req, res) {
   }
 
   return db.HostGroup.find({
-    hosts: { $all: req.query.host, $size: req.query.host.length },
+    users: { $all: req.query.host, $size: req.query.host.length },
   })
     .then(dbHostGroups => res.json(dbHostGroups))
     .catch(err => res.status(422).json(err));

@@ -9,7 +9,6 @@ import DropdownHost from '../../DropdownHost';
 import Button from '../../Button';
 import ButtonIcon from '../../ButtonIcon';
 import Input from '../../Input';
-import Loading from '../../Loading';
 
 class FormHostGroupAdd extends Component {
   state = {
@@ -18,14 +17,26 @@ class FormHostGroupAdd extends Component {
 
   submit = (values, dispatch, props) => {
     const { hostGroupActions, submitCallback } = this.props;
-    console.log(values);
-    hostGroupActions.add(values, submitCallback, true);
+    hostGroupActions.add(
+      values,
+      function(value) {
+        hostGroupActions.clear();
+        submitCallback(value);
+      },
+      true,
+    );
   };
 
-  handleHostSelect = host => {
+  useExistingHostGroup = hostGroup => {
+    const { submitCallback, hostGroupActions } = this.props;
+    hostGroupActions.clear();
+    submitCallback(hostGroup);
+  };
+
+  handleHostSelect = (host, index) => {
     let { hostsSelectedInDropdown } = this.state;
     const { hostGroupActions } = this.props;
-    hostsSelectedInDropdown.push(host);
+    hostsSelectedInDropdown[index] = host;
     this.setState({
       hostsSelectedInDropdown: hostsSelectedInDropdown,
     });
@@ -34,6 +45,8 @@ class FormHostGroupAdd extends Component {
 
   renderUsers = ({ fields, meta: { error, submitFailed } }) => {
     const { hostsSelectedInDropdown } = this.state;
+    const { hostGroupActions } = this.props;
+    let self = this;
     return (
       <div>
         <ul className="form-host-group-add__host-list">
@@ -44,25 +57,29 @@ class FormHostGroupAdd extends Component {
               type="button"
               onClick={e => {
                 e.preventDefault();
-                fields.push({});
-                hostGroupActions.findByHosts(fields);
+                hostsSelectedInDropdown.push(null);
+                self.setState({ hostsSelectedInDropdown });
+                fields.push(null);
               }}
             />
           </li>
           {fields.map((fieldName, index) => (
             <li key={'field_' + index}>
               <Field
+                key={'field-' + index + '-' + fields.get(index)}
                 name={`${fieldName}`}
                 type="text"
                 component={DropdownHost}
                 hostFieldClass={false}
-                onHostSelect={this.handleHostSelect}
+                onHostSelect={selectedValue =>
+                  this.handleHostSelect(selectedValue, index)
+                }
                 showAddNewHostOption={false}
                 showNewGroupOfHostsOption={false}
                 label="Host"
                 host={
                   hostsSelectedInDropdown.filter(
-                    obj => obj._id === fields.get(index),
+                    obj => obj != null && obj._id === fields.get(index),
                   )[0]
                 }
               />
@@ -71,8 +88,10 @@ class FormHostGroupAdd extends Component {
                 type="button"
                 onClick={e => {
                   e.preventDefault();
+                  hostsSelectedInDropdown.splice(index, 1);
+                  self.setState({ hostsSelectedInDropdown });
                   fields.remove(index);
-                  hostGroupActions.findByHosts(fields);
+                  hostGroupActions.findByHosts(hostsSelectedInDropdown);
                 }}
               />
             </li>
@@ -84,12 +103,23 @@ class FormHostGroupAdd extends Component {
   };
 
   render() {
-    const { props, submit } = this;
+    const { props, submit, useExistingHostGroup } = this;
     const { cancelCallback, handleSubmit, hostGroup } = props;
 
     let existingHostGroups = [];
-    hostGroup.docsByHosts.forEach(hg => {
-      existingHostGroups.push(<div>{hg.on_air_name}</div>);
+    hostGroup.docsByHosts.forEach((hg, idx) => {
+      existingHostGroups.push(
+        <div key={'existing-group-' + idx}>
+          <i>{hg.on_air_name}</i>{' '}
+          <span
+            onClick={function() {
+              useExistingHostGroup(hg);
+            }}
+          >
+            Use this group
+          </span>
+        </div>,
+      );
     });
 
     return (
@@ -107,11 +137,14 @@ class FormHostGroupAdd extends Component {
             component={this.renderUsers}
             validate={requiredValidate}
           />
-          <div>Existing host groups that already use these:</div>
           <div>
-            {hostGroup.loadingByHosts && <Loading displayMode="static" />}
             {!hostGroup.loadingByHosts && hostGroup.docsByHosts.length > 0 && (
-              <>{existingHostGroups}</>
+              <div className="form-host-group-add__existing-hosts">
+                <div>
+                  The following groups already exist with the same set of DJs:
+                </div>
+                {existingHostGroups}
+              </div>
             )}
           </div>
           <div className="form-host-group-add__buttons">

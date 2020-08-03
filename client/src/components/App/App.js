@@ -10,6 +10,7 @@ import CalendarRoutes from '../../routes/CalendarRoutes';
 import DashboardRoutes from '../../routes/DashboardRoutes';
 import ErrorRoutes from '../../routes/ErrorRoutes';
 import HomeRoutes from '../../routes/HomeRoutes';
+import HostGroupRoutes from '../../routes/HostGroupRoutes';
 import LibraryRoutes from '../../routes/LibraryRoutes';
 import ReportingRoutes from '../../routes/ReportingRoutes';
 import ResourcesRoutes from '../../routes/ResourcesRoutes';
@@ -38,6 +39,7 @@ class App extends Component {
             <Route path="/calendar" component={CalendarRoutes} />
             <Route path="/dashboard" component={DashboardRoutes} />
             <Route path="/error" component={ErrorRoutes} />
+            <Route path="/host-group" component={HostGroupRoutes} />
             <Route path="/library" component={LibraryRoutes} />
             <Route path="/traffic-calendar" component={TrafficCalendarRoutes} />
             <Route path="/reporting" component={ReportingRoutes} />

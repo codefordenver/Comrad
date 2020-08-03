@@ -26,4 +26,14 @@
       }
     }
   }
+  
+  &__existing-hosts {
+    font-size: 1.5em;
+    span {
+      cursor: pointer;
+      text-decoration: underline;
+      color: $color-primary;
+      margin-left: 0.5em;
+    }
+  }
 }

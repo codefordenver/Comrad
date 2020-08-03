@@ -1,0 +1,23 @@
+.host-group-search {
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-row-gap: 1rem;  
+  
+  &__container {
+    background: #fff;
+  }
+  
+  &__grid {
+    &__edit-options {
+      overflow: visible !important;
+      padding-right: 1.5rem !important;
+
+      .dropdown__list {
+        min-width: 6rem;
+      }
+      .dropdown__icon {
+        color: $color-grey-3;
+      }
+    }
+  }
+}

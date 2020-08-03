@@ -148,7 +148,6 @@ class TableAlbumTracks extends Component {
           <DeleteModal
             deleteModal={deleteModal}
             closeDeleteModal={this.closeDeleteModal}
-            deleteEntity={this.deleteEntity}
             deleteSuccess={this.deleteSuccess}
             deleteFailure={this.deleteFailure}
           />

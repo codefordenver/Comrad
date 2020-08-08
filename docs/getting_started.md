@@ -37,4 +37,10 @@ If, on using `npm run [command]`, you receive an error like the following:
 [1] However, a different version of babel-loader was detected higher up in the tree:
 ```
 
-Then, open/create the `.env` file in the client folder and add the line `SKIP_PREFLIGHT_CHECK=true`
+Then, open/create the `.env` file in the client folder and add the line `SKIP_PREFLIGHT_CHECK=true`.
+
+If you have to create a `.env` file in your client folder, you may also need to specify its location in the `server/index.js` file to avoid a Mongoose error. Edit line 1 as so:
+
+```
+require('dotenv').config({ path: 'client/.env' });
+```

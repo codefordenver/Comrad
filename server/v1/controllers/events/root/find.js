@@ -4,6 +4,7 @@ const {
     findEventQueryByDateRange,
     populateShowHost,
     populateMasterEvent,
+    populateMasterEventShowDetails,
   },
 } = require('../utils');
 
@@ -91,7 +92,7 @@ function find(req, res) {
           showResults = showResults.filter(function(val) {
             return (
               val.show_details.host != null &&
-              val.show_details.host._id === host
+              String(val.show_details.host._id) === String(host)
             );
           });
         }
@@ -143,6 +144,7 @@ function find(req, res) {
           .find(filter)
           .populate(populateShowHost())
           .populate(populateMasterEvent())
+          .populate(populateMasterEventShowDetails())
           .then(processEventResults)
           .catch(err => {
             console.log('error in events > root > find');

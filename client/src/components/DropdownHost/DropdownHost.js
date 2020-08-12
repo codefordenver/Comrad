@@ -263,6 +263,15 @@ class DropdownHost extends Component {
         _id: authState.doc._id,
         value: formatHostName(authState.doc) + ' (Me)',
       });
+      // add the user's host groups
+      if (authState.doc.host_groups != null) {
+        authState.doc.host_groups.forEach(hg => {
+          items.push({
+            _id: hg._id,
+            value: hg.on_air_name,
+          });
+        });
+      }
     }
 
     if (showsWithNoHostOption) {

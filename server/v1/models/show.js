@@ -16,7 +16,7 @@ const showSchema = new Schema({
         return 'show_details.host_type';
       },
     },
-    host_type: { type: String, default: 'User' }, // whichever collection the host value refers to, either User or HostGroup
+    host_type: { type: String, required: true, default: 'User' }, // whichever collection the host value refers to, either User or HostGroup
     guests: { type: [String], default: null },
     custom: Schema.Types.Mixed, // this will be an object that can contain any number of custom properties
   },

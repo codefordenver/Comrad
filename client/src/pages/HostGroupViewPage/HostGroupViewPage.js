@@ -19,7 +19,7 @@ class HostGroupViewPage extends Component {
 
   handleEdit = () => {
     const { history, hostGroup } = this.props;
-    history.push('/host-group/edit/' + hostGroup.doc._id);
+    history.push('/host-group/' + hostGroup.doc._id + '/edit');
   };
 
   render() {
@@ -30,7 +30,7 @@ class HostGroupViewPage extends Component {
     let hosts = [];
     if (doc != null) {
       doc.users.forEach(u => {
-        hosts.push(<div>{u.on_air_name}</div>);
+        hosts.push(<div key={'host-' + u._id}>{u.on_air_name}</div>);
       });
     }
 

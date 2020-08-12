@@ -4,6 +4,7 @@ import { findAll } from './findAll';
 import { findById } from './findById';
 import { findByHosts } from './findByHosts';
 import { remove } from './remove';
+import { update } from './update';
 
 export const hostGroupActions = {
   add,
@@ -12,4 +13,5 @@ export const hostGroupActions = {
   findById,
   findByHosts,
   remove,
+  update,
 };

@@ -8,12 +8,13 @@ router
   .post(requireAC('HostGroups', 'createAny'), hostGroupsController.create);
 
 router
-  .route('/:id')
-  .get(requireAC('HostGroups', 'readAny'), hostGroupsController.findById)
-  .delete(requireAC('HostGroups', 'updateAny'), hostGroupsController.remove);
-
-router
   .route('/all')
   .get(requireAC('HostGroups', 'readAny'), hostGroupsController.findAll);
+
+router
+  .route('/:id')
+  .get(requireAC('HostGroups', 'readAny'), hostGroupsController.findById)
+  .delete(requireAC('HostGroups', 'updateAny'), hostGroupsController.remove)
+  .put(requireAC('HostGroups', 'updateAny'), hostGroupsController.update);
 
 module.exports = router;

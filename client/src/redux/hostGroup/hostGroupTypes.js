@@ -6,4 +6,5 @@ export const hostGroupTypes = {
   FOUND_BY_HOSTS: 'host_group_find_by_hosts',
   LOADING: 'host_group_loading',
   LOADING_BY_HOSTS: 'host_group_loading_by_hosts',
+  UPDATE: 'host_group_update',
 };

@@ -71,6 +71,13 @@ function populateMasterEvent() {
   };
 }
 
+function populateMasterEventShowDetails() {
+  return {
+    path: 'show_details.host.master_event_id',
+    select: 'first_name last_name on_air_name',
+  };
+}
+
 function master_time_id(_id, start_time) {
   return _id + '-' + moment(start_time);
 }
@@ -90,6 +97,7 @@ module.exports = {
   findEventQueryByDateRange,
   populateShowHost,
   populateMasterEvent,
+  populateMasterEventShowDetails,
   master_time_id,
   master_time_id__byEventType,
 };

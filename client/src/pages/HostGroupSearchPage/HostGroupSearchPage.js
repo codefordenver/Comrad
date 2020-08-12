@@ -54,7 +54,7 @@ class HostGroupSearchPage extends Component {
   handleRowEditClick = data => {
     const { history } = this.props;
     const { _id } = data._original;
-    history.push('/host-group/edit/' + _id);
+    history.push('/host-group/' + _id + '/edit');
   };
 
   handleRowDeleteClick = data => {

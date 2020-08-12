@@ -3,6 +3,7 @@ const find = require('./find');
 const findAll = require('./findAll');
 const findById = require('./findById');
 const remove = require('./remove');
+const update = require('./update');
 
 module.exports = {
   create,
@@ -10,4 +11,5 @@ module.exports = {
   findAll,
   findById,
   remove,
+  update,
 };

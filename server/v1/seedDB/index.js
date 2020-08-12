@@ -292,6 +292,7 @@ async function seedDB() {
           show.show_details.host = await userByOnAirName(
             show.show_details.host,
           );
+          show.show_details.host = show.show_details.host._id;
         }
         let showInstances = [];
         if (show.instances) {
@@ -324,6 +325,7 @@ async function seedDB() {
               instance.show_details.host = await userByOnAirName(
                 instance.show_details.host,
               );
+              instance.show_details.host = instance.show_details.host._id;
             }
 
             //This assume that all instances are a single day so the start and end date are the same

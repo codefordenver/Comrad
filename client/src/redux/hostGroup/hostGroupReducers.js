@@ -53,6 +53,12 @@ export const hostGroupReducer = (state = initialState, { type, payload }) => {
         loadingByHosts: true,
       };
 
+    case hostGroupTypes.UPDATE:
+      return {
+        ...state,
+        doc: payload,
+      };
+
     default:
       return state;
   }

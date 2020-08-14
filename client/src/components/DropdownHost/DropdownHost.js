@@ -121,6 +121,7 @@ class DropdownHost extends Component {
     this.setState({ showAddHostModal: false });
     this.onSelect({
       _id: user._id,
+      host_type: 'User',
       value: this.props.formatHostName(user),
     });
   };
@@ -138,7 +139,7 @@ class DropdownHost extends Component {
     this.setState({ showNewGroupOfHostsModal: false });
     this.onSelect({
       _id: hostGroup._id,
-      type: 'HostGroup',
+      host_type: 'HostGroup',
       value: this.props.formatHostName(hostGroup),
     });
     alertActions.hide();
@@ -254,6 +255,7 @@ class DropdownHost extends Component {
 
       return {
         _id,
+        host_type: user.type,
         value: formatHostName(user),
       };
     });
@@ -261,6 +263,7 @@ class DropdownHost extends Component {
     if (items.length === 0) {
       items.push({
         _id: authState.doc._id,
+        host_type: 'User',
         value: formatHostName(authState.doc) + ' (Me)',
       });
       // add the user's host groups
@@ -268,6 +271,7 @@ class DropdownHost extends Component {
         authState.doc.host_groups.forEach(hg => {
           items.push({
             _id: hg._id,
+            host_type: 'HostGroup',
             value: hg.on_air_name,
           });
         });

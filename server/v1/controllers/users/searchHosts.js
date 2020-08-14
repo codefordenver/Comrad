@@ -20,6 +20,10 @@ function searchHosts(req, res) {
     last_name: 1,
   })
     .then(dbUsers => {
+      for (let i = 0; i < dbUsers.length; i++) {
+        dbUsers[i] = dbUsers[i].toObject();
+        dbUsers[i].type = 'User';
+      }
       const options = {
         shouldSort: true,
         threshold: 0.3,
@@ -30,8 +34,12 @@ function searchHosts(req, res) {
         keys: ['on_air_name', 'last_name', 'first_name'],
       };
 
-      return db.HostGroup.find({}, { on_air_name: 1 })
+      return db.HostGroup.find({}, { on_air_name: 1, type: 'HostGroup' })
         .then(dbHostGroups => {
+          for (let i = 0; i < dbHostGroups.length; i++) {
+            dbHostGroups[i] = dbHostGroups[i].toObject();
+            dbHostGroups[i].type = 'HostGroup';
+          }
           const fuse = new Fuse(dbUsers.concat(dbHostGroups), options);
           const results = fuse.search(q).slice(0, maxResults);
           return res.status(200).json(results);

@@ -11,6 +11,10 @@ async function determineHostType(data) {
       'show_details' in data && 'host' in data.show_details
         ? data.show_details.host
         : data['show_details.host'];
+    if (host === null) {
+      data['show_details.host_type'] = 'User';
+      return data;
+    }
     console.log('seeing if ' + host + ' is User or HostGroup');
     let hostGroup = await db.HostGroup.findOne({ _id: host });
     console.log('found', hostGroup);

@@ -52,12 +52,20 @@ class ShowListForUser extends Component {
     const {
       currentUserId,
       doNotIncludeNowPlaying = false,
+      hostGroups,
       endDate,
       maxItems,
       sortNewestToOldest = false,
       startDate,
     } = this.props;
-    showAPI.find(startDate, endDate, currentUserId).then(response => {
+    let hostsToSearch = currentUserId;
+    if (hostGroups != null && hostGroups.length > 0) {
+      hostsToSearch = [currentUserId];
+      hostGroups.forEach(hg => {
+        hostsToSearch.push(hg._id);
+      });
+    }
+    showAPI.find(startDate, endDate, hostsToSearch).then(response => {
       let results = response.data;
       if (doNotIncludeNowPlaying) {
         //remove any shows that are currently playing
@@ -180,6 +188,7 @@ function mapStateToProps(state, ownProps) {
   return {
     currentUserId:
       state.user.doc._id != null ? state.user.doc._id : state.auth.doc._id,
+    hostGroups: state.auth.doc.host_groups,
   };
 }
 

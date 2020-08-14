@@ -1,6 +1,6 @@
 const {
   utils: { eventList, getModelForEventType },
-  utils__mongoose: { populateShowHost, populateMasterEvent },
+  utils__mongoose: { determineHostType, populateShowHost, populateMasterEvent },
 } = require('../utils');
 
 function update(req, res) {
@@ -19,13 +19,19 @@ function update(req, res) {
     return;
   }
 
-  //Need to refresh updated at
-  dbModel
-    .findOneAndUpdate({ _id: id }, body, { new: true })
-    .populate(populateShowHost())
-    .populate(populateMasterEvent())
-    .then(dbShow => {
-      res.json(eventList(dbShow, startDate, endDate));
+  return determineHostType(body)
+    .then(body => {
+      //Need to refresh updated at
+      dbModel
+        .findOneAndUpdate({ _id: id }, body, { new: true })
+        .populate(populateShowHost())
+        .populate(populateMasterEvent())
+        .then(dbShow => {
+          res.json(eventList(dbShow, startDate, endDate));
+        })
+        .catch(err => {
+          res.status(422).json(err);
+        });
     })
     .catch(err => {
       res.status(422).json(err);

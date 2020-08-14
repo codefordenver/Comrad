@@ -6,7 +6,7 @@
 export const formatHostName = user => {
   const { first_name, last_name, on_air_name } = user;
 
-  return on_air_name || first_name + ' ' + last_name;
+  return user.value || on_air_name || first_name + ' ' + last_name;
 };
 
 /**

@@ -7,11 +7,12 @@ const {
     populateShowHost,
     populateMasterEvent,
     findEventQueryByDateRange,
+    determineHostType,
   },
 } = require('../utils');
 
 async function update(req, res) {
-  const { body } = req;
+  let { body } = req;
   let {
     body: { startDate, endDate },
   } = req;
@@ -71,6 +72,8 @@ async function update(req, res) {
       delete body['repeat_rule.repeat_start_date'];
     }
   }
+
+  body = await determineHostType(body);
 
   console.log('updating series');
   console.log(body);

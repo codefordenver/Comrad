@@ -1,24 +1,30 @@
+const db = require('../../../models');
 const moment = require('moment');
 
-function formatShow(data, res = null) {
-  let show = data;
-  //Set the show end date.  If it is empty set a date that is never ending.
-
-  //Determine if the repeat dropdown was set, convert to a JSON object.
-  if (show.repeat_rule_dropdown_value) {
-    let repeat_rule = JSON.parse(show.repeat_rule_dropdown_value);
-    repeat_rule.repeat_start_date = show.repeat_rule.repeat_start_date;
-
-    if (!show.repeat_end_date) {
-      show.repeat_rule.repeat_end_date = moment('9999', 'YYYY');
-    } else {
-      show.repeat_rule.repeat_end_date = show.repeat_rule.repeat_end_date;
+async function determineHostType(data) {
+  // if host is provided, we need to determine if this host is a User or a HostGroup
+  if (
+    ('show_details' in data && 'host' in data.show_details) ||
+    'show_details.host' in data
+  ) {
+    let host =
+      'show_details' in data && 'host' in data.show_details
+        ? data.show_details.host
+        : data['show_details.host'];
+    if (host === null) {
+      data['show_details.host_type'] = 'User';
+      return data;
     }
-  } else {
-    show.repeat_rule = {};
+    console.log('seeing if ' + host + ' is User or HostGroup');
+    let hostGroup = await db.HostGroup.findOne({ _id: host });
+    console.log('found', hostGroup);
+    if (hostGroup != null) {
+      data['show_details.host_type'] = 'HostGroup';
+    } else {
+      data['show_details.host_type'] = 'User';
+    }
   }
-
-  return show;
+  return data;
 }
 
 function findEventQueryByDateRange(start, end) {
@@ -69,6 +75,13 @@ function populateMasterEvent() {
   };
 }
 
+function populateMasterEventShowDetails() {
+  return {
+    path: 'show_details.host.master_event_id',
+    select: 'first_name last_name on_air_name',
+  };
+}
+
 function master_time_id(_id, start_time) {
   return _id + '-' + moment(start_time);
 }
@@ -84,10 +97,11 @@ function master_time_id__byEventType(event) {
 }
 
 module.exports = {
-  formatShow,
+  determineHostType,
   findEventQueryByDateRange,
   populateShowHost,
   populateMasterEvent,
+  populateMasterEventShowDetails,
   master_time_id,
   master_time_id__byEventType,
 };

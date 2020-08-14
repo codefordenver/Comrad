@@ -5,6 +5,7 @@ import { alertReducer } from './alert';
 import { authReducer } from './auth';
 import { configReducer } from './config';
 import { genreReducer } from './genre';
+import { hostGroupReducer } from './hostGroup';
 import { libraryReducer } from './library';
 import { modalReducer } from './modal';
 import { playlistReducer } from './playlist';
@@ -17,6 +18,7 @@ export * from './alert';
 export * from './auth';
 export * from './config';
 export * from './genre';
+export * from './hostGroup';
 export * from './library';
 export * from './playlist';
 export * from './traffic';
@@ -28,6 +30,7 @@ export default combineReducers({
   config: configReducer,
   form: formReducer,
   genre: genreReducer,
+  hostGroup: hostGroupReducer,
   library: libraryReducer,
   modal: modalReducer,
   playlist: playlistReducer,

@@ -4,6 +4,7 @@ const {
     findEventQueryByDateRange,
     populateShowHost,
     populateMasterEvent,
+    populateMasterEventShowDetails,
   },
 } = require('../utils');
 
@@ -41,12 +42,21 @@ function find(req, res) {
     //only query shows where any instance or the series has the provided host
     //we will filter this list down farther after the show list has been generated
     //from the series and instances
-    promiseChain.push(
-      dbModel.find(
-        { 'show_details.host': host },
-        { _id: 1, master_event_id: 1 },
-      ),
-    );
+    if (Array.isArray(host)) {
+      promiseChain.push(
+        dbModel.find(
+          { 'show_details.host': { $in: host } },
+          { _id: 1, master_event_id: 1 },
+        ),
+      );
+    } else {
+      promiseChain.push(
+        dbModel.find(
+          { 'show_details.host': host },
+          { _id: 1, master_event_id: 1 },
+        ),
+      );
+    }
   }
 
   Promise.all(promiseChain)
@@ -68,7 +78,11 @@ function find(req, res) {
             {
               $or: [
                 //show has the host:
-                { 'show_details.host': host },
+                {
+                  'show_details.host': Array.isArray(host)
+                    ? { $in: host }
+                    : host,
+                },
                 //one of the series instance's has the matching host, we'll get the series:
                 { _id: { $in: retrieveSeries } },
                 //the series has the matching host, we will get all instances:
@@ -90,8 +104,12 @@ function find(req, res) {
         if (host != null) {
           showResults = showResults.filter(function(val) {
             return (
-              val.show_details.host != null &&
-              val.show_details.host._id === host
+              (Array.isArray(host) &&
+                val.show_details.host != null &&
+                host.indexOf(String(val.show_details.host._id)) !== -1) ||
+              (!Array.isArray(host) &&
+                val.show_details.host != null &&
+                String(val.show_details.host._id) === String(host))
             );
           });
         }
@@ -143,6 +161,7 @@ function find(req, res) {
           .find(filter)
           .populate(populateShowHost())
           .populate(populateMasterEvent())
+          .populate(populateMasterEventShowDetails())
           .then(processEventResults)
           .catch(err => {
             console.log('error in events > root > find');

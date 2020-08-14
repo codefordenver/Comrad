@@ -10,7 +10,13 @@ const showSchema = new Schema({
     summary: String,
     description: String,
     producer: String,
-    host: { type: Schema.Types.ObjectId, ref: 'User' },
+    host: {
+      type: Schema.Types.ObjectId,
+      refPath: function() {
+        return 'show_details.host_type';
+      },
+    },
+    host_type: { type: String, required: true, default: 'User' }, // whichever collection the host value refers to, either User or HostGroup
     guests: { type: [String], default: null },
     custom: Schema.Types.Mixed, // this will be an object that can contain any number of custom properties
   },

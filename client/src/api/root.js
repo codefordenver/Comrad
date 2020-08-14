@@ -6,6 +6,8 @@ export const ROOT_CONFIG_URL =
   process.env.REACT_APP_API_SERVER_URL + `/${API_VERSION}/config`;
 export const ROOT_GENRE_URL =
   process.env.REACT_APP_API_SERVER_URL + `/${API_VERSION}/genres`;
+export const ROOT_HOST_GROUPS_URL =
+  process.env.REACT_APP_API_SERVER_URL + `/${API_VERSION}/host-groups`;
 export const ROOT_LIBRARY_URL =
   process.env.REACT_APP_API_SERVER_URL + `/${API_VERSION}/library`;
 export const ROOT_PLAYLISTS_URL =

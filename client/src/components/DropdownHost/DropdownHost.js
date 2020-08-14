@@ -4,14 +4,17 @@ import classnames from 'classnames';
 import Downshift from 'downshift';
 import { connect } from 'react-redux';
 
+import { alertActions } from '../../redux/alert';
 import { authActions } from '../../redux/auth';
 import { userActions } from '../../redux/user';
 import FormHostAdd from '../forms/FormHostAdd';
+import FormHostGroupAdd from '../forms/FormHostGroupAdd';
 import Input from '../Input';
 import Modal from '../Modal';
 import { formatHostName } from '../../utils/formatters';
 
 const ADD_NEW_HOST = 'add_new_host';
+const NEW_GROUP_OF_HOSTS = 'new_group_of_hosts';
 const SHOWS_WITH_NO_HOST = 'shows_with_no_host';
 
 class DropdownHost extends Component {
@@ -39,6 +42,7 @@ class DropdownHost extends Component {
       hasFocus: false,
       selectedHost: host ? { _id: host.id, value: hostDisplayName } : null,
       showAddHostModal: false,
+      showNewGroupOfHostsModal: false,
     };
   }
 
@@ -117,15 +121,44 @@ class DropdownHost extends Component {
     this.setState({ showAddHostModal: false });
     this.onSelect({
       _id: user._id,
+      host_type: 'User',
       value: this.props.formatHostName(user),
     });
   };
 
+  // close the Add Host modal
+  handleFormNewGroupOfHostsCancel = () => {
+    const { alertActions } = this.props;
+    this.setState({ showNewGroupOfHostsModal: false });
+    alertActions.hide();
+  };
+
+  // callback for submitting the Add Host modal
+  handleFormNewGroupOfHostsSubmit = hostGroup => {
+    const { alertActions } = this.props;
+    this.setState({ showNewGroupOfHostsModal: false });
+    this.onSelect({
+      _id: hostGroup._id,
+      host_type: 'HostGroup',
+      value: this.props.formatHostName(hostGroup),
+    });
+    alertActions.hide();
+  };
+
   // process a host being selected
   onSelect = (selection, stateAndHelpers) => {
-    const { input, onHostSelect } = this.props;
+    const { alertActions, input, onHostSelect } = this.props;
 
     if (selection === null) {
+      return;
+    }
+
+    if (selection === NEW_GROUP_OF_HOSTS) {
+      this.setState({
+        showNewGroupOfHostsModal: true,
+      });
+      stateAndHelpers.clearSelection(); // clear the Downshift selection so that we can click the "add new host" button again
+      alertActions.changeDisplayLocation('modal');
       return;
     }
 
@@ -164,11 +197,14 @@ class DropdownHost extends Component {
 
   //function for rendering the options in the host dropdown results
   renderHostListItem = (item, loading) => {
-    if (item !== ADD_NEW_HOST) {
-      return <div key={item._id}>{`${item.value}`}</div>;
+    if (item === ADD_NEW_HOST) {
+      //Add new user component
+      return <div key={item}>Add New Host</div>;
+    } else if (item === NEW_GROUP_OF_HOSTS) {
+      return <div key={item}>Add New Group of Hosts</div>;
     }
-    //Add new user component
-    return <div key={item}>Add New Host</div>;
+
+    return <div key={item._id}>{`${item.value}`}</div>;
   };
 
   dirtyOverride = currentInputValue => {
@@ -182,6 +218,8 @@ class DropdownHost extends Component {
       handleFocus,
       handleFormHostAddCancel,
       handleFormHostAddSubmit,
+      handleFormNewGroupOfHostsCancel,
+      handleFormNewGroupOfHostsSubmit,
       handleInputClick,
       handleBlur,
       initialValue,
@@ -192,8 +230,10 @@ class DropdownHost extends Component {
     } = this;
     const {
       authState,
+      hostFieldClass = 'mb-1-5',
       formatHostName,
       showAddNewHostOption = true,
+      showNewGroupOfHostsOption = true,
       showsWithNoHostOption = false,
       userState,
     } = props;
@@ -202,6 +242,7 @@ class DropdownHost extends Component {
       currentInputValue,
       hasFocus,
       showAddHostModal,
+      showNewGroupOfHostsModal,
     } = state;
 
     // get the documents from the cachedResults property rather than Redux,
@@ -214,6 +255,7 @@ class DropdownHost extends Component {
 
       return {
         _id,
+        host_type: user.type,
         value: formatHostName(user),
       };
     });
@@ -221,8 +263,19 @@ class DropdownHost extends Component {
     if (items.length === 0) {
       items.push({
         _id: authState.doc._id,
+        host_type: 'User',
         value: formatHostName(authState.doc) + ' (Me)',
       });
+      // add the user's host groups
+      if (authState.doc.host_groups != null) {
+        authState.doc.host_groups.forEach(hg => {
+          items.push({
+            _id: hg._id,
+            host_type: 'HostGroup',
+            value: hg.on_air_name,
+          });
+        });
+      }
     }
 
     if (showsWithNoHostOption) {
@@ -233,6 +286,15 @@ class DropdownHost extends Component {
 
     if (showAddNewHostOption && authState.doc.roles.indexOf('Admin') !== -1) {
       items.push(ADD_NEW_HOST);
+    }
+
+    if (
+      showNewGroupOfHostsOption &&
+      (authState.doc.roles.indexOf('Admin') !== -1 ||
+        authState.doc.roles.indexOf('Show Captain') !== -1 ||
+        authState.doc.roles.indexOf('Full Access') !== -1)
+    ) {
+      items.push(NEW_GROUP_OF_HOSTS);
     }
 
     return (
@@ -250,7 +312,10 @@ class DropdownHost extends Component {
           highlightedIndex,
           selectedItem,
         }) => (
-          <div key="host-field" className="mb-1-5 host-field">
+          <div
+            key="host-field"
+            className={classnames('host-field', hostFieldClass)}
+          >
             <Input
               className=""
               label="Host"
@@ -277,7 +342,9 @@ class DropdownHost extends Component {
                       className: classnames(
                         'dropdown__item',
                         highlightedIndex === index && 'selected',
-                        (item === ADD_NEW_HOST || item._id === null) &&
+                        (item === ADD_NEW_HOST ||
+                          item._id === null ||
+                          item === NEW_GROUP_OF_HOSTS) &&
                           'dropdown__item--grey',
                       ),
                       item,
@@ -301,6 +368,19 @@ class DropdownHost extends Component {
                 </div>
               </Modal>
             ) : null}
+
+            {/* Add Host Group modal */}
+            {showNewGroupOfHostsModal ? (
+              <Modal isOpen={true}>
+                <div className="host-group__add-modal">
+                  <h3>Add New Group of Hosts</h3>
+                  <FormHostGroupAdd
+                    cancelCallback={handleFormNewGroupOfHostsCancel}
+                    submitCallback={handleFormNewGroupOfHostsSubmit}
+                  />
+                </div>
+              </Modal>
+            ) : null}
           </div>
         )}
       </Downshift>
@@ -317,6 +397,7 @@ function mapStateToProps({ auth, user }) {
 
 function mapDispatchToProps(dispatch) {
   return {
+    alertActions: bindActionCreators({ ...alertActions }, dispatch),
     authActions: bindActionCreators({ ...authActions }, dispatch),
     formatHostName: formatHostName,
     userActions: bindActionCreators({ ...userActions }, dispatch),

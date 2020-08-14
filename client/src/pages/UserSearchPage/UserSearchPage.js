@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Row, Col } from 'react-grid-system';
+import { Link } from 'react-router-dom';
 import ReactTable from 'react-table';
 
 import Dropdown from '../../components/Dropdown';
@@ -155,6 +156,11 @@ class UserSearchPage extends Component {
                       >
                         <Dropdown.Item to="add">User</Dropdown.Item>
                       </Dropdown>
+                    </Col>
+                    <Col style={{ textAlign: 'right' }}>
+                      <Link to="/host-group">
+                        Host Groups &amp; Alternate DJ Names
+                      </Link>
                     </Col>
                   </Row>
 

@@ -1,5 +1,6 @@
 const Genres = require('./Genres');
 const Hosts = require('./Hosts');
+const HostGroups = require('./HostGroups');
 const Library = require('./Library');
 const Playlists = require('./Playlists');
 const Reporting = require('./Reporting');
@@ -11,6 +12,7 @@ const Users = require('./Users');
 module.exports = {
   Genres,
   Hosts,
+  HostGroups,
   Library,
   Playlists,
   Reporting,

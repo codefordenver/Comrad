@@ -10,7 +10,7 @@ export const ICON_SET = {
 
 export const RichTextAreaError = props => {
   const { children } = props;
-  return <div className="richtextarea__error">{children}</div>;
+  return <div className="input__error">{children}</div>;
 };
 
 export const RichTextAreaLabel = props => {
@@ -135,9 +135,9 @@ class RichTextArea extends Component {
               {label}
             </RichTextAreaLabel>
           )}
-          {touched && error && <RichTextAreaError>{error}</RichTextAreaError>}
           {icon && ICON_SET[icon]}
         </div>
+        {touched && error && <RichTextAreaError>{error}</RichTextAreaError>}
       </div>
     );
   }

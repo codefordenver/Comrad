@@ -9,6 +9,14 @@ import Button from '../../Button';
 import RichTextArea from '../../RichTextArea';
 
 class FormShowBuilderComment extends Component {
+  commentMaxLengthValidate = value => {
+    if (value != null && value.length > 2000) {
+      return 'Please enter text shorter than 2,000 characters';
+    } else {
+      return 'undefined';
+    }
+  };
+
   handleReduxFormSubmit = values => {
     const { playlist, playlistActions, reset } = this.props;
     if (values.submitAction === 'saved_items') {
@@ -43,7 +51,7 @@ class FormShowBuilderComment extends Component {
           label="Comment"
           name="comment"
           autoFocus
-          validate={requiredValidate}
+          validate={[requiredValidate, this.commentMaxLengthValidate]}
         />
         <div>
           <Button

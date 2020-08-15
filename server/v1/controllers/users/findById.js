@@ -9,9 +9,20 @@ function findById(req, res) {
 
       delete dbUser._doc.password;
 
-      res.json(dbUser);
+      //add the user's host groups
+      return db.HostGroup.find({ users: dbUser._id })
+        .then(result => {
+          return res.json({ ...dbUser.toObject(), host_groups: result });
+        })
+        .catch(err => {
+          console.error(err);
+          return res.status(422).json({ errorMessage: err });
+        });
     })
-    .catch(err => res.status(422).json(err));
+    .catch(err => {
+      console.error(err);
+      return res.status(422).json({ errorMessage: err });
+    });
 }
 
 module.exports = findById;

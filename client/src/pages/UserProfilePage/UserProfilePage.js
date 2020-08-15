@@ -102,6 +102,7 @@ class UserProfilePage extends Component {
       first_name,
       last_name,
       on_air_name,
+      host_groups,
     } = userState.doc;
 
     const today = moment();
@@ -244,6 +245,8 @@ class UserProfilePage extends Component {
                     startDate={today}
                     endDate={todayPlus3Months}
                     noItemsText="This user has no upcoming shows in the next three months."
+                    userId={_id}
+                    hostGroups={host_groups}
                   />
                   <h3 className="Heading Heading--3 user-profile-page__shows-headings mt-2">
                     Past Shows
@@ -255,6 +258,8 @@ class UserProfilePage extends Component {
                     startDate={oneYearAgo}
                     endDate={today}
                     noItemsText="This user hasn't hosted any shows in the past year."
+                    userId={_id}
+                    hostGroups={host_groups}
                   />
                 </CardV2>
               </Col>

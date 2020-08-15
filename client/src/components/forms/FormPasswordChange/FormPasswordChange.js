@@ -29,7 +29,7 @@ class FormPasswordChange extends Component {
           type="password"
           autoFocus
           validate={requiredValidate}
-          autocomplete="new-password"
+          autoComplete="new-password"
         />
         <Field
           component={Input}
@@ -37,7 +37,7 @@ class FormPasswordChange extends Component {
           name="passConfirm"
           type="password"
           validate={[passwordsMatchValidate, requiredValidate]}
-          autocomplete="new-password"
+          autoComplete="new-password"
         />
         <div>
           <Button type="submit">Submit</Button>

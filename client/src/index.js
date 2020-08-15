@@ -13,7 +13,7 @@ axios.interceptors.response.use(
     return response;
   },
   error => {
-    if (error.response.status === 401) {
+    if (error.response.status === 401 && window.location.pathname !== '/') {
       console.log('401 error, redirecting to login page');
       window.location.href =
         '/?reauthenticate&returnUrl=' +

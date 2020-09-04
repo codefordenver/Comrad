@@ -18,8 +18,8 @@
     "client": "npm run start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "build": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client",
-    "heroku-postbuild": "npm run build",
     "calculatepopularity": "node server/v1/calculatePopularity",
+    "generate-api-documentation": "swagger-jsdoc -d server/v1/swaggerDef.js -o comradApiSwagger.json && widdershins --search false --language_tabs javascript:JavaScript:request --summary comradApiSwagger.json -o comradApi.md",
     "seed": "node server/v1/seedDB",
     "seed:test": "cross-env NODE_ENV=test npm run seed",
     "seed:dev": "cross-env NODE_ENV=development npm run seed",
@@ -82,7 +82,9 @@
     "nodemon": "^1.19.2",
     "prettier": "^1.18.2",
     "puppeteer": "^1.20.0",
-    "supertest": "^4.0.2"
+    "supertest": "^4.0.2",
+    "swagger-jsdoc": "^4.0.0",
+    "widdershins": "^4.0.1"
   },
   "dependencies": {
     "accesscontrol": "^2.2.1",

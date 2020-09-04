@@ -1,3 +1,21 @@
+/**
+ * @swagger
+ *
+ * components:
+ *   schemas:
+ *     AccessControl:
+ *       type: object
+ *       properties:
+ *         role:
+ *           type: string
+ *         resource:
+ *           type: string
+ *         action:
+ *           type: string
+ *         attributes:
+ *           type: string
+ */
+
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 

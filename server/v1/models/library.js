@@ -1,3 +1,70 @@
+/**
+ * @swagger
+ *
+ * components:
+ *   schemas:
+ *     Library:
+ *       type: object
+ *       required: [name,type]
+ *       properties:
+ *         name:
+ *           type: string
+ *           description: The name of the artist, album or track
+ *         resource:
+ *           type: string
+ *           description: The resource (Library, Playlists, etc.) to grant permissions to
+ *         artist:
+ *           type: string
+ *           format: id
+ *           description: Used by albums. The ID of the artist associated with the album.
+ *         label:
+ *           type: string
+ *           description: Used by albums. The label that released the album
+ *         genre:
+ *           type: string
+ *           format: id
+ *           description: Used by albums. The genre of the album.
+ *         compilation:
+ *           type: boolean
+ *           description: Used by albums. Whether or not the album is a compilation that was not released by a specific artist (such as a film soundtrack)
+ *         album:
+ *           type: string
+ *           format: id
+ *           description: Used by tracks. The album containing the track.
+ *         artists:
+ *           type: array
+ *           items:
+ *             type: string
+ *             format: id
+ *           description: "Used by tracks. The artists credited with the track (the order of the array matters: the artists will be displayed in that order)"
+ *         track_number:
+ *           type: integer
+ *           description: Used by tracks. The track number in the track listing on the album's disc
+ *         disk_number:
+ *           type: integer
+ *           description: Used by tracks. The disk number of the track within the album.
+ *         duration_in_seconds:
+ *           type: integer
+ *           description: Used by tracks. The duration of the song, in seconds
+ *       example:
+ *         - type: album
+ *           name: Flamenco On Fire
+ *           artist: 5f35a3e7783e63454ccde9db
+ *           label: null
+ *           genre: null
+ *           compilation: false
+ *         - type: artist
+ *           name: Sabicas
+ *         - type: track
+ *           artists:
+ *           - 5f35a3e7783e63454ccde9db
+ *           name: Fantasia Inca
+ *           album: 5f35a495783e63454cd19670
+ *           track_number: 4
+ *           disk_number: 1
+ *           duration_in_seconds: 237
+ */
+
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
@@ -14,11 +81,13 @@ const librarySchema = new Schema(
 
     name: {
       type: String,
+      required: true,
     },
 
     type: {
       type: String,
       enum: ['artist', 'album', 'track'],
+      required: true,
     },
 
     popularity: {
@@ -71,10 +140,6 @@ const librarySchema = new Schema(
         ref: 'Library',
       },
     ],
-
-    name: {
-      type: String,
-    },
 
     track_number: {
       type: Number,

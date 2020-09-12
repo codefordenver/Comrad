@@ -19,7 +19,7 @@
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "build": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client",
     "calculatepopularity": "node server/v1/calculatePopularity",
-    "generate-api-documentation": "swagger-jsdoc -d server/v1/swaggerDef.js -o comradApiSwagger.json && widdershins --search false --language_tabs javascript:JavaScript:request --summary comradApiSwagger.json -o comradApi.md",
+    "generate-api-documentation": "swagger-jsdoc -d server/v1/swaggerDef.js -o comradApiSwagger.json && widdershins --search false --language_tabs javascript:JavaScript:request --summary comradApiSwagger.json -o comradApi.md -u documentationTemplates",
     "seed": "node server/v1/seedDB",
     "seed:test": "cross-env NODE_ENV=test npm run seed",
     "seed:dev": "cross-env NODE_ENV=development npm run seed",

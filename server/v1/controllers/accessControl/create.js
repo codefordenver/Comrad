@@ -7,6 +7,8 @@
  *     - Access Control
  *     operationId: CreateAccessControl
  *     summary: Create
+ *     security:
+ *     - ApiKeyAuth: []
  *     description: |
  *       Create a new AccessControl record
  *
@@ -18,13 +20,6 @@
  *             $ref: '#/components/schemas/AccessControl'
  *         required: true
  *         description: "AccessControl object to be added"
- *         example: |
- *           {
- *             "role": "Admin",
- *             "resource": "TestResource",
- *             "action": "create:any",
- *             "attributes": "*"
- *           }
  *     produces:
  *       - application/json
  *     responses:
@@ -34,16 +29,13 @@
  *           application/json:
  *             schema:
  *               type: AccessControl
- *               $ref: '#/components/schemas/AccessControl'
- *               example: |
- *                 {
- *                   "_id": "5f3d436c50dacd5124dc6ae6",
- *                   "role": "Admin",
- *                   "resource": "TestResource",
- *                   "action": "create:any",
- *                   "attributes": "*",
- *                   "__v": 0
- *                 }
+ *               example:
+ *                 "_id": "5f3d436c50dacd5124dc6ae6"
+ *                 "role": "Admin"
+ *                 "resource": "TestResource"
+ *                 "action": "create:any"
+ *                 "attributes": "*"
+ *                 "__v": 0
  *       401:
  *         description: The authentication you provided to access the API is invalid
  *       403:

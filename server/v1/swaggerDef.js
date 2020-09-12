@@ -11,7 +11,7 @@ module.exports = {
   },
   apis: ['server/v1/controllers/**/*.js', 'server/v1/models/*.js'], // paths to files containing API definitions
   components: {
-    securitySchemas: {
+    securitySchemes: {
       ApiKeyAuth: {
         type: 'apiKey',
         in: 'header',

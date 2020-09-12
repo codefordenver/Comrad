@@ -1,32 +1,120 @@
+/**
+ * @swagger
+ *
+ * /library:
+ *   get:
+ *     tags:
+ *     - Library (Albums, Artists and Tracks)
+ *     operationId: FindAllLibrary
+ *     summary: Find All
+ *     security:
+ *     - ApiKeyAuth: []
+ *     parameters:
+ *     - type:
+ *       required: false
+ *       schema:
+ *         type: string
+ *         enum: [artist,album,track]
+ *       description: If provided, this endpoint will only return the specified entity type
+ *     - sortBy:
+ *       required: false
+ *       type: string
+ *       description: If provided, the results will be sorted by this field name. Defaults to `updated_at`
+ *     - sortDescending:
+ *       required: false
+ *       type: boolean
+ *       description: Whether to sort the results in a descending manner. Defaults to `true`
+ *     - page:
+ *       required: false
+ *       type: integer
+ *       description: The page number of results to return. Defaults to 1.
+ *     description: |
+ *       Finds all items from the library. By default, this returns tracks, artists and albums together but the endpoint can be filtered to only return a particular type (artists, albums, tracks).
+ *
+ *       Results are paged. The `page` parameter can be used different pages in the result set. The API result will also include a `nextPage` object if there is another page of results. The `nextPage` object will consist of a `page` value (the numerical value of the next page) and a `url` value (the URL of the API call to access the next page)
+ *
+ *       The following roles can access this API endpoint: `Admin`, `Full Control`, `Show Captain`, `Underwriting`, `DJ`, `Music Library Admin`
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         content:
+ *           application/json:
+ *             schema:
+ *               example:
+ *                 docs:
+ *                 - popularity: 7
+ *                   artists:
+ *                   - popularity: 10
+ *                     _id: 5f35a3e7783e63454ccde9db
+ *                     name: Sabicas
+ *                     type: artist
+ *                     created_at: '2020-08-13T20:34:47.886Z'
+ *                     updated_at: '2020-08-13T20:34:47.886Z'
+ *                   _id: 5f35a645783e63454cd916b1
+ *                   name: Fantasia Inca
+ *                   album:
+ *                     popularity: 2
+ *                     _id: 5f35a495783e63454cd19670
+ *                     name: Flamenco On Fire
+ *                     artist: 5f35a3e7783e63454ccde9db
+ *                     label: Sample Label
+ *                     genre: 4a44a3e7783e63454ccdc897
+ *                     compilation: false
+ *                     created_at: '2020-05-05T15:20:28.000Z'
+ *                     custom:
+ *                       sample_custom_property: '1475159102'
+ *                       another_custom_property: A custom value
+ *                     type: album
+ *                     updated_at: '2020-08-13T20:37:41.468Z'
+ *                   track_number: 4
+ *                   disk_number: 1
+ *                   duration_in_seconds: 237
+ *                   custom:
+ *                     sample_custom_property_for_track: '591391'
+ *                   type: track
+ *                   created_at: '2020-08-13T20:44:53.977Z'
+ *                   updated_at: '2020-08-13T20:44:53.977Z'
+ *                 - popularity: 24
+ *                   _id: 5f35a645783e63454cd9108d
+ *                   name: 'Blind Willie Johnson '
+ *                   type: artist
+ *                   created_at: '2020-08-13T20:44:53.733Z'
+ *                   updated_at: '2020-08-13T20:44:53.733Z'
+ *                   __v: 0
+ *                 - popularity: 2
+ *                   _id: 5f35a495783e63454cd19666
+ *                   name: Whoops, We Did It (Live) - EP
+ *                   artist:
+ *                     popularity: 4
+ *                     _id: 5f35a3ea783e63454cce7ddd
+ *                     name: Dandu
+ *                     type: artist
+ *                     created_at: '2020-08-13T20:34:50.188Z'
+ *                     updated_at: '2020-08-13T20:34:50.188Z'
+ *                   label: Sample Label Value
+ *                   genre: 5f35a41e783e63454ccee914
+ *                   compilation: false
+ *                   created_at: '2020-05-04T18:01:57.000Z'
+ *                   custom:
+ *                     sample_custom_property: '1475159102'
+ *                     another_custom_property: A custom value
+ *                   type: album
+ *                   updated_at: '2020-08-13T20:37:41.468Z'
+ *                 totalPages: 7623
+ *                 nextPage:
+ *                   page: 1
+ *                   url: "/v1/library?page=1&sortBy=updated_at&sortDescending=1"
+ *       401:
+ *         description: The authentication you provided to access the API is invalid
+ *       403:
+ *         description: Your API key or account does not have permission to access this
+ *       500:
+ *         description: Server error. Check the response for more details.
+ */
+
 const db = require('../../models');
 const keys = require('../../config/keys');
-
-/**
- * Queries all records in the music library: artists, albums, and tracks.
- * Returns paged results, with a limited number of records per page in order to
- * keep the Mongo query running quickly.
- *
- * GET Parameters:
- * type (optional) -
- *  String, either "artist", "album" or "track" to filter by entity type
- * sortBy (optional) -
- *  String, defaults to "updated_at". The field name to filter by.
- *
- * sortDescending (optional) -
- *  Boolean, defaults to true. Whether to sort the records in a descending order
- *
- * page (optional) -
- *  Number, defaults to 1. The page number of results to return. Making an API call  to the first page of results (without providing page, artistSkip, albumSkip, or trackSkip) will return a property that will be the URL to use for the next page (with page, artistSkip, albumSkip and trackSkip automatically set)
- *
- *
- * Returns:
- * An object with:
- * results - Array, the artist/album/track objects
- * totalPages - Number, the total number of pages in the result set
- * nextPage - Object, if there is another page of results
- * nextPage.page - Number, the page number for the next page
- * nextPage.url - String, the API URL to call for the results of the next page
- */
 
 async function findAll(req, res) {
   let { sortBy, sortDescending, type, page } = req.query;
@@ -59,7 +147,7 @@ async function findAll(req, res) {
     docs: libraryResults,
     totalPages: totalPages,
   };
-  if (page + 1 >= totalPages) {
+  if (page + 1 <= totalPages) {
     //generate a URL that will be used to display the next page of results
     page++;
     resultsJson.nextPage = {

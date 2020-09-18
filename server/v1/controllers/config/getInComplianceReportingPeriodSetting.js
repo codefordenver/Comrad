@@ -12,7 +12,7 @@
  *     description: |
  *       Returns a boolean value indicating whether we are currently in a compliance reporting period
  *
- *       The following roles can access this API endpoint: `Admin`, `Full Control`, `Show Captain`, `Underwriting`, `DJ`, `Music Library Admin`
+ *       The following roles can access this API endpoint: `Admin`, `Full Access`, `Show Captain`, `Underwriting`, `DJ`, `Music Library Admin`
  *     responses:
  *       200:
  *         description:

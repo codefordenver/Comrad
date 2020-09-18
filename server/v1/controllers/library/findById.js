@@ -1,3 +1,59 @@
+/**
+ * @swagger
+ *
+ * /library/{id}:
+ *   parameters:
+ *   - name: id
+ *     in: path
+ *     required: true
+ *     example: 5f35a3e7783e63454ccdd9d9
+ *   get:
+ *     tags:
+ *     - Library (Albums, Artists and Tracks)
+ *     operationId: GetByIdLibrary
+ *     summary: Get by ID
+ *     security:
+ *     - ApiKeyAuth: []
+ *     description: |
+ *       Get an individual library item by ID
+ *
+ *       The following roles can access this API endpoint: `Admin`, `Full Access`, `Show Captain`, `Underwriting`, `DJ`, `Music Library Admin`
+ *     responses:
+ *       200:
+ *         content:
+ *           application/json:
+ *             schema:
+ *               example:
+ *                 docs:
+ *                 popularity: 77
+ *                 _id: 5f35a3e7783e63454ccdd9d9
+ *                 name: Janet Jackson & Michael Jackson
+ *                 type: artist
+ *                 created_at: '2020-08-13T20:34:47.650Z'
+ *                 updated_at: '2020-08-13T20:34:47.650Z'
+ *                 albums:
+ *                 - popularity: 55
+ *                   _id: 5f35a43a783e63454ccfa464
+ *                   artists: []
+ *                   name: Number Ones
+ *                   artist: 5f35a3e7783e63454ccdd9d9
+ *                   label:
+ *                   genre:
+ *                   compilation: false
+ *                   created_at: '2012-10-18T06:07:25.000Z'
+ *                   custom:
+ *                     a_custom_property: a custom value
+ *                   type: album
+ *                   updated_at: '2020-08-13T20:36:10.758Z'
+ *                   number_of_tracks: 1
+ *       401:
+ *         description: The authentication you provided to access the API is invalid
+ *       403:
+ *         description: Your API key or account does not have permission to access this
+ *       500:
+ *         description: Server error. Check the response for more details.
+ */
+
 const db = require('../../models');
 
 async function findById(req, res) {

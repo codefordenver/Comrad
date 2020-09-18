@@ -1,3 +1,169 @@
+/**
+ * @swagger
+ *
+ * /events/shows:
+ *   get:
+ *     tags:
+ *     - Shows
+ *     operationId: FindShows
+ *     summary: Find
+ *     security:
+ *     - ApiKeyAuth: []
+ *     parameters:
+ *     - startDate:
+ *       in: query
+ *       required: true
+ *       type: string
+ *       format: date-time
+ *       description: Retrieve events with either a start time or end time at or after this value. Should be parseable by `Date` constructor in JavaScript.
+ *     - endDate:
+ *       in: query
+ *       required: true
+ *       type: string
+ *       format: date-time
+ *       description: Retrieve events with either a start time or end time at or before this value. Should be parseable by `Date` constructor in JavaScript.
+ *     - host:
+ *       in: query
+ *       required: false
+ *       type: string
+ *       format: id
+ *       description: Return only shows hosted by the user specified by the id, or a host group containing that user
+ *     - showsWithNoHost:
+ *       in: query
+ *       required: false
+ *       type: boolean
+ *       description: If true, will only return shows that have no host
+ *     description: |
+ *       Returns shows in a given timeframe, ordered by time from earliest to latest
+ *
+ *       The following roles can access this API endpoint: `Admin`, `Full Access`, `Show Captain`, `Underwriting`, `DJ`, `Music Library Admin`
+ *     responses:
+ *       200:
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 schema:
+ *                   $ref: '#/components/schemas/Show'
+ *                 example:
+ *                   repeat_rule:
+ *                     byweekday:
+ *                     - MO
+ *                     - TU
+ *                     - WE
+ *                     - TH
+ *                     - FR
+ *                     repeat_start_date: '2011-03-28T15:30:00.000Z'
+ *                     frequency: 2
+ *                     repeat_end_date: '9999-01-01T06:00:00.000Z'
+ *                   show_details:
+ *                     host_type: User
+ *                     guests:
+ *                     -
+ *                     title: Morning Sound Alternative
+ *                     summary: Diverse and eclectic sounds, on the mellow side.
+ *                     description: "<p>Diverse and eclectic sounds, on the mellow side. You'll hear everything
+ *                       from Ambient Electronics to Reggae to Folk.</p>"
+ *                     producer:
+ *                     host:
+ *                     custom:
+ *                       my_custom_property: Custom value
+ *                   status: active
+ *                   _id: 5f35a6ef783e63454cd918f1
+ *                   start_time_utc: '2020-09-16T15:30:00Z'
+ *                   end_time_utc: '2020-09-16T18:06:00Z'
+ *                   is_recurring: true
+ *                   created_at: '2020-08-13T20:47:43.675Z'
+ *                   updated_at: '2020-08-13T20:47:43.675Z'
+ *                   __v: 0
+ *                   master_event_id:
+ *                     _id: 5f35a6ef783e63454cd918f1
+ *                   master_time_id: 5f35a6ef783e63454cd918f1-1600270200000
+ *       401:
+ *         description: The authentication you provided to access the API is invalid
+ *       403:
+ *         description: Your API key or account does not have permission to access this
+ *       422:
+ *         description: There was an issue with the parameters you provided. See response for more details
+ *       500:
+ *         description: Server error. Check the response for more details.
+ * /events/traffic:
+ *   get:
+ *     tags:
+ *     - Traffic
+ *     operationId: FindTraffic
+ *     summary: Find
+ *     security:
+ *     - ApiKeyAuth: []
+ *     parameters:
+ *     - startDate:
+ *       in: query
+ *       required: true
+ *       type: string
+ *       format: date-time
+ *       description: Retrieve events with either a start time or end time at or after this value. Should be parseable by `Date` constructor in JavaScript.
+ *     - endDate:
+ *       in: query
+ *       required: true
+ *       type: string
+ *       format: date-time
+ *       description: Retrieve events with either a start time or end time at or before this value. Should be parseable by `Date` constructor in JavaScript.
+ *     - filterByTrafficType[]:
+ *       in: query
+ *       required: false
+ *       type: array
+ *       items:
+ *         type: string
+ *       description: Return only shows matching the specified traffic types
+ *     description: |
+ *       Returns traffic in a given timeframe, ordered by time from earliest to latest
+ *
+ *       The following roles can access this API endpoint: `Admin`, `Full Access`, `Show Captain`, `Underwriting`, `DJ`, `Music Library Admin`
+ *     responses:
+ *       200:
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 schema:
+ *                   $ref: '#/components/schemas/Traffic'
+ *                 example:
+ *                   _id: 5f35a719783e63454cd9a071
+ *                   repeat_rule:
+ *                     byweekday: []
+ *                     repeat_start_date: '2011-03-29T16:00:00.000Z'
+ *                     frequency: 3
+ *                     repeat_end_date: '9999-01-01T06:00:00.000Z'
+ *                   traffic_details:
+ *                     type: Legal ID
+ *                     title: Legal Id
+ *                     description: '"KGNU, Boulder, Denver and Fort Collins"'
+ *                     producer:
+ *                     custom:
+ *                       custom_property: A custom value
+ *                   status: active
+ *                   start_time_utc: '2020-09-16T16:00:00Z'
+ *                   end_time_utc: '2020-09-16T16:01:00Z'
+ *                   is_recurring: true
+ *                   created_at: '2020-08-13T20:48:25.305Z'
+ *                   updated_at: '2020-08-13T20:48:25.305Z'
+ *                   __v: 0
+ *                   MasterEvent: []
+ *                   master_event_id:
+ *                     _id: 5f35a719783e63454cd9a071
+ *                   master_time_id: 5f35a719783e63454cd9a071-1600272000000
+ *       401:
+ *         description: The authentication you provided to access the API is invalid
+ *       403:
+ *         description: Your API key or account does not have permission to access this
+ *       422:
+ *         description: There was an issue with the parameters you provided. See response for more details
+ *       500:
+ *         description: Server error. Check the response for more details.
+ */
+
 const {
   utils: { getModelForEventType, eventList },
   utils__mongoose: {
@@ -29,9 +195,6 @@ function find(req, res) {
       .status(422)
       .json({ message: 'startDate and endDate must be provided' });
   }
-
-  startDate = JSON.parse(startDate);
-  endDate = JSON.parse(endDate);
 
   //This date filter allows the same endpoint to be used to find all shows or return a subset if both startDate and endDate are provided.
   let filter = findEventQueryByDateRange(startDate, endDate);

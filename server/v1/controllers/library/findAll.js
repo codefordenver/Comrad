@@ -12,20 +12,24 @@
  *     parameters:
  *     - type:
  *       required: false
+ *       in: query
  *       schema:
  *         type: string
  *         enum: [artist,album,track]
  *       description: If provided, this endpoint will only return the specified entity type
  *     - sortBy:
  *       required: false
+ *       in: query
  *       type: string
  *       description: If provided, the results will be sorted by this field name. Defaults to `updated_at`
  *     - sortDescending:
  *       required: false
+ *       in: query
  *       type: boolean
  *       description: Whether to sort the results in a descending manner. Defaults to `true`
  *     - page:
  *       required: false
+ *       in: query
  *       type: integer
  *       description: The page number of results to return. Defaults to 1.
  *     description: |
@@ -33,9 +37,7 @@
  *
  *       Results are paged. The `page` parameter can be used different pages in the result set. The API result will also include a `nextPage` object if there is another page of results. The `nextPage` object will consist of a `page` value (the numerical value of the next page) and a `url` value (the URL of the API call to access the next page)
  *
- *       The following roles can access this API endpoint: `Admin`, `Full Control`, `Show Captain`, `Underwriting`, `DJ`, `Music Library Admin`
- *     produces:
- *       - application/json
+ *       The following roles can access this API endpoint: `Admin`, `Full Access`, `Show Captain`, `Underwriting`, `DJ`, `Music Library Admin`
  *     responses:
  *       200:
  *         content:

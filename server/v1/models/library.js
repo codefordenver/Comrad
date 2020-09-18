@@ -134,12 +134,15 @@ const librarySchema = new Schema(
       ref: 'Library',
     },
 
-    artists: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'Library',
-      },
-    ],
+    artists: {
+      type: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: 'Library',
+        },
+      ],
+      default: undefined,
+    },
 
     track_number: {
       type: Number,

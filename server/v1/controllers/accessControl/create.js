@@ -12,7 +12,7 @@
  *     description: |
  *       Create a new AccessControl record
  *
- *       The following roles can access this API endpoint: `Admin`, `Full Control`
+ *       The following roles can access this API endpoint: `Admin`, `Full Access`
  *     requestBody:
  *       content:
  *         application/json:
@@ -20,8 +20,6 @@
  *             $ref: '#/components/schemas/AccessControl'
  *         required: true
  *         description: "AccessControl object to be added"
- *     produces:
- *       - application/json
  *     responses:
  *       200:
  *         description: The AccessControl record was created successfully

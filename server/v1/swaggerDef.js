@@ -1,7 +1,7 @@
 // settings used by swagger-jsoc to generate swagger JSON file
 
 module.exports = {
-  openapi: '3.0.0',
+  openapi: '3.0.3',
   info: {
     // API informations (required)
     title: 'Comrad API', // Title (required)

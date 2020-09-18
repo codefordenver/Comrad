@@ -12,9 +12,7 @@
  *     description: |
  *       Retrieve all Genres
  *
- *       The following roles can access this API endpoint: `Admin`, `Full Control`, `Show Captain`, `Underwriting`, `DJ`, `Music Library Admin`
- *     produces:
- *       - application/json
+ *       The following roles can access this API endpoint: `Admin`, `Full Access`, `Show Captain`, `Underwriting`, `DJ`, `Music Library Admin`
  *     responses:
  *       200:
  *         description:

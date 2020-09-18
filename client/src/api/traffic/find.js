@@ -3,8 +3,8 @@ import { ROOT_TRAFFIC_URL } from '../root';
 
 export function find(startDate, endDate, filterByType) {
   const params = {
-    startDate: '"' + startDate + '"',
-    endDate: '"' + endDate + '"',
+    startDate: startDate,
+    endDate: endDate,
     filterByTrafficType: filterByType,
   };
 

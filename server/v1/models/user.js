@@ -1,3 +1,39 @@
+/**
+ * @swagger
+ *
+ * components:
+ *   schemas:
+ *     User:
+ *       type: object
+ *       required: []
+ *       description: Represents a user that can log into Comrad, have an API to Comrad, and host shows in Comrad.
+ *       properties:
+ *         api_key:
+ *           last_used:
+ *             type: string
+ *             format: date-time
+ *             description: The last time the API key was used
+ *       example:
+ *         api_key:
+ *           last_used: '2020-09-16T17:41:32.271Z'
+ *           short: df8724ee
+ *           token: "$2a$10$kH.3DMain3OnCLbY3ZHO/e/ihIi/K0LvLkC.RVJTnd16zbfoihN6m"
+ *         can_delete: true
+ *         on_air_name: Sean W
+ *         primary_phone:
+ *         reset_token:
+ *         reset_token_expiry:
+ *         roles:
+ *         - DJ
+ *         - Music Library Admin
+ *         status: Active
+ *         _id: 5f35a3cf783e63454ccd7525
+ *         email: s@getcomrad.org
+ *         first_name: Sean
+ *         last_name: Williams
+ *         __v: 0
+ */
+
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const bcrypt = require('bcrypt-nodejs');

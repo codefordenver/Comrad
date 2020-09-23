@@ -1,3 +1,114 @@
+/**
+ * @swagger
+ *
+ * /library/search:
+ *   get:
+ *     tags:
+ *     - Library (Albums, Artists, Tracks)
+ *     operationId: SearchLibrary
+ *     summary: Search
+ *     security:
+ *     - ApiKeyAuth: []
+ *     parameters:
+ *     - name: s
+ *       required: true
+ *       in: query
+ *       type: string
+ *       description: The string to search for
+ *     - name: type
+ *       required: false
+ *       in: query
+ *       schema:
+ *         type: string
+ *         enum: [artist,album,track]
+ *       description: If provided, this endpoint will only return the specified entity type
+ *     - name: limit
+ *       required: false
+ *       in: query
+ *       type: integer
+ *       description: The number of results to return. Defaults to 100.
+ *     description: |
+ *       Search for library items based on a search string. Results will be ordered with the most relevant result first.
+ *
+ *       This endpoint returns a `totalPages` value, but that value will always be 1. The `totalPages` value is only included for compatibility with some components within Comrad.
+ *
+ *       The following roles can access this API endpoint: `Admin`, `Full Access`, `Show Captain`, `Underwriting`, `DJ`, `Music Library Admin`
+ *     responses:
+ *       200:
+ *         content:
+ *           application/json:
+ *             schema:
+ *               example:
+ *                 docs:
+ *                 - popularity: 80
+ *                   _id: 5f35a3e7783e63454ccdd9d9
+ *                   artists: []
+ *                   name: Janet Jackson & Michael Jackson
+ *                   type: artist
+ *                   updated_at: '2020-08-13T20:34:47.650Z'
+ *                   score: 1.125
+ *                   relevance: 3.375
+ *                 - popularity: 0
+ *                   _id: 5f35a4e8783e63454cd2cec9
+ *                   artists:
+ *                   - popularity: 61
+ *                     _id: 5f35a3e5783e63454ccd79be
+ *                     name: Johnny Cash
+ *                     type: artist
+ *                     created_at: '2020-08-13T20:34:45.558Z'
+ *                     updated_at: '2020-08-13T20:34:45.558Z'
+ *                   name: JACKSON
+ *                   album:
+ *                     popularity: 75
+ *                     _id: 5f35a425783e63454ccf2ce7
+ *                     name: The Legend of Johnny Cash
+ *                     artist: 5f35a3e5783e63454ccd79be
+ *                     label: Legacy
+ *                     genre: 5f35a41e783e63454ccee90f
+ *                     compilation: false
+ *                     type: album
+ *                     created_at: '2020-08-13T20:35:49.013Z'
+ *                     updated_at: '2020-08-13T20:35:49.013Z'
+ *                   type: track
+ *                   updated_at: '2020-08-13T20:39:04.848Z'
+ *                   score: 1.1
+ *                   relevance: 2.2
+ *                 - popularity: 54
+ *                   _id: 5f35a4b5783e63454cd1b72c
+ *                   artists:
+ *                   - popularity: 52
+ *                     _id: 5f35a3e5783e63454ccd75bb
+ *                     artists: []
+ *                     name: Lucinda Williams
+ *                     type: artist
+ *                     created_at: '2020-08-13T20:34:45.259Z'
+ *                     updated_at: '2020-08-13T20:34:45.259Z'
+ *                   name: Jackson
+ *                   album:
+ *                     popularity: 38
+ *                     _id: 5f35a41f783e63454ccef3b9
+ *                     artists: []
+ *                     name: Car Wheels on a Gravel Road
+ *                     artist: 5f35a3e5783e63454ccd75bb
+ *                     label: Mercury Records
+ *                     genre: 5f35a41e783e63454ccee908
+ *                     compilation: false
+ *                     type: album
+ *                     created_at: '2020-08-13T20:35:43.158Z'
+ *                     updated_at: '2020-08-13T20:35:43.158Z'
+ *                   type: track
+ *                   updated_at: '2020-08-13T20:38:13.160Z'
+ *                   score: 1.1
+ *                   relevance: 2.2
+ *                 totalPages: 1
+ *       401:
+ *         description: The authentication you provided to access the API is invalid
+ *       403:
+ *         description: Your API key or account does not have permission to access this
+ *       500:
+ *         description: Server error. Check the response for more details.
+ */
+
 const db = require('../../models');
 const keys = require('../../config/keys');
 

@@ -1,3 +1,60 @@
+/**
+ * @swagger
+ *
+ * components:
+ *   schemas:
+ *     User:
+ *       type: object
+ *       required: [email,first_name,last_name,roles]
+ *       description: Represents a user that can log into Comrad, have an API to Comrad, and host shows in Comrad.
+ *       properties:
+ *         api_key:
+ *           last_used:
+ *             type: string
+ *             format: date-time
+ *             description: The last time the API key was used
+ *           short:
+ *             type: string
+ *             description: The first 8 characters of a user's API key, used for an initial comparison when authenticating an API key
+ *           token:
+ *             type: string
+ *             description: The full bcrypted token for a user's API key
+ *         email:
+ *           type: string
+ *           description: The user's email address
+ *         first_name:
+ *           type: string
+ *           description: The user's first name
+ *         last_name:
+ *           type: string
+ *           description: The user's last name
+ *         password:
+ *           type: string
+ *           description: The user's password. Should be plain text when creating or updating a user. Encrypted at rest in the database.
+ *         roles:
+ *           type: array
+ *           items:
+ *             type: string
+ *             enum: ['Admin','Full Access','Show Captain','Underwriting','DJ','Music Library Admin']
+ *           description: The roles that the user has, which affects what APIs they can access
+ *         status:
+ *           type: string
+ *           enum: ['Active','Inactive']
+ *           description: Whether the user can currently log into the system. Defaults to Active.
+ *       example:
+ *         api_key:
+ *           last_used: '2020-09-16T17:41:32.271Z'
+ *         on_air_name: Sean W
+ *         primary_phone:
+ *         roles:
+ *         - DJ
+ *         - Music Library Admin
+ *         status: Active
+ *         email: s@getcomrad.org
+ *         first_name: Sean
+ *         last_name: Williams
+ */
+
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const bcrypt = require('bcrypt-nodejs');
@@ -20,11 +77,6 @@ const userSchema = new Schema({
       type: String,
       default: null,
     },
-  },
-
-  can_delete: {
-    type: Boolean,
-    default: true,
   },
 
   email: {
@@ -78,6 +130,7 @@ const userSchema = new Schema({
 
   roles: {
     type: [String],
+    required: true,
   },
 
   status: {

@@ -1,5 +1,4 @@
 const accessControlController = require('./accessControl');
-const announcementsController = require('./announcements');
 const authController = require('./auth');
 const configController = require('./config');
 const genresController = require('./genres');
@@ -15,7 +14,6 @@ const usersController = require('./users');
 
 module.exports = {
   accessControlController,
-  announcementsController,
   authController,
   configController,
   genresController,

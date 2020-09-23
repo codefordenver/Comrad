@@ -1,8 +1,57 @@
+/**
+ * @swagger
+ *
+ * /library/{id}:
+ *   parameters:
+ *   - name: id
+ *     in: path
+ *     required: true
+ *     example: 5f5fdb69e546d851980aa75d
+ *   delete:
+ *     tags:
+ *     - Library (Albums, Artists, Tracks)
+ *     operationId: DeleteLibrary
+ *     summary: Delete
+ *     security:
+ *     - ApiKeyAuth: []
+ *     description: |
+ *       Delete a library item
+ *
+ *       The following roles can access this API endpoint: `Admin`, `Full Access`, `Music Library Admin`
+ *     responses:
+ *       200:
+ *         content:
+ *           application/json:
+ *             schema:
+ *               description: "The record that was deleted"
+ *               example:
+ *                 popularity: 0
+ *                 _id: 5f5fdb69e546d851980aa75d
+ *                 name: A New Artist
+ *                 type: artist
+ *                 created_at: '2020-09-14T21:06:49.598Z'
+ *                 updated_at: '2020-09-14T21:06:49.599Z'
+ *                 __v: 0
+ *       401:
+ *         description: The authentication you provided to access the API is invalid
+ *       403:
+ *         description: Your API key or account does not have permission to access this
+ *       404:
+ *         description: Library item does not exist
+ *       422:
+ *         description: There was an issue with the data you provided. Check the response for more details.
+ */
+
 const db = require('../../models');
 
 function remove(req, res) {
   return db.Library.findOne({ _id: req.params.id })
     .then(libraryData => {
+      if (libraryData === null) {
+        return res
+          .status(404)
+          .json({ errorMessage: 'Library item does not exist' });
+      }
       switch (libraryData.type) {
         case 'album':
           return db.Library.findOne({ album: req.params.id })

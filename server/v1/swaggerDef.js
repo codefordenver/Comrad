@@ -9,7 +9,11 @@ module.exports = {
     description:
       'The API for Comrad, source software for radio stations that handles playlist logging, traffic management, reporting, and more', // Description (optional)
   },
-  apis: ['server/v1/controllers/**/*.js', 'server/v1/models/*.js'], // paths to files containing API definitions
+  apis: [
+    'server/v1/controllers/**/*.js',
+    'server/v1/models/*.js',
+    'server/v1/models/base/*.js',
+  ], // paths to files containing API definitions
   components: {
     securitySchemes: {
       ApiKeyAuth: {

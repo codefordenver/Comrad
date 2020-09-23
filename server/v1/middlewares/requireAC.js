@@ -39,6 +39,10 @@ function requireAC(resource, action) {
         const isMatch = await dbUser.compareApiKey(authorization);
 
         if (isMatch) {
+          await db.User.updateOne(
+            { _id: dbUser._id },
+            { 'api_key.last_used': new Date() },
+          );
           req.user = dbUser;
         }
       }

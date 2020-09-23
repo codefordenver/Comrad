@@ -1,5 +1,7 @@
 .DS_Store
 .vscode
 .env
+comradApiSwagger.json
+comradApi.md
 node_modules
 seedScriptProgress.json

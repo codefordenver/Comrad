@@ -7,6 +7,12 @@ export function find(
   host = null,
   onlyDisplayShowsWithNoHost = false,
 ) {
+  if (typeof startDate === 'object' && startDate._isAMomentObject) {
+    startDate = startDate.toDate();
+  }
+  if (typeof endDate === 'object' && endDate._isAMomentObject) {
+    endDate = endDate.toDate();
+  }
   const params = { startDate, endDate };
   if (host != null) {
     params.host = host;

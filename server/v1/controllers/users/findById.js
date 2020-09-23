@@ -8,6 +8,8 @@ function findById(req, res) {
       dbUser.can_delete = await dbUser.canDelete();
 
       delete dbUser._doc.password;
+      delete dbUser._doc.api_key.short;
+      delete dbUser._doc.api_key.token;
 
       //add the user's host groups
       return db.HostGroup.find({ users: dbUser._id })

@@ -1,0 +1,209 @@
+{{= data.tags.section }}
+<h1 id="{{=data.title_prefix}}">{{=data.api.info && data.api.info.title}} {{=data.version}}</h1>
+
+> Scroll down for {{? data.header.language_tabs.length}}code samples, {{?}}example requests and responses.{{? data.header.language_tabs.length}} Select a language for code samples from the tabs above or the mobile navigation menu.{{?}}
+
+{{? data.api.info && data.api.info.description}}{{=data.api.info.description}}{{?}}
+
+{{? data.api.servers }}
+Base URLs:
+{{~data.api.servers :s}}
+* <a href="{{=s.url}}">{{=s.url}}</a>
+{{ for(var v in s.variables) { }}
+    * **{{=v}}** - {{=s.variables[v].description||''}} Default: {{=s.variables[v].default}}
+{{? s.variables[v].enum}}
+{{~ s.variables[v].enum :e}}
+        * {{= e}}
+{{~}}
+{{?}}
+{{ } }}
+{{~}}
+{{?}}
+
+{{? data.api.info && data.api.info.termsOfService}}<a href="{{=data.api.info.termsOfService}}">Terms of service</a>{{?}}
+{{? data.api.info && data.api.info.contact}}{{? data.api.info.contact.email}}Email: <a href="mailto:{{=data.api.info.contact.email}}">{{=data.api.info.contact.name || 'Support'}}</a> {{?}}{{? data.api.info.contact.url}}Web: <a href="{{=data.api.info.contact.url}}">{{= data.api.info.contact.name || 'Support'}}</a> {{?}}{{?}}
+{{? data.api.info && data.api.info.license}}{{? data.api.info.license.url}}License: <a href="{{=data.api.info.license.url}}">{{=data.api.info.license.name}}</a>{{??}} License: {{=data.api.info.license.name}}{{?}}{{?}}
+{{= data.tags.endSection }}
+
+# Getting Started
+
+> Sample code 
+
+```javascript
+var apiKey = 'your api key (it will be a UUID)';
+var comradUrl = 'http://localhost:5000/v1'; //If running Comrad locally. Otherwise, replace with your API URL.
+
+let startDate = new Date(); // the current date/time
+let endDate = new Date(startDate.getTime() + (3 * 60 * 60 * 1000) ); // three hours from now
+
+fetch(
+    comradUrl + '/events/shows?' +
+    'startDate=' + encodeURIComponent(startDate.toJSON()) + '&' +
+    'endDate=' + encodeURIComponent(endDate.toJSON()), 
+    { 'headers': {'Authorization': apiKey } }
+  ).then(response => {
+    if (!response.ok) {
+      //API call was unsuccessful
+      console.log('API call unsuccessful. Status code: ' + response.status);
+      
+      //422 errors usually include a message with the reason the API call was unsuccessful.
+      if (response.status === 422) {
+        response.json().then(jsonResponse => {
+          if (jsonResponse.message) {
+            console.log('Details:', jsonResponse.message);
+          } else {
+            console.log('No additional error details provided');
+          }
+        });
+      }
+    } else {
+      response.json().then(jsonResponse => {
+        // output results to the console
+        console.log('Results:');
+        jsonResponse.forEach(show => {
+          console.log(show.show_details.title + ' starts at ' + show.start_time_utc + ' (UTC) and ends at ' + show.end_time_utc + ' (UTC)');
+        });
+      });
+    }
+  });
+```
+
+To get started using the API, we will walk through how to authenticate with the API and how to make an API call. We will make an API call to get all shows that are occurring in the next three hours. See the example code accompanying this section for reference.
+
+First, we will create an API key with the `DJ` role, which has the least amount of permissions of the available roles. To create an API key:
+
+1. Log into Comrad with an account that has the `Admin` role
+2. In the left menu, click on the Users icon at the bottom
+3. At the top of the page, click `Add User`
+4. For First Name, enter your name. For last name, enter "API Usage". 
+5. For email address, enter an email address that does not already have an account in Comrad. This does not have to be a real email address, for instance, you could use `api.test@getcomrad.org`
+6. For Roles, choose `DJ`
+7. Enter a password
+8. Click Submit
+9. Now, you'll be back on the users page. Search for your new user, and click on that user's row in the search results table.
+10. Scroll down and click `Create API` on the left.
+11. Now, at the top of the screen, you'll have a message with your API key. Record the API key and keep it somewhere safe: Comrad will not display it again.
+
+Now, the API key is created. Plug that value into the example code in the `apiKey` variable. In the example code, you'll also want to replace `comradUrl`'s value with the URL of your API. If you're running Comrad locally, that's `http://localhost:5000/v1`, but if you have Comrad hosted on a server, the URL would usually be `https://yourdomain.com/api/v1`.
+
+Once those values are replaced, you can run the sample code to retrieve events in the next three hours. The code is makinng a `GET` request to `/events/shows` with the following parameters:
+
+- `startDate`: the current date/time
+- `endDate`: three hours in the future from the current date/time
+
+The code passes your API key in the `Authorization` header.
+
+The example code will write out all of the events in the next three hours. If an error occurs with the API request, a status code will be printed. A `422` error means there's something wrong with the request you provided - usually, a validation error. There will be more details about this in the API response. The example code writes out any validation messages that come back from the server. A `401` error means your credentials are not valid. A `403` error means you have valid credentials, but your API key does not have the proper permissions to access the endpoint. A `404` error means "not found", and if you get that error on this example code, it probably means that you have the wrong value for `comradUrl` or, if you're trying to test locally, your local development environment is not running.
+
+{{? data.api.components && data.api.components.securitySchemes }}
+{{#def.security}}
+{{?}}
+
+{{ for (var r in data.resources) { }}
+{{ data.resource = data.resources[r]; }}
+
+{{= data.tags.section }}
+<h1 id="{{=data.title_prefix+'-'+data.utils.slugify(r)}}">{{= r}}</h1>
+
+{{? data.resource.description }}{{= data.resource.description}}{{?}}
+
+{{? data.resource.externalDocs}}
+<a href="{{=data.resource.externalDocs.url}}">{{=data.resource.externalDocs.description||'External documentation'}}</a>
+{{?}}
+
+{{ for (var m in data.resource.methods) { }}
+{{ data.operationUniqueName = m; }}
+{{ data.method = data.resource.methods[m]; }}
+{{ data.operationUniqueSlug = data.method.slug; }}
+{{ data.operation = data.method.operation; }}
+{{= data.templates.operation(data) }}
+{{ } /* of methods */ }}
+
+{{= data.tags.endSection }}
+{{ } /* of resources */ }}
+
+{{? data.api.components && data.api.components.schemas }}
+{{= data.tags.section }}
+
+# Schemas
+
+{{ for (var s in data.components.schemas) { }}
+{{ var origSchema = data.components.schemas[s]; }}
+{{ var schema = data.api.components.schemas[s]; }}
+
+{{= data.tags.section }}
+<h2 id="tocS_{{=s}}">{{=s}}</h2>
+{{ /* backwards compatibility */ }}
+<a id="schema{{=s.toLowerCase()}}"></a>
+<a id="schema_{{=s}}"></a>
+<a id="tocS{{=s.toLowerCase()}}"></a>
+<a id="tocs{{=s.toLowerCase()}}"></a>
+
+{{? data.options.yaml }}
+```yaml
+{{=data.utils.yaml.stringify(data.utils.getSample(schema,data.options,{quiet:true},data.api))}}
+{{??}}
+```json
+{{=data.utils.safejson(data.utils.getSample(schema,data.options,{quiet:true},data.api),null,2)}}
+{{?}}
+```
+
+{{ var enums = []; }}
+{{ var blocks = data.utils.schemaToArray(origSchema,-1,{trim:true,join:true},data); }}
+{{ for (var block of blocks) {
+     for (var p of block.rows) {
+       if (p.schema && p.schema.enum) {
+         for (var e of p.schema.enum) {
+           enums.push({name:p.name,value:e});
+         }
+       }
+     }
+   }
+}}
+
+{{~ blocks :block}}
+{{? block.title }}{{= block.title}}{{= '\n\n'}}{{?}}
+{{? block.externalDocs}}
+<a href="{{=block.externalDocs.url}}">{{=block.externalDocs.description||'External documentation'}}</a>
+{{?}}
+
+{{? block===blocks[0] }}
+{{= data.tags.section }}
+
+### Properties
+{{?}}
+
+{{? block.rows.length}}|Name|Type|Required|Description|
+|---|---|---|---|---|{{?}}
+{{~ block.rows :p}}|{{=p.displayName}}|{{=p.safeType}}|{{=p.required}}|{{=p.description||'none'}}|
+{{~}}
+{{~}}
+{{? (blocks[0].rows.length === 0) && (blocks.length === 1) }}
+*None*
+{{?}}
+
+{{? enums.length > 0 }}
+{{= data.tags.section }}
+
+#### Enumerated Values
+
+|Property|Value|
+|---|---|
+{{~ enums :e}}|{{=e.name}}|{{=data.utils.toPrimitive(e.value)}}|
+{{~}}
+
+{{= data.tags.endSection }}
+{{?}}
+
+{{= data.tags.endSection }}
+{{= data.tags.endSection }}
+
+{{ } /* of schemas */ }}
+
+{{?}}
+
+{{#def.footer}}
+
+{{? data.options.discovery}}
+{{#def.discovery}}
+{{?}}

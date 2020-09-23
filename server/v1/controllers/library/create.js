@@ -1,3 +1,48 @@
+/**
+ * @swagger
+ *
+ * /library:
+ *   post:
+ *     tags:
+ *     - Library (Albums, Artists, Tracks)
+ *     operationId: CreateLibrary
+ *     summary: Create
+ *     security:
+ *     - ApiKeyAuth: []
+ *     description: |
+ *       Create a new Library record
+ *
+ *       The following roles can access this API endpoint: `Admin`, `Full Access`, `Music Library Admin`
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Library'
+ *         required: true
+ *         description: "Library object to be added"
+ *     responses:
+ *       200:
+ *         description: The Library record was created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: Library
+ *               example:
+ *                 "popularity": 0
+ *                 "_id": "5f5fd9ebfa3e4138f8d38ecd"
+ *                 "name": "An API Artist"
+ *                 "type": "artist"
+ *                 "created_at": "2020-09-14T21:00:27.381Z"
+ *                 "updated_at": "2020-09-14T21:00:27.381Z"
+ *                 "__v": 0
+ *       401:
+ *         description: The authentication you provided to access the API is invalid
+ *       403:
+ *         description: Your API key or account does not have permission to access this
+ *       422:
+ *         description: There was an issue with the data you provided. Check the response for more details.
+ */
+
 const db = require('../../models');
 const {
   validateAlbumData,

@@ -9,7 +9,7 @@
  *     example: 5f5fdb69e546d851980aa75d
  *   delete:
  *     tags:
- *     - Library (Albums, Artists and Tracks)
+ *     - Library (Albums, Artists, Tracks)
  *     operationId: DeleteLibrary
  *     summary: Delete
  *     security:

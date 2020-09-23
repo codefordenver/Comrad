@@ -4,7 +4,7 @@
  * /library:
  *   get:
  *     tags:
- *     - Library (Albums, Artists and Tracks)
+ *     - Library (Albums, Artists, Tracks)
  *     operationId: FindAllLibrary
  *     summary: Find All
  *     security:

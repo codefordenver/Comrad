@@ -4,25 +4,25 @@
  * /library/search:
  *   get:
  *     tags:
- *     - Library (Albums, Artists and Tracks)
+ *     - Library (Albums, Artists, Tracks)
  *     operationId: SearchLibrary
  *     summary: Search
  *     security:
  *     - ApiKeyAuth: []
  *     parameters:
- *     - s:
+ *     - name: s
  *       required: true
  *       in: query
  *       type: string
  *       description: The string to search for
- *     - type:
+ *     - name: type
  *       required: false
  *       in: query
  *       schema:
  *         type: string
  *         enum: [artist,album,track]
  *       description: If provided, this endpoint will only return the specified entity type
- *     - limit:
+ *     - name: limit
  *       required: false
  *       in: query
  *       type: integer

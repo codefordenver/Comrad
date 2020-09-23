@@ -9,7 +9,7 @@
  *     example: 5f35a3e7783e63454ccdd9d9
  *   get:
  *     tags:
- *     - Library (Albums, Artists and Tracks)
+ *     - Library (Albums, Artists, Tracks)
  *     operationId: GetByIdLibrary
  *     summary: Get by ID
  *     security:

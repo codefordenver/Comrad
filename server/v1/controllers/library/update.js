@@ -9,7 +9,7 @@
  *     example: 5f35a3e7783e63454ccdd9d9
  *   put:
  *     tags:
- *     - Library (Albums, Artists and Tracks)
+ *     - Library (Albums, Artists, Tracks)
  *     operationId: UpdateLibrary
  *     summary: Update
  *     security:

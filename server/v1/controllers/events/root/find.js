@@ -10,25 +10,25 @@
  *     security:
  *     - ApiKeyAuth: []
  *     parameters:
- *     - startDate:
+ *     - name: startDate
  *       in: query
  *       required: true
  *       type: string
  *       format: date-time
  *       description: Retrieve events with either a start time or end time at or after this value. Should be parseable by `Date` constructor in JavaScript.
- *     - endDate:
+ *     - name: endDate
  *       in: query
  *       required: true
  *       type: string
  *       format: date-time
  *       description: Retrieve events with either a start time or end time at or before this value. Should be parseable by `Date` constructor in JavaScript.
- *     - host:
+ *     - name: host
  *       in: query
  *       required: false
  *       type: string
  *       format: id
  *       description: Return only shows hosted by the user specified by the id, or a host group containing that user
- *     - showsWithNoHost:
+ *     - name: showsWithNoHost
  *       in: query
  *       required: false
  *       type: boolean
@@ -97,19 +97,19 @@
  *     security:
  *     - ApiKeyAuth: []
  *     parameters:
- *     - startDate:
+ *     - name: startDate
  *       in: query
  *       required: true
  *       type: string
  *       format: date-time
  *       description: Retrieve events with either a start time or end time at or after this value. Should be parseable by `Date` constructor in JavaScript.
- *     - endDate:
+ *     - name: endDate
  *       in: query
  *       required: true
  *       type: string
  *       format: date-time
  *       description: Retrieve events with either a start time or end time at or before this value. Should be parseable by `Date` constructor in JavaScript.
- *     - filterByTrafficType[]:
+ *     - name: filterByTrafficType[]
  *       in: query
  *       required: false
  *       type: array

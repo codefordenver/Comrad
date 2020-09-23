@@ -4,7 +4,7 @@
  * /library:
  *   post:
  *     tags:
- *     - Library (Albums, Artists and Tracks)
+ *     - Library (Albums, Artists, Tracks)
  *     operationId: CreateLibrary
  *     summary: Create
  *     security:

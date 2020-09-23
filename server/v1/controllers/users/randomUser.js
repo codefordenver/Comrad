@@ -20,7 +20,6 @@ function randomUser(req, res) {
   const randStatus = randArrItem(USER_STATUS);
   const randString = chance.string({ pool: STRING_POOL }, { length: 10 });
 
-  const can_delete = Math.random() >= 0.5;
   const first_name = chance.first();
   const last_name = chance.last();
   const on_air_name = `DJ ${first_name} ${last_name}`;
@@ -33,7 +32,6 @@ function randomUser(req, res) {
   const email = `${first_name}.${last_name}@mail.com`;
 
   const userObj = {
-    can_delete,
     email,
     first_name,
     last_name,

@@ -4,7 +4,7 @@
  * /library/many:
  *   post:
  *     tags:
- *     - Library (Albums, Artists and Tracks)
+ *     - Library (Albums, Artists, Tracks)
  *     operationId: CreateManyLibrary
  *     summary: Create Many
  *     security:

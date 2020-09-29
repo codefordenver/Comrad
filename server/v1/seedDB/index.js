@@ -88,7 +88,7 @@ async function seedDB() {
       console.log('seeding artists...');
       let bulkOperations = [];
       seed.artists.forEach(function(artist) {
-        if (!(artist.toLowerCase() in allArtists)) {
+        if (!(artist.toLowerCase() in allArtists) && artist.length > 0) {
           // we will use the allArtists object to de-duplicate any artist data that is duplicated due to case-sensitivity
           allArtists[artist.toLowerCase()] = 0;
           bulkOperations.push({
@@ -212,6 +212,11 @@ async function seedDB() {
         let tracksToCreate = seed.tracks.splice(0, 5000);
         for (let index = 0; index < tracksToCreate.length; index++) {
           let track = tracksToCreate[index];
+
+          if (track.name.length === 0) {
+            continue;
+          }
+
           track.type = 'track';
           if (track.artist === null || track.artist.length === 0) {
             // use the artist from the album

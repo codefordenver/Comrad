@@ -34,9 +34,12 @@ function update(req, res) {
 
         db.User.findOneAndUpdate({ _id: id }, req.body, { new: true })
           .then(dbUser => {
-            let returnValue = JSON.parse(JSON.stringify(dbUser));
-            delete returnValue.password;
-            return res.json(returnValue);
+            dbUser = dbUser.forApiResponse();
+            return dbUser.canDelete().then(canDelete => {
+              dbUser = dbUser.toObject();
+              dbUser.can_delete = canDelete;
+              return res.json(dbUser);
+            });
           })
           .catch(err => res.status(422).json(err));
       });
@@ -44,9 +47,12 @@ function update(req, res) {
   } else {
     db.User.findOneAndUpdate({ _id: id }, req.body, { new: true })
       .then(dbUser => {
-        let returnValue = JSON.parse(JSON.stringify(dbUser));
-        delete returnValue.password;
-        return res.json(returnValue);
+        dbUser = dbUser.forApiResponse();
+        return dbUser.canDelete().then(canDelete => {
+          dbUser = dbUser.toObject();
+          dbUser.can_delete = canDelete;
+          return res.json(dbUser);
+        });
       })
       .catch(err => res.status(422).json(err));
   }

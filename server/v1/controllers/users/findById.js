@@ -5,16 +5,15 @@ function findById(req, res) {
 
   db.User.findById(id)
     .then(async dbUser => {
-      dbUser.can_delete = await dbUser.canDelete();
-
-      delete dbUser._doc.password;
-      delete dbUser._doc.api_key.short;
-      delete dbUser._doc.api_key.token;
+      dbUser = dbUser.forApiResponse();
+      let canDelete = await dbUser.canDelete();
+      dbUser = dbUser.toObject();
+      dbUser.can_delete = canDelete;
 
       //add the user's host groups
       return db.HostGroup.find({ users: dbUser._id })
         .then(result => {
-          return res.json({ ...dbUser.toObject(), host_groups: result });
+          return res.json({ ...dbUser, host_groups: result });
         })
         .catch(err => {
           console.error(err);

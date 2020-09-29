@@ -43,8 +43,29 @@ app.use(passport.session());
 
 app.use(function(req, res, next) {
   // allow passing credentials so API can live at a different URL than the application
-  res.header('Access-Control-Allow-Credentials', 'true');
-  res.header('Access-Control-Allow-Origin', '*');
+  if (process.env.NODE_ENV === 'development') {
+    // allow passing credentials so API can live at a different URL than the application
+    let allowOrigin = 'http://localhost:3000';
+    if (req.headers.referer != null) {
+      //get the host from the referrer
+      let referrer = req.headers.referer;
+      if (referrer.indexOf('http://') !== -1) {
+        console.log(referrer);
+        referrer = referrer.replace(/http\:\/\//, '');
+        console.log(referrer);
+        let referrerParts = referrer.split('/');
+        allowOrigin = 'http://' + referrerParts[0];
+      } else if (referrer.indexOf('https://') !== -1) {
+        referrer = referrer.replace(/https\:\/\//, '');
+        let referrerParts = referrer.split('/');
+        allowOrigin = 'https://' + referrerParts[0];
+      }
+    }
+    res.header('Access-Control-Allow-Origin', allowOrigin);
+    res.header('Access-Control-Allow-Credentials', 'true');
+  } else {
+    res.header('Access-Control-Allow-Origin', '*');
+  }
   res.header(
     'Access-Control-Allow-Methods',
     'POST,GET,OPTIONS,PATCH,PUT,DELETE',

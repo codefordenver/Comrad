@@ -200,6 +200,19 @@ userSchema.methods.canDelete = async function() {
   return true;
 };
 
+// cleanse the user object of sensitive data
+userSchema.methods.forApiResponse = function() {
+  let user = this;
+  delete user._doc.password;
+  delete user._doc.reset_token;
+  delete user._doc.reset_token_expiry;
+  if (user._doc.api_key.token) {
+    user._doc.api_key.token = 'exists';
+  }
+  delete user._doc.api_key.short;
+  return user;
+};
+
 const User = mongoose.model('User', userSchema);
 
 module.exports = User;

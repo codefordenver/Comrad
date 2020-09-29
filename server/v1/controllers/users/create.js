@@ -64,12 +64,7 @@ function create(req, res) {
       }
       return db.User.create(req.body)
         .then(dbUser => {
-          delete dbUser._doc.password;
-          delete dbUser._doc.reset_token;
-          delete dbUser._doc.reset_token_expiry;
-          delete dbUser._doc.api_key.token;
-          delete dbUser._doc.api_key.short;
-          return res.json(dbUser);
+          return res.json(dbUser.forApiResponse());
         })
         .catch(err => {
           console.log(err);

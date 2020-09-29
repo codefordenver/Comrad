@@ -48,11 +48,7 @@ function findAll(req, res) {
   db.User.find({})
     .then(dbUsers => {
       dbUsers.forEach(user => {
-        delete user._doc.password;
-        delete user._doc.api_key.short;
-        delete user._doc.api_key.token;
-        delete user._doc.reset_token;
-        delete user._doc.reset_token_expiry;
+        user = user.forApiResponse();
       });
 
       res.json(dbUsers);

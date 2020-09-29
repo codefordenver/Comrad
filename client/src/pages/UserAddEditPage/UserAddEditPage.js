@@ -40,9 +40,9 @@ class UserAddEditPage extends Component {
 
   addUserCallback = values => {
     const { alertActions, userActions } = this.props;
+    console.log(values);
     userActions.add(values, () => {
       this.handleGoBack();
-      alertActions.show('success', 'Success', 'User has been created');
     });
   };
 
@@ -112,7 +112,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(UserAddEditPage);
+export default connect(mapStateToProps, mapDispatchToProps)(UserAddEditPage);

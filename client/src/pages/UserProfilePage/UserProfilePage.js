@@ -154,11 +154,13 @@ class UserProfilePage extends Component {
                           className={classnames(
                             'user-profile-page__status',
                             `user-profile-page__status--${
-                              api_key.token ? 'true' : 'false'
+                              userState.doc.status === 'Active'
+                                ? 'true'
+                                : 'false'
                             }`,
                           )}
                         >
-                          {api_key.token ? 'Active' : 'Inactive'}
+                          {userState.doc.status}
                         </p>
                       </div>
                       {/* ======= CAN DELETE ======= */}
@@ -310,7 +312,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(UserProfilePage);
+export default connect(mapStateToProps, mapDispatchToProps)(UserProfilePage);

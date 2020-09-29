@@ -6,7 +6,8 @@ export const add = (values, callback, hideAlert) => async dispatch => {
   try {
     dispatch({ type: userTypes.LOADING });
 
-    const doc = await userAPI.add(values);
+    const response = await userAPI.add(values);
+    let doc = response.data;
 
     dispatch({ type: userTypes.ADD, payload: { doc } });
 

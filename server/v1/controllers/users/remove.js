@@ -26,7 +26,14 @@ async function remove(req, res) {
 
       return dbUser.remove();
     })
-    .then(response => res.json(response))
+    .then(response => {
+      if (typeof response.message === 'undefined') {
+        response = response.forApiResponse();
+        response = response.toObject();
+      }
+
+      res.json(response);
+    })
     .catch(err => res.status(422).json({ message: err }));
 }
 

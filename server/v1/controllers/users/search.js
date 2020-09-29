@@ -23,6 +23,9 @@ function search(req, res) {
 
   db.User.find(query)
     .then(dbUsers => {
+      dbUsers.forEach(user => {
+        user = user.forApiResponse();
+      });
       return res.status(200).json(dbUsers);
     })
     .catch(err => res.status(422).json({ message: err }));

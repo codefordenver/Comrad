@@ -84,7 +84,7 @@
     "puppeteer": "^1.20.0",
     "supertest": "^4.0.2",
     "swagger-jsdoc": "^4.2.0",
-    "widdershins": "^4.0.1"
+    "widdershins": "git+https://github.com/seankwilliams/widdershins.git"
   },
   "dependencies": {
     "accesscontrol": "^2.2.1",

@@ -13,7 +13,7 @@ class FormShowBuilderComment extends Component {
     if (value != null && value.length > 2000) {
       return 'Please enter text shorter than 2,000 characters';
     } else {
-      return 'undefined';
+      return null;
     }
   };
 

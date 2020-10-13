@@ -12,6 +12,10 @@ const reporting = require('./reporting');
 const resources = require('./resources');
 const users = require('./users');
 
+const { requireAC } = require('../middlewares');
+
+const { eventRootController, playlistsController } = require('../controllers');
+
 router.use('/access-control', accessControl);
 router.use('/auth', auth);
 router.use('/config', config);
@@ -23,5 +27,22 @@ router.use('/playlists', playlists);
 router.use('/reporting', reporting);
 router.use('/resources', resources);
 router.use('/users', users);
+
+// simplified endpoints to make the API more accessible to integrations
+router
+  .route('/current-show')
+  .get(requireAC('Shows', 'readAny'), eventRootController.currentShow);
+
+router
+  .route('/next-show')
+  .get(requireAC('Shows', 'readAny'), eventRootController.nextShow);
+
+router
+  .route('/previous-show')
+  .get(requireAC('Shows', 'readAny'), eventRootController.previousShow);
+
+router
+  .route('/recent-plays')
+  .get(requireAC('Playlists', 'readAny'), playlistsController.recentPlays);
 
 module.exports = router;

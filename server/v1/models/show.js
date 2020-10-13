@@ -4,6 +4,7 @@
  * components:
  *   schemas:
  *     Show:
+ *       description: A show. Can represent either a repeating series, or a single show instance, which could be within a series, or its own standalone instance. If a show instance is within a series, it will have a `master_event_id` value that references the series Show object.
  *       type: object
  *       required: [show_details.title,status,start_time_utc,end_time_utc,is_recurring]
  *       properties:

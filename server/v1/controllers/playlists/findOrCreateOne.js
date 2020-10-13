@@ -1,5 +1,5 @@
 const db = require('../../models');
-const { populatePlaylist } = require('./utils');
+const { findOrCreatePlaylist } = require('./utils');
 
 async function findOrCreateOne(req, res) {
   if (
@@ -11,20 +11,12 @@ async function findOrCreateOne(req, res) {
       .json('You must provide the startTime and endTime parameters');
   }
 
-  let documentProps = {
-    start_time_utc: req.query.startTime,
-    end_time_utc: req.query.endTime,
-  };
+  let playlist = await findOrCreatePlaylist(
+    req.query.startTime,
+    req.query.endTime,
+  );
 
-  let dbPlaylist = await db.Playlist.findOne(documentProps);
-
-  if (!dbPlaylist) {
-    dbPlaylist = await db.Playlist.create(documentProps);
-  }
-
-  let objPlaylist = await populatePlaylist(dbPlaylist);
-
-  res.status(200).json(objPlaylist);
+  res.status(200).json(playlist);
 }
 
 module.exports = findOrCreateOne;

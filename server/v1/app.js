@@ -50,9 +50,7 @@ app.use(function(req, res, next) {
       //get the host from the referrer
       let referrer = req.headers.referer;
       if (referrer.indexOf('http://') !== -1) {
-        console.log(referrer);
         referrer = referrer.replace(/http\:\/\//, '');
-        console.log(referrer);
         let referrerParts = referrer.split('/');
         allowOrigin = 'http://' + referrerParts[0];
       } else if (referrer.indexOf('https://') !== -1) {
@@ -60,6 +58,8 @@ app.use(function(req, res, next) {
         let referrerParts = referrer.split('/');
         allowOrigin = 'https://' + referrerParts[0];
       }
+    } else {
+      allowOrigin = '*';
     }
     res.header('Access-Control-Allow-Origin', allowOrigin);
     res.header('Access-Control-Allow-Credentials', 'true');

@@ -72,6 +72,12 @@ function eventList(events, startDate, endDate) {
       new Date(e.end_time_utc) > new Date(startDate)
     ) {
       return true;
+    } else if (
+      // the provided time range falls completely within the event's start-to-end time range
+      new Date(e.start_time_utc) <= new Date(startDate) &&
+      new Date(e.end_time_utc) >= new Date(endDate)
+    ) {
+      return true;
     }
     return false;
   });

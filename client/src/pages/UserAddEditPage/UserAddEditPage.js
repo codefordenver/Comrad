@@ -39,7 +39,7 @@ class UserAddEditPage extends Component {
   }
 
   addUserCallback = values => {
-    const { alertActions, userActions } = this.props;
+    const { userActions } = this.props;
     console.log(values);
     userActions.add(values, () => {
       this.handleGoBack();

@@ -16,4 +16,6 @@
 API documentation is at the top of controller and model files in YAML. This is converted to an OpenAPI v3 file later on using swagger-to-json.
 
 ## Modifying documentation templates
-TODO: fill out details for this section, including how to edit Getting Started section
+The `/documentationTemplates` folder contains templateas used to generate the files for the documentation.
+
+To modify the "Getting Started" section in the documentation, search for `# Getting Started` in the file at `/documentationTemplates/main.dot`

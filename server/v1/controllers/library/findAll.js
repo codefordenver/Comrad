@@ -10,24 +10,24 @@
  *     security:
  *     - ApiKeyAuth: []
  *     parameters:
- *     - type:
+ *     - name: type
  *       required: false
  *       in: query
  *       schema:
  *         type: string
  *         enum: [artist,album,track]
  *       description: If provided, this endpoint will only return the specified entity type
- *     - sortBy:
+ *     - name: sortBy
  *       required: false
  *       in: query
  *       type: string
  *       description: If provided, the results will be sorted by this field name. Defaults to `updated_at`
- *     - sortDescending:
+ *     - name: sortDescending
  *       required: false
  *       in: query
  *       type: boolean
  *       description: Whether to sort the results in a descending manner. Defaults to `true`
- *     - page:
+ *     - name: page
  *       required: false
  *       in: query
  *       type: integer

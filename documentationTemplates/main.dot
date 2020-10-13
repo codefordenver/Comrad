@@ -27,6 +27,59 @@ Base URLs:
 
 # Getting Started
 
+## Retrieve the Current Show
+
+> Sample code 
+
+```javascript
+var apiKey = 'your api key (it will be a UUID)';
+var comradUrl = 'http://localhost:5000/v1'; //If running Comrad locally. Otherwise, replace with your API URL.
+
+let startDate = new Date(); // the current date/time
+let endDate = new Date(startDate.getTime() + (3 * 60 * 60 * 1000) ); // three hours from now
+
+fetch(
+    comradUrl + '/current-show',
+    { 'headers': {'Authorization': apiKey } }
+  ).then(response => {
+    if (!response.ok) {
+      //API call was unsuccessful
+      console.log('API call unsuccessful. Status code: ' + response.status);
+    } else {
+      response.json().then(jsonResponse => {
+        // output results to the console
+        console.log('Results:');
+        console.log(jsonResponse.show_details.title + ' starts at ' + jsonResponse.start_time_utc + ' (UTC) and ends at ' + jsonResponse.end_time_utc + ' (UTC)');
+        console.log(jsonResponse);
+      });
+    }
+  });
+```
+
+To get started using the API, we will walk through how to authenticate with the API and how to make an API call. See the example code accompanying this section for reference.
+
+First, we will create an API key with the `DJ` role, which has the least amount of permissions of the available roles. To create an API key:
+
+1. Log into Comrad with an account that has the `Admin` role
+2. In the left menu, click on the Users icon at the bottom
+3. At the top of the page, click `Add User`
+4. For First Name, enter your name. For last name, enter "API Usage". 
+5. For email address, enter an email address that does not already have an account in Comrad. This does not have to be a real email address, for instance, you could use `api.test@getcomrad.org`
+6. For Roles, choose `DJ`
+7. Enter a password
+8. Click Submit
+9. Now, you'll be back on the users page. Search for your new user, and click on that user's row in the search results table.
+10. Scroll down and click `Create API` on the left.
+11. Now, at the top of the screen, you'll have a message with your API key. Record the API key and keep it somewhere safe: Comrad will not display it again.
+
+Now, the API key is created. Plug that value into the example code in the `apiKey` variable. In the example code, you'll also want to replace `comradUrl`'s value with the URL of your API. If you're running Comrad locally, that's `http://localhost:5000/v1`, but if you have Comrad hosted on a server, the URL would usually be `https://yourdomain.com/api/v1`.
+
+This code will call the `/current-show` endpoint, one of the [simple API endpoints](#comrad-api-simple-endpoints) that are designed for easily integrating with Comrad. The code passes your API key in the `Authorization` header. It will return a JSON object of the current show, including the playlist of the show, which consists of tracks, voice breaks, comments, and traffic events.
+
+If an error occurs with the API request, a status code will be printed. A `500` error indicates a server error, and the output of the API endpoint may include more details. A `401` error means your credentials are not valid. A `403` error means you have valid credentials, but your API key does not have the proper permissions to access the endpoint. A `404` error means "not found", and if you get that error on this example code, it probably means that you have the wrong value for `comradUrl` or, if you're trying to test locally, your local development environment is not running.
+
+## Using API Endpoints that take parameters.
+
 > Sample code 
 
 ```javascript
@@ -68,25 +121,9 @@ fetch(
   });
 ```
 
-To get started using the API, we will walk through how to authenticate with the API and how to make an API call. We will make an API call to get all shows that are occurring in the next three hours. See the example code accompanying this section for reference.
+The endpoints in the [Simple Endpoints](#comrad-api-simple-endpoints) section are designed to cover common use cases without having to deal with the more complex aspects of the API. Many of the other endpoints take parameters and return much more data. One use case for the more complex endpoints would be if you wanted to pull all of the shows in the next three hours. As in the previous example, you'll want to set values for `apiKey` and `comradUrl`. 
 
-First, we will create an API key with the `DJ` role, which has the least amount of permissions of the available roles. To create an API key:
-
-1. Log into Comrad with an account that has the `Admin` role
-2. In the left menu, click on the Users icon at the bottom
-3. At the top of the page, click `Add User`
-4. For First Name, enter your name. For last name, enter "API Usage". 
-5. For email address, enter an email address that does not already have an account in Comrad. This does not have to be a real email address, for instance, you could use `api.test@getcomrad.org`
-6. For Roles, choose `DJ`
-7. Enter a password
-8. Click Submit
-9. Now, you'll be back on the users page. Search for your new user, and click on that user's row in the search results table.
-10. Scroll down and click `Create API` on the left.
-11. Now, at the top of the screen, you'll have a message with your API key. Record the API key and keep it somewhere safe: Comrad will not display it again.
-
-Now, the API key is created. Plug that value into the example code in the `apiKey` variable. In the example code, you'll also want to replace `comradUrl`'s value with the URL of your API. If you're running Comrad locally, that's `http://localhost:5000/v1`, but if you have Comrad hosted on a server, the URL would usually be `https://yourdomain.com/api/v1`.
-
-Once those values are replaced, you can run the sample code to retrieve events in the next three hours. The code is makinng a `GET` request to `/events/shows` with the following parameters:
+The sample code is makinng a `GET` request to `/events/shows` with the following parameters:
 
 - `startDate`: the current date/time
 - `endDate`: three hours in the future from the current date/time
@@ -97,13 +134,27 @@ The example code will write out all of the events in the next three hours. If an
 
 {{? data.api.components && data.api.components.securitySchemes }}
 {{#def.security}}
-{{?}}
+{{?}} 
 
-{{ for (var r in data.resources) { }}
-{{ data.resource = data.resources[r]; }}
+
+<!-- sort "Simple Endpoints" first -->
+
+{{ data.sortedResources = Object.keys(data.resources).sort((a,b) => { 
+    if (a === 'Simple Endpoints') {
+      return -1;
+    } else if (b === 'Simple Endpoints') {
+      return 1;
+    }
+    return 0;
+  }); }}
+
+{{ for (var r = 0; r < data.sortedResources.length; r++) { }}
+{{ data.resourceTitle = data.sortedResources[r]; }}
+{{ data.resource = data.resources[data.resourceTitle]; }}
+{{ console.log(data.resourceTitle); }}
 
 {{= data.tags.section }}
-<h1 id="{{=data.title_prefix+'-'+data.utils.slugify(r)}}">{{= r}}</h1>
+<h1 id="{{=data.title_prefix+'-'+data.utils.slugify(data.resourceTitle)}}">{{= data.resourceTitle}}</h1>
 
 {{? data.resource.description }}{{= data.resource.description}}{{?}}
 

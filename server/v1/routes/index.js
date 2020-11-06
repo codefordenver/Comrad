@@ -14,7 +14,7 @@ const users = require('./users');
 
 const { requireAC } = require('../middlewares');
 
-const { eventRootController, playlistsController } = require('../controllers');
+const { eventsController, playlistsController } = require('../controllers');
 
 router.use('/access-control', accessControl);
 router.use('/auth', auth);
@@ -31,15 +31,15 @@ router.use('/users', users);
 // simplified endpoints to make the API more accessible to integrations
 router
   .route('/current-show')
-  .get(requireAC('Shows', 'readAny'), eventRootController.currentShow);
+  .get(requireAC('Shows', 'readAny'), eventsController.currentShow);
 
 router
   .route('/next-show')
-  .get(requireAC('Shows', 'readAny'), eventRootController.nextShow);
+  .get(requireAC('Shows', 'readAny'), eventsController.nextShow);
 
 router
   .route('/previous-show')
-  .get(requireAC('Shows', 'readAny'), eventRootController.previousShow);
+  .get(requireAC('Shows', 'readAny'), eventsController.previousShow);
 
 router
   .route('/recent-plays')

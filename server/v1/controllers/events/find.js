@@ -172,7 +172,7 @@ const {
     populateMasterEvent,
     populateMasterEventShowDetails,
   },
-} = require('../utils');
+} = require('./utils');
 
 function find(req, res) {
   let {
@@ -317,7 +317,7 @@ function find(req, res) {
           .catch(err => {
             console.log('error in events > root > find');
             console.error(err);
-            return res.status(422).json(err);
+            return res.status(422).json({ errorMessage: err });
           });
       } else {
         return dbModel
@@ -329,14 +329,14 @@ function find(req, res) {
           .catch(err => {
             console.log('error in events > root > find');
             console.error(err);
-            return res.status(422).json(err);
+            return res.status(422).json({ errorMessage: err });
           });
       }
     })
     .catch(err => {
       console.log('error in events > root > find');
       console.error(err);
-      return res.status(422).json(err);
+      return res.status(422).json({ errorMessage: err });
     });
 }
 

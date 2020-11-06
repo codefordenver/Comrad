@@ -1,9 +1,9 @@
 const {
   utils: { getModelForEventType },
-} = require('../utils');
-const { master_time_id__byEventType } = require('../utils/utils__mongoose');
+} = require('./utils');
+const { master_time_id__byEventType } = require('./utils/utils__mongoose');
 
-async function remove(req, res) {
+async function removeInstanceFromSeries(req, res) {
   const { eventType } = req.params;
 
   const dbModel = getModelForEventType(eventType);
@@ -43,4 +43,4 @@ async function remove(req, res) {
   }
 }
 
-module.exports = remove;
+module.exports = removeInstanceFromSeries;

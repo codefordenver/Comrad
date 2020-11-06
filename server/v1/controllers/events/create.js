@@ -12,7 +12,7 @@
  *     description: |
  *       Create a new Show record.
  *
- *       If `startDate` and `endDate` are provided in the request body, the API endpoint will return the show instances that occur between the start date and end date.
+ *       If `startDate` and `endDate` are provided in the request body, the API endpoint will return the show instances that occur between the start date and end date. Otherwise, no data will be returned.
  *
  *       The following roles can access this API endpoint: `Admin`, `Full Access`, `Show Captain`
  *     requestBody:
@@ -23,7 +23,7 @@
  *         required: true
  *         description: "Show object to be added"
  *     responses:
- *       200:
+ *       201:
  *         content:
  *           application/json:
  *             schema:
@@ -82,7 +82,7 @@
  *     description: |
  *       Create a new Traffic record.
  *
- *       If `startDate` and `endDate` are provided in the request body, the API endpoint will return the show instances that occur between the start date and end date.
+ *       If `startDate` and `endDate` are provided in the request body, the API endpoint will return the show instances that occur between the start date and end date. Otherwise, no data will be returned.
  *
  *       The following roles can access this API endpoint: `Admin`, `Full Access`, `Underwriting`
  *     requestBody:
@@ -93,7 +93,7 @@
  *         required: true
  *         description: "Traffic object to be added. For traffic events, `end_time_utc` cannot be set: it will always take the value of `start_time_utc`."
  *     responses:
- *       200:
+ *       201:
  *         content:
  *           application/json:
  *             schema:
@@ -122,10 +122,6 @@
  *                   created_at: '2020-08-13T20:48:25.305Z'
  *                   updated_at: '2020-08-13T20:48:25.305Z'
  *                   __v: 0
- *                   MasterEvent: []
- *                   master_event_id:
- *                     _id: 5f35a719783e63454cd9a071
- *                   master_time_id: 5f35a719783e63454cd9a071-1600272000000
  *       401:
  *         description: The authentication you provided to access the API is invalid
  *       403:
@@ -137,7 +133,7 @@
 const {
   utils: { getModelForEventType, eventList },
   utils__mongoose: { determineHostType, populateShowHost },
-} = require('../utils');
+} = require('./utils');
 const moment = require('moment');
 
 function create(req, res) {
@@ -175,7 +171,12 @@ function create(req, res) {
           dbModel
             .populate(dbShow, populateShowHost())
             .then(dbShow => {
-              res.json(eventList(dbShow, startDate, endDate));
+              if (startDate != null && endDate != null) {
+                let events = eventList(dbShow, startDate, endDate);
+                return res.status(201).json(events);
+              } else {
+                return res.status(201).json(null);
+              }
             })
             .catch(err => {
               console.log('Error Populating Show Data from linked records');

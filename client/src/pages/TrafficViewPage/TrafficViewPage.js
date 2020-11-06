@@ -77,7 +77,7 @@ class TrafficViewPage extends Component {
       history,
       traffic,
     } = this.props;
-    trafficActions.deleteSeries(
+    trafficActions.remove(
       traffic.doc.master_event_id != null
         ? traffic.doc.master_event_id._id
         : traffic.doc._id,
@@ -298,7 +298,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(TrafficViewPage);
+export default connect(mapStateToProps, mapDispatchToProps)(TrafficViewPage);

@@ -1,13 +1,9 @@
 import { alertTypes } from '../../alert';
 import { trafficAPI } from '../../../api';
 
-export const updateInstance = (
-  instanceId,
-  changedValues,
-  callback,
-) => async dispatch => {
+export const remove = (trafficSeriesId, callback) => async dispatch => {
   try {
-    const response = await trafficAPI.updateInstance(instanceId, changedValues);
+    const response = await trafficAPI.remove(trafficSeriesId);
     callback(response);
   } catch (e) {
     console.error(e);

@@ -7,7 +7,7 @@ import Modal from '../../Modal';
 import {
   clearAllInstancesForShow,
   clearAllButPastInstancesForShow,
-  updateSeries,
+  updateShow,
 } from '../../../redux/show';
 import { setModalVisibility } from '../../../redux/modal';
 
@@ -29,7 +29,7 @@ class EditModal extends Component {
     const {
       clearAllButPastInstancesForShow,
       clearAllInstancesForShow,
-      updateSeries,
+      updateShow,
     } = props;
     const {
       initial,
@@ -71,7 +71,7 @@ class EditModal extends Component {
     ) {
       clearAllInstancesForShow(values.master_time_id);
     }
-    updateSeries(_id, finalObject, handleFormSubmit);
+    updateShow(_id, finalObject, handleFormSubmit);
   };
 
   render() {
@@ -86,12 +86,9 @@ class EditModal extends Component {
   }
 }
 
-export default connect(
-  null,
-  {
-    clearAllButPastInstancesForShow,
-    clearAllInstancesForShow,
-    setModalVisibility,
-    updateSeries,
-  },
-)(EditModal);
+export default connect(null, {
+  clearAllButPastInstancesForShow,
+  clearAllInstancesForShow,
+  setModalVisibility,
+  updateShow,
+})(EditModal);

@@ -45,7 +45,7 @@ export const postShow = (input, callback) => async dispatch => {
 
 export const createInstanceShow = (show_id, data) => async dispatch => {
   try {
-    const response = await axios.put(`${ROOT_SHOWS_URL}/${show_id}`, data);
+    const response = await axios.post(`${ROOT_SHOWS_URL}/${show_id}`, data);
     dispatch({ type: SHOW_UPDATE, payload: response.data });
   } catch (e) {
     dispatch({ type: SHOW_ERROR, payload: e });
@@ -69,26 +69,7 @@ export const updateShow = (
   callback = null,
 ) => async dispatch => {
   try {
-    const response = await axios.patch(`${ROOT_SHOWS_URL}/${show_id}`, data);
-    dispatch({ type: SHOW_UPDATE, payload: response.data });
-    if (callback) {
-      callback();
-    }
-  } catch (e) {
-    dispatch({ type: SHOW_ERROR, payload: e });
-  }
-};
-
-export const updateSeries = (
-  show_id,
-  data,
-  callback = null,
-) => async dispatch => {
-  try {
-    const response = await axios.patch(
-      `${ROOT_SHOWS_URL}/series/${show_id}`,
-      data,
-    );
+    const response = await axios.put(`${ROOT_SHOWS_URL}/${show_id}`, data);
     dispatch({ type: SHOW_UPDATE, payload: response.data });
     if (callback) {
       callback();
@@ -107,10 +88,10 @@ export const deleteShow = show => async dispatch => {
   }
 };
 
-export const deleteShowInstance = (show_id, data) => async dispatch => {
+export const removeInstanceFromSeries = (show_id, data) => async dispatch => {
   try {
     const response = await axios.delete(
-      `${ROOT_SHOWS_URL}/instance/${show_id}`,
+      `${ROOT_SHOWS_URL}/remove-instance-from-series/${show_id}`,
       {
         data,
       },
@@ -121,9 +102,9 @@ export const deleteShowInstance = (show_id, data) => async dispatch => {
   }
 };
 
-export const deleteShowSeries = show => async dispatch => {
+export const remove = show => async dispatch => {
   try {
-    const response = await axios.delete(`${ROOT_SHOWS_URL}/series/${show}`);
+    const response = await axios.delete(`${ROOT_SHOWS_URL}/${show}`);
     dispatch({ type: SHOW_DELETE_SERIES, payload: response.data });
   } catch (e) {
     dispatch({ type: SHOW_ERROR, payload: e });

@@ -73,7 +73,7 @@ class TrafficEditPage extends Component {
         updateData(trafficData._id, trafficData);
       }
     } else {
-      trafficActions.updateSeries(trafficData, successCallback);
+      trafficActions.update(trafficData, successCallback);
     }
   };
 
@@ -137,7 +137,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(TrafficEditPage);
+export default connect(mapStateToProps, mapDispatchToProps)(TrafficEditPage);

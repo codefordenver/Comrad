@@ -7,9 +7,7 @@ const libraryController = require('./library');
 const playlistsController = require('./playlists');
 const reportingController = require('./reporting');
 const resourcesController = require('./resources');
-const eventRootController = require('./events/root');
-const eventInstanceController = require('./events/instance');
-const eventSeriesController = require('./events/series');
+const eventsController = require('./events');
 const usersController = require('./users');
 
 module.exports = {
@@ -22,8 +20,6 @@ module.exports = {
   playlistsController,
   reportingController,
   resourcesController,
-  eventRootController,
-  eventInstanceController,
-  eventSeriesController,
+  eventsController,
   usersController,
 };

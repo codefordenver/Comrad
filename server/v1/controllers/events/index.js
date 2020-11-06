@@ -7,6 +7,7 @@ const findEarliest = require('./findEarliest');
 const nextShow = require('./nextShow');
 const previousShow = require('./previousShow');
 const remove = require('./remove');
+const removeInstanceFromSeries = require('./removeInstanceFromSeries');
 const search = require('./search');
 const searchUnderwriters = require('./searchUnderwriters');
 const update = require('./update');
@@ -24,4 +25,5 @@ module.exports = {
   searchUnderwriters,
   update,
   remove,
+  removeInstanceFromSeries,
 };

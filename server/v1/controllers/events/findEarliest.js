@@ -67,7 +67,7 @@
 const {
   utils: { getModelForEventType },
   utils__mongoose: { populateMasterEvent },
-} = require('../utils');
+} = require('./utils');
 
 function findEarliest(req, res) {
   const { eventType } = req.params;

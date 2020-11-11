@@ -11,6 +11,8 @@ import ShowDetailsBottom from '../CommonShowForms/ShowDetailsBottom';
 
 import { getShowSelected, getSearchDate } from '../../../redux/show';
 
+import { repeatRuleToDropdownValue } from '../../../utils/events';
+
 const FORM_NAME = 'EDIT_SHOW';
 const ALLOW_REPEAT_SELECT = true;
 class EditShowForm extends Component {
@@ -81,6 +83,9 @@ function mapStateToProps(state) {
       initial: { ...selectedShow },
       startDate: searchDates.start,
       endDate: searchDates.end,
+      repeat_rule_dropdown_value: repeatRuleToDropdownValue(
+        selectedShow.repeat_rule,
+      ),
     };
   };
 
@@ -106,7 +111,4 @@ EditShowForm = reduxForm({
   form: FORM_NAME,
 })(EditShowForm);
 
-export default connect(
-  mapStateToProps,
-  {},
-)(EditShowForm);
+export default connect(mapStateToProps, {})(EditShowForm);

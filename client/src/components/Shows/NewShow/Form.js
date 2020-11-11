@@ -73,8 +73,9 @@ function mapStateToProps(state) {
     return {
       start_time_utc: startTime,
       end_time_utc: endTime,
-      repeat_start_date: startTime,
-      repeat_end_date: null,
+      repeat_rule: {
+        repeat_start_date: startTime,
+      },
       startDate: searchDates.start,
       endDate: searchDates.end,
       is_recurring: false,
@@ -95,7 +96,4 @@ NewShowForm = reduxForm({
   form: FORM_NAME,
 })(NewShowForm);
 
-export default connect(
-  mapStateToProps,
-  {},
-)(NewShowForm);
+export default connect(mapStateToProps, {})(NewShowForm);

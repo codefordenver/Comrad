@@ -294,7 +294,7 @@ function find(req, res) {
             { $match: filter },
             {
               $lookup: {
-                from: 'traffics',
+                from: 'traffic',
                 localField: 'master_event_id',
                 foreignField: '_id',
                 as: 'MasterEvent',

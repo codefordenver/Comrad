@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import moment from 'moment';
 
 import FormTraffic from '../../components/forms/FormTraffic';
 import Card, { CardBody } from '../../components/Card';
@@ -73,6 +74,16 @@ class TrafficEditPage extends Component {
         updateData(trafficData._id, trafficData);
       }
     } else {
+      if (
+        trafficData.repeat_rule != null &&
+        trafficData.repeat_rule.repeat_end_date != null
+      ) {
+        //the repeat rule end date is only a date selector, we will adjust this value so the time passed to the back-end is at the end of day rather than the beginning of the day
+        let repeatEndDate = moment(trafficData.repeat_rule.repeat_end_date);
+        repeatEndDate.endOf('day');
+        trafficData.repeat_rule.repeat_end_date = repeatEndDate.toDate();
+      }
+
       trafficActions.update(trafficData, successCallback);
     }
   };

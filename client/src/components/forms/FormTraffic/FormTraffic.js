@@ -199,6 +199,7 @@ function mapStateToProps(state, ownProps) {
     ownProps.initialValues != null ? ownProps.initialValues : {};
   if (ownProps.timeToAddAt != null) {
     initialValues.start_time_utc = ownProps.timeToAddAt;
+    initialValues['repeat_rule.repeat_start_date'] = ownProps.timeToAddAt;
   }
   return {
     configState: state.config,

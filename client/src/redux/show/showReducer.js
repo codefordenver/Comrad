@@ -41,10 +41,12 @@ export function showReducer(state = initialState, { type, payload }) {
 
     case SHOW_CLEAR_ALL_BUT_PAST_INSTANCES_FOR_SHOW:
       newStateData = state.data;
+      let instanceToDeleteFrom = state.data[payload];
       Object.keys(state.data).forEach(function(k) {
         if (
+          state.data[k].master_event_id != null &&
           state.data[k].master_event_id._id ===
-          instanceToDeleteFrom.master_event_id._id
+            instanceToDeleteFrom.master_event_id._id
         ) {
           if (
             state.data[k].start_time_utc >= instanceToDeleteFrom.start_time_utc
@@ -65,11 +67,10 @@ export function showReducer(state = initialState, { type, payload }) {
 
     case SHOW_CLEAR_ALL_INSTANCES_FOR_SERIES:
       newStateData = state.data;
-      let instanceToDeleteFrom = state.data[payload];
       Object.keys(state.data).forEach(function(k) {
         if (
-          state.data[k].master_event_id._id ===
-          instanceToDeleteFrom.master_event_id._id
+          state.data[k].master_event_id != null &&
+          state.data[k].master_event_id._id === payload
         ) {
           delete state.data[k];
         }

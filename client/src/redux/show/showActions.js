@@ -1,4 +1,5 @@
 import axios from 'axios';
+import moment from 'moment';
 import {
   SHOW_CLEAR,
   SHOW_CLEAR_ALL_INSTANCES_FOR_SERIES,
@@ -32,6 +33,13 @@ export const clearAllButPastInstancesForShow = _id => async dispatch => {
 export const postShow = (input, callback) => async dispatch => {
   const show = input;
   try {
+    if (show.repeat_rule != null && show.repeat_rule.repeat_end_date != null) {
+      //the repeat rule end date is only a date selector, we will adjust this value so the time passed to the back-end is at the end of day rather than the beginning of the day
+      let repeatEndDate = moment(show.repeat_rule.repeat_end_date);
+      repeatEndDate.endOf('day');
+      show.repeat_rule.repeat_end_date = repeatEndDate.toDate();
+    }
+
     const response = await axios.post(`${ROOT_SHOWS_URL}/`, show);
 
     dispatch({ type: SHOW_UPDATE, payload: response.data });
@@ -69,6 +77,12 @@ export const updateShow = (
   callback = null,
 ) => async dispatch => {
   try {
+    if (data.repeat_rule != null && data.repeat_rule.repeat_end_date != null) {
+      //the repeat rule end date is only a date selector, we will adjust this value so the time passed to the back-end is at the end of day rather than the beginning of the day
+      let repeatEndDate = moment(data.repeat_rule.repeat_end_date);
+      repeatEndDate.endOf('day');
+      data.repeat_rule.repeat_end_date = repeatEndDate.toDate();
+    }
     const response = await axios.put(`${ROOT_SHOWS_URL}/${show_id}`, data);
     dispatch({ type: SHOW_UPDATE, payload: response.data });
     if (callback) {
@@ -91,7 +105,7 @@ export const deleteShow = show => async dispatch => {
 export const removeInstanceFromSeries = (show_id, data) => async dispatch => {
   try {
     const response = await axios.delete(
-      `${ROOT_SHOWS_URL}/remove-instance-from-series/${show_id}`,
+      `${ROOT_SHOWS_URL}/${show_id}/remove-instance-from-series/`,
       {
         data,
       },

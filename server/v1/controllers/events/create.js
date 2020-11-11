@@ -156,9 +156,12 @@ function create(req, res) {
     let repeat_rule = JSON.parse(body.repeat_rule_dropdown_value);
     repeat_rule.repeat_start_date = body.repeat_rule.repeat_start_date;
 
-    if (!body.repeat_end_date) {
-      body.repeat_rule.repeat_end_date = moment('9999', 'YYYY');
+    if (!body.repeat_rule.repeat_end_date) {
+      repeat_rule.repeat_end_date = moment('9999', 'YYYY');
+    } else {
+      repeat_rule.repeat_end_date = moment(body.repeat_rule.repeat_end_date);
     }
+    body.repeat_rule = repeat_rule;
   } else {
     body.repeat_rule = {};
   }

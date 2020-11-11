@@ -55,7 +55,7 @@ class TrafficViewPage extends Component {
       history,
       traffic,
     } = this.props;
-    trafficActions.deleteInstance(traffic.doc, function() {
+    trafficActions.removeInstanceFromSeries(traffic.doc, function() {
       history.push(
         addDeleteActionReturnLocation != null
           ? addDeleteActionReturnLocation
@@ -124,7 +124,7 @@ class TrafficViewPage extends Component {
 
     let formattedTime = '';
     if (this.isDocumentLoaded()) {
-      formattedTime = moment(doc.start_time_utc).format('ddd, MMM D h:ma');
+      formattedTime = moment(doc.start_time_utc).format('ddd, MMM D h:mma');
     }
 
     let giveawayCustomFields = [];

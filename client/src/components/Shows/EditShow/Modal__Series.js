@@ -69,7 +69,7 @@ class EditModal extends Component {
       'repeat_rule.repeat_start_date' in finalObject ||
       'repeat_rule_dropdown_value' in finalObject
     ) {
-      clearAllInstancesForShow(values.master_time_id);
+      clearAllInstancesForShow(values.master_event_id);
     }
     updateShow(_id, finalObject, handleFormSubmit);
   };

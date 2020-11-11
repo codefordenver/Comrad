@@ -56,6 +56,8 @@ class RepeatDropdown extends Component {
       Sunday: 'SU',
     };
 
+    // If you are adding or modifying rules here, you must also modify the corresponding converters
+    // to change a repeat_rule value back to a rule in client/src/utils/events.js
     const rules = {
       daily: {
         name: 'Every Day',
@@ -113,7 +115,6 @@ class RepeatDropdown extends Component {
           component={DatePicker__React}
           label="Start"
           name="repeat_rule.repeat_start_date"
-          validate={[requiredValidate]}
           disabled={date != null ? true : false}
           controlledDate={date != null ? date : null}
         />
@@ -141,7 +142,4 @@ class RepeatDropdown extends Component {
   }
 }
 
-export default connect(
-  null,
-  { change },
-)(RepeatDropdown);
+export default connect(null, { change })(RepeatDropdown);

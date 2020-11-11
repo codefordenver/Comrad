@@ -241,7 +241,10 @@ async function update(req, res) {
 
   let originalEvent = await dbModel.findOne({ _id: id });
 
-  if (originalEvent.master_event_id != null) {
+  if (
+    originalEvent.master_event_id === null ||
+    typeof originalEvent.master_event_id === 'undefined'
+  ) {
     // we are updating a series, so we will need to check a few extra things
 
     if (
@@ -312,7 +315,10 @@ async function update(req, res) {
 
   console.log('finished updating event');
 
-  if (originalEvent.master_event_id != null) {
+  if (
+    originalEvent.master_event_id === null ||
+    typeof originalEvent.master_event_id === 'undefined'
+  ) {
     // we are updating a series, so we will need to check a few extra things
 
     //if date/time was changed, update the times of all instances that occur in the future

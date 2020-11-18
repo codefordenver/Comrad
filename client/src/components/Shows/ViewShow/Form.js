@@ -6,10 +6,10 @@ import { setModalVisibility } from '../../../redux/modal';
 import {
   selectShow,
   deleteShow,
-  deleteShowSeries,
-  deleteShowInstance,
+  remove,
+  removeInstanceFromSeries,
   createInstanceShow,
-  createInstanceAndEditShow,
+  editShow,
   updateShow,
 } from '../../../redux/show';
 import { getShowType } from '../../../utils/shows';
@@ -41,8 +41,8 @@ class NewShowForm extends Component {
   };
 
   showEditInstanceModal = show => {
-    const { setModalVisibility, createInstanceAndEditShow } = this.props;
-    createInstanceAndEditShow(show.master_event_id._id, show).then(() => {
+    const { setModalVisibility, createInstanceShow } = this.props;
+    createInstanceShow(show.master_event_id._id, show).then(() => {
       setModalVisibility(MODAL_EDIT_SHOW, true, null);
     });
   };
@@ -60,14 +60,14 @@ class NewShowForm extends Component {
   };
 
   deleteSeriesShow = show => {
-    const { deleteShowSeries, setModalVisibility } = this.props;
-    deleteShowSeries(show.master_event_id._id);
+    const { remove, setModalVisibility } = this.props;
+    remove(show.master_event_id._id);
     setModalVisibility(null, false, null);
   };
 
   deleteInstanceShow = show => {
-    const { deleteShowInstance, setModalVisibility } = this.props;
-    deleteShowInstance(show.master_event_id._id, show);
+    const { removeInstanceFromSeries, setModalVisibility } = this.props;
+    removeInstanceFromSeries(show.master_event_id._id, show);
     setModalVisibility(null, false, null);
   };
 
@@ -291,9 +291,9 @@ class NewShowForm extends Component {
               </>
             )}
           {auth.doc.roles != null &&
-            (auth.doc.roles.indexOf('Admin') === -1 &&
-              auth.doc.roles.indexOf('Full Access') === -1 &&
-              auth.doc.roles.indexOf('Show Captain') === -1) && (
+            auth.doc.roles.indexOf('Admin') === -1 &&
+            auth.doc.roles.indexOf('Full Access') === -1 &&
+            auth.doc.roles.indexOf('Show Captain') === -1 && (
               <div>
                 <b>Host: </b>
                 {host != null && <>{formattedHostName}</>}
@@ -334,17 +334,14 @@ function mapDispatchToProps(dispatch) {
     deleteShow: bindActionCreators(deleteShow, dispatch),
     updateShow: bindActionCreators(updateShow, dispatch),
     setModalVisibility: bindActionCreators(setModalVisibility, dispatch),
-    deleteShowSeries: bindActionCreators(deleteShowSeries, dispatch),
-    deleteShowInstance: bindActionCreators(deleteShowInstance, dispatch),
-    createInstanceShow: bindActionCreators(createInstanceShow, dispatch),
-    createInstanceAndEditShow: bindActionCreators(
-      createInstanceAndEditShow,
+    remove: bindActionCreators(remove, dispatch),
+    removeInstanceFromSeries: bindActionCreators(
+      removeInstanceFromSeries,
       dispatch,
     ),
+    createInstanceShow: bindActionCreators(createInstanceShow, dispatch),
+    editShow: bindActionCreators(editShow, dispatch),
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(NewShowForm);
+export default connect(mapStateToProps, mapDispatchToProps)(NewShowForm);

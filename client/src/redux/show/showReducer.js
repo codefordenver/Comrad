@@ -41,10 +41,12 @@ export function showReducer(state = initialState, { type, payload }) {
 
     case SHOW_CLEAR_ALL_BUT_PAST_INSTANCES_FOR_SHOW:
       newStateData = state.data;
+      let instanceToDeleteFrom = state.data[payload];
       Object.keys(state.data).forEach(function(k) {
         if (
+          state.data[k].master_event_id != null &&
           state.data[k].master_event_id._id ===
-          instanceToDeleteFrom.master_event_id._id
+            instanceToDeleteFrom.master_event_id._id
         ) {
           if (
             state.data[k].start_time_utc >= instanceToDeleteFrom.start_time_utc
@@ -65,11 +67,10 @@ export function showReducer(state = initialState, { type, payload }) {
 
     case SHOW_CLEAR_ALL_INSTANCES_FOR_SERIES:
       newStateData = state.data;
-      let instanceToDeleteFrom = state.data[payload];
       Object.keys(state.data).forEach(function(k) {
         if (
-          state.data[k].master_event_id._id ===
-          instanceToDeleteFrom.master_event_id._id
+          state.data[k].master_event_id != null &&
+          state.data[k].master_event_id._id === payload
         ) {
           delete state.data[k];
         }
@@ -80,11 +81,20 @@ export function showReducer(state = initialState, { type, payload }) {
         data: { ...newStateData },
       };
     case SHOW_UPDATE:
+      let selected = null;
+      if (Array.isArray(payload)) {
+        if (payload.length > 0) {
+          selected = payload[0];
+        }
+      } else {
+        selected = payload;
+      }
       return {
         ...state,
         data: { ...state.data, ..._.keyBy(payload, 'master_time_id') },
         fetching: false,
         error: false,
+        selected: selected,
       };
 
     case SHOW_SEARCH:
@@ -220,10 +230,6 @@ export function getShowsData(state = initialState) {
 
 export function getSearchDate(state = initialState) {
   return state.search;
-}
-
-export function getShowSelected(state = initialState) {
-  return state.selected;
 }
 
 export function fetchingShowsStatus(state = initialState) {

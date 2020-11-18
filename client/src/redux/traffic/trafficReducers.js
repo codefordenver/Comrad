@@ -22,6 +22,11 @@ export const trafficReducer = (state = initialState, { type, payload }) => {
       };
     case trafficTypes.CLEAR:
       return initialState;
+    case trafficTypes.CLEAR_DOCS:
+      return {
+        ...state,
+        docs: initialState.docs,
+      };
     case trafficTypes.EARLIEST:
       return {
         ...state,

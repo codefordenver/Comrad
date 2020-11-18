@@ -78,7 +78,7 @@ This code will call the `/current-show` endpoint, one of the [simple API endpoin
 
 If an error occurs with the API request, a status code will be printed. A `500` error indicates a server error, and the output of the API endpoint may include more details. A `401` error means your credentials are not valid. A `403` error means you have valid credentials, but your API key does not have the proper permissions to access the endpoint. A `404` error means "not found", and if you get that error on this example code, it probably means that you have the wrong value for `comradUrl` or, if you're trying to test locally, your local development environment is not running.
 
-## Using API Endpoints that take parameters.
+## Using API Endpoints that take parameters
 
 > Sample code 
 

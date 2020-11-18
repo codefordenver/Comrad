@@ -1,14 +1,19 @@
 import { alertTypes } from '../../alert';
 import { trafficAPI } from '../../../api';
+import { trafficTypes } from '../trafficTypes';
 
-export const updateInstance = (
-  instanceId,
+export const update = (
+  trafficId,
   changedValues,
   callback,
 ) => async dispatch => {
   try {
-    const response = await trafficAPI.updateInstance(instanceId, changedValues);
+    const response = await trafficAPI.update(trafficId, changedValues);
     callback(response);
+    dispatch({
+      type: trafficTypes.FIND_BY_ID,
+      payload: response.data,
+    });
   } catch (e) {
     console.error(e);
     dispatch({

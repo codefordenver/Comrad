@@ -21,6 +21,15 @@ class DatePicker__React extends Component {
     }
   }
 
+  componentDidUpdate() {
+    const { value } = this.props.input;
+    const { date } = this.state;
+
+    if (value instanceof Date && value !== date) {
+      this.setState({ date: value });
+    }
+  }
+
   handleDateChange = date => {
     const { allowNullDate = false, input } = this.props;
     const { onChange } = input;
@@ -44,16 +53,11 @@ class DatePicker__React extends Component {
         touched: false,
         submitting: false,
       } /* default values for when component is not used within React Form */,
-      controlledDate,
       type,
       ...rest
     } = props;
     let { touched, error } = meta;
     let { date } = state;
-
-    if (controlledDate && moment(controlledDate).isValid()) {
-      date = new Date(controlledDate);
-    }
 
     return (
       <div className={classnames('form-group', className)}>

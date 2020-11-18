@@ -1,22 +1,22 @@
 /**
  * @swagger
  *
- * /previous-show:
+ * /current-show:
  *   get:
  *     tags:
  *     - Simple Endpoints
  *     - Shows
- *     operationId: PreviousShow
- *     summary: Previous Show
+ *     operationId: CurrentShow
+ *     summary: Current Show
  *     security:
  *     - ApiKeyAuth: []
  *     description: |
- *       Returns the previous show that was playing. Returns `null` if there are no shows occurring within the previous day.
+ *       Returns the show that's currently playing, or null if there is no show currently playing.
  *
  *       The following roles can access this API endpoint: `Admin`, `Full Access`, `Show Captain`, `Underwriting`, `DJ`, `Music Library Admin`
  *     responses:
  *       200:
- *         description: an object containing the previous snow, or `null` if no shows occurred within the previous day
+ *         description: The show that is currently playing, including its playlist. `null` if there is no show currently playing.
  *         content:
  *           application/json:
  *             schema:
@@ -171,8 +171,8 @@ const {
     populateMasterEvent,
     populateMasterEventShowDetails,
   },
-} = require('../utils');
-const { findOrCreatePlaylist } = require('../../playlists/utils');
+} = require('./utils');
+const { findOrCreatePlaylist } = require('../playlists/utils');
 
 function currentShow(req, res) {
   const dbModel = getModelForEventType('shows');
@@ -181,24 +181,15 @@ function currentShow(req, res) {
     return;
   }
 
-  let endDate = new Date();
-  let startDate = new Date(endDate.getTime() - 24 * 60 * 60 * 1000);
+  let startDate = new Date();
+  let endDate = new Date(startDate.getTime() + 60 * 60 * 1000);
 
   let filter = findEventQueryByDateRange(startDate, endDate);
 
   const processEventResults = dbShow => {
     let showResults = eventList(dbShow, startDate, endDate);
     if (showResults.length > 0) {
-      let show;
-      for (let i = showResults.length - 1; i >= 0; i--) {
-        if (new Date(showResults[i].end_time_utc) < endDate) {
-          show = showResults[i];
-          break;
-        }
-      }
-      if (typeof show === 'undefined') {
-        return res.json(null);
-      }
+      let show = showResults[0];
       return findOrCreatePlaylist(show.start_time_utc, show.end_time_utc)
         .then(p => {
           show.playlist_executed = p.saved_items;
@@ -206,7 +197,7 @@ function currentShow(req, res) {
         })
         .catch(err => {
           console.log(
-            'error in events > root > nextShow > findOne for playlist',
+            'error in events > root > currentShow > findOne for playlist',
           );
           console.error(err);
           return res.status(500).json(err);
@@ -225,7 +216,7 @@ function currentShow(req, res) {
     .populate(populateMasterEventShowDetails())
     .then(processEventResults)
     .catch(err => {
-      console.log('error in events > root > nextShow');
+      console.log('error in events > root > currentShow');
       console.error(err);
       return res.status(500).json(err);
     });

@@ -172,7 +172,7 @@ const {
     populateMasterEvent,
     populateMasterEventShowDetails,
   },
-} = require('../utils');
+} = require('./utils');
 
 function find(req, res) {
   let {
@@ -294,10 +294,16 @@ function find(req, res) {
             { $match: filter },
             {
               $lookup: {
-                from: 'traffics',
+                from: 'traffic',
                 localField: 'master_event_id',
                 foreignField: '_id',
-                as: 'MasterEvent',
+                as: 'master_event_id',
+              },
+            },
+            {
+              $unwind: {
+                path: '$master_event_id',
+                preserveNullAndEmptyArrays: true,
               },
             },
             {
@@ -305,7 +311,7 @@ function find(req, res) {
                 $or: [
                   { 'traffic_details.type': { $in: filterByTrafficType } },
                   {
-                    'MasterEvent.traffic_details.type': {
+                    'master_event_id.traffic_details.type': {
                       $in: filterByTrafficType,
                     },
                   },
@@ -317,7 +323,7 @@ function find(req, res) {
           .catch(err => {
             console.log('error in events > root > find');
             console.error(err);
-            return res.status(422).json(err);
+            return res.status(422).json({ errorMessage: err });
           });
       } else {
         return dbModel
@@ -329,14 +335,14 @@ function find(req, res) {
           .catch(err => {
             console.log('error in events > root > find');
             console.error(err);
-            return res.status(422).json(err);
+            return res.status(422).json({ errorMessage: err });
           });
       }
     })
     .catch(err => {
       console.log('error in events > root > find');
       console.error(err);
-      return res.status(422).json(err);
+      return res.status(422).json({ errorMessage: err });
     });
 }
 

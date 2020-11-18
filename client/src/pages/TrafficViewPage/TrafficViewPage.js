@@ -132,6 +132,12 @@ class TrafficViewPage extends Component {
       giveawayCustomFields = configState.customFields.giveaway;
     }
 
+    let recurring =
+      doc != null
+        ? doc.is_recurring ||
+          (doc.master_event_id && doc.master_event_id.is_recurring)
+        : false;
+
     return (
       <div className="traffic-view-page">
         {!this.isDocumentLoaded() && <Loading />}
@@ -207,7 +213,12 @@ class TrafficViewPage extends Component {
                 <Button
                   className="mr-1"
                   onClick={() => {
-                    if (this.props.traffic.doc.is_recurring) {
+                    if (
+                      (this.props.traffic.doc.master_event_id != null &&
+                        this.props.traffic.doc.master_event_id._id !==
+                          doc._id) ||
+                      this.props.traffic.doc.is_recurring
+                    ) {
                       this.setState({ showEditModal: true });
                     } else {
                       this.handleEditSeries();
@@ -226,7 +237,7 @@ class TrafficViewPage extends Component {
             </Card>
           </>
         )}
-        {this.state.showDeleteModal && doc.is_recurring && (
+        {this.state.showDeleteModal && recurring && (
           <Modal>
             <div className="delete-traffic-modal">
               Delete only this occurrence, or the whole series of traffic
@@ -248,14 +259,13 @@ class TrafficViewPage extends Component {
             </div>
           </Modal>
         )}
-        {this.state.showDeleteModal &&
-          (!doc.is_recurring || typeof doc.is_recurring === 'undefined') && (
-            <DeleteModal
-              deleteModal={{ name: doc.traffic_details.title, type: 'traffic' }}
-              closeDeleteModal={() => this.setState({ showDeleteModal: false })}
-              deleteCallback={this.handleDeleteSeries}
-            />
-          )}
+        {this.state.showDeleteModal && !recurring && (
+          <DeleteModal
+            deleteModal={{ name: doc.traffic_details.title, type: 'traffic' }}
+            closeDeleteModal={() => this.setState({ showDeleteModal: false })}
+            deleteCallback={this.handleDeleteSeries}
+          />
+        )}
         {this.state.showEditModal && (
           <Modal>
             <div className="edit-traffic-modal">

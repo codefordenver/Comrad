@@ -9,7 +9,7 @@ import RepeatDropdown from '../../RepeatDropdown';
 import ShowDetailsTop from '../CommonShowForms/ShowDetailsTop';
 import ShowDetailsBottom from '../CommonShowForms/ShowDetailsBottom';
 
-import { getShowSelected, getSearchDate } from '../../../redux/show';
+import { getSearchDate } from '../../../redux/show';
 
 import { repeatRuleToDropdownValue } from '../../../utils/events';
 
@@ -75,7 +75,7 @@ class EditShowForm extends Component {
 const selector = formValueSelector(FORM_NAME);
 
 function mapStateToProps(state) {
-  const selectedShow = getShowSelected(state.show);
+  const selectedShow = state.show.selected;
   const initialValues = state => {
     const searchDates = getSearchDate(state.show);
     return {

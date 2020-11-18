@@ -1,5 +1,6 @@
 import { add } from './add';
 import { clear } from './clear';
+import { clearDocs } from './clearDocs';
 import { createInstance } from './createInstance';
 import { find } from './find';
 import { findEarliest } from './findEarliest';
@@ -14,6 +15,7 @@ import { update } from './update';
 export const trafficActions = {
   add,
   clear,
+  clearDocs,
   createInstance,
   find,
   findById,

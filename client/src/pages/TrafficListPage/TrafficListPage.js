@@ -9,7 +9,6 @@ import {
   clearShows,
   errorShowsMessage,
   fetchingShowsStatus,
-  getShowsData,
   searchShow,
 } from '../../redux/show';
 import Card, { CardBody } from '../../components/Card';
@@ -38,7 +37,7 @@ class TrafficListPage extends Component {
 
   componentWillUnmount() {
     const { trafficActions, clearShows } = this.props;
-    trafficActions.clear();
+    trafficActions.clearDocs(); //only clear the docs object: clearing out the individual doc will cause issues if navigating to a TrafficVIewPage for the document currently loaded in Redux state
     clearShows();
   }
 
@@ -290,7 +289,7 @@ class TrafficListPage extends Component {
 
 function mapStateToProps({ show, traffic }) {
   return {
-    shows: getShowsData(show),
+    shows: show.data,
     showsError: errorShowsMessage(show),
     showsFetching: fetchingShowsStatus(show),
     traffic,
@@ -305,7 +304,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(TrafficListPage);
+export default connect(mapStateToProps, mapDispatchToProps)(TrafficListPage);

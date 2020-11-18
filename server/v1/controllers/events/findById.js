@@ -151,13 +151,17 @@ function findById(req, res) {
           4. rrule.between won't return a date unless you use 15:00 UTC instead (that timestamp is 14:00 UTC, which is when the event should be because of daylight savings adjustment
         */
         /* be sure we are returning the result with the matching master_time_id */
+        console.log('here91');
+        console.log(showResults);
+        console.log(timestamp - 1 - 60 * 60 * 1000);
+        console.log(timestamp + 60 * 60 * 1000 + 1);
         let result = showResults[0];
         showResults.forEach(function(event) {
           if (event.master_time_id === req.params.id) {
             result = event;
           }
         });
-        res.json(result);
+        return res.json(result);
       })
       .catch(err => {
         console.error(err);

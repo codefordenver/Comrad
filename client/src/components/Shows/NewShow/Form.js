@@ -10,7 +10,7 @@ import RepeatDropdown from '../../RepeatDropdown';
 import ShowDetailsTop from '../CommonShowForms/ShowDetailsTop';
 import ShowDetailsBottom from '../CommonShowForms/ShowDetailsBottom';
 
-import { getShowSelected, getSearchDate } from '../../../redux/show';
+import { getSearchDate } from '../../../redux/show';
 
 const FORM_NAME = 'NEW_SHOW';
 const ALLOW_REPEAT_SELECT = true;
@@ -57,7 +57,7 @@ const selector = formValueSelector(FORM_NAME);
 
 function mapStateToProps(state) {
   const initialValues = state => {
-    const selectedShow = getShowSelected(state.show);
+    const selectedShow = state.show.selected;
     const searchDates = getSearchDate(state.show);
     let startTime = '';
     let endTime = '';

@@ -102,7 +102,7 @@ class RepeatDropdown extends Component {
 
   render() {
     const { definedRepeatRules, props } = this;
-    const { date } = props;
+    const { date, disabled = true } = props;
     const repeatDropdownList = _.map(definedRepeatRules(date), option => {
       // Dropdown values are using string of JSON instead of object. Inconclusive whether they can be set as object. See https://github.com/codefordenver/Comrad/issues/492
       return { text: option.name, value: JSON.stringify(option) };
@@ -115,8 +115,7 @@ class RepeatDropdown extends Component {
           component={DatePicker__React}
           label="Start"
           name="repeat_rule.repeat_start_date"
-          disabled={date != null ? true : false}
-          controlledDate={date != null ? date : null}
+          disabled={disabled}
         />
 
         <Field

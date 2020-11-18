@@ -9,7 +9,7 @@ import {
   remove,
   removeInstanceFromSeries,
   createInstanceShow,
-  createInstanceAndEditShow,
+  editShow,
   updateShow,
 } from '../../../redux/show';
 import { getShowType } from '../../../utils/shows';
@@ -41,8 +41,8 @@ class NewShowForm extends Component {
   };
 
   showEditInstanceModal = show => {
-    const { setModalVisibility, createInstanceAndEditShow } = this.props;
-    createInstanceAndEditShow(show.master_event_id._id, show).then(() => {
+    const { setModalVisibility, createInstanceShow } = this.props;
+    createInstanceShow(show.master_event_id._id, show).then(() => {
       setModalVisibility(MODAL_EDIT_SHOW, true, null);
     });
   };
@@ -340,10 +340,7 @@ function mapDispatchToProps(dispatch) {
       dispatch,
     ),
     createInstanceShow: bindActionCreators(createInstanceShow, dispatch),
-    createInstanceAndEditShow: bindActionCreators(
-      createInstanceAndEditShow,
-      dispatch,
-    ),
+    editShow: bindActionCreators(editShow, dispatch),
   };
 }
 

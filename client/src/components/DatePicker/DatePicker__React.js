@@ -21,6 +21,15 @@ class DatePicker__React extends Component {
     }
   }
 
+  componentDidUpdate() {
+    const { value } = this.props.input;
+    const { date } = this.state;
+
+    if (value instanceof Date && value !== date) {
+      this.setState({ date: value });
+    }
+  }
+
   handleDateChange = date => {
     const { allowNullDate = false, input } = this.props;
     const { onChange } = input;

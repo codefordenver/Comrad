@@ -18,7 +18,7 @@ import { requiredValidate } from '../../../utils/validation';
 
 const FORM_NAME = 'trafficAddEdit';
 
-class FormTrafficAdd extends Component {
+class FormTraffic extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -37,10 +37,19 @@ class FormTrafficAdd extends Component {
     }
   }
 
+  isInstance = () => {
+    return this.props.initialValues.master_event_id != null;
+  };
+
   toggleIsRepeat = () => {
     this.setState({
       isRepeat: !this.state.isRepeat,
     });
+  };
+
+  updatedDateTime = value => {
+    const { change } = this.props;
+    change('repeat_rule.repeat_start_date', value);
   };
 
   render() {
@@ -77,31 +86,37 @@ class FormTrafficAdd extends Component {
             label="Date/Time"
             name="start_time_utc"
             type="time"
+            onChange={this.updatedDateTime}
             validate={[requiredValidate]}
             dateFormat="MM/dd/yyyy h:mm aa"
           />
 
-          <Field
-            component={Checkbox}
-            dirtyOverride
-            label="Repeats"
-            name="is_recurring"
-            onChange={this.toggleIsRepeat}
-          />
-          {isRepeat && (
+          {!this.isInstance() && (
             <>
-              <RepeatDropdown
-                formSelectorName={FORM_NAME}
-                date={
-                  currentValues.repeat_rule != null &&
-                  currentValues.repeat_rule.repeat_start_date != null
-                    ? currentValues.repeat_rule.repeat_start_date
-                    : currentValues.start_time_utc != null
-                    ? currentValues.start_time_utc
-                    : new Date()
-                }
-                initialValues={this.props.initialValues}
+              <Field
+                component={Checkbox}
+                dirtyOverride
+                label="Repeats"
+                name="is_recurring"
+                onChange={this.toggleIsRepeat}
               />
+              {isRepeat && (
+                <>
+                  <RepeatDropdown
+                    formSelectorName={FORM_NAME}
+                    date={
+                      currentValues.repeat_rule != null &&
+                      currentValues.repeat_rule.repeat_start_date != null
+                        ? currentValues.repeat_rule.repeat_start_date
+                        : currentValues.start_time_utc != null
+                        ? currentValues.start_time_utc
+                        : new Date()
+                    }
+                    disabled={false}
+                    initialValues={this.props.initialValues}
+                  />
+                </>
+              )}
             </>
           )}
 
@@ -201,6 +216,7 @@ function mapStateToProps(state, ownProps) {
     initialValues.start_time_utc = ownProps.timeToAddAt;
     initialValues['repeat_rule.repeat_start_date'] = ownProps.timeToAddAt;
   }
+
   return {
     configState: state.config,
     currentValues,
@@ -215,11 +231,8 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-const ReduxFormTrafficAdd = reduxForm({
+const ReduxFormTraffic = reduxForm({
   form: FORM_NAME,
-})(FormTrafficAdd);
+})(FormTraffic);
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(ReduxFormTrafficAdd);
+export default connect(mapStateToProps, mapDispatchToProps)(ReduxFormTraffic);

@@ -231,7 +231,7 @@ function createInstance(req, res) {
         d1.master_event_id = id;
         if (eventType === 'shows') {
           //Set show_details to an empty object first so it will inherit any updates on the master series
-          d1.show_details = { host_type: body['show_details.host_type'] };
+          d1.show_details = { host_type: body.show_details.host_type };
           //Add only the new host if available
           if (body.show_details != null) {
             d1.show_details.host = body.show_details.host;

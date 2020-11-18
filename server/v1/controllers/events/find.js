@@ -297,7 +297,13 @@ function find(req, res) {
                 from: 'traffic',
                 localField: 'master_event_id',
                 foreignField: '_id',
-                as: 'MasterEvent',
+                as: 'master_event_id',
+              },
+            },
+            {
+              $unwind: {
+                path: '$master_event_id',
+                preserveNullAndEmptyArrays: true,
               },
             },
             {
@@ -305,7 +311,7 @@ function find(req, res) {
                 $or: [
                   { 'traffic_details.type': { $in: filterByTrafficType } },
                   {
-                    'MasterEvent.traffic_details.type': {
+                    'master_event_id.traffic_details.type': {
                       $in: filterByTrafficType,
                     },
                   },

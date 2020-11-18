@@ -54,13 +54,14 @@ export const postShow = (input, callback) => async dispatch => {
 export const createInstanceShow = (show_id, data) => async dispatch => {
   try {
     const response = await axios.post(`${ROOT_SHOWS_URL}/${show_id}`, data);
+    console.log('response:', response);
     dispatch({ type: SHOW_UPDATE, payload: response.data });
   } catch (e) {
     dispatch({ type: SHOW_ERROR, payload: e });
   }
 };
 
-export const createInstanceAndEditShow = (show_id, data) => async dispatch => {
+export const editShow = (show_id, data) => async dispatch => {
   try {
     const response = await axios.put(`${ROOT_SHOWS_URL}/${show_id}`, data);
     dispatch({ type: SHOW_UPDATE, payload: response.data });

@@ -17,6 +17,20 @@ class TrafficAddPage extends Component {
       history,
     } = this.props;
 
+    // START - this logic is also duplicated on the TrafficEditPage
+    if (
+      trafficData.repeat_rule != null &&
+      trafficData.repeat_rule.repeat_start_date != null
+    ) {
+      // the repeat rule's start date needs to have the same time as the event's date/time
+      let repeatStartDate = moment(trafficData.repeat_rule.repeat_start_date);
+      let startTimeUtc = moment(trafficData.start_time_utc);
+      repeatStartDate.set('hour', startTimeUtc.get('hour'));
+      repeatStartDate.set('minute', startTimeUtc.get('minute'));
+      repeatStartDate.set('second', startTimeUtc.get('second'));
+      trafficData.repeat_rule.repeat_start_date = repeatStartDate.toDate();
+    }
+
     if (
       trafficData.repeat_rule != null &&
       trafficData.repeat_rule.repeat_end_date != null
@@ -26,6 +40,7 @@ class TrafficAddPage extends Component {
       repeatEndDate.endOf('day');
       trafficData.repeat_rule.repeat_end_date = repeatEndDate.toDate();
     }
+    //END - this logic is also duplicated on the TrafficEditPage
 
     trafficActions.add(trafficData, function() {
       history.push(

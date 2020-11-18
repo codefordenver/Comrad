@@ -89,9 +89,6 @@ export function showReducer(state = initialState, { type, payload }) {
       } else {
         selected = payload;
       }
-      console.log('selected:');
-      console.log(selected);
-      console.log('payload', payload);
       return {
         ...state,
         data: { ...state.data, ..._.keyBy(payload, 'master_time_id') },

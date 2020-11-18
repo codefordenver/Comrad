@@ -212,8 +212,8 @@ function returnDatesArrayByRepeatRule(event, startDate, endDate) {
     let adjustedEndDate = new Date(
       moment(endDate).add(minutesOffset, 'minutes'),
     );
-    let events = rule.between(adjustedStartDate, adjustedEndDate);
 
+    let events = rule.between(adjustedStartDate, adjustedEndDate);
     // undo the minutes offset
     for (let i = 0; i < events.length; i++) {
       events[i] = moment(events[i])

@@ -1,22 +1,22 @@
 /**
  * @swagger
  *
- * /next-show:
+ * /previous-show:
  *   get:
  *     tags:
  *     - Simple Endpoints
  *     - Shows
- *     operationId: NextShow
- *     summary: Next Show
+ *     operationId: PreviousShow
+ *     summary: Previous Show
  *     security:
  *     - ApiKeyAuth: []
  *     description: |
- *       Returns the next show that will be playing. Returns `null` if there are no shows occurring within the next day.
+ *       Returns the previous show that was playing. Returns `null` if there are no shows occurring within the previous day.
  *
  *       The following roles can access this API endpoint: `Admin`, `Full Access`, `Show Captain`, `Underwriting`, `DJ`, `Music Library Admin`
  *     responses:
  *       200:
- *         description: An object containing the next show, including its playlist. `null` if no shows occur during the next day.
+ *         description: an object containing the previous snow, or `null` if no shows occurred within the previous day
  *         content:
  *           application/json:
  *             schema:
@@ -171,8 +171,8 @@ const {
     populateMasterEvent,
     populateMasterEventShowDetails,
   },
-} = require('../utils');
-const { findOrCreatePlaylist } = require('../../playlists/utils');
+} = require('./utils');
+const { findOrCreatePlaylist } = require('../playlists/utils');
 
 function currentShow(req, res) {
   const dbModel = getModelForEventType('shows');
@@ -181,8 +181,8 @@ function currentShow(req, res) {
     return;
   }
 
-  let startDate = new Date();
-  let endDate = new Date(startDate.getTime() + 24 * 60 * 60 * 1000);
+  let endDate = new Date();
+  let startDate = new Date(endDate.getTime() - 24 * 60 * 60 * 1000);
 
   let filter = findEventQueryByDateRange(startDate, endDate);
 
@@ -190,8 +190,8 @@ function currentShow(req, res) {
     let showResults = eventList(dbShow, startDate, endDate);
     if (showResults.length > 0) {
       let show;
-      for (let i = 0; i < showResults.length; i++) {
-        if (new Date(showResults[i].start_time_utc) > startDate) {
+      for (let i = showResults.length - 1; i >= 0; i--) {
+        if (new Date(showResults[i].end_time_utc) < endDate) {
           show = showResults[i];
           break;
         }

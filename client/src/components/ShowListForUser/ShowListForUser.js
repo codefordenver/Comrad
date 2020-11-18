@@ -8,7 +8,7 @@ import { showAPI } from '../../api';
 import Loading from '../Loading';
 import { getShowType } from '../../utils/shows';
 import { MODAL_EDIT_SHOW } from '../Shows/ShowModalController';
-import { createInstanceAndEditShow, selectShow } from '../../redux/show';
+import { createInstanceShow, selectShow } from '../../redux/show';
 import { setModalVisibility } from '../../redux/modal';
 import ShowModalController from '../Shows/ShowModalController';
 
@@ -92,16 +92,12 @@ class ShowListForUser extends Component {
   };
 
   showEditInstanceModal = show => {
-    const {
-      setModalVisibility,
-      createInstanceAndEditShow,
-      selectShow,
-    } = this.props;
+    const { setModalVisibility, createInstanceShow, selectShow } = this.props;
     if (getShowType(show) === 'instance') {
       selectShow(show);
       setModalVisibility(MODAL_EDIT_SHOW, true, null, this.findShows);
     } else {
-      createInstanceAndEditShow(show.master_event_id._id, show).then(() => {
+      createInstanceShow(show.master_event_id._id, show).then(() => {
         setModalVisibility(MODAL_EDIT_SHOW, true, null, this.findShows);
       });
     }
@@ -197,7 +193,7 @@ function mapStateToProps(state, ownProps) {
 export default connect(
   mapStateToProps,
   {
-    createInstanceAndEditShow,
+    createInstanceShow,
     selectShow,
     setModalVisibility,
   },

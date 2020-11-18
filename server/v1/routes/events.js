@@ -1,43 +1,37 @@
 const router = require('express').Router();
 const { requireAC } = require('../middlewares');
-const {
-  eventRootController,
-  eventInstanceController,
-  eventSeriesController,
-} = require('../controllers');
+const { eventsController } = require('../controllers');
 
 // :type is either "shows" or "traffic"
 router
   .route('/:eventType/')
-  .get(requireAC(null, 'readAny'), eventRootController.find)
-  .post(requireAC(null, 'createAny'), eventRootController.create);
+  .get(requireAC(null, 'readAny'), eventsController.find)
+  .post(requireAC(null, 'createAny'), eventsController.create);
 
 router
   .route('/:eventType/earliest')
-  .get(requireAC(null, 'readAny'), eventRootController.findEarliest);
+  .get(requireAC(null, 'readAny'), eventsController.findEarliest);
 
 router
   .route('/:eventType/search')
-  .get(requireAC(null, 'readAny'), eventRootController.search);
+  .get(requireAC(null, 'readAny'), eventsController.search);
 
 router
   .route('/:eventType/search-underwriters')
-  .get(requireAC(null, 'readAny'), eventRootController.searchUnderwriters);
+  .get(requireAC(null, 'readAny'), eventsController.searchUnderwriters);
 
 router
   .route('/:eventType/:id')
-  .get(requireAC(null, 'readAny'), eventRootController.findById)
-  .delete(requireAC(null, 'deleteAny'), eventRootController.remove)
-  .put(requireAC(null, 'updateOwn'), eventRootController.createInstance)
-  .patch(requireAC(null, 'updateOwn'), eventRootController.update);
+  .get(requireAC(null, 'readAny'), eventsController.findById)
+  .delete(requireAC(null, 'deleteAny'), eventsController.remove)
+  .post(requireAC(null, 'updateOwn'), eventsController.createInstance)
+  .put(requireAC(null, 'updateOwn'), eventsController.update);
 
 router
-  .route('/:eventType/instance/:id')
-  .delete(requireAC(null, 'deleteAny'), eventInstanceController.remove);
-
-router
-  .route('/:eventType/series/:id')
-  .delete(requireAC(null, 'deleteAny'), eventSeriesController.remove)
-  .patch(requireAC(null, 'updateOwn'), eventSeriesController.update);
+  .route('/:eventType/:id/remove-instance-from-series')
+  .delete(
+    requireAC(null, 'deleteAny'),
+    eventsController.removeInstanceFromSeries,
+  );
 
 module.exports = router;

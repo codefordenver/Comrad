@@ -10,7 +10,7 @@ import RepeatDropdown from '../../RepeatDropdown';
 import ShowDetailsTop from '../CommonShowForms/ShowDetailsTop';
 import ShowDetailsBottom from '../CommonShowForms/ShowDetailsBottom';
 
-import { getShowSelected, getSearchDate } from '../../../redux/show';
+import { getSearchDate } from '../../../redux/show';
 
 const FORM_NAME = 'NEW_SHOW';
 const ALLOW_REPEAT_SELECT = true;
@@ -57,7 +57,7 @@ const selector = formValueSelector(FORM_NAME);
 
 function mapStateToProps(state) {
   const initialValues = state => {
-    const selectedShow = getShowSelected(state.show);
+    const selectedShow = state.show.selected;
     const searchDates = getSearchDate(state.show);
     let startTime = '';
     let endTime = '';
@@ -73,8 +73,9 @@ function mapStateToProps(state) {
     return {
       start_time_utc: startTime,
       end_time_utc: endTime,
-      repeat_start_date: startTime,
-      repeat_end_date: null,
+      repeat_rule: {
+        repeat_start_date: startTime,
+      },
       startDate: searchDates.start,
       endDate: searchDates.end,
       is_recurring: false,
@@ -95,7 +96,4 @@ NewShowForm = reduxForm({
   form: FORM_NAME,
 })(NewShowForm);
 
-export default connect(
-  mapStateToProps,
-  {},
-)(NewShowForm);
+export default connect(mapStateToProps, {})(NewShowForm);

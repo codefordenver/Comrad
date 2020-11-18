@@ -22,3 +22,81 @@ export function getDifferencesForEventInstance(originalData, instanceData) {
 
   return finalObject;
 }
+
+export function repeatRuleToDropdownValue(repeatRule) {
+  const ruleToDay = {
+    MO: 'Monday',
+    TU: 'Tuesday',
+    WE: 'Wednesday',
+    TH: 'Thursday',
+    FR: 'Friday',
+    SA: 'Saturday',
+    SU: 'Sunday',
+  };
+
+  switch (repeatRule.frequency) {
+    case 3:
+      return '{"name":"Every Day","frequency":3}';
+      break;
+    case 2:
+      if (
+        repeatRule.byweekday.length === 5 &&
+        repeatRule.byweekday.sort() === ['FR', 'MO', 'TH', 'TU', 'WE']
+      ) {
+        return '{"name":"Every Weekday (Mon-Fri)","frequency":2,"byweekday":["MO","TU","WE","TH","FR"]}';
+      } else if (
+        repeatRule.byweekday.length === 2 &&
+        repeatRule.byweekday.sort() === ['SA', 'SU']
+      ) {
+        return '{"name":"Weekends (Sat/Sun)","frequency":2,"byweekday":["SA","SU"]}';
+      } else if (repeatRule.byweekday.length === 1) {
+        let day = repeatRule.byweekday[0];
+        return (
+          '{"name":"Weekly on ' +
+          ruleToDay[day] +
+          '","frequency":2,"byweekday":["' +
+          day +
+          '"]}'
+        );
+      }
+      break;
+    case 1:
+      if (
+        repeatRule.bysetpos === 1 &&
+        repeatRule.frequency === 1 &&
+        repeatRule.byweekday.length === 1
+      ) {
+        return (
+          '{"name":"First ' +
+          ruleToDay[repeatRule.byweekday[0]] +
+          ' of the Month","frequency":1,"byweekday":["' +
+          repeatRule.byweekday[0] +
+          '"],"bysetpos":1}'
+        );
+      } else if (
+        repeatRule.bysetpos === -1 &&
+        repeatRule.frequency === 1 &&
+        repeatRule.byweekday.length === 1
+      ) {
+        return (
+          '{"name":"First ' +
+          ruleToDay[repeatRule.byweekday[0]] +
+          ' of the Month","frequency":1,"byweekday":["' +
+          repeatRule.byweekday[0] +
+          '"],"bysetpos":-1}'
+        );
+      } else if (repeatRule.bymonthday != null) {
+        return (
+          '{"name":"On day ' +
+          repeatRule.bymonthday +
+          ' of the month","frequency":1,"bymonthday":' +
+          repeatRule.bymonthday +
+          '}'
+        );
+      }
+      break;
+    default:
+      break;
+  }
+  return null;
+}

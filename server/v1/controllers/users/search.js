@@ -2,7 +2,7 @@
  * @swagger
  *
  * /users/search:
- *   post:
+ *   get:
  *     tags:
  *     - Users
  *     operationId: UsersSearch

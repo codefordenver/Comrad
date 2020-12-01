@@ -1,3 +1,71 @@
+/**
+ * @swagger
+ *
+ * /users/search-hosts:
+ *   get:
+ *     tags:
+ *     - Users
+ *     operationId: UsersSearchHosts
+ *     summary: Search Hosts
+ *     security:
+ *     - ApiKeyAuth: []
+ *     parameters:
+ *     - name: q
+ *       required: true
+ *       in: query
+ *       type: string
+ *       description: The string to search for
+ *     - name: status
+ *       required: false
+ *       in: query
+ *       schema:
+ *         type: string
+ *         enum: [Active,Inactive]
+ *       description: If provided, this endpoint will only return users matching the specified status
+ *     - name: maxResults
+ *       required: false
+ *       in: query
+ *       type: integer
+ *       description: The maximum number of results to provide. Defaults to 10.
+ *     description: |
+ *       Returns users and host groups whose on-air name, first name or last name match the search string provided by the `q` parameter.
+ *
+ *       The following roles can access this API endpoint: `Admin`, `Full Access`, `Show Captain`, `Underwriting`, `DJ`, `Music Library Admin`
+ *     responses:
+ *       200:
+ *         description: Returns a list of matching users and host groups, ordered by relevance to the search string
+ *         content:
+ *           application/json:
+ *             schema:
+ *               example:
+ *                 - on_air_name: Sean Williams
+ *                   _id: 5f721174ab735642446f6583
+ *                   first_name: Sean
+ *                   last_name: Williams
+ *                   type: User
+ *                 - _id: 5f8f456552431919908e84b3
+ *                   on_air_name: Sean and Barry
+ *                   type: HostGroup
+ *                 - on_air_name: 'Indra, Sean, And Patrick'
+ *                   _id: 5f721164ab735642446f6542
+ *                   first_name: 'Indra,'
+ *                   last_name: 'Sean, And Patrick'
+ *                   type: User
+ *                 - on_air_name: Ean Parmar
+ *                   _id: 5f7211a9ab735642446f665a
+ *                   first_name: Ean
+ *                   last_name: Parmar
+ *                   type: User
+ *       401:
+ *         description: The authentication you provided to access the API is invalid
+ *       403:
+ *         description: Your API key or account does not have permission to access this
+ *       422:
+ *         description: There was an issue with the data you provided. Check the response for more details.
+ *       500:
+ *         description: Server error. Check the response for more details.
+ */
+
 const db = require('../../models');
 const Fuse = require('fuse.js'); //Fuse library will let us do a fuzzy search across multiple collections, which a Mongo full-text search will not
 

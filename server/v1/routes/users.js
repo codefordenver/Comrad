@@ -13,20 +13,13 @@ if (process.env.SHOW_DEVELOPMENT_SIGN_UP) {
 }
 
 router
-  .route('/api-key/create')
-  .put(requireAC('Users', 'createAny'), usersController.createApiKey);
+  .route('/:id/api-key')
+  .post(requireAC('Users', 'createAny'), usersController.createApiKey)
+  .delete(requireAC('Users', 'createAny'), usersController.removeApiKey);
 
 router
-  .route('/api-key/delete')
-  .put(requireAC('Users', 'createAny'), usersController.removeApiKey);
-
-router
-  .route('/can-delete')
+  .route('/:id/can-delete')
   .get(requireAC('Users', 'readAny'), usersController.canDelete);
-
-router
-  .route('/random')
-  .post(requireAC('Users', 'createAny'), usersController.randomUser);
 
 router
   .route('/search')

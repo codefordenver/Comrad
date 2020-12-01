@@ -1,3 +1,63 @@
+/**
+ * @swagger
+ *
+ * /users/{id}:
+ *   parameters:
+ *   - name: id
+ *     in: path
+ *     required: true
+ *     example: 5f720bae0504f73464bd83eb
+ *   put:
+ *     tags:
+ *     - Users
+ *     operationId: UpdateUser
+ *     summary: Update
+ *     security:
+ *     - ApiKeyAuth: []
+ *     description: |
+ *       Update a user
+ *
+ *       The following roles can access this API endpoint for any user: `Admin`
+ *
+ *       All users can use this endpoint for their own user ID, but only to update password, first_name, last_name, email and on_air_name.
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *           example:
+ *             "on_air_name": "DJ Coolest Software"
+ *       required: true
+ *       description: "JSON object of properties to update"
+ *     responses:
+ *       200:
+ *         content:
+ *           application/json:
+ *             schema:
+ *               description: "The new, updated record"
+ *               example:
+ *                 api_key:
+ *                   last_used: '2020-12-01T14:31:33.305Z'
+ *                   token: exists
+ *                 on_air_name: DJ Coolest Software
+ *                 primary_phone: null
+ *                 roles:
+ *                   - Admin
+ *                 status: Active
+ *                 _id: 5f720bae0504f73464bd83eb
+ *                 email: comrad.development@gmail.com
+ *                 first_name: Comrad
+ *                 last_name: Develpment
+ *                 __v: 0
+ *                 can_delete: false
+ *       401:
+ *         description: The authentication you provided to access the API is invalid
+ *       403:
+ *         description: Your API key or account does not have permission to access this
+ *       422:
+ *         description: There was an issue with the data you provided. Check the response for more details.
+ */
+
 const db = require('../../models');
 const bcrypt = require('bcrypt-nodejs');
 
@@ -17,6 +77,10 @@ function update(req, res) {
         req.body[field] = bodyCopy[field];
       }
     });
+    if ('password' in bodyCopy) {
+      console.log('password');
+      req.body.password = bodyCopy.password;
+    }
   }
 
   if (req.body.password != null) {

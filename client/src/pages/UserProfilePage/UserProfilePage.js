@@ -55,14 +55,14 @@ class UserProfilePage extends Component {
     const { userActions, userState } = this.props;
     const id = userState.doc._id;
 
-    userActions.createApiKey({ id });
+    userActions.createApiKey(id);
   };
 
   handleApiDelete = () => {
     const { userActions, userState } = this.props;
     const { _id } = userState.doc;
 
-    userActions.deleteApiKey({ _id });
+    userActions.deleteApiKey(_id);
   };
 
   handleCanDeleteUser = () => {

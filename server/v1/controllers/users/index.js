@@ -3,7 +3,6 @@ const create = require('./create');
 const createApiKey = require('./createApiKey');
 const findAll = require('./findAll');
 const findById = require('./findById');
-const randomUser = require('./randomUser');
 const remove = require('./remove');
 const removeApiKey = require('./removeApiKey');
 const search = require('./search');
@@ -16,7 +15,6 @@ module.exports = {
   createApiKey,
   findAll,
   findById,
-  randomUser,
   remove,
   removeApiKey,
   search,

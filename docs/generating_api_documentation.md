@@ -4,7 +4,7 @@
 1. `npm run generate-api-documentation`
 1. Clone the code from https://github.com/seankwilliams/comrad-documentation
 1. Run `npm i` in the `comrad-documentation` directory.
-1. Check out the `master` branch
+1. Check out the `main` branch
 1. Replace the `source/index.md` file in the `comrad-documentation` repo with the `/comradApi.md` code in the `comrad` repo
 1. Test your changes by running `npm run serve` in the `comrad-documentation` repo and accessing the documentation at `http://localhost:4567/`
 1. In the `comrad-documentation` repo, run `npm run build`

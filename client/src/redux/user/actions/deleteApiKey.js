@@ -2,9 +2,9 @@ import { alertTypes } from '../../alert/alertTypes';
 import { userTypes } from '../userTypes';
 import { userAPI } from '../../../api';
 
-export const deleteApiKey = values => async dispatch => {
+export const deleteApiKey = userId => async dispatch => {
   try {
-    const { data: doc } = await userAPI.deleteApiKey(values);
+    const { data: doc } = await userAPI.deleteApiKey(userId);
 
     const alert = {
       body: `API KEY DELETED`,

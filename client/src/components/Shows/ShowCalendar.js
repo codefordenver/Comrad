@@ -238,6 +238,7 @@ class Calendar extends Component {
           components={{
             eventWrapper: this.customEventWrapper,
           }}
+          onSelecting={slot => false}
         />
 
         <ShowModalController />
@@ -256,17 +257,14 @@ function mapStateToProps({ auth, show }) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    clearShows,
-    getShowsData,
-    fetchingShowsStatus,
-    postingShowsStatus,
-    searchShow,
-    setModalVisibility,
-    errorShowsMessage,
-    selectShow,
-    createInstanceShow,
-  },
-)(Calendar);
+export default connect(mapStateToProps, {
+  clearShows,
+  getShowsData,
+  fetchingShowsStatus,
+  postingShowsStatus,
+  searchShow,
+  setModalVisibility,
+  errorShowsMessage,
+  selectShow,
+  createInstanceShow,
+})(Calendar);

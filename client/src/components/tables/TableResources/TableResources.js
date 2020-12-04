@@ -15,9 +15,8 @@ class TableResources extends Component {
 
   componentDidMount() {
     const { resourceActions, category } = this.props;
-    const values = { category };
 
-    resourceActions.search(values);
+    resourceActions.find(category);
   }
 
   closeDeleteModal = () => {
@@ -132,7 +131,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(TableResources);
+export default connect(mapStateToProps, mapDispatchToProps)(TableResources);

@@ -1,13 +1,11 @@
 import { add } from './add';
-import { findAll } from './findAll';
+import { find } from './find';
 import { remove } from './remove';
-import { search } from './search';
 import { update } from './update';
 
 export const resourceActions = {
   add,
-  findAll,
+  find,
   remove,
-  search,
   update,
 };

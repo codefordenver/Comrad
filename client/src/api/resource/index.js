@@ -1,13 +1,11 @@
 import { add } from './add';
-import { findAll } from './findAll';
-import { search } from './search';
+import { find } from './find';
 import { remove } from './remove';
 import { update } from './update';
 
 export const resourceAPI = {
   add,
-  findAll,
+  find,
   remove,
-  search,
   update,
 };

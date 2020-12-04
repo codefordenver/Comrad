@@ -227,6 +227,7 @@ class TrafficCalendar extends Component {
           onSelectSlot={slot => this.handleClickSlotEvent(slot)}
           step={10}
           showMultiDayTimes
+          onSelecting={slot => false}
         />
       </div>
     );
@@ -251,7 +252,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(TrafficCalendar);
+export default connect(mapStateToProps, mapDispatchToProps)(TrafficCalendar);

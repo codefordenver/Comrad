@@ -157,6 +157,7 @@ class FormUser extends Component {
                     component={Input}
                     label="Confirm Password"
                     name="confirm_password"
+                    autoComplete="new-password"
                     type="password"
                     validate={
                       mode === 'add'
@@ -203,7 +204,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(ReduxFormUser);
+export default connect(mapStateToProps, mapDispatchToProps)(ReduxFormUser);

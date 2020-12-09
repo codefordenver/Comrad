@@ -62,6 +62,7 @@ class FormHostAdd extends Component {
             label="Password"
             name="password"
             type="password"
+            autoComplete="new-password"
             validate={requiredValidate}
           />
 
@@ -71,6 +72,7 @@ class FormHostAdd extends Component {
             label="Confirm Password"
             name="confirm_password"
             type="password"
+            autoComplete="new-password"
             validate={[requiredValidate, passwordConfirmValidate]}
           />
 
@@ -96,7 +98,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(
-  null,
-  mapDispatchToProps,
-)(ReduxFormHostAdd);
+export default connect(null, mapDispatchToProps)(ReduxFormHostAdd);

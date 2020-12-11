@@ -12,7 +12,7 @@
  *     tags:
  *     - Playlists
  *     operationId: PlaylistsAddVoiceBreakToScratchpad
- *     summary: "Scratchpad: Add Voice Break"
+ *     summary: "Scratchpad - Add Voice Break"
  *     security:
  *     - ApiKeyAuth: []
  *     description: |

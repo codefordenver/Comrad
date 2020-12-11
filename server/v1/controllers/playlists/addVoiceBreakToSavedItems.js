@@ -12,7 +12,7 @@
  *     tags:
  *     - Playlists
  *     operationId: PlaylistsAddVoiceBreakToSavedItems
- *     summary: "Saved Items: Add Voice Break"
+ *     summary: "Saved Items - Add Voice Break"
  *     security:
  *     - ApiKeyAuth: []
  *     description: |

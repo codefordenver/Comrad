@@ -17,7 +17,7 @@
  *     tags:
  *     - Playlists
  *     operationId: PlaylistsSavedItemsRearrangeItem
- *     summary: "Saved Items: Rearrange Item"
+ *     summary: "Saved Items - Rearrange Item"
  *     security:
  *     - ApiKeyAuth: []
  *     description: |

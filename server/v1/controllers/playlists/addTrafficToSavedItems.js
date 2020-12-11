@@ -12,7 +12,7 @@
  *     tags:
  *     - Playlists
  *     operationId: PlaylistsAddTrafficToSavedItems
- *     summary: "Saved Items: Add Traffic"
+ *     summary: "Saved Items - Add Traffic"
  *     security:
  *     - ApiKeyAuth: []
  *     description: |

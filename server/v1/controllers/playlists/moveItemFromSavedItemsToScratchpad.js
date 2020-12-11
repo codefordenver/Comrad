@@ -17,7 +17,7 @@
  *     tags:
  *     - Playlists
  *     operationId: PlaylistsMoveItemFromSavedItemsToScratchpad
- *     summary: "Scratchpad: Move Item to Saved Items"
+ *     summary: "Scratchpad - Move Item to Saved Items"
  *     security:
  *     - ApiKeyAuth: []
  *     description: |

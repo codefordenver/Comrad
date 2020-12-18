@@ -7,6 +7,7 @@ import isEmpty from 'lodash/isEmpty';
 import { formatTotalSecondsAsMMSS } from '../../../utils/formatters';
 import Dropdown from '../../Dropdown';
 import DeleteModal from '../../DeleteModal';
+import ScratchpadModal from '../../ScratchpadModal';
 
 import { libraryActions, alertActions } from '../../../redux';
 
@@ -20,6 +21,7 @@ const CellDuration = ({ value }) =>
 class TableAlbumTracks extends Component {
   state = {
     deleteModal: false,
+    scratchpadModal: false,
   };
 
   closeDeleteModal = () => {
@@ -39,6 +41,12 @@ class TableAlbumTracks extends Component {
       'Success',
       `${entity.data.name} was successfully deleted`,
     );
+  };
+
+  closeScratchpadModal = () => {
+    this.setState({
+      scratchpadModal: false,
+    });
   };
 
   handleRowClick = (state, rowInfo) => {
@@ -63,7 +71,13 @@ class TableAlbumTracks extends Component {
 
   handleRowDeleteClick = data => {
     this.setState({
-      deleteModal: data,
+      deleteModal: true,
+    });
+  };
+
+  handleRowAddToScratchpadClick = data => {
+    this.setState({
+      scratchpadModal: true,
     });
   };
 
@@ -73,9 +87,10 @@ class TableAlbumTracks extends Component {
 
   render() {
     const { handleRowClick, props, state } = this;
-    const { deleteModal } = state;
+    const { deleteModal, scratchpadModal } = state;
     const { libraryState } = props;
     const { tracks } = libraryState.doc;
+    console.log(props);
 
     const columns = [
       {
@@ -112,6 +127,11 @@ class TableAlbumTracks extends Component {
                 faClass="fas fa-ellipsis-h"
               >
                 <Dropdown.Item
+                  handleOnClick={() =>
+                    this.handleRowAddToScratchpadClick(row.row)
+                  }
+                ></Dropdown.Item>
+                <Dropdown.Item
                   handleOnClick={() => this.handleRowEditClick(row.row)}
                 >
                   Edit
@@ -142,6 +162,10 @@ class TableAlbumTracks extends Component {
           noDataText="This album does not have any tracks"
           getTdProps={handleRowClick}
         />
+        {/* Scratchpad Modal */}
+        {scratchpadModal ? (
+          <ScratchpadModal closeScratchpadModal={this.closeScratchpadModal} />
+        ) : null}
 
         {/* Delete modal */}
         {deleteModal ? (
@@ -170,7 +194,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(TableAlbumTracks);
+export default connect(mapStateToProps, mapDispatchToProps)(TableAlbumTracks);

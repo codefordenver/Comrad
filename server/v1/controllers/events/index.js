@@ -2,6 +2,7 @@ const create = require('./create');
 const createInstance = require('./createInstance');
 const currentShow = require('./currentShow');
 const find = require('./find');
+const findByDateAndName = require('./findByDateAndName');
 const findById = require('./findById');
 const findEarliest = require('./findEarliest');
 const nextShow = require('./nextShow');
@@ -17,6 +18,7 @@ module.exports = {
   createInstance,
   currentShow,
   find,
+  findByDateAndName,
   findById,
   findEarliest,
   nextShow,

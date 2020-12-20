@@ -69,4 +69,17 @@
       font-style: italic;
     }
   }
+
+  &__scratchpad-modal {
+    width: 48rem;
+    font-size: 2rem;
+
+    div {
+      margin-top: 2rem;
+    }
+
+    i {
+      font-style: italic;
+    }
+  }
 }

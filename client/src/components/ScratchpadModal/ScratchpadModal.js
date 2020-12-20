@@ -24,15 +24,22 @@ class ScratchpadModal extends Component {
     console.log(this.props);
     return (
       <Modal isOpen={true}>
-        <ShowListForUser
-          maxItems="5"
-          startDate={today}
-          endDate={todayPlus3Months}
-          noItemsText="You have no upcoming shows in the next three months."
-        />
-        <Button color="neutral" onClick={closeScratchpadModal} className="ml-1">
-          Close
-        </Button>
+        <div className="library-search__scratchpad-modal">
+          Please select the show scratchpad you would like to add this track to.
+          <ShowListForUser
+            maxItems="5"
+            startDate={today}
+            endDate={todayPlus3Months}
+            noItemsText="You have no upcoming shows in the next three months."
+          />
+          <Button
+            color="neutral"
+            onClick={closeScratchpadModal}
+            className="ml-1"
+          >
+            Close
+          </Button>
+        </div>
       </Modal>
     );
   }

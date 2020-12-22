@@ -81,7 +81,7 @@ class Input extends Component {
           type={type}
           onBlur={event => {
             if (input != null) {
-              input.onBlur();
+              input.onBlur(event);
             } else if (typeof props.onBlur == 'function') {
               props.onBlur(event);
             }

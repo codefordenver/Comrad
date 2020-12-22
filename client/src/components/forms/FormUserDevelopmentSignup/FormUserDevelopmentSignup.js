@@ -58,6 +58,7 @@ class FormUserDevelopmentSignup extends Component {
           label="Password"
           name="password"
           type="password"
+          autoComplete="new-password"
           validate={requiredValidate}
         />
         <Field
@@ -66,6 +67,7 @@ class FormUserDevelopmentSignup extends Component {
           label="Confirm Password"
           name="confirm_password"
           type="password"
+          autoComplete="new-password"
           validate={[requiredValidate, passwordConfirmValidate]}
         />
         <Button submitting={submitting} type="submit">

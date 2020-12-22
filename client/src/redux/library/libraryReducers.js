@@ -68,6 +68,7 @@ export const libraryReducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         doc: {
+          ...state.doc,
           ...payload,
         },
       };

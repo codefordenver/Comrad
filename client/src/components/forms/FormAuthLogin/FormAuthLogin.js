@@ -52,6 +52,7 @@ class FormAuthLogin extends Component {
           label="Password"
           name="password"
           type="password"
+          autoComplete="current-password"
           validate={requiredValidate}
         />
         <Button submitting={submitting} type="submit">
@@ -81,7 +82,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(
-  null,
-  mapDispatchToProps,
-)(ReduxFormAuthLogin);
+export default connect(null, mapDispatchToProps)(ReduxFormAuthLogin);

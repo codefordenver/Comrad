@@ -17,7 +17,7 @@
  *     tags:
  *     - Playlists
  *     operationId: PlaylistsDeleteItemFromScratchpad
- *     summary: "Scratchpad: Delete Item"
+ *     summary: "Scratchpad - Delete Item"
  *     security:
  *     - ApiKeyAuth: []
  *     description: |

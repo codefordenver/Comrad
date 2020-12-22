@@ -11,7 +11,7 @@
  *   delete:
  *     tags:
  *     - Shows
- *     operationId: DeleteInstanceFromSeries
+ *     operationId: DeleteInstanceFromShowSeries
  *     summary: Delete Instance from Series
  *     security:
  *     - ApiKeyAuth: []
@@ -58,8 +58,8 @@
  *     description: The id of the traffic series
  *   delete:
  *     tags:
- *     - Shows
- *     operationId: DeleteInstanceFromSeries
+ *     - Traffic
+ *     operationId: DeleteInstanceFromTrafficSeries
  *     summary: Delete Instance from Series
  *     security:
  *     - ApiKeyAuth: []

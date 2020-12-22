@@ -21,6 +21,10 @@ router
   .get(requireAC(null, 'readAny'), eventsController.searchUnderwriters);
 
 router
+  .route('/:eventType/:year-:month-:day')
+  .get(requireAC(null, 'readAny'), eventsController.findByDateAndName);
+
+router
   .route('/:eventType/:id')
   .get(requireAC(null, 'readAny'), eventsController.findById)
   .delete(requireAC(null, 'deleteAny'), eventsController.remove)

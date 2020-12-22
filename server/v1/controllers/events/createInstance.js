@@ -122,7 +122,7 @@
  *     required: true
  *     example: 5f7211f2ab735642446fee9c
  *     description: The id of the traffic series
- *   put:
+ *   post:
  *     tags:
  *     - Traffic
  *     operationId: CreateInstanceTraffic

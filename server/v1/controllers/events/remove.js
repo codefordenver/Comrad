@@ -52,7 +52,7 @@
  *     required: true
  *     example: 5f7211f4ab735642446ff94a
  *     description: The id of the traffic
- *   get:
+ *   delete:
  *     tags:
  *     - Traffic
  *     operationId: DeleteTraffic

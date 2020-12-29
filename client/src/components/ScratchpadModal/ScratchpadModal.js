@@ -30,6 +30,7 @@ class ScratchpadModal extends Component {
             maxItems="5"
             startDate={today}
             endDate={todayPlus3Months}
+            addToScratchpad={true}
             noItemsText="You have no upcoming shows in the next three months."
           />
           <Button

@@ -19,7 +19,7 @@ class ShowListForUser extends Component {
       loading: true,
       data: [],
       userId: props.currentUserId,
-      addToScratchpad: props.addToScratchpad,
+      showAddToScratchpadButton: props.showAddToScratchpadButton,
     };
   }
 
@@ -122,8 +122,7 @@ class ShowListForUser extends Component {
   };
 
   renderBody = () => {
-    const { data } = this.state;
-    const addToScratchpad = this.state.addToScratchpad;
+    const { data, showAddToScratchpadButton } = this.state;
 
     return (
       <tbody>
@@ -158,7 +157,7 @@ class ShowListForUser extends Component {
                   Edit Show Instance
                 </span>
               </td>
-              {addToScratchpad && (
+              {showAddToScratchpadButton && (
                 <td>
                   <span
                     className="show-list-for-user__edit-show-instance"

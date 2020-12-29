@@ -19,6 +19,7 @@ class ShowListForUser extends Component {
       loading: true,
       data: [],
       userId: props.currentUserId,
+      addToScratchpad: props.addToScratchpad,
     };
   }
 
@@ -103,6 +104,10 @@ class ShowListForUser extends Component {
     }
   };
 
+  addToScratchpad = show => {
+    console.log('added');
+  };
+
   renderHeader = () => {
     return (
       <thead>
@@ -118,6 +123,7 @@ class ShowListForUser extends Component {
 
   renderBody = () => {
     const { data } = this.state;
+    const addToScratchpad = this.state.addToScratchpad;
 
     return (
       <tbody>
@@ -152,6 +158,16 @@ class ShowListForUser extends Component {
                   Edit Show Instance
                 </span>
               </td>
+              {addToScratchpad && (
+                <td>
+                  <span
+                    className="show-list-for-user__edit-show-instance"
+                    onClick={e => this.addToScratchpad(item)}
+                  >
+                    Add To Scratchpad
+                  </span>
+                </td>
+              )}
               <ShowModalController />
             </tr>
           );

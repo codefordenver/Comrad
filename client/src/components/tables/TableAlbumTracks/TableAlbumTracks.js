@@ -130,7 +130,9 @@ class TableAlbumTracks extends Component {
                   handleOnClick={() =>
                     this.handleRowAddToScratchpadClick(row.row)
                   }
-                ></Dropdown.Item>
+                >
+                  Add to Scratchpad
+                </Dropdown.Item>
                 <Dropdown.Item
                   handleOnClick={() => this.handleRowEditClick(row.row)}
                 >

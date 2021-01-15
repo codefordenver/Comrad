@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import moment from 'moment';
 
 import { showAPI } from '../../api';
@@ -11,6 +12,7 @@ import { MODAL_EDIT_SHOW } from '../Shows/ShowModalController';
 import { createInstanceShow, selectShow } from '../../redux/show';
 import { setModalVisibility } from '../../redux/modal';
 import ShowModalController from '../Shows/ShowModalController';
+import { playlistActions } from '../../redux';
 
 class ShowListForUser extends Component {
   constructor(props) {
@@ -31,7 +33,7 @@ class ShowListForUser extends Component {
   }
 
   componentDidMount() {
-    const { setModalVisibility } = this.props;
+    const { setModalVisibility, playlistActions } = this.props;
     setModalVisibility(false, false, null);
   }
 
@@ -104,9 +106,9 @@ class ShowListForUser extends Component {
     }
   };
 
-  addToScratchpad = show => {
-    console.log('added');
-  };
+  addToScratchpad() {
+    console.log(this.props);
+  }
 
   renderHeader = () => {
     return (
@@ -205,12 +207,13 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    createInstanceShow,
-    selectShow,
-    setModalVisibility,
-  },
-  null,
-)(ShowListForUser);
+function mapDispatchToProps(dispatch) {
+  return {
+    playlistActions: bindActionCreators({ ...playlistActions }, dispatch),
+    createInstanceShow: bindActionCreators(createInstanceShow, dispatch),
+    selectShow: bindActionCreators(selectShow, dispatch),
+    setModalVisibility: bindActionCreators(setModalVisibility, dispatch),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ShowListForUser);

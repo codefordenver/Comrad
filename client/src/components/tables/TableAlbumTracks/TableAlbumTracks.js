@@ -22,6 +22,7 @@ class TableAlbumTracks extends Component {
   state = {
     deleteModal: false,
     scratchpadModal: false,
+    trackId: '',
   };
 
   closeDeleteModal = () => {
@@ -78,6 +79,7 @@ class TableAlbumTracks extends Component {
   handleRowAddToScratchpadClick = data => {
     this.setState({
       scratchpadModal: true,
+      trackId: data._original._id,
     });
   };
 
@@ -166,7 +168,10 @@ class TableAlbumTracks extends Component {
         />
         {/* Scratchpad Modal */}
         {scratchpadModal ? (
-          <ScratchpadModal closeScratchpadModal={this.closeScratchpadModal} />
+          <ScratchpadModal
+            trackId={this.state.trackId}
+            closeScratchpadModal={this.closeScratchpadModal}
+          />
         ) : null}
 
         {/* Delete modal */}

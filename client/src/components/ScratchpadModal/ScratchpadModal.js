@@ -2,26 +2,18 @@ import React, { Component } from 'react';
 import Modal from '../Modal';
 import Button from '../Button';
 import moment from 'moment';
-import { libraryActions } from '../../redux';
+import { libraryActions, playlistActions } from '../../redux';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { showAPI } from '../../api';
 import ShowListForUser from '../ShowListForUser';
 
 class ScratchpadModal extends Component {
-  componentWillMount() {
-    const userId = this.props.doc._id;
-    console.log(userId);
-    // if (currentUserId != null) {
-    //   this.findShows();
-    // }
-  }
   render() {
-    const { closeScratchpadModal } = this.props;
+    const { closeScratchpadModal, trackId } = this.props;
     const today = moment();
     const todayPlus3Months = moment().add('3', 'month');
     const oneYearAgo = moment().subtract('1', 'year');
-    console.log(this.props);
     return (
       <Modal isOpen={true}>
         <div className="library-search__scratchpad-modal">
@@ -30,6 +22,7 @@ class ScratchpadModal extends Component {
             maxItems="5"
             startDate={today}
             endDate={todayPlus3Months}
+            trackId={trackId}
             showAddToScratchpadButton={true}
             noItemsText="You have no upcoming shows in the next three months."
           />
@@ -46,17 +39,14 @@ class ScratchpadModal extends Component {
   }
 }
 
-function mapStateToProps({ auth }) {
-  return auth;
+function mapStateToProps(state, ownProps) {
+  return;
 }
 
-// function mapDispatchToProps(dispatch) {
-//     return {
-//       libraryActions: bindActionCreators({ ...libraryActions }, dispatch),
-//     };
-//   }
+function mapDispatchToProps(dispatch) {
+  return {
+    playlistActions: bindActionCreators({ ...playlistActions }, dispatch),
+  };
+}
 
-export default connect(
-  mapStateToProps,
-  //mapDispatchToProps,
-)(ScratchpadModal);
+export default connect(mapStateToProps, mapDispatchToProps)(ScratchpadModal);

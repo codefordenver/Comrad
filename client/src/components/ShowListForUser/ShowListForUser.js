@@ -106,8 +106,13 @@ class ShowListForUser extends Component {
     }
   };
 
-  addToScratchpad() {
-    console.log(this.props);
+  addToScratchpad(data) {
+    let startTime = data.start_time_utc;
+    let endTime = data.end_time_utc;
+    let { trackId } = this.props;
+    playlistActions.findOrCreateOne(startTime, endTime, function(playlist) {
+      playlistActions.addTrackToScratchpad(playlist._id, trackId);
+    });
   }
 
   renderHeader = () => {

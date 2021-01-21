@@ -40,7 +40,7 @@ class ScratchpadModal extends Component {
 }
 
 function mapStateToProps(state, ownProps) {
-  return;
+  return state;
 }
 
 function mapDispatchToProps(dispatch) {

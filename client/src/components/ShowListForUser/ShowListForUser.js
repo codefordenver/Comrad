@@ -22,6 +22,7 @@ class ShowListForUser extends Component {
       data: [],
       userId: props.currentUserId,
       showAddToScratchpadButton: props.showAddToScratchpadButton,
+      addToScratchpadSuccess: false,
     };
   }
 
@@ -113,6 +114,9 @@ class ShowListForUser extends Component {
     playlistActions.findOrCreateOne(startTime, endTime, function(playlist) {
       playlistActions.addTrackToScratchpad(playlist._id, trackId);
     });
+    this.setState({
+      addToScratchpadSuccess: true,
+    });
   }
 
   renderHeader = () => {
@@ -172,6 +176,7 @@ class ShowListForUser extends Component {
                   >
                     Add To Scratchpad
                   </span>
+                  {this.state.addToScratchpadSuccess && <div>Track added</div>}
                 </td>
               )}
               <ShowModalController />

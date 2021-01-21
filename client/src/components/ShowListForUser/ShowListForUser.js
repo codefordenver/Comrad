@@ -33,7 +33,7 @@ class ShowListForUser extends Component {
   }
 
   componentDidMount() {
-    const { setModalVisibility, playlistActions } = this.props;
+    const { setModalVisibility } = this.props;
     setModalVisibility(false, false, null);
   }
 
@@ -109,7 +109,7 @@ class ShowListForUser extends Component {
   addToScratchpad(data) {
     let startTime = data.start_time_utc;
     let endTime = data.end_time_utc;
-    let { trackId } = this.props;
+    let { trackId, playlistActions } = this.props;
     playlistActions.findOrCreateOne(startTime, endTime, function(playlist) {
       playlistActions.addTrackToScratchpad(playlist._id, trackId);
     });

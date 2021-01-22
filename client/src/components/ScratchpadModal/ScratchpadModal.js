@@ -25,6 +25,7 @@ class ScratchpadModal extends Component {
             trackId={trackId}
             showAddToScratchpadButton={true}
             noItemsText="You have no upcoming shows in the next three months."
+            addToScratchpadSuccess={this.props.addToScratchpadSuccess}
           />
           <Button
             color="neutral"

@@ -12,7 +12,7 @@ import { MODAL_EDIT_SHOW } from '../Shows/ShowModalController';
 import { createInstanceShow, selectShow } from '../../redux/show';
 import { setModalVisibility } from '../../redux/modal';
 import ShowModalController from '../Shows/ShowModalController';
-import { playlistActions } from '../../redux';
+import { alertActions, playlistActions } from '../../redux';
 
 class ShowListForUser extends Component {
   constructor(props) {
@@ -113,6 +113,7 @@ class ShowListForUser extends Component {
     playlistActions.findOrCreateOne(startTime, endTime, function(playlist) {
       playlistActions.addTrackToScratchpad(playlist._id, trackId);
     });
+    this.props.addToScratchpadSuccess();
   }
 
   renderHeader = () => {

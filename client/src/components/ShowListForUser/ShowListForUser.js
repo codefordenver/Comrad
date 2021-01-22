@@ -113,9 +113,6 @@ class ShowListForUser extends Component {
     playlistActions.findOrCreateOne(startTime, endTime, function(playlist) {
       playlistActions.addTrackToScratchpad(playlist._id, trackId);
     });
-    this.setState({
-      addToScratchpadSuccess: true,
-    });
   }
 
   renderHeader = () => {

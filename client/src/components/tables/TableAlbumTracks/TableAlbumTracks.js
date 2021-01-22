@@ -77,10 +77,22 @@ class TableAlbumTracks extends Component {
   };
 
   handleRowAddToScratchpadClick = data => {
+    alertActions.changeDisplayLocation('modal');
     this.setState({
       scratchpadModal: true,
       trackId: data._original._id,
     });
+  };
+
+  addToScratchpadSuccess = () => {
+    this.closeScratchpadModal();
+    this.props.alertActions.hide();
+    this.props.handleTrackRefresh();
+    this.props.alertActions.show(
+      'success',
+      'Success',
+      `Track was successfully added`,
+    );
   };
 
   stopPropagation = event => {
@@ -92,7 +104,6 @@ class TableAlbumTracks extends Component {
     const { deleteModal, scratchpadModal } = state;
     const { libraryState } = props;
     const { tracks } = libraryState.doc;
-    console.log(props);
 
     const columns = [
       {
@@ -171,6 +182,7 @@ class TableAlbumTracks extends Component {
           <ScratchpadModal
             trackId={this.state.trackId}
             closeScratchpadModal={this.closeScratchpadModal}
+            addToScratchpadSuccess={this.addToScratchpadSuccess}
           />
         ) : null}
 

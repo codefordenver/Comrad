@@ -11,9 +11,19 @@ import { requiredValidate } from '../../../utils/validation.js';
 import ButtonIcon from '../../ButtonIcon';
 import Input from '../../Input';
 
+const FORM_NAME = 'artistUpdate';
+
 class FormArtistUpdateName extends Component {
   state = {
     editMode: false,
+    pressedTabKey: false,
+  };
+
+  handleBlur = e => {
+    if (!this.state.pressedTabKey) {
+      // let users tab over the field without submitting it so that screen readers can work effectively
+      this.formSubmit(this.props.formValues);
+    }
   };
 
   handleEditClick = () => {
@@ -31,7 +41,20 @@ class FormArtistUpdateName extends Component {
     e.preventDefault();
   };
 
-  submit = values => {
+  handleKeyDown = e => {
+    //detect pressing tab
+    if ((e.which || e.keyCode) === 9) {
+      this.setState({
+        pressedTabKey: true,
+      });
+    } else {
+      this.setState({
+        pressedTabKey: false,
+      });
+    }
+  };
+
+  formSubmit = values => {
     const { alertActions, library, libraryActions } = this.props;
     const { _id } = library.doc;
 
@@ -46,7 +69,7 @@ class FormArtistUpdateName extends Component {
   };
 
   render() {
-    const { handleDefault, handleEditClick, props, state, submit } = this;
+    const { handleDefault, handleEditClick, props, state, formSubmit } = this;
     const { auth, library, className, handleSubmit, submitting } = props;
     const { editMode } = state;
     const { doc } = library;
@@ -55,19 +78,20 @@ class FormArtistUpdateName extends Component {
     return (
       <div className={classnames('faun', className)}>
         {editMode ? (
-          <form className="faun__form" onSubmit={handleSubmit(submit)}>
+          <form className="faun__form" onSubmit={handleSubmit(formSubmit)}>
             <Field
               autoFocus
               component={Input}
               label="Artist Name"
-              onBlur={handleSubmit(submit)}
+              onBlur={this.handleBlur}
+              onKeyDown={this.handleKeyDown}
               name="name"
               type="text"
               validate={requiredValidate}
             />
             <ButtonIcon
               icon="confirm"
-              onClick={handleSubmit(submit)}
+              onClick={handleSubmit(formSubmit)}
               onMouseDown={handleDefault}
               submitting={submitting}
             />
@@ -101,7 +125,7 @@ class FormArtistUpdateName extends Component {
 }
 
 const ReduxFormArtistUpdateName = reduxForm({
-  form: 'artistUpdate',
+  form: FORM_NAME,
   enableReinitialize: true,
 })(FormArtistUpdateName);
 
@@ -112,13 +136,14 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-function mapStateToProps({ auth, library }) {
+function mapStateToProps({ auth, form, library }) {
   return {
     auth,
     library,
     initialValues: {
       ...library.doc,
     },
+    formValues: form[FORM_NAME] != null ? form[FORM_NAME].values : null,
   };
 }
 

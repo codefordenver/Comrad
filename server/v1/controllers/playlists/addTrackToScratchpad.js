@@ -12,7 +12,7 @@
  *     tags:
  *     - Playlists
  *     operationId: PlaylistsAddTrackToScratchpad
- *     summary: "Scratchpad: Add Track"
+ *     summary: "Scratchpad - Add Track"
  *     security:
  *     - ApiKeyAuth: []
  *     description: |

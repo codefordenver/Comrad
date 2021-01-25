@@ -68,7 +68,7 @@ function create(req, res) {
         })
         .catch(err => {
           console.log(err);
-          return res.status(422).json({ errorMessage: err.message });
+          return res.status(422).json({ errorMessage: err });
         });
     })
     .catch(err => {

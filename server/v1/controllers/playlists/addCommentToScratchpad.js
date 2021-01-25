@@ -12,7 +12,7 @@
  *     tags:
  *     - Playlists
  *     operationId: PlaylistsAddCommentToScratchpad
- *     summary: "Scratchpad: Add Comment"
+ *     summary: "Scratchpad - Add Comment"
  *     security:
  *     - ApiKeyAuth: []
  *     description: |

@@ -12,7 +12,7 @@
  *     tags:
  *     - Playlists
  *     operationId: PlaylistsMoveItemFromScratchpadToSavedItems
- *     summary: "Saved Items: Move Item to Scratchpad"
+ *     summary: "Saved Items - Move Item to Scratchpad"
  *     security:
  *     - ApiKeyAuth: []
  *     description: |

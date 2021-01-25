@@ -50,6 +50,7 @@ class FormPasswordNew extends Component {
           label="New Password"
           name="passNew"
           type="password"
+          autoComplete="new-password"
           validate={requiredValidate}
         />
 
@@ -59,6 +60,7 @@ class FormPasswordNew extends Component {
           label="Confirm"
           name="passConfirm"
           type="password"
+          autoComplete="new-password"
           validate={[requiredValidate, passwordsMatchValidate]}
         />
 

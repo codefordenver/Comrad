@@ -18,7 +18,7 @@
  *       The following roles can access this API endpoint: `Admin`, `Full Access`, `Show Captain`, `Underwriting`, `DJ`, `Music Library Admin`
  *     responses:
  *       200:
- *         description: an array containing the current and recent shows
+ *         description: Returns an array containing the current and recent shows
  *         content:
  *           application/json:
  *             schema:

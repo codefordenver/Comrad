@@ -12,7 +12,7 @@
  *     tags:
  *     - Playlists
  *     operationId: PlaylistsAddTrackToSavedItems
- *     summary: "Saved Items: Add Track"
+ *     summary: "Saved Items - Add Track"
  *     security:
  *     - ApiKeyAuth: []
  *     description: |

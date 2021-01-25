@@ -1,7 +1,7 @@
 /**
  * @swagger
  *
- * /events/shows:
+ * /events/shows/search:
  *   get:
  *     tags:
  *     - Shows

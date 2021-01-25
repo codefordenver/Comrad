@@ -42,6 +42,10 @@ router
   .get(requireAC('Shows', 'readAny'), eventsController.previousShow);
 
 router
+  .route('/recent-shows')
+  .get(requireAC('Shows', 'readAny'), eventsController.recentShows);
+
+router
   .route('/recent-plays')
   .get(requireAC('Playlists', 'readAny'), playlistsController.recentPlays);
 

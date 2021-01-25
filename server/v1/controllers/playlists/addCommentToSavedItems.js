@@ -12,7 +12,7 @@
  *     tags:
  *     - Playlists
  *     operationId: PlaylistsAddCommentToSavedItems
- *     summary: "Saved Items: Add Comment"
+ *     summary: "Saved Items - Add Comment"
  *     security:
  *     - ApiKeyAuth: []
  *     description: |

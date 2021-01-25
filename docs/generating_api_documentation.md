@@ -10,7 +10,7 @@
 1. In the `comrad-documentation` repo, run `npm run build`
 1. Commit and push your changes.
 1. Switch to the `gh-pages` branch in the `comrad-documentation` repo.
-1. Copy the contents of the `/_site` folder to the root folder of the `comrad-documentation-repo` branch
+1. Copy the contents of the `/_site` folder to the root folder of the `gh-pages` branch
 1. Commit and push your changes.
 
 ## Writing API documentation

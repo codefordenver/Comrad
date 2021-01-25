@@ -17,7 +17,7 @@
  *     tags:
  *     - Playlists
  *     operationId: PlaylistsScratchpadRearrangeItem
- *     summary: "Scratchpad: Rearrange Item"
+ *     summary: "Scratchpad - Rearrange Item"
  *     security:
  *     - ApiKeyAuth: []
  *     description: |

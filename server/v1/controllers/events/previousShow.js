@@ -16,7 +16,7 @@
  *       The following roles can access this API endpoint: `Admin`, `Full Access`, `Show Captain`, `Underwriting`, `DJ`, `Music Library Admin`
  *     responses:
  *       200:
- *         description: an object containing the previous snow, or `null` if no shows occurred within the previous day
+ *         description: an object containing the previous show, or `null` if no shows occurred within the previous day
  *         content:
  *           application/json:
  *             schema:
@@ -225,7 +225,7 @@ function currentShow(req, res) {
     .populate(populateMasterEventShowDetails())
     .then(processEventResults)
     .catch(err => {
-      console.log('error in events > root > nextShow');
+      console.log('error in events > root > previousShow');
       console.error(err);
       return res.status(500).json(err);
     });

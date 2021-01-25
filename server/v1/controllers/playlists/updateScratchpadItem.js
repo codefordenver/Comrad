@@ -17,7 +17,7 @@
  *     tags:
  *     - Playlists
  *     operationId: PlaylistsUpdateScratchpadItem
- *     summary: "Scratchpad: Update Item"
+ *     summary: "Scratchpad - Update Item"
  *     security:
  *     - ApiKeyAuth: []
  *     description: |

@@ -12,7 +12,7 @@ import { MODAL_EDIT_SHOW } from '../Shows/ShowModalController';
 import { createInstanceShow, selectShow } from '../../redux/show';
 import { setModalVisibility } from '../../redux/modal';
 import ShowModalController from '../Shows/ShowModalController';
-import { alertActions, playlistActions } from '../../redux';
+import { playlistActions } from '../../redux';
 
 class ShowListForUser extends Component {
   constructor(props) {

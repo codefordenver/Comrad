@@ -9,10 +9,14 @@ import ShowListForUser from '../ShowListForUser';
 
 class ScratchpadModal extends Component {
   render() {
-    const { closeScratchpadModal, trackId } = this.props;
+    const {
+      closeScratchpadModal,
+      trackId,
+      addToScratchpadSuccess,
+    } = this.props;
     const today = moment();
     const todayPlus3Months = moment().add('3', 'month');
-    const { addToScratchpadSuccess } = this.props;
+
     return (
       <Modal isOpen={true}>
         <div className="library-search__scratchpad-modal">

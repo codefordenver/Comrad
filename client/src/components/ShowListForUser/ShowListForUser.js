@@ -154,17 +154,21 @@ class ShowListForUser extends Component {
                 {showDate} {startTimeFormatted} - {endTimeFormatted}
               </td>
               <td>{item.show_details.title}</td>
-              <td>
-                <Link to={showUrl}>Show Builder</Link>
-              </td>
-              <td>
-                <span
-                  className="show-list-for-user__edit-show-instance"
-                  onClick={e => this.showEditInstanceModal(item)}
-                >
-                  Edit Show Instance
-                </span>
-              </td>
+              {!showAddToScratchpadButton && (
+                <>
+                  <td>
+                    <Link to={showUrl}>Show Builder</Link>
+                  </td>
+                  <td>
+                    <span
+                      className="show-list-for-user__edit-show-instance"
+                      onClick={e => this.showEditInstanceModal(item)}
+                    >
+                      Edit Show Instance
+                    </span>
+                  </td>
+                </>
+              )}
               {showAddToScratchpadButton && (
                 <td>
                   <span

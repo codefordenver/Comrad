@@ -72,7 +72,7 @@ class TableAlbumTracks extends Component {
 
   handleRowDeleteClick = data => {
     this.setState({
-      deleteModal: true,
+      deleteModal: data,
     });
   };
 

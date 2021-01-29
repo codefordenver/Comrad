@@ -113,7 +113,6 @@ class LibrarySearchPage extends Component {
   addToScratchpadSuccess = () => {
     this.closeScratchpadModal();
     this.props.alertActions.hide();
-    //this.props.handleTrackRefresh();
     this.props.alertActions.show(
       'success',
       'Success',

@@ -33,7 +33,7 @@ class ScratchpadModal extends Component {
           <Button
             color="neutral"
             onClick={closeScratchpadModal}
-            className="ml-1"
+            className="ml-1 mt-1"
           >
             Close
           </Button>

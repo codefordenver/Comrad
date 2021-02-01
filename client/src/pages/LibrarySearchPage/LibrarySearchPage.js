@@ -9,6 +9,7 @@ import Card, { CardBody } from '../../components/Card';
 import Dropdown from '../../components/Dropdown';
 import Input from '../../components/Input';
 import DeleteModal from '../../components/DeleteModal';
+import ScratchpadModal from '../../components/ScratchpadModal';
 
 import { alertActions, libraryActions } from '../../redux';
 
@@ -16,6 +17,7 @@ class LibrarySearchPage extends Component {
   state = {
     activeFilter: 'all',
     deleteModal: false, //false to hide, or an object of data if the modal should be displayed
+    scratchpadModal: false,
     page: 0,
     searchString: null,
     sort: {
@@ -30,6 +32,10 @@ class LibrarySearchPage extends Component {
 
   closeDeleteModal = () => {
     this.setState({ deleteModal: false });
+  };
+
+  closeScratchpadModal = () => {
+    this.setState({ scratchpadModal: false });
   };
 
   deleteFailure = () => {
@@ -96,6 +102,24 @@ class LibrarySearchPage extends Component {
     }
   };
 
+  handleRowAddToScratchpadClick = data => {
+    alertActions.changeDisplayLocation('modal');
+    this.setState({
+      scratchpadModal: true,
+      trackId: data._original._id,
+    });
+  };
+
+  addToScratchpadSuccess = () => {
+    this.closeScratchpadModal();
+    this.props.alertActions.hide();
+    this.props.alertActions.show(
+      'success',
+      'Success',
+      `Track was successfully added`,
+    );
+  };
+
   loadLibraryData = () => {
     const { activeFilter, searchString, sort, page } = this.state;
     const { libraryActions, loadingSearch } = this.props;
@@ -152,7 +176,12 @@ class LibrarySearchPage extends Component {
       loadingError,
       totalPages,
     } = this.props;
-    const { activeFilter, deleteModal, searchString } = this.state;
+    const {
+      activeFilter,
+      deleteModal,
+      scratchpadModal,
+      searchString,
+    } = this.state;
 
     return (
       <div className="library-search">
@@ -259,6 +288,14 @@ class LibrarySearchPage extends Component {
             deleteEntity={deleteEntity}
             deleteSuccess={this.deleteSuccess}
             deleteFailure={this.deleteFailure}
+          />
+        ) : null}
+        {/* Scratchpad modal */}
+        {scratchpadModal ? (
+          <ScratchpadModal
+            trackId={this.state.trackId}
+            closeScratchpadModal={this.closeScratchpadModal}
+            addToScratchpadSuccess={this.addToScratchpadSuccess}
           />
         ) : null}
       </div>
@@ -389,6 +426,15 @@ class LibrarySearchPage extends Component {
                   >
                     Delete
                   </Dropdown.Item>
+                  {row.row.type === 'track' && (
+                    <Dropdown.Item
+                      handleOnClick={() =>
+                        this.handleRowAddToScratchpadClick(row.row)
+                      }
+                    >
+                      Add to Scratchpad
+                    </Dropdown.Item>
+                  )}
                 </Dropdown>
               )}
           </div>

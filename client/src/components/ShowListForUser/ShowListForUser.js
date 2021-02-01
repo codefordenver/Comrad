@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import moment from 'moment';
 
 import { showAPI } from '../../api';
@@ -11,6 +12,7 @@ import { MODAL_EDIT_SHOW } from '../Shows/ShowModalController';
 import { createInstanceShow, selectShow } from '../../redux/show';
 import { setModalVisibility } from '../../redux/modal';
 import ShowModalController from '../Shows/ShowModalController';
+import { playlistActions } from '../../redux';
 
 class ShowListForUser extends Component {
   constructor(props) {
@@ -19,6 +21,7 @@ class ShowListForUser extends Component {
       loading: true,
       data: [],
       userId: props.currentUserId,
+      showAddToScratchpadButton: props.showAddToScratchpadButton,
     };
   }
 
@@ -103,6 +106,16 @@ class ShowListForUser extends Component {
     }
   };
 
+  addToScratchpad(data) {
+    let startTime = data.start_time_utc;
+    let endTime = data.end_time_utc;
+    let { trackId, playlistActions } = this.props;
+    playlistActions.findOrCreateOne(startTime, endTime, function(playlist) {
+      playlistActions.addTrackToScratchpad(playlist._id, trackId);
+    });
+    this.props.addToScratchpadSuccess();
+  }
+
   renderHeader = () => {
     return (
       <thead>
@@ -117,7 +130,7 @@ class ShowListForUser extends Component {
   };
 
   renderBody = () => {
-    const { data } = this.state;
+    const { data, showAddToScratchpadButton } = this.state;
 
     return (
       <tbody>
@@ -141,17 +154,31 @@ class ShowListForUser extends Component {
                 {showDate} {startTimeFormatted} - {endTimeFormatted}
               </td>
               <td>{item.show_details.title}</td>
-              <td>
-                <Link to={showUrl}>Show Builder</Link>
-              </td>
-              <td>
-                <span
-                  className="show-list-for-user__edit-show-instance"
-                  onClick={e => this.showEditInstanceModal(item)}
-                >
-                  Edit Show Instance
-                </span>
-              </td>
+              {!showAddToScratchpadButton && (
+                <>
+                  <td>
+                    <Link to={showUrl}>Show Builder</Link>
+                  </td>
+                  <td>
+                    <span
+                      className="show-list-for-user__edit-show-instance"
+                      onClick={e => this.showEditInstanceModal(item)}
+                    >
+                      Edit Show Instance
+                    </span>
+                  </td>
+                </>
+              )}
+              {showAddToScratchpadButton && (
+                <td>
+                  <span
+                    className="show-list-for-user__edit-show-instance"
+                    onClick={e => this.addToScratchpad(item)}
+                  >
+                    Add To Scratchpad
+                  </span>
+                </td>
+              )}
               <ShowModalController />
             </tr>
           );
@@ -190,12 +217,13 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    createInstanceShow,
-    selectShow,
-    setModalVisibility,
-  },
-  null,
-)(ShowListForUser);
+function mapDispatchToProps(dispatch) {
+  return {
+    playlistActions: bindActionCreators({ ...playlistActions }, dispatch),
+    createInstanceShow: bindActionCreators(createInstanceShow, dispatch),
+    selectShow: bindActionCreators(selectShow, dispatch),
+    setModalVisibility: bindActionCreators(setModalVisibility, dispatch),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ShowListForUser);

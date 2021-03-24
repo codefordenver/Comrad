@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 import { trafficTypes } from '../trafficTypes';
 import { trafficAPI } from '../../../api';
 
@@ -13,6 +15,10 @@ export const find = (startTime, endTime, filterByType) => async dispatch => {
 
     dispatch({ type: trafficTypes.FIND, payload: traffic });
   } catch (err) {
-    console.log(err);
+    if (axios.isCancel(err)) {
+      // the request was cancelled, do nothing
+    } else {
+      console.log(err);
+    }
   }
 };

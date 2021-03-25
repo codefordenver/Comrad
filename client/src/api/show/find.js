@@ -9,7 +9,6 @@ export function find(
 ) {
   // cancel the previous request, if it exists
   if (window.activeShowFindAxiosRequest != null) {
-    console.log(window.activeShowFindAxiosRequest);
     window.activeShowFindAxiosRequest.cancel();
   }
 

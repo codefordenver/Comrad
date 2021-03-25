@@ -10,7 +10,6 @@ export function find(startDate, endDate, filterByType) {
 
   // cancel the previous request, if it exists
   if (window.activeTrafficFindAxiosRequest != null) {
-    console.log(window.activeTrafficFindAxiosRequest);
     window.activeTrafficFindAxiosRequest.cancel();
   }
 

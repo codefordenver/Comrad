@@ -87,8 +87,13 @@ class TrafficListPage extends Component {
     const nextDay = searchDate.clone();
     nextDay.add(1, 'day');
 
-    trafficActions.find(searchDate.format(), nextDay.format(), filterByType);
-    searchShow(searchDate, nextDay);
+    trafficActions.find(
+      searchDate.format(),
+      nextDay.format(),
+      filterByType,
+      'trafficListPage',
+    );
+    searchShow(searchDate, nextDay, null, false, 'trafficListPage');
   };
 
   render() {

@@ -33,8 +33,7 @@ export const formatTotalSecondsAsMMSS = totalSeconds => {
  * @returns {String} a string with removed tags
  */
 export const stripHtml = html => {
-  html = html.replace('<br />', '\n');
-  html = html.replace('<br>', '\n');
+  html = html.replaceAll('</p>', '\n').trim('');
   var tmp = document.createElement('DIV');
   tmp.innerHTML = html;
   return tmp.textContent || tmp.innerText || '';

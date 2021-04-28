@@ -43,6 +43,7 @@ class ShowBuilderItemList extends Component {
 
     if (
       'giveaway' in configState.customFields &&
+      traffic.traffic_details.giveaway_details != null &&
       traffic.traffic_details.giveaway_details.custom != null
     ) {
       configState.customFields.giveaway.forEach(function(cf) {
@@ -171,22 +172,26 @@ class ShowBuilderItemList extends Component {
               deleteButton={false}
             >
               {/* regex below is to replace HTML tags */}
-              {traffic.traffic_details.description
-                .replace(/<(.*?)>/gi, '')
-                .trim().length > 0 && (
-                <div
-                  dangerouslySetInnerHTML={{
-                    __html: traffic.traffic_details.description,
-                  }}
-                />
-              )}
-              {traffic.traffic_details.description
-                .replace(/<(.*?)>/gi, '')
-                .trim().length === 0 && (
-                <div>
-                  <i>There are no additional details for this traffic event.</i>
-                </div>
-              )}
+              {traffic.traffic_details.description != null &&
+                traffic.traffic_details.description
+                  .replace(/<(.*?)>/gi, '')
+                  .trim().length > 0 && (
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: traffic.traffic_details.description,
+                    }}
+                  />
+                )}
+              {typeof traffic.traffic_details.description === 'undefined' ||
+                (traffic.traffic_details.description
+                  .replace(/<(.*?)>/gi, '')
+                  .trim().length === 0 && (
+                  <div>
+                    <i>
+                      There are no additional details for this traffic event.
+                    </i>
+                  </div>
+                ))}
               {traffic.traffic_details.type === 'Giveaway' && (
                 <>
                   <Button
@@ -195,25 +200,45 @@ class ShowBuilderItemList extends Component {
                       process.env.REACT_APP_JOTFORM_GIVEAWAY_WINNER_FORM_URL +
                       '?venue=' +
                       encodeURIComponent(
-                        traffic.traffic_details.giveaway_details.venue,
+                        typeof traffic.traffic_details.giveaway_details !==
+                          'undefined' ||
+                          (traffic.traffic_details.giveaway_details &&
+                            traffic.traffic_details.giveaway_details.venue)
+                          ? traffic.traffic_details.giveaway_details.venue
+                          : '',
                       ) +
                       '&showArtist=' +
                       encodeURIComponent(
-                        traffic.traffic_details.giveaway_details.event_name,
+                        traffic.traffic_details.giveaway_details != null &&
+                          traffic.traffic_details.giveaway_details.event_name !=
+                            null
+                          ? traffic.traffic_details.giveaway_details.event_name
+                          : '',
                       ) +
                       '&showInfo=' +
                       encodeURIComponent(
-                        stripHtml(traffic.traffic_details.description),
+                        traffic.traffic_details.description != null
+                          ? stripHtml(traffic.traffic_details.description)
+                          : '',
                       ) +
                       '&showTime=' +
                       encodeURIComponent(
-                        traffic.traffic_details.giveaway_details.event_time,
+                        traffic.traffic_details.giveaway_details != null &&
+                          traffic.traffic_details.giveaway_details.event_time !=
+                            null
+                          ? traffic.traffic_details.giveaway_details.event_time
+                          : '',
                       ) +
                       '&showDate=' +
                       encodeURIComponent(
-                        moment(
-                          traffic.traffic_details.giveaway_details.event_date,
-                        ).format('L'),
+                        traffic.traffic_details.giveaway_details != null &&
+                          traffic.traffic_details.giveaway_details.event_date !=
+                            null
+                          ? moment(
+                              traffic.traffic_details.giveaway_details
+                                .event_date,
+                            ).format('L')
+                          : '',
                       ) +
                       urlParametersForCustomGiveawayProperties(traffic)
                     }

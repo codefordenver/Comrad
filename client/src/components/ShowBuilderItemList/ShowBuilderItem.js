@@ -166,10 +166,15 @@ const ShowBuilderItem = props => {
       </div>
       {children && (
         <div
+          draggable
           className={classnames(
             'show-builder-item__details',
             expanded ? 'show-builder-item__details--expanded' : '',
           )}
+          onDragStart={e => {
+            e.preventDefault();
+            e.stopPropagation();
+          }}
         >
           {children}
         </div>
@@ -188,7 +193,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(ShowBuilderItem);
+export default connect(mapStateToProps, mapDispatchToProps)(ShowBuilderItem);

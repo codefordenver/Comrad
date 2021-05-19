@@ -171,12 +171,20 @@ const ShowBuilderItem = props => {
             'show-builder-item__details',
             expanded ? 'show-builder-item__details--expanded' : '',
           )}
-          onDragStart={e => {
-            e.preventDefault();
-            e.stopPropagation();
-          }}
         >
           {children}
+          {children[0].props && (
+            <i
+              class="fas fa-copy"
+              onClick={() => {
+                navigator.clipboard.writeText(
+                  JSON.stringify(
+                    children[0].props.dangerouslySetInnerHTML.__html,
+                  ),
+                );
+              }}
+            ></i>
+          )}
         </div>
       )}
     </div>

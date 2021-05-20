@@ -6,6 +6,7 @@ import { playlistActions } from '../../redux';
 import classnames from 'classnames';
 
 import Button from '../Button';
+import { stripHtml } from '../../utils/formatters';
 
 const SHOW_BUILDER_ITEM_TYPE = 'show_builder_item';
 
@@ -177,11 +178,12 @@ const ShowBuilderItem = props => {
             <i
               class="fas fa-copy"
               onClick={() => {
-                navigator.clipboard.writeText(
+                const copiedText = stripHtml(
                   JSON.stringify(
                     children[0].props.dangerouslySetInnerHTML.__html,
                   ),
-                );
+                ).replaceAll('\\"', '');
+                navigator.clipboard.writeText(copiedText);
               }}
             ></i>
           )}

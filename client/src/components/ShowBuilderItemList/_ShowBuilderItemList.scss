@@ -91,9 +91,18 @@
       padding: 0.2em 0.5em;
       margin-top: 0.3em;
       display: none;
+      position: relative;
       
       &--expanded {
         display: block;
+      }
+
+      .fa-copy {
+        position: absolute;
+        right: 0;
+        top: 0;
+        margin-top: 5px;
+        margin-right: 5px;
       }
       
       b {

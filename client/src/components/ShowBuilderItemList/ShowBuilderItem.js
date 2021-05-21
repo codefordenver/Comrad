@@ -176,6 +176,7 @@ const ShowBuilderItem = props => {
           {children}
           {children[0].props && (
             <i
+              title="Copy text to clipboard"
               class="fas fa-copy"
               onClick={() => {
                 const copiedText = stripHtml(

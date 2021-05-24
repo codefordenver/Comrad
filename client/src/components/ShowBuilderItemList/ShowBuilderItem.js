@@ -6,6 +6,7 @@ import { playlistActions } from '../../redux';
 import classnames from 'classnames';
 
 import Button from '../Button';
+import { stripHtml } from '../../utils/formatters';
 
 const SHOW_BUILDER_ITEM_TYPE = 'show_builder_item';
 
@@ -166,12 +167,27 @@ const ShowBuilderItem = props => {
       </div>
       {children && (
         <div
+          draggable
           className={classnames(
             'show-builder-item__details',
             expanded ? 'show-builder-item__details--expanded' : '',
           )}
         >
           {children}
+          {children[0].props && (
+            <i
+              title="Copy text to clipboard"
+              class="fas fa-copy"
+              onClick={() => {
+                const copiedText = stripHtml(
+                  JSON.stringify(
+                    children[0].props.dangerouslySetInnerHTML.__html,
+                  ),
+                ).replaceAll('\\"', '');
+                navigator.clipboard.writeText(copiedText);
+              }}
+            ></i>
+          )}
         </div>
       )}
     </div>
@@ -188,7 +204,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(ShowBuilderItem);
+export default connect(mapStateToProps, mapDispatchToProps)(ShowBuilderItem);

@@ -180,7 +180,7 @@ const ShowBuilderItem = props => {
               Release Date:{' '}
               {moment(
                 props.playlist.doc.scratchpad[0].track.album.release_date,
-              ).format('ddd, MMM D h:mma')}
+              ).format('L')}
             </div>
           )}
           {children[0].props && (

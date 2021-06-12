@@ -88,7 +88,7 @@ class FormAlbumAdd extends Component {
           selectOptions={genreState.docs}
         />
         <Field
-          className="z-index--250"
+          className="mb-1-5"
           component={DatePicker__React}
           label="Release Date"
           name="release_date"

@@ -13,7 +13,7 @@ import { bindActionCreators } from 'redux';
 import Checkbox from '../../Checkbox';
 import CustomFieldsEdit from '../../CustomFieldsEdit';
 import Select from '../../Select';
-import DatePicker__React from '../../DatePicker';
+import { DatePicker__React } from '../../DatePicker';
 
 class FormAlbumEdit extends Component {
   componentWillMount() {
@@ -87,10 +87,10 @@ class FormAlbumEdit extends Component {
           className="mb-1-5"
           component={DatePicker__React}
           label="Release Date"
-          //name="release_date"
+          name="release_date"
           type="time"
           validate={[requiredValidate]}
-          dateFormat="MM/dd/yyyy h:mm aa"
+          dateFormat="MM/dd/yyyy"
         />
         <CustomFieldsEdit fieldsMeta={albumCustomFields} />
         <div>

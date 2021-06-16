@@ -129,7 +129,7 @@ const librarySchema = new Schema(
 
     release_date: {
       type: Date,
-      default: Date.now,
+      default: null,
     },
 
     // properties used by tracks

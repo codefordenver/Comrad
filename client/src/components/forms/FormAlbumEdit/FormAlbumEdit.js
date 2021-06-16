@@ -88,9 +88,7 @@ class FormAlbumEdit extends Component {
           component={DatePicker__React}
           label="Release Date"
           name="release_date"
-          type="time"
           validate={[requiredValidate]}
-          dateFormat="MM/dd/yyyy"
         />
         <CustomFieldsEdit fieldsMeta={albumCustomFields} />
         <div>

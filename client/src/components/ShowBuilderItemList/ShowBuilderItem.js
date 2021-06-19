@@ -118,7 +118,7 @@ const ShowBuilderItem = props => {
   });
   drag(drop(ref));
   // END - drag and drop functionality
-
+  console.log(props);
   return (
     <div
       ref={ref}
@@ -175,14 +175,15 @@ const ShowBuilderItem = props => {
           )}
         >
           {children}
-          {props.playlist.doc.scratchpad[0].track.album.release_date && (
-            <div>
-              Release Date:{' '}
-              {moment(
-                props.playlist.doc.scratchpad[0].track.album.release_date,
-              ).format('L')}
-            </div>
-          )}
+          {props.playlist.doc.scratchpad[0] &&
+            props.playlist.doc.scratchpad[0].track.album.release_date && (
+              <div>
+                Release Date:{' '}
+                {moment(
+                  props.playlist.doc.scratchpad[0].track.album.release_date,
+                ).format('L')}
+              </div>
+            )}
           {children[0].props && (
             <i
               title="Copy text to clipboard"

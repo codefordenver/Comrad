@@ -118,7 +118,6 @@ const ShowBuilderItem = props => {
   });
   drag(drop(ref));
   // END - drag and drop functionality
-  console.log(props);
   return (
     <div
       ref={ref}

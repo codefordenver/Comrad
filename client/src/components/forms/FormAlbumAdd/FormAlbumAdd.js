@@ -14,6 +14,7 @@ import CustomFieldsEdit from '../../CustomFieldsEdit';
 import DropdownLibrary from '../../DropdownLibrary';
 import Input from '../../Input';
 import Select from '../../Select';
+import { DatePicker__React } from '../../DatePicker';
 
 class FormAlbumAdd extends Component {
   componentWillMount() {
@@ -86,6 +87,13 @@ class FormAlbumAdd extends Component {
           name="genre"
           selectOptions={genreState.docs}
         />
+        <Field
+          className="mb-1-5"
+          component={DatePicker__React}
+          label="Release Date"
+          name="release_date"
+          validate={[requiredValidate]}
+        />
         <CustomFieldsEdit fieldsMeta={albumCustomFields} />
         <div>
           <Button type="submit" className="mr-1">
@@ -120,7 +128,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(ReduxFormAlbumAdd);
+export default connect(mapStateToProps, mapDispatchToProps)(ReduxFormAlbumAdd);

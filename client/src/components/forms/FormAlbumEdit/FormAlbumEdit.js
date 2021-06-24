@@ -13,6 +13,7 @@ import { bindActionCreators } from 'redux';
 import Checkbox from '../../Checkbox';
 import CustomFieldsEdit from '../../CustomFieldsEdit';
 import Select from '../../Select';
+import { DatePicker__React } from '../../DatePicker';
 
 class FormAlbumEdit extends Component {
   componentWillMount() {
@@ -82,6 +83,13 @@ class FormAlbumEdit extends Component {
           name="genre"
           selectOptions={genreState.docs}
         />
+        <Field
+          className="mb-1-5"
+          component={DatePicker__React}
+          label="Release Date"
+          name="release_date"
+          validate={[requiredValidate]}
+        />
         <CustomFieldsEdit fieldsMeta={albumCustomFields} />
         <div>
           <Button type="submit">Submit</Button>
@@ -92,7 +100,7 @@ class FormAlbumEdit extends Component {
 }
 
 function mapStateToProps(state) {
-  let artist, name, label, compilation, _id, custom, genre;
+  let artist, name, label, compilation, _id, custom, genre, release_date;
   if (state.library.doc != null) {
     ({
       artist,
@@ -102,6 +110,7 @@ function mapStateToProps(state) {
       _id,
       custom,
       genre,
+      release_date,
     } = state.library.doc);
   }
   return {
@@ -115,6 +124,7 @@ function mapStateToProps(state) {
       id: _id,
       custom: custom,
       genre: genre != null ? genre._id : null,
+      release_date: release_date ? release_date : null,
     },
   };
 }
@@ -131,7 +141,4 @@ const ReduxFormAlbumEdit = reduxForm({
   form: 'albumEdit',
 })(FormAlbumEdit);
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(ReduxFormAlbumEdit);
+export default connect(mapStateToProps, mapDispatchToProps)(ReduxFormAlbumEdit);

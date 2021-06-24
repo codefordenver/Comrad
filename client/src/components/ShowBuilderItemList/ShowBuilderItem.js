@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { playlistActions } from '../../redux';
 import classnames from 'classnames';
+import moment from 'moment';
 
 import Button from '../Button';
 import { stripHtml } from '../../utils/formatters';
@@ -117,7 +118,6 @@ const ShowBuilderItem = props => {
   });
   drag(drop(ref));
   // END - drag and drop functionality
-
   return (
     <div
       ref={ref}
@@ -174,10 +174,19 @@ const ShowBuilderItem = props => {
           )}
         >
           {children}
+          {props.playlist.doc.scratchpad[0] &&
+            props.playlist.doc.scratchpad[0].track.album.release_date && (
+              <div>
+                Release Date:{' '}
+                {moment(
+                  props.playlist.doc.scratchpad[0].track.album.release_date,
+                ).format('L')}
+              </div>
+            )}
           {children[0].props && (
             <i
               title="Copy text to clipboard"
-              class="fas fa-copy"
+              className={classnames('fas', 'fa-copy')}
               onClick={() => {
                 const copiedText = stripHtml(
                   JSON.stringify(

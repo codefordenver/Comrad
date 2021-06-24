@@ -127,6 +127,11 @@ const librarySchema = new Schema(
       type: Boolean,
     },
 
+    release_date: {
+      type: Date,
+      default: null,
+    },
+
     // properties used by tracks
 
     album: {

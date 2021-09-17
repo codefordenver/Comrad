@@ -37,7 +37,6 @@ export function repeatRuleToDropdownValue(repeatRule) {
   switch (repeatRule.frequency) {
     case 3:
       return '{"name":"Every Day","frequency":3}';
-      break;
     case 2:
       if (
         repeatRule.byweekday.length === 5 &&

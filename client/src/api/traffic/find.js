@@ -15,9 +15,9 @@ export function find(
 
   // cancel the previous request, if it exists
   if (
-    cancellableRequestId != false &&
-    window.activeTrafficFindAxiosRequest != null &&
-    window.activeTrafficFindAxiosRequest[cancellableRequestId] != null
+    cancellableRequestId !== false &&
+    window.activeTrafficFindAxiosRequest !== null &&
+    window.activeTrafficFindAxiosRequest[cancellableRequestId] !== null
   ) {
     window.activeTrafficFindAxiosRequest[cancellableRequestId].cancel();
   }

@@ -11,6 +11,7 @@ async function validateArtistData(data, id) {
       $text: {
         $search: '"' + data.name + '"',
       } /* use $text to search rather than a query for name so that the search is case-insensitive */,
+      type: 'artist',
     };
     if (typeof id !== 'undefined') {
       parameters._id = { $ne: id };

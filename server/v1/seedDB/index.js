@@ -84,6 +84,7 @@ async function seedDB() {
 
     // Artists
     let allArtists = {};
+    let allArtistNamesById = {};
     if (!scriptProgress.artists) {
       console.log('seeding artists...');
       let bulkOperations = [];
@@ -96,6 +97,7 @@ async function seedDB() {
               document: {
                 name: artist,
                 type: 'artist',
+                search_index: artist,
               },
             },
           });
@@ -127,6 +129,7 @@ async function seedDB() {
       );
       allArtistsQuery.forEach(function(a) {
         allArtists[a.name.toLowerCase()] = a._id;
+        allArtistNamesById[a._id] = a.name;
       });
     }
 
@@ -151,7 +154,9 @@ async function seedDB() {
         for (let index = 0; index < albumsToCreate.length; index++) {
           let album = albumsToCreate[index];
           album.type = 'album';
+          album.search_index = album.name;
           if (album.artist != null) {
+            album.search_index += ' ' + album.artist.toLowerCase();
             album.artist = allArtists[album.artist.toLowerCase()];
           }
           if (album.genre != null) {
@@ -182,11 +187,12 @@ async function seedDB() {
     //remember the old comrad id's of albums for later use
     let allAlbums = {};
     let allAlbumArtists = {};
+    let allAlbumNamesById = {};
     if (scriptProgress.tracks < seed.tracks.length) {
       console.log('getting created album ids...');
       let allAlbumsQuery = await db.Library.find(
         { type: 'album' },
-        '_id artist custom.old_comrad_id',
+        '_id artist custom.old_comrad_id name',
       );
       allAlbumsQuery.forEach(function(a) {
         if (
@@ -195,6 +201,7 @@ async function seedDB() {
         ) {
           allAlbums[a.custom.old_comrad_id] = a._id;
           allAlbumArtists[a.custom.old_comrad_id] = a.artist;
+          allAlbumNamesById[a._id] = a.name;
         }
       });
     }
@@ -218,6 +225,7 @@ async function seedDB() {
           }
 
           track.type = 'track';
+          track.search_index = track.name;
           if (track.artist === null || track.artist.length === 0) {
             // use the artist from the album
             track.artists = [allAlbumArtists[track.album]];
@@ -232,9 +240,11 @@ async function seedDB() {
             }
             track.artists = [allArtists[track.artist.toLowerCase()]];
           }
+          track.search_index += ' ' + allArtistNamesById[track.artists[0]];
           delete track.artist;
           if (track.album.length > 0) {
             track.album = allAlbums[track.album];
+            track.search_index += ' ' + allAlbumNamesById[track.album];
           } else {
             console.warning('Album empty for track: ' + track.name);
             continue;
@@ -255,7 +265,9 @@ async function seedDB() {
 
     //free up memory used in the music library import process
     allArtists = {};
+    allArtistNamesById = {};
     allAlbums = {};
+    allAlbumNamesById = {};
     allAlbumArtists = {};
 
     // Shows

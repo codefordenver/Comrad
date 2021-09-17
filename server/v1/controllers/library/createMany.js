@@ -58,6 +58,7 @@
 
 const db = require('../../models');
 const {
+  updateSearchIndex,
   validateAlbumData,
   validateArtistData,
   validateTrackData,
@@ -101,10 +102,15 @@ function createMany(req, res) {
     return;
   }
 
+  var resultsToReturn;
   Promise.all(libraryPromises)
     .then(values => {
       db.Library.insertMany(values)
-        .then(dbLibrary => res.json(dbLibrary))
+        .then(dbLibrary => {
+          resultsToReturn = dbLibrary;
+          return Promise.all(dbLibrary.map(lib => updateSearchIndex(lib)));
+        })
+        .then(() => res.json(resultsToReturn))
         .catch(err => res.json(422).json(err));
     })
     .catch(err => {

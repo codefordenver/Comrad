@@ -45,6 +45,7 @@
 
 const db = require('../../models');
 const {
+  updateSearchIndex,
   validateAlbumData,
   validateArtistData,
   validateTrackData,
@@ -70,6 +71,7 @@ function create(req, res) {
         .then(albumData => {
           db.Library.create(albumData)
             .then(dbAlbum => db.Library.populate(dbAlbum, ['genre', 'artist']))
+            .then(dbAlbum => updateSearchIndex(dbAlbum))
             .then(dbAlbum => res.json(dbAlbum))
             .catch(err => res.status(422).json(err));
         })
@@ -84,6 +86,7 @@ function create(req, res) {
         .then(artistData => {
           db.Library.create(artistData)
             .then(dbArtist => res.json(dbArtist))
+            .then(dbArtist => updateSearchIndex(dbArtist))
             .catch(err => res.status(422).json(err));
         })
         .catch(err => {
@@ -96,6 +99,7 @@ function create(req, res) {
       return validateTrackData(req.body)
         .then(() => db.Library.create(req.body))
         .then(dbTrack => db.Library.populate(dbTrack, ['album', 'artists']))
+        .then(dbTrack => updateSearchIndex(dbTrack))
         .then(dbTrack => res.json(dbTrack))
         .catch(err => {
           console.log(err);

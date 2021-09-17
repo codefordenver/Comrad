@@ -98,6 +98,11 @@ const librarySchema = new Schema(
 
     custom: Schema.Types.Mixed, // this will be an object that can contain any number of custom properties
 
+    search_index: {
+      //will include all fields that should be searched. this will bring related entities onto this field, like artist/album names
+      type: String,
+    },
+
     created_at: {
       type: Date,
       default: Date.now,
@@ -165,7 +170,7 @@ const librarySchema = new Schema(
 );
 
 // check if any additional keys should be included in the text index
-let textIndex = { name: 'text' };
+let textIndex = { name: 'text', search_index: 'text' };
 if ('album' in keys.modelCustomFields) {
   let fieldsForCustomIndex = keys.modelCustomFields.album.filter(
     a => a.includeInTextIndex,
@@ -182,6 +187,47 @@ librarySchema
   .index({ artists: 1 }, { background: true })
   .index({ album: 1, disk_number: 1, track_number: 1 }, { background: true })
   .index({ updated_at: -1 }, { background: true });
+
+librarySchema.methods.getSearchIndexForLibrary = async function() {
+  const libraryDoc = this;
+  let libraryLookups = [];
+
+  if (libraryDoc.album != null) {
+    libraryLookups.push(
+      Library.findById(libraryDoc.album).then(a => {
+        return a != null ? a.name : '';
+      }),
+    );
+  }
+
+  if (libraryDoc.artist != null) {
+    libraryLookups.push(
+      Library.findById(libraryDoc.artist).then(a => {
+        return a != null ? a.name : '';
+      }),
+    );
+  }
+
+  if (libraryDoc.artists != null && libraryDoc.artists.length > 0) {
+    for (var i = 0; i < libraryDoc.artists.length; i++) {
+      libraryLookups.push(
+        Library.findById(libraryDoc.artists[i]).then(a => {
+          return a != null ? a.name : '';
+        }),
+      );
+    }
+  }
+
+  return Promise.all(libraryLookups)
+    .then(values => {
+      var searchIndex = libraryDoc.name + ' ' + values.join(' ');
+      return searchIndex;
+    })
+    .catch(err => {
+      console.log('Error in getSearchIndexForLibrary:');
+      console.log(err);
+    });
+};
 
 const Library = mongoose.model('Library', librarySchema);
 

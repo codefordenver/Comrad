@@ -61,6 +61,7 @@
 
 const db = require('../../models');
 const {
+  updateSearchIndex,
   validateAlbumData,
   validateArtistData,
   validateTrackData,
@@ -79,20 +80,21 @@ function update(req, res) {
                 new: true,
               }).populate('genre'),
             )
+            .then(dbAlbum => updateSearchIndex(dbAlbum))
             .then(dbAlbum => res.json(dbAlbum))
-            .catch(err => {
-              console.error(err);
-              res.status(422).json({
-                errorMessage: err,
-              });
-            });
+            .catch(err => res.status(422).json(err));
         case 'artist':
           return validateArtistData(req.body, req.params.id)
             .then(updateTo => {
               updateTo.updated_at = Date.now();
-              db.Library.findOneAndUpdate({ _id: req.params.id }, updateTo, {
-                new: true,
-              })
+              return db.Library.findOneAndUpdate(
+                { _id: req.params.id },
+                updateTo,
+                {
+                  new: true,
+                },
+              )
+                .then(dbArtist => updateSearchIndex(dbArtist))
                 .then(dbArtist => res.json(dbArtist))
                 .catch(err => res.status(422).json(err));
             })
@@ -112,7 +114,7 @@ function update(req, res) {
                 .populate('artists')
                 .populate('album'),
             )
-
+            .then(dbTrack => updateSearchIndex(dbTrack))
             .then(dbTrack => res.json(dbTrack))
             .catch(err => res.status(422).json({ errorMessage: err }));
         default:

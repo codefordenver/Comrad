@@ -130,11 +130,38 @@ async function search(req, res) {
     limit = keys.queryPageSize;
   }
 
-  let filterObj = { $text: { $search: s } };
+  //START: wrap each word in the search string in quotes
+
+  let searchString = '';
+  let regexForWrappedInQuotes = /\"(.*?)\"/g;
+  let wordWraps = [...s.matchAll(regexForWrappedInQuotes)];
+  wordWraps.forEach(function(ww) {
+    searchString += ww[0] + ' ';
+  });
+  let stringWithoutQuotedSections = s.replace(regexForWrappedInQuotes, '');
+  let words = stringWithoutQuotedSections.split(' ');
+  words.forEach(function(word) {
+    searchString += '"' + word + '" ';
+  });
+
+  console.log('original search string: ' + s);
+  console.log('revised search string with quotes: ' + searchString);
+
+  //END: wrap each word in the search string in quotes
+
+  let filterObj = { $text: { $search: searchString } };
+
+  // // START: search for tracks where the artist or album matches the search string
+  // const artists = await db.Library.find({"type":"artist",...filterObj}, { "_id": 1 });
+  // const artistsFilter = artists.map(result => result._id);
+  // const albums = await db.Library.find({"type":"album",...filterObj}, { "_id": 1 });
+  // const albumsFilter = albums.map(result => result._id);
+  // filterObj = { $or: [filterObj, {artists: {$in: artistsFilter}}, {album: {$in: albumsFilter}}]};
+  // // END: search for tracks where the artist or album matches the search string
 
   let validTypes = ['album', 'artist', 'track'];
   if (type != null && validTypes.indexOf(type) !== -1) {
-    filterObj.type = type;
+    filterObj = { $and: [filterObj, { type: type }] };
   }
 
   const libraryResults = await db.Library.find(
@@ -147,13 +174,20 @@ async function search(req, res) {
       popularity: 1,
       type: 1,
       updated_at: 1,
+      search_index: 1,
       score: { $meta: 'textScore' },
     },
     {
       sort: { score: { $meta: 'textScore' } },
-      limit: limit,
+      limit: limit, //don't limit these since this query does not score based on a combo of track + artist + album name
     },
   ).populate(['artist', 'artists', 'album']);
+
+  //TEMP - don't use my relevance rankings
+  return res.json({
+    docs: libraryResults,
+    totalPages: 1,
+  });
 
   const results = libraryResults.map(result => {
     // in these relevance calculations, popularity of the entity has a slight effect,
@@ -164,10 +198,11 @@ async function search(req, res) {
 
     // if making changes to this process,
     // here are some queries to test: (and please add any queries you come across that are causing issues that require changes)
-    // michael jackson --- 1st result should be the artist Michael Jackson
-    // michael jackson thriller in concert --- 1st result should be the track Thriller off of Michael Jackson's album In Concert
+    // michael jackson --- 1st result should be the album Michael Jackson by Michael Jackson
     // stevie songs in the key of life --- 1st result should be the album Songs in the Key of Life by Stevie Wonder
-    // yesterday --- 1st result should be Yesterday by The Beatles
+    // yesterday beatles --- 1st result should be Yesterday by The Beatles
+    // car beatles - 1st result should be Drive My Car by The Beatles
+    // ali farka toure dofana - 1st result should be a track named "Dofana"
     switch (result.type) {
       case 'artist':
         return {
@@ -219,6 +254,10 @@ async function search(req, res) {
         };
       default:
         //this condition should not be called, but is here to eliminate the eslint warning
+        console.log(
+          'default condition for library search controller map called in error:',
+        );
+        console.log(result);
         return {
           ...result._doc,
         };

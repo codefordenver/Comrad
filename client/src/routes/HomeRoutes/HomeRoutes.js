@@ -7,6 +7,8 @@ import PasswordNewPage from '../../pages/PasswordNewPage';
 import PasswordResetPage from '../../pages/PasswordResetPage';
 import DevelopmentSignupPage from '../../pages/DevelopmentSignupPage';
 
+import NotFoundPage from '../../pages/NotFoundPage';
+
 const LoginRoutes = props => {
   return (
     <HomeLayout {...props}>
@@ -16,6 +18,9 @@ const LoginRoutes = props => {
       {process.env.REACT_APP_SHOW_DEVELOPMENT_SIGN_UP === 'true' && (
         <Route exact path={`/signup`} component={DevelopmentSignupPage} />
       )}
+      <Route path="*">
+        <NotFoundPage />
+      </Route>
     </HomeLayout>
   );
 };

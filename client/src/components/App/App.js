@@ -50,9 +50,6 @@ class App extends Component {
             <Route path="/traffic" component={TrafficRoutes} />
             <Route path="/user" component={UserRoutes} />
             <Route component={HomeRoutes} />
-            <Route path="*">
-              <NotFoundPage />
-            </Route>
           </Switch>
         </div>
       </Router>

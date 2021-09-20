@@ -27,6 +27,7 @@ class ReportingSoundExchangePage extends Component {
         );
     }
     window.location.href = url;
+    return false;
   };
 
   render() {

@@ -20,6 +20,8 @@ import TrafficCalendarRoutes from '../../routes/TrafficCalendarRoutes';
 import UserRoutes from '../../routes/UserRoutes';
 import { bindActionCreators } from 'redux';
 
+import NotFoundPage from '../../pages/NotFoundPage';
+
 class App extends Component {
   componentDidMount() {
     const { authActions } = this.props;
@@ -61,7 +63,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(
-  null,
-  mapDispatchToProps,
-)(App);
+export default connect(null, mapDispatchToProps)(App);

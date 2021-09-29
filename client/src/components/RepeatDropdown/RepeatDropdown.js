@@ -12,7 +12,7 @@ class RepeatDropdown extends Component {
   componentWillMount() {
     const { change, formSelectorName, initialValues } = this.props;
     if (initialValues != null && initialValues.repeat_rule != null) {
-      let rules = this.definedRepeatRules(this.props.date);
+      let rules = this.definedRepeatRules(this.props.dateUtc);
       let repeatRule = initialValues.repeat_rule;
       Object.keys(rules).forEach(function(k) {
         let i = rules[k];
@@ -42,9 +42,16 @@ class RepeatDropdown extends Component {
     }
   }
 
-  definedRepeatRules = date => {
-    const dateSpelled = moment(date).format('dddd');
-    const dateNumber = moment(date).date();
+  definedRepeatRules = dateUtc => {
+    const dateSpelledUserTimezone = moment(dateUtc).format('dddd');
+    const dateNumberUserTimezone = moment(dateUtc).date();
+
+    const dateSpelledUtc = moment(dateUtc)
+      .utc()
+      .format('dddd');
+    const dateNumberUtc = moment(dateUtc)
+      .utc()
+      .date();
 
     const dayToRRule = {
       Monday: 'MO',
@@ -74,26 +81,26 @@ class RepeatDropdown extends Component {
         byweekday: ['SA', 'SU'],
       },
       weekly: {
-        name: `Weekly on ${dateSpelled}`,
+        name: `Weekly on ${dateSpelledUserTimezone}`,
         frequency: RRule.WEEKLY,
-        byweekday: [dayToRRule[dateSpelled]],
+        byweekday: [dayToRRule[dateSpelledUtc]],
       },
       byposition_FirstOfMonth: {
-        name: `First ${dateSpelled} of the Month`,
+        name: `First ${dateSpelledUserTimezone} of the Month`,
         frequency: RRule.MONTHLY,
-        byweekday: [dayToRRule[dateSpelled]],
+        byweekday: [dayToRRule[dateSpelledUtc]],
         bysetpos: 1,
       },
       byposition_LastOfMonth: {
-        name: `Last ${dateSpelled} of the Month`,
+        name: `Last ${dateSpelledUserTimezone} of the Month`,
         frequency: RRule.MONTHLY,
-        byweekday: [dayToRRule[dateSpelled]],
+        byweekday: [dayToRRule[dateSpelledUtc]],
         bysetpos: -1,
       },
       byday: {
-        name: `On day ${dateNumber} of the month`,
+        name: `On day ${dateNumberUserTimezone} of the month`,
         frequency: RRule.MONTHLY,
-        bymonthday: dateNumber,
+        bymonthday: dateNumberUtc,
       },
     };
 
@@ -102,8 +109,8 @@ class RepeatDropdown extends Component {
 
   render() {
     const { definedRepeatRules, props } = this;
-    const { date, disabled = true } = props;
-    const repeatDropdownList = _.map(definedRepeatRules(date), option => {
+    const { dateUtc, disabled = true } = props;
+    const repeatDropdownList = _.map(definedRepeatRules(dateUtc), option => {
       // Dropdown values are using string of JSON instead of object. Inconclusive whether they can be set as object. See https://github.com/codefordenver/Comrad/issues/492
       return { text: option.name, value: JSON.stringify(option) };
     });

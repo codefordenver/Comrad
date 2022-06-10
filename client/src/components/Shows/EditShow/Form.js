@@ -39,7 +39,7 @@ class EditShowForm extends Component {
               {isRepeat && ALLOW_REPEAT_SELECT && (
                 <RepeatDropdown
                   formSelectorName={FORM_NAME}
-                  date={
+                  dateUtc={
                     currentValues.repeat_rule != null &&
                     currentValues.repeat_rule.repeat_start_date != null
                       ? currentValues.repeat_rule.repeat_start_date

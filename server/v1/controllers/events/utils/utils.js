@@ -30,6 +30,11 @@ function eventList(events, startDate, endDate) {
   const allSeriesEvents = reduceEventsByRepeatProperty(events, true);
 
   const allSeriesEventsExpanded = allSeriesEvents.map(event => {
+    if (event.show_details.title == 'test124124') {
+      console.log(event);
+      let test = allEventInstancesInDateRange(event, startDate, endDate);
+      console.log(test);
+    }
     return allEventInstancesInDateRange(event, startDate, endDate);
   });
 

@@ -104,7 +104,7 @@
     "json2csv": "^5.0.3",
     "lodash": "^4.17.21",
     "luxon": "^1.25.0",
-    "moment": "^2.29.0",
+    "moment": "^2.29.4",
     "moment-timezone": "^0.5.32",
     "mongoose": "^5.13.6",
     "mongoose-paginate": "^5.0.3",

@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Row, Col } from 'react-grid-system';
 import { Link } from 'react-router-dom';
-import ReactTable from 'react-table';
+import ReactTable from 'react-table-6';
 
 import Dropdown from '../../components/Dropdown';
 import { CardV2, Filter, Form, Heading, InputV2 } from '../../components';

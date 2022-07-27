@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux';
 import { configActions } from '../../redux';
 
 import { DndProvider } from 'react-dnd';
-import HTML5Backend from 'react-dnd-html5-backend';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import Button from '../Button';
 import ShowBuilderItem from './ShowBuilderItem';

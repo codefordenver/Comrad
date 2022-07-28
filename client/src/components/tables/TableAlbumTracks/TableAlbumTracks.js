@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import ReactTable from 'react-table';
+import ReactTable from 'react-table-6';
 import isEmpty from 'lodash/isEmpty';
 
 import { formatTotalSecondsAsMMSS } from '../../../utils/formatters';

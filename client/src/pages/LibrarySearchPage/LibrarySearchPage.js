@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 
-import ReactTable from 'react-table';
+import ReactTable from 'react-table-6';
 
 import Card, { CardBody } from '../../components/Card';
 import Dropdown from '../../components/Dropdown';

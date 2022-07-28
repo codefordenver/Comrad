@@ -32,7 +32,7 @@ class NewShowForm extends Component {
               <ShowDetailsTop allowRepeatSelect={ALLOW_REPEAT_SELECT} />
               {isRepeat && ALLOW_REPEAT_SELECT && (
                 <>
-                  <RepeatDropdown formSelectorName={FORM_NAME} date={date} />
+                  <RepeatDropdown formSelectorName={FORM_NAME} dateUtc={date} />
                 </>
               )}
 

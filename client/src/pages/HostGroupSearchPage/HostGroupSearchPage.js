@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Row, Col } from 'react-grid-system';
-import ReactTable from 'react-table';
+import ReactTable from 'react-table-6';
 
 import Dropdown from '../../components/Dropdown';
 import DeleteModal from '../../components/DeleteModal';

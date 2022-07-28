@@ -5,3 +5,6 @@ comradApiSwagger.json
 comradApi.md
 node_modules
 seedScriptProgress.json
+
+# ignore all seed data from production
+server/v1/seedDB/data/*.json

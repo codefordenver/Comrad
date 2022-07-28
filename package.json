@@ -52,7 +52,6 @@
   },
   "devDependencies": {
     "concurrently": "^7.3.0",
-    "console.table": "^0.10.0",
     "cross-env": "^7.0.3",
     "inquirer": "^8.0.0",
     "jest": "^28.1.3",

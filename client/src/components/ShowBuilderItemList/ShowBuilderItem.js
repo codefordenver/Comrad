@@ -174,17 +174,6 @@ const ShowBuilderItem = props => {
           )}
         >
           {children}
-          {
-            props.playlist.doc.scratchpad[0] &&
-            props.playlist.doc.scratchpad[0].track &&
-            props.playlist.doc.scratchpad[0].track.album.release_date && (
-              <div>
-                Release Date:{' '}
-                {moment(
-                  props.playlist.doc.scratchpad[0].track.album.release_date,
-                ).format('L')}
-              </div>
-            )}
           {children[0].props && (
             <i
               title="Copy text to clipboard"

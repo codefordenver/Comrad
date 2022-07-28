@@ -89,6 +89,9 @@ class ShowBuilderItemList extends Component {
             item.track != null && item.track.album != null
               ? item.track.label
               : null;
+          let releaseDate = item.track != null && item.track.album != null ?
+              item.track.album.release_date
+              : null;
           let canExpand = albumName != null || label != null;
           let artists =
             item.track != null
@@ -125,6 +128,15 @@ class ShowBuilderItemList extends Component {
                   <b>Label:</b> {label}
                 </div>
               )}
+              {
+                releaseDate && (
+                  <div>
+                    Release Date:{' '}
+                    {moment(
+                      releaseDate
+                    ).format('L')}
+                  </div>
+                )}
             </ShowBuilderItem>,
           );
           break;

@@ -118,6 +118,9 @@ const ShowBuilderItem = props => {
   });
   drag(drop(ref));
   // END - drag and drop functionality
+
+  const expandedTextRef = useRef(null);
+
   return (
     <div
       ref={ref}
@@ -173,33 +176,22 @@ const ShowBuilderItem = props => {
             expanded ? 'show-builder-item__details--expanded' : '',
           )}
         >
-          {children}
-          {children && children[0] && children[0].props && (
-            <i
-              title="Copy text to clipboard"
-              className={classnames('fas', 'fa-copy')}
-              onClick={() => {
-                const copiedText = stripHtml(
-                  JSON.stringify(
-                    children[0].props.dangerouslySetInnerHTML.__html,
-                  ),
-                ).replaceAll('\\"', '');
-                navigator.clipboard.writeText(copiedText);
-              }}
-            ></i>
-          )}
-          {children && !children[0] && (
-            <i
-              title="Copy text to clipboard"
-              className={classnames('fas', 'fa-copy')}
-              onClick={() => {
-                const copiedText = stripHtml(
-                  children.props.dangerouslySetInnerHTML.__html
-                ).replaceAll('\\"', '');
-                navigator.clipboard.writeText(copiedText);
-              }}
-            ></i>
-          )}
+          <div ref={expandedTextRef}>{children}</div>
+          
+          <i
+            title="Copy text to clipboard"
+            className={classnames('fas', 'fa-copy')}
+            onClick={() => {
+                //https://stackoverflow.com/questions/36639681/how-to-copy-text-from-a-div-to-clipboard
+                var range = document.createRange();
+                range.selectNode(expandedTextRef.current);
+                window.getSelection().removeAllRanges(); // clear current selection
+                window.getSelection().addRange(range); // to select text
+                document.execCommand("copy");
+                window.getSelection().removeAllRanges();// to deselect
+
+            }}
+          ></i>
         </div>
       )}
     </div>

@@ -174,7 +174,7 @@ const ShowBuilderItem = props => {
           )}
         >
           {children}
-          {children[0].props && (
+          {children && children[0] && children[0].props && (
             <i
               title="Copy text to clipboard"
               className={classnames('fas', 'fa-copy')}
@@ -183,6 +183,18 @@ const ShowBuilderItem = props => {
                   JSON.stringify(
                     children[0].props.dangerouslySetInnerHTML.__html,
                   ),
+                ).replaceAll('\\"', '');
+                navigator.clipboard.writeText(copiedText);
+              }}
+            ></i>
+          )}
+          {children && !children[0] && (
+            <i
+              title="Copy text to clipboard"
+              className={classnames('fas', 'fa-copy')}
+              onClick={() => {
+                const copiedText = stripHtml(
+                  children.props.dangerouslySetInnerHTML.__html
                 ).replaceAll('\\"', '');
                 navigator.clipboard.writeText(copiedText);
               }}

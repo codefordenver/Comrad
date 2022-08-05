@@ -34,6 +34,11 @@ module.exports = {
         includeInTextIndex: true,
         includeInChartingReport: true,
       },
+      {
+        name: 'album_art_url',
+        label: 'Album Art URL',
+        editFieldType: 'text'
+      }
     ],
     giveaway: [
       {

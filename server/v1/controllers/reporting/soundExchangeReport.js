@@ -90,26 +90,26 @@ function soundExchangeReport(req, res) {
       const csv = parser.parse(
         soundExchangeData.map(t => {
           // see explanation at the top of this file for how we are calculating start time
-          console.log('start');
-          console.log(playlistStartTime);
-          console.log(typeof t.time_utc);
-          console.log(t.time_utc);
-          console.log(typeof playlistStartTime);
-          console.log(playlistCounter);
+          // console.log('start');
+          // console.log(playlistStartTime);
+          // console.log(typeof t.time_utc);
+          // console.log(t.time_utc);
+          // console.log(typeof playlistStartTime);
+          // console.log(playlistCounter);
           if (String(playlistStartTime) !== String(t.time_utc)) {
-            console.log('reset');
+            // console.log('reset');
             playlistStartTime = t.time_utc;
             playlistCounter = 0;
           }
-          console.log(playlistStartTime);
-          console.log(playlistCounter);
+          // console.log(playlistStartTime);
+          // console.log(playlistCounter);
 
           let startTime = moment(t.time_utc);
           startTime.add(playlistCounter, 'seconds');
 
           playlistCounter += t.track_info.duration_in_seconds;
 
-          console.log(playlistCounter);
+          // console.log(playlistCounter);
 
           return {
             'Start Time': startTime.format('YYYY-MM-DD HH:mm:ss'),
@@ -126,6 +126,7 @@ function soundExchangeReport(req, res) {
       return res.status(200).end(csv);
     })
     .catch(err => {
+      console.error('Error in sound exchange report:');
       console.error(err);
       return res.status(422).json(err);
     });

@@ -117,8 +117,8 @@ function soundExchangeReport(req, res) {
             Duration: t.track_info.duration_in_seconds,
             Title: t.track_info.name,
             Artist: t.artists.join(', '),
-            Album: t.album_info.name,
-            Label: t.album_info.label,
+            Album: t.album_info?.name,
+            Label: t.album_info?.label,
           };
         }),
       );

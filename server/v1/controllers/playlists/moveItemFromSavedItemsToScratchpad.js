@@ -114,6 +114,8 @@ async function moveItemFromSavedItemsToScratchpad(req, res) {
         delete movedItem.executed_time_utc;
       }
 
+
+
       return db.Playlist.update(
         {
           _id: req.params.playlistId,
@@ -130,7 +132,8 @@ async function moveItemFromSavedItemsToScratchpad(req, res) {
     .then(dbResult => {
       //we won't add traffic onto the scratchpad
       if (movedItem.type === 'traffic') {
-        return res.json([]);
+        res.json([]); 
+        return { then: function() {} }; // end/break the chain
       }
 
       return db.Playlist.findOneAndUpdate(
@@ -146,15 +149,25 @@ async function moveItemFromSavedItemsToScratchpad(req, res) {
       );
     })
     .then(dbPlaylist => {
+      // 
+
       return populatePlaylist(dbPlaylist)
         .then(dbPlaylist => {
           return res.json(
             dbPlaylist.scratchpad[dbPlaylist.scratchpad.length - 1],
           ); //return the scratchpad item that was moved
         })
-        .catch(err => res.status(422).json({ errorMessage: err }));
+        .catch(err => {
+          console.error("Error in moveItemFromSavedItemsToScratchpad controller");
+          console.error(err);
+          return res.status(422).json({ errorMessage: err });
+        });
     })
-    .catch(err => res.status(422).json({ errorMessage: err }));
+    .catch(err => {
+      console.error("Error in moveItemFromSavedItemsToScratchpad controller");
+      console.error(err);
+      return res.status(422).json({ errorMessage: err });
+    });
 }
 
 module.exports = moveItemFromSavedItemsToScratchpad;

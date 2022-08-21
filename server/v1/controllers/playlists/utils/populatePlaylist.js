@@ -25,6 +25,7 @@ async function populatePlaylist(docPlaylist) {
     },
   ]);
 
+
   let objPlaylist = docPlaylist.toObject();
   for (var i = 0; i < docPlaylist.saved_items.length; i++) {
     let docSavedItems = docPlaylist.saved_items[i];

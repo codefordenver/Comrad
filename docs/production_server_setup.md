@@ -140,17 +140,17 @@ cp .env-sample .env
 
 cd ../
 
-npm install --production
+npm install --omit=dev
 
 cd client
 
-npm install --production
+npm install --omit=dev
 npm run build
 
 sudo npm install pm2@latest -g
 
 pm2 serve build 3000 --spa
-cd /var/logs
+cd /var/log
 sudo mkdir comrad
 sudo chown seanwilliams:comrad comrad
 sudo chmod 770 comrad
@@ -219,6 +219,9 @@ As long as `sudo nginx -t` reports that the configuration is good, we can restar
 sudo service nginx restart
 ```
 
+## DNS Creation
+For the domain name you would like to use, set up a DNS A record pointing to your server's IP address
+
 ## Set up SSL
 
 Set up SSL using Certbot / Let's Encrypt with these steps:
@@ -237,10 +240,6 @@ sudo certbot --nginx
 Follow the steps in the wizard to set up your certificate
 Choose to redirect all requests to HTTPS
 
-
-
-## DNS Creation
-For the domain name you would like to use, set up a DNS A record pointing to your server's IP address
 
 ## Seed the database
 TODO: We still need to create a utility that will create an initial user you can use to log into Comrad. 
@@ -293,9 +292,9 @@ Going forward, when you need to update Comrad with the latest from source code, 
 ```
 cd /srv/comrad
 git pull
-npm install --production
+npm install --omit=dev
 cd client
-npm install --production
+npm install --omit=dev
 npm run build
 pm2 restart index
 pm2 restart static-page-server-3000

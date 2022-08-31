@@ -55,6 +55,12 @@ module.exports = {
         label: 'Record Audio',
         editFieldType: 'checkbox',
       },
+      {
+        name: 'category',
+        label: 'Category',
+        editFieldType: 'dropdown',
+        options: ['NewsPA', 'Music']
+      }
     ],
   },
   queryPageSize: 100,

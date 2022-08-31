@@ -9,5 +9,5 @@ comradApi.md
 node_modules
 seedScriptProgress.json
 
-# ignore all seed data from production
+# ignore all seed data
 server/v1/seedDB/data/*.json

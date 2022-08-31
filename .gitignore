@@ -10,4 +10,4 @@ node_modules
 seedScriptProgress.json
 
 # ignore all seed data
-#server/v1/seedDB/data/*.json
+server/v1/seedDB/data/*.json

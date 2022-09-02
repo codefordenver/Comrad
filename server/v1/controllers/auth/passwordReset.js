@@ -31,7 +31,7 @@ async function passwordReset(req, res) {
     .catch(err => res.status(422).json(err));
 
   await transport.sendMail({
-    from: 'comrad.development@gmail.com',
+    from: process.env.MAIL_SENDER_EMAIL,
     to: user.email,
     subject: 'Comrad: Reset Your Password',
     html: emailTemplate(

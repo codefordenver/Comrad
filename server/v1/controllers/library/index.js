@@ -5,7 +5,7 @@ const findAll = require('./findAll');
 const findById = require('./findById');
 const remove = require('./remove');
 const search = require('./search');
-const searchItunes = require('./searchItunes');
+//const searchItunes = require('./searchItunes');
 const update = require('./update');
 
 module.exports = {
@@ -16,6 +16,6 @@ module.exports = {
   findById,
   remove,
   search,
-  searchItunes,
+  //searchItunes,
   update,
 };

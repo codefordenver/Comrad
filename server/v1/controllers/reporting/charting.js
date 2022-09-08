@@ -17,6 +17,8 @@ function charting(req, res) {
     match_query['saved_items.executed_time_utc'] = { $gte: new Date(from) };
   } else if (to != null) {
     match_query['saved_items.executed_time_utc'] = { $lte: new Date(to) };
+  } else {
+    return res.status(422).json({"error":"Please provide a parameter for 'from' or 'to'"});
   }
 
   // look for custom properties we should include in the export

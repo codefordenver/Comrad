@@ -547,7 +547,7 @@ class ShowBuilderPage extends Component {
                           -1) && (
                         <>
                           <b>Host:</b>{' '}
-                          {formattedHostName.length > 0
+                          {formattedHostName != null && formattedHostName.length > 0
                             ? formattedHostName
                             : 'No Host'}
                         </>

@@ -16,6 +16,10 @@ router
   .get(requireAC('Library', 'readAny'), libraryController.search);
 
 router
+  .route('/search-itunes')
+  .get(requireAC('Library', 'readAny'), libraryController.searchItunes);
+
+router
   .route('/:id')
   .get(requireAC('Library', 'readAny'), libraryController.findById)
   .put(requireAC('Library', 'updateAny'), libraryController.update)

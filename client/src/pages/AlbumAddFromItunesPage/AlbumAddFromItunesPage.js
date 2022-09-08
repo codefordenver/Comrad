@@ -7,11 +7,14 @@ import Loading from '../../components/Loading';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 
+import { libraryActions } from '../../redux';
 
 const AlbumAddFromItunesPage = ({ handleSubmit }) => {
 
+  const dispatch = useDispatch();
+  
   const itunesAlbumSearch = (form) => {
-    console.log('form', form);
+    dispatch(libraryActions.search(form.q));
   }
 
   return (

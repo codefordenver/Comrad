@@ -47,8 +47,10 @@ function eventList(events, startDate, endDate) {
     return o.master_time_id;
   });
 
-  //Combined series and instance events by object ID and then return the final array
-  let eventsToReturn = { ...seriesKeyBy, ...instanceKeyBy };
+  // combine the series and instances
+  // if there's an instance, overwrite the series object with fields from the instance object
+  // we need to deep merge the object so that nested objects, like show_details.custom, are accounted for
+  let eventsToReturn = _.merge(seriesKeyBy,instanceKeyBy);
 
   //transform the object back to an array
   let eventsToReturnArray = [];

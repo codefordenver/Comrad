@@ -131,7 +131,11 @@
 
 const {
   utils: { getModelForEventType },
+  utils__mongoose: { populateShowHost,
+    populateMasterEvent,
+    populateMasterEventShowDetails },
 } = require('./utils');
+const _ = require('lodash');
 
 function findByCustomField(req, res) {
   const { name, value } = req.query;
@@ -154,8 +158,34 @@ function findByCustomField(req, res) {
   filters['show_details.custom.' + name] = value;
   return dbModel
       .find(filters)
-      .then(dbShows => res.json(dbShows))
-      .catch(err => res.status(500).json({ errorMessage: err }));
+      .populate(populateShowHost())
+      .populate(populateMasterEvent())
+      .populate(populateMasterEventShowDetails())
+      .then(dbEvent => {
+        
+        //combine the instance data with master series event data
+        let results = [];
+        dbEvent.forEach(event => {
+          if (event.master_event_id && event.master_event_id instanceof Object) {
+            
+            let masterEvent = JSON.parse(JSON.stringify(event.master_event_id));
+
+            let show = JSON.parse(JSON.stringify(event));
+
+            results.push(_.merge(masterEvent, show));
+
+          } else {
+            results.push(event);
+          }
+        });
+        
+        return res.json(results);
+      })
+      .catch(err => {
+        console.error('error in events > findByCustomField');
+        console.error(err);
+        return res.status(500).json({ errorMessage: err });
+      });
 }
 
 module.exports = findByCustomField;

@@ -30,6 +30,7 @@ async function seedDB() {
       useNewUrlParser: true,
       useUnifiedTopology: false,
     });
+    mongoose.set('maxTimeMS', 1000 * 60 * 5);
 
     let scriptProgress;
 

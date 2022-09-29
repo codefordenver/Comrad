@@ -9,6 +9,10 @@ router
   .post(requireAC(null, 'createAny'), eventsController.create);
 
 router
+  .route('/:eventType/by-custom-field')
+  .get(requireAC(null, 'readAny'), eventsController.findByCustomField);
+
+router
   .route('/:eventType/earliest')
   .get(requireAC(null, 'readAny'), eventsController.findEarliest);
 

@@ -33,6 +33,16 @@
  *       required: false
  *       type: boolean
  *       description: If true, will only return shows that have no host
+ *     - name: masterEventCustomFieldName
+ *       in: query
+ *       required: false
+ *       type: string
+ *       description: If this is provided, only shows whose master event matches the given custom field name and value in masterEventCustomFieldValue will be returned.
+ *     - name: masterEventCustomFieldValue
+ *       in: query
+ *       required: false
+ *       type: string
+ *       description: If this is provided, only shows whose master event matches the given custom field name in masterEventCustomFieldName and value in this field will be returned.
  *     description: |
  *       Returns shows in a given timeframe, ordered by time from earliest to latest
  *
@@ -116,6 +126,16 @@
  *       items:
  *         type: string
  *       description: Return only shows matching the specified traffic types
+ *     - name: masterEventCustomFieldName
+ *       in: query
+ *       required: false
+ *       type: string
+ *       description: If this is provided, only traffic whose master event matches the given custom field name and value in masterEventCustomFieldValue will be returned.
+ *     - name: masterEventCustomFieldValue
+ *       in: query
+ *       required: false
+ *       type: string
+ *       description: If this is provided, only traffic whose master event matches the given custom field name in masterEventCustomFieldName and value in this field will be returned.
  *     description: |
  *       Returns traffic in a given timeframe, ordered by time from earliest to latest
  *
@@ -181,6 +201,8 @@ function find(req, res) {
     showsWithNoHost,
     startDate,
     filterByTrafficType,
+    masterEventCustomFieldName,
+    masterEventCustomFieldValue
   } = req.query;
   const { eventType } = req.params;
 
@@ -286,15 +308,49 @@ function find(req, res) {
         res.json(showResults);
       };
 
-      if (filterByTrafficType != null) {
-        //only query traffic with a type in the list provided by filterByTrafficType
+      if (filterByTrafficType != null || 
+          (masterEventCustomFieldName != null && masterEventCustomFieldValue != null)
+          ) {
+        //only query with a type in the list provided by filterByTrafficType
+
+
+        let additionalFilters = {"$and":[]};
+
+        if (filterByTrafficType != null) {
+          additionalFilters['$and'].push({
+              $or: [
+                { 'traffic_details.type': { $in: filterByTrafficType } },
+                {
+                  'master_event_id.traffic_details.type': {
+                    $in: filterByTrafficType,
+                  },
+                },
+              ],
+            });
+        }
+        if (masterEventCustomFieldName != null && masterEventCustomFieldValue != null) {
+          let masterEventCustomFieldFilter1 = {}; 
+          masterEventCustomFieldFilter1[(eventType == 'shows' ? 'master_event_id.show_details.custom.' : 'master_event_id.traffic_details.custom.') + 
+                masterEventCustomFieldName] = masterEventCustomFieldValue;
+          let masterEventCustomFieldFilter2 = {}; 
+          masterEventCustomFieldFilter2['master_event_id'] = null;
+          masterEventCustomFieldFilter2[(eventType == 'shows' ? 'show_details.custom.' : 'traffic_details.custom.') + 
+                masterEventCustomFieldName] = masterEventCustomFieldValue;
+          additionalFilters['$and'].push({
+              '$or': [
+                masterEventCustomFieldFilter1
+                ,
+                masterEventCustomFieldFilter2
+              ]
+            });
+        }
 
         return dbModel
           .aggregate([
             { $match: filter },
             {
               $lookup: {
-                from: 'traffic',
+                from: eventType == 'shows' ? 'show' : 'traffic',
                 localField: 'master_event_id',
                 foreignField: '_id',
                 as: 'master_event_id',
@@ -307,16 +363,7 @@ function find(req, res) {
               },
             },
             {
-              $match: {
-                $or: [
-                  { 'traffic_details.type': { $in: filterByTrafficType } },
-                  {
-                    'master_event_id.traffic_details.type': {
-                      $in: filterByTrafficType,
-                    },
-                  },
-                ],
-              },
+              $match: additionalFilters,
             },
           ])
           .then(processEventResults)

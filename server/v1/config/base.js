@@ -60,11 +60,6 @@ module.exports = {
         label: 'Category',
         editFieldType: 'dropdown',
         options: ['NewsPA', 'Music']
-      },
-      {
-        name: "numeric_id",
-        label: "Numeric ID (only use for master shows)", // referenced in the WordPress shortcodes on kgnu.org
-        editFieldType: 'text'
       }
     ],
   },

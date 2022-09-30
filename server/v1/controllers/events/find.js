@@ -43,6 +43,11 @@
  *       required: false
  *       type: string
  *       description: If this is provided, only shows whose master event matches the given custom field name in masterEventCustomFieldName and value in this field will be returned.
+ *      - name: includePlaylist
+ *       in: query
+ *       required: false
+ *       type: string
+ *       description: If this parameter is specified (with any value), each show object will include its playlist.
  *     description: |
  *       Returns shows in a given timeframe, ordered by time from earliest to latest
  *
@@ -202,9 +207,12 @@ function find(req, res) {
     startDate,
     filterByTrafficType,
     masterEventCustomFieldName,
-    masterEventCustomFieldValue
+    masterEventCustomFieldValue,
+    includePlaylist
   } = req.query;
   const { eventType } = req.params;
+
+  const { findOrCreatePlaylist } = require('../playlists/utils');
 
   const dbModel = getModelForEventType(eventType);
   if (!dbModel) {
@@ -306,7 +314,53 @@ function find(req, res) {
           });
         }
 
-        res.json(showResults);
+        if (includePlaylist != null) {
+          return Promise.all(
+            showResults.map(show => {
+              return findOrCreatePlaylist(show.start_time_utc, show.end_time_utc)
+                .then(p => {
+                  show.playlist_executed = p.saved_items;
+                  return show;
+                })
+                .catch(err => {
+                  console.log(
+                    'error in includePlaylist param functionality -- events > find for individual playlist',
+                  );
+                  console.error(err);
+                  return res.status(500).json(err);
+                });
+            }),
+          )
+          .then(values => {
+            return res.json(values);
+          })
+          .catch(err => {
+            console.log('error in includePlaylist param functionality -- events > find for Promise.all');
+            console.error(err);
+            return res.status(500).json(err);
+          });
+
+        } else {
+          return res.json(showResults);
+        }
+
+          let show = showResults[0];
+          return findOrCreatePlaylist(show.start_time_utc, show.end_time_utc)
+            .then(p => {
+              show.playlist_executed = p.saved_items;
+              return res.json(show);
+            })
+            .catch(err => {
+              console.log(
+                'error in events > root > currentShow > findOne for playlist',
+              );
+              console.error(err);
+              return res.status(500).json(err);
+            });
+
+          return res.json(showResults[0]);
+
+        
       };
 
       if (filterByTrafficType != null || 

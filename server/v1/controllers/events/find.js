@@ -279,6 +279,7 @@ function find(req, res) {
       }
 
       const processEventResults = dbShow => {
+        // console.log(dbShow);
         //populateMasterEvent
         let showResults = eventList(dbShow, startDate, endDate);
         //apply filters, if they were provided
@@ -350,7 +351,7 @@ function find(req, res) {
             { $match: filter },
             {
               $lookup: {
-                from: eventType == 'shows' ? 'show' : 'traffic',
+                from: eventType == 'shows' ? 'shows' : 'traffic',
                 localField: 'master_event_id',
                 foreignField: '_id',
                 as: 'master_event_id',

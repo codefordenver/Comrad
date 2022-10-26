@@ -50,6 +50,9 @@
       "tests"
     ]
   },
+  "devDependneciesComments": {
+    "swagger-jsdoc": "needs to stay at 5.0.1 for this issue: https://github.com/Surnet/swagger-jsdoc/issues/294"
+  },
   "devDependencies": {
     "concurrently": "^7.3.0",
     "cross-env": "^7.0.3",
@@ -59,7 +62,7 @@
     "prettier": "^2.7.1",
     "puppeteer": "^15.5.0",
     "supertest": "^6.2.4",
-    "swagger-jsdoc": "^6.2.1",
+    "swagger-jsdoc": "^5.0.1",
     "widdershins": "git+https://github.com/seankwilliams/widdershins.git"
   },
   "dependencies": {

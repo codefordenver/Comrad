@@ -3,6 +3,7 @@
 .DS_Store
 .vscode
 .env
+.env-local
 .env-comrad
 comradApiSwagger.json
 comradApi.md

@@ -4,6 +4,7 @@ const currentShow = require('./currentShow');
 const find = require('./find');
 const findByDateAndName = require('./findByDateAndName');
 const findById = require('./findById');
+const findByCustomField = require('./findByCustomField');
 const findEarliest = require('./findEarliest');
 const nextShow = require('./nextShow');
 const previousShow = require('./previousShow');
@@ -19,6 +20,7 @@ module.exports = {
   createInstance,
   currentShow,
   find,
+  findByCustomField,
   findByDateAndName,
   findById,
   findEarliest,

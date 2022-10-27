@@ -11,11 +11,22 @@ import { libraryActions } from '../../redux';
 
 const AlbumAddFromItunesPage = ({ handleSubmit }) => {
 
+  const { loadingSearchItunes, loadingError, itunesData } = useSelector(state => state.library);
+
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    return () => {
+      // cleanup code
+      dispatch(libraryActions.clear());
+    };
+  }, []); 
   
   const itunesAlbumSearch = (form) => {
-    dispatch(libraryActions.search(form.q));
+    dispatch(libraryActions.searchItunes(form['q']));
   }
+
+
 
   return (
     <div className="album-add-from-itunes-page">
@@ -38,6 +49,14 @@ const AlbumAddFromItunesPage = ({ handleSubmit }) => {
                 Submit
               </Button>
             </form>
+          </CardBody>
+        </Card>
+        <Card>
+          <CardBody>
+            {loadingSearchItunes && <Loading />}
+            {loadingError && (
+              <div>An error occurred loading data. Please try again.</div>
+            )}
           </CardBody>
         </Card>
       </div>

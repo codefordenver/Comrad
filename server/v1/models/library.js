@@ -46,6 +46,9 @@
  *         duration_in_seconds:
  *           type: integer
  *           description: Used by tracks. The duration of the song, in seconds
+ *         itunes_id:
+ *           type: integer
+ *           description: The collection ID matching an album from the iTunes API
  *       example:
  *         - type: album
  *           name: Flamenco On Fire
@@ -164,6 +167,10 @@ const librarySchema = new Schema(
 
     duration_in_seconds: {
       type: Number,
+    },
+
+    itunes_id: {
+      type: Number
     },
   },
   { collection: 'library' },

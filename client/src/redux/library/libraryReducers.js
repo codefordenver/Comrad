@@ -5,9 +5,11 @@ const initialState = {
   docsForDropdown: null,
   doc: null,
   editingName: false,
+  itunesResults: false,
   loading: false,
   loadingError: false,
   loadingSearch: false,
+  loadingSearchItunes: false,
   searchString: null,
   totalPages: null,
 };
@@ -49,11 +51,23 @@ export const libraryReducer = (state = initialState, { type, payload }) => {
         ...state,
         loading: false,
         loadingError: true,
+        loadingSearchItunes: false,
       };
     case libraryTypes.LOADING_SEARCH:
       return {
         ...state,
         loadingSearch: true,
+      };
+    case libraryTypes.LOADING_SEARCH_ITUNES:
+      return {
+        ...state,
+        loadingSearchItunes: true
+      };
+    case libraryTypes.SEARCH_ITUNES:
+      return {
+        ...state,
+        itunesResults: payload,
+        loadingSearchItunes: false,
       };
     case libraryTypes.SEARCH:
       return {

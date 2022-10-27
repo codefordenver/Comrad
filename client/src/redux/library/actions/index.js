@@ -4,6 +4,7 @@ import { clear } from './clear';
 import { update } from './update';
 import { findOne } from './findOne';
 import { search } from './search';
+import { searchItunes } from './searchItunes';
 import { remove } from './remove';
 
 export const libraryActions = {
@@ -13,5 +14,6 @@ export const libraryActions = {
   findOne,
   remove,
   search,
+  searchItunes,
   update,
 };

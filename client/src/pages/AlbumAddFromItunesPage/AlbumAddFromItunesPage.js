@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Field, reduxForm } from 'redux-form';
+import { Link } from "react-router-dom";
 
 import Card, { CardBody } from '../../components/Card';
 import Loading from '../../components/Loading';
@@ -11,7 +12,7 @@ import { libraryActions } from '../../redux';
 
 const AlbumAddFromItunesPage = ({ handleSubmit }) => {
 
-  const { loadingSearchItunes, loadingError, itunesData } = useSelector(state => state.library);
+  const { loadingSearchItunes, loadingError, itunesResults } = useSelector(state => state.library);
 
   const dispatch = useDispatch();
 
@@ -57,6 +58,18 @@ const AlbumAddFromItunesPage = ({ handleSubmit }) => {
             {loadingError && (
               <div>An error occurred loading data. Please try again.</div>
             )}
+            {itunesResults && <div className="album-add-from-itunes-page__results">
+              {itunesResults.map(r => <div className="album-add-from-itunes-page__result" key={"collection-" + r.collectionId}>
+                <Link to={"/library/album/add-from-itunes/" + r.collectionId}><img src={r.artworkUrl100} alt={r.collectionName} /></Link>
+                <div>
+                  <Link to={"/library/album/add-from-itunes/" + r.collectionId}>{r.collectionName}</Link>
+                  <br />
+                  <i>{r.artistName}</i>
+                  <br />
+                  <Button color="neutral">Import</Button>
+                </div>
+              </div>)}
+            </div>}
           </CardBody>
         </Card>
       </div>

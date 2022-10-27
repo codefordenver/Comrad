@@ -3,6 +3,7 @@ const create = require('./create');
 const createMany = require('./createMany');
 const findAll = require('./findAll');
 const findById = require('./findById');
+const findItunesByCollectionId = require('./findItunesByCollectionId');
 const remove = require('./remove');
 const search = require('./search');
 const searchItunes = require('./searchItunes');
@@ -14,6 +15,7 @@ module.exports = {
   createMany,
   findAll,
   findById,
+  findItunesByCollectionId,
   remove,
   search,
   searchItunes,

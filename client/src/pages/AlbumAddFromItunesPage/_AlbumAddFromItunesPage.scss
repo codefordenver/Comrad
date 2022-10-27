@@ -2,4 +2,27 @@
   form {
     display: flex;
   }
+
+  &__results {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  &__result {
+    display:flex;
+    width: 33%;
+    padding-right: 2em;
+    margin-bottom: 2em;
+    font-size: 1.3em;
+
+    > a > img {
+      margin-right: 1em;
+      width: 100px;
+      height: 100px;
+    }
+
+    @media (max-width:767px) {
+      width: auto;
+      margin: 1em 0;
+    }
+  }
 }

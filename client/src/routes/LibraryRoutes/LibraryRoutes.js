@@ -10,7 +10,8 @@ import LibrarySearchPage from '../../pages/LibrarySearchPage';
 import TrackViewPage from '../../pages/TrackViewPage';
 import TrackAddPage from '../../pages/TrackAddPage';
 import TrackEditPage from '../../pages/TrackEditPage';
-import AlbumAddFromItunesPage from "../../pages/AlbumAddFromItunesPage"
+import AlbumAddFromItunesPage from "../../pages/AlbumAddFromItunesPage";
+import AlbumItunesViewPage from "../../pages/AlbumItunesViewPage";
 import AlbumAddPage from '../../pages/AlbumAddPage';
 import AlbumEditPage from '../../pages/AlbumEditPage';
 
@@ -24,6 +25,7 @@ class Library extends Component {
         <Switch>
           <Route path={`${url}/album/:id/add`} component={TrackAddPage} />
           <Route path={`${url}/album/:id/edit`} component={AlbumEditPage} />
+          <Route path={`${url}/album/add-from-itunes/:id`} component={AlbumItunesViewPage} />
           <Route path={`${url}/album/add-from-itunes`} component={AlbumAddFromItunesPage} />
           <Route path={`${url}/album/add`} component={AlbumAddPage} />
           <Route path={`${url}/album/:id`} component={AlbumViewPage} />

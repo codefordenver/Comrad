@@ -24,6 +24,10 @@ router
   .get(requireAC('Library', 'readAny'), libraryController.searchItunes);
 
 router
+  .route('/itunes/:id')
+  .get(requireAC('Library', 'readAny'), libraryController.findItunesByCollectionId);
+
+router
   .route('/:id')
   .get(requireAC('Library', 'readAny'), libraryController.findById)
   .put(requireAC('Library', 'updateAny'), libraryController.update)

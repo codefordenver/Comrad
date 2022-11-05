@@ -2,6 +2,7 @@ import { add } from './add';
 import { findAll } from './findAll';
 import { findOne } from './findOne';
 import { findItunes } from './findItunes';
+import { importFromItunes } from './importFromItunes';
 import { remove } from './remove';
 import { search } from './search';
 import { searchItunes } from './searchItunes';
@@ -12,6 +13,7 @@ export const libraryAPI = {
   findAll,
   findOne,
   findItunes,
+  importFromItunes,
   remove,
   search,
   searchItunes,

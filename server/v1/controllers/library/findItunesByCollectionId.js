@@ -32,61 +32,18 @@
  */
 
 const db = require('../../models');
-const keys = require('../../config/keys');
-const axios = require('axios');
+const { findItunesByCollectionId: utils__findItunesByCollectionId } = require('./utils')
 
-async function findItunesByCollectionId(req, res) {
+async function findItunesByCollectionId(req, res) { 
   let { id } = req.params;
 
   if (!id) {
     return res.json(null);
   }
 
-  let itunesResponse = await axios.get('http://itunes.apple.com/lookup?id=' + encodeURIComponent(id) + '&entity=song&limit=500');
+  let itunesData = await utils__findItunesByCollectionId(id);
 
-  var data = itunesResponse.data;
-
-  var album = null;
-  var tracks = [];
-
-
-  data.results.forEach(d => {
-    if (album == null && d['wrapperType'] == 'collection') {
-      album = {
-        'id': d['collectionId'],
-        'title': d['title'],
-        'artist': d['artistName'],
-        'albumArt': d['artworkUrl100'],
-        'genre': d['primaryGenreName'],
-        'trackCount': d['trackCount'],
-        'copyright': d['copyright'],
-        'compilation': d['collectionType'] == 'Compilation' || d['artistName'] == 'Various Artists'
-      };
-    } else if (d['wrapperType'] == 'track') {
-      tracks.push({
-        'name': d['trackName'],
-        'artistName': d['artistName'],
-        'previewUrl': d['previewUrl'],
-        'diskNumber': d['discNumber'],
-        'trackNumber': d['trackNumber'],
-        'duration': Math.ceil(d['trackTimeMillis'] / 1000)
-      });
-    }
-  });
-
-  if (!album) {
-    console.log('album not found in itunes');
-    return res.json(null);
-  }
-
-  // check if album has already been imported
-  let localAlbum = await db.Library.findOne({'itunes_id': id});
-  
-  return res.json({
-    localAlbum,
-    album,
-    tracks
-  });
+  return res.json(itunesData);
 }
 
 module.exports = findItunesByCollectionId;

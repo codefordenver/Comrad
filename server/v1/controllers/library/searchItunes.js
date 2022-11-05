@@ -50,33 +50,52 @@ async function search(req, res) {
   var data = itunesResponse.data;
 
   let iTunesIds = [];
+  let albumNames = [];
   data.results.forEach(album => {
     iTunesIds.push(album['collectionId']);
+    albumNames.push(new RegExp(album['collectionName'], "i")); // case insensitive search
   });
 
   //find local albums using this iTunesId
   let localAlbums = await db.Library.find({
     "type": "album",
-    "itunes_id": {
-      "$in": iTunesIds
-    }
-  });
+    "$or": [
+      {"itunes_id": { "$in": iTunesIds }},
+      {"name": { "$in": albumNames }}
+    ]
+  })
+  .populate('artist');
+
+  console.log('localAlbums', localAlbums);
 
   for (var i = 0; i < data.results.length; i++) {
     let album = data.results[i];
-    if (localAlbums.find(a => a['itunes_id'] == album['collectionId'])) {
-      data.results[i]['local_id'] = album['_id'];
-      data.results[i]['local_track_count'] = await db.Library.countDocuments({ "type": "track", "album": album['_id'] });
+    let localAlbum = null;
+    localAlbum = localAlbums.find(a => a['itunes_id'] == album['collectionId']);
+    if (!localAlbum) {
+      localAlbum = localAlbums.find(a => 
+        album['collectionName'].toLowerCase() == a['name'].toLowerCase() && 
+        a['artist'] 
+        && album['artistName'].toLowerCase() == a['artist']['name'].toLowerCase());
+    }
+    if (localAlbum) {
+      data.results[i]['local_id'] = localAlbum['_id'];
+      data.results[i]['local_track_count'] = await db.Library.countDocuments({ "type": "track", "album": localAlbum['_id'] });
 
       // The iTunes 'trackCount' field counts an extra "track" for each disc, so we need to add
       // the local disc count to the local track count when comparing to figure out if the album
       // has been entirely imported.
 
-      let numDiscs = await db.Library.find({ "type": "track", "album": album['_id'] })
+      let numDiscs = 0;
+      let maxTrack = await db.Library.find({ "type": "track", "album": localAlbum['_id'] })
         .sort({ "disk_number": -1 })
-        .limit(1)
-        
-        .map(u => u.disk_number);
+        .limit(1);
+      if (maxTrack.length > 0) {
+        numDiscs = maxTrack[0]['disk_number'];
+      }
+
+      console.log('numDiscs', numDiscs)
+      console.log('total', data.results[i]['local_track_count'] + numDiscs);
 
       data.results[i]['is_partial_import'] = album['trackCount'] > data.results[i]['local_track_count'] + numDiscs;
     }

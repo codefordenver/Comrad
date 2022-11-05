@@ -1,20 +1,21 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, useMemo} from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Field, reduxForm } from 'redux-form';
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 import Card, { CardBody } from '../../components/Card';
 import Loading from '../../components/Loading';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 
-import { libraryActions } from '../../redux';
+import { alertActions, libraryActions } from '../../redux';
 
 const AlbumAddFromItunesPage = ({ handleSubmit }) => {
 
   const { loadingSearchItunes, loadingError, itunesResults } = useSelector(state => state.library);
 
   const dispatch = useDispatch();
+  const history = useHistory();
 
   useEffect(() => {
     return () => {
@@ -25,7 +26,60 @@ const AlbumAddFromItunesPage = ({ handleSubmit }) => {
   
   const itunesAlbumSearch = (form) => {
     dispatch(libraryActions.searchItunes(form['q']));
-  }
+  };
+
+  const importAlbum = (collectionId) => {
+    dispatch(libraryActions.importFromItunes({
+      collectionId: collectionId,
+      callback: (result) => {
+        history.push('/library/album/' + result.album_id);
+        dispatch(alertActions.show('success', 'Success', 'Album has been imported'));
+      }
+    }));
+  };
+
+  const itunesResultsHtml = useMemo(() => {
+    if (!itunesResults) return null;
+    let html = itunesResults.map(r => {
+      let image = null;
+      let link = null;
+      let titleLink = null;
+      let buttonArea = null;
+      if (r.is_partial_import === false) {
+        link = "/library/album/" + r.local_id;
+        image = <Link to={link}><img src={r.artworkUrl100} alt={r.collectionName} /></Link>;
+        buttonArea = (<>
+              <b>Imported</b><br />
+              <Link to={"/library/album/" + r.local_id} className="button button--neutral button--normal">View Album</Link>
+            </>);
+      } else if (r.is_partial_import === true) {
+        link = "/library/album/add-from-itunes/" + r.collectionId;
+        image = <Link to={link}><img src={r.artworkUrl100} alt={r.collectionName} /></Link>;
+        buttonArea = (<>
+          {r.local_track_count} tracks imported so far
+          <br />
+          <Button color="neutral" onClick={e => importAlbum(r.collectionId)}>Import</Button>
+        </>);
+      } else {
+        //if no value for r.is_partial_import, then this album is not imported at all
+        link = "/library/album/add-from-itunes/" + r.collectionId;
+        image = <Link to={link}><img src={r.artworkUrl100} alt={r.collectionName} /></Link>;
+        buttonArea = (<Button color="neutral" onClick={e => importAlbum(r.collectionId)}>Import</Button>);
+      }
+      return (<div className="album-add-from-itunes-page__result" key={"collection-" + r.collectionId}>
+        {image}
+        <div>
+          <Link to={link}>{r.collectionName}</Link>
+          <br />
+          <i>{r.artistName}</i>
+          <br />
+          {buttonArea}            
+        </div>
+      </div>)
+    });
+    
+    return html;
+  }, [itunesResults]);
 
 
 
@@ -59,16 +113,7 @@ const AlbumAddFromItunesPage = ({ handleSubmit }) => {
               <div>An error occurred loading data. Please try again.</div>
             )}
             {itunesResults && <div className="album-add-from-itunes-page__results">
-              {itunesResults.map(r => <div className="album-add-from-itunes-page__result" key={"collection-" + r.collectionId}>
-                <Link to={"/library/album/add-from-itunes/" + r.collectionId}><img src={r.artworkUrl100} alt={r.collectionName} /></Link>
-                <div>
-                  <Link to={"/library/album/add-from-itunes/" + r.collectionId}>{r.collectionName}</Link>
-                  <br />
-                  <i>{r.artistName}</i>
-                  <br />
-                  <Button color="neutral">Import</Button>
-                </div>
-              </div>)}
+              {itunesResultsHtml}
             </div>}
           </CardBody>
         </Card>

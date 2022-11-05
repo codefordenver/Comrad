@@ -25,7 +25,8 @@ router
 
 router
   .route('/itunes/:id')
-  .get(requireAC('Library', 'readAny'), libraryController.findItunesByCollectionId);
+  .get(requireAC('Library', 'readAny'), libraryController.findItunesByCollectionId)
+  .post(requireAC('Library', 'updateAny'), libraryController.importItunesAlbum);
 
 router
   .route('/:id')

@@ -66,8 +66,6 @@ async function search(req, res) {
   })
   .populate('artist');
 
-  console.log('localAlbums', localAlbums);
-
   for (var i = 0; i < data.results.length; i++) {
     let album = data.results[i];
     let localAlbum = null;
@@ -93,9 +91,6 @@ async function search(req, res) {
       if (maxTrack.length > 0) {
         numDiscs = maxTrack[0]['disk_number'];
       }
-
-      console.log('numDiscs', numDiscs)
-      console.log('total', data.results[i]['local_track_count'] + numDiscs);
 
       data.results[i]['is_partial_import'] = album['trackCount'] > data.results[i]['local_track_count'] + numDiscs;
     }

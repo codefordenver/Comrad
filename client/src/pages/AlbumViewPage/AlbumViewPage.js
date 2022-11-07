@@ -94,7 +94,7 @@ class AlbumViewPage extends Component {
                         'No Artist'
                       )}
                     </h5>
-                    {!!label && <span>&nbsp;| {label}</span>}
+                    {!!label && <span>{label}</span>}
                     {!!genre && <span>&nbsp;| {genre.name}</span>}
                     {!!compilation && <span>&nbsp;| Compilation</span>}
                     {custom && (

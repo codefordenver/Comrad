@@ -33,6 +33,9 @@
 
 const db = require('../../models');
 const keys = require('../../config/keys');
+const axios = require('axios');
+
+
 
 async function search(req, res) {
   let { q } = req.query;
@@ -42,50 +45,60 @@ async function search(req, res) {
   }
 
 
-  // replicate this:
+  let itunesResponse = await axios.get('http://itunes.apple.com/search?term=' + encodeURIComponent(q) +  '&entity=album&limit=60');
 
-  'http://itunes.apple.com/search?term=' . $term . '&entity=album&limit=60'
-    if (isset($this->params->query['q']) && $this->params->query['q'] !== '') {
-      $response = $this->ITunes->searchAlbums($this->params->query['q']);
-      
-      $iTunesIds = array();
-      foreach ($response['results'] as $album) {
-        $iTunesIds[$album['collectionId']] = array(
-          'trackCount' => $album['trackCount']
-        );
-      }
-      
-      $localAlbums = $this->Album->find('all', array(
-        'conditions' => array('Album.a_ITunesId' => array_keys($iTunesIds))
-      ));
-      
-      foreach ($response['results'] as $key => $iTunesAlbum) {
-        // Try to find the local album
-        foreach ($localAlbums as $localAlbum) {
-          if ($localAlbum['Album']['a_ITunesId'] == $iTunesAlbum['collectionId']) {
-            $response['results'][$key]['localId'] = $localAlbum['Album']['a_AlbumID'];
-            $response['results'][$key]['localTrackCount'] = count($localAlbum['Track']);
-            
-            // The iTunes 'trackCount' field counts an extra "track" for each disc, so we need to add
-            // the local disc count to the local track count when comparing to figure out if the album
-            // has been entirely imported.
-            $numDiscs = 1;
-            foreach ($localAlbum['Track'] as $localTrack) {
-              if ($localTrack['t_DiskNumber'] > $numDiscs) $numDiscs = $localTrack['t_DiskNumber'];
-            }
-            
-            $response['results'][$key]['isPartialImport'] = $iTunesAlbum['trackCount'] > count($localAlbum['Track']) + $numDiscs;
-            break;
-          }
-        }
-      }
-      
-      $this->set('response', $response);
+  var data = itunesResponse.data;
 
-  return res.json({
-    docs: data,
-    totalPages: 1,
+  let iTunesIds = [];
+  let albumNames = [];
+  data.results.forEach(album => {
+    iTunesIds.push(album['collectionId']);
+    albumNames.push(new RegExp(album['collectionName'], "i")); // case insensitive search
   });
+
+  //find local albums using this iTunesId
+  let localAlbums = await db.Library.find({
+    "type": "album",
+    "$or": [
+      {"itunes_id": { "$in": iTunesIds }},
+      {"name": { "$in": albumNames }}
+    ]
+  })
+  .populate('artist');
+
+  for (var i = 0; i < data.results.length; i++) {
+    let album = data.results[i];
+    let localAlbum = null;
+    localAlbum = localAlbums.find(a => a['itunes_id'] == album['collectionId']);
+    if (!localAlbum) {
+      localAlbum = localAlbums.find(a => 
+        album['collectionName'].toLowerCase() == a['name'].toLowerCase() && 
+        a['artist'] 
+        && album['artistName'].toLowerCase() == a['artist']['name'].toLowerCase());
+    }
+    if (localAlbum) {
+      data.results[i]['local_id'] = localAlbum['_id'];
+      data.results[i]['local_track_count'] = await db.Library.countDocuments({ "type": "track", "album": localAlbum['_id'] });
+
+      // The iTunes 'trackCount' field counts an extra "track" for each disc, so we need to add
+      // the local disc count to the local track count when comparing to figure out if the album
+      // has been entirely imported.
+
+      let numDiscs = 0;
+      let maxTrack = await db.Library.find({ "type": "track", "album": localAlbum['_id'] })
+        .sort({ "disk_number": -1 })
+        .limit(1);
+      if (maxTrack.length > 0) {
+        numDiscs = maxTrack[0]['disk_number'];
+      }
+
+      data.results[i]['is_partial_import'] = album['trackCount'] > data.results[i]['local_track_count'] + numDiscs;
+    }
+
+  }
+        
+
+  return res.json(data.results);
 }
 
 module.exports = search;

@@ -102,9 +102,16 @@ class TableAlbumTracks extends Component {
     const { handleRowClick, props, state } = this;
     const { deleteModal, scratchpadModal } = state;
     const { libraryState } = props;
-    const { tracks } = libraryState.doc;
+    let showActions = true;
+    let tracks;
+    if (props.tracks) {
+      showActions = false;
+      tracks = props.tracks;
+    } else {
+      ({ tracks } = libraryState.doc);
+    }
 
-    const columns = [
+    let columns = [
       {
         Header: 'Disk #',
         accessor: 'disk_number',
@@ -128,41 +135,50 @@ class TableAlbumTracks extends Component {
           borderRight: '0',
         },
       },
-      {
+    ];
+
+    if (showActions) {
+      columns.push({
         Header: '',
         Cell: row => {
-          return (
-            <div onClick={this.stopPropagation}>
-              <Dropdown
-                position="bottom-left"
-                type="icon"
-                faClass="fas fa-ellipsis-h"
+          return (<div onClick={this.stopPropagation}>
+            <Dropdown
+              position="bottom-left"
+              type="icon"
+              faClass="fas fa-ellipsis-h"
+            >
+              <Dropdown.Item
+                handleOnClick={() =>
+                  this.handleRowAddToScratchpadClick(row.row)
+                }
               >
-                <Dropdown.Item
-                  handleOnClick={() =>
-                    this.handleRowAddToScratchpadClick(row.row)
-                  }
-                >
-                  Add to Scratchpad
-                </Dropdown.Item>
-                <Dropdown.Item
-                  handleOnClick={() => this.handleRowEditClick(row.row)}
-                >
-                  Edit
-                </Dropdown.Item>
-                <Dropdown.Item
-                  handleOnClick={() => this.handleRowDeleteClick(row.row)}
-                >
-                  Delete
-                </Dropdown.Item>
-              </Dropdown>
-            </div>
+                Add to Scratchpad
+              </Dropdown.Item>
+              <Dropdown.Item
+                handleOnClick={() => this.handleRowEditClick(row.row)}
+              >
+                Edit
+              </Dropdown.Item>
+              <Dropdown.Item
+                handleOnClick={() => this.handleRowDeleteClick(row.row)}
+              >
+                Delete
+              </Dropdown.Item>
+            </Dropdown>
+          </div>
           );
         },
         minWidth: undefined,
         className: 'table-album-tracks__grid__edit-options',
-      },
-    ];
+      });
+    }
+
+    if (tracks.length > 0 && typeof tracks[0].imported !== 'undefined') {
+      columns.push({
+        Header: 'Imported',
+        Cell: row => row.row._original.imported ? 'Yes' : '',
+      });
+    }
 
     return (
       <div>

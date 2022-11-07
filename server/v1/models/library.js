@@ -10,9 +10,6 @@
  *         name:
  *           type: string
  *           description: The name of the artist, album or track
- *         resource:
- *           type: string
- *           description: The resource (Library, Playlists, etc.) to grant permissions to
  *         artist:
  *           type: string
  *           format: id
@@ -46,6 +43,9 @@
  *         duration_in_seconds:
  *           type: integer
  *           description: Used by tracks. The duration of the song, in seconds
+ *         itunes_id:
+ *           type: integer
+ *           description: The collection ID matching an album from the iTunes API
  *       example:
  *         - type: album
  *           name: Flamenco On Fire
@@ -165,8 +165,15 @@ const librarySchema = new Schema(
     duration_in_seconds: {
       type: Number,
     },
+
+    itunes_id: {
+      type: Number
+    },
   },
-  { collection: 'library' },
+  { 
+    collection: 'library' ,
+    collation: { locale: 'en', strength: 2 } // case insensitive collation
+  },
 );
 
 // check if any additional keys should be included in the text index
@@ -181,6 +188,10 @@ if ('album' in keys.modelCustomFields) {
 }
 
 librarySchema
+  .index({ name: 1 }, { 
+    background: true,
+    collation: { locale: 'en', strength: 2 } // case insensitive collation
+  })
   .index({ type: 1, updated_at: -1 }, { background: true })
   .index(textIndex, { background: true })
   .index({ artist: 1 }, { background: true })

@@ -5,6 +5,7 @@ const findAll = require('./findAll');
 const findById = require('./findById');
 const findItunesByCollectionId = require('./findItunesByCollectionId');
 const importItunesAlbum = require('./importItunesAlbum');
+const importTrackFromItunes = require('./importTrackFromItunes');
 const remove = require('./remove');
 const search = require('./search');
 const searchItunes = require('./searchItunes');
@@ -18,6 +19,7 @@ module.exports = {
   findById,
   findItunesByCollectionId,
   importItunesAlbum,
+  importTrackFromItunes,
   remove,
   search, 
   searchItunes,

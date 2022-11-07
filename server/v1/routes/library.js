@@ -24,6 +24,10 @@ router
   .get(requireAC('Library', 'readAny'), libraryController.searchItunes);
 
 router
+  .route('/from-itunes')
+  .put(requireAC('Library', 'updateAny'), libraryController.importTrackFromItunes);
+
+router
   .route('/itunes/:id')
   .get(requireAC('Library', 'readAny'), libraryController.findItunesByCollectionId)
   .post(requireAC('Library', 'updateAny'), libraryController.importItunesAlbum);

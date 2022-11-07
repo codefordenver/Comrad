@@ -53,6 +53,11 @@ export const libraryReducer = (state = initialState, { type, payload }) => {
         loading: true,
         loadingError: false,
       };
+    case libraryTypes.LOAD_COMPLETE:
+      return {
+        ...state,
+        loading: false
+      };
     case libraryTypes.LOADING_ERROR:
       return {
         ...state,

@@ -17,13 +17,14 @@ export const search = (
   limit,
   useDocsForDropdown,
   callback,
+  searchItunes = false,
 ) => async dispatch => {
   try {
     dispatch({ type: libraryTypes.LOADING_SEARCH });
 
     let apiResponse;
     if (searchString != null && searchString.length > 0) {
-      apiResponse = await libraryAPI.search(type, searchString, limit);
+      apiResponse = await libraryAPI.search(type, searchString, limit, searchItunes);
     } else {
       apiResponse = await libraryAPI.findAll(type, sort, page);
     }

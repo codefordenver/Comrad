@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/static/css/main.79c707a7.css",
+    "main.js": "/static/js/main.fadf4ddc.js",
+    "static/media/kgnu-logo-white-gray.png": "/static/media/kgnu-logo-white-gray.47db3bca240d77b55858.png",
+    "static/media/cassette_tapes.jpg": "/static/media/cassette_tapes.b2ecc75e116a8e62fb80.jpg",
+    "static/media/comrad-loading-secondary.gif": "/static/media/comrad-loading-secondary.9bb2ab265f8a282bc573.gif",
+    "static/media/comrad-logo-white.png": "/static/media/comrad-logo-white.3f85c0663f6605c7b780.png",
+    "index.html": "/index.html",
+    "main.79c707a7.css.map": "/static/css/main.79c707a7.css.map",
+    "main.fadf4ddc.js.map": "/static/js/main.fadf4ddc.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.79c707a7.css",
+    "static/js/main.fadf4ddc.js"
+  ]
+}

@@ -179,25 +179,61 @@ class ShowBuilderPage extends Component {
   };
 
   promptForLabelModalOpen = (track, callback) => {
-    this.setState({
-      showPromptForLabelModal: true,
-      promptForLabelModalAlbumId: track.album._id,
-      promptForLabelModalAlbumName: track.album.name,
-      promptForLabelModalTrackId: track._id,
-      promptForLabelModalCallback: callback,
-    });
+    const { libraryActions } = this.props;
+    var self = this;
+    if (!track._id) {
+      //import track and album from itunes if it is not yet imported
+      libraryActions.importTrackFromItunes(track, (dbTrack) => {
+        if (typeof dbTrack.album.label === 'undefined' ||
+          dbTrack.album.label === null ||
+          dbTrack.album.label.length === 0) {
+          this.setState({
+            showPromptForLabelModal: true,
+            promptForLabelModalAlbumId: dbTrack.album._id,
+            promptForLabelModalAlbumName: dbTrack.album.name,
+            promptForLabelModalTrack: dbTrack,
+            promptForLabelModalCallback: callback,
+          });
+        } else {
+          callback(dbTrack);
+        }
+      });
+    } else {
+      this.setState({
+        showPromptForLabelModal: true,
+        promptForLabelModalAlbumId: track.album._id,
+        promptForLabelModalAlbumName: track.album.name,
+        promptForLabelModalTrack: track,
+        promptForLabelModalCallback: callback,
+      });
+    }
   };
 
   /* END - in compliance reporting periods, prompt the user for the album's label */
 
-  addTrackToSavedItems = trackId => {
+  addTrackToSavedItems = track => {
     const { playlist, playlistActions } = this.props;
-    playlistActions.addTrackToSavedItems(playlist.doc._id, trackId);
+    if (!track._id) {
+      //this is from itunes, and needs to be imported into the library
+      libraryActions.importTrackFromItunes(track, (dbTrack) => {
+        playlistActions.addTrackToSavedItems(playlist.doc._id, dbTrack._id);
+      });
+
+    } else {
+      playlistActions.addTrackToSavedItems(playlist.doc._id, track._id);
+    }
   };
 
-  addTrackToScratchpad = trackId => {
+  addTrackToScratchpad = track => {
     const { playlist, playlistActions } = this.props;
-    playlistActions.addTrackToScratchpad(playlist.doc._id, trackId);
+    if (!track._id) {
+      //this is from itunes, and needs to be imported into the library
+      libraryActions.importTrackFromItunes(track, (dbTrack) => {
+        playlistActions.addTrackToScratchpad(playlist.doc._id, dbTrack._id);
+      });
+    } else {
+      playlistActions.addTrackToScratchpad(playlist.doc._id, track._id);
+    }
   };
 
   checkIfTracksAlbumNeedsLabel = (track, callback) => {
@@ -205,13 +241,14 @@ class ShowBuilderPage extends Component {
     //if we are in a compliance reporting period, prompt the user for the label of the album
     if (
       config.inComplianceReportingPeriod &&
-      (typeof track.album.label === 'undefined' ||
+      (typeof track._id === 'undefined' || // an undefined track._id indicates an album in itunes that has not yet been imported
+        typeof track.album.label === 'undefined' ||
         track.album.label === null ||
         track.album.label.length === 0)
     ) {
-      this.promptForLabelModalOpen(track, callback);
+      this.promptForLabelModalOpen(track, callback); 
     } else {
-      callback(track._id);
+      callback(track);
     }
   };
 
@@ -431,7 +468,7 @@ class ShowBuilderPage extends Component {
     if (typeof form.q === 'undefined' || form.q.length === 0) {
       libraryActions.clear();
     } else {
-      libraryActions.search('track', form.q, null, null, 20);
+      libraryActions.search('track', form.q, null, null, 30, null, null, true);
     }
   };
 
@@ -574,7 +611,7 @@ class ShowBuilderPage extends Component {
             </div>
 
             <div className="show-builder__grid">
-              {(playlist.loading || showFetching || traffic.loading) && (
+              {(playlist.loading || showFetching || traffic.loading || library.loading) && (
                 <Loading />
               )}
               <div>
@@ -809,7 +846,7 @@ class ShowBuilderPage extends Component {
                   albumId={this.state.promptForLabelModalAlbumId}
                   submitCallback={() => {
                     this.state.promptForLabelModalCallback(
-                      this.state.promptForLabelModalTrackId,
+                      this.state.promptForLabelModalTrack,
                     );
                     this.promptForLabelModalClose();
                   }}
@@ -843,7 +880,7 @@ class ShowBuilderPage extends Component {
       <tbody>
         {docs.map(item => {
           return (
-            <tr key={item._id}>
+            <tr key={item._id != null ? item._id : item.itunes_track_id + '_itunes'}>
               <td>{item.name}</td>
               <td>{item.artists.map(a => a.name).join(', ')}</td>
               <td>{item.album != null && item.album.name}</td>

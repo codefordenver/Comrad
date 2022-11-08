@@ -27,6 +27,11 @@
  *       in: query
  *       type: integer
  *       description: The number of results to return. Defaults to 100.
+ *     - name: searchItunes
+ *       required: false
+ *       in: query
+ *       type: integer
+ *       description: If 1, will search itunes if there are not enough results found in the library.
  *     description: |
  *       Search for library items based on a search string. Results will be ordered with the most relevant result first.
  *
@@ -111,9 +116,10 @@
 
 const db = require('../../models');
 const keys = require('../../config/keys');
+const axios = require('axios');
 
 async function search(req, res) {
-  let { s, type, limit } = req.query;
+  let { s, type, limit, searchItunes } = req.query;
 
   if (!s) {
     return res.json([]);
@@ -182,12 +188,6 @@ async function search(req, res) {
       limit: limit, //don't limit these since this query does not score based on a combo of track + artist + album name
     },
   ).populate(['artist', 'artists', 'album']);
-
-  //TEMP - don't use my relevance rankings
-  return res.json({
-    docs: libraryResults,
-    totalPages: 1,
-  });
 
   const results = libraryResults.map(result => {
     // in these relevance calculations, popularity of the entity has a slight effect,
@@ -285,6 +285,37 @@ async function search(req, res) {
     }
     return 0;
   });
+
+  if (data.length < limit && searchItunes) {
+    //fill in the remainder of the results with what we find in itunes
+    let itunesResults = await axios.get(
+      'http://ax.itunes.apple.com/WebObjects/MZStoreServices.woa/wa/wsSearch?term=' + encodeURIComponent(s) +  
+      '&entity=musicTrack&limit=' + limit + '&media=music')
+    let trackResults = itunesResults['data']['results'];
+    for (var i = 0; i < trackResults.length; i++) {
+      let track = trackResults[i];
+      if (data.length < limit) {
+        if (!data.find(trk => trk['name'] == track['trackName'] && trk['album']['name'] == track['collectionName'])) {
+          data.push({
+            itunes_track_id: track['trackId'],
+            popularity: 0,
+            name: track['trackName'],
+            album: {
+              itunes_id: track['collectionId'],
+              name: track['collectionName']
+            },
+            'type': 'track',
+            'artists': [{
+              'name': track['artistName']
+            }],
+            'duration_in_seconds': Math.ceil(track['trackTimeMillis'] / 1000),
+            'disk_number': track['discNumber'],
+            'track_number': track['trackNumber']
+          });
+        }
+      }
+    }
+  }
 
   return res.json({
     docs: data,

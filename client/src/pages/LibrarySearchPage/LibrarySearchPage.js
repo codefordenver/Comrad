@@ -247,9 +247,9 @@ class LibrarySearchPage extends Component {
                       <Dropdown.Item to="library/artist/add">
                         Artist
                       </Dropdown.Item>
-                      {/* <Dropdown.Item to="library/album/add-from-itunes">
-                         Album (Import from iTunes)
-                       </Dropdown.Item> */}
+                      <Dropdown.Item to="library/album/add-from-itunes">
+                        Album (Import from iTunes)
+                      </Dropdown.Item>
                       <Dropdown.Item to="library/album/add">
                         Album (Add Manually)
                       </Dropdown.Item>

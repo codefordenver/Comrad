@@ -7,6 +7,7 @@ const findById = require('./findById');
 const findByCustomField = require('./findByCustomField');
 const findEarliest = require('./findEarliest');
 const nextShow = require('./nextShow');
+const nowPlaying = require('./nowPlaying');
 const previousShow = require('./previousShow');
 const recentShows = require('./recentShows');
 const remove = require('./remove');
@@ -25,6 +26,7 @@ module.exports = {
   findById,
   findEarliest,
   nextShow,
+  nowPlaying,
   previousShow,
   recentShows,
   search,

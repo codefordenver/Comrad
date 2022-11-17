@@ -541,6 +541,7 @@ class ShowBuilderPage extends Component {
       (auth.doc.roles.indexOf('Admin') !== -1 ||
         auth.doc.roles.indexOf('Full Access') !== -1 ||
         auth.doc.roles.indexOf('Music Library Admin') !== -1 ||
+        auth.doc.roles.indexOf('Show Captain') !== -1 ||
         (auth.doc.roles.indexOf('DJ') !== -1 &&
           host != null &&
           host._id === auth.doc._id));
@@ -568,8 +569,8 @@ class ShowBuilderPage extends Component {
                     {auth.doc.roles != null &&
                       (auth.doc.roles.indexOf('Admin') !== -1 ||
                         auth.doc.roles.indexOf('Full Access') !== -1 ||
-                        auth.doc.roles.indexOf('Music Library Admin') !==
-                          -1) && (
+                        auth.doc.roles.indexOf('Music Library Admin') !== -1 ||
+                        auth.doc.roles.indexOf('Show Captain') !== -1) && (
                         <DropdownHost
                           key={host != null ? host._id : 'no host'}
                           host={host}
@@ -580,8 +581,8 @@ class ShowBuilderPage extends Component {
                     {auth.doc.roles != null &&
                       (auth.doc.roles.indexOf('Admin') === -1 &&
                         auth.doc.roles.indexOf('Full Access') === -1 &&
-                        auth.doc.roles.indexOf('Music Library Admin') ===
-                          -1) && (
+                        auth.doc.roles.indexOf('Music Library Admin') === -1 &&
+                        auth.doc.roles.indexOf('Show Captain') === -1) && (
                         <>
                           <b>Host:</b>{' '}
                           {formattedHostName != null && formattedHostName.length > 0

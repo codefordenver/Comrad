@@ -49,4 +49,8 @@ router
   .route('/recent-plays')
   .get(requireAC('Playlists', 'readAny'), playlistsController.recentPlays);
 
+router
+  .route('/now-playing')
+  .get(requireAC('Shows', 'readAny'), eventsController.nowPlaying);
+
 module.exports = router;

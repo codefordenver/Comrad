@@ -1,6 +1,7 @@
 const canDelete = require('./canDelete');
 const create = require('./create');
 const createApiKey = require('./createApiKey');
+const getDjDetails = require('./getDjDetails');
 const findAll = require('./findAll');
 const findById = require('./findById');
 const remove = require('./remove');
@@ -13,6 +14,7 @@ module.exports = {
   canDelete,
   create,
   createApiKey,
+  getDjDetails,
   findAll,
   findById,
   remove,

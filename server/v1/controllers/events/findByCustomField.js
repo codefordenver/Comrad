@@ -20,6 +20,11 @@
  *       required: true
  *       type: string
  *       description: The exact value to match
+ *     - name: listDjs
+ *       in: query
+ *       required: false
+ *       type: boolean
+ *       description: If true, will include list of all DJs who have hosted the show
  *     description: |
  *       Get shows based on the exact value of a custom field.
  *
@@ -138,7 +143,7 @@ const {
 const _ = require('lodash');
 
 function findByCustomField(req, res) {
-  const { name, value } = req.query;
+  const { name, value , listDjs} = req.query;
   const { eventType } = req.params;
 
   const dbModel = getModelForEventType(eventType);
@@ -178,14 +183,67 @@ function findByCustomField(req, res) {
             results.push(event);
           }
         });
-        
-        return res.json(results);
+
+        if (listDjs) {
+          //retrieve list of DJs who have hosted the show
+
+          console.log('retrieving djs');
+          let promises = [];
+          let newResults = [];
+          asyncForEach(results, async event => {
+            let allInstances = await dbModel.find({"master_event_id": event._id, "show_details.host": {$ne:null}}).populate(populateShowHost());
+            let hosts = allInstances.map((inst) => inst.show_details.host);
+
+
+            let allDjs = [];
+            if (event.show_details.host) {
+              allDjs.push(event.show_details.host);
+            }
+            hosts.forEach(host => {
+              if (!allDjs.find(a => a._id == host._id)) {
+                allDjs.push({
+                  _id: host._id,
+                  name: host.on_air_name ?? host.first_name + " " + host.last_name
+                });
+              }
+            });
+
+            allDjs.sort((a,b) => {
+              if (a.name > b.name) {
+                return 1;
+              } else if (a.name < b.name) {
+                return -1;
+              } else {
+                return 0;
+              }
+            });
+
+            newResults.push({
+              ...event.toObject(),
+              all_djs: allDjs
+            });
+          }).then(() => {
+            return res.json(newResults);
+          });
+          
+
+
+        } else {
+
+          return res.json(results);
+        }
       })
       .catch(err => {
         console.error('error in events > findByCustomField');
         console.error(err);
         return res.status(500).json({ errorMessage: err });
       });
+}
+
+async function asyncForEach(array, callback) {
+  for (let index = 0; index < array.length; index++) {
+    await callback(array[index], index, array);
+  }
 }
 
 module.exports = findByCustomField;

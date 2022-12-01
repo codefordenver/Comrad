@@ -9,6 +9,7 @@ comradApiSwagger.json
 comradApi.md
 node_modules
 seedScriptProgress.json
+client/build/*
 
 # ignore all seed data
 server/v1/seedDB/data/*.json

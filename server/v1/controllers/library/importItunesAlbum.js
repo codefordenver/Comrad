@@ -85,7 +85,7 @@ async function importItunesAlbum(req, res) {
   // create each track
   for (var i = 0; i < tracks.length; i++) {
     let t = tracks[i];
-    if (localAlbum.tracks.find(localTrack => localTrack.name.toLowerCase() == t['name'].toLowerCase())) {
+    if (localAlbum && localAlbum.tracks.find(localTrack => localTrack.name.toLowerCase() == t['name'].toLowerCase())) {
       console.log("track already exists, skipping import: " + t['name']);
       continue;
     }

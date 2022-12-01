@@ -14,7 +14,7 @@ const users = require('./users');
 
 const { requireAC } = require('../middlewares');
 
-const { eventsController, playlistsController } = require('../controllers');
+const { eventsController, playlistsController, usersController } = require('../controllers');
 
 router.use('/access-control', accessControl);
 router.use('/auth', auth);
@@ -51,6 +51,10 @@ router
 
 router
   .route('/now-playing')
-  .get(requireAC('Shows', 'readAny'), eventsController.nowPlaying);
+  .get(eventsController.nowPlaying); // anonymous access allowed
+
+router
+  .route('/dj/:id')
+  .get(usersController.getDjDetails); // anonymous access allowed
 
 module.exports = router;

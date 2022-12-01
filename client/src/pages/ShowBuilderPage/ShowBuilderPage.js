@@ -329,6 +329,7 @@ class ShowBuilderPage extends Component {
     if (showType === 'series') {
       const { createInstanceShow } = this.props;
       show.show_details.host = host._id;
+      show.show_details.host_type = host.host_type ? host.host_type : 'User';
       createInstanceShow(master_event_id._id, show);
     } else {
       //Only update host if the show is regular or instance

@@ -187,14 +187,49 @@ function findByCustomField(req, res) {
         if (listDjs) {
           //retrieve list of DJs who have hosted the show
 
-          //need to finish, but here's the pseudo code
-          foreach event
-            get host for the current item (master)
-            then, find all instances with the master ID matching this item's id
-            
-            allhosts = 
+          console.log('retrieving djs');
+          let promises = [];
+          let newResults = [];
+          asyncForEach(results, async event => {
+            let allInstances = await dbModel.find({"master_event_id": event._id, "show_details.host": {$ne:null}}).populate(populateShowHost());
+            let hosts = allInstances.map((inst) => inst.show_details.host);
+
+
+            let allDjs = [];
+            if (event.show_details.host) {
+              allDjs.push(event.show_details.host);
+            }
+            hosts.forEach(host => {
+              if (!allDjs.find(a => a._id == host._id)) {
+                allDjs.push({
+                  _id: host._id,
+                  name: host.on_air_name ?? host.first_name + " " + host.last_name
+                });
+              }
+            });
+
+            allDjs.sort((a,b) => {
+              if (a.name > b.name) {
+                return 1;
+              } else if (a.name < b.name) {
+                return -1;
+              } else {
+                return 0;
+              }
+            });
+
+            newResults.push({
+              ...event.toObject(),
+              all_djs: allDjs
+            });
+          }).then(() => {
+            return res.json(newResults);
+          });
+          
+
 
         } else {
+
           return res.json(results);
         }
       })
@@ -203,6 +238,12 @@ function findByCustomField(req, res) {
         console.error(err);
         return res.status(500).json({ errorMessage: err });
       });
+}
+
+async function asyncForEach(array, callback) {
+  for (let index = 0; index < array.length; index++) {
+    await callback(array[index], index, array);
+  }
 }
 
 module.exports = findByCustomField;

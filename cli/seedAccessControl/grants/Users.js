@@ -35,7 +35,7 @@ const Users = [
     role: 'Show Captain',
     resource: 'Users',
     action: 'update:own',
-    attributes: 'first_name,last_name,email,on_air_name',
+    attributes: 'first_name,last_name,email,on_air_name,bio',
   },
 
   // Underwriting
@@ -49,7 +49,7 @@ const Users = [
     role: 'Underwriting',
     resource: 'Users',
     action: 'update:own',
-    attributes: 'first_name,last_name,email,on_air_name',
+    attributes: 'first_name,last_name,email,on_air_name,bio',
   },
 
   // DJ
@@ -63,7 +63,7 @@ const Users = [
     role: 'DJ',
     resource: 'Users',
     action: 'update:own',
-    attributes: 'first_name,last_name,email,on_air_name',
+    attributes: 'first_name,last_name,email,on_air_name,bio',
   },
 
   // Music Library Admin
@@ -77,7 +77,7 @@ const Users = [
     role: 'Music Library Admin',
     resource: 'Users',
     action: 'update:own',
-    attributes: 'first_name,last_name,email,on_air_name',
+    attributes: 'first_name,last_name,email,on_air_name,bio',
   },
 ];
 

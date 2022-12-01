@@ -20,6 +20,11 @@
  *       required: true
  *       type: string
  *       description: The exact value to match
+ *     - name: listDjs
+ *       in: query
+ *       required: false
+ *       type: boolean
+ *       description: If true, will include list of all DJs who have hosted the show
  *     description: |
  *       Get shows based on the exact value of a custom field.
  *
@@ -138,7 +143,7 @@ const {
 const _ = require('lodash');
 
 function findByCustomField(req, res) {
-  const { name, value } = req.query;
+  const { name, value , listDjs} = req.query;
   const { eventType } = req.params;
 
   const dbModel = getModelForEventType(eventType);
@@ -178,8 +183,20 @@ function findByCustomField(req, res) {
             results.push(event);
           }
         });
-        
-        return res.json(results);
+
+        if (listDjs) {
+          //retrieve list of DJs who have hosted the show
+
+          //need to finish, but here's the pseudo code
+          foreach event
+            get host for the current item (master)
+            then, find all instances with the master ID matching this item's id
+            
+            allhosts = 
+
+        } else {
+          return res.json(results);
+        }
       })
       .catch(err => {
         console.error('error in events > findByCustomField');

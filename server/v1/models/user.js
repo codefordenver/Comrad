@@ -28,6 +28,9 @@
  *         last_name:
  *           type: string
  *           description: The user's last name
+ *         bio:
+ *            type: string
+ *            description: Biography for the user
  *         password:
  *           type: string
  *           description: The user's password. Should be plain text when creating or updating a user. Encrypted at rest in the database.
@@ -107,6 +110,11 @@ const userSchema = new Schema({
   on_air_name: {
     type: String,
     default: null,
+  },
+
+  bio: {
+    type: String,
+    default: null
   },
 
   password: {

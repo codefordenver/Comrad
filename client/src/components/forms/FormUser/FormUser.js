@@ -8,6 +8,7 @@ import ButtonIcon from '../../ButtonIcon';
 import Card, { CardBody } from '../../Card';
 import Input from '../../Input';
 import Select from '../../Select';
+import TextArea from '../../TextArea';
 
 import { userActions } from '../../../redux/user';
 
@@ -103,6 +104,7 @@ class FormUser extends Component {
                 component={Input}
                 label="Email Address"
                 name="email"
+                autoComplete="off"
                 type="text"
                 validate={[emailValidate, requiredValidate]}
               />
@@ -115,9 +117,17 @@ class FormUser extends Component {
                 type="text"
               />
 
-              {isAdmin && (
+              <Field
+                className="mb-1-5"
+                component={TextArea}
+                label="Bio"
+                name="bio"
+              />
+
+              {isAdmin && (<>
+                <div>{/* blank table cell */}</div>
                 <FieldArray name="roles" component={this.renderRoles} />
-              )}
+              </>)}
 
               {isAdmin && (
                 <Field

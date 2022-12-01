@@ -421,11 +421,19 @@ function find(req, res) {
               $match: additionalFilters,
             },
           ])
-          .then(processEventResults)
-          .catch(err => {
-            console.log('error in events > root > find');
-            console.error(err);
-            return res.status(422).json({ errorMessage: err });
+          .exec((err, results) => {
+            if (err) {
+              console.log('error in events > root > find');
+              console.error(err);
+              return res.status(422).json({ errorMessage: err });
+            }
+            return dbModel.populate(results, populateShowHost())
+              .then(processEventResults)
+              .catch(err => {
+                console.log('error in events > root > find, populating show host after aggregate');
+                console.error(err);
+                return res.status(422).json({ errorMessage: err });
+              });
           });
       } else {
         return dbModel

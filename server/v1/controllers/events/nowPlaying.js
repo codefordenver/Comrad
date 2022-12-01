@@ -8,12 +8,10 @@
  *     - Shows
  *     operationId: NowPlaying
  *     summary: Now Playing
- *     security:
- *     - ApiKeyAuth: []
  *     description: |
  *       Returns details on the show and track that is currently playing. This is a custom API tailored specifically for the KGNU mobile app.
  *
- *       The following roles can access this API endpoint: `Admin`, `Full Access`, `Show Captain`, `Underwriting`, `DJ`, `Music Library Admin`
+ *       This API endpoint can be accessed anonymously.
  *     responses:
  *       200:
  *         description: JSON content includes details on the show and track that's currently playing

@@ -6,12 +6,19 @@
  *     tags:
  *     - Simple Endpoints
  *     - Shows
- *     operationId: NextShow
- *     summary: Next Show
+ *     operationId: NextShows
+ *     summary: Next Shows
  *     security:
  *     - ApiKeyAuth: []
+ *     parameters:
+ *     - name: number
+ *       in: query
+ *       required: false
+ *       type: string
+ *       format: integer
+ *       description: Number of shows to retrieve. Defaults to one. If provided, API endpoint will return an array of objects rather than an object.
  *     description: |
- *       Returns the next show that will be playing. Returns `null` if there are no shows occurring within the next day.
+ *       Returns the next show(s) that will be playing. Returns `null` if there are no shows occurring within the next day. Returns one show by default.
  *
  *       The following roles can access this API endpoint: `Admin`, `Full Access`, `Show Captain`, `Underwriting`, `DJ`, `Music Library Admin`
  *     responses:
@@ -175,6 +182,8 @@ const {
 const { findOrCreatePlaylist } = require('../playlists/utils');
 
 function currentShow(req, res) {
+  let { number } = req.query;
+
   const dbModel = getModelForEventType('shows');
   if (!dbModel) {
     res.send(404);
@@ -188,31 +197,30 @@ function currentShow(req, res) {
 
   const processEventResults = dbShow => {
     let showResults = eventList(dbShow, startDate, endDate);
+    showResults = showResults.filter(a => new Date(a.start_time_utc) > startDate ); // filter out shows that are in progress
     if (showResults.length > 0) {
-      let show;
-      for (let i = 0; i < showResults.length; i++) {
-        if (new Date(showResults[i].start_time_utc) > startDate) {
-          show = showResults[i];
-          break;
-        }
-      }
-      if (typeof show === 'undefined') {
-        return res.json(null);
-      }
-      return findOrCreatePlaylist(show.start_time_utc, show.end_time_utc)
-        .then(p => {
-          show.playlist_executed = p.saved_items;
-          return res.json(show);
-        })
-        .catch(err => {
-          console.log(
-            'error in events > root > nextShow > findOne for playlist',
-          );
-          console.error(err);
-          return res.status(500).json(err);
-        });
+      let show = showResults[0];
+      if (!number) {
+        return findOrCreatePlaylist(show.start_time_utc, show.end_time_utc)
+          .then(p => {
+            show.playlist_executed = p.saved_items;
+            return res.json(show);
+          })
+          .catch(err => {
+            console.log(
+              'error in events > root > nextShow > findOne for playlist',
+            );
+            console.error(err);
+            return res.status(500).json(err);
+          });
 
-      return res.json(showResults[0]);
+        return res.json(showResults[0]);
+      } else {
+        console.log(number + 1);
+        showResults.splice(Number(number));
+        console.log(showResults.length);
+        return res.json(showResults);
+      }
     } else {
       return res.json(null);
     }

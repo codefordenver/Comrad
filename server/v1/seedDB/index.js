@@ -26,11 +26,14 @@ const PROGRESS_FILE_NAME = 'seedScriptProgress.json';
 
 async function seedDB() {
   try {
+    console.log(keys.mongoURI);
     mongoose.connect(keys.mongoURI, {
       useNewUrlParser: true,
       useUnifiedTopology: false,
     });
     mongoose.set('maxTimeMS', 1000 * 60 * 5);
+    var test = await db.Library.find({}, null, {limit:1});
+    console.log('test', test);
 
     let scriptProgress;
 
@@ -604,6 +607,7 @@ async function userByOnAirName(onAirName) {
     }
     const emailAddress =
       onAirName.replace(/[^a-zA-Z0-9]/gi, '') + '@fake-dj-email.kgnu.org';
+try {
     user = await db.User.create({
       first_name: firstName,
       last_name: lastName,
@@ -612,6 +616,10 @@ async function userByOnAirName(onAirName) {
       password: 'temppassword',
       roles: ['DJ'],
     });
+} catch (err) {
+    console.log(err);
+    console.log('didnt create user');
+}
   }
   usersByOnAirName[onAirName] = user;
   return user;

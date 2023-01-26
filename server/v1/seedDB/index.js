@@ -607,6 +607,12 @@ async function userByOnAirName(onAirName) {
     }
     const emailAddress =
       onAirName.replace(/[^a-zA-Z0-9]/gi, '') + '@fake-dj-email.kgnu.org';
+    user = await db.User.findOne({
+      email: emailAddress,
+    });
+    if (user != null) {
+      return user;
+    }
 try {
     user = await db.User.create({
       first_name: firstName,

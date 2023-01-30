@@ -50,7 +50,14 @@ function eventList(events, startDate, endDate) {
   // combine the series and instances
   // if there's an instance, overwrite the series object with fields from the instance object
   // we need to deep merge the object so that nested objects, like show_details.custom, are accounted for
-  let eventsToReturn = _.merge(seriesKeyBy,instanceKeyBy);
+  // merge deep copies of objects - I am not sure where, but some of these objects
+  // must have references to other objects, because show_details.custom.recorded_file_name
+  // does not always merge properly - it will take the recorded_file_name from one instance
+  // and apply it to all instances
+  let eventsToReturn = _.merge(
+    JSON.parse(JSON.stringify(seriesKeyBy)),
+    JSON.parse(JSON.stringify(instanceKeyBy))
+  );
 
   //transform the object back to an array
   let eventsToReturnArray = [];

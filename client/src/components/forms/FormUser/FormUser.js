@@ -78,7 +78,7 @@ class FormUser extends Component {
     return (
       <Card>
         <CardBody>
-          <form className="form-user" onSubmit={handleSubmit(submitCallback)}>
+          <form className="form-user" onSubmit={handleSubmit(submitCallback)} autocomplete="off">
             <h3 className="form-user__headers mb-1-5">Contact Info</h3>
             <div className="form-user__contact-info">
               <Field
@@ -104,6 +104,7 @@ class FormUser extends Component {
                 component={Input}
                 label="Email Address"
                 name="email"
+                data-lpignore="true"
                 autoComplete="off"
                 type="text"
                 validate={[emailValidate, requiredValidate]}
@@ -154,6 +155,7 @@ class FormUser extends Component {
                     label="Password"
                     name="password"
                     type="password"
+                    data-lpignore="true"
                     autoComplete="new-password"
                     validate={
                       mode === 'add'
@@ -167,6 +169,7 @@ class FormUser extends Component {
                     component={Input}
                     label="Confirm Password"
                     name="confirm_password"
+                    data-lpignore="true"
                     autoComplete="new-password"
                     type="password"
                     validate={

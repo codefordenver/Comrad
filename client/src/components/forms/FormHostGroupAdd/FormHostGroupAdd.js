@@ -124,7 +124,7 @@ class FormHostGroupAdd extends Component {
 
     return (
       <div>
-        <form className="form-host-group-add" onSubmit={handleSubmit(submit)}>
+        <form className="form-host-group-add" onSubmit={handleSubmit(submit)} autocomplete="off">
           <Field
             component={Input}
             label="On-Air Name"

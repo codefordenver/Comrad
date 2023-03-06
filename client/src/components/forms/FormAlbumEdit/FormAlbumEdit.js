@@ -47,6 +47,7 @@ class FormAlbumEdit extends Component {
 
     return (
       <form
+        autocomplete="off"
         className="form-album-edit"
         onSubmit={handleSubmit(data => {
           submit({

@@ -31,6 +31,7 @@ class FormDateRangeForExport extends Component {
 
     return (
       <form
+        autocomplete="off"
         className="form-date-range-for-export"
         onSubmit={handleSubmit(submit)}
       >

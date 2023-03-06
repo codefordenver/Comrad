@@ -194,7 +194,7 @@ class LibrarySearchPage extends Component {
           <CardBody>
             <div className="library-search__header">
               <div>
-                <form onSubmit={handleSubmit(this.searchLibrary)}>
+                <form autocomplete="off" onSubmit={handleSubmit(this.searchLibrary)}>
                   <Field
                     className="mb-1"
                     component={Input}

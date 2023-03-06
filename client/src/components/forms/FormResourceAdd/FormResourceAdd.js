@@ -22,7 +22,7 @@ class FormResourceAdd extends Component {
     const { handleSubmit, handleSwitch, submitting } = props;
 
     return (
-      <form className="fra" onSubmit={handleSubmit(submit)}>
+      <form className="fra" onSubmit={handleSubmit(submit)} autocomplete="off">
         <div className="fra__fields">
           <Field
             className="mb-1-5"

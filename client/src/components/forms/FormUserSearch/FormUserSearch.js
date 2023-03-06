@@ -26,7 +26,7 @@ class FormUserSearch extends Component {
     const { handleSubmit } = props;
 
     return (
-      <form className="fus mb-2" onSubmit={handleSubmit(submit)}>
+      <form className="fus mb-2" onSubmit={handleSubmit(submit)} autocomplete="off">
         <div className="fus__field">
           <Field
             className="mb-1"

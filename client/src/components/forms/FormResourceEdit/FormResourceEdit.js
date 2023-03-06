@@ -24,7 +24,7 @@ class FormResourceEdit extends Component {
     const { handleSubmit, handleSwitch, submitting } = props;
 
     return (
-      <form className="fre" onSubmit={handleSubmit(submit)}>
+      <form className="fre" onSubmit={handleSubmit(submit)} autocomplete="off">
         <div className="fre__fields">
           <Field
             className="mb-1-5"

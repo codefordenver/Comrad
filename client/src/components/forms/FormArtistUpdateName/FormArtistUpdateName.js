@@ -78,7 +78,7 @@ class FormArtistUpdateName extends Component {
     return (
       <div className={classnames('faun', className)}>
         {editMode ? (
-          <form className="faun__form" onSubmit={handleSubmit(formSubmit)}>
+          <form className="faun__form" onSubmit={handleSubmit(formSubmit)} autocomplete="off">
             <Field
               autoFocus
               component={Input}

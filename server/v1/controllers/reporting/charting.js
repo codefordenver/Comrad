@@ -170,6 +170,8 @@ function charting(req, res) {
           }
         }
 
+        currentRow++;
+
       }
 
       //set worksheet titles

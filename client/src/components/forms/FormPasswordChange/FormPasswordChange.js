@@ -21,7 +21,7 @@ class FormPasswordChange extends Component {
     const { handleSubmit } = props;
 
     return (
-      <form className="form-password-change" onSubmit={handleSubmit(submit)}>
+      <form className="form-password-change" onSubmit={handleSubmit(submit)} autocomplete="off">
         <Field
           component={Input}
           label="New Password"

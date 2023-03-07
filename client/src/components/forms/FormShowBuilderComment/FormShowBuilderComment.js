@@ -43,6 +43,7 @@ class FormShowBuilderComment extends Component {
     return (
       <form
         className="form-show-builder-comment"
+        autocomplete="off"
         onSubmit={handleSubmit(handleReduxFormSubmit)}
       >
         <Field

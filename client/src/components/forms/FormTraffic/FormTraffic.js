@@ -69,7 +69,7 @@ class FormTraffic extends Component {
     }
 
     return (
-      <form className="traffic-form" onSubmit={handleSubmit(submitCallback)}>
+      <form className="traffic-form" onSubmit={handleSubmit(submitCallback)} autocomplete="off">
         <div className="traffic-form__grid">
           <Field
             className="grid-span--2"

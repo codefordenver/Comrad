@@ -14,7 +14,7 @@ class ReportingChartingPage extends Component {
       '/reporting/charting?';
 
     if (values.from != null) {
-      url += 'from=' + encodeURIComponent(moment(values.from).toISOString());
+      url += 'from=' + encodeURIComponent(moment(values.from).format('YYYY-M-D'));
     }
 
     if (values.to != null) {
@@ -23,7 +23,7 @@ class ReportingChartingPage extends Component {
         encodeURIComponent(
           moment(values.to)
             .add(1, 'day')
-            .toISOString(),
+            .format('YYYY-M-D'),
         );
     }
     window.location.href = url;

@@ -30,7 +30,7 @@ class EditShowForm extends Component {
     return (
       <Card>
         <CardBody>
-          <form className="edit-show-form" onSubmit={handleSubmit}>
+          <form className="edit-show-form" onSubmit={handleSubmit} autocomplete="off">
             <div className="edit-show-form__grid">
               {!editSummaryAndDescriptionOnly && (
                 <ShowDetailsTop allowRepeatSelect={ALLOW_REPEAT_SELECT} />

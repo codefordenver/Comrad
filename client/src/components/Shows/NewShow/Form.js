@@ -27,7 +27,7 @@ class NewShowForm extends Component {
     return (
       <Card>
         <CardBody>
-          <form className="new-show-form" onSubmit={handleSubmit}>
+          <form autocomplete="off" className="new-show-form" onSubmit={handleSubmit}>
             <div className="edit-show-form__grid">
               <ShowDetailsTop allowRepeatSelect={ALLOW_REPEAT_SELECT} />
               {isRepeat && ALLOW_REPEAT_SELECT && (

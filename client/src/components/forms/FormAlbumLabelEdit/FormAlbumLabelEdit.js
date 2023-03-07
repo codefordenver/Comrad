@@ -24,6 +24,7 @@ class FormAlbumLabelEdit extends Component {
 
     return (
       <form
+        autocomplete="off"
         className="form-album-label-edit"
         onSubmit={handleSubmit(data => {
           submit({

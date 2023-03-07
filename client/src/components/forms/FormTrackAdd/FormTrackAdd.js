@@ -103,7 +103,7 @@ class FormTrackAdd extends Component {
     const { customSubmitButtons, handleSubmit } = props;
 
     return (
-      <form className="form-track-add" onSubmit={handleSubmit(submit)}>
+      <form className="form-track-add" onSubmit={handleSubmit(submit)} autocomplete="off">
         <Field
           component={Input}
           label="Name"

@@ -10,25 +10,27 @@ function charting(req, res) {
   let match_query = { 'saved_items.track': { $ne: null } };
   if (from != null && to != null) {
     match_query['saved_items.executed_time_utc'] = {
-      $gte: new Date(from),
-      $lte: new Date(to),
+      $gte: moment.tz(from, keys.stationTimeZone).toDate(),
+      $lte: moment.tz(to, keys.stationTimeZone).toDate(),
     };
   } else if (from != null) {
-    match_query['saved_items.executed_time_utc'] = { $gte: new Date(from) };
+    match_query['saved_items.executed_time_utc'] = { $gte: moment.tz(from, keys.stationTimeZone).toDate() };
   } else if (to != null) {
-    match_query['saved_items.executed_time_utc'] = { $lte: new Date(to) };
+    match_query['saved_items.executed_time_utc'] = { $lte: moment.tz(to, keys.stationTimeZone).toDate() };
   } else {
     return res.status(422).json({"error":"Please provide a parameter for 'from' or 'to'"});
   }
 
   // look for custom properties we should include in the export
   var customPropertiesToInclude = [];
+  var customPropertiesToIncludeLabels = [];
   let customPropertiesProjection = {};
   let customPropertiesGroup = {};
   if ('album' in keys.modelCustomFields) {
     keys.modelCustomFields.album.forEach(function(a) {
       if (a.includeInChartingReport != null && a.includeInChartingReport) {
         customPropertiesToInclude.push(a.name);
+        customPropertiesToIncludeLabels.push(a.label);
         customPropertiesProjection[a.name + '_custom_field'] =
           '$album_info.custom.' + a.name;
         customPropertiesGroup[a.name + '_custom_field'] = {
@@ -123,44 +125,80 @@ function charting(req, res) {
     },
   ])
     .then(albumsForCharting => {
-      res.setHeader('Content-disposition', 'attachment; filename=charting.csv');
-      res.set('Content-Type', 'text/csv');
+      //res.setHeader('Content-disposition', 'attachment; filename=charting.xlsx');
+      //res.set('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 
-      if (albumsForCharting.length === 0) {
-        return res
-          .status(200)
-          .end(
-            'plays,album_title,artist,add_date,label,genre' +
-              (customPropertiesToInclude.length > 0
-                ? ',' + customPropertiesToInclude.join(',')
-                : ''),
-          );
+
+      // Require library
+      var xl = require('excel4node');
+
+      // Create a new instance of a Workbook class
+      var wb = new xl.Workbook();
+      var worksheets = [
+        wb.addWorksheet('Unknown genre')
+      ];
+
+      var worksheetGenre;
+      var currentRow = 2;
+      for (var i = 0; i < albumsForCharting.length; i++) {
+        let dataRow = albumsForCharting[i];
+
+        if (dataRow.genre != worksheetGenre) {
+          worksheetGenre = dataRow.genre;
+          worksheets.push(wb.addWorksheet(dataRow.genre));
+          currentRow = 2;
+        }
+
+        let currentWorksheet = worksheets[worksheets.length - 1];
+
+
+        currentWorksheet.cell(currentRow, 1).number(dataRow.plays);
+        currentWorksheet.cell(currentRow, 2).string(dataRow.artist);
+        currentWorksheet.cell(currentRow, 3).string(dataRow.album_title);
+        currentWorksheet.cell(currentRow, 4).string(dataRow.label);
+        currentWorksheet.cell(currentRow, 5).string(moment(dataRow.add_date)
+            .tz(keys.stationTimeZone)
+            .format('YYYY-M-D h:mm:ss a'));
+        if (dataRow.genre != null) {
+          currentWorksheet.cell(currentRow, 6).string(dataRow.genre);
+        }
+
+        for (let j = 0; j < customPropertiesToInclude.length; j++) {
+          let value =  dataRow[customPropertiesToInclude[j] + '_custom_field'];
+          if (value != null) {
+            currentWorksheet.cell(currentRow, 7 + j).string(value);
+          }
+        }
+
       }
 
-      const parser = new Parser();
-      const csv = parser.parse(
-        albumsForCharting.map(t => {
-          let customPropertiesMapping = {};
-          for (let i = 0; i < customPropertiesToInclude.length; i++) {
-            customPropertiesMapping[customPropertiesToInclude[i]] =
-              t[customPropertiesToInclude[i] + '_custom_field'];
-          }
-          return {
-            plays: t.plays,
-            album_title: t.album_title,
-            artist: t.artist,
+      //set worksheet titles
+      worksheets.forEach((ws) => {
+        let bold = {"font":{"bold":true}};
+        ws.cell(1,1).string("Plays").style(bold);
+        ws.cell(1,2).string("Artist").style(bold);
+        ws.cell(1,3).string("Album Title").style(bold);
+        ws.cell(1,4).string("Label").style(bold);
+        ws.cell(1,5).string("Add Date").style(bold);
+        ws.cell(1,6).string("Genre").style(bold);
 
-            label: t.label,
-            add_date: moment(t.add_date)
-              .tz(keys.stationTimeZone)
-              .format('YYYY-M-D h:mm:ss a'),
-            genre: t.genre,
-            ...customPropertiesMapping,
-          };
-        }),
-      );
+        for (let j = 0; j < customPropertiesToInclude.length; j++) {
+          ws.cell(1, 7 + j).string(customPropertiesToIncludeLabels[j]).style(bold);
+        }
+      });
 
-      return res.status(200).end(csv);
+      var title;
+      if (from != null && to != null) {
+        title = "Comrad Charting Report " + moment(from).format('M-D-YYYY') + ' to ' + moment(to).format('M-D-YYYY');
+      } else if (from != null) {
+        title = "Comrad Charting Report " + moment(from).format('M-D-YYYY') + " to " + moment(new Date()).format("M-D-YYYY");
+      } else {
+        title = "Comrad Charting Report before " + moment(to).format('M-D-YYYY');
+      }
+
+      wb.write(title + ".xlsx", res);
+
+      return;
     })
     .catch(err => {
       console.error(err);

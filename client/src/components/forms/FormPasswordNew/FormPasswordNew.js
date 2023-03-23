@@ -43,7 +43,7 @@ class FormPasswordNew extends Component {
     const { className, handleSubmit } = props;
 
     return (
-      <form className={classnames(className)} onSubmit={handleSubmit(submit)} autocomplete="off">
+      <form className={classnames(className)} onSubmit={handleSubmit(submit)} autoComplete="off">
         <Field
           className="mb-3"
           component={Input}

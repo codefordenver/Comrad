@@ -45,8 +45,8 @@ module.exports = {
         name: 'ticket_type',
         label: 'Ticket Type',
         editFieldType: 'dropdown',
-        jotformUrlParameter: 'typeOf10',
-        options: ['Guest List', 'Paper'],
+        jotformUrlParameter: 'ticketType',
+        options: ['Guest List', 'Paper', 'Digital', 'Other'],
       },
     ],
     show: [
@@ -70,5 +70,29 @@ module.exports = {
     'Fund Drives',
     'Other Important Documents',
   ],
+  ticketGiveawayHtml: "<div>" + 
+    "<b>Notes to DJ:</b>" +
+    "<br />" +
+    "<br />" +
+    "We ask that callers have NOT won anything from KGNU in the last 30 days and can make it to the show." +
+    "<br />" +
+    "<br />" +
+    "IF DOING A PHONE GIVEAWAY:" +
+    "<br />" +
+    "<br />" +
+    "Give the phone number of the studio you are broadcasting from, and tell listeners which caller you will be \"taking\" (2nd or 3rd works well). Record the winner's information by clicking on “ENTER WINNER INFORMATION” below, entering the required info and then *VERY IMPORTANT* click \"SUBMIT.\" If there are no callers, please check the 'no callers' box on the form." +
+    "<br />" +
+    "<br />" +
+    "Please spell/read back the winner's email address and phone number so we can contact them." +
+    "<br />" +
+    "<br />" +
+    "IF YOU'D RATHER DO AN EMAIL GIVEAWAY:" +
+    "<br />" +
+    "<br />" +
+    "Tell listeners to send an email with the concert in the subject line to <a href=\"mailto:tickets@kgnu.org\">tickets@kgnu.org</a>. The third person to email <a href=\"mailto:tickets@kgnu.org\">tickets@kgnu.org</a> will win the tickets and will be notified by email." +
+    "<br />" +
+    "<br />" +
+    "For *all* questions about tickets, please email <a href=\"mailto:tickets@kgnu.org\">tickets@kgnu.org</a>" +
+  "</div>",
   stationTimeZone: 'America/Denver', // all events will be adjusted to this time zone (for Daylight Savings Time adjustments), should be in a proper format for the Luxon package
 };

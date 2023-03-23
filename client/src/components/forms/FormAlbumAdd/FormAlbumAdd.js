@@ -48,7 +48,7 @@ class FormAlbumAdd extends Component {
     }
 
     return (
-      <form className="form-album-add" onSubmit={handleSubmit(submit)} autocomplete="off">
+      <form className="form-album-add" onSubmit={handleSubmit(submit)} autoComplete="off">
         <Field
           component={Input}
           className="mb-1-5"

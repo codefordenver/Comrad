@@ -148,6 +148,7 @@ const trafficSchema = new Schema(
         event_name: String,
         event_date: Date,
         event_time: String,
+        ticket_quantity: Number,
         venue: String,
         custom: Schema.Types.Mixed,
       },

@@ -19,7 +19,7 @@ class FormArtistAdd extends Component {
     const { handleSubmit } = props;
 
     return (
-      <form className="form-artist-add" onSubmit={handleSubmit(submit)} autocomplete="off">
+      <form className="form-artist-add" onSubmit={handleSubmit(submit)} autoComplete="off">
         <Field
           component={Input}
           label="Name"

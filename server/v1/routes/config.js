@@ -8,5 +8,8 @@ router
 router
   .route('/resources-categories')
   .get(configController.getResourcesCategories);
+router
+  .route('/ticket-giveaway-html')
+  .get(configController.getTicketGiveawayHtml);
 
 module.exports = router;

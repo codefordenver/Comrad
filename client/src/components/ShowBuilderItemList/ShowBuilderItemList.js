@@ -20,6 +20,8 @@ class ShowBuilderItemList extends Component {
     if (!('giveaway' in configState.customFields)) {
       configActions.customFieldsForModel('giveaway');
     }
+
+    configActions.getTicketGiveawayHtml();
   }
 
   onRearrangeShowBuilderItem = (fromIndex, toIndex, itemBeingMoved) => {
@@ -69,6 +71,7 @@ class ShowBuilderItemList extends Component {
       urlParametersForCustomGiveawayProperties,
     } = this;
     const { items } = this.props;
+    const { configState } = this.props;
 
     const buttonProps = {
       deleteButton: this.props.deleteButton,
@@ -160,6 +163,19 @@ class ShowBuilderItemList extends Component {
           let eventType = traffic.traffic_details.type
             .replace(/\s/g, '')
             .toLowerCase();
+          let customGiveawayProperties = [];
+          if (
+            traffic.traffic_details.type === 'Giveaway' &&
+            'giveaway' in configState.customFields &&
+            traffic.traffic_details.giveaway_details != null &&
+            traffic.traffic_details.giveaway_details.custom != null
+          ) {
+            configState.customFields.giveaway.forEach(function(cf, idx) {
+              customGiveawayProperties.push(<div key={"giveaway-property-" + idx}>
+                <b>{cf.label}:</b> {traffic.traffic_details.giveaway_details.custom[cf.name]}
+              </div>);
+            });
+          }
           elements.push(
             <ShowBuilderItem
               key={idx}
@@ -183,6 +199,14 @@ class ShowBuilderItemList extends Component {
               {...buttonProps}
               deleteButton={false}
             >
+              {traffic.traffic_details.type === 'Giveaway' && <>
+                <div><b>Event Name:</b> {traffic.traffic_details.giveaway_details.event_name}</div>
+                <div><b>Event Date:</b> {traffic.traffic_details.giveaway_details.event_date}</div>
+                <div><b>Event Time:</b> {traffic.traffic_details.giveaway_details.event_time}</div>
+                <div><b>Ticket Quantity:</b> {traffic.traffic_details.giveaway_details.ticket_quantity}</div>
+                <div><b>Venue:</b> {traffic.traffic_details.giveaway_details.venue}</div>
+                {customGiveawayProperties}
+              </>}
               {/* regex below is to replace HTML tags */}
               {traffic.traffic_details.description != null &&
                 traffic.traffic_details.description
@@ -261,6 +285,9 @@ class ShowBuilderItemList extends Component {
                   </Button>
                 </>
               )}
+              {traffic.traffic_details.type === 'Giveaway' &&
+                <div style={{marginTop:"1em"}} dangerouslySetInnerHTML={{__html: configState.ticketGiveawayHtml}}></div>
+              }
             </ShowBuilderItem>,
           );
           break;

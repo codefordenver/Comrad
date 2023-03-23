@@ -197,6 +197,10 @@ class TrafficViewPage extends Component {
                       {doc.traffic_details.giveaway_details.event_time}
                     </div>
                     <div>
+                      Ticket Quantity:{' '}
+                      {doc.traffic_details.giveaway_details.ticket_quantity}
+                    </div>
+                    <div>
                       Venue: {doc.traffic_details.giveaway_details.venue}
                     </div>
                     {doc.traffic_details.giveaway_details.custom && (

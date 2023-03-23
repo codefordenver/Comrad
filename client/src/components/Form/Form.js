@@ -13,7 +13,7 @@ import { Group } from './Group';
 function Form({ children, className, handleSubmit, onChange, onSubmit }) {
   return (
     <form
-      autocomplete="off"
+      autoComplete="off"
       className={classnames('form', className)}
       onSubmit={onSubmit && handleSubmit(onSubmit)}
       onChange={onChange && handleSubmit(onChange)}

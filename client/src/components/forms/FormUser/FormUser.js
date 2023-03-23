@@ -78,7 +78,7 @@ class FormUser extends Component {
     return (
       <Card>
         <CardBody>
-          <form className="form-user" onSubmit={handleSubmit(submitCallback)} autocomplete="off">
+          <form className="form-user" onSubmit={handleSubmit(submitCallback)} autoComplete="off">
             <h3 className="form-user__headers mb-1-5">Contact Info</h3>
             <div className="form-user__contact-info">
               <Field

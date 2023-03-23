@@ -52,6 +52,8 @@ class FormTraffic extends Component {
     change('repeat_rule.repeat_start_date', value);
   };
 
+
+
   render() {
     const { props } = this;
     const {
@@ -69,7 +71,7 @@ class FormTraffic extends Component {
     }
 
     return (
-      <form className="traffic-form" onSubmit={handleSubmit(submitCallback)} autocomplete="off">
+      <form className="traffic-form" onSubmit={handleSubmit(submitCallback)} autoComplete="off">
         <div className="traffic-form__grid">
           <Field
             className="grid-span--2"
@@ -134,6 +136,11 @@ class FormTraffic extends Component {
               'PSA',
               'Underwriting',
             ]}
+            onChange={(evt, newValue) => {
+              if (newValue == 'Giveaway') {
+                this.props.change('traffic_details.giveaway_details.ticket_quantity', 2);
+              }
+            }}
           />
 
           {formValues.traffic_details != null &&
@@ -160,21 +167,31 @@ class FormTraffic extends Component {
                 <Field
                   component={Input}
                   label="Event Name"
+                  validate={[requiredValidate]}
                   name="traffic_details.giveaway_details.event_name"
                 />
                 <Field
                   component={DatePicker__React}
                   label="Event Date"
+                  validate={[requiredValidate]}
                   name="traffic_details.giveaway_details.event_date"
                 />
                 <Field
                   component={Input}
                   label="Event Time"
+                  validate={[requiredValidate]}
                   name="traffic_details.giveaway_details.event_time"
                 />
                 <Field
                   component={Input}
+                  label="Ticket Quantity"
+                  validate={[requiredValidate]}
+                  name="traffic_details.giveaway_details.ticket_quantity"
+                />
+                <Field
+                  component={Input}
                   label="Venue"
+                  validate={[requiredValidate]}
                   name="traffic_details.giveaway_details.venue"
                 />
                 <CustomFieldsEdit

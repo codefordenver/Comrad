@@ -29,6 +29,12 @@ export const configReducer = (state = initialState, { type, payload }) => {
         resourcesCategories: payload,
       };
 
+    case configTypes.TICKET_GIVEAWAY_HTML:
+      return {
+        ...state,
+        ticketGiveawayHtml: payload,
+      };
+
     default:
       return state;
   }

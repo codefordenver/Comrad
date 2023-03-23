@@ -92,7 +92,7 @@ const AlbumAddFromItunesPage = ({ handleSubmit }) => {
         </Card>
         <Card>
           <CardBody className="aap__form">
-            <form autocomplete="off" onSubmit={handleSubmit(itunesAlbumSearch)}>
+            <form autoComplete="off" onSubmit={handleSubmit(itunesAlbumSearch)}>
               <Field
                 className="mb-1"
                 component={Input}

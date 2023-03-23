@@ -707,7 +707,7 @@ class ShowBuilderPage extends Component {
                   </div>
                   {activeTab === 'search' && (
                     <div className="library-tab-container__tab-content">
-                      <form autocomplete="off" onSubmit={handleSubmit(this.searchLibrary)}>
+                      <form autoComplete="off" onSubmit={handleSubmit(this.searchLibrary)}>
                         <Field
                           className="mb-1"
                           component={Input}
@@ -764,7 +764,7 @@ class ShowBuilderPage extends Component {
                   <>
                     <div>
                       <form
-                        autocomplete="off"
+                        autoComplete="off"
                         onSubmit={handleSubmit(
                           this.addTrackModalSelectExistingAlbum,
                         )}

@@ -24,7 +24,7 @@ class FormHostAdd extends Component {
 
     return (
       <div>
-        <form className="form-host-add" onSubmit={handleSubmit(submit)} autocomplete="off">
+        <form className="form-host-add" onSubmit={handleSubmit(submit)} autoComplete="off">
           <Field
             className="mb-3"
             component={Input}

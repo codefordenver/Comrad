@@ -68,7 +68,7 @@ class FormTrackEdit extends Component {
     const { handleSubmit } = props;
 
     return (
-      <form className="form-track-edit" onSubmit={handleSubmit(submit)} autocomplete="off">
+      <form className="form-track-edit" onSubmit={handleSubmit(submit)} autoComplete="off">
         <Field
           component={Input}
           label="Name"

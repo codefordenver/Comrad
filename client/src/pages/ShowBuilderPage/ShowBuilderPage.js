@@ -853,6 +853,10 @@ class ShowBuilderPage extends Component {
                     );
                     this.promptForLabelModalClose();
                   }}
+                  skipCallback={() => {
+                    this.state.promptForLabelModalCallback(this.state.promptForLabelModalTrack);
+                    this.promptForLabelModalClose();
+                  }}
                 />
               </div>
             </Modal>

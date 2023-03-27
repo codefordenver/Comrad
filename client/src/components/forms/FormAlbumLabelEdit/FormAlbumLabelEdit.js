@@ -20,7 +20,7 @@ class FormAlbumLabelEdit extends Component {
 
   render() {
     const { props, submit } = this;
-    const { handleSubmit } = props;
+    const { handleSubmit, skipCallback } = props;
 
     return (
       <form
@@ -40,6 +40,9 @@ class FormAlbumLabelEdit extends Component {
         />
         <div>
           <Button type="submit">Submit</Button>
+          {skipCallback && <Button color="neutral" className="ml-1" onClick={skipCallback}>
+            Skip
+          </Button>}
         </div>
       </form>
     );

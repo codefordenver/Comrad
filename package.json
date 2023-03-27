@@ -83,7 +83,7 @@
     "html-to-text": "^8.2.1",
     "json2csv": "^5.0.7",
     "lodash": "^4.17.21",
-    "luxon": "^3.0.1",
+    "luxon": "^3.2.1",
     "moment": "^2.29.4",
     "moment-timezone": "^0.5.35",
     "mongoose": "^5.8.3",

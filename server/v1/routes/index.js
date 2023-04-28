@@ -31,23 +31,23 @@ router.use('/users', users);
 // simplified endpoints to make the API more accessible to integrations
 router
   .route('/current-show')
-  .get(requireAC('Shows', 'readAny'), eventsController.currentShow);
+  .get(eventsController.currentShow);
 
 router
   .route('/next-show')
-  .get(requireAC('Shows', 'readAny'), eventsController.nextShow);
+  .get(eventsController.nextShow);
 
 router
   .route('/previous-show')
-  .get(requireAC('Shows', 'readAny'), eventsController.previousShow);
+  .get(eventsController.previousShow);
 
 router
   .route('/recent-shows')
-  .get(requireAC('Shows', 'readAny'), eventsController.recentShows);
+  .get(eventsController.recentShows);
 
 router
   .route('/recent-plays')
-  .get(requireAC('Playlists', 'readAny'), playlistsController.recentPlays);
+  .get(playlistsController.recentPlays);
 
 router
   .route('/now-playing')

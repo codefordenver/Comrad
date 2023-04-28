@@ -240,6 +240,21 @@ function recentShows(req, res) {
         showResults = showResults.slice(0, pageSize);
       }
 
+      //make host a string
+      for (var i = 0; i < showResults.length; i++) {
+        // return either the on air name or the first name/last name
+        let host = showResults[i]['show_details']['host']
+        if (host) { 
+          showResults[i]['show_details']['host'] = host['on_air_name'] ? host['on_air_name'] : host['first_name'] + ' ' + host['last_name'];
+        }
+        if (showResults[i]['master_event_id']['show_details']) {
+          let masterEventHost = showResults[i]['master_event_id']['show_details']['host'];
+          if (masterEventHost && typeof masterEventHost !== 'string') {
+            showResults[i]['master_event_id']['show_details']['host'] = masterEventHost['on_air_name'] ? masterEventHost['on_air_name'] : masterEventHost['first_name'] + ' ' + masterEventHost['last_name'];
+          }
+        }
+      }
+
       return Promise.all(
         showResults.map(show => {
           return findOrCreatePlaylist(show.start_time_utc, show.end_time_utc)

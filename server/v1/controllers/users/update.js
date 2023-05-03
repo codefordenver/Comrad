@@ -83,6 +83,11 @@ function update(req, res) {
     }
   }
 
+  // don't allow api key changes through this api endpoint
+  if (req.body.api_key != null) {
+    delete req.body.api_key;
+  }
+
   if (req.body.password != null) {
     bcrypt.genSalt(10, function(err, salt) {
       if (err) {

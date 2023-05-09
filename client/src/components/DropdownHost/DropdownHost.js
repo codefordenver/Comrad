@@ -260,7 +260,7 @@ class DropdownHost extends Component {
       };
     });
 
-    if (items.length === 0) {
+    if (items.length === 0 && authState.doc) {
       items.push({
         _id: authState.doc._id,
         host_type: 'User',
@@ -284,15 +284,15 @@ class DropdownHost extends Component {
 
     items.push({ _id: null, value: 'Clear' });
 
-    if (showAddNewHostOption && authState.doc.roles.indexOf('Admin') !== -1) {
+    if (showAddNewHostOption && authState.doc?.roles?.indexOf('Admin') !== -1) {
       items.push(ADD_NEW_HOST);
     }
 
     if (
       showNewGroupOfHostsOption &&
-      (authState.doc.roles.indexOf('Admin') !== -1 ||
-        authState.doc.roles.indexOf('Show Captain') !== -1 ||
-        authState.doc.roles.indexOf('Full Access') !== -1)
+      (authState?.doc?.roles?.indexOf('Admin') !== -1 ||
+        authState?.doc?.roles?.indexOf('Show Captain') !== -1 ||
+        authState?.doc?.roles?.indexOf('Full Access') !== -1)
     ) {
       items.push(NEW_GROUP_OF_HOSTS);
     }

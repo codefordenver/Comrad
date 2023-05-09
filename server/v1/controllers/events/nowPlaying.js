@@ -31,7 +31,8 @@ const {
   },
 } = require('./utils');
 const { findOrCreatePlaylist } = require('../playlists/utils');
-const { convert } = require('html-to-text');
+const { compile  } = require('html-to-text');
+let convert = compile({wordwrap: null});
 
 function nowPlaying(req, res) {
   const dbModel = getModelForEventType('shows');
@@ -66,6 +67,16 @@ function nowPlaying(req, res) {
           let mostRecentPlay = null;
           if (sortedTracks.length > 0) {
             mostRecentPlay = sortedTracks[0];
+          }
+          if (mostRecentPlay != null) {
+
+            var now = new Date(); // current date/time
+
+            var difference = now.getTime() - mostRecentPlay.executed_time_utc.getTime(); // difference in milliseconds
+            var minutes = difference / (1000 * 60); // convert milliseconds to minutes
+            if (minutes > 15) {
+              mostRecentPlay = null;
+            }
           }
           return res.json({
             "current_show": show.show_details.title,

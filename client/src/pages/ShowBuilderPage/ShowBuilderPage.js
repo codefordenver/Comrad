@@ -567,30 +567,12 @@ class ShowBuilderPage extends Component {
               <div>
                 {!showFetching && (
                   <>
-                    {auth.doc.roles != null &&
-                      (auth.doc.roles.indexOf('Admin') !== -1 ||
-                        auth.doc.roles.indexOf('Full Access') !== -1 ||
-                        auth.doc.roles.indexOf('Music Library Admin') !== -1 ||
-                        auth.doc.roles.indexOf('Show Captain') !== -1) && (
-                        <DropdownHost
-                          key={host != null ? host._id : 'no host'}
-                          host={host}
-                          onHostSelect={this.handleHostSelect}
-                          filterByStatus="Active"
-                        />
-                      )}
-                    {auth.doc.roles != null &&
-                      (auth.doc.roles.indexOf('Admin') === -1 &&
-                        auth.doc.roles.indexOf('Full Access') === -1 &&
-                        auth.doc.roles.indexOf('Music Library Admin') === -1 &&
-                        auth.doc.roles.indexOf('Show Captain') === -1) && (
-                        <>
-                          <b>Host:</b>{' '}
-                          {formattedHostName != null && formattedHostName.length > 0
-                            ? formattedHostName
-                            : 'No Host'}
-                        </>
-                      )}
+                    <DropdownHost
+                      key={host != null ? host._id : 'no host'}
+                      host={host}
+                      onHostSelect={this.handleHostSelect}
+                      filterByStatus="Active"
+                    />
                   </>
                 )}
               </div>

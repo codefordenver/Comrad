@@ -75,17 +75,17 @@ function soundExchangeReport(req, res) {
     .then(soundExchangeData => {
       res.setHeader(
         'Content-disposition',
-        'attachment; filename=soundExchange.txt',
+        'attachment; filename=soundExchange.csv',
       );
       res.set('Content-Type', 'text/plain');
 
       if (soundExchangeData.length === 0) {
         return res
           .status(200)
-          .end('Start Time\tEnd Time\tDuration\tTitle\tArtist\tAlbum\tLabel');
+          .end('Start Time,End Time,Duration,Title,Artist,Album,Label');
       }
 
-      const parser = new Parser({ delimiter: '\t' });
+      const parser = new Parser({ delimiter: ',' });
       var playlistCounter, playlistStartTime;
       const csv = parser.parse(
         soundExchangeData.map(t => {

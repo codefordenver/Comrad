@@ -6,7 +6,7 @@ const { eventsController } = require('../controllers');
 router
   .route('/:eventType/')
   .get(requireAC(null, 'readAny'), eventsController.find)
-  .post(requireAC(null, 'createAny'), eventsController.create);
+  .post(requireAC(null, 'updateOwn'), eventsController.create);
 
 router
   .route('/:eventType/by-custom-field')

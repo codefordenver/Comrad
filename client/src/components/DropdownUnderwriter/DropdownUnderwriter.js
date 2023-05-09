@@ -89,6 +89,13 @@ class DropdownUnderwriter extends Component {
     const { input, onUnderwriterSelect } = this.props;
 
     if (selection === 'Clear') {
+      this.setState({
+        currentInputValue: '',
+        selectedUnderwriter: null,
+      },
+      function() {
+        document.activeElement.blur(); //remove focus from the Underwriter text field
+      });
       return;
     }
 

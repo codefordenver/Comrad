@@ -84,13 +84,28 @@ function requireAC(resource, action) {
       switch (resource) {
         case 'Shows':
           //check to ensure the user is the host of the show
+          // or, be sure this is a new instance of a show
           const { id } = req.params;
-          show = await db.Show.findOne({ _id: id });
-          userIsHost = await userIsHostOfShow(req.user, show);
-          if (!userIsHost) {
-            return res.status(403).json({
-              message: 'You do not have permission to access this resource',
-            });
+          if (id) {
+            show = await db.Show.findOne({ _id: id });
+            if (!show) {
+            //previously, we only allowed users to update their own show
+            //however, people need to set the show host in show builder to themselves, so we will allow updating any instance
+            // that already exists
+              
+            //userIsHost = await userIsHostOfShow(req.user, show);
+            //if (!userIsHost) {
+              return res.status(403).json({
+                message: 'You do not have permission to access this resource',
+              });
+            }
+          } else {
+            const { body } = req;
+            if (!body.master_event_id) {
+              return res.status(403).json({
+                message: 'You only have permission to create show instances, not new show series',
+              });
+            }
           }
           break;
         case 'Playlists':

@@ -80,7 +80,7 @@ function nowPlaying(req, res) {
           }
           return res.json({
             "current_show": show.show_details.title,
-            "description": convert(show.show_details.description),
+            "description": convert(show.show_details.description).replace(/\n/g, " "),
             "category": show.show_details.custom?.category ?? "",
             "host": show.show_details.host ? (show.show_details.host.on_air_name ?? show.show_details.host.first_name + " " + show.show_details.host.last_name) : "",
             "host_id": show.show_details.host?._id ?? null,

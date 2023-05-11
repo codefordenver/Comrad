@@ -98,7 +98,7 @@ function charting(req, res) {
         album_id: '$album_info._id',
         name: '$album_info.name',
         artist: '$artist.name',
-        add_date: '$album_info.created_at',
+        add_date: '$album_info.release_date',
         label: '$album_info.label',
         genre: '$genre.name',
         ...customPropertiesProjection,

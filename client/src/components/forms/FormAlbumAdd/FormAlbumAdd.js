@@ -31,11 +31,21 @@ class FormAlbumAdd extends Component {
 
   submit = values => {
     const { libraryActions, submitCallback } = this.props;
-    libraryActions.add('album', values, albumData => {
-      if (typeof submitCallback === 'function') {
-        submitCallback(albumData);
-      }
-    });
+    if (typeof values.artist == 'object' && values.artist.new) {
+      libraryActions.add('artist', {"name": values.artist.new}, artistData => {
+        libraryActions.add('album', {...values, artist: artistData._id}, albumData => {
+          if (typeof submitCallback === 'function') {
+            submitCallback(albumData);
+          }
+        });
+      });
+    } else {
+      libraryActions.add('album', values, albumData => {
+        if (typeof submitCallback === 'function') {
+          submitCallback(albumData);
+        }
+      });
+    }
   };
 
   render() {
@@ -59,6 +69,7 @@ class FormAlbumAdd extends Component {
         />
         <Field
           component={DropdownLibrary}
+          allowNewEntries={true}
           libraryType="artist"
           className="mb-1-5"
           label="Artist"

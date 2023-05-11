@@ -63,8 +63,9 @@ class DropdownLibrary extends Component {
   }
 
   componentDidUpdate() {
-    const { artist, libraryState, libraryType } = this.props;
-    const { cachedSearches } = this.state;
+    const { artist, libraryState, libraryType, allowNewEntries } = this.props;
+    const { cachedSearches, currentInputValue } = this.state;
+    const { setValueBasedOnTextInput } = this;
 
     //check to see if the artist property has changed: if so, reset the initial value
     if (libraryType === 'artist') {
@@ -91,14 +92,34 @@ class DropdownLibrary extends Component {
     ) {
       cachedSearches[libraryState.searchString.toLowerCase()] =
         libraryState.docsForDropdown;
-      this.setState({ cachedSearches: cachedSearches });
+      this.setState({ cachedSearches: cachedSearches }, () => {
+        if (allowNewEntries && currentInputValue) {
+          setValueBasedOnTextInput(currentInputValue);
+        }
+      });
     }
+  }
+
+  setValueBasedOnTextInput = value => {
+    const { input } = this.props;
+    const { cachedSearches, currentInputValue } = this.state;
+    if (input != null && input.onChange) {
+        if (value.toLowerCase() in cachedSearches) {
+          let foundOption = cachedSearches[currentInputValue.toLowerCase()].filter(e => e.name.toLowerCase() == value.toLowerCase());
+          if (foundOption.length > 0) {
+            input.onChange(foundOption[0]._id);
+          } else {
+            input.onChange({"new": value });
+          }
+        }
+      }
   }
 
   //handles input box change
   handleChange = e => {
-    const { libraryActions, libraryType } = this.props;
+    const { libraryActions, libraryType, allowNewEntries, input, onLibraryItemSelect } = this.props;
     const { cachedSearches, librarySearchTimeout } = this.state;
+    const { setValueBasedOnTextInput } = this;
     const { value } = e.target;
 
     if (value.length && !(value.toLowerCase() in cachedSearches)) {
@@ -132,22 +153,38 @@ class DropdownLibrary extends Component {
           );
         }, 150),
       });
+
+
     }
 
     //update the textbox value
-    this.setState({ currentInputValue: value });
+    this.setState({ currentInputValue: value }, () => {
+      if (allowNewEntries) {
+        setValueBasedOnTextInput(value);
+      }
+    });
   };
+
+  
 
   //on blur from the input box, reset the dropdown to its original value
   handleBlur = e => {
-    const { selectedLibraryItem } = this.state;
+    const { currentInputValue, selectedLibraryItem } = this.state;
+    const { allowNewEntries, input, onLibraryItemSelect } = this.props;
 
-    this.setState({
+    let newStateValues = {
       currentInputValue:
         selectedLibraryItem != null ? selectedLibraryItem.name : '',
       hasFocus: false,
       haveSelectedTextOnClick: false,
-    });
+    };
+
+    if (allowNewEntries && !selectedLibraryItem && currentInputValue) {
+      newStateValues['currentInputValue'] = currentInputValue;
+
+    }
+
+    this.setState(newStateValues);
   };
 
   handleFocus = () => {

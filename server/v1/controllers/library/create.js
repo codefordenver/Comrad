@@ -73,7 +73,10 @@ function create(req, res) {
             .then(dbAlbum => db.Library.populate(dbAlbum, ['genre', 'artist']))
             .then(dbAlbum => updateSearchIndex(dbAlbum))
             .then(dbAlbum => res.json(dbAlbum))
-            .catch(err => res.status(422).json(err));
+            .catch(err => {
+              console.error(err);
+              return res.status(422).json(err)
+            });
         })
         .catch(err => {
           console.error(err);
@@ -85,9 +88,12 @@ function create(req, res) {
       return validateArtistData(req.body)
         .then(artistData => {
           db.Library.create(artistData)
-            .then(dbArtist => res.json(dbArtist))
             .then(dbArtist => updateSearchIndex(dbArtist))
-            .catch(err => res.status(422).json(err));
+            .then(dbArtist => res.json(dbArtist))
+            .catch(err => {
+              console.error(err);
+              return res.status(422).json(err);
+            });
         })
         .catch(err => {
           console.error(err);

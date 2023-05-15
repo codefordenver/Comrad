@@ -98,7 +98,7 @@ function charting(req, res) {
         album_id: '$album_info._id',
         name: '$album_info.name',
         artist: '$artist.name',
-        add_date: '$album_info.release_date',
+        add_date: '$album_info.created_at',
         label: '$album_info.label',
         genre: '$genre.name',
         ...customPropertiesProjection,
@@ -152,13 +152,16 @@ function charting(req, res) {
         let currentWorksheet = worksheets[worksheets.length - 1];
 
 
+        let addDateValue = dataRow.addDate != null ?
+          moment(dataRow.add_date)
+            .tz(keys.stationTimeZone)
+            .format('YYYY-M-D h:mm:ss a')
+          : null;
         currentWorksheet.cell(currentRow, 1).number(dataRow.plays);
         currentWorksheet.cell(currentRow, 2).string(dataRow.artist);
         currentWorksheet.cell(currentRow, 3).string(dataRow.album_title);
         currentWorksheet.cell(currentRow, 4).string(dataRow.label);
-        currentWorksheet.cell(currentRow, 5).string(moment(dataRow.add_date)
-            .tz(keys.stationTimeZone)
-            .format('YYYY-M-D h:mm:ss a'));
+        currentWorksheet.cell(currentRow, 5).string(addDateValue);
         if (dataRow.genre != null) {
           currentWorksheet.cell(currentRow, 6).string(dataRow.genre);
         }

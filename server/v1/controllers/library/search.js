@@ -301,8 +301,9 @@ async function search(req, res) {
             popularity: 0,
             name: track['trackName'],
             album: {
-              itunes_id: track['collectionId'],
-              name: track['collectionName']
+              'itunes_id': track['collectionId'],
+              'name': track['collectionName'],
+              'album_art_url': track['artworkUrl100']
             },
             'type': 'track',
             'artists': [{

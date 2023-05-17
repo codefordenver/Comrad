@@ -32,6 +32,7 @@
  */
 
 const db = require('../../models');
+const keys = require('../../config/keys');
 const { 
   findItunesByCollectionId: utils__findItunesByCollectionId,
   updateSearchIndex,
@@ -69,7 +70,7 @@ async function importItunesAlbum(req, res) {
       });
     }
 
-    dbAlbum = await db.Library.create({
+    var albumData = {
         "name": album['title'],
         "type": "album",
         "compilation": album['compilation'],
@@ -77,7 +78,36 @@ async function importItunesAlbum(req, res) {
         "itunes_id": id,
         "genre": dbGenre ? dbGenre["_id"] : null,
         "label": album['copyright']
-    });
+    };
+
+    let autoIncrementField = null;
+    if ('album' in keys.modelCustomFields) {
+      keys.modelCustomFields.album.forEach(function(a) {
+        if (a.kgnuCustomFunctionalityAutoIncrement != null && a.kgnuCustomFunctionalityAutoIncrement) {
+          autoIncrementField = a;
+        }
+      });
+    }
+    if (autoIncrementField) {
+      // let highestRecord = await db.Library.find({"type":"album"}).sort("-custom." + autoIncrementField.name)
+      //   .collation({locale: "en_US", numericOrdering: true}).limit(1);
+      let highestRecord = await db.Library.aggregate([
+        {"$addFields": {
+          "library_number_as_int": {"$toInt": "$custom.library_number"}
+        }},
+        {"$sort": {
+          "library_number_as_int": -1
+        }},
+        {"$limit": 1}
+      ]);
+
+      let autoIncrementValue = Number(highestRecord[0]['custom'][autoIncrementField.name]);
+      autoIncrementValue++;
+      albumData['custom.' + autoIncrementField.name] = autoIncrementValue;
+      console.log('using this value for custom.' + autoIncrementField.name, autoIncrementValue);
+    }
+
+    dbAlbum = await db.Library.create(albumData);
   } else {
     dbAlbum = localAlbum;
   }
@@ -102,7 +132,7 @@ async function importItunesAlbum(req, res) {
     await db.Library.create({
       'name': t['name'],
       'type': 'track',
-      'artist': dbArtist['_id'],
+      'artists': [dbArtist['_id']],
       'album': dbAlbum['_id'],
       'disk_number': t['diskNumber'],
       'track_number': t['trackNumber'],

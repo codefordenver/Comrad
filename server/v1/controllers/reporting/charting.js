@@ -128,6 +128,9 @@ function charting(req, res) {
       //res.setHeader('Content-disposition', 'attachment; filename=charting.xlsx');
       //res.set('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 
+      console.log('customPropertiesProjection', customPropertiesProjection);
+      console.log('customPropertiesGroup', customPropertiesGroup);
+      console.log('customPropertiesToInclude', customPropertiesToInclude);
 
       // Require library
       var xl = require('excel4node');
@@ -167,9 +170,10 @@ function charting(req, res) {
         }
 
         for (let j = 0; j < customPropertiesToInclude.length; j++) {
+          console.log('dataRow', dataRow);
           let value =  dataRow[customPropertiesToInclude[j] + '_custom_field'];
           if (value != null) {
-            currentWorksheet.cell(currentRow, 7 + j).string(value);
+            currentWorksheet.cell(currentRow, 7 + j).string(value.toString());
           }
         }
 

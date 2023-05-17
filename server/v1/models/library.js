@@ -123,6 +123,10 @@ const librarySchema = new Schema(
       type: String,
     },
 
+    album_art_url: {
+      type: String,
+    },
+
     genre: {
       type: Schema.Types.ObjectId,
       ref: 'Genre',

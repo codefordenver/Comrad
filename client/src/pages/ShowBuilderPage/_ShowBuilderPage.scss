@@ -123,6 +123,9 @@
     .dropdown__icon {
       color: $color-grey-3;
     }
+    .library-results-table td {
+      vertical-align: top;
+    }
     &__add-new-track {
       color: blue;
       cursor: pointer;

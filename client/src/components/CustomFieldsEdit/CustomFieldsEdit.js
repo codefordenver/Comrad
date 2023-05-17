@@ -6,6 +6,10 @@ import Checkbox from '../Checkbox';
 import Select from '../Select';
 import Input from '../Input';
 
+import {
+  requiredValidate,
+} from '../../utils/validation';
+
 class CustomFieldsEdit extends Component {
   render() {
     const { fieldsMeta, prefixToCustomProperty } = this.props;
@@ -55,6 +59,7 @@ class CustomFieldsEdit extends Component {
               component={Input}
               label={field.label}
               name={fieldName}
+              validate={field.required ? requiredValidate : null}
             />,
           );
           break;

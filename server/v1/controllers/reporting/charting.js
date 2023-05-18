@@ -151,7 +151,7 @@ function charting(req, res) {
         let currentWorksheet = worksheets[worksheets.length - 1];
 
 
-        let addDateValue = dataRow.addDate != null ?
+        let addDateValue = dataRow.add_date != null ?
           moment(dataRow.add_date)
             .tz(keys.stationTimeZone)
             .format('YYYY-M-D h:mm:ss a')

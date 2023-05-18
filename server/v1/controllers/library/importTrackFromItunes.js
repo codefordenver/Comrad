@@ -26,6 +26,7 @@
  */
 
 const db = require('../../models');
+const keys = require('../../config/keys');
 const { 
   findItunesByCollectionId: utils__findItunesByCollectionId,
   updateSearchIndex,
@@ -57,7 +58,7 @@ async function importTrackFromItunes(req, res) {
       });
     }
 
-    dbAlbum = await db.Library.create({
+    let albumData = {
         "name": album['title'],
         "type": "album",
         "compilation": album['compilation'],
@@ -65,7 +66,34 @@ async function importTrackFromItunes(req, res) {
         "itunes_id": trackData.album.itunes_id,
         "genre": dbGenre ? dbGenre["_id"] : null,
         "label": album['copyright']
-    });
+    }
+
+    let autoIncrementField = null;
+    if ('album' in keys.modelCustomFields) {
+      keys.modelCustomFields.album.forEach(function(a) {
+        if (a.kgnuCustomFunctionalityAutoIncrement != null && a.kgnuCustomFunctionalityAutoIncrement) {
+          autoIncrementField = a;
+        }
+      });
+    }
+    if (autoIncrementField) {
+      let highestRecord = await db.Library.aggregate([
+        {"$addFields": {
+          "library_number_as_int": {"$toInt": "$custom.library_number"}
+        }},
+        {"$sort": {
+          "library_number_as_int": -1
+        }},
+        {"$limit": 1}
+      ]);
+      
+      let autoIncrementValue = highestRecord[0]['custom'][autoIncrementField.name];
+      autoIncrementValue++;
+      albumData['custom.' + autoIncrementField.name] = autoIncrementValue;
+      console.log('using this value for custom.' + autoIncrementField.name, autoIncrementValue);
+    }
+
+    dbAlbum = await db.Library.create(albumData);
   }
 
   let {

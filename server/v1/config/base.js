@@ -33,6 +33,8 @@ module.exports = {
         editFieldType: 'text',
         includeInTextIndex: true,
         includeInChartingReport: true,
+        required: true,
+        kgnuCustomFunctionalityAutoIncrement: true, // this field will auto increment from its highest value when imported from itunes
       },
       {
         name: 'album_art_url',

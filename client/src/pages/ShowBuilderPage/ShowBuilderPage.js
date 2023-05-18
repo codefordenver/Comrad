@@ -43,6 +43,8 @@ import { formatHostName } from '../../utils/formatters';
 import { getShowType } from '../../utils/shows';
 import { getNextDiskAndTrackNumberForAlbum } from '../../utils/library';
 
+import defaultAlbumCover from '../../images/default-album-cover.png';
+
 class ShowBuilderPage extends Component {
   state = {
     activeTab: 'search',
@@ -700,7 +702,7 @@ class ShowBuilderPage extends Component {
                       </form>
                       {library.docs != null && library.docs.length > 0 && (
                         <div className="library-results">
-                          <table className="base-table-style">
+                          <table className="base-table-style library-results-table">
                             {this.renderLibraryResultsHeader()}
                             {this.renderLibraryResultsBody()}
                           </table>
@@ -852,6 +854,7 @@ class ShowBuilderPage extends Component {
     return (
       <thead>
         <tr>
+          <th></th>
           <th>Track Name</th>
           <th>Artist</th>
           <th>Album</th>
@@ -870,6 +873,11 @@ class ShowBuilderPage extends Component {
         {docs.map(item => {
           return (
             <tr key={item._id != null ? item._id : item.itunes_track_id + '_itunes'}>
+              <td>
+                {item.album.album_art_url && <img src={item.album.album_art_url} style={{"width":"50px"}} />}
+                {!item.album.album_art_url && <img src={defaultAlbumCover} />}
+
+              </td>
               <td>{item.name}</td>
               <td>{item.artists.map(a => a.name).join(', ')}</td>
               <td>{item.album != null && item.album.name}</td>

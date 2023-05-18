@@ -167,9 +167,9 @@ async function seedDB() {
             album.genre = await getIdForGenre(album.genre);
           }
 
-          //cleanse data that was entered incorrectly in KGNU
+          //cleanse data that was entered incorrectly in KGNU, and preserve empty dates for created_at
           if (album.created_at === '0000-00-00 00:00:00') {
-            delete album.created_at;
+            album.created_at = null;
           }
           if (album.compilation > 1) {
             album.compilation = 1;

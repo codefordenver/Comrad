@@ -45,7 +45,16 @@ async function search(req, res) {
   }
 
 
-  let itunesResponse = await axios.get('http://itunes.apple.com/search?term=' + encodeURIComponent(q) +  '&entity=album&limit=60');
+  var itunesResponseError = false;
+  let itunesResponse = await axios.get('http://itunes.apple.com/search?term=' + encodeURIComponent(q) +  '&entity=album&limit=60').catch(err => {
+    console.error('itunes response error: ', err);
+    itunesResponseError = true;
+  });
+
+  if (itunesResponseError) {
+    return res.json([]);
+  }
+
 
   var data = itunesResponse.data;
 
@@ -53,7 +62,10 @@ async function search(req, res) {
   let albumNames = [];
   data.results.forEach(album => {
     iTunesIds.push(album['collectionId']);
-    albumNames.push(new RegExp(album['collectionName'], "i")); // case insensitive search
+    albumNames.push(new RegExp(
+      album['collectionName'].replace(/[.*+?^${}()|[\]\\]/g, '\\$&') // escape all special characters
+      , "i"
+    )); // case insensitive search
   });
 
   //find local albums using this iTunesId
@@ -64,7 +76,10 @@ async function search(req, res) {
       {"name": { "$in": albumNames }}
     ]
   })
-  .populate('artist');
+  .populate('artist')
+  .catch(err => {
+    console.error('db.library.find error: ', err);
+  });;
 
   for (var i = 0; i < data.results.length; i++) {
     let album = data.results[i];

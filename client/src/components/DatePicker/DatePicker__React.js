@@ -24,9 +24,17 @@ class DatePicker__React extends Component {
   componentDidUpdate() {
     const { value } = this.props.input;
     const { date } = this.state;
+    if (value != date) {
 
-    if (value instanceof Date && value !== date) {
-      this.setState({ date: value });
+      if (value instanceof Date) { // value is a date
+        this.setState({ date: value });
+      } else if (!isNaN(Date.parse(value))) { //value can be converted to a date
+        if (!(date instanceof Date) || new Date(value).getTime() != date.getTime()) {
+          this.setState({ date: new Date(value) });
+        }
+      } else if (!value && date != null) { //value is a falsy value, so change date to null if it is not already
+        this.setState({ date: null });
+      }
     }
   }
 

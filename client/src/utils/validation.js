@@ -28,6 +28,17 @@ export const requiredValidate = value => {
   }
 };
 
+export const integerValidate = (value) => {
+  if (!isNaN(value) && 
+         parseInt(Number(value)) == value && 
+         !isNaN(parseInt(value, 10))
+     ) {
+    return null;
+  } else {
+    return "Integer required";
+  }
+}
+
 export const albumNeedsArtistOrCompilation = (value, allValues) => {
   // Artist set and compilation is true
   if (

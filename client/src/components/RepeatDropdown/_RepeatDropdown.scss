@@ -1,0 +1,27 @@
+.repeat-dropdown {
+  &__container {
+    font-size: 1.6em;
+  }
+  &__custom-rule-row {
+    display: flex;
+    align-items: center;
+    font-size: 1.6em;
+    > * {
+      margin-right: 0.4em;
+    }
+  }
+  &__days-of-week {
+    display: flex;
+
+    > div {
+      margin-right: 1.5em;
+      font-size: 0.8em;
+      text-align: center;
+      margin-top: 1em;
+
+      .checkbox__label::before {
+        margin-right: 0;
+      }
+    }
+  }
+}

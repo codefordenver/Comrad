@@ -214,7 +214,7 @@ const moment = require('moment-timezone');
 const keys = require('../../config/keys');
 
 const {
-  utils: { eventList, getModelForEventType },
+  utils: { customRepeatOptionsToRepeatRule, eventList, getModelForEventType },
   utils__mongoose: {
     determineHostType,
     findEventQueryByDateRange,
@@ -263,17 +263,27 @@ async function update(req, res) {
         originalEvent = await dbModel.findOne({ _id: id });
       }
       body.repeat_rule = originalEvent.repeat_rule;
-      body.repeat_rule = {
-        ...originalEvent.repeat_rule,
-        ...JSON.parse(body.repeat_rule_dropdown_value),
-      };
+      let parsedDropdownValue = JSON.parse(body.repeat_rule_dropdown_value);
+      if (parsedDropdownValue.name == 'Custom') {
+        body.repeat_rule = {
+          ...originalEvent.repeat_rule,
+          ...customRepeatOptionsToRepeatRule(body),
+        };
+      } else {
+        body.repeat_rule = {
+          "repeat_start_date": originalEvent.repeat_rule.repeat_start_date,
+          "repeat_end_date": originalEvent.repeat_rule.repeat_end_date,
+          ...parsedDropdownValue,
+        };
+      }
       if ('repeat_rule.repeat_end_date' in body) {
-        if (body['repeat_rule.repeat_end_date'] !== null) {
-          if (!('repeat_rule' in body)) {
-            body.repeat_rule = {};
-          }
-          body.repeat_rule.repeat_end_date =
-            body['repeat_rule.repeat_end_date'];
+        if (!('repeat_rule' in body)) {
+          body.repeat_rule = {};
+        }
+        if (body['repeat_rule.repeat_end_date'] == null) {
+          body.repeat_rule.repeat_end_date = new Date('9999-01-01T06:00:00.000Z');
+        } else {
+          body.repeat_rule.repeat_end_date = body['repeat_rule.repeat_end_date'];
         }
         delete body['repeat_rule.repeat_end_date'];
       }

@@ -104,7 +104,7 @@ const EventSchema = {
     byweekday: [String],
     bymonth: Number,
     bysetpos: Number,
-    bymonthday: Number,
+    bymonthday: Schema.Types.Mixed, // a Number, or an array of Number
   },
 
   created_at: {

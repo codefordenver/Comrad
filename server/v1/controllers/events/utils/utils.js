@@ -9,6 +9,43 @@ const {
   master_time_id__byEventType,
 } = require('./utils__mongoose');
 
+function customRepeatOptionsToRepeatRule(body) {
+  // convert custom repeat options submitted from RepeatDropdown to a repeat rule
+  let repeatRule = {
+    "interval": body['repeat_rule_custom_interval'],
+    "frequency": body['repeat_rule_custom_frequency'],
+  };
+  if (repeatRule['frequency'] == RRule.WEEKLY) {
+    const weekdaysMap = {
+          "repeat_rule_custom_weekly_sunday": "SU",
+          "repeat_rule_custom_weekly_monday": "MO",
+          "repeat_rule_custom_weekly_tuesday": "TU",
+          "repeat_rule_custom_weekly_wedensday": "WE",
+          "repeat_rule_custom_weekly_thursday": "TH",
+          "repeat_rule_custom_weekly_friday": "FR",
+          "repeat_rule_custom_weekly_saturday": "SA", 
+        };
+    repeatRule['byweekday'] = [];
+    Object.keys(weekdaysMap).forEach(key => {
+      if (body[key]) {
+        repeatRule['byweekday'].push(weekdaysMap[key]);
+      }
+    });
+  } else {
+    repeatRule['byweekday'] = null;
+  }
+  if (repeatRule['frequency'] == RRule.MONTHLY) {
+    let repeatRuleDropdownJson = JSON.parse(body.repeat_rule_custom_monthly_option);
+    repeatRule['bymonthday'] = repeatRuleDropdownJson['bymonthday'];
+    repeatRule['byweekday'] = repeatRuleDropdownJson['byweekday'];
+    repeatRule['bysetpos'] = repeatRuleDropdownJson['bysetpos'];
+  } else {
+    repeatRule['bymonthday'] = null;
+    repeatRule['bysetpos'] = null;
+  }
+  return repeatRule;
+};
+
 function getModelForEventType(eventType) {
   switch (eventType) {
     case 'shows':
@@ -396,6 +433,7 @@ function returnInstanceEventsArray(events) {
 }
 
 module.exports = {
+  customRepeatOptionsToRepeatRule,
   allEventInstancesInDateRange,
   getModelForEventType,
   eventList,

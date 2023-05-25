@@ -131,7 +131,7 @@
  */
 
 const {
-  utils: { getModelForEventType, eventList },
+  utils: { customRepeatOptionsToRepeatRule, getModelForEventType, eventList },
   utils__mongoose: { determineHostType, populateShowHost },
 } = require('./utils');
 const moment = require('moment');
@@ -154,6 +154,14 @@ function create(req, res) {
   //Determine if the repeat dropdown was set, convert to a JSON object.
   if (body.repeat_rule_dropdown_value) {
     let repeat_rule = JSON.parse(body.repeat_rule_dropdown_value);
+
+    if (repeat_rule.name == 'Custom') {
+      repeat_rule = {
+        ...repeat_rule,
+        ...customRepeatOptionsToRepeatRule(body),
+      };
+    }
+
     repeat_rule.repeat_start_date = body.repeat_rule.repeat_start_date;
 
     if (!body.repeat_rule.repeat_end_date) {

@@ -14,11 +14,16 @@
     justify-self: end;
 
     display: grid;
-    grid-template-columns: auto auto;
+    grid-template-columns: auto auto auto;
     grid-column-gap: 2rem;
     align-items: center;
 
     margin-right: 2rem;
+  }
+
+  &__username {
+    color: white;
+    font-size: 1.5em;
   }
 
   &__radio {

@@ -26,6 +26,11 @@ class Navbar extends Component {
           <Logo src={comradLogo} />
         </div>
         <div className="navbar__profile">
+          <div className="navbar__username">
+            {authState.doc && <>
+              Hello, {authState.doc.first_name} {authState.doc.last_name}!
+            </>}
+          </div>
           <div className="navbar__radio">
             <Logo src={kgnuLogo} />
           </div>

@@ -77,7 +77,7 @@ const Playlists = [
   {
     role: 'DJ',
     resource: 'Playlists',
-    action: 'update:own',
+    action: 'update:any',
     attributes: '*',
   },
 

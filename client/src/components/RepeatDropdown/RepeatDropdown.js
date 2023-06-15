@@ -13,6 +13,25 @@ const RepeatDropdown = ({ dateUtc, disabled = true, formSelectorName, initialVal
 
   const formValues = useSelector(state => getFormValues(formSelectorName)(state)); // https://github.com/redux-form/redux-form/issues/4700
   
+  const [customWeeklyRepeatMapping, setCustomWeeklyRepeatMapping] = useState({
+    "SU": "repeat_rule_custom_weekly_sunday",
+    "MO": "repeat_rule_custom_weekly_monday",
+    "TU": "repeat_rule_custom_weekly_tuesday",
+    "WE": "repeat_rule_custom_weekly_wedensday",
+    "TH": "repeat_rule_custom_weekly_thursday",
+    "FR": "repeat_rule_custom_weekly_friday",
+    "SA": "repeat_rule_custom_weekly_saturday",
+  });
+  const weekdaysMap = {
+    "repeat_rule_custom_weekly_sunday": "SU",
+    "repeat_rule_custom_weekly_monday": "MO",
+    "repeat_rule_custom_weekly_tuesday": "TU",
+    "repeat_rule_custom_weekly_wedensday": "WE",
+    "repeat_rule_custom_weekly_thursday": "TH",
+    "repeat_rule_custom_weekly_friday": "FR",
+    "repeat_rule_custom_weekly_saturday": "SA", 
+  };
+
   const repeatRuleDropdownValueJson = useMemo( () => {
     if (!formValues['repeat_rule_dropdown_value']) {
       return null;
@@ -44,6 +63,64 @@ const RepeatDropdown = ({ dateUtc, disabled = true, formSelectorName, initialVal
       Sunday: 'SU',
     };
 
+    // START: account for shifting RRule definitions of the index to account for mismatches between
+    // user time zone and UTC
+    const dayToDayOfWeekIndex = {
+      Monday: 1,
+      Tuesday: 2,
+      Wednesday: 3,
+      Thursday: 4,
+      Friday: 5,
+      Saturday: 6,
+      Sunday: 7,
+    };
+    let shiftToUtc = dayToDayOfWeekIndex[dateSpelledUtc] - dayToDayOfWeekIndex[dateSpelledUserTimezone];
+    const getUtcRRuleValueFromUserTimezoneValue = (rruleValue) => {
+      // Sunday 7pm for user, Monday UTC = -6 // User SUNDAY, shift -6 for Monday
+      // Sunday 1am for user, Saturday UTC = -1 // User SUNDAY, shift -1 for Saturday
+      // Monday 1am for user, Sunday UTC = 6 // User MONDAY, shift +6 for Sunday
+      // Sunday +6 shift is 13. 13 % 7 = 6
+      // Tuesday -5 shift is -3. if negative, add 7 until it's positive.
+
+      // convert rruleValue to its index for dayToDayOfWeekIndex
+      let originalWeekdayName = Object.keys(dayToRRule).find(key => dayToRRule[key] == rruleValue);
+      let dayIndex = dayToDayOfWeekIndex[originalWeekdayName];
+      let shiftedDayIndex = dayIndex + shiftToUtc;
+
+      while (shiftedDayIndex < 1) {
+        shiftedDayIndex = shiftedDayIndex + 7;
+      }
+      if (shiftedDayIndex > 7) {
+        shiftedDayIndex = shiftedDayIndex % 7;
+      }
+
+      let newWeekdayName = Object.keys(dayToDayOfWeekIndex).find(key => dayToDayOfWeekIndex[key] == shiftedDayIndex);
+      let newRruleValue = dayToRRule[newWeekdayName];
+      
+      // console.log('getUtcRRuleValueFromUserTimezoneValue input and results:', rruleValue, shiftToUtc, shiftedDayIndex, newRruleValue);
+
+      return newRruleValue;
+
+    };
+    // END: account for shifting RRule definitions of the index to account for mismatches between
+    // user time zone and UTC
+
+    
+    
+    const getFieldNameForCustomWeeklyRepeat = (day) => {
+      let newDay = getUtcRRuleValueFromUserTimezoneValue(day);
+      return Object.keys(weekdaysMap).find(key => weekdaysMap[key] == newDay);
+    };
+    setCustomWeeklyRepeatMapping({
+      "SU": getFieldNameForCustomWeeklyRepeat("SU"),
+      "MO": getFieldNameForCustomWeeklyRepeat("MO"),
+      "TU": getFieldNameForCustomWeeklyRepeat("TU"),
+      "WE": getFieldNameForCustomWeeklyRepeat("WE"),
+      "TH": getFieldNameForCustomWeeklyRepeat("TH"),
+      "FR": getFieldNameForCustomWeeklyRepeat("FR"),
+      "SA": getFieldNameForCustomWeeklyRepeat("SA"),
+    });
+    
     // determine what week of the month it is, eg, Fifth Monday of the month
     let weeklyPositionFromStartOfMonth = 0;
     let testDate = new Date(dateUtc);
@@ -118,12 +195,19 @@ const RepeatDropdown = ({ dateUtc, disabled = true, formSelectorName, initialVal
       weekdays: {
         name: 'Every Weekday (Mon-Fri)',
         frequency: RRule.WEEKLY,
-        byweekday: ['MO', 'TU', 'WE', 'TH', 'FR'],
+        byweekday: [
+          getUtcRRuleValueFromUserTimezoneValue('MO'), 
+          getUtcRRuleValueFromUserTimezoneValue('TU'), 
+          getUtcRRuleValueFromUserTimezoneValue('WE'), 
+          getUtcRRuleValueFromUserTimezoneValue('TH'), 
+          getUtcRRuleValueFromUserTimezoneValue('FR')],
       },
       weekends: {
         name: 'Weekends (Sat/Sun)',
         frequency: RRule.WEEKLY,
-        byweekday: ['SA', 'SU'],
+        byweekday: [
+          getUtcRRuleValueFromUserTimezoneValue('SA'), 
+          getUtcRRuleValueFromUserTimezoneValue('SU')],
       },
       weekly: {
         name: `Weekly on ${dateSpelledUserTimezone}`,
@@ -141,6 +225,9 @@ const RepeatDropdown = ({ dateUtc, disabled = true, formSelectorName, initialVal
         name: `Custom`,
       },
     };
+
+    // console.log('shift to utc:', shiftToUtc);
+    // console.log('rules', rules);
 
     return rules;
   }, [dateUtc]);
@@ -194,15 +281,7 @@ const RepeatDropdown = ({ dateUtc, disabled = true, formSelectorName, initialVal
             'repeat_rule_custom_frequency',
             initialValues.repeat_rule.frequency,
           ));
-        const weekdaysMap = {
-          "repeat_rule_custom_weekly_sunday": "SU",
-          "repeat_rule_custom_weekly_monday": "MO",
-          "repeat_rule_custom_weekly_tuesday": "TU",
-          "repeat_rule_custom_weekly_wedensday": "WE",
-          "repeat_rule_custom_weekly_thursday": "TH",
-          "repeat_rule_custom_weekly_friday": "FR",
-          "repeat_rule_custom_weekly_saturday": "SA", 
-        };
+        
         if (initialValues.repeat_rule.byweekday) {
           Object.keys(weekdaysMap).forEach(key => {
             dispatch(change(
@@ -301,49 +380,49 @@ const RepeatDropdown = ({ dateUtc, disabled = true, formSelectorName, initialVal
               <div className="repeat-dropdown__days-of-week">
                 <div>
                   <Field
-                    name="repeat_rule_custom_weekly_sunday"
+                    name={customWeeklyRepeatMapping["SU"]}
                     component={Checkbox}
                     />
                   <span>Sunday</span>
                 </div>
                 <div>
                   <Field
-                    name="repeat_rule_custom_weekly_monday"
+                    name={customWeeklyRepeatMapping["MO"]}
                     component={Checkbox}
                     />
                   <span>Monday</span>
                 </div>
                 <div>
                   <Field
-                    name="repeat_rule_custom_weekly_tuesday"
+                    name={customWeeklyRepeatMapping["TU"]}
                     component={Checkbox}
                     />
                   <span>Tuesday</span>
                 </div>
                 <div>
                   <Field
-                    name="repeat_rule_custom_weekly_wedensday"
+                    name={customWeeklyRepeatMapping["WE"]}
                     component={Checkbox}
                     />
                   <span>Wednesday</span>
                 </div>
                 <div>
                   <Field
-                    name="repeat_rule_custom_weekly_thursday"
+                    name={customWeeklyRepeatMapping["TH"]}
                     component={Checkbox}
                     />
                   <span>Thursday</span>
                 </div>
                 <div>
                   <Field
-                    name="repeat_rule_custom_weekly_friday"
+                    name={customWeeklyRepeatMapping["FR"]}
                     component={Checkbox}
                     />
                   <span>Friday</span>
                 </div>
                 <div>
                   <Field
-                    name="repeat_rule_custom_weekly_saturday"
+                    name={customWeeklyRepeatMapping["SA"]}
                     component={Checkbox}
                     />
                   <span>Saturday</span>

@@ -74,6 +74,18 @@ const Library = [
     action: 'read:any',
     attributes: '*',
   },
+  {
+    role: 'DJ',
+    resource: 'Library',
+    action: 'update:any',
+    attributes: '*',
+  },
+  {
+    role: 'DJ',
+    resource: 'Library',
+    action: 'create:any',
+    attributes: '*',
+  },
 
   // Music Library Admin
   {

@@ -49,7 +49,12 @@ class NewShowForm extends Component {
 
   showEditSeriesModal = show => {
     const { setModalVisibility, selectShow } = this.props;
-    selectShow(show);
+    console.log('show', show);
+    selectShow({
+      ...show,
+      start_time_utc: null,
+      end_time_utc: null,
+    });
     setModalVisibility(MODAL_EDIT_SERIES, true, null);
   };
 

@@ -856,6 +856,7 @@ class ShowBuilderPage extends Component {
           <th>Track Name</th>
           <th>Artist</th>
           <th>Album</th>
+          <th>Source</th>
           <th />
         </tr>
       </thead>
@@ -879,6 +880,7 @@ class ShowBuilderPage extends Component {
               <td>{item.name}</td>
               <td>{item.artists.map(a => a.name).join(', ')}</td>
               <td>{item.album != null && item.album.name}</td>
+              <td>{item.album.itunes_id != null ? "iTunes" : "Library"}</td>
               <td>
                 <div onClick={this.stopPropagation}>
                   <Dropdown

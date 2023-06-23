@@ -208,7 +208,14 @@ class TrafficCalendar extends Component {
           {...calendarDateProperty}
           titleAccessor={traffic => traffic.traffic_details.title}
           startAccessor={traffic => new Date(traffic.start_time_utc)}
-          endAccessor={traffic => new Date(traffic.end_time_utc)}
+          endAccessor={traffic => {
+            let end = new Date(traffic.end_time_utc);
+            // check if event ends at midnight, and traffic this 1 minute earlier so it doesn't overlap into the next day
+            if (end.getHours() === 0 && end.getMinutes() === 0) {
+              end.setMinutes(end.getMinutes() - 1)
+            }
+            return end;
+          }}
           eventPropGetter={traffic => {
             return {
               className:

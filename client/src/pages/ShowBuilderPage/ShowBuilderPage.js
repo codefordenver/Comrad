@@ -880,7 +880,7 @@ class ShowBuilderPage extends Component {
               <td>{item.name}</td>
               <td>{item.artists.map(a => a.name).join(', ')}</td>
               <td>{item.album != null && item.album.name}</td>
-              <td>{item.album.itunes_id != null ? "iTunes" : "Library"}</td>
+              <td>{!item.album?.custom?.library_number != null || Number(item.album.custom.library_number) > 1000000000 ? "iTunes" : "Library"}</td>
               <td>
                 <div onClick={this.stopPropagation}>
                   <Dropdown

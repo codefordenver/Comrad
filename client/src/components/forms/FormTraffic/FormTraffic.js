@@ -19,6 +19,7 @@ import { requiredValidate } from '../../../utils/validation';
 const FORM_NAME = 'trafficAddEdit';
 
 class FormTraffic extends Component {
+
   constructor(props) {
     super(props);
     this.state = {
@@ -26,6 +27,7 @@ class FormTraffic extends Component {
         this.props.initialValues != null
           ? this.props.initialValues.is_recurring
           : false,
+      "dateUtc": new Date()
     };
   }
 
@@ -36,6 +38,28 @@ class FormTraffic extends Component {
       configActions.customFieldsForModel('giveaway');
     }
   }
+
+  componentDidUpdate() {
+    const { props } = this;
+    const {
+      currentValues,
+    } = props;
+    let dateUtc = new Date();
+
+    if (currentValues.start_time_utc != null && !this.isInstance()) {
+      dateUtc = currentValues.start_time_utc;
+    } else if (this.isInstance() && currentValues.repeat_rule != null 
+              && currentValues.repeat_rule.repeat_start_date != null) {
+      dateUtc = currentValues.repeat_rule.repeat_start_date;
+    }
+
+    if (String(this.state.dateUtc) != String(dateUtc)) {
+
+      this.setState({
+        "dateUtc": dateUtc
+      });
+    }
+  };
 
   isInstance = () => {
     return this.props.initialValues.master_event_id != null;
@@ -63,7 +87,7 @@ class FormTraffic extends Component {
       handleSubmit,
       submitCallback,
     } = props;
-    const { isRepeat } = this.state;
+    const { isRepeat, dateUtc } = this.state;
 
     let giveawayCustomFields = [];
     if ('giveaway' in configState.customFields) {
@@ -107,12 +131,7 @@ class FormTraffic extends Component {
                   <RepeatDropdown
                     formSelectorName={FORM_NAME}
                     dateUtc={
-                      currentValues.repeat_rule != null &&
-                      currentValues.repeat_rule.repeat_start_date != null
-                        ? currentValues.repeat_rule.repeat_start_date
-                        : currentValues.start_time_utc != null
-                        ? currentValues.start_time_utc
-                        : new Date()
+                      dateUtc
                     }
                     disabled={false}
                     initialValues={this.props.initialValues}
@@ -143,8 +162,7 @@ class FormTraffic extends Component {
             }}
           />
 
-          {formValues.traffic_details != null &&
-            formValues.traffic_details.type === 'Feature' && (
+          {formValues?.traffic_details?.type === 'Feature' && (
               <Field
                 component={Input}
                 label="Producer"
@@ -152,8 +170,7 @@ class FormTraffic extends Component {
               />
             )}
 
-          {formValues.traffic_details != null &&
-            formValues.traffic_details.type === 'Underwriting' && (
+          {formValues?.traffic_details?.type === 'Underwriting' && (
               <Field
                 component={Input}
                 label="Underwriter Name"
@@ -161,8 +178,7 @@ class FormTraffic extends Component {
               />
             )}
 
-          {formValues.traffic_details != null &&
-            formValues.traffic_details.type === 'Giveaway' && (
+          {formValues?.traffic_details?.type === 'Giveaway' && (
               <>
                 <Field
                   component={Input}

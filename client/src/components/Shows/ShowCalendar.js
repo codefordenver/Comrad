@@ -230,7 +230,14 @@ class Calendar extends Component {
           onSelectSlot={show => this.showNewShowModal(show)}
           titleAccessor={show => show.show_details.title}
           startAccessor={show => new Date(show.start_time_utc)}
-          endAccessor={show => new Date(show.end_time_utc)}
+          endAccessor={show => {
+            let end = new Date(show.end_time_utc);
+            // check if event ends at midnight, and show this 1 minute earlier so it doesn't overlap into the next day
+            if (end.getHours() === 0 && end.getMinutes() === 0) {
+              end.setMinutes(end.getMinutes() - 1)
+            }
+            return end;
+          }}
           onRangeChange={dateRange => this.handleDateChange(dateRange)}
           onNavigate={date => this.handleNavigate(date)}
           eventPropGetter={this.eventStyleGetter}

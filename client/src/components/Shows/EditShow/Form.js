@@ -16,6 +16,33 @@ import { repeatRuleToDropdownValue } from '../../../utils/events';
 const FORM_NAME = 'EDIT_SHOW';
 const ALLOW_REPEAT_SELECT = true;
 class EditShowForm extends Component {
+
+  state= {
+    dateUtc: new Date()
+  };
+
+  componentDidUpdate() {
+    const { props } = this;
+    const {
+      currentValues,
+    } = props;
+    let dateUtc = new Date();
+
+    if (currentValues.start_time_utc != null && !currentValues.master_event_id) {
+      dateUtc = currentValues.start_time_utc;
+    } else if (currentValues.master_event_id && currentValues.repeat_rule != null 
+              && currentValues.repeat_rule.repeat_start_date != null) {
+      dateUtc = currentValues.repeat_rule.repeat_start_date;
+    }
+
+    if (String(this.state.dateUtc) != String(dateUtc)) {
+
+      this.setState({
+        "dateUtc": dateUtc
+      });
+    }
+  };
+
   render() {
     const { props } = this;
     const {
@@ -25,6 +52,7 @@ class EditShowForm extends Component {
       handleSubmit,
       editSummaryAndDescriptionOnly,
     } = props;
+    const { dateUtc } = this.state;
     const host = props.initialValues.initial.show_details.host;
 
     return (
@@ -39,14 +67,7 @@ class EditShowForm extends Component {
               {isRepeat && ALLOW_REPEAT_SELECT && (
                 <RepeatDropdown
                   formSelectorName={FORM_NAME}
-                  dateUtc={
-                    currentValues.repeat_rule != null &&
-                    currentValues.repeat_rule.repeat_start_date != null
-                      ? currentValues.repeat_rule.repeat_start_date
-                      : currentValues.start_time_utc != null
-                      ? currentValues.start_time_utc
-                      : new Date()
-                  }
+                  dateUtc={dateUtc}
                   initialValues={this.props.initialValues}
                 />
               )}

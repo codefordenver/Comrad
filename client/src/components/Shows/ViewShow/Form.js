@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
+import { showAPI } from '../../../api';
 import { setModalVisibility } from '../../../redux/modal';
 import {
   selectShow,
@@ -49,13 +50,18 @@ class NewShowForm extends Component {
 
   showEditSeriesModal = show => {
     const { setModalVisibility, selectShow } = this.props;
-    console.log('show', show);
-    selectShow({
-      ...show,
-      start_time_utc: null,
-      end_time_utc: null,
-    });
-    setModalVisibility(MODAL_EDIT_SERIES, true, null);
+    // make an API call to get the data for the master show
+    // console.log('showEditSeriesModal', show);
+    if (show.master_event_id) {
+      showAPI.findById(show.master_event_id._id)
+      .then(response => {
+        selectShow(response.data);
+        setModalVisibility(MODAL_EDIT_SERIES, true, null);
+      });
+    } else {
+      selectShow(show);
+      setModalVisibility(MODAL_EDIT_SERIES, true, null);
+    }
   };
 
   deleteRegularShow = show => {

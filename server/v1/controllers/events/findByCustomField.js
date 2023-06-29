@@ -25,6 +25,11 @@
  *       required: false
  *       type: boolean
  *       description: If true, will include list of all DJs who have hosted the show
+ *     - name: currentScheduleOnly
+ *       in: query
+ *       required: false
+ *       type: boolean
+ *       description: If true, will only return the current schedule for a program (will not return any event series that are past the repeat end date)
  *     description: |
  *       Get shows based on the exact value of a custom field.
  *
@@ -143,7 +148,7 @@ const {
 const _ = require('lodash');
 
 function findByCustomField(req, res) {
-  const { name, value , listDjs} = req.query;
+  const { name, value , listDjs, currentScheduleOnly } = req.query;
   const { eventType } = req.params;
 
   const dbModel = getModelForEventType(eventType);
@@ -161,6 +166,9 @@ function findByCustomField(req, res) {
 
   let filters = {};
   filters['show_details.custom.' + name] = value;
+  if (currentScheduleOnly) {
+    filters['repeat_rule.repeat_end_date'] = { "$gte": new Date() };
+  }
   return dbModel
       .find(filters)
       .populate(populateShowHost())

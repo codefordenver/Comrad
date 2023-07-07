@@ -174,6 +174,12 @@ async function seedDB() {
           if (album.compilation > 1) {
             album.compilation = 1;
           }
+          if (!album.custom) {
+            album.custom = {};
+          }
+          if (album.custom.library_number && Number(album.custom.library_number) < 1000000000) {
+            album.custom.in_kgnu_library = true;
+          }
 
           bulkOperations.push({
             insertOne: {

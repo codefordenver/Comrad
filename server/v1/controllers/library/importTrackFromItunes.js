@@ -58,6 +58,7 @@ async function importTrackFromItunes(req, res) {
       });
     }
 
+
     let albumData = {
         "name": album['title'],
         "type": "album",
@@ -65,7 +66,8 @@ async function importTrackFromItunes(req, res) {
         "artist": dbArtist['_id'],
         "itunes_id": trackData.album.itunes_id,
         "genre": dbGenre ? dbGenre["_id"] : null,
-        "label": album['copyright']
+        "label": album['copyright'],
+        'custom.album_art_url': album['albumArt']
     }
 
     let autoIncrementField = null;

@@ -127,6 +127,9 @@ function mapStateToProps(state) {
     genreState: state.genre,
     initialValues: {
       artist: state.library.doc != null ? state.library.doc._id : null,
+      custom: {
+        'in_kgnu_library': true
+      },
     },
   };
 }

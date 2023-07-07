@@ -70,6 +70,7 @@ async function importItunesAlbum(req, res) {
       });
     }
 
+
     var albumData = {
         "name": album['title'],
         "type": "album",
@@ -77,7 +78,8 @@ async function importItunesAlbum(req, res) {
         "artist": dbArtist['_id'],
         "itunes_id": id,
         "genre": dbGenre ? dbGenre["_id"] : null,
-        "label": album['copyright']
+        "label": album['copyright'],
+        'custom.album_art_url': album['albumArt'],
     };
 
     let autoIncrementField = null;
@@ -106,6 +108,8 @@ async function importItunesAlbum(req, res) {
       albumData['custom.' + autoIncrementField.name] = autoIncrementValue;
       console.log('using this value for custom.' + autoIncrementField.name, autoIncrementValue);
     }
+
+    albumData['custom.in_kgnu_library'] = true;
 
     dbAlbum = await db.Library.create(albumData);
   } else {

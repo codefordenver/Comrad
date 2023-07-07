@@ -856,7 +856,7 @@ class ShowBuilderPage extends Component {
           <th>Track Name</th>
           <th>Artist</th>
           <th>Album</th>
-          <th>Source</th>
+          <th>In KGNU Library</th>
           <th />
         </tr>
       </thead>
@@ -880,7 +880,7 @@ class ShowBuilderPage extends Component {
               <td>{item.name}</td>
               <td>{item.artists.map(a => a.name).join(', ')}</td>
               <td>{item.album != null && item.album.name}</td>
-              <td>{!item.album?.custom?.library_number != null || Number(item.album.custom.library_number) > 1000000000 ? "iTunes" : "Library"}</td>
+              <td>{item.album?.custom?.in_kgnu_library ? "Yes" : "No"}</td>
               <td>
                 <div onClick={this.stopPropagation}>
                   <Dropdown

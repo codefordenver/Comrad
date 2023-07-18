@@ -50,7 +50,7 @@ class EditShowForm extends Component {
       isInstance,
       isRepeat,
       handleSubmit,
-      editSummaryAndDescriptionOnly,
+      editDescriptionOnly,
     } = props;
     const { dateUtc } = this.state;
     const host = props.initialValues.initial.show_details.host;
@@ -60,11 +60,11 @@ class EditShowForm extends Component {
         <CardBody>
           <form className="edit-show-form" onSubmit={handleSubmit} autoComplete="off">
             <div className="edit-show-form__grid">
-              {!editSummaryAndDescriptionOnly && (
+              {!editDescriptionOnly && (
                 <ShowDetailsTop allowRepeatSelect={ALLOW_REPEAT_SELECT} />
               )}
 
-              {isRepeat && ALLOW_REPEAT_SELECT && (
+              {isRepeat && ALLOW_REPEAT_SELECT && !editDescriptionOnly && (
                 <RepeatDropdown
                   formSelectorName={FORM_NAME}
                   dateUtc={dateUtc}
@@ -74,7 +74,7 @@ class EditShowForm extends Component {
 
               <ShowDetailsBottom
                 host={host}
-                editSummaryAndDescriptionOnly={editSummaryAndDescriptionOnly}
+                editDescriptionOnly={editDescriptionOnly}
                 isInstance={isInstance}
               />
             </div>

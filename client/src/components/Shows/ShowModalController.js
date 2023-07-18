@@ -34,7 +34,7 @@ const ModalController = props => {
       return <EditSeriesModal {...props} />;
 
     case MODAL_EDIT_SHOW_INSTANCE_DESCRIPTION:
-      return <EditShowModal editSummaryAndDescriptionOnly={true} {...props} />;
+      return <EditShowModal editDescriptionOnly={true} {...props} />;
 
     default:
       return null;

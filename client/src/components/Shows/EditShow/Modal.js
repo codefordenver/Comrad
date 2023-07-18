@@ -41,7 +41,7 @@ class EditModal extends Component {
     const {
       modalVisibility,
       data,
-      editSummaryAndDescriptionOnly = false,
+      editDescriptionOnly = false,
     } = props;
 
     return (
@@ -49,7 +49,7 @@ class EditModal extends Component {
         <Form
           onSubmit={submit}
           data={data}
-          editSummaryAndDescriptionOnly={editSummaryAndDescriptionOnly}
+          editDescriptionOnly={editDescriptionOnly}
         />
       </Modal>
     );

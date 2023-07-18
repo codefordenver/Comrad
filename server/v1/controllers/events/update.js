@@ -258,7 +258,7 @@ async function update(req, res) {
     }
 
     //update repeat rule, if it was changed
-    if ('repeat_rule_dropdown_value' in body) {
+    if ('repeat_rule_dropdown_value' in body && body.repeat_rule_dropdown_value) {
       if (typeof originalEvent === 'undefined') {
         originalEvent = await dbModel.findOne({ _id: id });
       }

@@ -63,7 +63,7 @@ class ShowDetailsBottom extends Component {
     const {
       configState,
       host,
-      editSummaryAndDescriptionOnly = false,
+      editDescriptionOnly = false,
       isInstance,
     } = this.props;
 
@@ -74,13 +74,15 @@ class ShowDetailsBottom extends Component {
 
     return (
       <>
-        <Field
-          className="grid-span--2"
-          component={TextArea}
-          label="Summary"
-          name="show_details.summary"
-          type="text"
-        />
+        {!editDescriptionOnly && (
+          <Field
+            className="grid-span--2"
+            component={TextArea}
+            label="Summary"
+            name="show_details.summary"
+            type="text"
+          />
+        )}
 
         <Field
           className="grid-span--2"
@@ -90,7 +92,7 @@ class ShowDetailsBottom extends Component {
           type="text"
         />
 
-        {!editSummaryAndDescriptionOnly && (
+        {!editDescriptionOnly && (
           <Field
             label="Producer"
             name="show_details.producer"
@@ -99,7 +101,7 @@ class ShowDetailsBottom extends Component {
           />
         )}
 
-        {!editSummaryAndDescriptionOnly && (
+        {!editDescriptionOnly && (
           <Field
             label="Host"
             name="show_details.host"
@@ -107,13 +109,13 @@ class ShowDetailsBottom extends Component {
             host={host}
           />
         )}
-        {!editSummaryAndDescriptionOnly && isInstance && (
+        {!editDescriptionOnly && isInstance && (
           <FieldArray
             name="show_details.guests"
             component={this.renderGuests}
           />
         )}
-        {!editSummaryAndDescriptionOnly && (
+        {!editDescriptionOnly && (
           <CustomFieldsEdit
             prefixToCustomProperty="show_details"
             fieldsMeta={showCustomFields}

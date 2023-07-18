@@ -476,11 +476,17 @@ class ShowBuilderPage extends Component {
   };
 
   showEditShowDescriptionModal = () => {
-    const { setModalVisibility, selectShow, shows } = this.props;
+    const { createInstanceShow, setModalVisibility, selectShow, shows } = this.props;
     let show = shows[Object.keys(shows)[0]];
 
-    selectShow(show);
-    setModalVisibility(MODAL_EDIT_SHOW_INSTANCE_DESCRIPTION, true, null);
+    if (getShowType(show) == 'instance') {
+      selectShow(show);
+      setModalVisibility(MODAL_EDIT_SHOW_INSTANCE_DESCRIPTION, true, null);
+    } else {
+      createInstanceShow(show.master_event_id._id, show).then(() => {
+        setModalVisibility(MODAL_EDIT_SHOW_INSTANCE_DESCRIPTION, true, null);
+      });
+    }
   };
 
   render() {
@@ -856,7 +862,7 @@ class ShowBuilderPage extends Component {
           <th>Track Name</th>
           <th>Artist</th>
           <th>Album</th>
-          <th>In KGNU Library</th>
+          <th>KGNU Library</th>
           <th />
         </tr>
       </thead>

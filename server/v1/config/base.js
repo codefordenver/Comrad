@@ -29,7 +29,7 @@ module.exports = {
       },
       {
         'name': 'in_kgnu_library',
-        'label': 'In KGNU Library',
+        'label': 'KGNU Library',
         'editFieldType': 'checkbox',
         includeInChartingReport: true,
       },

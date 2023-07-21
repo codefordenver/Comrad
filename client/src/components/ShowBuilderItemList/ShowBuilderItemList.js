@@ -99,7 +99,7 @@ class ShowBuilderItemList extends Component {
           let artists =
             item.track != null
               ? item.track.artists.map(function(artist) {
-                  return artist.name;
+                  return artist ? artist?.name : "";
                 })
               : [];
           artists = artists.join(',');

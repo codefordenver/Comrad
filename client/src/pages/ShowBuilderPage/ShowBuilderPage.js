@@ -62,6 +62,7 @@ class ShowBuilderPage extends Component {
       libraryActions,
       playlistActions,
       trafficActions,
+      history,
     } = this.props;
     const params = new URLSearchParams(location.search);
     const startTime = params.get('startTime');
@@ -74,6 +75,10 @@ class ShowBuilderPage extends Component {
     libraryActions.clear();
 
     //find the playlist
+    if (!startTime || !endTime) {
+      history.push("/show-builder/");
+      return;
+    }
     playlistActions.findOrCreateOne(startTime, endTime);
 
     //find traffic events during the show

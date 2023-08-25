@@ -80,8 +80,15 @@ async function importTrackFromItunes(req, res) {
     }
     if (autoIncrementField) {
       let highestRecord = await db.Library.aggregate([
+        {"$match": {"type": "album"}},
         {"$addFields": {
-          "library_number_as_int": {"$toInt": "$custom.library_number"}
+          "library_number_as_int": {
+            "$convert": {
+              "input": "$custom.library_number",
+              "to": "long",
+              "onError": 0 // ignore non-number library numbers (some have characters)
+            }
+          }
         }},
         {"$sort": {
           "library_number_as_int": -1

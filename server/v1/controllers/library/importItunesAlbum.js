@@ -94,8 +94,15 @@ async function importItunesAlbum(req, res) {
       // let highestRecord = await db.Library.find({"type":"album"}).sort("-custom." + autoIncrementField.name)
       //   .collation({locale: "en_US", numericOrdering: true}).limit(1);
       let highestRecord = await db.Library.aggregate([
+        {"$match": {"type": "album"}},
         {"$addFields": {
-          "library_number_as_int": {"$toInt": "$custom.library_number"}
+          "library_number_as_int": {
+            "$convert": {
+              "input": "$custom.library_number",
+              "to": "long",
+              "onError": 0 // ignore non-number library numbers (some have characters)
+            }
+          }
         }},
         {"$sort": {
           "library_number_as_int": -1

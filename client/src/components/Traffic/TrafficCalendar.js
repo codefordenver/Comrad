@@ -181,7 +181,7 @@ class TrafficCalendar extends Component {
         if (showNamesUsed.indexOf(tss) === -1) {
           showNamesUsed.push(tss);
           showNameClasses +=
-            '.show-name--' +
+            '.rbc-day-slot .show-name--' +
             tss.replace(/[^a-zA-Z0-9]/gi, '') +
             '.show-name--start::before{content: "' +
             tss.replace('"', '\\"') +

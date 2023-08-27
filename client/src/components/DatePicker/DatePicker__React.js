@@ -17,39 +17,42 @@ class DatePicker__React extends Component {
     const { value } = this.props.input;
 
     if (value) {
-      this.setState({ date: new Date(value) });
+      this.setState({date: value});
     }
-  }
+  };
 
-  componentDidUpdate() {
+  dateAsDateObject = () => {
+    const { type } = this.props;
     const { value } = this.props.input;
     const { date } = this.state;
-    if (value != date) {
 
-      if (value instanceof Date) { // value is a date
-        this.setState({ date: value });
-      } else if (!isNaN(Date.parse(value))) { //value can be converted to a date
-        if (!(date instanceof Date) || new Date(value).getTime() != date.getTime()) {
-          this.setState({ date: new Date(value) });
-        }
-      } else if (!value && date != null) { //value is a falsy value, so change date to null if it is not already
-        this.setState({ date: null });
-      }
+    if (type === 'timeOnly' && moment(value, "h:mm a").isValid()) {
+      return moment(value, "h:mm a").toDate();
+    } else if (value instanceof Date) { // value is a date
+      return date;
+    } else if (!isNaN(Date.parse(value))) { //value can be converted to a date
+      return new Date(value);
+    } else if (!value && date != null) { //value is a falsy value, so change date to null if it is not already
+      return null;
     }
-  }
+  };
 
   handleDateChange = date => {
-    const { allowNullDate = false, input } = this.props;
+    const { allowNullDate = false, input, type } = this.props;
     const { onChange } = input;
 
     if (moment(date).isValid() || allowNullDate) {
-      onChange(date);
+      if (type === 'timeOnly') {
+        onChange(moment(date).format('h:mm a'));
+      } else {
+        onChange(date);
+      }
       this.setState({ date });
     }
   };
 
   render() {
-    const { handleDateChange, props, state } = this;
+    const { handleDateChange, props, state, dateAsDateObject } = this;
     const {
       className,
       input: { name },
@@ -65,7 +68,7 @@ class DatePicker__React extends Component {
       ...rest
     } = props;
     let { touched, error } = meta;
-    let { date } = state;
+    let date = dateAsDateObject();
 
     return (
       <div className={classnames('form-group', className)}>
@@ -73,23 +76,38 @@ class DatePicker__React extends Component {
           <DatePicker
             id={`${name}_picker`}
             className={classnames('input', touched && error && 'error')}
-            selected={date}
+            selected={(date instanceof Date) ? date : null}
             onChange={handleDateChange}
             showTimeSelect
-            timeFormat="h:mmaa"
+            timeFormat="h:mm a"
             timeIntervals={15}
             timeCaption="Time"
             {...rest}
           />
-        ) : (
-          <DatePicker
-            id={`${name}_picker`}
-            className={classnames('input', touched && error && 'error')}
-            selected={date}
-            onChange={handleDateChange}
-            {...rest}
-          />
-        )}
+        ) : type === 'timeOnly' ? (
+            <DatePicker
+              id={`${name}_picker`}
+              className={classnames('input', touched && error && 'error')}
+              selected={(date instanceof Date) ? date : null}
+              onChange={handleDateChange}
+              showTimeSelect
+              showTimeSelectOnly
+              timeFormat="h:mm a"
+              timeIntervals={15}
+              timeCaption="Time"
+              dateFormat="h:mm aa"
+              {...rest}
+            />
+          ) : (
+            <DatePicker
+              id={`${name}_picker`}
+              className={classnames('input', touched && error && 'error')}
+              selected={(date instanceof Date) ? date : null}
+              onChange={handleDateChange}
+              {...rest}
+            />
+          )
+        }
 
         <InputLabel {...meta} dirtyOverride>
           {label}

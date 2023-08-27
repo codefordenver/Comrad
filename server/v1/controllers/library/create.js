@@ -44,6 +44,7 @@
  */
 
 const db = require('../../models');
+const keys = require('../../config/keys');
 const {
   updateSearchIndex,
   validateAlbumData,
@@ -69,6 +70,53 @@ function create(req, res) {
     case 'album':
       return validateAlbumData(req.body)
         .then(albumData => {
+
+          if (req.body.fromShowBuilderModal) {
+            //START: this code is duplicated in create.js and in importItunesAlbum.js and importTrackFromItunes.js
+            //        although, this version handles async differently
+            let autoIncrementField = null;
+            if ('album' in keys.modelCustomFields) {
+              keys.modelCustomFields.album.forEach(function(a) {
+                if (a.kgnuCustomFunctionalityAutoIncrement != null && a.kgnuCustomFunctionalityAutoIncrement) {
+                  autoIncrementField = a;
+                }
+              });
+            }
+            if (autoIncrementField) {
+              // let highestRecord = await db.Library.find({"type":"album"}).sort("-custom." + autoIncrementField.name)
+              //   .collation({locale: "en_US", numericOrdering: true}).limit(1);
+              return db.Library.aggregate([
+                {"$match": {"type": "album"}},
+                {"$addFields": {
+                  "library_number_as_int": {
+                    "$convert": {
+                      "input": "$custom.library_number",
+                      "to": "long",
+                      "onError": 0 // ignore non-number library numbers (some have characters)
+                    }
+                  }
+                }},
+                {"$sort": {
+                  "library_number_as_int": -1
+                }},
+                {"$limit": 1}
+              ]).then(highestRecord => {
+                let autoIncrementValue = Number(highestRecord[0]['custom'][autoIncrementField.name]);
+                autoIncrementValue++;
+                albumData['custom.' + autoIncrementField.name] = autoIncrementValue;
+                console.log('using this value for custom.' + autoIncrementField.name, autoIncrementValue);
+                return albumData;
+              });
+
+              
+            }
+            //END: this code is duplicated in create.js and in importItunesAlbum.js and importTrackFromItunes.js
+          }
+
+          return albumData;
+        })
+        .then(albumData => {
+
           db.Library.create(albumData)
             .then(dbAlbum => db.Library.populate(dbAlbum, ['genre', 'artist']))
             .then(dbAlbum => updateSearchIndex(dbAlbum))

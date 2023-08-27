@@ -18,6 +18,7 @@ class CustomFieldsEdit extends Component {
 
     fieldsMeta.forEach(function(field, index) {
       let fieldName = 'custom.' + field.name;
+      let defaultValue = field.defaultValue;
       if (prefixToCustomProperty != null) {
         fieldName = prefixToCustomProperty + '.' + fieldName;
       }
@@ -60,6 +61,17 @@ class CustomFieldsEdit extends Component {
               label={field.label}
               name={fieldName}
               validate={field.required ? requiredValidate : null}
+            />,
+          );
+          break;
+        case 'hidden':
+          elements.push(
+            <Field
+              key={index}
+              className="mb-1-5"
+              type="hidden"
+              name={fieldName}
+              component="input"
             />,
           );
           break;

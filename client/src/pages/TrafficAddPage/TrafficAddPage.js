@@ -57,7 +57,7 @@ class TrafficAddPage extends Component {
   };
 
   render() {
-    const { match } = this.props;
+    const { match, history } = this.props;
     const { timeToAddAt } = match.params;
     return (
       <div className="traffic-add-page">
@@ -70,6 +70,7 @@ class TrafficAddPage extends Component {
           <CardBody>
             <FormTraffic
               submitCallback={this.addTrafficCallback}
+              cancelCallback={() => history.push('/traffic')}
               timeToAddAt={timeToAddAt}
             />
           </CardBody>

@@ -82,6 +82,7 @@ async function importItunesAlbum(req, res) {
         'custom.album_art_url': album['albumArt'],
     };
 
+    //START: this code is duplicated in create.js and in importItunesAlbum.js and importTrackFromItunes.js
     let autoIncrementField = null;
     if ('album' in keys.modelCustomFields) {
       keys.modelCustomFields.album.forEach(function(a) {
@@ -115,6 +116,7 @@ async function importItunesAlbum(req, res) {
       albumData['custom.' + autoIncrementField.name] = autoIncrementValue;
       console.log('using this value for custom.' + autoIncrementField.name, autoIncrementValue);
     }
+    //END: this code is duplicated in create.js and in importItunesAlbum.js and importTrackFromItunes.js
 
     albumData['custom.in_kgnu_library'] = true;
 

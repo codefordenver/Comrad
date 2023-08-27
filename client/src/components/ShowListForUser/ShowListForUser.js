@@ -168,6 +168,10 @@ class ShowListForUser extends Component {
                       Edit Show Instance
                     </span>
                   </td>
+                  <td>
+                    {item.show_details?.custom?.recorded_file_name && 
+                      <a href={item.show_details?.custom?.recorded_file_name} target="_blank">Recording</a>}
+                  </td>
                 </>
               )}
               {showAddToScratchpadButton && (
@@ -180,10 +184,6 @@ class ShowListForUser extends Component {
                   </span>
                 </td>
               )}
-              <td>
-                {item.show_details?.custom?.recorded_file_name && 
-                  <a href={item.show_details?.custom?.recorded_file_name} target="_blank">Recording</a>}
-              </td>
               <ShowModalController />
             </tr>
           );

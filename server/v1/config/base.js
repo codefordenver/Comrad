@@ -75,6 +75,11 @@ module.exports = {
         label: 'Category',
         editFieldType: 'dropdown',
         options: ['NewsPA', 'Music']
+      },
+      {
+        name: 'recorded_file_name',
+        label: 'Recorded file URL',
+        editFieldType: 'text',
       }
     ],
   },

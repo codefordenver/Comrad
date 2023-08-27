@@ -55,7 +55,7 @@ function nowPlaying(req, res) {
           show.playlist_executed = p.saved_items;
           let sortedTracks = show
             .playlist_executed
-            .filter(p => p.type == 'track')
+            .filter(p => p.type == 'track' && p.executed_time_utc)
             .sort((a,b) => {
               if (a.executed_time_utc == b.executed_time_utc) {
                 return 0;
@@ -68,7 +68,7 @@ function nowPlaying(req, res) {
           if (sortedTracks.length > 0) {
             mostRecentPlay = sortedTracks[0];
           }
-          if (mostRecentPlay != null) {
+          if (mostRecentPlay != null && mostRecentPlay.executed_time_utc != null) {
 
             var now = new Date(); // current date/time
 

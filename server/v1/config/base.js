@@ -19,6 +19,10 @@ module.exports = {
         name: 'location',
         label: 'Location',
         editFieldType: 'dropdown',
+        showBuilderModalBehavior: {
+          'editFieldType': 'hidden',
+          'defaultValue': 'Not in library'
+        },
         options: [
           'Gnu Bin',
           'KGNU Library',
@@ -31,6 +35,7 @@ module.exports = {
         'name': 'in_kgnu_library',
         'label': 'KGNU Library',
         'editFieldType': 'checkbox',
+        excludeFromShowBuilderModal: true,
         includeInChartingReport: true,
       },
       {
@@ -39,13 +44,15 @@ module.exports = {
         editFieldType: 'text',
         includeInTextIndex: true,
         includeInChartingReport: true,
+        excludeFromShowBuilderModal: true,
         required: true,
         kgnuCustomFunctionalityAutoIncrement: true, // this field will auto increment from its highest value when imported from itunes
       },
       {
         name: 'album_art_url',
         label: 'Album Art URL',
-        editFieldType: 'text'
+        editFieldType: 'text',
+        excludeFromShowBuilderModal: true,
       }
     ],
     giveaway: [
@@ -68,6 +75,11 @@ module.exports = {
         label: 'Category',
         editFieldType: 'dropdown',
         options: ['NewsPA', 'Music']
+      },
+      {
+        name: 'recorded_file_name',
+        label: 'Recorded file URL',
+        editFieldType: 'text',
       }
     ],
   },

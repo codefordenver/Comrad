@@ -124,6 +124,7 @@ class ShowListForUser extends Component {
           <th>Show Name</th>
           <th />
           <th />
+          <th />
         </tr>
       </thead>
     );
@@ -166,6 +167,10 @@ class ShowListForUser extends Component {
                     >
                       Edit Show Instance
                     </span>
+                  </td>
+                  <td>
+                    {item.show_details?.custom?.recorded_file_name && 
+                      <a href={item.show_details?.custom?.recorded_file_name} target="_blank">Recording</a>}
                   </td>
                 </>
               )}

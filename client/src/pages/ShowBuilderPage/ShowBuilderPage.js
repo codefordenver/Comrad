@@ -783,6 +783,7 @@ class ShowBuilderPage extends Component {
                       <h3>Or, create a new album:</h3>
                       <FormAlbumAdd
                         submitCallback={this.addTrackModalAddNewAlbum}
+                        showBuilderModal={true}
                         additionalButton={
                           <Button
                             color="neutral"

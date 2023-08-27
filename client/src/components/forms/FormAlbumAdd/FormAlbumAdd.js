@@ -30,17 +30,17 @@ class FormAlbumAdd extends Component {
   }
 
   submit = values => {
-    const { libraryActions, submitCallback } = this.props;
+    const { libraryActions, submitCallback, showBuilderModal = false } = this.props;
     if (typeof values.artist == 'object' && values.artist.new) {
       libraryActions.add('artist', {"name": values.artist.new}, artistData => {
-        libraryActions.add('album', {...values, artist: artistData._id}, albumData => {
+        libraryActions.add('album', {...values, artist: artistData._id, 'fromShowBuilderModal': showBuilderModal}, albumData => {
           if (typeof submitCallback === 'function') {
             submitCallback(albumData);
           }
         });
       });
     } else {
-      libraryActions.add('album', values, albumData => {
+      libraryActions.add('album', {...values, 'fromShowBuilderModal': showBuilderModal}, albumData => {
         if (typeof submitCallback === 'function') {
           submitCallback(albumData);
         }
@@ -50,12 +50,7 @@ class FormAlbumAdd extends Component {
 
   render() {
     const { props, submit } = this;
-    const { artist, handleSubmit, configState, genreState } = props;
-
-    let albumCustomFields = [];
-    if ('album' in configState.customFields) {
-      albumCustomFields = configState.customFields.album;
-    }
+    const { albumCustomFields, artist, handleSubmit, configState, genreState, showBuilderModal = false } = props;
 
     return (
       <form className="form-album-add" onSubmit={handleSubmit(submit)} autoComplete="off">
@@ -119,18 +114,46 @@ class FormAlbumAdd extends Component {
 
 const ReduxFormAlbumAdd = reduxForm({
   form: 'albumAdd',
+  enableReinitialize: true, // allow reinitializing, since Initial values wil change after album custom fields loads
 })(FormAlbumAdd);
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
+
+  let { showBuilderModal } = ownProps;
+
+  let configState = state.config;
+  let albumCustomFields = [];
+  var initialValues = {
+    artist: state.library.doc != null ? state.library.doc._id : null,
+  };
+  if (!showBuilderModal) {
+    initialValues['custom.in_kgnu_library'] = true;
+  }
+  if ('album' in configState.customFields) {
+    albumCustomFields = configState.customFields.album;
+    if (showBuilderModal) {
+      albumCustomFields = albumCustomFields.filter(acf => !acf.excludeFromShowBuilderModal);
+      albumCustomFields.forEach(acf => {
+        if (acf.showBuilderModalBehavior) {
+          for (let k in acf.showBuilderModalBehavior) {
+            acf[k] = acf.showBuilderModalBehavior[k];
+          };
+        }
+      });
+    }
+
+    albumCustomFields.forEach(acf => {
+      if (acf.defaultValue) {
+        initialValues['custom.' + acf.name] = acf.defaultValue;
+      }
+    });
+  }
+
   return {
-    configState: state.config,
+    albumCustomFields: albumCustomFields,
+    configState: configState,
     genreState: state.genre,
-    initialValues: {
-      artist: state.library.doc != null ? state.library.doc._id : null,
-      custom: {
-        'in_kgnu_library': true
-      },
-    },
+    "initialValues": initialValues,
   };
 }
 

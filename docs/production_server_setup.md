@@ -156,7 +156,7 @@ sudo chown seanwilliams:comrad comrad
 sudo chmod 770 comrad
 sudo chmod g+s comrad
 cd /srv/comrad
-pm2 start server/index.js -l /var/log/comrad/api
+pm2 start server/index.js -l /var/log/comrad/api --time
 
 pm2 startup systemd
 ```

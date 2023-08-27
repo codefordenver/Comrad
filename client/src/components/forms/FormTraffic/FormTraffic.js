@@ -86,6 +86,7 @@ class FormTraffic extends Component {
       formValues,
       handleSubmit,
       submitCallback,
+      cancelCallback,
     } = props;
     const { isRepeat, dateUtc } = this.state;
 
@@ -109,7 +110,7 @@ class FormTraffic extends Component {
           <Field
             className="z-index--250"
             component={DatePicker__React}
-            label="Date/Time"
+            label="Date/Time of Announcement"
             name="start_time_utc"
             type="time"
             onChange={this.updatedDateTime}
@@ -193,7 +194,8 @@ class FormTraffic extends Component {
                   name="traffic_details.giveaway_details.event_date"
                 />
                 <Field
-                  component={Input}
+                  component={DatePicker__React}
+                  type="timeOnly"
                   label="Event Time"
                   validate={[requiredValidate]}
                   name="traffic_details.giveaway_details.event_time"
@@ -229,6 +231,9 @@ class FormTraffic extends Component {
         <div className="traffic-form__buttons">
           <Button color="primary" type="submit">
             Save
+          </Button>
+          <Button color="neutral" onClick={cancelCallback}>
+            Cancel
           </Button>
         </div>
       </form>

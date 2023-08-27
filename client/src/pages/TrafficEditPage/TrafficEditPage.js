@@ -16,7 +16,7 @@ import { alertActions, trafficActions } from '../../redux';
 
 class TrafficEditPage extends Component {
   componentDidMount() {
-    const { match, trafficActions } = this.props;
+    const { match, trafficActions, history } = this.props;
     const { masterTimeOrSeriesId } = match.params;
 
     //always find a series in the database since the redux state might be a state of an instance from the VIew Traffic page
@@ -136,6 +136,7 @@ class TrafficEditPage extends Component {
   };
 
   render() {
+    const { traffic, history } = this.props;
     return (
       <div className="traffic-edit-page">
         <Card>
@@ -148,6 +149,7 @@ class TrafficEditPage extends Component {
             {this.isDocumentLoaded() && (
               <FormTraffic
                 initialValues={this.trafficInitialValues()}
+                cancelCallback={() => history.push('/traffic/' + traffic.doc._id)}
                 submitCallback={this.editTrafficCallback}
               />
             )}

@@ -70,6 +70,7 @@ async function importTrackFromItunes(req, res) {
         'custom.album_art_url': album['albumArt']
     }
 
+    //START: this code is duplicated in create.js and in importItunesAlbum.js and importTrackFromItunes.js
     let autoIncrementField = null;
     if ('album' in keys.modelCustomFields) {
       keys.modelCustomFields.album.forEach(function(a) {
@@ -80,8 +81,15 @@ async function importTrackFromItunes(req, res) {
     }
     if (autoIncrementField) {
       let highestRecord = await db.Library.aggregate([
+        {"$match": {"type": "album"}},
         {"$addFields": {
-          "library_number_as_int": {"$toInt": "$custom.library_number"}
+          "library_number_as_int": {
+            "$convert": {
+              "input": "$custom.library_number",
+              "to": "long",
+              "onError": 0 // ignore non-number library numbers (some have characters)
+            }
+          }
         }},
         {"$sort": {
           "library_number_as_int": -1
@@ -94,6 +102,7 @@ async function importTrackFromItunes(req, res) {
       albumData['custom.' + autoIncrementField.name] = autoIncrementValue;
       console.log('using this value for custom.' + autoIncrementField.name, autoIncrementValue);
     }
+    //END: this code is duplicated in create.js and in importItunesAlbum.js and importTrackFromItunes.js
 
     dbAlbum = await db.Library.create(albumData);
   }

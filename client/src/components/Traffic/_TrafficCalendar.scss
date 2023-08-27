@@ -44,16 +44,18 @@
   .rbc-events-container {
     margin-left: 2.5em;
   }
-  
-  .show-name {
+
+  .rbc-day-slot .show-name {
     display: grid;
     position: relative;
+    overflow: visible;
     
     &::before {
       background: $color-grey-4;
-      width: 2.5em;
+      width: 2.4em;
       padding-left: 0.4em;
       position: relative;
+
       top: -1px;
       content: " ";
       writing-mode: vertical-lr;
@@ -71,6 +73,9 @@
       &::before {
         padding-top: 1em;
         color: #fff;
+        height: 100px;
+        position: absolute;
+        z-index: 2;
       }
     }
     

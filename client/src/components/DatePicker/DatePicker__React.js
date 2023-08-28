@@ -28,6 +28,8 @@ class DatePicker__React extends Component {
 
     if (type === 'timeOnly' && moment(value, "h:mm a").isValid()) {
       return moment(value, "h:mm a").toDate();
+    else if (type === 'timeOnly' && moment(value, "h:mma").isValid()) {
+      return moment(value, "h:mma").toDate();
     } else if (value instanceof Date) { // value is a date
       return date;
     } else if (!isNaN(Date.parse(value))) { //value can be converted to a date

@@ -170,7 +170,7 @@ class ShowListForUser extends Component {
                   </td>
                   <td>
                     {item.show_details?.custom?.recorded_file_name && 
-                      <a href={item.show_details?.custom?.recorded_file_name} target="_blank">Recording</a>}
+                      <a href={"https://aa.kgnu.net/audioarchives/" + item.show_details?.custom?.recorded_file_name} target="_blank">Recording</a>}
                   </td>
                 </>
               )}

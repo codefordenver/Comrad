@@ -92,7 +92,7 @@
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
     "redis": "^4.2.0",
-    "rrule": "git+https://github.com/seankwilliams/rrule.git",
+    "rrule": "seankwilliams/rrule",
     "uuid": "^8.3.2"
   }
 }

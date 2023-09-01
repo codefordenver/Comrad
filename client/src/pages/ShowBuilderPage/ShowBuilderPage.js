@@ -121,7 +121,7 @@ class ShowBuilderPage extends Component {
   };
 
   addTrackModalAddToSavedItems = track => {
-    this.addTrackToSavedItems(track._id);
+    this.addTrackToSavedItems(track);
     this.addTrackModalClose();
   };
 

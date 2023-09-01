@@ -144,6 +144,7 @@ function eventList(events, startDate, endDate) {
 
 function allEventInstancesInDateRange(event, startDate, endDate) {
   const allEventDates = returnDatesArrayByRepeatRule(event, startDate, endDate);
+  
   const allSeriesEventsExpandedByDates = returnSeriesEventsArrayWithNewDates(
     allEventDates,
     event,
@@ -256,8 +257,9 @@ function returnDatesArrayByRepeatRule(event, startDate, endDate) {
       ),
     ); //between searches on START times, and we want to get anything in progress in this date range, so subtract the event duration from the start time
     let adjustedEndDate = new Date(
-      moment(endDate).add(minutesOffset, 'minutes'),
+      moment(endDate).add(minutesOffset, 'minutes')
     );
+
 
     let events = rule.between(adjustedStartDate, adjustedEndDate);
     // undo the minutes offset

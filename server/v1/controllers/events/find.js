@@ -287,9 +287,10 @@ function find(req, res) {
       }
 
       const processEventResults = dbShow => {
-        // console.log(dbShow);
+        //console.log(dbShow);
         //populateMasterEvent
         let showResults = eventList(dbShow, startDate, endDate);
+
         //apply filters, if they were provided
         //these filters can't be applied on the initial query because of series + instances possibly having
         //different values. For example, if we search for a show with a host of "Sean" and a series has

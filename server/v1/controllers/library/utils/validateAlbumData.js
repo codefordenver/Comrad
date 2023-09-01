@@ -26,7 +26,6 @@ async function validateAlbumData(data, id) {
       return data;
     })
     .catch(err => {
-      console.log('throw error');
       console.log(err);
       throw err;
     });

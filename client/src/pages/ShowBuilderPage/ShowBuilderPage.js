@@ -220,7 +220,6 @@ class ShowBuilderPage extends Component {
 
   addTrackToSavedItems = track => {
     const { playlist, playlistActions } = this.props;
-    console.log('add track to saved items');
     if (!track._id) {
       //this is from itunes, and needs to be imported into the library
       libraryActions.importTrackFromItunes(track, (dbTrack) => {

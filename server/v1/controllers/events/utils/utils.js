@@ -20,7 +20,7 @@ function customRepeatOptionsToRepeatRule(body) {
           "repeat_rule_custom_weekly_sunday": "SU",
           "repeat_rule_custom_weekly_monday": "MO",
           "repeat_rule_custom_weekly_tuesday": "TU",
-          "repeat_rule_custom_weekly_wedensday": "WE",
+          "repeat_rule_custom_weekly_wednesday": "WE",
           "repeat_rule_custom_weekly_thursday": "TH",
           "repeat_rule_custom_weekly_friday": "FR",
           "repeat_rule_custom_weekly_saturday": "SA", 

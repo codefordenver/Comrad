@@ -48,7 +48,7 @@ async function findItunesByCollectionId(collectionId) {
     ]
   }).populate('artist');
 
-  if (localAlbum && !localAlbum['itunes_id'] && localAlbum['artist']['name'].toLowerCase() != album['artist'].toLowerCase()) {
+  if (localAlbum && !localAlbum['itunes_id'] && localAlbum['artist'] != null && localAlbum['artist']['name'].toLowerCase() != album['artist'].toLowerCase()) {
     localAlbum = null;
   }
 

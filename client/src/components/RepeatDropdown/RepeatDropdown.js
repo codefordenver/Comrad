@@ -330,7 +330,6 @@ const RepeatDropdown = ({ dateUtc, disabled = true, formSelectorName, initialVal
   return (
       <>
         <Field
-          className="z-index--200"
           component={DatePicker__React}
           label="Start"
           name="repeat_rule.repeat_start_date"
@@ -449,7 +448,6 @@ const RepeatDropdown = ({ dateUtc, disabled = true, formSelectorName, initialVal
         </>}
 
         <Field
-          className="z-index--150"
           component={DatePicker__React}
           label="End"
           name="repeat_rule.repeat_end_date"

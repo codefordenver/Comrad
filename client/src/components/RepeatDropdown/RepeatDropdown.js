@@ -17,7 +17,7 @@ const RepeatDropdown = ({ dateUtc, disabled = true, formSelectorName, initialVal
     "SU": "repeat_rule_custom_weekly_sunday",
     "MO": "repeat_rule_custom_weekly_monday",
     "TU": "repeat_rule_custom_weekly_tuesday",
-    "WE": "repeat_rule_custom_weekly_wedensday",
+    "WE": "repeat_rule_custom_weekly_wednesday",
     "TH": "repeat_rule_custom_weekly_thursday",
     "FR": "repeat_rule_custom_weekly_friday",
     "SA": "repeat_rule_custom_weekly_saturday",
@@ -26,7 +26,7 @@ const RepeatDropdown = ({ dateUtc, disabled = true, formSelectorName, initialVal
     "repeat_rule_custom_weekly_sunday": "SU",
     "repeat_rule_custom_weekly_monday": "MO",
     "repeat_rule_custom_weekly_tuesday": "TU",
-    "repeat_rule_custom_weekly_wedensday": "WE",
+    "repeat_rule_custom_weekly_wednesday": "WE",
     "repeat_rule_custom_weekly_thursday": "TH",
     "repeat_rule_custom_weekly_friday": "FR",
     "repeat_rule_custom_weekly_saturday": "SA", 
@@ -330,7 +330,6 @@ const RepeatDropdown = ({ dateUtc, disabled = true, formSelectorName, initialVal
   return (
       <>
         <Field
-          className="z-index--200"
           component={DatePicker__React}
           label="Start"
           name="repeat_rule.repeat_start_date"
@@ -449,7 +448,6 @@ const RepeatDropdown = ({ dateUtc, disabled = true, formSelectorName, initialVal
         </>}
 
         <Field
-          className="z-index--150"
           component={DatePicker__React}
           label="End"
           name="repeat_rule.repeat_end_date"

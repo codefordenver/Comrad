@@ -263,18 +263,17 @@ async function update(req, res) {
         originalEvent = await dbModel.findOne({ _id: id });
       }
 
-      const newRepeatRule = body.repeat_rule;
-      body.repeat_rule = {...originalEvent.repeat_rule, ...newRepeatRule};
       let parsedDropdownValue = JSON.parse(body.repeat_rule_dropdown_value);
 
       if (parsedDropdownValue.name == 'Custom') {
         body.repeat_rule = {
           ...originalEvent.repeat_rule,
-          ...newRepeatRule,
+          ...body.repeat_rule,
           ...customRepeatOptionsToRepeatRule(body),
         };
       } else {
         body.repeat_rule = {
+          ...originalEvent.repeat_rule,
           "repeat_start_date": originalEvent.repeat_rule.repeat_start_date,
           "repeat_end_date": originalEvent.repeat_rule.repeat_end_date,
           ...parsedDropdownValue,

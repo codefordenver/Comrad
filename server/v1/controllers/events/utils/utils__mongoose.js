@@ -38,10 +38,11 @@ function findEventQueryByDateRange(start, end) {
             },
           },
           {
-            'repeat_rule.repeat_end_date': {
-              $gte: new Date(start),
-            },
-          },
+            $or: [
+              { 'repeat_rule.repeat_end_date': { $gte: new Date(start), },},
+              { 'repeat_rule.repeat_end_date': null},
+            ]
+          }
         ],
       },
       {

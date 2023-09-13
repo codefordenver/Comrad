@@ -44,11 +44,11 @@ async function findItunesByCollectionId(collectionId) {
     'type': 'album',
     $or: [
       {'itunes_id': collectionId},
-      {'name': new RegExp(album['title'], "i")}
+      {'name': new RegExp(album['title'].replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), "i")} // escape sequence from https://stackoverflow.com/questions/3446170/escape-string-for-use-in-javascript-regex, works on track titles like "F**K, It Got Emotional - Single"
     ]
   }).populate('artist');
 
-  if (localAlbum && !localAlbum['itunes_id'] && localAlbum['artist']['name'].toLowerCase() != album['artist'].toLowerCase()) {
+  if (localAlbum && !localAlbum['itunes_id'] && localAlbum['artist'] != null && localAlbum['artist']['name'].toLowerCase() != album['artist'].toLowerCase()) {
     localAlbum = null;
   }
 

@@ -11,8 +11,11 @@ import { getDifferencesForEventInstance } from '../../../utils/events';
 
 class EditModal extends Component {
   handleFormSubmit = () => {
-    const { setModalVisibility } = this.props;
+    const { afterUpdate, setModalVisibility } = this.props;
     setModalVisibility(null, false, null);
+    if (typeof afterUpdate === 'function') {
+      afterUpdate();
+    }
   };
 
   assign = (obj, keyPath, value) => {

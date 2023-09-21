@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import moment from 'moment';
 
 import Form from './Form';
 import Modal from '../../Modal';
@@ -15,8 +16,11 @@ import { diff } from 'deep-diff';
 
 class EditModal extends Component {
   handleFormSubmit = () => {
-    const { setModalVisibility } = this.props;
+    const { afterUpdate, setModalVisibility } = this.props;
     setModalVisibility(null, false, null);
+    if (typeof afterUpdate === 'function') {
+      afterUpdate();
+    }
   };
 
   assign = (obj, keyPath, value) => {
@@ -71,6 +75,18 @@ class EditModal extends Component {
     ) {
       clearAllInstancesForShow(values.master_event_id);
     }
+
+    //START - this logic is duplicated on both NewShow/Modal and EditShow/Modal__Series
+    if (
+        finalObject['repeat_rule.repeat_end_date'] != null
+      ) {
+        //the repeat rule end date is only a date selector, we will adjust this value so the time passed to the back-end is at the end of day rather than the beginning of the day
+        let repeatEndDate = moment(finalObject['repeat_rule.repeat_end_date']);
+        repeatEndDate.endOf('day');
+        finalObject['repeat_rule.repeat_end_date'] = repeatEndDate.toDate();
+      }
+      //END - this logic is duplicated on both NewShow/Modal and EditShow/Modal__Series
+
     updateShow(_id, finalObject, handleFormSubmit);
   };
 

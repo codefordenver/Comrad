@@ -233,6 +233,7 @@ class TrafficCalendar extends Component {
           onSelectEvent={event => this.handleClickEvent(event)}
           onSelectSlot={slot => this.handleClickSlotEvent(slot)}
           step={10}
+          timeslots={3}
           showMultiDayTimes
           onSelecting={slot => false}
         />

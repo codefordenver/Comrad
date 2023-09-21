@@ -32,7 +32,6 @@ async function validateArtistData(data, id) {
         return data;
       })
       .catch(err => {
-        console.log('thrown error:');
         console.log(err);
         throw err;
       });

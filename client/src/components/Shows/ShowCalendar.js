@@ -248,7 +248,7 @@ class Calendar extends Component {
           onSelecting={slot => false}
         />
 
-        <ShowModalController />
+        <ShowModalController afterUpdate={this.searchShows} />
       </div>
     );
   }

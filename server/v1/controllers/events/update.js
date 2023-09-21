@@ -239,6 +239,13 @@ async function update(req, res) {
     return;
   }
 
+  console.log('Calling events > update:', id, body);
+
+  if (eventType === 'traffic') {
+    // set the end date/time to the start date/time
+    body.end_time_utc = body.start_time_utc;
+  }
+
   let originalEvent = await dbModel.findOne({ _id: id });
 
   if (
@@ -274,33 +281,36 @@ async function update(req, res) {
       } else {
         body.repeat_rule = {
           ...originalEvent.repeat_rule,
-          "repeat_start_date": originalEvent.repeat_rule.repeat_start_date,
-          "repeat_end_date": originalEvent.repeat_rule.repeat_end_date,
+          ...body.repeat_rule,
           ...parsedDropdownValue,
         };
       }
 
-      if (body.repeat_rule.repeat_end_date || body.repeat_rule.repeat_end_date == null) {
-        if (!('repeat_rule' in body)) {
-          body.repeat_rule = {};
-        }
-        if (body.repeat_rule.repeat_end_date == null) {
-          body.repeat_rule.repeat_end_date = new Date('9999-01-01T06:00:00.000Z');
-        } else {
-          body.repeat_rule.repeat_end_date = body.repeat_rule.repeat_end_date
-        }
+      //sometimes the key 'repeat_rule.repeat_end_date' is passed rather than 'repeat_end_date' under a 'repeat_rule' object
+      if ('repeat_rule.repeat_end_date' in body) {
+        body.repeat_rule.repeat_end_date = body['repeat_rule.repeat_end_date'];
         delete body['repeat_rule.repeat_end_date'];
       }
-      if (body.repeat_rule.repeat_start_date) {
-        if (body.repeat_rule.repeat_start_date !== null) {
-          if (!('repeat_rule' in body)) {
-            body.repeat_rule = {};
-          }
-          body.repeat_rule.repeat_start_date =
-            body.repeat_rule.repeat_start_date;
-        }
+      if ('repeat_rule.repeat_start_date' in body) {
+        body.repeat_rule.repeat_start_date = body['repeat_rule.repeat_start_date'];
         delete body['repeat_rule.repeat_start_date'];
       }
+
+      if (!body.repeat_rule.repeat_end_date) {
+        body.repeat_rule.repeat_end_date = new Date('9999-01-01T06:00:00.000Z');
+      }
+
+      Object.keys(body).forEach(k => {
+        if (k.indexOf('repeat_rule.') !== -1) {
+          console.error('Unexpected key for updating event: ', k);
+          // if that error above fires, maybe we need something like this:
+          // delete body['repeat_rule.repeat_start_date'];
+          // delete body['repeat_rule.repeat_start_date'];
+        }
+      });
+     
+      
+      
     }
   }
 

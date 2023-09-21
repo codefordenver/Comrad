@@ -238,23 +238,27 @@ const RepeatDropdown = ({ dateUtc, disabled = true, formSelectorName, initialVal
     if (initialValues != null && initialValues.repeat_rule != null) {
       let repeatRule = initialValues.repeat_rule;
       let selectedRepeatRule = null;
+
+      // see which predefined repeat rule option should be selected
       Object.keys(definedRepeatRules).forEach(function(k) {
         let i = definedRepeatRules[k];
-        if (
-          i.frequency === repeatRule.frequency &&
-          !repeatRule.interval  &&
-          ((typeof i.byweekday !== 'undefined' &&
+        let byWeekdayMatches = ((typeof i.byweekday !== 'undefined' &&
             repeatRule.byweekday != null &&
             JSON.stringify(i.byweekday.concat().sort()) === // use concact() to make copy of the array so it doesn't affect the rule, otherwise it won't match a value from the dropdown
               JSON.stringify(repeatRule.byweekday.sort())) ||
             (typeof i.byweekday === 'undefined' &&
-              (repeatRule.byweekday == null || repeatRule.byweekday.length === 0))) &&
-          i.bysetpos == repeatRule.bysetpos && // use == instead of === so that undefined and null match
-          (
+              (repeatRule.byweekday == null || repeatRule.byweekday.length === 0)));
+        let byMonthDayMatches = (
             JSON.stringify(i.bymonthday) === JSON.stringify(repeatRule.bymonthday)
             ||
             (!i.bymonthday && !repeatRule.bymonthday) // checks for when one is null and the other is undefined
-          )
+        );
+        if (
+          i.frequency === repeatRule.frequency &&
+          !repeatRule.interval  &&
+          byWeekdayMatches &&
+          i.bysetpos == repeatRule.bysetpos && // use == instead of === so that undefined and null match
+          byMonthDayMatches
         ) {
           selectedRepeatRule = i;
           dispatch(change(
@@ -264,6 +268,8 @@ const RepeatDropdown = ({ dateUtc, disabled = true, formSelectorName, initialVal
           ));
         }
       });
+
+      // if we didn't find a match in the predefined repeat rules, it's a custom repeat rule
       if (!selectedRepeatRule) {
         selectedRepeatRule = definedRepeatRules['custom'];
         dispatch(change(

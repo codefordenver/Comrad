@@ -248,7 +248,7 @@ function returnDatesArrayByRepeatRule(event, startDate, endDate) {
     // 5. On Show Calendar, go to the DST cutoff for the year and be sure the show times are correct before and after the cutoff
     // 6. Do the same with the server running in UTC
     let minutesOffset =
-      moment.tz.zone(keys.stationTimeZone).utcOffset(moment(endDate)) -
+      moment.tz.zone(keys.stationTimeZone).utcOffset(moment(event.end_time_utc)) -
       new Date().getTimezoneOffset();
     let adjustedStartDate = new Date(
       moment(startDate).add(
@@ -257,7 +257,7 @@ function returnDatesArrayByRepeatRule(event, startDate, endDate) {
       ),
     ); //between searches on START times, and we want to get anything in progress in this date range, so subtract the event duration from the start time
     let adjustedEndDate = new Date(
-      moment(endDate).add(minutesOffset, 'minutes')
+      moment(endDate).add(minutesOffset, 'minutes') 
     );
 
 

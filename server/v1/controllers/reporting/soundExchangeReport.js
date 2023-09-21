@@ -107,13 +107,16 @@ function soundExchangeReport(req, res) {
           let startTime = moment(t.time_utc);
           startTime.add(playlistCounter, 'seconds');
 
+          let endTime = moment(startTime);
+          endTime.add(t.track_info.duration_in_seconds, 'seconds');
+
           playlistCounter += t.track_info.duration_in_seconds;
 
           // console.log(playlistCounter);
 
           return {
             'Start Time': startTime.format('YYYY-MM-DD HH:mm:ss'),
-            'End Time': null, //not required, since duration is provided
+            'End Time': endTime.format('YYYY-MM-DD HH:mm:ss'), 
             Duration: t.track_info.duration_in_seconds,
             Title: t.track_info.name,
             Artist: t.artists.join(', '),

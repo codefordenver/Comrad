@@ -157,9 +157,7 @@ class Calendar extends Component {
 
     if (
       auth.doc.roles != null &&
-      (auth.doc.roles.indexOf('Admin') !== -1 ||
-        auth.doc.roles.indexOf('Full Access') !== -1 ||
-        auth.doc.roles.indexOf('Show Captain') !== -1)
+      (auth.doc.roles.indexOf('Admin') !== -1)
     ) {
       selectShow(show);
       setModalVisibility(MODAL_NEW_SHOW, true, null);

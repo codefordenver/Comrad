@@ -292,27 +292,30 @@ async function search(req, res) {
       'http://ax.itunes.apple.com/WebObjects/MZStoreServices.woa/wa/wsSearch?term=' + encodeURIComponent(s) +  
       '&entity=musicTrack&limit=' + limit + '&media=music')
     let trackResults = itunesResults['data']['results'];
+    console.log('itunes results', trackResults);
     for (var i = 0; i < trackResults.length; i++) {
       let track = trackResults[i];
       if (data.length < limit) {
-        if (!data.find(trk => trk['name'] == track['trackName'] && trk['album']['name'] == track['collectionName'])) {
-          data.push({
-            itunes_track_id: track['trackId'],
-            popularity: 0,
-            name: track['trackName'],
-            album: {
-              'itunes_id': track['collectionId'],
-              'name': track['collectionName'],
-              'album_art_url': track['artworkUrl100']
-            },
-            'type': 'track',
-            'artists': [{
-              'name': track['artistName']
-            }],
-            'duration_in_seconds': Math.ceil(track['trackTimeMillis'] / 1000),
-            'disk_number': track['discNumber'],
-            'track_number': track['trackNumber']
-          });
+        if (track.kind == 'song') { // exclude music video, which does not have an album
+          if (!data.find(trk => trk['name'] == track['trackName'] && trk['album']['name'] == track['collectionName'])) {
+            data.push({
+              itunes_track_id: track['trackId'],
+              popularity: 0,
+              name: track['trackName'],
+              album: {
+                'itunes_id': track['collectionId'],
+                'name': track['collectionName'],
+                'album_art_url': track['artworkUrl100']
+              },
+              'type': 'track',
+              'artists': [{
+                'name': track['artistName']
+              }],
+              'duration_in_seconds': Math.ceil(track['trackTimeMillis'] / 1000),
+              'disk_number': track['discNumber'],
+              'track_number': track['trackNumber']
+            });
+          }
         }
       }
     }

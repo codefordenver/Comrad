@@ -2,7 +2,12 @@ const db = require('../../../models');
 const axios = require('axios');
 
 async function findItunesByCollectionId(collectionId) {
-  let itunesResponse = await axios.get('http://itunes.apple.com/lookup?id=' + encodeURIComponent(collectionId) + '&entity=song&limit=500');
+  let itunesResponse;
+  try {
+    itunesResponse = await axios.get('http://itunes.apple.com/lookup?id=' + encodeURIComponent(collectionId) + '&entity=song&limit=500');
+  } catch(error) {
+    console.error('findItunesByCollectionId itunes API call error', 'http://itunes.apple.com/lookup?id=' + encodeURIComponent(collectionId) + '&entity=song&limit=500', error);
+  }
 
   var data = itunesResponse.data;
 

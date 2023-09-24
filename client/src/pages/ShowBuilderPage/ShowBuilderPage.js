@@ -218,16 +218,24 @@ class ShowBuilderPage extends Component {
 
   /* END - in compliance reporting periods, prompt the user for the album's label */
 
+  handleTrackAddedClearSearch = () => {
+    const { libraryActions, change } = this.props;
+    libraryActions.clear();
+    change('q','');
+  }
+
   addTrackToSavedItems = track => {
     const { playlist, playlistActions } = this.props;
     if (!track._id) {
       //this is from itunes, and needs to be imported into the library
       libraryActions.importTrackFromItunes(track, (dbTrack) => {
         playlistActions.addTrackToSavedItems(playlist.doc._id, dbTrack._id);
+        this.handleTrackAddedClearSearch();
       });
 
     } else {
       playlistActions.addTrackToSavedItems(playlist.doc._id, track._id);
+      this.handleTrackAddedClearSearch();
     }
   };
 
@@ -237,9 +245,11 @@ class ShowBuilderPage extends Component {
       //this is from itunes, and needs to be imported into the library
       libraryActions.importTrackFromItunes(track, (dbTrack) => {
         playlistActions.addTrackToScratchpad(playlist.doc._id, dbTrack._id);
+        this.handleTrackAddedClearSearch();
       });
     } else {
       playlistActions.addTrackToScratchpad(playlist.doc._id, track._id);
+      this.handleTrackAddedClearSearch();
     }
   };
 

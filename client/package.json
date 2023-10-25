@@ -14,7 +14,7 @@
     "classnames": "^2.3.1",
     "downshift": "^6.1.7",
     "lodash": "^4.17.21",
-    "node-sass": "^7.0.1",
+    "node-sass": "^9.0.0",
     "rc-tooltip": "^5.2.2",
     "react": "^16.14.0",
     "react-big-calendar": "^1.5.0",

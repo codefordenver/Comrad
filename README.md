@@ -1,8 +1,6 @@
 ## Comrad
 
-[Highest Priority Issues](https://github.com/codefordenver/Comrad/projects/24)
-
-[API Documentation (In Progress)](https://apidocs.getcomrad.org)
+[API Documentation](https://apidocs.getcomrad.org)
 
 Currently, we are in the process of doing a beta test of Comrad with KGNU. The project board linked above reflects the high priority issues that have come up in beta testing with KGNU.
 

@@ -109,7 +109,7 @@ async function moveItemFromScratchpadToSavedItems(req, res) {
         return res.status(422).json('Item does not exist');
       }
 
-      movedItem = movedItem[0];
+      movedItem = movedItem[0].toObject();
 
       //clear out data before inserting this record into saved_items
       if (typeof movedItem.occurs_after_time_utc !== 'undefined') {

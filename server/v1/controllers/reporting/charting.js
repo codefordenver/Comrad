@@ -8,15 +8,12 @@ function charting(req, res) {
   let { from, to } = req.query;
 
   let match_query = { 'saved_items.track': { $ne: null } };
-  if (from != null && to != null) {
-    match_query['saved_items.executed_time_utc'] = {
-      $gte: moment.tz(from, keys.stationTimeZone).toDate(),
-      $lte: moment.tz(to, keys.stationTimeZone).toDate(),
-    };
-  } else if (from != null) {
-    match_query['saved_items.executed_time_utc'] = { $gte: moment.tz(from, keys.stationTimeZone).toDate() };
+  // this used to query based on saved_items.executed_time_utc - if we change it to do that again,
+  // need to retroactively fix some data in comrad production that doesn't have executed_time_utc
+  if (from != null) {
+    match_query['end_time_utc'] = { $gt: moment.tz(from, keys.stationTimeZone).toDate() };
   } else if (to != null) {
-    match_query['saved_items.executed_time_utc'] = { $lte: moment.tz(to, keys.stationTimeZone).toDate() };
+    match_query['start_time_utc'] = { $lt: moment.tz(to, keys.stationTimeZone).toDate() };
   } else {
     return res.status(422).json({"error":"Please provide a parameter for 'from' or 'to'"});
   }

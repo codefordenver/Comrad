@@ -27,7 +27,13 @@ class FormDateRangeForExport extends Component {
       requireFromDate = true,
       requireToDate = true,
       withUnderwriterName = false,
+      useDefaultDates // This is passed in from page to determine whether initial date values need to be set in input fields.
     } = this.props;
+
+    // These values are for setting initial values for input dates if page requires it.
+    const today = new Date()
+    const priorDay = new Date()
+    priorDay.setDate(priorDay.getDate() - 30)
 
     return (
       <form
@@ -42,6 +48,7 @@ class FormDateRangeForExport extends Component {
           name="from"
           validate={requireFromDate ? requiredValidate : null}
           dateFormat="MM/dd/yyyy"
+          selected={useDefaultDates && priorDay}
         />
         <Field
           component={DatePicker__React}
@@ -50,6 +57,7 @@ class FormDateRangeForExport extends Component {
           name="to"
           validate={requireToDate ? requiredValidate : null}
           dateFormat="MM/dd/yyyy"
+          selected={useDefaultDates && today}        
         />
         {withUnderwriterName && (
           <Field

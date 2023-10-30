@@ -67,7 +67,7 @@ class ReportingUnderwritingPage extends Component {
                 to: moment(),
               }}
               withUnderwriterName={true}
-              useDefaultDates={true}
+              useInitialDateValues={true}
             />
           </>
         )}

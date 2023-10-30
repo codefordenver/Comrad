@@ -45,7 +45,7 @@ class ReportingSoundExchangePage extends Component {
           submitCallback={this.handleSubmit}
           requireFromDate={false}
           requireToDate={false}
-          useDefaultDates={true}
+          useInitialDateValues={true}
         />
       </div>
     );

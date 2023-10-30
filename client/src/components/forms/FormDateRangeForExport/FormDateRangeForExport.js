@@ -9,12 +9,34 @@ import { DatePicker__React } from '../../DatePicker';
 import DropdownUnderwriter from '../../DropdownUnderwriter';
 
 class FormDateRangeForExport extends Component {
+  constructor(props) {
+    super()
+    this.state = {
+      // These values are for setting initial values for input dates if page requires it.
+      today: '',
+      priorDay: '',
+      useInitialDateValues: props.useInitialDateValues, // This is passed in from page to determine whether initial date values need to be set in input fields.
+    }
+  }
+  
   submit = values => {
     const { submitCallback } = this.props;
     if (typeof submitCallback === 'function') {
       submitCallback(values);
     }
   };
+
+  componentDidMount() {
+    if (this.state.useInitialDateValues) {
+      const today = new Date()
+      const priorDay = new Date()
+      priorDay.setDate(priorDay.getDate() - 30)
+      this.setState({
+        today: today,
+        priorDay: priorDay,
+      })
+    }
+  }
 
   componentWillUnmount() {
     this.props.clearFields();
@@ -27,13 +49,12 @@ class FormDateRangeForExport extends Component {
       requireFromDate = true,
       requireToDate = true,
       withUnderwriterName = false,
-      useDefaultDates // This is passed in from page to determine whether initial date values need to be set in input fields.
     } = this.props;
 
-    // These values are for setting initial values for input dates if page requires it.
-    const today = new Date()
-    const priorDay = new Date()
-    priorDay.setDate(priorDay.getDate() - 30)
+    const {
+      today,
+      priorDay,
+    } = this.state;
 
     return (
       <form
@@ -48,7 +69,12 @@ class FormDateRangeForExport extends Component {
           name="from"
           validate={requireFromDate ? requiredValidate : null}
           dateFormat="MM/dd/yyyy"
-          selected={useDefaultDates && priorDay}
+          selected={priorDay}
+          onChange={(date) => {
+            this.setState({
+              priorDay: date,
+            })
+          }}
         />
         <Field
           component={DatePicker__React}
@@ -57,7 +83,12 @@ class FormDateRangeForExport extends Component {
           name="to"
           validate={requireToDate ? requiredValidate : null}
           dateFormat="MM/dd/yyyy"
-          selected={useDefaultDates && today}        
+          selected={today}
+          onChange={(date) => {
+            this.setState({
+              today: date,
+            })
+          }}        
         />
         {withUnderwriterName && (
           <Field

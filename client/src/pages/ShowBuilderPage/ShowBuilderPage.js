@@ -710,6 +710,7 @@ class ShowBuilderPage extends Component {
                   </div>
                   {activeTab === 'search' && (
                     <div className="library-tab-container__tab-content">
+                      {library.loadingSearch && (<Loading />)}
                       <form autoComplete="off" onSubmit={handleSubmit(this.searchLibrary)}>
                         <Field
                           className="mb-1"

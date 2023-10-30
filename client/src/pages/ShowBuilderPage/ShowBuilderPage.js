@@ -721,9 +721,9 @@ class ShowBuilderPage extends Component {
                       </form>
                       {library.loadingSearch && (
                         <div>
-                          <Loading />
+                          <Loading displayMode="static" />
                         </div>
-                        )}
+                      )}
                       {library.docs != null && library.docs.length > 0 && (
                         <div className="library-results">
                           <table className="base-table-style library-results-table">

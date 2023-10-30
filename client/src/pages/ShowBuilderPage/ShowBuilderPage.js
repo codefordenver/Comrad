@@ -710,7 +710,6 @@ class ShowBuilderPage extends Component {
                   </div>
                   {activeTab === 'search' && (
                     <div className="library-tab-container__tab-content">
-                      {library.loadingSearch && (<Loading />)}
                       <form autoComplete="off" onSubmit={handleSubmit(this.searchLibrary)}>
                         <Field
                           className="mb-1"
@@ -720,6 +719,11 @@ class ShowBuilderPage extends Component {
                           type="text"
                         />
                       </form>
+                      {library.loadingSearch && (
+                        <div>
+                          <Loading />
+                        </div>
+                        )}
                       {library.docs != null && library.docs.length > 0 && (
                         <div className="library-results">
                           <table className="base-table-style library-results-table">

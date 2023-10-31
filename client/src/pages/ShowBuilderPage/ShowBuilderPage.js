@@ -486,6 +486,7 @@ class ShowBuilderPage extends Component {
     if (typeof form.q === 'undefined' || form.q.length === 0) {
       libraryActions.clear();
     } else {
+      libraryActions.clear();
       libraryActions.search('track', form.q, null, null, 30, null, null, true);
     }
   };

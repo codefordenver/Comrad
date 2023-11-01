@@ -126,7 +126,6 @@ class ShowBuilderShowListPage extends Component {
         <Card>
           <CardBody>
             <h1>Show List</h1>
-            {showsFetching && <Loading displayMode="static" />}
           </CardBody>
         </Card>
         <Card>
@@ -134,6 +133,7 @@ class ShowBuilderShowListPage extends Component {
             <div className="show-list__date-selector">
               <DatePicker label="Date" input={dateInput} />
             </div>
+            {showsFetching && <Loading displayMode="static" />}
             {!showsFetching && (
               <div className="show-list__shows">{showElements}</div>
             )}

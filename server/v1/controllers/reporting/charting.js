@@ -141,7 +141,7 @@ function charting(req, res) {
 
         if (dataRow.genre != worksheetGenre) {
           worksheetGenre = dataRow.genre;
-          worksheets.push(wb.addWorksheet(dataRow.genre));
+          worksheets.push(wb.addWorksheet(dataRow.genre.replace('/', ' '))); // slashes are not supported as excel tab sheet names
           currentRow = 2;
         }
 

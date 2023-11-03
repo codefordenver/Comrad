@@ -95,7 +95,7 @@ function charting(req, res) {
         album_id: '$album_info._id',
         name: '$album_info.name',
         artist: '$artist.name',
-        add_date: '$album_info.created_at',
+        release_date: '$album_info.release_date',
         label: '$album_info.label',
         genre: '$genre.name',
         ...customPropertiesProjection,
@@ -108,7 +108,7 @@ function charting(req, res) {
         plays: { $sum: 1 },
         album_title: { $first: '$name' },
         artist: { $first: '$artist' },
-        add_date: { $first: '$add_date' },
+        release_date: { $first: '$release_date' },
         label: { $first: '$label' },
         genre: { $first: '$genre' },
         ...customPropertiesGroup,
@@ -148,10 +148,9 @@ function charting(req, res) {
         let currentWorksheet = worksheets[worksheets.length - 1];
 
 
-        let addDateValue = dataRow.add_date != null ?
-          moment(dataRow.add_date)
-            .tz(keys.stationTimeZone)
-            .format('YYYY-M-D h:mm:ss a')
+        let addDateValue = dataRow.release_date != null ?
+          moment(dataRow.release_date)
+            .format('YYYY-MM-DD')
           : null;
         currentWorksheet.cell(currentRow, 1).number(dataRow.plays);
         currentWorksheet.cell(currentRow, 2).string(dataRow.artist);
@@ -180,7 +179,7 @@ function charting(req, res) {
         ws.cell(1,2).string("Artist").style(bold);
         ws.cell(1,3).string("Album Title").style(bold);
         ws.cell(1,4).string("Label").style(bold);
-        ws.cell(1,5).string("Add Date").style(bold);
+        ws.cell(1,5).string("Release Date").style(bold);
         ws.cell(1,6).string("Genre").style(bold);
 
         for (let j = 0; j < customPropertiesToInclude.length; j++) {

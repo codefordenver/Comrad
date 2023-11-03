@@ -12,6 +12,7 @@ import {
 import Card, { CardBody } from '../../components/Card';
 import DatePicker from '../../components/DatePicker';
 import { formatHostName } from '../../utils/formatters';
+import Loading from '../../components/Loading';
 
 class ShowBuilderShowListPage extends Component {
   state = {
@@ -132,6 +133,7 @@ class ShowBuilderShowListPage extends Component {
             <div className="show-list__date-selector">
               <DatePicker label="Date" input={dateInput} />
             </div>
+            {showsFetching && <Loading displayMode="static" />}
             {!showsFetching && (
               <div className="show-list__shows">{showElements}</div>
             )}

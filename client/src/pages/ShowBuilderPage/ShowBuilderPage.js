@@ -486,6 +486,7 @@ class ShowBuilderPage extends Component {
     if (typeof form.q === 'undefined' || form.q.length === 0) {
       libraryActions.clear();
     } else {
+      libraryActions.clear();
       libraryActions.search('track', form.q, null, null, 30, null, null, true);
     }
   };
@@ -719,6 +720,11 @@ class ShowBuilderPage extends Component {
                           type="text"
                         />
                       </form>
+                      {library.loadingSearch && (
+                        <div>
+                          <Loading displayMode="static" />
+                        </div>
+                      )}
                       {library.docs != null && library.docs.length > 0 && (
                         <div className="library-results">
                           <table className="base-table-style library-results-table">

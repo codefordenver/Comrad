@@ -250,22 +250,30 @@ function returnDatesArrayByRepeatRule(event, startDate, endDate) {
     let minutesOffset =
       moment.tz.zone(keys.stationTimeZone).utcOffset(moment(event.end_time_utc)) -
       new Date().getTimezoneOffset();
-    let adjustedStartDate = new Date(
-      moment(startDate).add(
+    let adjustedStartDate = moment(startDate).add(
         -1 * eventDuration - 1 * 1000 * minutesOffset * 60,
         'milliseconds',
-      ),
-    ); //between searches on START times, and we want to get anything in progress in this date range, so subtract the event duration from the start time
-    let adjustedEndDate = new Date(
-      moment(endDate).add(minutesOffset, 'minutes') 
-    );
+      ); //between searches on START times, and we want to get anything in progress in this date range, so subtract the event duration from the start time
+    let adjustedEndDate = moment(endDate).add(minutesOffset, 'minutes') ;
+
+    // Account for another bug in the rule.between library:
+    // If we are in the timeframe right before DST starts, the calculation goes off by an hour
+    // An event at 02:00 UTC on the day daylight savings starts (eg, Nov 5 2:00 UTC) will not be found
+    // Whatever the offset is, that number of hours leading up to the actual start of DST (Nov 5 8:00 UTC for moutnain time)
+    // causes errors
+    let offsetForDstBug = moment.tz.zone(keys.stationTimeZone).utcOffset(moment(endDate).add(minutesOffset, 'minutes')) - 
+      moment.tz.zone(keys.stationTimeZone).utcOffset(moment(endDate));
+
+    adjustedStartDate = adjustedStartDate.add (offsetForDstBug, 'minutes');
+    adjustedEndDate = adjustedEndDate.add (offsetForDstBug, 'minutes');
 
 
-    let events = rule.between(adjustedStartDate, adjustedEndDate);
+    let events = rule.between(new Date(adjustedStartDate), new Date(adjustedEndDate));
     // undo the minutes offset
     for (let i = 0; i < events.length; i++) {
       events[i] = moment(events[i])
         .subtract(minutesOffset, 'minute')
+        .subtract(offsetForDstBug, 'minute')
         .format();
     }
 

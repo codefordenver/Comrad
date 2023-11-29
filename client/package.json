@@ -33,7 +33,7 @@
     "redux": "^4.2.0",
     "redux-form": "^8.3.8",
     "redux-promise": "^0.6.0",
-    "redux-thunk": "^2.4.1"
+    "redux-thunk": "^2.4.2"
   },
   "devDependencies": {
     "axios-mock-adapter": "^1.21.1",

@@ -54,7 +54,7 @@
     "swagger-jsdoc": "needs to stay at 5.0.1 for this issue: https://github.com/Surnet/swagger-jsdoc/issues/294"
   },
   "devDependencies": {
-    "concurrently": "^7.3.0",
+    "concurrently": "^8.2.2",
     "cross-env": "^7.0.3",
     "inquirer": "^8.0.0",
     "jest": "^28.1.3",

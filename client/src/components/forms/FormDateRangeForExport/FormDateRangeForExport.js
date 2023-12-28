@@ -8,6 +8,8 @@ import Button from '../../Button';
 import { DatePicker__React } from '../../DatePicker';
 import DropdownUnderwriter from '../../DropdownUnderwriter';
 
+const moment = require('moment');
+
 class FormDateRangeForExport extends Component {
   constructor(props) {
     super()
@@ -102,8 +104,8 @@ function mapStateToProps(state, ownProps) {
     ownProps.initialValues != null ? ownProps.initialValues : {};
   
   if (ownProps.useInitialDateValues === true) {
-    const from = new Date()
-    const to = new Date()
+    const from = moment().startOf('day').toDate()
+    const to = moment().startOf('day').toDate()
     from.setDate(from.getDate() - 30)
     initialValues.from = from;
     initialValues.to = to;

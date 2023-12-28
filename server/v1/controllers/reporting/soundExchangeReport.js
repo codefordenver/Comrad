@@ -115,8 +115,8 @@ function soundExchangeReport(req, res) {
           // console.log(playlistCounter);
 
           return {
-            'Start Time': startTime.format('YYYY-MM-DD HH:mm:ss'),
-            'End Time': endTime.format('YYYY-MM-DD HH:mm:ss'), 
+            'Start Time': startTime.tz(keys.stationTimeZone).format('YYYY-MM-DD HH:mm:ss'),
+            'End Time': endTime.tz(keys.stationTimeZone).format('YYYY-MM-DD HH:mm:ss'), 
             Duration: t.track_info.duration_in_seconds,
             Title: t.track_info.name,
             Artist: t.artists.join(', '),

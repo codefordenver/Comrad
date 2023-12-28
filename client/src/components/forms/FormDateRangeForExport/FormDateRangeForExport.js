@@ -12,10 +12,8 @@ class FormDateRangeForExport extends Component {
   constructor(props) {
     super()
     this.state = {
-      // These values are for setting initial values for input dates if page requires it.
-      today: '',
-      priorDay: '',
-      useInitialDateValues: props.useInitialDateValues, // This is passed in from page to determine whether initial date values need to be set in input fields.
+      from: props.initialValues.from,
+      to: props.initialValues.to,
     }
   }
   
@@ -25,18 +23,6 @@ class FormDateRangeForExport extends Component {
       submitCallback(values);
     }
   };
-
-  componentDidMount() {
-    if (this.state.useInitialDateValues) {
-      const today = new Date()
-      const priorDay = new Date()
-      priorDay.setDate(priorDay.getDate() - 30)
-      this.setState({
-        today: today,
-        priorDay: priorDay,
-      })
-    }
-  }
 
   componentWillUnmount() {
     this.props.clearFields();
@@ -52,8 +38,8 @@ class FormDateRangeForExport extends Component {
     } = this.props;
 
     const {
-      today,
-      priorDay,
+      from,
+      to,
     } = this.state;
 
     return (
@@ -69,10 +55,10 @@ class FormDateRangeForExport extends Component {
           name="from"
           validate={requireFromDate ? requiredValidate : null}
           dateFormat="MM/dd/yyyy"
-          selected={priorDay}
+          selected={from}
           onChange={(date) => {
             this.setState({
-              priorDay: date,
+              from: date,
             })
           }}
         />
@@ -83,10 +69,10 @@ class FormDateRangeForExport extends Component {
           name="to"
           validate={requireToDate ? requiredValidate : null}
           dateFormat="MM/dd/yyyy"
-          selected={today}
+          selected={to}
           onChange={(date) => {
             this.setState({
-              today: date,
+              to: date,
             })
           }}        
         />
@@ -111,8 +97,20 @@ const ReduxFormDateRangeForExport = reduxForm({
 })(FormDateRangeForExport);
 
 function mapStateToProps(state, ownProps) {
+  
+  let initialValues =
+    ownProps.initialValues != null ? ownProps.initialValues : {};
+  
+  if (ownProps.useInitialDateValues === true) {
+    const from = new Date()
+    const to = new Date()
+    from.setDate(from.getDate() - 30)
+    initialValues.from = from;
+    initialValues.to = to;
+  }
+
   return {
-    initialValues: ownProps.initialValues,
+    initialValues: initialValues,
   };
 }
 

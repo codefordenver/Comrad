@@ -276,6 +276,14 @@ class ShowBuilderItemList extends Component {
                             ).format('L')
                           : '',
                       ) +
+                      '&quantity=' +
+                      encodeURIComponent(
+                        traffic.traffic_details.giveaway_details != null &&
+                          traffic.traffic_details.giveaway_details.ticket_quantity !=
+                            null
+                          ? traffic.traffic_details.giveaway_details.ticket_quantity
+                          : '',
+                      ) +
                       urlParametersForCustomGiveawayProperties(traffic)
                     }
                     target="_blank"

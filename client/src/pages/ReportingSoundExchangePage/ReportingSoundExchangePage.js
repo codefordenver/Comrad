@@ -14,7 +14,7 @@ class ReportingSoundExchangePage extends Component {
       '/reporting/sound-exchange?';
 
     if (values.from != null) {
-      url += 'from=' + encodeURIComponent(moment(values.from).toISOString());
+      url += 'from=' + encodeURIComponent(moment(values.from).utc().toISOString());
     }
 
     if (values.to != null) {
@@ -22,6 +22,7 @@ class ReportingSoundExchangePage extends Component {
         '&to=' +
         encodeURIComponent(
           moment(values.to)
+            .utc()
             .add(1, 'day')
             .toISOString(),
         );

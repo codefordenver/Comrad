@@ -13,6 +13,7 @@ import { createInstanceShow, selectShow } from '../../redux/show';
 import { setModalVisibility } from '../../redux/modal';
 import ShowModalController from '../Shows/ShowModalController';
 import { playlistActions } from '../../redux';
+import { getShowRecordingUrl } from '../../utils/shows';
 
 class ShowListForUser extends Component {
   constructor(props) {
@@ -169,8 +170,8 @@ class ShowListForUser extends Component {
                     </span>
                   </td>
                   <td>
-                    {item.show_details?.custom?.recorded_file_name && 
-                      <a href={"https://aa.kgnu.net/audioarchives/" + item.show_details?.custom?.recorded_file_name} target="_blank">Recording</a>}
+                    {item.show_details?.custom?.record_audio && new Date(item.end_time_utc) < new Date() && 
+                      <a href={getShowRecordingUrl(item)} target="_blank">Recording</a>}
                   </td>
                 </>
               )}

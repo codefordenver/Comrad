@@ -598,21 +598,23 @@ class ShowBuilderPage extends Component {
                   </>
                 )}
               </div>
-              <div>{showName}</div>
               <div>
-                {formattedDay}
-                <br />
-                {formattedStartTime} - {formattedEndTime}
-                <br />
+                {showName}
                 {canEditPlaylist && (
                   <div className="edit-show-description">
                     <span onClick={e => this.showEditShowDescriptionModal()}>
                       Edit Show Description
                     </span>
-
+                    
                     <ShowModalController />
                   </div>
                 )}
+              </div>
+              <div>
+                {formattedDay}
+                <br />
+                {formattedStartTime} - {formattedEndTime}
+                <br />
               </div>
             </div>
 

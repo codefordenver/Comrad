@@ -21,7 +21,6 @@ class ShowDetailsTop extends Component {
         />
 
         <Field
-          className="z-index--250"
           component={DatePicker__React}
           label="From"
           name="start_time_utc"
@@ -31,7 +30,6 @@ class ShowDetailsTop extends Component {
         />
 
         <Field
-          className="z-index--250"
           component={DatePicker__React}
           label="To"
           type="time"

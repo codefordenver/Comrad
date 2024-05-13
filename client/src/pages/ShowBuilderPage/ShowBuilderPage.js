@@ -618,7 +618,7 @@ class ShowBuilderPage extends Component {
                 {formattedStartTime} - {formattedEndTime}
                 <br />
                 {show?.show_details?.custom?.record_audio && new Date(show?.end_time_utc) < new Date() && 
-                      <a href={getShowRecordingUrl(show)} target="_blank">Recording</a>}
+                      <a href={getShowRecordingUrl(show)} target="_blank">Download Recording</a>}
               </div>
             </div>
 

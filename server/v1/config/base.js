@@ -104,7 +104,7 @@ module.exports = {
     "IF YOU'D RATHER DO AN EMAIL GIVEAWAY:" +
     "<br />" +
     "<br />" +
-    "Tell listeners to send an email with the concert in the subject line to <a href=\"mailto:tickets@kgnu.org\">tickets@kgnu.org</a>. The third person to email <a href=\"mailto:tickets@kgnu.org\">tickets@kgnu.org</a> will win the tickets and will be notified by email." +
+    "Tell listeners to send an email with the name of the concert in the subject line to <a href=\"mailto:tickets@kgnu.org\">tickets@kgnu.org</a>. The third person to email <a href=\"mailto:tickets@kgnu.org\">tickets@kgnu.org</a> will win the tickets and will be notified by email." +
     "<br />" +
     "<br />" +
     "For *all* questions about tickets, please email <a href=\"mailto:tickets@kgnu.org\">tickets@kgnu.org</a>" +

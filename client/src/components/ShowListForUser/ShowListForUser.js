@@ -171,7 +171,7 @@ class ShowListForUser extends Component {
                   </td>
                   <td>
                     {item.show_details?.custom?.record_audio && new Date(item.end_time_utc) < new Date() && 
-                      <a href={getShowRecordingUrl(item)} target="_blank">Recording</a>}
+                      <a href={getShowRecordingUrl(item)} target="_blank">Download Recording</a>}
                   </td>
                 </>
               )}

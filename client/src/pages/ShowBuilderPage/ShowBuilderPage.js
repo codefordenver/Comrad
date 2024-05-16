@@ -21,6 +21,7 @@ import ShowBuilderItemList from '../../components/ShowBuilderItemList';
 import { MODAL_EDIT_SHOW_INSTANCE_DESCRIPTION } from '../../components/Shows/ShowModalController';
 import { setModalVisibility } from '../../redux/modal';
 import ShowModalController from '../../components/Shows/ShowModalController';
+import { getShowRecordingUrl } from "../../utils/shows";
 
 import {
   alertActions,
@@ -528,6 +529,7 @@ class ShowBuilderPage extends Component {
     let { scratchpad, saved_items } = playlist.doc;
 
     let showName = '';
+    let show = null;
     let host = null;
     let formattedHostName;
     if (shows && Object.keys(shows).length > 0) {
@@ -536,7 +538,7 @@ class ShowBuilderPage extends Component {
           'More than one show returned for show builder, using the first one',
         );
       }
-      let show = shows[Object.keys(shows)[0]];
+      show = shows[Object.keys(shows)[0]];
       showName = show.show_details.title;
       host = show.show_details.host;
       if (host != null) {
@@ -615,6 +617,8 @@ class ShowBuilderPage extends Component {
                 <br />
                 {formattedStartTime} - {formattedEndTime}
                 <br />
+                {show?.show_details?.custom?.record_audio && new Date(show?.end_time_utc) < new Date() && 
+                      <a href={getShowRecordingUrl(show)} target="_blank">Download Recording</a>}
               </div>
             </div>
 

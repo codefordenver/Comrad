@@ -3,7 +3,7 @@
  *
  * components:
  *   schemas:
- *     Library:
+ *     library:
  *       type: object
  *       required: [name,type]
  *       properties:
@@ -207,12 +207,24 @@ librarySchema.methods.getSearchIndexForLibrary = async function() {
   const libraryDoc = this;
   let libraryLookups = [];
 
-  if (libraryDoc.album != null) {
+  if (libraryDoc.album != null) {    
     libraryLookups.push(
       Library.findById(libraryDoc.album).then(a => {
-        return a != null ? a.name : '';
-      }),
-    );
+        if (a != null) {
+          let returnValue = '';
+          returnValue += a.custom?.library_number != null ? a.custom?.library_number: '';
+          if (a != null) {
+            if (returnValue.length > 0) {
+              returnValue += ' ';
+            }
+            returnValue += a.name
+          }
+          return returnValue;
+        } else {
+          return '';
+        }
+      }));
+    
   }
 
   if (libraryDoc.artist != null) {

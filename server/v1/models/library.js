@@ -220,6 +220,8 @@ librarySchema.methods.getSearchIndexForLibrary = async function() {
             returnValue += a.name
           }
           return returnValue;
+        } else {
+          return '';
         }
       }));
     

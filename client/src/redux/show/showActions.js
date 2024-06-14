@@ -40,6 +40,14 @@ export const postShow = (input, callback) => async dispatch => {
       show.repeat_rule.repeat_end_date = repeatEndDate.toDate();
     }
 
+    if (show.show_details.custom == null) {
+      show.show_details.custom = {};
+    }
+
+    if (show.show_details.custom.record_audio == null) {
+      show.show_details.custom.record_audio = false;
+    }
+
     const response = await axios.post(`${ROOT_SHOWS_URL}/`, show);
 
     dispatch({ type: SHOW_UPDATE, payload: response.data });

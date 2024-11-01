@@ -289,7 +289,8 @@ async function search(req, res) {
   if (data.length < limit && searchItunes) {
     //fill in the remainder of the results with what we find in itunes
     let itunesResults = await axios.get(
-      'http://ax.itunes.apple.com/WebObjects/MZStoreServices.woa/wa/wsSearch?term=' + encodeURIComponent(s) +  
+      //10/31/2024 changed from ax.itunes.apple.com to itunes.apple.com
+      'http://itunes.apple.com/WebObjects/MZStoreServices.woa/wa/wsSearch?term=' + encodeURIComponent(s) +  
       '&entity=musicTrack&limit=' + limit + '&media=music')
     let trackResults = itunesResults['data']['results'];
     console.log('itunes results', trackResults);

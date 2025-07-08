@@ -93,6 +93,7 @@
     "passport-local": "^1.0.0",
     "redis": "^4.6.13",
     "rrule": "seankwilliams/rrule",
+    "sass": "^1.89.2",
     "uuid": "^8.3.2"
   }
 }

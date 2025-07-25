@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import comradLogo from '../../images/comrad-logo-white.png';
 import Dropdown from '../Dropdown';
-import kgnuLogo from '../../images/kgnu-logo-white-gray.png';
+import kgnuLogo from '../../images/kgnu-logo-white.png';
 import Logo from '../Logo';
 import { authActions } from '../../redux/auth';
 import { bindActionCreators } from 'redux';

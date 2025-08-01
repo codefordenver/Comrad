@@ -201,7 +201,7 @@ class ShowBuilderItemList extends Component {
             >
               {traffic.traffic_details.type === 'Giveaway' && <>
                 <div><b>Event Name:</b> {traffic.traffic_details.giveaway_details.event_name}</div>
-                <div><b>Event Date:</b> {moment(traffic.traffic_details.giveaway_details.event_date).format('L')}</div>
+                <div><b>Event Date:</b> {moment(traffic.traffic_details.giveaway_details.event_date).format('dddd, MMMM D, YYYY')}</div>
                 <div><b>Event Time:</b> {traffic.traffic_details.giveaway_details.event_time}</div>
                 <div><b>Ticket Quantity:</b> {traffic.traffic_details.giveaway_details.ticket_quantity}</div>
                 <div><b>Venue:</b> {traffic.traffic_details.giveaway_details.venue}</div>

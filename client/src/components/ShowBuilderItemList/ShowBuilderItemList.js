@@ -273,7 +273,7 @@ class ShowBuilderItemList extends Component {
                           ? moment(
                               traffic.traffic_details.giveaway_details
                                 .event_date,
-                            ).format('L')
+                            ).format('dddd, MMMM D, YYYY')
                           : '',
                       ) +
                       '&quantity=' +

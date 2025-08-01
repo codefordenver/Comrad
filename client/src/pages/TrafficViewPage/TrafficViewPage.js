@@ -190,7 +190,7 @@ class TrafficViewPage extends Component {
                       Event Date:{' '}
                       {moment(
                         doc.traffic_details.giveaway_details.event_date,
-                      ).format('L')}
+                      ).format('dddd, MMMM D, YYYY')}
                     </div>
                     <div>
                       Event Time:{' '}

@@ -14,6 +14,7 @@ export function getShowRecordingUrl(show) {
   let titleNoSpaces = show.show_details?.title;
   if (titleNoSpaces) {
     titleNoSpaces = titleNoSpaces.replace(/ /g, '');
+    titleNoSpaces = titleNoSpaces.replace(/&/g,'');
   }
   let startTime = moment(show.start_time_utc);
   return "https://aa.kgnu.net/audioarchives/" + titleNoSpaces + "/" 

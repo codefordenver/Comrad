@@ -61,7 +61,7 @@ module.exports = {
         label: 'Ticket Type',
         editFieldType: 'dropdown',
         jotformUrlParameter: 'ticketType',
-        options: ['Guest List', 'Paper', 'Digital', 'Digital - AXS', 'Digital - Ticketmaster', 'Will Call', 'PDF Tickets', 'Other'],
+        options: ['Guest List', 'Paper', 'Digital', 'Digital - AXS', 'Digital - Ticketmaster', 'Digital - Tixr', 'Will Call', 'PDF Tickets', 'Other'],
       },
     ],
     show: [
